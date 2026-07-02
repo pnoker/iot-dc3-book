@@ -1,0 +1,145 @@
+"""
+LLM 客户端 - DeepSeek (chat) + OpenRouter (embedding)
+带重试、超时、日志
+"""
+
+from __future__ import annotations
+
+from openai import APIConnectionError, APITimeoutError, InternalServerError, OpenAI, RateLimitError
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+
+from core.log import get_logger
+
+logger = get_logger("llm")
+
+# 需要重试的异常类型
+_RETRYABLE = (ConnectionError, TimeoutError, OSError, APIConnectionError, APITimeoutError, RateLimitError, InternalServerError)
+
+
+class LLMClient:
+    """统一的 LLM 调用客户端（延迟初始化）"""
+
+    def __init__(
+        self,
+        base_url: str,
+        api_key: str,
+        model: str,
+        temperature: float = 0.7,
+        max_tokens: int = 8192,
+        embed_base_url: str = "",
+        embed_api_key: str = "",
+        embed_model: str = "",
+        timeout: float = 120.0,
+    ) -> None:
+        # Chat config (DeepSeek)
+        self._base_url = base_url
+        self._api_key = api_key
+        self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self._timeout = timeout
+        self._client: OpenAI | None = None
+
+        # Embedding config (OpenRouter)
+        self._embed_base_url = embed_base_url or base_url
+        self._embed_api_key = embed_api_key or api_key
+        self._embed_model = embed_model or "openai/text-embedding-3-small"
+        self._embed_client: OpenAI | None = None
+
+    @property
+    def client(self) -> OpenAI:
+        if self._client is None:
+            if not self._api_key:
+                raise ValueError("未配置 Chat API Key。请设置 DEEPSEEK_API_KEY 或在 config.yaml 中配置。")
+            self._client = OpenAI(
+                base_url=self._base_url,
+                api_key=self._api_key,
+                timeout=self._timeout,
+            )
+            logger.info("Chat 客户端初始化: %s / %s", self._base_url, self.model)
+        return self._client
+
+    @property
+    def embed_client(self) -> OpenAI:
+        if self._embed_client is None:
+            if not self._embed_api_key:
+                raise ValueError("未配置 Embedding API Key。请设置 OPENROUTER_API_KEY 或在 config.yaml 中配置。")
+            self._embed_client = OpenAI(
+                base_url=self._embed_base_url,
+                api_key=self._embed_api_key,
+                timeout=self._timeout,
+            )
+            logger.info("Embedding 客户端初始化: %s / %s", self._embed_base_url, self._embed_model)
+        return self._embed_client
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=30),
+        retry=retry_if_exception_type(_RETRYABLE),
+        reraise=True,
+    )
+    def chat(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        temperature: float | None = None,
+        max_tokens: int | None = None,
+    ) -> str:
+        """单轮对话（自动重试 3 次）"""
+        logger.debug("Chat 请求: model=%s, user_len=%d", self.model, len(user_prompt))
+        try:
+            resp = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                temperature=self.temperature if temperature is None else temperature,
+                max_tokens=self.max_tokens if max_tokens is None else max_tokens,
+            )
+            content = resp.choices[0].message.content or ""
+            logger.debug("Chat 响应: len=%d", len(content))
+            return content
+        except Exception:
+            logger.exception("Chat 调用失败: model=%s", self.model)
+            raise
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=30),
+        retry=retry_if_exception_type(_RETRYABLE),
+        reraise=True,
+    )
+    def embed(self, text: str) -> list[float]:
+        """文本嵌入（自动重试 3 次）"""
+        logger.debug("Embed 请求: model=%s, text_len=%d", self._embed_model, len(text))
+        try:
+            resp = self.embed_client.embeddings.create(
+                model=self._embed_model,
+                input=text,
+            )
+            return resp.data[0].embedding
+        except Exception:
+            logger.exception("Embed 调用失败: model=%s", self._embed_model)
+            raise
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=30),
+        retry=retry_if_exception_type(_RETRYABLE),
+        reraise=True,
+    )
+    def embed_many(self, texts: list[str]) -> list[list[float]]:
+        """批量文本嵌入（自动重试 3 次）"""
+        if not texts:
+            return []
+        logger.debug("Embed 批量请求: model=%s, count=%d", self._embed_model, len(texts))
+        try:
+            resp = self.embed_client.embeddings.create(
+                model=self._embed_model,
+                input=texts,
+            )
+            return [item.embedding for item in resp.data]
+        except Exception:
+            logger.exception("Embed 批量调用失败: model=%s", self._embed_model)
+            raise

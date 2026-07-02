@@ -1,0 +1,5 @@
+# 参考书籍配置
+books_dir: "../books"
+top_k: 5
+chunk_size: 1000
+chunk_overlap: 200

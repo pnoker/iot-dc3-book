@@ -1,0 +1,104 @@
+# 全书篇章结构 - 三篇 14 章
+- name: "基础篇 · 万物互联"
+  prefix: "一"
+  chapters:
+    - id: 1
+      title: "物联网概述：从连接到智能"
+      summary: |
+        物联网的三次浪潮：PC 互联网→移动互联网→万物互联。
+        物联网的定义、发展历程、产业现状。
+        2023 年后 AI 大模型对物联网的范式冲击——从"被动连接"到"主动智能"。
+        物联网与 AI 融合的趋势：AIoT 不是简单叠加，而是从架构层面重构。
+    - id: 2
+      title: "物联网体系架构"
+      summary: |
+        经典四层架构：感知层、网络层、平台层、应用层。
+        AI 时代的新架构范式：在平台层与应用层之间引入"智能层"（Agentic Layer）。
+        从"数据采集→存储→展示"到"数据采集→理解→决策→执行"的闭环。
+        IoT DC3 的微服务架构实践：Gateway、Auth、Manager、Data、Agentic 五大中心。
+    - id: 3
+      title: "感知层技术基础"
+      summary: |
+        传感器、RFID、定位技术、边缘计算节点。
+        感知层的智能化趋势：端侧 AI（TinyML）、智能传感器、自适应采样。
+        物模型（Profile）与设备抽象：如何用统一模型描述千差万别的物理设备。
+    - id: 4
+      title: "网络层通信技术"
+      summary: |
+        NB-IoT、LoRa、5G、WiFi、BLE、Zigbee 等通信技术。
+        协议碎片化问题与统一接入层的设计。
+        IoT DC3 的 28 协议驱动架构：如何用 Driver SDK 实现多协议统一接入。
+    - id: 5
+      title: "平台层与数据处理"
+      summary: |
+        物联网平台架构、云计算、边缘计算、时序数据库、消息队列。
+        数据从设备到云端的完整链路：采集→传输→存储→计算→可视化。
+        AI 驱动的数据处理：异常检测、预测性分析、自动告警。
+
+- name: "技术篇 · 万物智联"
+  prefix: "二"
+  chapters:
+    - id: 6
+      title: "物联网软件开发技术"
+      summary: |
+        Python/Java 物联网开发实践、RESTful API、gRPC、MQTT 编程。
+        微服务架构下的物联网系统开发方法论。
+        IoT DC3 的工程实践：Spring Boot 4 + Spring Cloud 2025 技术栈。
+    - id: 7
+      title: "AI 与物联网融合"
+      summary: |
+        AIoT 的技术全景：大模型、Agent、RAG、Tool-Calling、MCP。
+        Spring AI 在物联网中的应用：ChatClient、Function Calling、对话记忆。
+        IoT DC3 的 Agentic Center 实践：
+          - DeviceTool/DriverTool/PointValueTool：LLM 直接操控设备
+          - 自然语言运维：用对话替代传统运维界面
+          - 智能告警分析与数据洞察
+        多模型支持与私有化部署：GPT、Claude、DeepSeek、通义千问。
+        从 Copilot 到 Agent：物联网运维的范式转移。
+    - id: 8
+      title: "物联网安全技术"
+      summary: |
+        设备安全、通信安全、数据安全、隐私保护。
+        AI 时代的新安全挑战：模型注入攻击、Prompt 安全、AI 决策的可解释性。
+        多租户隔离、JWT 认证、TLS 加密、RBAC 权限模型。
+    - id: 9
+      title: "物联网协议与标准"
+      summary: |
+        MQTT、CoAP、LwM2M、HTTP、BLE 等应用层协议。
+        MCP（Model Context Protocol）：AI 与物联网设备交互的新协议标准。
+        从协议适配到语义互操作：物联网标准化的演进方向。
+
+- name: "应用篇 · 智能落地"
+  prefix: "三"
+  chapters:
+    - id: 10
+      title: "工业物联网与智能制造"
+      summary: |
+        工业 4.0、数字孪生、预测性维护、产线数字化。
+        AI 赋能工业：从数据采集到智能决策的闭环。
+        IoT DC3 在工业场景的实践：Modbus/OPC UA 驱动、时序数据、规则引擎。
+    - id: 11
+      title: "智慧城市与车联网"
+      summary: |
+        智慧交通、城市治理、V2X、自动驾驶协同。
+        城市级物联网的架构挑战：百万设备接入、实时数据处理、跨系统协同。
+        AI 在城市治理中的应用：交通预测、能耗优化、应急响应。
+    - id: 12
+      title: "农业物联网与环境监测"
+      summary: |
+        精准农业、环境传感网络、农业大数据。
+        AI 在农业中的应用：作物病害识别、产量预测、智能灌溉。
+        低功耗广域网（LPWAN）在农业场景的技术选型。
+    - id: 13
+      title: "区块链与物联网融合"
+      summary: |
+        区块链在物联网中的应用：设备身份、数据可信、供应链溯源。
+        去中心化物联网架构：从中心化平台到分布式协作。
+        AI + 区块链 + 物联网：可信智能的三角范式。
+    - id: 14
+      title: "物联网项目实战与工程方法论"
+      summary: |
+        需求分析、架构设计、开发流程、部署运维、项目案例。
+        IoT DC3 完整项目实战：从零搭建一个支持 AI 运维的物联网平台。
+        物联网项目的常见陷阱与最佳实践。
+        物联网的未来：AGI 时代的万物智联。

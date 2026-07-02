@@ -1,0 +1,3 @@
+# 输出配置
+dir: "./output"
+structure: "hierarchical"

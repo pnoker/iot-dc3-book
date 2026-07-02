@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[oc]
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+wheels/
+*.egg-info
+*.egg
+
+# Virtual environments
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# RAG 索引缓存
+.rag_index.json
+
+# 输出目录
+output/
+
+# 日志
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 数据库
+.data/

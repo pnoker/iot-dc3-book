@@ -1,0 +1,33 @@
+# 写作风格规范
+tone: "专业严谨但通俗易懂，面向工程师和高校师生，融入 2024-2026 年 AIoT 最新实践"
+perspective: "第三人称"
+
+terminology:
+  rule: "首次出现的专业术语需附英文原文和简要解释"
+  example: "窄带物联网（Narrowband Internet of Things, NB-IoT）"
+
+format:
+  chapter_title: "第{id}章 {title}"
+  section: "{part_prefix}.{chapter_id} {title}"
+  subsection_l1: "{part_prefix}.{chapter_id}.{sub_id} {title}"
+  subsection_l2: "{part_prefix}.{chapter_id}.{sub_id}.{sub_id2} {title}"
+  subsection_l3: "{part_prefix}.{chapter_id}.{sub_id}.{sub_id2}.{sub_id3} {title}"
+  figure: "图{chapter_id}-{seq} {caption}"
+  table: "表{chapter_id}-{seq} {caption}"
+  code_block: "使用 fenced code block，标注语言"
+
+forbidden_words:
+  - "笔者认为"
+  - "不言而喻"
+  - "众所周知"
+  - "毋庸置疑"
+  - "简单来说"
+  - "显而易见"
+
+chapter_structure:
+  - "引言：从一个真实的工程问题或行业现象切入"
+  - "正文：分节展开，含示例、图表、IoT DC3 实践参照"
+  - "本章小结：核心要点回顾"
+  - "思考与练习：3-5道思考题"
+
+target_words_per_chapter: "4000-8000字"
