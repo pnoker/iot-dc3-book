@@ -1,0 +1,113 @@
+html,
+body,
+#app {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #0f172a;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 22px 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.brand-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.brand p,
+.muted {
+  margin: 4px 0 0;
+  color: #94a3b8;
+}
+
+.content {
+  padding: 28px;
+}
+
+.page-title h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.page-title p {
+  margin: 8px 0 0;
+  color: #94a3b8;
+}
+
+.mt-12 {
+  margin-top: 12px;
+}
+
+.part-block + .part-block {
+  margin-top: 18px;
+}
+
+.part-block h3 {
+  margin: 0 0 10px;
+  color: #cbd5e1;
+}
+
+.markdown-preview {
+  color: #e5e7eb;
+  line-height: 1.8;
+}
+
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3 {
+  color: #f8fafc;
+}
+
+.markdown-preview code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 68vh;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.log-line {
+  display: grid;
+  grid-template-columns: 160px 76px 180px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.log-time,
+.log-agent {
+  color: #94a3b8;
+}
+
+.chart {
+  width: 100%;
+  height: 360px;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "mi-book-writer-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "latest",
+    "echarts": "latest",
+    "katex": "^0.17.0",
+    "markdown-it": "latest",
+    "naive-ui": "latest",
+    "vite": "latest",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "typescript": "latest",
+    "vue-tsc": "latest"
+  }
+}

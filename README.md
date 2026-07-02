@@ -80,6 +80,9 @@ uv run python main.py resume
 # 查看当前 checkpoint、下一节点、当前章节和 RAG 健康状态
 uv run python main.py status
 
+# 启动本地可视化 Dashboard（默认 http://127.0.0.1:18080）
+uv run python main.py dashboard
+
 # 使用新 thread-id 开始一个独立任务
 uv run python main.py --thread-id book-2 run
 
@@ -89,6 +92,33 @@ uv run python main.py run --fresh
 # 显式删除某个 thread-id 的 checkpoint
 uv run python main.py reset --yes
 ```
+
+## 可视化 Dashboard
+
+Dashboard 采用前后端分离实现：后端为 `FastAPI`，前端为 `Vue 3 + Vite + TypeScript + Naive UI + ECharts`。
+
+后端启动：
+
+```bash
+uv run python main.py dashboard
+```
+
+前端开发模式：
+
+```bash
+cd web
+pnpm install
+pnpm dev
+```
+
+生产构建：
+
+```bash
+cd web
+pnpm build
+```
+
+页面能力包括总览、章节审阅、日志过滤、指标图表和只读设置。Dashboard 只监听本地地址，且不会向前端返回 `.env`、API Key 或 token 明文。
 
 默认日志会持久化到 `logs/book-writer.log`，单文件 `10MB`，保留 `10` 个历史分片。可按需调整：
 
