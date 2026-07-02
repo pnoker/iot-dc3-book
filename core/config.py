@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Any, cast
 
 import yaml
 
+from core.config_models import AppConfig, EnvSettings
 from core.log import get_logger
 from core.state import BookState, ChapterPlan, PartPlan, StyleConfig
 
@@ -21,24 +21,25 @@ ConfigDict = dict[str, Any]
 
 def load_config(config_path: str = "config") -> ConfigDict:
     """
-    加载配置。支持两种模式：
-    1. 目录模式：传入 config/ 目录路径，自动合并目录下所有 .yaml 文件
-    2. 文件模式：传入单个 .yaml 文件路径（向后兼容）
+    加载配置目录，自动合并目录下所有 .yaml 文件。
 
     Args:
-        config_path: 配置目录或文件路径
+        config_path: 配置目录路径
 
     Returns:
         合并后的配置字典
     """
     path = Path(config_path)
 
-    if path.is_dir():
-        return _load_config_dir(path)
-    elif path.is_file():
-        return _load_config_file(path)
-    else:
-        raise FileNotFoundError(f"配置路径不存在: {config_path}")
+    if not path.is_dir():
+        raise FileNotFoundError(f"配置目录不存在: {config_path}")
+    return _load_config_dir(path)
+
+
+def load_env_settings(env_path: Path = Path(".env")) -> EnvSettings:
+    """使用 pydantic-settings 加载环境变量和 .env。"""
+    settings_cls = cast("Any", EnvSettings)
+    return cast("EnvSettings", settings_cls(_env_file=env_path))
 
 
 def _load_config_dir(config_dir: Path) -> ConfigDict:
@@ -63,67 +64,42 @@ def _load_config_dir(config_dir: Path) -> ConfigDict:
     return merged
 
 
-def _load_config_file(config_path: Path) -> ConfigDict:
-    """加载单个 YAML 配置文件（向后兼容）"""
-    with open(config_path, encoding="utf-8") as f:
-        cfg = cast("ConfigDict", yaml.safe_load(f))
-    logger.info("配置已加载: %s", config_path)
-    _validate_config(cfg)
-    return cfg
-
-
 def _validate_config(cfg: ConfigDict) -> None:
     """基础配置校验"""
-    # 目录模式：检查必需的顶层 key
-    required_keys = ["book", "parts", "style", "llm"]
-    for key in required_keys:
-        if key not in cfg:
-            raise ValueError(f"配置缺少必填字段: {key} (检查 config/{key}.yaml)")
+    app_config = config_to_app_config(cfg)
+    total_chapters = sum(len(p.chapters) for p in app_config.parts)
+    logger.debug("配置校验通过: %d 篇, %d 章", len(app_config.parts), total_chapters)
 
-    book = cfg["book"]
-    for key in ("title", "subtitle"):
-        if not book.get(key):
-            raise ValueError(f"book.{key} 不能为空")
 
-    parts = cfg["parts"]
-    if not isinstance(parts, list) or len(parts) == 0:
-        raise ValueError("parts 必须是非空列表")
-
-    total_chapters = sum(len(p.get("chapters", [])) for p in parts)
-    if total_chapters == 0:
-        raise ValueError("parts 中至少需要一个章节")
-
-    logger.debug("配置校验通过: %d 篇, %d 章", len(parts), total_chapters)
+def config_to_app_config(cfg: ConfigDict) -> AppConfig:
+    """将配置字典转换为强类型 AppConfig。"""
+    return AppConfig.model_validate(cfg).with_env_settings(load_env_settings())
 
 
 def config_to_book_state(cfg: ConfigDict) -> BookState:
     """将配置转换为 BookState"""
-    book_cfg = cfg.get("book", {})
-    parts_cfg = cfg.get("parts", [])
-    style_cfg = cfg.get("style", {})
+    app_config = config_to_app_config(cfg)
 
     parts: list[PartPlan] = []
-    for p in parts_cfg:
-        chapters = [
-            ChapterPlan(id=ch["id"], title=ch["title"], summary=ch.get("summary", "")) for ch in p.get("chapters", [])
-        ]
-        parts.append(PartPlan(name=p["name"], prefix=p["prefix"], chapters=chapters))
+    for part_cfg in app_config.parts:
+        chapters = [ChapterPlan(id=ch.id, title=ch.title, summary=ch.summary) for ch in part_cfg.chapters]
+        parts.append(PartPlan(name=part_cfg.name, prefix=part_cfg.prefix, chapters=chapters))
 
-    terminology = style_cfg.get("terminology", {})
+    style_cfg = app_config.style
     style = StyleConfig(
-        tone=style_cfg.get("tone", ""),
-        perspective=style_cfg.get("perspective", "第三人称"),
-        terminology_rule=terminology.get("rule", "") if isinstance(terminology, dict) else "",
-        forbidden_words=style_cfg.get("forbidden_words", []),
-        chapter_structure=style_cfg.get("chapter_structure", []),
-        target_words_per_chapter=style_cfg.get("target_words_per_chapter", "4000-8000字"),
-        format_rules=style_cfg.get("format", {}),
+        tone=style_cfg.tone,
+        perspective=style_cfg.perspective,
+        terminology_rule=style_cfg.terminology.rule,
+        forbidden_words=style_cfg.forbidden_words,
+        chapter_structure=style_cfg.chapter_structure,
+        target_words_per_chapter=style_cfg.target_words_per_chapter,
+        format_rules=style_cfg.format,
     )
 
     state = BookState(
-        book_title=book_cfg.get("title", ""),
-        book_subtitle=book_cfg.get("subtitle", ""),
-        author=book_cfg.get("author", ""),
+        book_title=app_config.book.title,
+        book_subtitle=app_config.book.subtitle,
+        author=app_config.book.author,
         parts=parts,
         style=style,
     )
@@ -133,43 +109,29 @@ def config_to_book_state(cfg: ConfigDict) -> BookState:
 
 def get_references_dir(cfg: ConfigDict, config_path: str = "config") -> Path:
     """获取参考书籍目录的绝对路径"""
-    references = cast("ConfigDict", cfg.get("references", {}))
-    ref_dir = str(references.get("books_dir", "../books"))
-    base = Path(config_path).resolve()
-    config_dir = base.parent if base.is_file() else base
+    app_config = config_to_app_config(cfg)
+    ref_dir = app_config.references.books_dir
+    config_dir = Path(config_path).resolve()
     return (config_dir / ref_dir).resolve()
 
 
 def get_llm_config(cfg: ConfigDict) -> ConfigDict:
     """获取 Chat LLM 配置"""
-    llm = cfg.get("llm", {})
-    api_key = _resolve_env_var(llm.get("api_key", ""))
+    llm = config_to_app_config(cfg).llm
     return {
-        "base_url": llm.get("base_url", "https://api.deepseek.com"),
-        "api_key": api_key,
-        "model": llm.get("model", "deepseek-chat"),
-        "temperature": llm.get("temperature", 0.7),
-        "max_tokens": llm.get("max_tokens", 8192),
+        "base_url": llm.base_url,
+        "api_key": llm.api_key,
+        "model": llm.model,
+        "temperature": llm.temperature,
+        "max_tokens": llm.max_tokens,
     }
 
 
 def get_embed_config(cfg: ConfigDict) -> ConfigDict:
     """获取 Embedding 配置"""
-    emb = cfg.get("llm", {}).get("embedding", {})
-    api_key = _resolve_env_var(emb.get("api_key", ""))
+    emb = config_to_app_config(cfg).llm.embedding
     return {
-        "embed_base_url": emb.get("base_url", ""),
-        "embed_api_key": api_key,
-        "embed_model": emb.get("model", "openai/text-embedding-3-small"),
+        "embed_base_url": emb.base_url,
+        "embed_api_key": emb.api_key,
+        "embed_model": emb.model,
     }
-
-
-def _resolve_env_var(value: str) -> str:
-    """解析 ${VAR_NAME} 格式的环境变量"""
-    if value.startswith("${") and value.endswith("}"):
-        env_var = value[2:-1]
-        resolved = os.environ.get(env_var, "")
-        if not resolved:
-            logger.warning("环境变量 %s 未设置", env_var)
-        return resolved
-    return value

@@ -4,22 +4,17 @@ RAG 文本分块工具
 
 from __future__ import annotations
 
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+DEFAULT_SEPARATORS = ["\n\n", "\n", "。", "；", ".", " ", ""]
+
 
 def split_text(text: str, chunk_size: int, chunk_overlap: int) -> list[str]:
-    """按 chunk_size 分块，尽量保留句子边界。"""
-    if len(text) <= chunk_size:
-        return [text]
-
-    chunks: list[str] = []
-    start = 0
-    while start < len(text):
-        end = start + chunk_size
-        if end < len(text):
-            for sep in ["。", "\n", ".", "；"]:
-                pos = text.rfind(sep, start + chunk_size // 2, end)
-                if pos > start:
-                    end = pos + 1
-                    break
-        chunks.append(text[start:end].strip())
-        start = end - chunk_overlap
-    return chunks
+    """使用 LangChain 递归文本切分器按语义边界分块。"""
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        separators=DEFAULT_SEPARATORS,
+        keep_separator=True,
+    )
+    return [chunk.strip() for chunk in splitter.split_text(text) if chunk.strip()]

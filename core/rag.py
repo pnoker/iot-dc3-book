@@ -109,7 +109,7 @@ class RAGEngine:
 
         Args:
             books_dir: PDF 书籍目录
-            index_path: 未使用（保留接口兼容）
+            index_path: 索引输入签名文件路径
 
         Returns:
             分块总数

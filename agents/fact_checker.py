@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-from core.utils import parse_json_from_llm
 
 from .base import BaseAgent
 
@@ -65,9 +64,8 @@ class FactCheckerAgent(BaseAgent):
 请输出严格 JSON。"""
 
         self.logger.info("事实核查第%d章...", chapter.id)
-        response = self.llm.chat(_FACT_CHECKER_SYSTEM, user_prompt, temperature=0.2)
         try:
-            return parse_json_from_llm(response)
+            return self.llm.chat_json(_FACT_CHECKER_SYSTEM, user_prompt, temperature=0.2)
         except ValueError:
             self.logger.error("事实核查报告解析失败")
             return {

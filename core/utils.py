@@ -7,6 +7,8 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from json_repair import repair_json
+
 from core.log import get_logger
 
 logger = get_logger("utils")
@@ -62,7 +64,12 @@ def parse_json_from_llm(response: str) -> dict[str, Any]:
             if isinstance(parsed, dict):
                 return {str(k): v for k, v in parsed.items()}
         except json.JSONDecodeError:
-            continue
+            try:
+                repaired = json.loads(repair_json(candidate))
+                if isinstance(repaired, dict):
+                    return {str(k): v for k, v in repaired.items()}
+            except (json.JSONDecodeError, ValueError):
+                continue
 
     logger.error("JSON 解析失败，响应前 200 字: %s", response[:200])
     raise ValueError(f"无法从 LLM 响应中解析 JSON: {response[:100]}...")

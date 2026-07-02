@@ -3,7 +3,9 @@ from __future__ import annotations
 import pytest
 
 from core.state import BookState, ChapterContent, ChapterPlan, PartPlan
-from graph.nodes import node_fact_check, node_plan_review, node_revise, node_style_check, node_write
+from graph.node_chapter import node_write
+from graph.node_lifecycle import node_plan_review
+from graph.node_quality import node_fact_check, node_revise, node_style_check
 
 
 class _PassingStyleGuard:

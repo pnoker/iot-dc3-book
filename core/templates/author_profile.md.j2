@@ -1,0 +1,19 @@
+# 关于作者
+
+## {{ profile.name | default("", true) }}
+
+**{{ profile.title | default("", true) }}**
+
+{{ profile.bio | default("", true) | trim }}
+
+### 核心领域
+
+{% for item in profile.expertise | default([], true) -%}
+- {{ item }}
+{% endfor %}
+
+### 开源项目
+
+**[{{ profile.project | default("", true) }}]({{ profile.project_url | default("", true) }})**
+
+{{ profile.project_description | default("", true) | trim }}

@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-from core.utils import parse_json_from_llm
 
 from .base import BaseAgent
 
@@ -87,10 +86,8 @@ class EditorAgent(BaseAgent):
 请进行严格审校并输出 JSON 格式报告。"""
 
         self.logger.info("审校第%d章...", chapter.id)
-        response = self.llm.chat(_EDITOR_SYSTEM, user_prompt, temperature=0.3)
-
         try:
-            return parse_json_from_llm(response)
+            return self.llm.chat_json(_EDITOR_SYSTEM, user_prompt, temperature=0.3)
         except ValueError:
             self.logger.error("审校报告解析失败")
             return {"pass": False, "overall_score": 5, "summary": "审校解析失败", "issues": []}

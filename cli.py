@@ -1,78 +1,66 @@
 """
-命令行接口：参数解析与命令分发。
+命令行接口：Typer 命令定义与分发。
 """
 
 from __future__ import annotations
 
-import argparse
 import json
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated, TypeVar
 
-if TYPE_CHECKING:
-    from logging import Logger
+import typer
 
 from core.log import get_logger, setup_logging
 from graph import BookWriterGraph
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from logging import Logger
 
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="mi-book-writer: 多 Agent 书籍写作系统",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    parser.add_argument("--config", default="config", help="配置目录或文件路径 (默认: config/)")
-    parser.add_argument("--thread-id", default="book-1", help="任务线程 ID (默认: book-1)")
-    parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"], help="日志级别")
-    parser.add_argument("--log-file", default=None, help="日志文件路径 (可选)")
-    parser.add_argument("--resume", action="store_true", help="兼容旧参数：等同于 resume 命令")
+app = typer.Typer(
+    help="mi-book-writer: 多 Agent 书籍写作系统",
+    no_args_is_help=False,
+    add_completion=False,
+)
 
-    subparsers = parser.add_subparsers(dest="command")
-
-    run_parser = subparsers.add_parser("run", help="执行写书流程；默认自动续跑未完成 checkpoint")
-    run_parser.add_argument("--fresh", action="store_true", help="忽略并清除同 thread-id 的旧 checkpoint 后重跑")
-
-    subparsers.add_parser("resume", help="从 checkpoint 继续执行")
-    subparsers.add_parser("status", help="查看 checkpoint、当前章节和 RAG 健康状态")
-
-    export_parser = subparsers.add_parser("export-state", help="导出 checkpoint 状态 JSON")
-    export_parser.add_argument("--file", required=True, help="导出文件路径")
-
-    patch_parser = subparsers.add_parser("patch-chapter", help="用本地 Markdown 覆盖指定章节正文")
-    patch_parser.add_argument("--chapter-id", type=int, required=True, help="章节 ID")
-    patch_parser.add_argument("--file", required=True, help="Markdown 文件路径")
-    patch_parser.add_argument("--regenerate-output", action="store_true", help="补丁后立即重新生成 output")
-
-    revise_parser = subparsers.add_parser("revise-chapter", help="对指定章节执行一次 LLM 局部修订")
-    revise_parser.add_argument("--chapter-id", type=int, required=True, help="章节 ID")
-    feedback_group = revise_parser.add_mutually_exclusive_group(required=True)
-    feedback_group.add_argument("--feedback", help="修订反馈文本")
-    feedback_group.add_argument("--feedback-file", help="修订反馈文件")
-    revise_parser.add_argument("--regenerate-output", action="store_true", help="修订后立即重新生成 output")
-
-    subparsers.add_parser("regenerate-output", help="仅根据 checkpoint 重新生成 output")
-
-    reset_parser = subparsers.add_parser("reset", help="删除指定 thread-id 的 checkpoint")
-    reset_parser.add_argument("--yes", action="store_true", help="确认执行删除")
-
-    args = parser.parse_args(argv)
-    if args.command is None:
-        args.command = "resume" if args.resume else "run"
-        args.fresh = False
-    return args
+ResultT = TypeVar("ResultT")
 
 
-def main(argv: list[str] | None = None) -> None:
-    args = parse_args(argv)
+ConfigOption = Annotated[str, typer.Option("--config", help="配置目录路径")]
+ThreadIdOption = Annotated[str, typer.Option("--thread-id", help="任务线程 ID")]
+LogLevelOption = Annotated[str, typer.Option("--log-level", help="日志级别")]
+LogFileOption = Annotated[str | None, typer.Option("--log-file", help="日志文件路径")]
 
-    setup_logging(level=args.log_level, log_file=args.log_file)
+
+@app.callback(invoke_without_command=True)
+def callback(
+    ctx: typer.Context,
+    config: ConfigOption = "config",
+    thread_id: ThreadIdOption = "book-1",
+    log_level: LogLevelOption = "INFO",
+    log_file: LogFileOption = None,
+) -> None:
+    """保存全局选项；无子命令时执行 run。"""
+    ctx.obj = {
+        "config": config,
+        "thread_id": thread_id,
+        "log_level": log_level,
+        "log_file": log_file,
+    }
+    if ctx.invoked_subcommand is None:
+        _execute(ctx, lambda writer, selected_thread_id: writer.run(thread_id=selected_thread_id, fresh=False))
+
+
+def _execute(ctx: typer.Context, action: Callable[[BookWriterGraph, str], ResultT]) -> ResultT:
+    options = ctx.obj or {}
+    setup_logging(level=str(options.get("log_level", "INFO")), log_file=options.get("log_file"))
     logger = get_logger("main")
 
-    config_path = Path(args.config)
-    if not config_path.exists() and not config_path.is_dir():
-        logger.error("配置文件不存在: %s", config_path)
-        sys.exit(1)
+    config_path = Path(str(options.get("config", "config")))
+    thread_id = str(options.get("thread_id", "book-1"))
+    if not config_path.is_dir():
+        raise typer.BadParameter(f"配置目录不存在: {config_path}", param_hint="--config")
 
     logger.info("=" * 60)
     logger.info("📚 mi-book-writer: 多 Agent 书籍写作系统")
@@ -80,49 +68,133 @@ def main(argv: list[str] | None = None) -> None:
 
     try:
         writer = BookWriterGraph(str(config_path))
-        dispatch_command(args, writer, logger)
-
+        result = action(writer, thread_id)
         logger.info("=" * 60)
         logger.info("✅ 执行完成")
         logger.info("=" * 60)
+        return result
     except KeyboardInterrupt:
         logger.info("⏹️  用户中断，已保留最近一次 checkpoint。下次运行使用 resume 恢复。")
-        sys.exit(0)
-    except Exception:
+        raise typer.Exit(code=0) from None
+    except Exception as exc:
         logger.exception("❌ 执行失败")
-        sys.exit(1)
+        raise typer.Exit(code=1) from exc
 
 
-def dispatch_command(args: argparse.Namespace, writer: BookWriterGraph, logger: Logger) -> None:
-    if args.command == "run":
-        writer.run(thread_id=args.thread_id, fresh=getattr(args, "fresh", False))
-    elif args.command == "resume":
-        logger.info("🔄 从断点恢复...")
-        writer.resume(thread_id=args.thread_id)
-    elif args.command == "status":
-        print(json.dumps(writer.get_status(args.thread_id), ensure_ascii=False, indent=2))
-    elif args.command == "export-state":
-        writer.export_state(args.thread_id, args.file)
-        logger.info("✅ 状态已导出: %s", args.file)
-    elif args.command == "patch-chapter":
-        markdown = Path(args.file).read_text(encoding="utf-8")
-        writer.patch_chapter(args.thread_id, args.chapter_id, markdown)
-        logger.info("✅ 第%d章已应用人工补丁", args.chapter_id)
-        if args.regenerate_output:
-            writer.regenerate_output(args.thread_id)
-    elif args.command == "revise-chapter":
-        feedback = args.feedback or Path(args.feedback_file).read_text(encoding="utf-8")
-        writer.revise_chapter(args.thread_id, args.chapter_id, feedback)
-        logger.info("✅ 第%d章已完成局部 LLM 修订", args.chapter_id)
-        if args.regenerate_output:
-            writer.regenerate_output(args.thread_id)
-    elif args.command == "regenerate-output":
-        output_dir = writer.regenerate_output(args.thread_id)
-        logger.info("✅ 输出已重新生成: %s", output_dir)
-    elif args.command == "reset":
-        if not args.yes:
-            raise ValueError("reset 会删除 checkpoint，请添加 --yes 确认")
-        writer.reset_thread(args.thread_id)
-        logger.info("✅ 已删除 thread-id=%s 的 checkpoint", args.thread_id)
-    else:
-        raise ValueError(f"未知命令: {args.command}")
+@app.command()
+def run(
+    ctx: typer.Context,
+    fresh: Annotated[bool, typer.Option("--fresh", help="忽略并清除同 thread-id 的旧 checkpoint 后重跑")] = False,
+) -> None:
+    """执行写书流程；默认自动续跑未完成 checkpoint。"""
+    _execute(ctx, lambda writer, thread_id: writer.run(thread_id=thread_id, fresh=fresh))
+
+
+@app.command()
+def resume(ctx: typer.Context) -> None:
+    """从 checkpoint 继续执行。"""
+    logger = get_logger("main")
+    _execute(ctx, lambda writer, thread_id: _resume(writer, thread_id, logger))
+
+
+def _resume(writer: BookWriterGraph, thread_id: str, logger: Logger) -> dict[str, object]:
+    logger.info("🔄 从断点恢复...")
+    return writer.resume(thread_id=thread_id)
+
+
+@app.command()
+def status(ctx: typer.Context) -> None:
+    """查看 checkpoint、当前章节和 RAG 健康状态。"""
+
+    def show_status(writer: BookWriterGraph, thread_id: str) -> None:
+        typer.echo(json.dumps(writer.get_status(thread_id), ensure_ascii=False, indent=2))
+
+    _execute(ctx, show_status)
+
+
+@app.command("export-state")
+def export_state(
+    ctx: typer.Context,
+    file: Annotated[str, typer.Option("--file", help="导出文件路径")],
+) -> None:
+    """导出 checkpoint 状态 JSON。"""
+
+    def export(writer: BookWriterGraph, thread_id: str) -> None:
+        writer.export_state(thread_id, file)
+        get_logger("main").info("✅ 状态已导出: %s", file)
+
+    _execute(ctx, export)
+
+
+@app.command("patch-chapter")
+def patch_chapter(
+    ctx: typer.Context,
+    chapter_id: Annotated[int, typer.Option("--chapter-id", help="章节 ID")],
+    file: Annotated[str, typer.Option("--file", help="Markdown 文件路径")],
+    regenerate_output: Annotated[bool, typer.Option("--regenerate-output", help="补丁后立即重新生成 output")] = False,
+) -> None:
+    """用本地 Markdown 覆盖指定章节正文。"""
+
+    def patch(writer: BookWriterGraph, thread_id: str) -> None:
+        markdown = Path(file).read_text(encoding="utf-8")
+        writer.patch_chapter(thread_id, chapter_id, markdown)
+        logger = get_logger("main")
+        logger.info("✅ 第%d章已应用人工补丁", chapter_id)
+        if regenerate_output:
+            writer.regenerate_output(thread_id)
+
+    _execute(ctx, patch)
+
+
+@app.command("revise-chapter")
+def revise_chapter(
+    ctx: typer.Context,
+    chapter_id: Annotated[int, typer.Option("--chapter-id", help="章节 ID")],
+    feedback: Annotated[str | None, typer.Option("--feedback", help="修订反馈文本")] = None,
+    feedback_file: Annotated[str | None, typer.Option("--feedback-file", help="修订反馈文件")] = None,
+    regenerate_output: Annotated[bool, typer.Option("--regenerate-output", help="修订后立即重新生成 output")] = False,
+) -> None:
+    """对指定章节执行一次 LLM 局部修订。"""
+    if bool(feedback) == bool(feedback_file):
+        raise typer.BadParameter("必须且只能提供 --feedback 或 --feedback-file")
+
+    def revise(writer: BookWriterGraph, thread_id: str) -> None:
+        selected_feedback = feedback if feedback is not None else Path(str(feedback_file)).read_text(encoding="utf-8")
+        writer.revise_chapter(thread_id, chapter_id, selected_feedback)
+        logger = get_logger("main")
+        logger.info("✅ 第%d章已完成局部 LLM 修订", chapter_id)
+        if regenerate_output:
+            writer.regenerate_output(thread_id)
+
+    _execute(ctx, revise)
+
+
+@app.command("regenerate-output")
+def regenerate_output(ctx: typer.Context) -> None:
+    """仅根据 checkpoint 重新生成 output。"""
+
+    def regenerate(writer: BookWriterGraph, thread_id: str) -> None:
+        output_dir = writer.regenerate_output(thread_id)
+        get_logger("main").info("✅ 输出已重新生成: %s", output_dir)
+
+    _execute(ctx, regenerate)
+
+
+@app.command()
+def reset(
+    ctx: typer.Context,
+    yes: Annotated[bool, typer.Option("--yes", help="确认执行删除")] = False,
+) -> None:
+    """删除指定 thread-id 的 checkpoint。"""
+    if not yes:
+        raise typer.BadParameter("reset 会删除 checkpoint，请添加 --yes 确认")
+    _execute(ctx, lambda writer, thread_id: writer.reset_thread(thread_id))
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Typer 脚本入口。"""
+    app(args=argv if argv is not None else sys.argv[1:])
+
+
+if __name__ == "__main__":
+    main()

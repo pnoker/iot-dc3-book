@@ -1,0 +1,10 @@
+# 伏笔报告
+
+| ID | 描述 | 埋入章节 | 计划回收 | 状态 |
+|------|------|----------|----------|------|
+{% for item in state.foreshadows -%}
+| {{ item.id }} | {{ item.description }} | 第{{ item.planted_chapter }}章 | 第{{ item.planned_resolve_chapter }}章 | {{ item.status }} |
+{% endfor %}
+
+总计: {{ state.foreshadows | length }} 个伏笔
+已回收: {{ resolved_count }} / {{ state.foreshadows | length }}

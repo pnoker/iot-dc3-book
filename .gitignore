@@ -28,6 +28,9 @@ output/
 # 日志
 *.log
 
+# 本地环境变量
+.env
+
 # OS
 .DS_Store
 Thumbs.db

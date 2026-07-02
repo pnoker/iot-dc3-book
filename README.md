@@ -28,8 +28,8 @@ core/                # 状态、配置、LLM、RAG、输出等基础能力
 graph/               # LangGraph 编排、路由和节点实现
 config/              # 书籍、章节、风格、模型和输出配置
 tests/               # 状态、节点、CLI、RAG、LLM 等回归测试
-cli.py               # CLI 参数解析与命令分发
-main.py              # 最小入口，兼容 book-writer 脚本
+cli.py               # Typer CLI 命令定义与分发
+main.py              # 最小入口
 ```
 
 `graph/` 节点已按职责拆分：
@@ -41,19 +41,25 @@ main.py              # 最小入口，兼容 book-writer 脚本
 
 `core/` 的 RAG 能力已拆分：
 
-- `rag_pdf.py`：PDF 文本提取。
-- `rag_chunking.py`：文本分块。
+- `rag_pdf.py`：基于 `pymupdf4llm` 的 PDF Markdown 提取。
+- `rag_chunking.py`：基于 `langchain-text-splitters` 的文本分块。
 - `rag_manifest.py`：索引输入签名与过期判断。
 - `rag.py`：RAGEngine 编排 ChromaDB 与检索。
 
+`core/templates/` 存放 Jinja2 Markdown 输出模板，封面、作者简介、导读、目录、附录和伏笔报告均通过模板渲染。
+
 ## 环境变量
 
-不要把 API Key 写入配置文件。运行前设置：
+不要把 API Key 写入 YAML 配置文件。复制 `.env.example` 为 `.env`，再填写本地密钥：
 
 ```bash
-export DEEPSEEK_API_KEY="..."
-export OPENROUTER_API_KEY="..."
+cp .env.example .env
+# 编辑 .env：
+# DEEPSEEK_API_KEY=...
+# OPENROUTER_API_KEY=...
 ```
+
+也可以在 shell 中用同名环境变量临时覆盖 `.env`。
 
 ## 常用命令
 
@@ -61,8 +67,7 @@ export OPENROUTER_API_KEY="..."
 # 默认运行；若同 thread-id 有未完成 checkpoint，会自动续跑
 uv run python main.py run
 
-# 兼容旧用法；等同于从 checkpoint 继续
-uv run python main.py --resume
+# 显式从 checkpoint 继续
 uv run python main.py resume
 
 # 查看当前 checkpoint、下一节点、当前章节和 RAG 健康状态
@@ -109,5 +114,5 @@ uv run python main.py export-state --file ./state/book-1.json
 ```bash
 uv run ruff check .
 uv run pytest
-uv run mypy --python-version 3.14 core agents graph main.py
+uv run mypy --python-version 3.14 core agents graph cli.py main.py
 ```

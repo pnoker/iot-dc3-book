@@ -4,8 +4,9 @@ Planner Agent - 大纲规划 + 伏笔设计
 
 from __future__ import annotations
 
+from typing import Any
+
 from core.state import BookState, ForeshadowItem, PartPlan
-from core.utils import parse_json_from_llm
 
 from .base import BaseAgent
 
@@ -80,40 +81,59 @@ class PlannerAgent(BaseAgent):
 ```"""
 
         self.logger.info("开始生成大纲和伏笔规划...")
-        response = self.llm.chat(_PLANNER_SYSTEM, user_prompt, temperature=0.8)
-
         try:
-            data = parse_json_from_llm(response)
+            data = self.llm.chat_json(_PLANNER_SYSTEM, user_prompt, temperature=0.8)
         except ValueError:
             self.logger.error("大纲 JSON 解析失败")
             return state.parts, []
 
+        raw_parts = _dict_items(data.get("parts"))
+        raw_foreshadows = _dict_items(data.get("foreshadows"))
+
         # 更新 parts
         parts = []
-        for part_data in data.get("parts", []):
+        for part_data in raw_parts:
             orig_part = next((p for p in state.parts if p.name == part_data.get("name", "")), None)
             if orig_part is None:
                 continue
             chapters = []
-            for ch_data in part_data.get("chapters", []):
+            for ch_data in _dict_items(part_data.get("chapters")):
                 ch_id = ch_data.get("id")
                 orig_ch = next((c for c in orig_part.chapters if c.id == ch_id), None)
                 if orig_ch is None:
                     continue
-                orig_ch.outline = ch_data.get("outline", "")
-                orig_ch.key_points = ch_data.get("key_points", [])
+                orig_ch.outline = str(ch_data.get("outline", ""))
+                orig_ch.key_points = [str(item) for item in _list_items(ch_data.get("key_points"))]
                 chapters.append(orig_ch)
             parts.append(type(orig_part)(name=orig_part.name, prefix=orig_part.prefix, chapters=chapters))
 
         foreshadows = [
             ForeshadowItem(
-                id=fs.get("id", ""),
-                description=fs.get("description", ""),
-                planted_chapter=fs.get("planted_chapter", 0),
-                planned_resolve_chapter=fs.get("planned_resolve_chapter", 0),
+                id=str(fs.get("id", "")),
+                description=str(fs.get("description", "")),
+                planted_chapter=_int_value(fs.get("planted_chapter")),
+                planned_resolve_chapter=_int_value(fs.get("planned_resolve_chapter")),
             )
-            for fs in data.get("foreshadows", [])
+            for fs in raw_foreshadows
         ]
 
         self.logger.info("大纲生成完成: %d 篇, %d 个伏笔", len(parts), len(foreshadows))
         return parts, foreshadows
+
+
+def _dict_items(value: object) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
+
+
+def _list_items(value: object) -> list[object]:
+    return value if isinstance(value, list) else []
+
+
+def _int_value(value: object) -> int:
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.isdigit():
+        return int(value)
+    return 0

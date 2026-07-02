@@ -11,7 +11,7 @@ class _FakeChatCompletions:
 
     def create(self, **kwargs):
         self.kwargs = kwargs
-        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="ok"))])
+        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content='{"ok": true}'))])
 
 
 class _FakeEmbeddings:
@@ -30,9 +30,10 @@ def test_chat_preserves_zero_temperature() -> None:
     completions = _FakeChatCompletions()
     client._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
 
-    client.chat("system", "user", temperature=0.0)
+    result = client.chat("system", "user", temperature=0.0)
 
     assert completions.kwargs["temperature"] == 0.0
+    assert result == '{"ok": true}'
 
 
 def test_embed_many_sends_single_batch_request() -> None:
@@ -44,3 +45,14 @@ def test_embed_many_sends_single_batch_request() -> None:
 
     assert embeddings.kwargs["input"] == ["第一段", "第二段"]
     assert result == [[1.0, 0.0], [0.0, 1.0]]
+
+
+def test_chat_json_requests_json_object_response() -> None:
+    client = LLMClient(base_url="http://example.test", api_key="key", model="model")
+    completions = _FakeChatCompletions()
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+
+    result = client.chat_json("system", "return json")
+
+    assert completions.kwargs["response_format"] == {"type": "json_object"}
+    assert result == {"ok": True}

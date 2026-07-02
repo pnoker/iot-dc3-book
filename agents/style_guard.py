@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-from core.utils import parse_json_from_llm
 
 from .base import BaseAgent
 
@@ -74,10 +73,8 @@ class StyleGuardAgent(BaseAgent):
 请进行完整校验并输出 JSON 格式报告。"""
 
         self.logger.info("校验第%d章风格...", chapter.id)
-        response = self.llm.chat(_STYLE_GUARD_SYSTEM, user_prompt, temperature=0.2)
-
         try:
-            return parse_json_from_llm(response)
+            return self.llm.chat_json(_STYLE_GUARD_SYSTEM, user_prompt, temperature=0.2)
         except ValueError:
             self.logger.error("风格校验报告解析失败")
             return {

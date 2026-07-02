@@ -1,0 +1,23 @@
+# 导读
+
+{{ preface.theme | default("", true) | trim }}
+
+## 全书结构
+
+{% for part in state.parts -%}
+- **{{ part.name }}**（{% for chapter in part.chapters %}第{{ chapter.id }}章《{{ chapter.title }}》{% if not loop.last %}, {% endif %}{% endfor %}）
+{% endfor %}
+
+## 阅读建议
+
+- **快速浏览**：先读每章的引言和本章小结，建立全局认知
+- **深入学习**：按顺序阅读，每章末尾的思考与练习帮助巩固
+- **按需查阅**：根据实际工作需要，直接跳转到相关章节
+- **结合实践**：书中涉及的 IoT DC3 项目源码可在 GitHub 获取，建议边读边动手
+
+## 本书约定
+
+- 首次出现的专业术语附英文原文和简要解释
+- 代码示例使用 fenced code block 并标注语言
+- 图表按 `图X-X` / `表X-X` 编号
+- 标题层级：`#` 篇名 → `##` 章名 → `###` 节名 → `####` 子节名

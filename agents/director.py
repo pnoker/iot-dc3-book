@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-from core.utils import parse_json_from_llm
 
 from .base import BaseAgent
 
@@ -72,10 +71,8 @@ class DirectorAgent(BaseAgent):
 请输出 JSON 格式的终审报告。"""
 
         self.logger.info("全书终审中...")
-        response = self.llm.chat(_DIRECTOR_SYSTEM, user_prompt, temperature=0.3)
-
         try:
-            return parse_json_from_llm(response)
+            return self.llm.chat_json(_DIRECTOR_SYSTEM, user_prompt, temperature=0.3)
         except ValueError:
             self.logger.error("终审报告解析失败")
             return {"pass": False, "overall_score": 5, "summary": "终审报告解析失败"}

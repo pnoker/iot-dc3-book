@@ -5,10 +5,13 @@ LLM 客户端 - DeepSeek (chat) + OpenRouter (embedding)
 
 from __future__ import annotations
 
+from typing import Any
+
 from openai import APIConnectionError, APITimeoutError, InternalServerError, OpenAI, RateLimitError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from core.log import get_logger
+from core.utils import parse_json_from_llm
 
 logger = get_logger("llm")
 
@@ -84,25 +87,46 @@ class LLMClient:
         user_prompt: str,
         temperature: float | None = None,
         max_tokens: int | None = None,
+        response_format: dict[str, str] | None = None,
     ) -> str:
         """单轮对话（自动重试 3 次）"""
         logger.debug("Chat 请求: model=%s, user_len=%d", self.model, len(user_prompt))
         try:
-            resp = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
+            kwargs: dict[str, Any] = {
+                "model": self.model,
+                "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
                 ],
-                temperature=self.temperature if temperature is None else temperature,
-                max_tokens=self.max_tokens if max_tokens is None else max_tokens,
-            )
+                "temperature": self.temperature if temperature is None else temperature,
+                "max_tokens": self.max_tokens if max_tokens is None else max_tokens,
+            }
+            if response_format is not None:
+                kwargs["response_format"] = response_format
+            resp = self.client.chat.completions.create(**kwargs)
             content = resp.choices[0].message.content or ""
             logger.debug("Chat 响应: len=%d", len(content))
             return content
         except Exception:
             logger.exception("Chat 调用失败: model=%s", self.model)
             raise
+
+    def chat_json(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        temperature: float | None = None,
+        max_tokens: int | None = None,
+    ) -> dict[str, object]:
+        """请求 JSON object 响应并解析。"""
+        content = self.chat(
+            system_prompt,
+            user_prompt,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            response_format={"type": "json_object"},
+        )
+        return parse_json_from_llm(content)
 
     @retry(
         stop=stop_after_attempt(3),

@@ -28,6 +28,14 @@ def test_parse_json_invalid():
         parse_json_from_llm("this is not json at all")
 
 
+def test_parse_json_repairs_common_llm_json_errors():
+    response = "```json\n{'key': 'value',}\n```"
+
+    result = parse_json_from_llm(response)
+
+    assert result == {"key": "value"}
+
+
 def test_truncate_short():
     assert truncate("hello", 10) == "hello"
 
