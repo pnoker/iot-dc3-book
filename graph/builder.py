@@ -19,12 +19,13 @@ from agents.planner import PlannerAgent
 from agents.research import ResearchAgent
 from agents.style_guard import StyleGuardAgent
 from agents.writer import WriterAgent
-from core.config import get_embed_config, get_llm_config, load_config
+from core.config import get_config_paths, get_embed_config, get_llm_config, load_app_config
 from core.llm_client import LLMClient
 from core.log import get_logger
 from core.output import generate_output
 from core.rag import RAGEngine
 from core.state import BookState, ChapterContent
+from core.state_validation import IncompleteBookStateError, is_complete_book_state, require_complete_book_state
 from graph.node_chapter import node_research, node_write
 from graph.node_final import node_final_review, node_output
 from graph.node_lifecycle import node_advance_chapter, node_indexing, node_init, node_plan_review, node_planning
@@ -51,7 +52,8 @@ class BookWriterGraph:
     """
 
     def __init__(self, config_path: str = "config") -> None:
-        self.cfg = load_config(config_path)
+        self.cfg = load_app_config(config_path)
+        self.paths = get_config_paths(self.cfg)
         self.config_path = config_path
 
         # 初始化 LLM
@@ -60,13 +62,12 @@ class BookWriterGraph:
         self.llm = LLMClient(**llm_cfg, **embed_cfg)
 
         # 初始化 RAG
-        ref_cfg = self.cfg.get("references", {})
         self.rag = RAGEngine(
             embed_fn=self.llm.embed,
             embed_many_fn=self.llm.embed_many,
-            chunk_size=ref_cfg.get("chunk_size", 1000),
-            chunk_overlap=ref_cfg.get("chunk_overlap", 200),
-            persist_dir=str((Path(self.config_path).resolve().parent / ".data" / "chroma").resolve()),
+            chunk_size=self.cfg.references.chunk_size,
+            chunk_overlap=self.cfg.references.chunk_overlap,
+            persist_dir=str(self.paths.chroma_dir),
         )
 
         # 初始化 Agent
@@ -88,7 +89,7 @@ class BookWriterGraph:
 
         # 节点（使用 lambda 闭包注入依赖）
         builder.add_node("init", lambda s: node_init(s, self.cfg))
-        builder.add_node("indexing", lambda s: node_indexing(s, self.cfg, self.config_path, self.rag))
+        builder.add_node("indexing", lambda s: node_indexing(s, self.cfg, self.rag))
         builder.add_node("planning", lambda s: node_planning(s, self.planner))
         builder.add_node("plan_review", lambda s: node_plan_review(s))
         builder.add_node("research", lambda s: node_research(s, self.researcher))
@@ -156,9 +157,9 @@ class BookWriterGraph:
         builder.add_edge("final_review", "output")
         builder.add_edge("output", END)
 
-        data_dir = Path(self.config_path).resolve().parent / ".data"
+        data_dir = self.paths.data_dir
         data_dir.mkdir(parents=True, exist_ok=True)
-        db_path = str(data_dir / "checkpoint.db")
+        db_path = str(self.paths.checkpoint_db)
         self._db_path = db_path
         conn = sqlite3.connect(db_path, check_same_thread=False)
         self._checkpointer = SqliteSaver(conn=conn)
@@ -175,10 +176,14 @@ class BookWriterGraph:
             snapshot = self.graph.get_state(config)
             if snapshot and snapshot.values and not fresh:
                 if not snapshot.next:
+                    state = BookState(**snapshot.values)
+                    require_complete_book_state(state)
                     logger.info("✅ 任务已完成，无需重复执行。若需重跑请使用 fresh/reset。")
                     return dict(snapshot.values)
                 logger.info("🔄 检测到未完成的任务，从中断处继续...")
                 return cast("dict[str, Any]", self.graph.invoke(None, config))
+        except IncompleteBookStateError:
+            raise
         except Exception:
             pass
         logger.info("🚀 开始写作...")
@@ -210,6 +215,7 @@ class BookWriterGraph:
             "thread_id": thread_id,
             "has_checkpoint": bool(snapshot and snapshot.values),
             "phase": state.current_phase if state else "not_started",
+            "complete": is_complete_book_state(state) if state else False,
             "next_nodes": list(snapshot.next) if snapshot else [],
             "current_chapter": {"id": chapter.id, "title": chapter.title} if chapter else None,
             "chapters_written": len(state.chapters) if state else 0,
@@ -280,9 +286,8 @@ class BookWriterGraph:
         state = self.get_book_state(thread_id)
         if state is None:
             raise ValueError(f"线程不存在或尚未开始: {thread_id}")
-        output_cfg = self.cfg.get("output", {})
-        output_dir = output_cfg.get("dir", "./output")
-        return generate_output(state, output_dir, self.cfg)
+        output_dir = str(self.paths.output_dir)
+        return generate_output(state, output_dir, self.cfg.model_dump(mode="python"))
 
     def reset_thread(self, thread_id: str = "book-1") -> None:
         """删除指定线程 checkpoint。调用方必须先完成确认。"""

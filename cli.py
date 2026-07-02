@@ -31,6 +31,8 @@ ConfigOption = Annotated[str, typer.Option("--config", help="配置目录路径"
 ThreadIdOption = Annotated[str, typer.Option("--thread-id", help="任务线程 ID")]
 LogLevelOption = Annotated[str, typer.Option("--log-level", help="日志级别")]
 LogFileOption = Annotated[str | None, typer.Option("--log-file", help="日志文件路径")]
+LogMaxBytesOption = Annotated[int, typer.Option("--log-max-bytes", help="单个日志文件最大字节数")]
+LogBackupCountOption = Annotated[int, typer.Option("--log-backup-count", help="保留的历史日志文件数量")]
 
 
 @app.callback(invoke_without_command=True)
@@ -40,6 +42,8 @@ def callback(
     thread_id: ThreadIdOption = "book-1",
     log_level: LogLevelOption = "INFO",
     log_file: LogFileOption = None,
+    log_max_bytes: LogMaxBytesOption = 10 * 1024 * 1024,
+    log_backup_count: LogBackupCountOption = 10,
 ) -> None:
     """保存全局选项；无子命令时执行 run。"""
     ctx.obj = {
@@ -47,6 +51,8 @@ def callback(
         "thread_id": thread_id,
         "log_level": log_level,
         "log_file": log_file,
+        "log_max_bytes": log_max_bytes,
+        "log_backup_count": log_backup_count,
     }
     if ctx.invoked_subcommand is None:
         _execute(ctx, lambda writer, selected_thread_id: writer.run(thread_id=selected_thread_id, fresh=False))
@@ -54,7 +60,12 @@ def callback(
 
 def _execute(ctx: typer.Context, action: Callable[[BookWriterGraph, str], ResultT]) -> ResultT:
     options = ctx.obj or {}
-    setup_logging(level=str(options.get("log_level", "INFO")), log_file=options.get("log_file"))
+    setup_logging(
+        level=str(options.get("log_level", "INFO")),
+        log_file=options.get("log_file"),
+        log_max_bytes=int(options.get("log_max_bytes", 10 * 1024 * 1024)),
+        log_backup_count=int(options.get("log_backup_count", 10)),
+    )
     logger = get_logger("main")
 
     config_path = Path(str(options.get("config", "config")))

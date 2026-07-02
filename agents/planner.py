@@ -93,11 +93,12 @@ class PlannerAgent(BaseAgent):
         # 更新 parts
         parts = []
         for part_data in raw_parts:
-            orig_part = next((p for p in state.parts if p.name == part_data.get("name", "")), None)
+            raw_chapters = _dict_items(part_data.get("chapters"))
+            orig_part = _match_original_part(state.parts, part_data, raw_chapters)
             if orig_part is None:
                 continue
             chapters = []
-            for ch_data in _dict_items(part_data.get("chapters")):
+            for ch_data in raw_chapters:
                 ch_id = ch_data.get("id")
                 orig_ch = next((c for c in orig_part.chapters if c.id == ch_id), None)
                 if orig_ch is None:
@@ -125,6 +126,21 @@ def _dict_items(value: object) -> list[dict[str, Any]]:
     if not isinstance(value, list):
         return []
     return [item for item in value if isinstance(item, dict)]
+
+
+def _match_original_part(
+    parts: list[PartPlan], part_data: dict[str, Any], raw_chapters: list[dict[str, Any]]
+) -> PartPlan | None:
+    part_name = str(part_data.get("name", ""))
+    exact = next((part for part in parts if part.name == part_name), None)
+    if exact is not None:
+        return exact
+
+    chapter_ids = {_int_value(chapter.get("id")) for chapter in raw_chapters}
+    chapter_ids.discard(0)
+    if not chapter_ids:
+        return None
+    return next((part for part in parts if chapter_ids <= {chapter.id for chapter in part.chapters}), None)
 
 
 def _list_items(value: object) -> list[object]:

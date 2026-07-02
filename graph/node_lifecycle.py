@@ -6,14 +6,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from core.config import config_to_book_state, get_references_dir
+from core.config import config_to_book_state, get_config_paths
+from core.config_models import AppConfig
 from core.log import get_logger
 from core.state import BookState
 
 logger = get_logger("nodes")
 
 
-def node_init(state: BookState | dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
+def node_init(state: BookState | dict[str, Any], cfg: AppConfig) -> dict[str, Any]:
     """初始化：加载配置，构建 BookState"""
     logger.info("📋 [初始化] 加载书籍配置...")
     book_state = config_to_book_state(cfg)
@@ -21,12 +22,13 @@ def node_init(state: BookState | dict[str, Any], cfg: dict[str, Any]) -> dict[st
     return book_state.model_dump()
 
 
-def node_indexing(state: BookState | dict[str, Any], cfg: dict[str, Any], config_path: str, rag: Any) -> dict[str, Any]:
+def node_indexing(state: BookState | dict[str, Any], cfg: AppConfig, rag: Any) -> dict[str, Any]:
     """索引参考书籍"""
     logger.info("📚 [索引] 开始索引参考书籍...")
 
-    books_dir = get_references_dir(cfg, config_path)
-    index_path = str(books_dir.parent / "book-writer" / ".rag_index.json")
+    paths = get_config_paths(cfg)
+    books_dir = paths.books_dir
+    index_path = str(paths.rag_manifest)
     count = rag.index_books(str(books_dir), index_path)
     logger.info("📚 [索引] 完成，共 %d 个分块", count)
     return {"current_phase": "planning"}
@@ -37,6 +39,9 @@ def node_planning(state: BookState | dict[str, Any], planner: Any) -> dict[str, 
     logger.info("📝 [规划] 生成大纲和伏笔规划...")
     s = BookState(**state) if isinstance(state, dict) else state
     parts, foreshadows = planner.plan(s)
+    if not parts:
+        logger.warning("Planner 未返回可匹配篇章，保留配置中的原始篇章，避免生成空书。")
+        parts = s.parts
     return {
         "parts": [p.model_dump() for p in parts],
         "foreshadows": [f.model_dump() for f in foreshadows],

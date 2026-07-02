@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
 
@@ -17,6 +18,20 @@ logger = get_logger("config")
 
 
 ConfigDict = dict[str, Any]
+
+
+@dataclass(frozen=True)
+class ConfigPaths:
+    """配置派生路径，全部解析为绝对路径。"""
+
+    config_dir: Path
+    project_dir: Path
+    books_dir: Path
+    output_dir: Path
+    data_dir: Path
+    checkpoint_db: Path
+    chroma_dir: Path
+    rag_manifest: Path
 
 
 def load_config(config_path: str = "config") -> ConfigDict:
@@ -33,7 +48,14 @@ def load_config(config_path: str = "config") -> ConfigDict:
 
     if not path.is_dir():
         raise FileNotFoundError(f"配置目录不存在: {config_path}")
-    return _load_config_dir(path)
+    return _load_config_dir(path.resolve())
+
+
+def load_app_config(config_path: str = "config") -> AppConfig:
+    """一次性加载、校验并返回强类型应用配置。"""
+    config_dir = Path(config_path).resolve()
+    cfg = load_config(str(config_dir))
+    return config_to_app_config(cfg, config_dir=config_dir)
 
 
 def load_env_settings(env_path: Path = Path(".env")) -> EnvSettings:
@@ -60,25 +82,35 @@ def _load_config_dir(config_dir: Path) -> ConfigDict:
         logger.debug("加载配置: %s", yf.name)
 
     logger.info("配置已加载: %s (%d 个文件)", config_dir, len(yaml_files))
-    _validate_config(merged)
+    _validate_config(merged, config_dir)
     return merged
 
 
-def _validate_config(cfg: ConfigDict) -> None:
+def _validate_config(cfg: ConfigDict, config_dir: Path | None = None) -> None:
     """基础配置校验"""
-    app_config = config_to_app_config(cfg)
+    app_config = config_to_app_config(cfg, config_dir=config_dir)
     total_chapters = sum(len(p.chapters) for p in app_config.parts)
     logger.debug("配置校验通过: %d 篇, %d 章", len(app_config.parts), total_chapters)
 
 
-def config_to_app_config(cfg: ConfigDict) -> AppConfig:
+def config_to_app_config(cfg: ConfigDict, config_dir: Path | None = None) -> AppConfig:
     """将配置字典转换为强类型 AppConfig。"""
-    return AppConfig.model_validate(cfg).with_env_settings(load_env_settings())
+    resolved_config_dir = (config_dir or Path("config")).resolve()
+    project_dir = resolved_config_dir.parent
+    env_path = project_dir / ".env"
+    app_config = AppConfig.model_validate(
+        {
+            **cfg,
+            "config_dir": resolved_config_dir,
+            "project_dir": project_dir,
+        }
+    )
+    return app_config.with_env_settings(load_env_settings(env_path))
 
 
-def config_to_book_state(cfg: ConfigDict) -> BookState:
+def config_to_book_state(cfg: ConfigDict | AppConfig) -> BookState:
     """将配置转换为 BookState"""
-    app_config = config_to_app_config(cfg)
+    app_config = cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg)
 
     parts: list[PartPlan] = []
     for part_cfg in app_config.parts:
@@ -107,17 +139,34 @@ def config_to_book_state(cfg: ConfigDict) -> BookState:
     return state
 
 
-def get_references_dir(cfg: ConfigDict, config_path: str = "config") -> Path:
+def get_config_paths(app_config: AppConfig) -> ConfigPaths:
+    """根据强类型配置计算所有运行时路径。"""
+    project_dir = app_config.project_dir.resolve()
+    config_dir = app_config.config_dir.resolve()
+    books_dir = _resolve_path(app_config.references.books_dir, project_dir)
+    output_dir = _resolve_path(app_config.output.dir, project_dir)
+    data_dir = project_dir / ".data"
+    return ConfigPaths(
+        config_dir=config_dir,
+        project_dir=project_dir,
+        books_dir=books_dir,
+        output_dir=output_dir,
+        data_dir=data_dir,
+        checkpoint_db=data_dir / "checkpoint.db",
+        chroma_dir=data_dir / "chroma",
+        rag_manifest=data_dir / "rag_index.json",
+    )
+
+
+def get_references_dir(cfg: ConfigDict | AppConfig, config_path: str = "config") -> Path:
     """获取参考书籍目录的绝对路径"""
-    app_config = config_to_app_config(cfg)
-    ref_dir = app_config.references.books_dir
-    config_dir = Path(config_path).resolve()
-    return (config_dir / ref_dir).resolve()
+    app_config = cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg, Path(config_path).resolve())
+    return get_config_paths(app_config).books_dir
 
 
-def get_llm_config(cfg: ConfigDict) -> ConfigDict:
+def get_llm_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
     """获取 Chat LLM 配置"""
-    llm = config_to_app_config(cfg).llm
+    llm = (cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg)).llm
     return {
         "base_url": llm.base_url,
         "api_key": llm.api_key,
@@ -127,11 +176,18 @@ def get_llm_config(cfg: ConfigDict) -> ConfigDict:
     }
 
 
-def get_embed_config(cfg: ConfigDict) -> ConfigDict:
+def get_embed_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
     """获取 Embedding 配置"""
-    emb = config_to_app_config(cfg).llm.embedding
+    emb = (cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg)).llm.embedding
     return {
         "embed_base_url": emb.base_url,
         "embed_api_key": emb.api_key,
         "embed_model": emb.model,
     }
+
+
+def _resolve_path(value: str, base_dir: Path) -> Path:
+    path = Path(value).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (base_dir / path).resolve()

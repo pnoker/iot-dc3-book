@@ -17,7 +17,12 @@ class PdfPage(TypedDict):
 
 def extract_pdf_pages(pdf_path: str) -> list[PdfPage]:
     """使用 pymupdf4llm 提取 Markdown 文本并保留页码。"""
-    chunks = pymupdf4llm.to_markdown(pdf_path, page_chunks=True)
+    try:
+        chunks = pymupdf4llm.to_markdown(pdf_path, page_chunks=True)
+    except Exception as exc:
+        if "KeyboardInterrupt" in str(exc):
+            raise KeyboardInterrupt from exc
+        raise
     pages: list[PdfPage] = []
     current_section = "前言"
     for index, chunk in enumerate(chunks):

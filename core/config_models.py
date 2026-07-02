@@ -4,10 +4,17 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class StrictConfigModel(BaseModel):
+    """禁止未知配置项，避免 YAML 拼写错误静默失效。"""
+
+    model_config = ConfigDict(extra="forbid")
 
 
 class EnvSettings(BaseSettings):
@@ -19,7 +26,7 @@ class EnvSettings(BaseSettings):
     openrouter_api_key: str = Field(default="", validation_alias="OPENROUTER_API_KEY")
 
 
-class BookConfig(BaseModel):
+class BookConfig(StrictConfigModel):
     title: str
     subtitle: str
     author: str = ""
@@ -29,24 +36,24 @@ class BookConfig(BaseModel):
     language: str = "zh-CN"
 
 
-class ChapterConfig(BaseModel):
+class ChapterConfig(StrictConfigModel):
     id: int
     title: str
     summary: str = ""
 
 
-class PartConfig(BaseModel):
+class PartConfig(StrictConfigModel):
     name: str
     prefix: str
     chapters: list[ChapterConfig]
 
 
-class TerminologyConfig(BaseModel):
+class TerminologyConfig(StrictConfigModel):
     rule: str = ""
     example: str = ""
 
 
-class StyleConfigModel(BaseModel):
+class StyleConfigModel(StrictConfigModel):
     tone: str = ""
     perspective: str = "第三人称"
     terminology: TerminologyConfig = Field(default_factory=TerminologyConfig)
@@ -56,13 +63,13 @@ class StyleConfigModel(BaseModel):
     target_words_per_chapter: str = "4000-8000字"
 
 
-class EmbeddingConfig(BaseModel):
+class EmbeddingConfig(StrictConfigModel):
     base_url: str = ""
     api_key: str = ""
     model: str = "openai/text-embedding-3-small"
 
 
-class LLMConfig(BaseModel):
+class LLMConfig(StrictConfigModel):
     provider: str = "openai_compatible"
     base_url: str = "https://api.deepseek.com"
     api_key: str = ""
@@ -72,7 +79,7 @@ class LLMConfig(BaseModel):
     embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
 
 
-class ReferenceConfig(BaseModel):
+class ReferenceConfig(StrictConfigModel):
     books_dir: str = "../books"
     top_k: int = 5
     chunk_size: int = 1000
@@ -89,12 +96,12 @@ class ReferenceConfig(BaseModel):
         return self
 
 
-class OutputConfig(BaseModel):
+class OutputConfig(StrictConfigModel):
     dir: str = "./output"
     structure: str = "hierarchical"
 
 
-class AppConfig(BaseModel):
+class AppConfig(StrictConfigModel):
     book: BookConfig
     parts: list[PartConfig]
     style: StyleConfigModel
@@ -102,6 +109,8 @@ class AppConfig(BaseModel):
     references: ReferenceConfig = Field(default_factory=ReferenceConfig)
     output: OutputConfig = Field(default_factory=OutputConfig)
     author: dict[str, Any] = Field(default_factory=dict)
+    config_dir: Path = Field(default_factory=lambda: Path("config").resolve(), exclude=True)
+    project_dir: Path = Field(default_factory=Path.cwd, exclude=True)
 
     @model_validator(mode="after")
     def validate_parts(self) -> AppConfig:

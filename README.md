@@ -48,6 +48,13 @@ main.py              # 最小入口
 
 `core/templates/` 存放 Jinja2 Markdown 输出模板，封面、作者简介、导读、目录、附录和伏笔报告均通过模板渲染。
 
+配置通过 `pydantic-settings` 一次性加载为强类型 `AppConfig`：
+
+- 未知 YAML 字段会直接报错，避免配置拼写错误静默失效。
+- `.env` 固定从项目根目录读取，环境变量仍可覆盖 `.env`。
+- `references.books_dir` 和 `output.dir` 都相对项目根目录解析；默认参考书目录为项目同级的 `../books/`。
+- checkpoint、RAG 索引和 manifest 固定写入 `.data/`。
+
 ## 环境变量
 
 不要把 API Key 写入 YAML 配置文件。复制 `.env.example` 为 `.env`，再填写本地密钥：
@@ -81,6 +88,12 @@ uv run python main.py run --fresh
 
 # 显式删除某个 thread-id 的 checkpoint
 uv run python main.py reset --yes
+```
+
+默认日志会持久化到 `logs/book-writer.log`，单文件 `10MB`，保留 `10` 个历史分片。可按需调整：
+
+```bash
+uv run python main.py --log-file logs/run.log --log-max-bytes 5242880 --log-backup-count 5 run
 ```
 
 ## 局部修复章节

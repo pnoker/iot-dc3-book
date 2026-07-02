@@ -62,3 +62,13 @@ def test_extract_pdf_pages_uses_pymupdf4llm_markdown(monkeypatch) -> None:
         {"page": 1, "text": "# 第一章 总览\n正文", "section": "第一章 总览"},
         {"page": 2, "text": "延续正文", "section": "第一章 总览"},
     ]
+
+
+def test_extract_pdf_pages_propagates_wrapped_keyboard_interrupt(monkeypatch) -> None:
+    def interrupted_markdown(pdf_path: str, page_chunks: bool) -> object:
+        raise RuntimeError("Director error: <class 'KeyboardInterrupt'>")
+
+    monkeypatch.setattr("core.rag_pdf.pymupdf4llm.to_markdown", interrupted_markdown)
+
+    with pytest.raises(KeyboardInterrupt):
+        extract_pdf_pages("book.pdf")
