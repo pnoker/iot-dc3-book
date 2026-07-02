@@ -34,6 +34,7 @@ from graph.routes import (
     route_after_editor_review,
     route_after_fact_check,
     route_after_plan_review,
+    route_after_revise,
     route_after_style_check,
     route_next_chapter,
 )
@@ -143,7 +144,14 @@ class BookWriterGraph:
                 "fail": "revise",
             },
         )
-        builder.add_edge("revise", "write")
+        builder.add_conditional_edges(
+            "revise",
+            route_after_revise,
+            {
+                "revise": "write",  # 未达上限：继续修改
+                "advance": "advance_chapter",  # 达上限：止损放行，推进下一章
+            },
+        )
 
         builder.add_conditional_edges(
             "advance_chapter",

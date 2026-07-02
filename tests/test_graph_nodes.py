@@ -8,6 +8,7 @@ from core.state_validation import is_complete_book_state, require_complete_book_
 from graph.node_chapter import node_write
 from graph.node_lifecycle import node_plan_review, node_planning
 from graph.node_quality import node_fact_check, node_revise, node_style_check
+from graph.routes import route_after_revise
 
 
 class _PassingStyleGuard:
@@ -180,15 +181,41 @@ def test_write_updates_existing_chapter_instead_of_appending_duplicate() -> None
     assert updated.get_chapter_content(1).markdown == "# 新正文\n\n新内容"
 
 
-def test_revise_stops_when_revision_limit_reached() -> None:
+def test_revise_approves_current_version_when_revision_limit_reached() -> None:
     state = _state_with_chapter(
         ChapterContent(
             chapter_id=1,
             title="物联网概述",
             markdown="# 正文",
             revision_count=2,
+            fact_feedback='{"pass": false}',
         )
     )
 
-    with pytest.raises(RuntimeError, match="修订次数已达上限"):
-        node_revise(state)
+    update = node_revise(state)
+    updated = BookState(**{**state.model_dump(), **update})
+
+    assert updated.needs_revision is False
+    assert updated.revision_target_chapter == 0
+    assert updated.get_current_chapter().status == "approved"
+    assert updated.get_chapter_content(1).fact_feedback == ""
+    assert "已强制放行" in updated.error_message
+    assert route_after_revise(updated) == "advance"
+
+
+def test_revise_routes_back_to_write_before_revision_limit() -> None:
+    state = _state_with_chapter(
+        ChapterContent(
+            chapter_id=1,
+            title="物联网概述",
+            markdown="# 正文",
+            revision_count=1,
+        )
+    )
+
+    update = node_revise(state)
+    updated = BookState(**{**state.model_dump(), **update})
+
+    assert updated.needs_revision is True
+    assert updated.revision_target_chapter == 1
+    assert route_after_revise(updated) == "revise"

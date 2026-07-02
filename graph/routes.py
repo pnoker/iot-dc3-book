@@ -41,6 +41,12 @@ def route_after_editor_review(state: BookState | dict[str, Any]) -> Literal["pas
     return "fail" if s.needs_revision else "pass"
 
 
+def route_after_revise(state: BookState | dict[str, Any]) -> Literal["revise", "advance"]:
+    """修订后路由：未达上限继续修改，达上限则止损放行推进下一章。"""
+    s = _as_state(state)
+    return "revise" if s.needs_revision else "advance"
+
+
 def route_next_chapter(state: BookState | dict[str, Any]) -> Literal["next", "done"]:
     s = _as_state(state)
     return "done" if s.current_phase == "final_review" else "next"
