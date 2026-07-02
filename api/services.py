@@ -6,6 +6,7 @@ import datetime as dt
 from collections import defaultdict
 from itertools import pairwise
 from pathlib import Path
+from threading import Lock, Thread
 from typing import TYPE_CHECKING, Any, cast
 
 from api.log_reader import LogEntry, read_logs
@@ -38,6 +39,8 @@ class DashboardService:
         self._graph_factory = graph_factory or BookWriterGraph
         self._state_loader = state_loader
         self._graph: Any | None = None
+        self._running_threads: set[str] = set()
+        self._lock = Lock()
         self.output_dir = Path(output_dir) if output_dir is not None else Path("output")
         self.log_file = Path(log_file) if log_file is not None else Path(DEFAULT_LOG_FILE)
 
@@ -148,6 +151,62 @@ class DashboardService:
 
     def get_rag_status(self, thread_id: str | None = None) -> dict[str, Any]:
         return dict(self.get_status(thread_id).get("rag") or {})
+
+    def start_run(self, thread_id: str, *, fresh: bool = False) -> dict[str, Any]:
+        return self._start_background(thread_id, lambda: self.graph.run(thread_id=thread_id, fresh=fresh))
+
+    def resume(self, thread_id: str) -> dict[str, Any]:
+        return self._start_background(thread_id, lambda: self.graph.resume(thread_id=thread_id))
+
+    def regenerate_output(self, thread_id: str) -> dict[str, Any]:
+        return {"output_dir": self.graph.regenerate_output(thread_id), "thread_id": thread_id}
+
+    def patch_chapter(
+        self,
+        thread_id: str,
+        chapter_id: int,
+        markdown: str,
+        *,
+        regenerate_output: bool = False,
+    ) -> dict[str, Any]:
+        self.graph.patch_chapter(thread_id, chapter_id, markdown)
+        output_dir = self.graph.regenerate_output(thread_id) if regenerate_output else ""
+        return {"patched": True, "chapter_id": chapter_id, "output_dir": output_dir}
+
+    def revise_chapter(
+        self,
+        thread_id: str,
+        chapter_id: int,
+        feedback: str,
+        *,
+        regenerate_output: bool = False,
+    ) -> dict[str, Any]:
+        self.graph.revise_chapter(thread_id, chapter_id, feedback)
+        output_dir = self.graph.regenerate_output(thread_id) if regenerate_output else ""
+        return {"revised": True, "chapter_id": chapter_id, "output_dir": output_dir}
+
+    def reset_thread(self, thread_id: str, *, confirm: str) -> dict[str, Any]:
+        expected = f"RESET {thread_id}"
+        if confirm != expected:
+            raise ValueError(f"reset 需要确认字段: {expected}")
+        self.graph.reset_thread(thread_id)
+        return {"reset": True, "thread_id": thread_id}
+
+    def _start_background(self, thread_id: str, action: Callable[[], object]) -> dict[str, Any]:
+        with self._lock:
+            if thread_id in self._running_threads:
+                return {"accepted": False, "running": True, "thread_id": thread_id}
+            self._running_threads.add(thread_id)
+
+        def run_action() -> None:
+            try:
+                action()
+            finally:
+                with self._lock:
+                    self._running_threads.discard(thread_id)
+
+        Thread(target=run_action, daemon=True).start()
+        return {"accepted": True, "running": True, "thread_id": thread_id}
 
     def _chapter_summary(self, state: BookState, chapter_id: int, title: str, status: str) -> dict[str, Any]:
         content = state.get_chapter_content(chapter_id)

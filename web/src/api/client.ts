@@ -59,8 +59,30 @@ export interface Metrics {
   log_entries?: number
 }
 
+export interface CommandResult {
+  accepted?: boolean
+  running?: boolean
+  thread_id?: string
+  output_dir?: string
+  patched?: boolean
+  revised?: boolean
+  reset?: boolean
+}
+
 async function getJson<T>(url: string): Promise<T> {
   const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`)
+  }
+  return response.json() as Promise<T>
+}
+
+async function postJson<T>(url: string, body: unknown): Promise<T> {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
   if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText}`)
   }
@@ -75,4 +97,7 @@ export const api = {
   logs: (params = '') => getJson<LogEntry[]>(`/api/logs${params}`),
   metrics: () => getJson<Metrics>('/api/metrics'),
   ragStatus: () => getJson<RagStatus>('/api/rag/status'),
+  run: (threadId = 'book-1', fresh = false) => postJson<CommandResult>('/api/run', { thread_id: threadId, fresh }),
+  resume: (threadId = 'book-1') => postJson<CommandResult>('/api/resume', { thread_id: threadId }),
+  regenerateOutput: (threadId = 'book-1') => postJson<CommandResult>('/api/regenerate-output', { thread_id: threadId }),
 }

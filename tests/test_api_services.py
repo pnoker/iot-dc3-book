@@ -111,3 +111,66 @@ def test_get_metrics_aggregates_log_durations(tmp_path: Path) -> None:
     assert metrics["agent_durations"]["WriterAgent"] == 104
     assert metrics["agent_durations"]["FactCheckerAgent"] == 30
     assert metrics["chapter_durations"]["2"] == 134
+
+
+def test_start_run_uses_thread_lock(monkeypatch) -> None:
+    calls: list[tuple[str, str, bool]] = []
+
+    class SlowFakeGraph:
+        def run(self, thread_id: str, fresh: bool = False) -> dict[str, object]:
+            calls.append(("run", thread_id, fresh))
+            return {"ok": True}
+
+    service = DashboardService(graph_factory=lambda config: SlowFakeGraph())
+    monkeypatch.setattr("api.services.Thread", InlineThread)
+
+    first = service.start_run("book-1", fresh=True)
+    second = service.start_run("book-1", fresh=False)
+
+    assert first == {"accepted": True, "running": True, "thread_id": "book-1"}
+    assert second == {"accepted": True, "running": True, "thread_id": "book-1"}
+    assert calls == [("run", "book-1", True), ("run", "book-1", False)]
+
+
+def test_reset_requires_exact_confirmation() -> None:
+    calls: list[tuple[str, str]] = []
+
+    class FakeResetGraph:
+        def reset_thread(self, thread_id: str) -> None:
+            calls.append(("reset", thread_id))
+
+    service = DashboardService(graph_factory=lambda config: FakeResetGraph())
+
+    with pytest.raises(ValueError, match="RESET book-1"):
+        service.reset_thread("book-1", confirm="yes")
+
+    assert service.reset_thread("book-1", confirm="RESET book-1") == {"reset": True, "thread_id": "book-1"}
+    assert calls == [("reset", "book-1")]
+
+
+def test_patch_chapter_delegates_to_graph_and_optionally_regenerates() -> None:
+    calls: list[tuple[str, object]] = []
+
+    class FakePatchGraph:
+        def patch_chapter(self, thread_id: str, chapter_id: int, markdown: str) -> None:
+            calls.append(("patch", thread_id, chapter_id, markdown))
+
+        def regenerate_output(self, thread_id: str) -> str:
+            calls.append(("output", thread_id))
+            return "output"
+
+    service = DashboardService(graph_factory=lambda config: FakePatchGraph())
+
+    result = service.patch_chapter("book-1", 7, "# 第七章", regenerate_output=True)
+
+    assert result == {"patched": True, "chapter_id": 7, "output_dir": "output"}
+    assert calls == [("patch", "book-1", 7, "# 第七章"), ("output", "book-1")]
+
+
+class InlineThread:
+    def __init__(self, target: object, daemon: bool) -> None:
+        self._target = target
+        self.daemon = daemon
+
+    def start(self) -> None:
+        self._target()

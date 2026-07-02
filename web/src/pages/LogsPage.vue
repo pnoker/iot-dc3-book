@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { NButton, NCard, NInput, NSelect, NSpace, NTag } from 'naive-ui'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { NButton, NCard, NInput, NSelect, NSpace, NSwitch, NTag } from 'naive-ui'
 import { api, type LogEntry } from '../api/client'
 
 const logs = ref<LogEntry[]>([])
 const level = ref<string | null>(null)
 const agent = ref('')
+const autoRefresh = ref(true)
+let timer: number | undefined
 const levels = [
   { label: '全部', value: '' },
   { label: 'INFO', value: 'INFO' },
@@ -21,7 +23,16 @@ async function load() {
   logs.value = await api.logs(`?${params.toString()}`)
 }
 
-onMounted(load)
+onMounted(() => {
+  void load()
+  timer = window.setInterval(() => {
+    if (autoRefresh.value) void load()
+  }, 3000)
+})
+
+onBeforeUnmount(() => {
+  if (timer) window.clearInterval(timer)
+})
 </script>
 
 <template>
@@ -35,6 +46,7 @@ onMounted(load)
         <NSelect v-model:value="level" :options="levels" placeholder="级别" style="width: 140px" @update:value="load" />
         <NInput v-model:value="agent" placeholder="Agent，例如 WriterAgent" style="width: 260px" @keydown.enter="load" />
         <NButton @click="load">刷新</NButton>
+        <NSwitch v-model:value="autoRefresh">自动刷新</NSwitch>
       </NSpace>
     </NCard>
     <NCard>

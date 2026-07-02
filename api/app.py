@@ -11,6 +11,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from api.log_reader import LogEntry
+from api.models import PatchChapterCommand, ResetCommand, ReviseChapterCommand, RunCommand, ThreadCommand
 from api.services import DashboardService, PathTraversalError
 
 
@@ -59,6 +60,43 @@ def create_app(*, service: DashboardService | Any | None = None, web_dist: str |
     @app.get("/api/rag/status")
     def get_rag_status(thread_id: str = "book-1") -> dict[str, Any]:
         return dashboard_service.get_rag_status(thread_id)
+
+    @app.post("/api/run")
+    def run(command: RunCommand) -> dict[str, Any]:
+        return dashboard_service.start_run(command.thread_id, fresh=command.fresh)
+
+    @app.post("/api/resume")
+    def resume(command: ThreadCommand) -> dict[str, Any]:
+        return dashboard_service.resume(command.thread_id)
+
+    @app.post("/api/regenerate-output")
+    def regenerate_output(command: ThreadCommand) -> dict[str, Any]:
+        return dashboard_service.regenerate_output(command.thread_id)
+
+    @app.post("/api/chapters/{chapter_id}/patch")
+    def patch_chapter(chapter_id: int, command: PatchChapterCommand) -> dict[str, Any]:
+        return dashboard_service.patch_chapter(
+            command.thread_id,
+            chapter_id,
+            command.markdown,
+            regenerate_output=command.regenerate_output,
+        )
+
+    @app.post("/api/chapters/{chapter_id}/revise")
+    def revise_chapter(chapter_id: int, command: ReviseChapterCommand) -> dict[str, Any]:
+        return dashboard_service.revise_chapter(
+            command.thread_id,
+            chapter_id,
+            command.feedback,
+            regenerate_output=command.regenerate_output,
+        )
+
+    @app.post("/api/reset")
+    def reset(command: ResetCommand) -> dict[str, Any]:
+        try:
+            return dashboard_service.reset_thread(command.thread_id, confirm=command.confirm)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     @app.websocket("/api/events")
     async def events(websocket: WebSocket) -> None:

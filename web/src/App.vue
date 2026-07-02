@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { NConfigProvider, NGlobalStyle, NLayout, NLayoutContent, NLayoutSider, NMenu, darkTheme } from 'naive-ui'
+import { NConfigProvider, NGlobalStyle, NLayout, NLayoutContent, NLayoutSider, NMenu, NMessageProvider, darkTheme } from 'naive-ui'
 import OverviewPage from './pages/OverviewPage.vue'
 import ChaptersPage from './pages/ChaptersPage.vue'
 import LogsPage from './pages/LogsPage.vue'
@@ -29,21 +29,23 @@ const currentComponent = computed(() => {
 
 <template>
   <NConfigProvider :theme="darkTheme">
-    <NGlobalStyle />
-    <NLayout has-sider class="app-shell">
-      <NLayoutSider bordered collapse-mode="width" :width="240">
-        <div class="brand">
-          <div class="brand-mark">📚</div>
-          <div>
-            <h1>mi-book-writer</h1>
-            <p>多 Agent 写书控制台</p>
+    <NMessageProvider>
+      <NGlobalStyle />
+      <NLayout has-sider class="app-shell">
+        <NLayoutSider bordered collapse-mode="width" :width="240">
+          <div class="brand">
+            <div class="brand-mark">📚</div>
+            <div>
+              <h1>mi-book-writer</h1>
+              <p>多 Agent 写书控制台</p>
+            </div>
           </div>
-        </div>
-        <NMenu v-model:value="activePage" :options="menuOptions" />
-      </NLayoutSider>
-      <NLayoutContent class="content">
-        <component :is="currentComponent" />
-      </NLayoutContent>
-    </NLayout>
+          <NMenu v-model:value="activePage" :options="menuOptions" />
+        </NLayoutSider>
+        <NLayoutContent class="content">
+          <component :is="currentComponent" />
+        </NLayoutContent>
+      </NLayout>
+    </NMessageProvider>
   </NConfigProvider>
 </template>
