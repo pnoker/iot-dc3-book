@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, TypeVar
 
 import typer
+import uvicorn
 
 from core.log import get_logger, setup_logging
 from graph import BookWriterGraph
@@ -200,6 +201,16 @@ def reset(
     if not yes:
         raise typer.BadParameter("reset 会删除 checkpoint，请添加 --yes 确认")
     _execute(ctx, lambda writer, thread_id: writer.reset_thread(thread_id))
+
+
+@app.command()
+def dashboard(
+    host: Annotated[str, typer.Option("--host", help="Dashboard 监听地址")] = "127.0.0.1",
+    port: Annotated[int, typer.Option("--port", help="Dashboard 监听端口")] = 18080,
+    reload: Annotated[bool, typer.Option("--reload", help="开发模式自动重载")] = False,
+) -> None:
+    """启动本地 Web Dashboard。"""
+    uvicorn.run("api.app:app", host=host, port=port, reload=reload)
 
 
 def main(argv: list[str] | None = None) -> None:

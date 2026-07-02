@@ -13,6 +13,21 @@ def test_cli_help_lists_commands() -> None:
     assert result.exit_code == 0
     assert "run" in result.output
     assert "patch-chapter" in result.output
+    assert "dashboard" in result.output
+
+
+def test_dashboard_command_starts_uvicorn(monkeypatch) -> None:
+    calls: list[tuple[str, object]] = []
+
+    def fake_run(app_path: str, **kwargs: object) -> None:
+        calls.append((app_path, kwargs))
+
+    monkeypatch.setattr("cli.uvicorn.run", fake_run)
+
+    result = runner.invoke(app, ["dashboard", "--host", "127.0.0.1", "--port", "18080"])
+
+    assert result.exit_code == 0
+    assert calls == [("api.app:app", {"host": "127.0.0.1", "port": 18080, "reload": False})]
 
 
 def test_legacy_resume_flag_is_not_supported() -> None:
