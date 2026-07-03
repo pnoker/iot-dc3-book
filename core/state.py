@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -66,6 +66,8 @@ class ChapterContent(BaseModel):
     style_feedback: str = ""
     fact_feedback: str = ""
     revision_count: int = 0
+    # Editor 对本章伏笔任务的核验结论 [{id, type, done}]，供质量门通过时转移伏笔状态
+    foreshadow_checks: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class ReferenceChunk(BaseModel):
@@ -121,6 +123,14 @@ class BookState(BaseModel):
     revision_target_chapter: int = 0
     max_revision_count: int = 3
     error_message: str = ""
+    # 大纲评审：是否需重规划、已重规划次数与上限（防评审-重规划死循环）
+    plan_needs_revision: bool = False
+    plan_revision_count: int = 0
+    max_plan_revision_count: int = 2
+    # 终审：需返修的章节 id 列表、已终审返修轮次与上限
+    final_revision_chapters: list[int] = Field(default_factory=list)
+    final_revision_round: int = 0
+    max_final_revision_round: int = 1
 
     # --- 最终输出 ---
     output_dir: str = ""
@@ -223,3 +233,25 @@ class BookState(BaseModel):
             preview = ch.markdown[:500].replace("\n", " ")
             summaries.append(f"第{ch.chapter_id}章 {ch.title}: {preview}...")
         return "\n\n".join(summaries)
+
+    def get_covered_topics(self, exclude_chapter_id: int | None = None) -> str:
+        """汇总其他章节已覆盖的标题与要点，供当前章去重。
+
+        全书层面的内容重叠是长文档写作的典型病：相邻主题各自检索到相似资料、
+        各自展开，导致重复。把已定稿章节的标题 + key_points 作为「已覆盖清单」
+        提供给检索与写作，使当前章主动规避与别章撞车。
+        """
+        lines: list[str] = []
+        for part in self.parts:
+            for chapter in part.chapters:
+                if chapter.id == exclude_chapter_id:
+                    continue
+                # 仅纳入已产出正文的章节，避免用未写章节的空要点误导
+                if self.get_chapter_content(chapter.id) is None:
+                    continue
+                points = "；".join(chapter.key_points) if chapter.key_points else ""
+                entry = f"- 第{chapter.id}章 {chapter.title}"
+                if points:
+                    entry += f"：{points}"
+                lines.append(entry)
+        return "\n".join(lines)

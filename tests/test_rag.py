@@ -5,6 +5,229 @@ import pytest
 from core.rag import RAGEngine
 from core.rag_chunking import split_text
 from core.rag_pdf import _page_has_ocr_candidate, extract_pdf_pages
+from core.rag_sources import ReferenceSource
+
+
+def test_index_books_indexes_pdf_and_markdown_with_unique_ids(tmp_path, monkeypatch) -> None:
+    # 两个来源：一个含 PDF，一个含 Markdown（含同名 index.md 场景由 label 前缀保证唯一）
+    books = tmp_path / "books"
+    docs = tmp_path / "docs"
+    books.mkdir()
+    docs.mkdir()
+    (books / "guide.pdf").write_bytes(b"%PDF-1.4 fake")
+    (docs / "index.md").write_text(
+        "---\ntitle: DC3 架构\n---\n" + "IoT DC3 使用 Spring AI 构建 Agentic Center。" * 5,
+        encoding="utf-8",
+    )
+
+    def fake_pdf(path: str) -> list[dict[str, object]]:
+        return [{"page": 1, "text": "物联网平台通过网关统一接入多协议设备。" * 5, "section": "第一章"}]
+
+    monkeypatch.setattr("core.rag.extract_pdf_pages", fake_pdf)
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [float(len(text) % 7), 1.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+    sources = [ReferenceSource(books, "books"), ReferenceSource(docs, "dc3")]
+
+    count = engine.index_books(sources, str(tmp_path / "manifest.json"))
+
+    assert count >= 2
+    ids = engine.collection.get()["ids"]
+    assert len(ids) == len(set(ids))  # chunk_id 全局唯一
+    sources_seen = {m["source_file"] for m in engine.collection.get()["metadatas"]}
+    assert any(s.startswith("dc3/") for s in sources_seen)  # MD 带 label 前缀
+    assert any(s.startswith("books/") for s in sources_seen)  # PDF 带 label 前缀
+
+
+def test_index_books_writes_category_metadata_and_filters(tmp_path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    (docs / "ai").mkdir(parents=True)
+    (docs / "misc").mkdir()
+    (docs / "ai" / "a.md").write_text("# AI\n" + "Spring AI 与 Agentic Center 设计。" * 5, encoding="utf-8")
+    (docs / "misc" / "b.md").write_text("# 杂项\n" + "一些通用的物联网背景介绍内容。" * 5, encoding="utf-8")
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [float(len(text) % 5), 1.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+    src = ReferenceSource(
+        docs,
+        "dc3",
+        categories=("iot", "dc3"),
+        dir_categories=(("ai", ("ai", "agentic")),),
+        language="zh",
+    )
+
+    engine.index_books([src], str(tmp_path / "manifest.json"))
+
+    # list 型 categories 用 $contains 过滤（$eq/$in 对 list 无效）
+    ai_hits = engine.collection.get(where={"categories": {"$contains": "agentic"}})
+    assert ai_hits["ids"], "应能按 agentic 标签过滤出 ai 子目录内容"
+    for meta in ai_hits["metadatas"]:
+        assert "agentic" in meta["categories"]
+        assert meta["source_file"].startswith("dc3/ai/")
+        assert meta["doc_type"] == "docs"
+        assert meta["language"] == "zh"
+    # misc 未命中 agentic
+    misc_ids = set(engine.collection.get(where={"categories": {"$contains": "agentic"}})["ids"])
+    all_ids = set(engine.collection.get()["ids"])
+    assert all_ids - misc_ids, "存在非 agentic 的分块"
+
+
+def test_hybrid_retrieve_recalls_exact_term_via_bm25(tmp_path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    # 用固定 embedding：让向量对所有 doc 几乎无区分度，凸显 BM25 的字面召回作用
+    (docs / "bg.md").write_text("# 背景\n" + "物联网是万物互联的技术体系与理念。" * 6, encoding="utf-8")
+    (docs / "modbus.md").write_text("# 协议\n" + "Modbus 是主从式工业串行通信协议规范。" * 6, encoding="utf-8")
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [1.0, 0.0],  # 所有文本同向量 → dense 无区分
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+    )
+    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+
+    hybrid_hits = engine.retrieve("Modbus 协议", top_k=2, hybrid=True)
+    assert any("Modbus" in c.text for c in hybrid_hits)  # 混合检索召回精确术语
+    # BM25 索引在索引期已构建
+    assert engine._get_bm25() is not None
+
+
+def test_retrieve_hybrid_false_is_pure_dense(tmp_path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "a.md").write_text("# A\n" + "内容甲。" * 30, encoding="utf-8")
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [1.0, 0.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+    )
+    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+
+    # hybrid=False 不应触碰 BM25
+    monkeypatch.setattr(engine, "_get_bm25", lambda: (_ for _ in ()).throw(AssertionError("不应调用 BM25")))
+    hits = engine.retrieve("内容", top_k=3, hybrid=False)
+    assert hits  # 纯 dense 仍能返回
+
+
+def test_retrieve_category_filter_scopes_results(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    (docs / "ai").mkdir(parents=True)
+    (docs / "net").mkdir()
+    (docs / "ai" / "a.md").write_text("# AI\n" + "Spring AI Agentic 设计。" * 6, encoding="utf-8")
+    (docs / "net" / "b.md").write_text("# 网络\n" + "NB-IoT 低功耗广域网络。" * 6, encoding="utf-8")
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [float(len(text) % 3), 1.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+    )
+    src = ReferenceSource(
+        docs, "dc3",
+        categories=("dc3",),
+        dir_categories=(("ai", ("ai",)), ("net", ("network",))),
+    )
+    engine.index_books([src], str(tmp_path / "manifest.json"))
+
+    hits = engine.retrieve("设计", top_k=5, categories=["ai"], hybrid=True)
+    assert hits
+    for c in hits:
+        assert "/ai/" in c.source_file  # 分类过滤只返回 ai 子目录
+
+
+def test_retrieve_applies_injected_reranker(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    for i in range(4):
+        (docs / f"d{i}.md").write_text(f"# 章{i}\n" + f"物联网主题内容第{i}段落说明。" * 6, encoding="utf-8")
+
+    seen: dict[str, int] = {}
+
+    def reranker(query, chunks, top_k):
+        seen["candidates"] = len(chunks)
+        return list(reversed(chunks))[:top_k]  # 逆序取前 top_k
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [float(len(text) % 4), 1.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+        reranker=reranker,
+    )
+    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+
+    hits = engine.retrieve("物联网", top_k=2, hybrid=True)
+
+    assert len(hits) == 2  # rerank 截断到 top_k
+    assert seen["candidates"] >= 2  # rerank 收到比 top_k 更宽的候选
+
+
+def test_index_books_contextualizer_feeds_embedding_not_stored_text(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "a.md").write_text("# 标题\n" + "Modbus 协议正文内容说明。" * 6, encoding="utf-8")
+
+    embedded: list[str] = []
+
+    def contextualizer(source: str, section: str, chunk_text: str) -> str:
+        return f"[情境] {section}\n\n{chunk_text}"
+
+    def embed_fn(text: str) -> list[float]:
+        embedded.append(text)
+        return [1.0, 0.0]
+
+    engine = RAGEngine(
+        embed_fn=embed_fn,
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+        contextualizer=contextualizer,
+    )
+    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+
+    # 存储正文为原文，不含情境前缀（避免污染最终引用事实）
+    stored = engine.collection.get(include=["documents"])["documents"]
+    assert stored and all(not d.startswith("[情境]") for d in stored)
+    # 情境前缀仅进入嵌入输入
+    assert embedded and all(t.startswith("[情境]") for t in embedded)
+
+
+def test_index_books_skips_rebuild_when_manifest_unchanged(tmp_path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "a.md").write_text("# 标题\n" + "内容。" * 30, encoding="utf-8")
+    engine = RAGEngine(
+        embed_fn=lambda text: [1.0, 0.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+    sources = [ReferenceSource(docs, "dc3")]
+    manifest = str(tmp_path / "manifest.json")
+
+    first = engine.index_books(sources, manifest)
+
+    calls: list[str] = []
+    monkeypatch.setattr(engine, "reset_index", lambda: calls.append("reset"))
+    second = engine.index_books(sources, manifest)
+
+    assert first == second
+    assert calls == []  # 输入未变，跳过重建
 
 
 def test_rag_rejects_overlap_not_smaller_than_chunk_size(tmp_path) -> None:

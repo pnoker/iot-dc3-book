@@ -15,10 +15,10 @@ DEFAULT_LOG_BACKUP_COUNT = 10
 
 
 def setup_logging(
-    level: str = "INFO",
-    log_file: str | None = None,
-    log_max_bytes: int = DEFAULT_LOG_MAX_BYTES,
-    log_backup_count: int = DEFAULT_LOG_BACKUP_COUNT,
+        level: str = "INFO",
+        log_file: str | None = None,
+        log_max_bytes: int = DEFAULT_LOG_MAX_BYTES,
+        log_backup_count: int = DEFAULT_LOG_BACKUP_COUNT,
 ) -> logging.Logger:
     """
     配置全局日志。

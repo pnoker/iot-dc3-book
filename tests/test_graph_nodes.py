@@ -26,6 +26,11 @@ class _FailingFactChecker:
         return {"pass": False, "score": 4, "issues": [{"description": "缺少事实依据"}]}
 
 
+class _PassingPlanReviewer:
+    def review(self, state: BookState, candidates: list) -> dict:
+        return {"pass": True, "best_index": 0, "scores": [], "reason": "ok"}
+
+
 class _Writer:
     def write(self, state: BookState) -> str:
         return "# 新正文\n\n新内容"
@@ -35,7 +40,10 @@ class _Writer:
 
 
 class _EmptyPlanner:
-    def plan(self, state: BookState) -> tuple[list[PartPlan], list[object]]:
+    def plan_candidates(self, state: BookState, n: int = 2) -> list[dict]:
+        return []
+
+    def build_plan(self, state: BookState, data: dict) -> tuple[list[PartPlan], list[object]]:
         return [], []
 
 
@@ -88,15 +96,15 @@ def test_style_check_pass_clears_stale_feedback() -> None:
     assert updated.get_chapter_content(1).style_feedback == ""
 
 
-def test_fact_check_failure_records_feedback_for_revision() -> None:
+def test_fact_check_records_feedback_but_does_not_route() -> None:
+    # 纯评审：只记录 feedback，路由/needs_revision 交给 quality_gate
     state = _state_with_chapter(ChapterContent(chapter_id=1, title="物联网概述", markdown="# 正文"))
 
     update = node_fact_check(state, _FailingFactChecker())
     updated = BookState(**{**state.model_dump(), **update})
 
     assert updated.get_chapter_content(1).fact_feedback
-    assert updated.needs_revision is True
-    assert updated.revision_target_chapter == 1
+    assert updated.needs_revision is False  # 不再由本节点触发
 
 
 def test_fact_check_pass_clears_stale_feedback() -> None:
@@ -108,7 +116,6 @@ def test_fact_check_pass_clears_stale_feedback() -> None:
     updated = BookState(**{**state.model_dump(), **update})
 
     assert updated.get_chapter_content(1).fact_feedback == ""
-    assert updated.get_current_chapter().status == "fact_checked"
 
 
 def test_plan_review_marks_state_ready_for_writing() -> None:
@@ -119,14 +126,15 @@ def test_plan_review_marks_state_ready_for_writing() -> None:
     assert update["current_phase"] == "writing"
 
 
-def test_planning_keeps_existing_parts_when_planner_returns_no_parts() -> None:
+def test_planning_keeps_existing_parts_when_planner_returns_no_candidates() -> None:
     state = _state_with_chapter()
 
-    update = node_planning(state, _EmptyPlanner())
+    update = node_planning(state, _EmptyPlanner(), _PassingPlanReviewer())
     updated = BookState(**{**state.model_dump(), **update})
 
     assert len(updated.parts) == 1
     assert updated.parts[0].chapters[0].title == "物联网概述"
+    assert update["current_phase"] == "plan_review"
 
 
 def test_planner_matches_model_part_by_chapter_ids_when_name_differs() -> None:
@@ -142,7 +150,9 @@ def test_planner_matches_model_part_by_chapter_ids_when_name_differs() -> None:
     )
     planner = PlannerAgent(_PlannerLLM())
 
-    parts, foreshadows = planner.plan(state)
+    candidates = planner.plan_candidates(state, n=2)
+    assert len(candidates) == 2  # 生成 n 个候选
+    parts, foreshadows = planner.build_plan(state, candidates[0])
 
     assert len(parts) == 1
     assert parts[0].name == "基础篇 · 万物互联"

@@ -27,7 +27,6 @@ app = typer.Typer(
 
 ResultT = TypeVar("ResultT")
 
-
 ConfigOption = Annotated[str, typer.Option("--config", help="配置目录路径")]
 ThreadIdOption = Annotated[str, typer.Option("--thread-id", help="任务线程 ID")]
 LogLevelOption = Annotated[str, typer.Option("--log-level", help="日志级别")]
@@ -38,13 +37,13 @@ LogBackupCountOption = Annotated[int, typer.Option("--log-backup-count", help="�
 
 @app.callback(invoke_without_command=True)
 def callback(
-    ctx: typer.Context,
-    config: ConfigOption = "config",
-    thread_id: ThreadIdOption = "book-1",
-    log_level: LogLevelOption = "INFO",
-    log_file: LogFileOption = None,
-    log_max_bytes: LogMaxBytesOption = 10 * 1024 * 1024,
-    log_backup_count: LogBackupCountOption = 10,
+        ctx: typer.Context,
+        config: ConfigOption = "config",
+        thread_id: ThreadIdOption = "book-1",
+        log_level: LogLevelOption = "INFO",
+        log_file: LogFileOption = None,
+        log_max_bytes: LogMaxBytesOption = 10 * 1024 * 1024,
+        log_backup_count: LogBackupCountOption = 10,
 ) -> None:
     """保存全局选项；无子命令时执行 run。"""
     ctx.obj = {
@@ -95,8 +94,8 @@ def _execute(ctx: typer.Context, action: Callable[[BookWriterGraph, str], Result
 
 @app.command()
 def run(
-    ctx: typer.Context,
-    fresh: Annotated[bool, typer.Option("--fresh", help="忽略并清除同 thread-id 的旧 checkpoint 后重跑")] = False,
+        ctx: typer.Context,
+        fresh: Annotated[bool, typer.Option("--fresh", help="忽略并清除同 thread-id 的旧 checkpoint 后重跑")] = False,
 ) -> None:
     """执行写书流程；默认自动续跑未完成 checkpoint。"""
     _execute(ctx, lambda writer, thread_id: writer.run(thread_id=thread_id, fresh=fresh))
@@ -126,8 +125,8 @@ def status(ctx: typer.Context) -> None:
 
 @app.command("export-state")
 def export_state(
-    ctx: typer.Context,
-    file: Annotated[str, typer.Option("--file", help="导出文件路径")],
+        ctx: typer.Context,
+        file: Annotated[str, typer.Option("--file", help="导出文件路径")],
 ) -> None:
     """导出 checkpoint 状态 JSON。"""
 
@@ -140,10 +139,10 @@ def export_state(
 
 @app.command("patch-chapter")
 def patch_chapter(
-    ctx: typer.Context,
-    chapter_id: Annotated[int, typer.Option("--chapter-id", help="章节 ID")],
-    file: Annotated[str, typer.Option("--file", help="Markdown 文件路径")],
-    regenerate_output: Annotated[bool, typer.Option("--regenerate-output", help="补丁后立即重新生成 output")] = False,
+        ctx: typer.Context,
+        chapter_id: Annotated[int, typer.Option("--chapter-id", help="章节 ID")],
+        file: Annotated[str, typer.Option("--file", help="Markdown 文件路径")],
+        regenerate_output: Annotated[bool, typer.Option("--regenerate-output", help="补丁后立即重新生成 output")] = False,
 ) -> None:
     """用本地 Markdown 覆盖指定章节正文。"""
 
@@ -160,11 +159,11 @@ def patch_chapter(
 
 @app.command("revise-chapter")
 def revise_chapter(
-    ctx: typer.Context,
-    chapter_id: Annotated[int, typer.Option("--chapter-id", help="章节 ID")],
-    feedback: Annotated[str | None, typer.Option("--feedback", help="修订反馈文本")] = None,
-    feedback_file: Annotated[str | None, typer.Option("--feedback-file", help="修订反馈文件")] = None,
-    regenerate_output: Annotated[bool, typer.Option("--regenerate-output", help="修订后立即重新生成 output")] = False,
+        ctx: typer.Context,
+        chapter_id: Annotated[int, typer.Option("--chapter-id", help="章节 ID")],
+        feedback: Annotated[str | None, typer.Option("--feedback", help="修订反馈文本")] = None,
+        feedback_file: Annotated[str | None, typer.Option("--feedback-file", help="修订反馈文件")] = None,
+        regenerate_output: Annotated[bool, typer.Option("--regenerate-output", help="修订后立即重新生成 output")] = False,
 ) -> None:
     """对指定章节执行一次 LLM 局部修订。"""
     if bool(feedback) == bool(feedback_file):
@@ -194,8 +193,8 @@ def regenerate_output(ctx: typer.Context) -> None:
 
 @app.command()
 def reset(
-    ctx: typer.Context,
-    yes: Annotated[bool, typer.Option("--yes", help="确认执行删除")] = False,
+        ctx: typer.Context,
+        yes: Annotated[bool, typer.Option("--yes", help="确认执行删除")] = False,
 ) -> None:
     """删除指定 thread-id 的 checkpoint。"""
     if not yes:
@@ -205,9 +204,9 @@ def reset(
 
 @app.command()
 def dashboard(
-    host: Annotated[str, typer.Option("--host", help="Dashboard 监听地址")] = "127.0.0.1",
-    port: Annotated[int, typer.Option("--port", help="Dashboard 监听端口")] = 18080,
-    reload: Annotated[bool, typer.Option("--reload", help="开发模式自动重载")] = False,
+        host: Annotated[str, typer.Option("--host", help="Dashboard 监听地址")] = "127.0.0.1",
+        port: Annotated[int, typer.Option("--port", help="Dashboard 监听端口")] = 18080,
+        reload: Annotated[bool, typer.Option("--reload", help="开发模式自动重载")] = False,
 ) -> None:
     """启动本地 Web Dashboard。"""
     uvicorn.run("api.app:app", host=host, port=port, reload=reload)

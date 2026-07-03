@@ -33,10 +33,10 @@ def create_app(*, service: DashboardService | Any | None = None, web_dist: str |
 
     @app.get("/api/logs")
     def get_logs(
-        level: str | None = None,
-        agent: str | None = None,
-        chapter: int | None = None,
-        limit: int = Query(default=200, ge=1, le=2000),
+            level: str | None = None,
+            agent: str | None = None,
+            chapter: int | None = None,
+            limit: int = Query(default=200, ge=1, le=2000),
     ) -> list[dict[str, Any]]:
         return [_to_dict(entry) for entry in dashboard_service.get_logs(level=level, agent=agent, chapter=chapter, limit=limit)]
 

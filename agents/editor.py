@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-
 from .base import BaseAgent
 
 _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
@@ -21,6 +20,12 @@ _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
 5. **内容充实度**: 是否达到目标字数，是否有实质性内容
 6. **结构完整性**: 是否包含引言、正文、小结、练习等标准结构
 
+## 伏笔核验
+对「本章伏笔任务清单」中的每一条，逐条判定作者是否已在正文中真正完成：
+- 埋入类任务：正文是否已自然埋入该伏笔
+- 回收类任务：正文是否已对之前埋下的伏笔给出呼应/解答
+在 foreshadow_checks 中如实报告每条的 id、类型(plant/resolve)与是否达成(done)。
+
 ## 输出格式
 ```json
 {
@@ -30,6 +35,10 @@ _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
     "accuracy": 8, "coherence": 8, "foreshadow": 7,
     "consistency": 8, "completeness": 7, "structure": 9
   },
+  "foreshadow_checks": [
+    {"id": "F001", "type": "plant", "done": true},
+    {"id": "F002", "type": "resolve", "done": false}
+  ],
   "issues": [
     {"severity": "minor", "dimension": "coherence", "description": "...", "suggestion": "..."}
   ],
@@ -40,7 +49,8 @@ _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
 ## 判定规则
 - 存在 critical 级别问题: pass = false
 - overall_score < 6: pass = false
-- foreshadow 维度得分 < 5: pass = false"""
+- foreshadow 维度得分 < 5: pass = false
+- 存在 type=resolve 且 done=false 的伏笔（应回收却未回收）: pass = false"""
 
 
 class EditorAgent(BaseAgent):

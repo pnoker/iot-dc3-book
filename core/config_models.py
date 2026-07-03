@@ -79,11 +79,37 @@ class LLMConfig(StrictConfigModel):
     embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
 
 
+class ReferenceSourceConfig(StrictConfigModel):
+    """一个参考来源目录及其分类。
+
+    - path 相对 project_dir 解析，label 用于溯源和命名空间。
+    - categories 为该来源的基础分类标签（多标签）。
+    - dir_categories 将子目录首段映射到追加的分类标签。
+    - language 标注该来源语言，用于检索过滤。
+    """
+
+    path: str
+    label: str = ""
+    categories: list[str] = Field(default_factory=list)
+    dir_categories: dict[str, list[str]] = Field(default_factory=dict)
+    language: str = "zh"
+
+
 class ReferenceConfig(StrictConfigModel):
     books_dir: str = "../books"
     top_k: int = 5
     chunk_size: int = 1000
     chunk_overlap: int = 200
+    sources: list[ReferenceSourceConfig] = Field(default_factory=list)
+    # 本书检索限定的分类（空=全局检索所有分类）
+    query_categories: list[str] = Field(default_factory=list)
+    # 混合检索开关（dense + BM25 + RRF）
+    hybrid: bool = True
+    # rerank 开关与候选数（默认关闭）
+    rerank_enabled: bool = False
+    rerank_candidates: int = 12
+    # 知识精炼（Contextual Retrieval）开关（默认关闭）
+    contextualize: bool = False
 
     @model_validator(mode="after")
     def validate_chunking(self) -> ReferenceConfig:

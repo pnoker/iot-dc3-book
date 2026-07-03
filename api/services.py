@@ -25,14 +25,14 @@ class PathTraversalError(ValueError):
 
 class DashboardService:
     def __init__(
-        self,
-        *,
-        config_dir: str = "config",
-        thread_id: str = "book-1",
-        graph_factory: Callable[[str], Any] | None = None,
-        state_loader: Callable[[str], BookState | None] | None = None,
-        output_dir: str | Path | None = None,
-        log_file: str | Path | None = None,
+            self,
+            *,
+            config_dir: str = "config",
+            thread_id: str = "book-1",
+            graph_factory: Callable[[str], Any] | None = None,
+            state_loader: Callable[[str], BookState | None] | None = None,
+            output_dir: str | Path | None = None,
+            log_file: str | Path | None = None,
     ) -> None:
         self.config_dir = config_dir
         self.thread_id = thread_id
@@ -121,12 +121,12 @@ class DashboardService:
         return path.read_text(encoding="utf-8")
 
     def get_logs(
-        self,
-        *,
-        level: str | None = None,
-        agent: str | None = None,
-        chapter: int | None = None,
-        limit: int = 200,
+            self,
+            *,
+            level: str | None = None,
+            agent: str | None = None,
+            chapter: int | None = None,
+            limit: int = 200,
     ) -> list[LogEntry]:
         return read_logs(self.log_file, level=level, agent=agent, chapter=chapter, limit=limit)
 
@@ -162,24 +162,24 @@ class DashboardService:
         return {"output_dir": self.graph.regenerate_output(thread_id), "thread_id": thread_id}
 
     def patch_chapter(
-        self,
-        thread_id: str,
-        chapter_id: int,
-        markdown: str,
-        *,
-        regenerate_output: bool = False,
+            self,
+            thread_id: str,
+            chapter_id: int,
+            markdown: str,
+            *,
+            regenerate_output: bool = False,
     ) -> dict[str, Any]:
         self.graph.patch_chapter(thread_id, chapter_id, markdown)
         output_dir = self.graph.regenerate_output(thread_id) if regenerate_output else ""
         return {"patched": True, "chapter_id": chapter_id, "output_dir": output_dir}
 
     def revise_chapter(
-        self,
-        thread_id: str,
-        chapter_id: int,
-        feedback: str,
-        *,
-        regenerate_output: bool = False,
+            self,
+            thread_id: str,
+            chapter_id: int,
+            feedback: str,
+            *,
+            regenerate_output: bool = False,
     ) -> dict[str, Any]:
         self.graph.revise_chapter(thread_id, chapter_id, feedback)
         output_dir = self.graph.regenerate_output(thread_id) if regenerate_output else ""

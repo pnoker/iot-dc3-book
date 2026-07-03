@@ -23,16 +23,16 @@ class LLMClient:
     """统一的 LLM 调用客户端（延迟初始化）"""
 
     def __init__(
-        self,
-        base_url: str,
-        api_key: str,
-        model: str,
-        temperature: float = 0.7,
-        max_tokens: int = 8192,
-        embed_base_url: str = "",
-        embed_api_key: str = "",
-        embed_model: str = "",
-        timeout: float = 120.0,
+            self,
+            base_url: str,
+            api_key: str,
+            model: str,
+            temperature: float = 0.7,
+            max_tokens: int = 8192,
+            embed_base_url: str = "",
+            embed_api_key: str = "",
+            embed_model: str = "",
+            timeout: float = 120.0,
     ) -> None:
         # Chat config (DeepSeek)
         self._base_url = base_url
@@ -82,12 +82,12 @@ class LLMClient:
         reraise=True,
     )
     def chat(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        temperature: float | None = None,
-        max_tokens: int | None = None,
-        response_format: dict[str, str] | None = None,
+            self,
+            system_prompt: str,
+            user_prompt: str,
+            temperature: float | None = None,
+            max_tokens: int | None = None,
+            response_format: dict[str, str] | None = None,
     ) -> str:
         """单轮对话（自动重试 3 次）"""
         logger.debug("Chat 请求: model=%s, user_len=%d", self.model, len(user_prompt))
@@ -112,11 +112,11 @@ class LLMClient:
             raise
 
     def chat_json(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        temperature: float | None = None,
-        max_tokens: int | None = None,
+            self,
+            system_prompt: str,
+            user_prompt: str,
+            temperature: float | None = None,
+            max_tokens: int | None = None,
     ) -> dict[str, object]:
         """请求 JSON object 响应并解析。"""
         content = self.chat(

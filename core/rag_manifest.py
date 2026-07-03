@@ -6,26 +6,60 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+from core.rag_sources import SUPPORTED_EXTENSIONS, iter_source_files
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from core.rag_sources import ReferenceSource
 
 
-def build_manifest(books_dir: str, chunk_size: int, chunk_overlap: int) -> dict[str, object]:
-    """构建参考书索引输入签名，用于判断索引是否过期。"""
-    books_path = Path(books_dir)
+def build_manifest(
+        sources: Sequence[ReferenceSource],
+        chunk_size: int,
+        chunk_overlap: int,
+        embed_model: str = "",
+        contextualize: bool = False,
+) -> dict[str, object]:
+    """构建参考来源索引输入签名，用于判断索引是否过期。
+
+    条目按 label 命名空间，避免不同来源下同名文件（如多个 index.md）相互别名；
+    签名含 sources 与 extensions，配置层变化（增删来源、支持新格式）也会触发重建。
+    embed_model 与 contextualize 同样改变入库向量/正文，纳入签名以免换模型或
+    开关情境化后仍误判「未变化，跳过构建」而检索劣化。
+    """
     files: list[dict[str, object]] = []
-    if books_path.exists():
-        for pdf_file in sorted(books_path.rglob("*.pdf")):
-            stat = pdf_file.stat()
-            files.append(
-                {
-                    "path": str(pdf_file.relative_to(books_path)),
-                    "size": stat.st_size,
-                    "mtime_ns": stat.st_mtime_ns,
-                }
-            )
+    for source_file in iter_source_files(sources):
+        stat = source_file.abs_path.stat()
+        files.append(
+            {
+                "source": source_file.label,
+                "path": source_file.rel,
+                "size": stat.st_size,
+                "mtime_ns": stat.st_mtime_ns,
+            }
+        )
     return {
         "chunk_size": chunk_size,
         "chunk_overlap": chunk_overlap,
+        "embed_model": embed_model,
+        "contextualize": contextualize,
+        "sources": [_source_signature(s) for s in sources],
+        "extensions": sorted(SUPPORTED_EXTENSIONS),
         "files": files,
+    }
+
+
+def _source_signature(source: ReferenceSource) -> dict[str, object]:
+    """来源签名：路径与分类配置变化都应触发重建（会改变 chunk metadata）。"""
+    return {
+        "label": source.label,
+        "path": str(source.path),
+        "categories": list(source.categories),
+        "dir_categories": [[name, list(tags)] for name, tags in source.dir_categories],
+        "language": source.language,
     }
 
 

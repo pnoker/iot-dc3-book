@@ -56,7 +56,7 @@ def parse_json_from_llm(response: str) -> dict[str, Any]:
     first_brace = response.find("{")
     last_brace = response.rfind("}")
     if first_brace != -1 and last_brace > first_brace:
-        candidates.append(response[first_brace : last_brace + 1])
+        candidates.append(response[first_brace: last_brace + 1])
 
     for candidate in candidates:
         try:

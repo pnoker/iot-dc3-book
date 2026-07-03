@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-
 from .base import BaseAgent
 
 _STYLE_GUARD_SYSTEM = """你是一位书籍排版与风格规范专家。

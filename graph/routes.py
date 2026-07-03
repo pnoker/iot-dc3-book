@@ -14,29 +14,13 @@ def _as_state(state: BookState | dict[str, Any]) -> BookState:
 
 
 def route_after_plan_review(state: BookState | dict[str, Any]) -> Literal["approved", "revise_plan"]:
-    """大纲审后路由"""
-    return "approved"
-
-
-def route_after_style_check(state: BookState | dict[str, Any]) -> Literal["pass", "fail"]:
+    """大纲门路由：评审通过进入写作，未过且未达上限回退重规划。"""
     s = _as_state(state)
-    chapter = s.get_current_chapter()
-    content = s.get_chapter_content(chapter.id) if chapter else None
-    if content and content.style_feedback:
-        return "fail"
-    return "pass"
+    return "revise_plan" if s.current_phase == "planning" else "approved"
 
 
-def route_after_fact_check(state: BookState | dict[str, Any]) -> Literal["pass", "fail"]:
-    s = _as_state(state)
-    chapter = s.get_current_chapter()
-    content = s.get_chapter_content(chapter.id) if chapter else None
-    if content and content.fact_feedback:
-        return "fail"
-    return "pass"
-
-
-def route_after_editor_review(state: BookState | dict[str, Any]) -> Literal["pass", "fail"]:
+def route_after_quality_gate(state: BookState | dict[str, Any]) -> Literal["pass", "fail"]:
+    """质量门汇总路由：三门全通过则推进，任一未过则转修订。"""
     s = _as_state(state)
     return "fail" if s.needs_revision else "pass"
 
@@ -50,3 +34,9 @@ def route_after_revise(state: BookState | dict[str, Any]) -> Literal["revise", "
 def route_next_chapter(state: BookState | dict[str, Any]) -> Literal["next", "done"]:
     s = _as_state(state)
     return "done" if s.current_phase == "final_review" else "next"
+
+
+def route_after_final_review(state: BookState | dict[str, Any]) -> Literal["revise", "output"]:
+    """终审门路由：有需返修章节且未达轮次上限则返修，否则定稿输出。"""
+    s = _as_state(state)
+    return "revise" if s.final_revision_chapters else "output"

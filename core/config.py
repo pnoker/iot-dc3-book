@@ -12,10 +12,10 @@ import yaml
 
 from core.config_models import AppConfig, EnvSettings
 from core.log import get_logger
+from core.rag_sources import ReferenceSource
 from core.state import BookState, ChapterPlan, PartPlan, StyleConfig
 
 logger = get_logger("config")
-
 
 ConfigDict = dict[str, Any]
 
@@ -27,11 +27,13 @@ class ConfigPaths:
     config_dir: Path
     project_dir: Path
     books_dir: Path
+    reference_sources: tuple[ReferenceSource, ...]
     output_dir: Path
     data_dir: Path
     checkpoint_db: Path
     chroma_dir: Path
     rag_manifest: Path
+    bm25_index: Path
 
 
 def load_config(config_path: str = "config") -> ConfigDict:
@@ -144,17 +146,20 @@ def get_config_paths(app_config: AppConfig) -> ConfigPaths:
     project_dir = app_config.project_dir.resolve()
     config_dir = app_config.config_dir.resolve()
     books_dir = _resolve_path(app_config.references.books_dir, project_dir)
+    reference_sources = _resolve_reference_sources(app_config, project_dir, books_dir)
     output_dir = _resolve_path(app_config.output.dir, project_dir)
     data_dir = project_dir / ".data"
     return ConfigPaths(
         config_dir=config_dir,
         project_dir=project_dir,
         books_dir=books_dir,
+        reference_sources=reference_sources,
         output_dir=output_dir,
         data_dir=data_dir,
         checkpoint_db=data_dir / "checkpoint.db",
         chroma_dir=data_dir / "chroma",
         rag_manifest=data_dir / "rag_index.json",
+        bm25_index=data_dir / "bm25_index.json",
     )
 
 
@@ -184,6 +189,28 @@ def get_embed_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
         "embed_api_key": emb.api_key,
         "embed_model": emb.model,
     }
+
+
+def _resolve_reference_sources(app_config: AppConfig, project_dir: Path, books_dir: Path) -> tuple[ReferenceSource, ...]:
+    """解析参考来源；未配置 sources 时回退为单个 books_dir，保证向后兼容。"""
+    sources = app_config.references.sources
+    if not sources:
+        return (ReferenceSource(path=books_dir, label="books"),)
+    resolved: list[ReferenceSource] = []
+    for source in sources:
+        path = _resolve_path(source.path, project_dir)
+        label = source.label or path.name
+        dir_categories = tuple((name, tuple(tags)) for name, tags in source.dir_categories.items())
+        resolved.append(
+            ReferenceSource(
+                path=path,
+                label=label,
+                categories=tuple(source.categories),
+                dir_categories=dir_categories,
+                language=source.language,
+            )
+        )
+    return tuple(resolved)
 
 
 def _resolve_path(value: str, base_dir: Path) -> Path:

@@ -4,10 +4,14 @@ Research Agent - 参考资料检索
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from core.rag import RAGEngine
 from core.state import BookState, ReferenceChunk
-
 from .base import BaseAgent
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 _RESEARCH_SYSTEM = """你是一位物联网领域的技术研究员。
 你的任务是根据当前要写的章节主题，生成最佳的检索查询词，
@@ -18,9 +22,11 @@ _RESEARCH_SYSTEM = """你是一位物联网领域的技术研究员。
 class ResearchAgent(BaseAgent):
     """参考资料检索 Agent"""
 
-    def __init__(self, llm: object, rag: RAGEngine) -> None:
+    def __init__(self, llm: object, rag: RAGEngine, query_categories: Sequence[str] | None = None) -> None:
         super().__init__(llm)  # type: ignore[arg-type]
         self.rag = rag
+        # 本书检索限定的分类（空/None=全局检索所有分类）
+        self.query_categories = list(query_categories) if query_categories else None
 
     def search(self, state: BookState) -> list[ReferenceChunk]:
         """为当前章节检索参考资料"""
@@ -32,7 +38,15 @@ class ResearchAgent(BaseAgent):
         if chapter.outline:
             query_context += f"\n大纲:\n{chapter.outline}"
 
-        user_prompt = f"当前要写的章节：\n{query_context}\n\n请生成检索查询词，用于从物联网参考书籍中查找相关资料。"
+        covered = state.get_covered_topics(exclude_chapter_id=chapter.id)
+        dedup_hint = (
+            f"\n\n以下主题已在其他章节覆盖，请生成聚焦本章差异化内容的查询，避免检索到与这些章节重复的资料：\n{covered}"
+            if covered
+            else ""
+        )
+        user_prompt = (
+            f"当前要写的章节：\n{query_context}\n\n请生成检索查询词，用于从物联网参考书籍中查找相关资料。{dedup_hint}"
+        )
 
         self.logger.info("检索第%d章 %s 的参考资料...", chapter.id, chapter.title)
         response = self.llm.chat(_RESEARCH_SYSTEM, user_prompt, temperature=0.3)
@@ -43,7 +57,7 @@ class ResearchAgent(BaseAgent):
         all_chunks: list[ReferenceChunk] = []
         seen_texts: set[str] = set()
         for query in queries[:5]:
-            chunks = self.rag.retrieve(query, top_k=3)
+            chunks = self.rag.retrieve(query, top_k=3, categories=self.query_categories)
             for chunk in chunks:
                 if chunk.text not in seen_texts:
                     seen_texts.add(chunk.text)

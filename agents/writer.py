@@ -5,7 +5,6 @@ Writer Agent - 逐章写作与修改
 from __future__ import annotations
 
 from core.state import BookState
-
 from .base import BaseAgent
 
 _WRITER_SYSTEM = """你是一位资深的物联网技术书籍作者。
@@ -40,6 +39,12 @@ class WriterAgent(BaseAgent):
         style_prompt = self._build_style_prompt(state.style)
         foreshadow_prompt = self._build_foreshadow_prompt(state)
         ref_prompt = self._build_references_prompt(state)
+        covered = state.get_covered_topics(exclude_chapter_id=chapter.id)
+        dedup_prompt = (
+            f"\n## 其他章节已覆盖内容（本章勿重复展开，如需提及请一句带过并指向对应章节）\n{covered}"
+            if covered
+            else ""
+        )
 
         # 伏笔任务
         foreshadow_hints: list[str] = []
@@ -72,6 +77,7 @@ class WriterAgent(BaseAgent):
 
 # 前文摘要（保持连贯性）
 {prev_summary if prev_summary else "这是全书第一章，无需前文。"}
+{dedup_prompt}
 
 {style_prompt}
 

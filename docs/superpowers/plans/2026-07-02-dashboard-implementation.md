@@ -1,10 +1,12 @@
 # Dashboard Visualization Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps
+> use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a professional local Web Dashboard for observing, controlling, and previewing the multi-agent book-writing workflow.
 
-**Architecture:** Add a `FastAPI` adapter layer under `api/` that reuses existing `BookWriterGraph`, checkpoint, logs, RAG state, and output files. Add a Vue 3 + Vite + TypeScript frontend under `web/` that consumes the API and renders overview, chapter preview, logs, and metrics without moving writing logic into the frontend.
+**Architecture:** Add a `FastAPI` adapter layer under `api/` that reuses existing `BookWriterGraph`, checkpoint, logs, RAG state, and output files. Add a Vue 3 + Vite + TypeScript
+frontend under `web/` that consumes the API and renders overview, chapter preview, logs, and metrics without moving writing logic into the frontend.
 
 **Tech Stack:** Python, FastAPI, uvicorn, Pydantic, pytest, Vue 3, Vite, TypeScript, Naive UI, ECharts, markdown-it.
 
@@ -34,6 +36,7 @@
 ### Task 1: Backend log reader
 
 **Files:**
+
 - Create `api/log_reader.py`
 - Test `tests/test_api_log_reader.py`
 
@@ -45,6 +48,7 @@
 ### Task 2: Backend service layer
 
 **Files:**
+
 - Create `api/models.py`
 - Create `api/services.py`
 - Test `tests/test_api_services.py`
@@ -58,6 +62,7 @@
 ### Task 3: FastAPI routes
 
 **Files:**
+
 - Create `api/app.py`
 - Modify `pyproject.toml`
 - Test `tests/test_api_app.py`
@@ -71,6 +76,7 @@
 ### Task 4: CLI entry for dashboard
 
 **Files:**
+
 - Modify `cli.py`
 - Modify `README.md`
 - Test `tests/test_cli.py`
@@ -83,6 +89,7 @@
 ### Task 5: Frontend scaffold
 
 **Files:**
+
 - Create `web/package.json`
 - Create `web/index.html`
 - Create `web/vite.config.ts`
@@ -100,6 +107,7 @@
 ### Task 6: Frontend API and pages
 
 **Files:**
+
 - Create `web/src/api/client.ts`
 - Create `web/src/pages/OverviewPage.vue`
 - Create `web/src/pages/ChaptersPage.vue`
@@ -119,6 +127,7 @@
 ### Task 7: Verification and documentation
 
 **Files:**
+
 - Modify `README.md`
 
 - [ ] Run `uv run pytest`.

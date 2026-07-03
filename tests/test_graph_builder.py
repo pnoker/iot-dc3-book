@@ -34,3 +34,24 @@ def test_run_rejects_incomplete_completed_checkpoint_without_restarting() -> Non
         writer.run()
 
     assert graph.invoked is False
+
+
+def test_graph_compiles_with_all_quality_gate_nodes_connected() -> None:
+    """冒烟：新图（大纲门 / 合并质量门 / 终审门）能被 LangGraph 编译且节点齐全。"""
+    graph = BookWriterGraph("config")
+    nodes = set(graph.graph.get_graph().nodes.keys())
+
+    # 三处质量门重构引入的关键节点必须在位且连通
+    expected = {
+        "planning",
+        "plan_review",
+        "fact_check",
+        "style_check",
+        "editor_review",
+        "quality_gate",
+        "revise",
+        "final_review",
+        "final_revise",
+        "output",
+    }
+    assert expected <= nodes

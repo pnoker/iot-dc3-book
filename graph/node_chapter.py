@@ -8,6 +8,7 @@ from typing import Any
 
 from core.log import get_logger
 from core.state import BookState, ChapterContent
+from core.wordcount import count_words
 
 logger = get_logger("nodes")
 
@@ -36,7 +37,7 @@ def node_write(state: BookState | dict[str, Any], writer: Any) -> dict[str, Any]
         )
         markdown = writer.revise(s, feedback)
         content.markdown = markdown
-        content.word_count = len(markdown)
+        content.word_count = count_words(markdown)
         content.revision_count += 1
         content.review_feedback = ""
         content.style_feedback = ""
@@ -53,7 +54,9 @@ def node_write(state: BookState | dict[str, Any], writer: Any) -> dict[str, Any]
 
     logger.info("✍️ [写作] 撰写第%d章 %s...", chapter.id, chapter.title)
     markdown = writer.write(s)
-    new_chapter = ChapterContent(chapter_id=chapter.id, title=chapter.title, markdown=markdown, word_count=len(markdown))
+    new_chapter = ChapterContent(
+        chapter_id=chapter.id, title=chapter.title, markdown=markdown, word_count=count_words(markdown)
+    )
     s.upsert_chapter_content(new_chapter)
     s.mark_chapter_status(chapter.id, "written")
     return {"chapters": [c.model_dump() for c in s.chapters], "parts": [p.model_dump() for p in s.parts]}

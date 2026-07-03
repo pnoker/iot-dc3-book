@@ -15,6 +15,7 @@ from langgraph.graph import END, START, StateGraph
 from agents.director import DirectorAgent
 from agents.editor import EditorAgent
 from agents.fact_checker import FactCheckerAgent
+from agents.plan_reviewer import PlanReviewerAgent
 from agents.planner import PlannerAgent
 from agents.research import ResearchAgent
 from agents.style_guard import StyleGuardAgent
@@ -24,18 +25,26 @@ from core.llm_client import LLMClient
 from core.log import get_logger
 from core.output import generate_output
 from core.rag import RAGEngine
-from core.state import BookState, ChapterContent
+from core.rag_contextualize import contextualize_chunk
+from core.rag_rerank import rerank_chunks
+from core.state import BookState, ChapterContent, ReferenceChunk
 from core.state_validation import IncompleteBookStateError, is_complete_book_state, require_complete_book_state
+from core.wordcount import count_words
 from graph.node_chapter import node_research, node_write
-from graph.node_final import node_final_review, node_output
+from graph.node_final import node_final_review, node_final_revise, node_output
 from graph.node_lifecycle import node_advance_chapter, node_indexing, node_init, node_plan_review, node_planning
-from graph.node_quality import node_editor_review, node_fact_check, node_revise, node_style_check
+from graph.node_quality import (
+    node_editor_review,
+    node_fact_check,
+    node_quality_gate,
+    node_revise,
+    node_style_check,
+)
 from graph.routes import (
-    route_after_editor_review,
-    route_after_fact_check,
+    route_after_final_review,
     route_after_plan_review,
+    route_after_quality_gate,
     route_after_revise,
-    route_after_style_check,
     route_next_chapter,
 )
 
@@ -47,9 +56,10 @@ class BookWriterGraph:
     书籍写作状态图编排器
 
     流程:
-    START → init → indexing → planning → plan_review(human)
-        → [research → write → style_check → editor_review → advance_chapter] 循环
-        → final_review → output → END
+    START → init → indexing → planning → plan_review(大纲质量门, 不过则回退重规划)
+        → [research → write → fact_check → style_check → editor_review
+           → quality_gate(三门汇总判定) →(fail)revise / (pass)advance_chapter] 循环
+        → final_review(终审质量门) →(需返修)final_revise→重审 / (通过)output → END
     """
 
     def __init__(self, config_path: str = "config") -> None:
@@ -62,20 +72,38 @@ class BookWriterGraph:
         embed_cfg = get_embed_config(self.cfg)
         self.llm = LLMClient(**llm_cfg, **embed_cfg)
 
-        # 初始化 RAG
+        # 初始化 RAG（rerank / 情境化默认关闭，开启时注入对应 LLM 闭包）
+        ref_cfg = self.cfg.references
+        reranker = None
+        if ref_cfg.rerank_enabled:
+            candidates = ref_cfg.rerank_candidates
+
+            def reranker(query: str, chunks: list[ReferenceChunk], top_k: int) -> list[ReferenceChunk]:
+                return rerank_chunks(self.llm, query, chunks[:candidates], top_k)
+
+        contextualizer = None
+        if ref_cfg.contextualize:
+            def contextualizer(source: str, section: str, chunk_text: str) -> str:
+                return contextualize_chunk(self.llm, source, section, chunk_text)
+
         self.rag = RAGEngine(
             embed_fn=self.llm.embed,
             embed_many_fn=self.llm.embed_many,
-            chunk_size=self.cfg.references.chunk_size,
-            chunk_overlap=self.cfg.references.chunk_overlap,
+            chunk_size=ref_cfg.chunk_size,
+            chunk_overlap=ref_cfg.chunk_overlap,
             persist_dir=str(self.paths.chroma_dir),
+            bm25_path=str(self.paths.bm25_index),
+            reranker=reranker,
+            contextualizer=contextualizer,
+            embed_model=embed_cfg["embed_model"],
         )
 
         # 初始化 Agent
         self.planner = PlannerAgent(self.llm)
-        self.researcher = ResearchAgent(self.llm, self.rag)
+        self.plan_reviewer = PlanReviewerAgent(self.llm)
+        self.researcher = ResearchAgent(self.llm, self.rag, query_categories=ref_cfg.query_categories)
         self.writer = WriterAgent(self.llm)
-        self.fact_checker = FactCheckerAgent(self.llm)
+        self.fact_checker = FactCheckerAgent(self.llm, self.rag, query_categories=ref_cfg.query_categories)
         self.editor = EditorAgent(self.llm)
         self.style_guard = StyleGuardAgent(self.llm)
         self.director = DirectorAgent(self.llm)
@@ -91,16 +119,18 @@ class BookWriterGraph:
         # 节点（使用 lambda 闭包注入依赖）
         builder.add_node("init", lambda s: node_init(s, self.cfg))
         builder.add_node("indexing", lambda s: node_indexing(s, self.cfg, self.rag))
-        builder.add_node("planning", lambda s: node_planning(s, self.planner))
+        builder.add_node("planning", lambda s: node_planning(s, self.planner, self.plan_reviewer))
         builder.add_node("plan_review", lambda s: node_plan_review(s))
         builder.add_node("research", lambda s: node_research(s, self.researcher))
         builder.add_node("write", lambda s: node_write(s, self.writer))
         builder.add_node("fact_check", lambda s: node_fact_check(s, self.fact_checker))
         builder.add_node("style_check", lambda s: node_style_check(s, self.style_guard))
         builder.add_node("editor_review", lambda s: node_editor_review(s, self.editor))
+        builder.add_node("quality_gate", lambda s: node_quality_gate(s))
         builder.add_node("revise", lambda s: node_revise(s))
         builder.add_node("advance_chapter", lambda s: node_advance_chapter(s))
         builder.add_node("final_review", lambda s: node_final_review(s, self.director))
+        builder.add_node("final_revise", lambda s: node_final_revise(s, self.writer))
         builder.add_node("output", lambda s: node_output(s, self.cfg))
 
         # 边
@@ -109,6 +139,7 @@ class BookWriterGraph:
         builder.add_edge("indexing", "planning")
         builder.add_edge("planning", "plan_review")
 
+        # 大纲质量门：不通过则回退重规划
         builder.add_conditional_edges(
             "plan_review",
             route_after_plan_review,
@@ -118,27 +149,15 @@ class BookWriterGraph:
             },
         )
 
+        # 章节生产：写作后三门顺序评审（纯打标），汇总于 quality_gate 统一判定
         builder.add_edge("research", "write")
         builder.add_edge("write", "fact_check")
+        builder.add_edge("fact_check", "style_check")
+        builder.add_edge("style_check", "editor_review")
+        builder.add_edge("editor_review", "quality_gate")
         builder.add_conditional_edges(
-            "fact_check",
-            route_after_fact_check,
-            {
-                "pass": "style_check",
-                "fail": "revise",
-            },
-        )
-        builder.add_conditional_edges(
-            "style_check",
-            route_after_style_check,
-            {
-                "pass": "editor_review",
-                "fail": "revise",
-            },
-        )
-        builder.add_conditional_edges(
-            "editor_review",
-            route_after_editor_review,
+            "quality_gate",
+            route_after_quality_gate,
             {
                 "pass": "advance_chapter",
                 "fail": "revise",
@@ -148,7 +167,7 @@ class BookWriterGraph:
             "revise",
             route_after_revise,
             {
-                "revise": "write",  # 未达上限：继续修改
+                "revise": "write",  # 未达上限：带合并反馈重写
                 "advance": "advance_chapter",  # 达上限：止损放行，推进下一章
             },
         )
@@ -162,7 +181,16 @@ class BookWriterGraph:
             },
         )
 
-        builder.add_edge("final_review", "output")
+        # 终审质量门：有全书级问题则返修重审，否则输出
+        builder.add_conditional_edges(
+            "final_review",
+            route_after_final_review,
+            {
+                "revise": "final_revise",
+                "output": "output",
+            },
+        )
+        builder.add_edge("final_revise", "final_review")
         builder.add_edge("output", END)
 
         data_dir = self.paths.data_dir
@@ -255,7 +283,7 @@ class BookWriterGraph:
             chapter_id=chapter_id,
             title=existing.title if existing else chapter.title,
             markdown=markdown,
-            word_count=len(markdown),
+            word_count=count_words(markdown),
             revision_count=existing.revision_count if existing else 0,
         )
         state.upsert_chapter_content(content)
@@ -281,7 +309,7 @@ class BookWriterGraph:
         state.revision_target_chapter = chapter_id
         markdown = self.writer.revise(state, feedback)
         content.markdown = markdown
-        content.word_count = len(markdown)
+        content.word_count = count_words(markdown)
         content.revision_count += 1
         state.upsert_chapter_content(content)
         state.clear_chapter_feedback(chapter_id)

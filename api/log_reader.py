@@ -57,12 +57,12 @@ def parse_log_line(line: str) -> LogEntry:
 
 
 def read_logs(
-    log_file: str | Path,
-    *,
-    level: str | None = None,
-    agent: str | None = None,
-    chapter: int | None = None,
-    limit: int = 200,
+        log_file: str | Path,
+        *,
+        level: str | None = None,
+        agent: str | None = None,
+        chapter: int | None = None,
+        limit: int = 200,
 ) -> list[LogEntry]:
     """读取并过滤日志，返回最近 limit 条。"""
     path = Path(log_file)

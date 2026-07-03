@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState, ForeshadowItem, PartPlan
-
 from .base import BaseAgent
 
 _PLANNER_SYSTEM = """你是一位资深的物联网技术书籍策划编辑。
@@ -34,14 +33,65 @@ _PLANNER_SYSTEM = """你是一位资深的物联网技术书籍策划编辑。
 class PlannerAgent(BaseAgent):
     """大纲规划 Agent"""
 
-    def plan(self, state: BookState) -> tuple[list[PartPlan], list[ForeshadowItem]]:
-        """执行规划，返回 (更新后的 parts, 伏笔列表)"""
+    def plan_candidates(self, state: BookState, n: int = 2) -> list[dict[str, Any]]:
+        """生成 n 个候选大纲的原始 JSON（{parts, foreshadows}），供 PlanReviewer 择优。
+
+        全书结构是高杠杆决策，一次成型易平庸；生成多个候选再择优，显著提升地基质量。
+        """
+        user_prompt = self._build_prompt(state)
+        candidates: list[dict[str, Any]] = []
+        self.logger.info("开始生成 %d 个候选大纲...", n)
+        for i in range(n):
+            try:
+                # 递增温度制造方案差异，避免 n 个候选雷同
+                data = self.llm.chat_json(_PLANNER_SYSTEM, user_prompt, temperature=0.8 + 0.1 * i)
+                candidates.append(data)
+            except ValueError:
+                self.logger.error("第 %d 个候选大纲 JSON 解析失败，跳过", i)
+        return candidates
+
+    def build_plan(self, state: BookState, data: dict[str, Any]) -> tuple[list[PartPlan], list[ForeshadowItem]]:
+        """将一个候选大纲 JSON 落地为 (parts, 伏笔列表)。"""
+        raw_parts = _dict_items(data.get("parts"))
+        raw_foreshadows = _dict_items(data.get("foreshadows"))
+
+        parts = []
+        for part_data in raw_parts:
+            raw_chapters = _dict_items(part_data.get("chapters"))
+            orig_part = _match_original_part(state.parts, part_data, raw_chapters)
+            if orig_part is None:
+                continue
+            chapters = []
+            for ch_data in raw_chapters:
+                ch_id = ch_data.get("id")
+                orig_ch = next((c for c in orig_part.chapters if c.id == ch_id), None)
+                if orig_ch is None:
+                    continue
+                orig_ch.outline = str(ch_data.get("outline", ""))
+                orig_ch.key_points = [str(item) for item in _list_items(ch_data.get("key_points"))]
+                chapters.append(orig_ch)
+            parts.append(type(orig_part)(name=orig_part.name, prefix=orig_part.prefix, chapters=chapters))
+
+        foreshadows = [
+            ForeshadowItem(
+                id=str(fs.get("id", "")),
+                description=str(fs.get("description", "")),
+                planted_chapter=_int_value(fs.get("planted_chapter")),
+                planned_resolve_chapter=_int_value(fs.get("planned_resolve_chapter")),
+            )
+            for fs in raw_foreshadows
+        ]
+
+        self.logger.info("大纲落地: %d 篇, %d 个伏笔", len(parts), len(foreshadows))
+        return parts, foreshadows
+
+    def _build_prompt(self, state: BookState) -> str:
         parts_desc: list[str] = []
         for part in state.parts:
             ch_list = [f"  第{ch.id}章 {ch.title}: {ch.summary}" for ch in part.chapters]
             parts_desc.append(f"\n【{part.name}】(编号前缀: {part.prefix})\n" + "\n".join(ch_list))
 
-        user_prompt = f"""请为以下书籍生成详细大纲和伏笔规划。
+        return f"""请为以下书籍生成详细大纲和伏笔规划。
 
 # 书籍信息
 - 书名: {state.book_title}
@@ -80,47 +130,6 @@ class PlannerAgent(BaseAgent):
 }}
 ```"""
 
-        self.logger.info("开始生成大纲和伏笔规划...")
-        try:
-            data = self.llm.chat_json(_PLANNER_SYSTEM, user_prompt, temperature=0.8)
-        except ValueError:
-            self.logger.error("大纲 JSON 解析失败")
-            return state.parts, []
-
-        raw_parts = _dict_items(data.get("parts"))
-        raw_foreshadows = _dict_items(data.get("foreshadows"))
-
-        # 更新 parts
-        parts = []
-        for part_data in raw_parts:
-            raw_chapters = _dict_items(part_data.get("chapters"))
-            orig_part = _match_original_part(state.parts, part_data, raw_chapters)
-            if orig_part is None:
-                continue
-            chapters = []
-            for ch_data in raw_chapters:
-                ch_id = ch_data.get("id")
-                orig_ch = next((c for c in orig_part.chapters if c.id == ch_id), None)
-                if orig_ch is None:
-                    continue
-                orig_ch.outline = str(ch_data.get("outline", ""))
-                orig_ch.key_points = [str(item) for item in _list_items(ch_data.get("key_points"))]
-                chapters.append(orig_ch)
-            parts.append(type(orig_part)(name=orig_part.name, prefix=orig_part.prefix, chapters=chapters))
-
-        foreshadows = [
-            ForeshadowItem(
-                id=str(fs.get("id", "")),
-                description=str(fs.get("description", "")),
-                planted_chapter=_int_value(fs.get("planted_chapter")),
-                planned_resolve_chapter=_int_value(fs.get("planned_resolve_chapter")),
-            )
-            for fs in raw_foreshadows
-        ]
-
-        self.logger.info("大纲生成完成: %d 篇, %d 个伏笔", len(parts), len(foreshadows))
-        return parts, foreshadows
-
 
 def _dict_items(value: object) -> list[dict[str, Any]]:
     if not isinstance(value, list):
@@ -129,7 +138,7 @@ def _dict_items(value: object) -> list[dict[str, Any]]:
 
 
 def _match_original_part(
-    parts: list[PartPlan], part_data: dict[str, Any], raw_chapters: list[dict[str, Any]]
+        parts: list[PartPlan], part_data: dict[str, Any], raw_chapters: list[dict[str, Any]]
 ) -> PartPlan | None:
     part_name = str(part_data.get("name", ""))
     exact = next((part for part in parts if part.name == part_name), None)

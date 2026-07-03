@@ -27,30 +27,41 @@ def node_indexing(state: BookState | dict[str, Any], cfg: AppConfig, rag: Any) -
     logger.info("📚 [索引] 开始索引参考书籍...")
 
     paths = get_config_paths(cfg)
-    books_dir = paths.books_dir
     index_path = str(paths.rag_manifest)
-    count = rag.index_books(str(books_dir), index_path)
+    count = rag.index_books(paths.reference_sources, index_path)
     logger.info("📚 [索引] 完成，共 %d 个分块", count)
     return {"current_phase": "planning"}
 
 
-def node_planning(state: BookState | dict[str, Any], planner: Any) -> dict[str, Any]:
-    """大纲规划"""
-    logger.info("📝 [规划] 生成大纲和伏笔规划...")
+def node_planning(state: BookState | dict[str, Any], planner: Any, plan_reviewer: Any) -> dict[str, Any]:
+    """大纲规划：生成多个候选，由评审择优落地。"""
+    logger.info("📝 [规划] 生成候选大纲和伏笔规划...")
     s = BookState(**state) if isinstance(state, dict) else state
-    parts, foreshadows = planner.plan(s)
+
+    candidates = planner.plan_candidates(s, n=2)
+    if not candidates:
+        logger.warning("Planner 未返回候选，保留配置中的原始篇章，避免生成空书。")
+        return {"current_phase": "plan_review", "plan_needs_revision": False}
+
+    review = plan_reviewer.review(s, candidates)
+    best_index = review.get("best_index", 0)
+    logger.info("📝 [评审] 择优候选 %d，pass=%s，理由: %s", best_index, review.get("pass"), review.get("reason", ""))
+
+    parts, foreshadows = planner.build_plan(s, candidates[best_index])
     if not parts:
-        logger.warning("Planner 未返回可匹配篇章，保留配置中的原始篇章，避免生成空书。")
+        logger.warning("最优候选未匹配到篇章，保留原始篇章。")
         parts = s.parts
+
     return {
         "parts": [p.model_dump() for p in parts],
         "foreshadows": [f.model_dump() for f in foreshadows],
         "current_phase": "plan_review",
+        "plan_needs_revision": not review.get("pass", True),
     }
 
 
 def node_plan_review(state: BookState | dict[str, Any]) -> dict[str, Any]:
-    """大纲审阅（human-in-the-loop 节点）"""
+    """大纲质量门：评审通过进入写作；不通过且未达上限则计数并回退重规划。"""
     s = BookState(**state) if isinstance(state, dict) else state
     logger.info("=" * 60)
     logger.info("📖 大纲预览")
@@ -65,7 +76,13 @@ def node_plan_review(state: BookState | dict[str, Any]) -> dict[str, Any]:
     for fs in s.foreshadows:
         logger.info("  - %s: %s (第%d章→第%d章)", fs.id, fs.description, fs.planted_chapter, fs.planned_resolve_chapter)
     logger.info("=" * 60)
-    return {"current_phase": "writing"}
+
+    if s.plan_needs_revision and s.plan_revision_count < s.max_plan_revision_count:
+        logger.warning("⚠️ [大纲门] 评审未通过，第 %d 次重规划...", s.plan_revision_count + 1)
+        return {"current_phase": "planning", "plan_revision_count": s.plan_revision_count + 1}
+    if s.plan_needs_revision:
+        logger.warning("⚠️ [大纲门] 重规划已达上限 %d，接受当前大纲继续写作。", s.max_plan_revision_count)
+    return {"current_phase": "writing", "plan_needs_revision": False}
 
 
 def node_advance_chapter(state: BookState | dict[str, Any]) -> dict[str, Any]:

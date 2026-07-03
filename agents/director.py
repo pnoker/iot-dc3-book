@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
-
 from .base import BaseAgent
 
 _DIRECTOR_SYSTEM = """你是一位资深的书籍总编辑。
@@ -33,11 +32,18 @@ _DIRECTOR_SYSTEM = """你是一位资深的书籍总编辑。
   "chapter_reviews": [
     {"chapter_id": 1, "score": 8, "highlights": "...", "issues": "..."}
   ],
+  "revise_chapters": [
+    {"chapter_id": 3, "reason": "存在全书级问题，需返修：术语与前文不一致 / 伏笔未回收 / 与他章重复"}
+  ],
   "unresolved_foreshadows": [],
   "suggestions": ["..."],
   "summary": "终审总结"
 }
-```"""
+```
+
+## 判定规则
+- revise_chapters 只列存在「全书级」问题、必须返修的章节；无则留空数组
+- revise_chapters 非空时 pass = false"""
 
 
 class DirectorAgent(BaseAgent):

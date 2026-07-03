@@ -92,47 +92,47 @@ book-writer/
 ### 状态与指标
 
 - `GET /api/status`
-  - 返回 thread 状态、phase、next nodes、当前章节、已写章节数、总章节数、RAG 健康状态。
+    - 返回 thread 状态、phase、next nodes、当前章节、已写章节数、总章节数、RAG 健康状态。
 - `GET /api/metrics`
-  - 从日志和 checkpoint 聚合耗时指标。
-  - 返回每章耗时、每 Agent 平均耗时、修订次数、错误次数。
+    - 从日志和 checkpoint 聚合耗时指标。
+    - 返回每章耗时、每 Agent 平均耗时、修订次数、错误次数。
 - `GET /api/rag/status`
-  - 返回 ChromaDB chunk 数、manifest 状态、books 目录状态、索引是否健康。
+    - 返回 ChromaDB chunk 数、manifest 状态、books 目录状态、索引是否健康。
 
 ### 章节与输出
 
 - `GET /api/chapters`
-  - 返回全书章节树、每章状态、是否已写、字数、反馈摘要。
+    - 返回全书章节树、每章状态、是否已写、字数、反馈摘要。
 - `GET /api/chapters/{chapter_id}`
-  - 返回章节 Markdown、标题、状态、事实反馈、风格反馈、审校反馈。
+    - 返回章节 Markdown、标题、状态、事实反馈、风格反馈、审校反馈。
 - `GET /api/output/files`
-  - 返回 `output/` 文件树。
+    - 返回 `output/` 文件树。
 - `GET /api/output/file?path=...`
-  - 返回指定输出 Markdown 内容，路径必须限制在 `output/` 内。
+    - 返回指定输出 Markdown 内容，路径必须限制在 `output/` 内。
 
 ### 日志
 
 - `GET /api/logs?level=&agent=&chapter=&limit=`
-  - 返回过滤后的日志片段。
+    - 返回过滤后的日志片段。
 - `WS /api/events`
-  - 推送状态变化、日志新增、章节更新、指标刷新。
+    - 推送状态变化、日志新增、章节更新、指标刷新。
 
 ### 操作
 
 - `POST /api/run`
-  - 启动或继续当前 thread。
+    - 启动或继续当前 thread。
 - `POST /api/resume`
-  - 从 checkpoint 继续。
+    - 从 checkpoint 继续。
 - `POST /api/regenerate-output`
-  - 根据 checkpoint 重新生成 `output/`。
+    - 根据 checkpoint 重新生成 `output/`。
 - `POST /api/chapters/{chapter_id}/patch`
-  - 用 Markdown 覆盖指定章节正文。
+    - 用 Markdown 覆盖指定章节正文。
 - `POST /api/chapters/{chapter_id}/revise`
-  - 按用户反馈触发局部 LLM 修订。
+    - 按用户反馈触发局部 LLM 修订。
 - `POST /api/export-state`
-  - 导出 checkpoint 状态。
+    - 导出 checkpoint 状态。
 - `POST /api/reset`
-  - 危险操作，必须要求确认字段，例如 `{ "confirm": "RESET book-1" }`。
+    - 危险操作，必须要求确认字段，例如 `{ "confirm": "RESET book-1" }`。
 
 ## 前端页面设计
 
