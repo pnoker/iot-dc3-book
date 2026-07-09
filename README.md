@@ -134,7 +134,7 @@ uv run python main.py write start --fresh
 
 并发写作完成后仍会进入全书终审。伏笔、术语统一、重复内容、章节递进和连续性问题不会在并发阶段强行判断，而是在终审中统一检查；终审发现问题后按章节返修，再重新进入章节质量门。
 
-质量门不会无限循环。默认最多自动修订 `3` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作；如果你希望对某次全量出稿做更重的自动打磨，可以临时把 `max_revision_rounds` 调到 `10`，但不建议作为日常默认值。
+质量门不会无限循环。默认最多自动修订 `5` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作；不建议继续调大，否则会显著拖慢写作并放大重复返修成本。
 
 - 小节未通过会标记为 `review_failed`。
 - 章节未通过会标记为 `quality_failed`。

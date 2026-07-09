@@ -71,7 +71,7 @@ class QualitySettings(BaseModel):
     forbid_placeholder_images: bool = False
     forbid_unsourced_statistics: bool = False
     forbid_unresolved_final_review: bool = False
-    max_revision_rounds: int = 3
+    max_revision_rounds: int = 5
     max_final_revision_rounds: int = 1
     continue_on_failure: bool = True
 

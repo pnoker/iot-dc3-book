@@ -196,7 +196,7 @@ class QualityConfig(StrictConfigModel):
     forbid_placeholder_images: bool = True
     forbid_unsourced_statistics: bool = True
     forbid_unresolved_final_review: bool = True
-    max_revision_rounds: int = 3
+    max_revision_rounds: int = 5
     max_final_revision_rounds: int = 1
     continue_on_failure: bool = True
 
