@@ -12,6 +12,7 @@ import re
 from typing import TYPE_CHECKING, Any
 
 from core.state import BookState, ReferenceChunk
+
 from .base import BaseAgent
 
 if TYPE_CHECKING:
@@ -23,11 +24,12 @@ _FACT_CHECKER_SYSTEM = """你是一位严格的技术事实核查编辑。
 你的任务是依据章节正文和「独立检索证据」，检查技术事实、年份、标准、产品能力、架构描述是否有依据。
 
 ## 核查原则
-1. 优先检查容易误导读者的硬事实：协议能力、标准名称、版本、性能结论、工程实践结论
+1. 优先检查容易误导读者的硬事实：协议能力、标准名称、版本、年份分界、时延/吞吐/成本/市场金额、性能结论、工程实践结论
 2. 独立检索证据是核查依据，不是作者的参考资料；对与证据冲突的断言必须提出修订
 3. 对没有证据支撑、也非常识性技术知识的重要断言提出修订建议
 4. 不要求逐句引用，但关键事实必须能被证据或常识性技术知识支撑
 5. 不负责文风和格式，这些交给 Style Guard
+6. 对没有证据的精确数字，不要建议“补一个来源”；应建议删除数字、改为定性表达，或标注为假设/示意场景
 
 ## 输出格式
 ```json
@@ -84,15 +86,9 @@ class FactCheckerAgent(BaseAgent):
         self.logger.info("事实核查第%d章（独立取证 %d 段）...", chapter.id, len(evidence))
         try:
             return self.llm.chat_json(_FACT_CHECKER_SYSTEM, user_prompt, temperature=0.2)
-        except ValueError:
+        except ValueError as exc:
             self.logger.error("事实核查报告解析失败")
-            return {
-                "pass": False,
-                "score": 5,
-                "claims": [],
-                "issues": [{"severity": "major", "description": "事实核查报告解析失败", "suggestion": "重新核查"}],
-                "summary": "事实核查解析失败",
-            }
+            raise RuntimeError("事实核查报告解析失败，已阻断章节质量门。") from exc
 
     def _gather_evidence(self, title: str, summary: str, markdown: str) -> list[ReferenceChunk]:
         """从作者实际写出的结构（标题 + 小节标题 + 概述）出发独立检索证据并去重。"""
@@ -103,12 +99,12 @@ class FactCheckerAgent(BaseAgent):
         for query in queries:
             if not query.strip():
                 continue
-            for chunk in self.rag.retrieve(query, top_k=3, categories=self.query_categories):
+            for chunk in self.rag.retrieve(query, top_k=4, categories=self.query_categories):
                 if chunk.text not in seen:
                     seen.add(chunk.text)
                     evidence.append(chunk)
         evidence.sort(key=lambda c: c.relevance_score, reverse=True)
-        return evidence[:8]
+        return evidence[:12]
 
     @staticmethod
     def _build_evidence_prompt(evidence: list[ReferenceChunk]) -> str:

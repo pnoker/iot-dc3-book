@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
+
 from .base import BaseAgent
 
 _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
@@ -18,7 +19,7 @@ _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
 3. **伏笔完整性**: 伏笔是否已自然植入/回收
 4. **前后一致性**: 术语使用、观点立场是否与前文一致
 5. **内容充实度**: 是否达到目标字数，是否有实质性内容
-6. **结构完整性**: 是否包含引言、正文、小结、练习等标准结构
+6. **结构完整性**: 是否具备自然开篇、主体层次、图表/案例支撑和章节收束；不要要求每章固定引言或练习题
 
 ## 伏笔核验
 对「本章伏笔任务清单」中的每一条，逐条判定作者是否已在正文中真正完成：
@@ -98,6 +99,6 @@ class EditorAgent(BaseAgent):
         self.logger.info("审校第%d章...", chapter.id)
         try:
             return self.llm.chat_json(_EDITOR_SYSTEM, user_prompt, temperature=0.3)
-        except ValueError:
+        except ValueError as exc:
             self.logger.error("审校报告解析失败")
-            return {"pass": False, "overall_score": 5, "summary": "审校解析失败", "issues": []}
+            raise RuntimeError("审校报告解析失败，已阻断章节质量门。") from exc

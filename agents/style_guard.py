@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
+
 from .base import BaseAgent
 
 _STYLE_GUARD_SYSTEM = """你是一位书籍排版与风格规范专家。
@@ -19,7 +20,7 @@ _STYLE_GUARD_SYSTEM = """你是一位书籍排版与风格规范专家。
 4. 段落结构: 段落是否过长或过短
 5. 图表编号: 图表是否按规范编号
 6. 代码块: 是否正确标注语言
-7. 章节结构: 是否包含引言、正文、小结、练习
+7. 章节结构: 是否自然、层次清晰、收束完整；不要因为缺少固定“引言”或“思考与练习”而判失败
 
 ## 输出格式
 ```json
@@ -74,11 +75,6 @@ class StyleGuardAgent(BaseAgent):
         self.logger.info("校验第%d章风格...", chapter.id)
         try:
             return self.llm.chat_json(_STYLE_GUARD_SYSTEM, user_prompt, temperature=0.2)
-        except ValueError:
+        except ValueError as exc:
             self.logger.error("风格校验报告解析失败")
-            return {
-                "pass": False,
-                "score": 5,
-                "issues": [{"type": "other", "description": "报告解析失败"}],
-                "statistics": {},
-            }
+            raise RuntimeError("风格校验报告解析失败，已阻断章节质量门。") from exc

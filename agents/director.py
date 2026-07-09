@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
+
 from .base import BaseAgent
 
 _DIRECTOR_SYSTEM = """你是一位资深的书籍总编辑。
@@ -79,6 +80,6 @@ class DirectorAgent(BaseAgent):
         self.logger.info("全书终审中...")
         try:
             return self.llm.chat_json(_DIRECTOR_SYSTEM, user_prompt, temperature=0.3)
-        except ValueError:
+        except ValueError as exc:
             self.logger.error("终审报告解析失败")
-            return {"pass": False, "overall_score": 5, "summary": "终审报告解析失败"}
+            raise RuntimeError("终审报告解析失败，已阻断输出流程。") from exc
