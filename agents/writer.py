@@ -21,6 +21,7 @@ _WRITER_SYSTEM = """你是一位资深的物联网技术书籍作者。
 7. 证据优先：统计数字、年份分界、版本号、标准状态、成本、性能、市场规模、项目效果、企业案例等硬事实，必须能在参考资料或研究资料包中找到明确依据
 8. 没有证据的硬事实不要写；需要讲解时改为定性分析、作者归纳、假设场景或方法论步骤，并明确标注“假设场景/示意”
 9. 扩充篇幅时优先增加原理解释、工程权衡、检查清单、流程步骤、风险分析、对比表和实践清单，不得用虚构数字、虚构真实项目或伪来源凑字数
+10. 每个三级小节必须至少包含一个完整 `book-figure` 规格块，用于后续统一 HTML/SVG 绘制
 
 ## 输出要求
 - 输出完整的 Markdown 格式章节正文
@@ -165,6 +166,52 @@ class WriterAgent(BaseAgent):
         )
         return self._write_section(state, blueprint_section, blueprint, dossier, base_prompt, previous_brief)
 
+    def revise_planned_section(
+            self,
+            state: BookState,
+            section: SectionPlan,
+            markdown: str,
+            feedback: str,
+            previous_brief: str = "",
+    ) -> str:
+        """按质量反馈修订单个三级小节。"""
+        chapter = state.get_current_chapter()
+        if chapter is None:
+            return markdown
+        base_prompt = self._build_section_base_prompt(state)
+        user_prompt = f"""请只修订当前三级小节，不要输出整章。
+
+# 全章写作上下文
+{base_prompt}
+
+{_EVIDENCE_DISCIPLINE}
+
+# 当前小节任务
+- 小节编号与标题: {section.heading}
+- 目标字数: {section.target_words}
+- 小节目的: {section.purpose}
+- 要点: {"；".join(section.key_points) if section.key_points else "按蓝图展开"}
+- 需要证据: {"；".join(section.evidence_needed) if section.evidence_needed else "无特殊证据要求"}
+- 必备元素: {"；".join(section.required_elements) if section.required_elements else "无特殊元素要求"}
+
+# 小节级配图约束
+- 不要用 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图充当占位图；必须在本小节保留或补充至少一个完整 `book-figure` 规格块。
+- 即使必备元素中没有显式写 `book-figure`，也要根据本小节内容选择合适的 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix 或 timeline 图表类型。
+- `book-figure` 规格块必须清晰描述图表类型、专业图例、元素、关系、图注和 HTML/SVG 渲染说明。
+
+# 前一个小节摘要
+{previous_brief or "这是本章第一个小节。"}
+
+# 质量反馈
+{feedback}
+
+# 当前小节正文
+{markdown}
+
+请输出修订后的该小节 Markdown。必须保留合适的 ## 或 ### 标题，不要输出整章标题。"""
+        self.logger.info("修订第%d章小节: %s", chapter.id, section.heading)
+        return self.llm.chat(_WRITER_SYSTEM, user_prompt, temperature=0.35, max_tokens=8192)
+
     def _build_section_base_prompt(self, state: BookState) -> str:
         chapter = state.get_current_chapter()
         part = state.get_current_part()
@@ -243,7 +290,8 @@ class WriterAgent(BaseAgent):
 
 # 小节级出版约束
 - 如果使用虚构案例、设想场景、未来年份或工程数字，必须明确标注“假设场景/示意”，不得伪装成真实项目。
-- 不要用代码块画“图1-x”占位图；需要图表时，输出可出版的 Markdown 表格，或写成“图表建议”并说明应绘制的真实内容。
+- 不要用 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图充当占位图；必须在本小节输出至少一个完整 `book-figure` 规格块，清晰描述图表类型、专业图例、元素、关系、图注和 HTML/SVG 渲染说明。
+- 即使必备元素中没有显式写 `book-figure`，也要根据本小节内容选择合适的 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix 或 timeline 图表类型。
 - 不要为了衔接后文而重复本章其他小节会展开的主体内容；本小节只完成当前编号的任务。
 
 # 前一个小节摘要

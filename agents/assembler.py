@@ -31,6 +31,8 @@ class ChapterAssemblerAgent(BaseAgent):
 - 统一标题层级与编号
 - 补齐小节之间的自然衔接
 - 检查章节收束是否自然，可使用本章小结、工程检查表、实践清单或延伸阅读；不要补教科书式练习题
+- 原样保留并规范化 `book-figure` 图表规格块；不要把它们转换成 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图
+- 若章节已有多个 `book-figure`，统一图号、图名、图例和图注表达，确保后续 HTML/SVG 统一绘制
 - 不要添加没有来源的统计数据
 
 # 当前正文

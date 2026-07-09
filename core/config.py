@@ -159,8 +159,10 @@ def config_to_book_state(cfg: ConfigDict | AppConfig) -> BookState:
         chapter_structure=style_cfg.chapter_structure,
         target_words_per_chapter=style_cfg.target_words_per_chapter,
         format_rules=style_cfg.format,
+        illustrations=style_cfg.illustrations.model_dump(mode="python"),
     )
 
+    quality = QualitySettings(**app_config.quality.model_dump())
     state = BookState(
         book_title=app_config.book.title,
         book_subtitle=app_config.book.subtitle,
@@ -168,7 +170,9 @@ def config_to_book_state(cfg: ConfigDict | AppConfig) -> BookState:
         parts=parts,
         style=style,
         writing=WritingSettings(**app_config.writing.model_dump()),
-        quality=QualitySettings(**app_config.quality.model_dump()),
+        quality=quality,
+        max_revision_count=quality.max_revision_rounds,
+        max_final_revision_round=quality.max_final_revision_rounds,
     )
     logger.info("BookState 初始化: %s, %d 章", state.book_title, sum(len(p.chapters) for p in parts))
     return state

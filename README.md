@@ -48,13 +48,13 @@ uv run python main.py outline approve --source ./drafts/outline.json
 # 6. 初始化小节级写作 checkpoint
 uv run python main.py write start
 
-# 7. 每次只写一个或少量三级小节，便于审稿和中断恢复
-uv run python main.py write resume --max-sections 1
+# 7. 从当前小节继续写作，并自动进入小节审校与章节质量门
+uv run python main.py write resume
 ```
 
 ### 日常续写
 
-写作阶段的恢复单位是三级小节，例如 `1.1.1`。程序中断后，不需要重新生成大纲，也不需要重建知识库。
+写作阶段支持按自然目录目标续写。程序中断后，不需要重新生成大纲，也不需要重建知识库。
 
 ```bash
 # 查看当前写作断点
@@ -63,11 +63,20 @@ uv run python main.py write status
 # 查看小节级目录与完成状态
 uv run python main.py write contents
 
-# 从当前小节继续写 1 个小节
-uv run python main.py write resume --max-sections 1
+# 从当前断点继续写 1 个三级小节
+uv run python main.py write resume
 
-# 一次写 3 个小节；建议确认质量稳定后再调大
-uv run python main.py write resume --max-sections 3
+# 写完整个第 1 章
+uv run python main.py write resume 1
+
+# 写完 1.1 这个二级节下的所有三级小节
+uv run python main.py write resume 1.1
+
+# 只写指定三级小节
+uv run python main.py write resume 1.1.1
+
+# 全量写完整本书；完成后会触发全书终审
+uv run python main.py write resume all
 
 # 查看某个已写小节
 uv run python main.py write section 1.1.1
@@ -110,6 +119,51 @@ uv run python main.py write start --fresh
 ```
 
 注意：`output/` 是导出结果，不是源数据；当前真实写作进度以 `.data/write/<thread-id>.json` 和 `write status` 为准。
+
+### 写作质量闭环
+
+`write resume` 不是单纯生成文本。每个目标范围都会按以下顺序执行并落盘：
+
+1. 三级小节写作：生成 `.data/manuscript/chapter-XX/<section-id>.md`。
+2. 小节基础审校：检查空稿、明显过短、标题缺失和禁用词；不通过会自动修订。
+3. 章节合稿：当一章所有三级小节完成后，合成 `.data/manuscript/chapter-XX/chapter.md`。
+4. 章节质量门：依次执行出版确定性规则、事实核查、引用守门、风格校验和编辑审校；不通过会自动返修并重审。
+5. 全书终审：`write resume all` 写完整本书后触发总编辑终审，只有终审通过才设置 `publication_approved=true`。
+
+质量门不会无限循环。默认最多自动修订 `10` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作：
+
+- 小节未通过会标记为 `review_failed`。
+- 章节未通过会标记为 `quality_failed`。
+- 全书终审未通过会保留 `final_report`，且 `publication_approved=false`。
+
+运行 `uv run python main.py write status` 可以查看 `review_failed_sections`、`quality_failed_chapters` 和 `final_review.feedback` 的失败原因摘要；运行 `uv run python main.py write contents` 可以快速定位目录中的失败小节或章节。
+
+`uv run python main.py write section 1`、`write section 1.1` 和 `write section 1.1.1` 会在输出的 Markdown 前追加 `write-status` 注释块，显示章节/小节状态、修订轮次和失败摘要，便于直接在正文视图中定位未通过原因。
+
+`write patch-section` 回写人工修改后也会重新进入小节审校与章节质量门，避免人工补丁绕过出版级检查。若希望质量门失败时直接中断，可将 `config/quality.yaml` 的 `continue_on_failure` 改为 `false`。
+
+### 配图规格标记
+
+本项目不在写作阶段生成图片文件。每个三级小节至少需要一个完整 `book-figure` 规格块，后续由 HTML/SVG 统一绘制。需要架构图、时序图、流程图、数据流图、金字塔图、分层图、拓扑图、生命周期图、矩阵图或时间线时，正文中输出 `book-figure` 规格块。
+
+```book-figure
+id: "fig-02-01"
+type: "architecture"
+title: "图2-1 AIoT 平台分层架构"
+purpose: "说明设备接入、平台服务、智能编排与业务应用之间的边界和主链路。"
+layout: "自下而上分层架构，设备层→接入层→平台层→智能层→应用层。"
+elements:
+  - "设备层：传感器、网关、PLC，使用青绿色节点。"
+  - "平台层：认证、设备管理、数据中心，使用蓝色服务块。"
+relationships:
+  - "设备层通过 MQTT/Modbus/OPC UA 接入平台层，实线箭头。"
+legend:
+  - "蓝色=核心平台服务；青绿色=设备与边缘；橙色=AI 智能能力。"
+caption: "图2-1 展示 AIoT 平台从设备接入到智能编排的主要层次和职责边界。"
+render_notes: "HTML/SVG 渲染，浅色背景，圆角矩形，统一 12px 间距，箭头带文字标签。"
+```
+
+统一配色、图例、允许的图表类型和必填字段配置在 `config/style.yaml` 的 `illustrations` 节点。质量门会把完整的 `book-figure` 规格块计为图表，并阻止缺少 `purpose/layout/elements/relationships/legend/caption/render_notes` 等关键字段的不完整规格块。每节最少图表数由 `config/quality.yaml` 的 `min_figures_per_section` 控制，默认值为 `1`。
 
 ## 代码结构
 
@@ -183,7 +237,7 @@ cp .env.example .env
 默认日志会持久化到 `logs/book-writer.log`，单文件 `10MB`，保留 `10` 个历史分片。可按需调整：
 
 ```bash
-uv run python main.py --log-file logs/run.log --log-max-bytes 5242880 --log-backup-count 5 write resume --max-sections 1
+uv run python main.py --log-file logs/run.log --log-max-bytes 5242880 --log-backup-count 5 write resume 1.1
 ```
 
 ## 验证

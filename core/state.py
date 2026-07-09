@@ -8,8 +8,17 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-ChapterStatus = Literal["pending", "researched", "written", "fact_checked", "styled", "reviewed", "approved"]
-SectionStatus = Literal["pending", "written", "assembled", "reviewed"]
+ChapterStatus = Literal[
+    "pending",
+    "researched",
+    "written",
+    "fact_checked",
+    "styled",
+    "reviewed",
+    "approved",
+    "quality_failed",
+]
+SectionStatus = Literal["pending", "written", "assembled", "reviewed", "review_failed"]
 
 
 class StyleConfig(BaseModel):
@@ -22,6 +31,7 @@ class StyleConfig(BaseModel):
     chapter_structure: list[str] = Field(default_factory=list)
     target_words_per_chapter: str = "4000-8000字"
     format_rules: dict[str, str] = Field(default_factory=dict)
+    illustrations: dict[str, Any] = Field(default_factory=dict)
 
 
 class WritingSettings(BaseModel):
@@ -54,10 +64,14 @@ class QualitySettings(BaseModel):
     require_exercises: bool = False
     min_exercise_count: int = 0
     min_figures_or_tables: int = 0
+    min_figures_per_section: int = 1
     require_existing_local_images: bool = False
     forbid_placeholder_images: bool = False
     forbid_unsourced_statistics: bool = False
     forbid_unresolved_final_review: bool = False
+    max_revision_rounds: int = 10
+    max_final_revision_rounds: int = 1
+    continue_on_failure: bool = True
 
 
 class BlueprintSection(BaseModel):

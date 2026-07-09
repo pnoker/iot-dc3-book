@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from core.quality_rules import ensure_book_releasable, evaluate_chapter_quality
-from core.state import BookState, ChapterContent, ChapterPlan, PartPlan, QualitySettings
+from core.state import BookState, ChapterContent, ChapterPlan, PartPlan, QualitySettings, SectionContent, SectionPlan
 from core.state_validation import is_complete_book_state, require_complete_book_state
 
 
@@ -114,6 +114,139 @@ def test_publication_quality_accepts_structured_chapter(tmp_path) -> None:
     assert report.pass_ is True
 
 
+def test_publication_quality_counts_book_figure_spec_as_figure() -> None:
+    markdown = """# 第1章 概述
+
+## 1.1 工程问题
+这是一个足够长的段落，用来解释工程背景、技术约束、系统边界、风险来源、实践方法和读者需要掌握的核心能力。
+
+```book-figure
+id: "fig-01-01"
+type: "architecture"
+title: "图1-1 平台分层架构"
+purpose: "说明平台层次与职责边界。"
+layout: "自下而上分层。"
+elements:
+  - "设备层"
+relationships:
+  - "设备层连接平台层"
+legend:
+  - "蓝色=核心平台服务"
+caption: "图1-1 展示平台分层架构。"
+render_notes: "HTML/SVG 统一绘制。"
+```
+
+## 本章小结
+本章总结核心概念、工程判断和实践路径，帮助读者建立稳定的知识结构。
+"""
+    content = ChapterContent(chapter_id=1, title="概述", markdown=markdown)
+    state = _state(content)
+    state.quality.min_words_per_chapter = 20
+    state.quality.min_heading_count = 2
+    state.quality.require_exercises = False
+    state.quality.require_existing_local_images = True
+
+    report = evaluate_chapter_quality(state, content)
+
+    assert report.pass_ is True
+    assert report.statistics["figure_or_table_count"] == 1
+
+
+def test_publication_quality_rejects_incomplete_book_figure_spec() -> None:
+    markdown = """# 第1章 概述
+
+## 1.1 工程问题
+这是一个足够长的段落，用来解释工程背景、技术约束、系统边界、风险来源、实践方法和读者需要掌握的核心能力。
+
+```book-figure
+id: "fig-01-01"
+type: "flowchart"
+title: "图1-1 数据处理流程"
+caption: "图1-1 展示处理流程。"
+```
+
+## 本章小结
+本章总结核心概念、工程判断和实践路径，帮助读者建立稳定的知识结构。
+"""
+    content = ChapterContent(chapter_id=1, title="概述", markdown=markdown)
+    state = _state(content)
+    state.quality.min_words_per_chapter = 20
+    state.quality.min_heading_count = 2
+
+    report = evaluate_chapter_quality(state, content)
+
+    codes = {issue.code for issue in report.issues}
+    assert "asset.invalid_book_figure" in codes
+
+
+def test_publication_quality_requires_book_figure_per_section() -> None:
+    state = BookState(
+        parts=[
+            PartPlan(
+                name="基础篇",
+                prefix="一",
+                chapters=[
+                    ChapterPlan(
+                        id=1,
+                        title="概述",
+                        sections=[
+                            SectionPlan(id="1.1.1", chapter_id=1, title="小节一", heading="1.1.1 小节一"),
+                            SectionPlan(id="1.1.2", chapter_id=1, title="小节二", heading="1.1.2 小节二"),
+                        ],
+                    )
+                ],
+            )
+        ],
+        quality=QualitySettings(
+            enabled=True,
+            min_words_per_chapter=1,
+            min_heading_count=1,
+            min_figures_or_tables=0,
+            min_figures_per_section=1,
+            require_summary=False,
+            require_exercises=False,
+            require_existing_local_images=False,
+            forbid_placeholder_images=False,
+            forbid_unsourced_statistics=False,
+        ),
+        section_contents=[
+            SectionContent(
+                section_id="1.1.1",
+                chapter_id=1,
+                title="小节一",
+                markdown="""### 1.1.1 小节一
+
+正文。
+
+```book-figure
+id: "fig-01-01"
+type: "flowchart"
+title: "图1-1 流程"
+purpose: "说明流程。"
+layout: "从左到右。"
+elements:
+  - "步骤A"
+relationships:
+  - "步骤A到步骤B"
+legend:
+  - "蓝色=步骤"
+caption: "图1-1 展示流程。"
+render_notes: "HTML/SVG 统一绘制。"
+```
+""",
+            ),
+            SectionContent(section_id="1.1.2", chapter_id=1, title="小节二", markdown="### 1.1.2 小节二\n\n正文。"),
+        ],
+    )
+    content = ChapterContent(chapter_id=1, title="概述", markdown="# 第1章 概述\n\n正文。")
+
+    report = evaluate_chapter_quality(state, content)
+
+    codes = {issue.code for issue in report.issues}
+    assert "asset.section_missing_book_figure" in codes
+    assert "1.1.2 小节二" in report.to_feedback()
+
+
 def test_release_state_requires_publication_approval() -> None:
     state = _state(ChapterContent(chapter_id=1, title="概述", markdown="# 正文"))
     state.current_phase = "completed"
@@ -132,4 +265,3 @@ def test_release_rechecks_chapter_quality_even_when_approved() -> None:
 
     with pytest.raises(RuntimeError, match="质量复检失败"):
         ensure_book_releasable(state)
-

@@ -15,12 +15,13 @@ _ARCHITECT_SYSTEM = """你是一位出版级技术图书章节架构师。
 ## 设计要求
 1. 明确读者读完本章能解决什么工程问题
 2. 为每个三级写作单元分配目标字数，合计接近章节目标字数
-3. 每章至少规划一个工程案例、一个图或表、必要的代码/配置示例；真实案例必须依赖资料来源，无法确认时规划为“假设场景/示意案例”
+3. 每章至少规划一个工程案例和必要的代码/配置示例；真实案例必须依赖资料来源，无法确认时规划为“假设场景/示意案例”
 4. 标明每节需要的事实证据或资料来源类型，避免无依据断言
 5. 不要把每章设计成教科书模板；避免固定“引言/思考与练习”，按章节内容选择自然开篇、工程检查表、实践清单或延伸阅读
-5. sections 必须是扁平数组，每个元素都是三级写作单元，编号形如 1.1.1、1.1.2；不要只生成 1.1 或 1.2
-6. 每个三级写作单元应该足够小，便于断点恢复、人工审稿和局部重写；每章通常 10-18 个三级写作单元
-7. 输出严格 JSON，不要输出 Markdown 正文
+6. 每个三级写作单元都必须规划至少一个 `book-figure` 配图规格块，图表类型必须明确，例如 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix、timeline
+7. sections 必须是扁平数组，每个元素都是三级写作单元，编号形如 1.1.1、1.1.2；不要只生成 1.1 或 1.2
+8. 每个三级写作单元应该足够小，便于断点恢复、人工审稿和局部重写；每章通常 10-18 个三级写作单元
+9. 输出严格 JSON，不要输出 Markdown 正文
 
 ## 输出格式
 ```json
@@ -40,7 +41,7 @@ _ARCHITECT_SYSTEM = """你是一位出版级技术图书章节架构师。
       "purpose": "小节目的",
       "key_points": ["要点"],
       "evidence_needed": ["需要查证的资料"],
-      "required_elements": ["案例/图表/代码/风险分析"]
+    "required_elements": ["book-figure: 图表类型 + 图名 + 主要元素 + 关系 + 图例", "案例/代码/风险分析"]
     }
   ],
   "case_studies": ["案例"],
@@ -63,6 +64,7 @@ class ChapterArchitectAgent(BaseAgent):
             return None
 
         target_words = state.writing.target_for_chapter(chapter.id)
+        illustration_prompt = self._build_illustration_prompt(state.style)
         user_prompt = f"""请为以下章节设计出版级写作蓝图。
 
 # 书籍信息
@@ -83,11 +85,15 @@ class ChapterArchitectAgent(BaseAgent):
 
 # 出版要求
 - 面向工程师和高校师生
-- 必须包含工程案例、图表或表格、实践建议；无来源案例只能规划为“假设场景/示意案例”
+- 必须包含工程案例、实践建议；无来源案例只能规划为“假设场景/示意案例”
+- 每个三级小节都必须配置至少一张图：在 figures 中写清图表编号建议、图表类型、图表目的、主要元素、关系、图例和应放入哪个三级小节；在每个 section.required_elements 中写入 `book-figure: 图表类型 + 图名 + 必备元素`
+- 优先使用 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix、timeline 等专业图表类型；不要规划泛泛的“配图”
 - 不强制“引言”和“思考与练习”，章节收束可规划为本章小结、工程检查表、实践清单或延伸阅读
 - 对统计数据、版本号、平台能力等硬事实标明需要证据
 - sections 必须生成到三级目录，section_id 必须以 {chapter.id}. 开头，例如 {chapter.id}.1.1、{chapter.id}.1.2、{chapter.id}.2.1
 - 不要生成二级目录作为写作单元；二级目录只能通过 parent_title 表达
+
+{illustration_prompt}
 
 请输出严格 JSON。"""
 

@@ -16,6 +16,80 @@ format:
   table: "表{chapter_id}-{seq} {caption}"
   code_block: "使用 fenced code block，标注语言"
 
+illustrations:
+  marker: "book-figure"
+  renderer: "html-svg"
+  theme: "technical-publication-light"
+  palette:
+    canvas: "#F8FAFC"
+    panel: "#FFFFFF"
+    primary: "#2563EB"
+    secondary: "#0F766E"
+    accent: "#F97316"
+    neutral: "#475569"
+    line: "#94A3B8"
+    text: "#0F172A"
+    success: "#16A34A"
+    warning: "#D97706"
+    danger: "#DC2626"
+  allowed_types:
+    - "architecture"
+    - "sequence"
+    - "flowchart"
+    - "dataflow"
+    - "pyramid"
+    - "layered"
+    - "topology"
+    - "lifecycle"
+    - "matrix"
+    - "timeline"
+  required_fields:
+    - "id"
+    - "type"
+    - "title"
+    - "purpose"
+    - "layout"
+    - "elements"
+    - "relationships"
+    - "legend"
+    - "caption"
+    - "render_notes"
+  legend:
+    - "蓝色：核心平台、中心服务、主链路组件"
+    - "青绿色：边缘节点、设备接入、数据采集组件"
+    - "橙色：AI Agent、智能决策、自动化编排能力"
+    - "灰色：外部系统、约束、边界和非核心依赖"
+    - "绿色：成功路径、已验证能力、稳定状态"
+    - "黄色：风险、告警、人工确认或降级路径"
+    - "红色：故障、阻断、危险操作或安全边界"
+    - "实线箭头：同步调用或强依赖；虚线箭头：异步消息、事件或可选依赖"
+  constraints:
+    - "正文不得直接插入 Markdown 图片占位，不生成本地图片路径。"
+    - "需要配图时必须输出 fenced code block：```book-figure。"
+    - "图表只描述设计规格，不绘制 Mermaid、SVG、ASCII 图或 HTML。"
+    - "每个图表必须有专业图名、图注、图例、元素清单、关系清单和渲染说明。"
+    - "同一章图表编号使用 图{chapter_id}-{seq}，全书配色和视觉语义保持一致。"
+    - "架构图强调层次、边界和职责；时序图强调参与者、消息和时间顺序；流程图强调决策分支；金字塔图强调层级与递进关系。"
+  example: |
+    ```book-figure
+    id: "fig-02-01"
+    type: "architecture"
+    title: "图2-1 AIoT 平台分层架构"
+    purpose: "说明设备接入、平台服务、智能编排与业务应用之间的边界和主链路。"
+    layout: "自下而上分层架构，设备层→接入层→平台层→智能层→应用层。"
+    elements:
+      - "设备层：传感器、网关、PLC，使用青绿色节点。"
+      - "平台层：认证、设备管理、数据中心，使用蓝色服务块。"
+      - "智能层：Agent 编排、知识库、规则/模型推理，使用橙色服务块。"
+    relationships:
+      - "设备层通过 MQTT/Modbus/OPC UA 接入平台层，实线箭头。"
+      - "平台层向智能层提供上下文和历史数据，虚线箭头。"
+    legend:
+      - "蓝色=核心平台服务；青绿色=设备与边缘；橙色=AI 智能能力。"
+    caption: "图2-1 展示 AIoT 平台从设备接入到智能编排的主要层次和职责边界。"
+    render_notes: "HTML/SVG 渲染，浅色背景，圆角矩形，统一 12px 间距，箭头带文字标签。"
+    ```
+
 forbidden_words:
   - "笔者认为"
   - "不言而喻"

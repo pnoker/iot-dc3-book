@@ -8,7 +8,14 @@ from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel
 
-from core.markdown_assets import count_figures_or_tables, count_headings, find_placeholder_images, missing_local_images
+from core.markdown_assets import (
+    count_figures_or_tables,
+    count_headings,
+    extract_book_figures,
+    find_invalid_book_figures,
+    find_placeholder_images,
+    missing_local_images,
+)
 from core.state import BookState, ChapterContent, QualitySettings
 from core.wordcount import count_words
 
@@ -77,15 +84,22 @@ def evaluate_chapter_quality(
         return PublicationQualityReport(pass_=True, issues=[], statistics={"enabled": False})
 
     markdown = content.markdown
+    illustration_cfg = state.style.illustrations or {}
+    figure_marker = str(illustration_cfg.get("marker", "book-figure"))
+    required_figure_fields = illustration_cfg.get("required_fields")
+    if not isinstance(required_figure_fields, list):
+        required_figure_fields = None
     actual_words = count_words(markdown)
     target_words = max(settings.target_words_per_chapter, state.writing.target_for_chapter(content.chapter_id))
     max_words = int(target_words * settings.max_words_over_target_ratio) if settings.max_words_over_target_ratio else 0
     heading_count = count_headings(markdown)
-    figure_or_table_count = count_figures_or_tables(markdown)
+    figure_or_table_count = count_figures_or_tables(markdown, marker=figure_marker)
     issues: list[PublicationIssue] = []
 
     _check_word_count(settings, actual_words, target_words, max_words, issues)
     _check_structure(settings, markdown, heading_count, figure_or_table_count, issues)
+    _check_section_figures(state, content, figure_marker, issues)
+    _check_book_figure_specs(markdown, figure_marker, required_figure_fields, issues)
     _check_assets(settings, markdown, base_dir, issues)
     _check_unsourced_hard_facts(settings, markdown, issues)
 
@@ -186,6 +200,30 @@ def _check_structure(
         )
 
 
+def _check_section_figures(
+        state: BookState,
+        content: ChapterContent,
+        marker: str,
+        issues: list[PublicationIssue],
+) -> None:
+    min_figures = state.quality.min_figures_per_section
+    if min_figures <= 0:
+        return
+    missing: list[str] = []
+    for section in state.get_chapter_section_contents(content.chapter_id):
+        figure_count = len(extract_book_figures(section.markdown, marker=marker))
+        if figure_count < min_figures:
+            missing.append(f"{section.section_id} {section.title}: {figure_count}/{min_figures}")
+    if missing:
+        issues.append(
+            PublicationIssue(
+                code="asset.section_missing_book_figure",
+                message="以下三级小节缺少完整配图规格块: " + "；".join(missing[:10]),
+                suggestion=f"每个三级小节至少补充 {min_figures} 个 `{marker}` 规格块，描述图表类型、元素、关系、图例、图注和 HTML/SVG 渲染说明。",
+            )
+        )
+
+
 def _check_assets(
         settings: QualitySettings,
         markdown: str,
@@ -212,6 +250,23 @@ def _check_assets(
                     suggestion="生成对应图片资源，或改为正文可渲染的 Mermaid/SVG/表格。",
                 )
             )
+
+
+def _check_book_figure_specs(
+        markdown: str,
+        marker: str,
+        required_fields: list[str] | None,
+        issues: list[PublicationIssue],
+) -> None:
+    invalid = find_invalid_book_figures(markdown, marker=marker, required_fields=required_fields)
+    if invalid:
+        issues.append(
+            PublicationIssue(
+                code="asset.invalid_book_figure",
+                message="图表规格块不完整: " + "；".join(invalid[:3]),
+                suggestion=f"补齐 `{marker}` 规格块中的图名、用途、布局、元素、关系、图例、图注和渲染说明。",
+            )
+        )
 
 
 def _check_unsourced_hard_facts(settings: QualitySettings, markdown: str, issues: list[PublicationIssue]) -> None:

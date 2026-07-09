@@ -43,11 +43,26 @@ class TerminologyConfig(StrictConfigModel):
     example: str = ""
 
 
+class IllustrationConfig(StrictConfigModel):
+    """全书图表规格标记与视觉约束。"""
+
+    marker: str = "book-figure"
+    renderer: str = "html-svg"
+    theme: str = "technical-publication-light"
+    palette: dict[str, str] = Field(default_factory=dict)
+    allowed_types: list[str] = Field(default_factory=list)
+    required_fields: list[str] = Field(default_factory=list)
+    legend: list[str] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
+    example: str = ""
+
+
 class StyleConfigModel(StrictConfigModel):
     tone: str = ""
     perspective: str = "第三人称"
     terminology: TerminologyConfig = Field(default_factory=TerminologyConfig)
     format: dict[str, str] = Field(default_factory=dict)
+    illustrations: IllustrationConfig = Field(default_factory=IllustrationConfig)
     forbidden_words: list[str] = Field(default_factory=list)
     chapter_structure: list[str] = Field(default_factory=list)
     target_words_per_chapter: str = "4000-8000字"
@@ -172,10 +187,14 @@ class QualityConfig(StrictConfigModel):
     require_exercises: bool = False
     min_exercise_count: int = 0
     min_figures_or_tables: int = 1
+    min_figures_per_section: int = 1
     require_existing_local_images: bool = True
     forbid_placeholder_images: bool = True
     forbid_unsourced_statistics: bool = True
     forbid_unresolved_final_review: bool = True
+    max_revision_rounds: int = 10
+    max_final_revision_rounds: int = 1
+    continue_on_failure: bool = True
 
     @model_validator(mode="after")
     def validate_thresholds(self) -> QualityConfig:
@@ -191,6 +210,12 @@ class QualityConfig(StrictConfigModel):
             raise ValueError("quality.min_exercise_count 不能小于 0")
         if self.min_figures_or_tables < 0:
             raise ValueError("quality.min_figures_or_tables 不能小于 0")
+        if self.min_figures_per_section < 0:
+            raise ValueError("quality.min_figures_per_section 不能小于 0")
+        if self.max_revision_rounds < 0:
+            raise ValueError("quality.max_revision_rounds 不能小于 0")
+        if self.max_final_revision_rounds < 0:
+            raise ValueError("quality.max_final_revision_rounds 不能小于 0")
         return self
 
 

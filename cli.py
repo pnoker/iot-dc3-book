@@ -18,7 +18,7 @@ from core.workflow import BookProject
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from core.state import BookState, ChapterPlan, SectionPlan
+    from core.state import BookState, ChapterContent, ChapterPlan, SectionContent, SectionPlan
 
 app = typer.Typer(
     help="mi-book-writer: 多 Agent 书籍写作系统",
@@ -223,12 +223,12 @@ def write_contents(ctx: typer.Context) -> None:
 @write_app.command("resume")
 def write_resume(
         ctx: typer.Context,
-        max_sections: Annotated[int, typer.Option("--max-sections", help="本次最多续写几个三级小节")] = 1,
+        target: Annotated[str, typer.Argument(help="写作目标：current、all、1、1.1 或 1.1.1")] = "current",
 ) -> None:
-    """从当前 1.1.1 级别断点继续写作。"""
+    """按指定章节、二级节、三级小节或全书继续写作。"""
 
     def resume_project(project: BookProject, thread_id: str) -> None:
-        typer.echo(json.dumps(project.write_resume(thread_id, max_sections=max_sections), ensure_ascii=False, indent=2))
+        typer.echo(json.dumps(project.write_resume(thread_id, target=target), ensure_ascii=False, indent=2))
 
     _execute_project(ctx, resume_project)
 
@@ -255,13 +255,17 @@ def _format_write_contents(state: BookState) -> str:
         for chapter in part.chapters:
             written_count = sum(1 for section in chapter.sections if state.get_section_content(section.id) is not None)
             assembled = "已合稿" if state.get_chapter_content(chapter.id) is not None else "未合稿"
-            lines.append(f"  第{chapter.id}章 {chapter.title}（{written_count}/{len(chapter.sections)}，{assembled}）")
+            chapter_status = _chapter_status_label(chapter.status)
+            lines.append(f"  第{chapter.id}章 {chapter.title}（{written_count}/{len(chapter.sections)}，{assembled}，{chapter_status}）")
+            if chapter.status == "quality_failed" and (chapter_content := state.get_chapter_content(chapter.id)) is not None:
+                lines.append(f"    ⚠ 章节质量门未通过：{_feedback_summary(_chapter_feedback_text(chapter_content))}")
             for section_group_id, group_title, sections in _group_chapter_sections(chapter):
                 lines.append(f"    {section_group_id} {group_title}")
                 for section in sections:
                     done = "✓" if state.get_section_content(section.id) is not None else " "
+                    status_note = f"（{_section_status_label(section.status)}）"
                     current = " ← 当前" if section.id == current_section_id else ""
-                    lines.append(f"      [{done}] {section.id} {section.title}{current}")
+                    lines.append(f"      [{done}] {section.id} {section.title}{status_note}{current}")
     return "\n".join(lines).rstrip()
 
 
@@ -287,7 +291,8 @@ def _render_write_target(state: BookState, target: str) -> str:
         section_content = state.get_section_content(normalized)
         if section_content is None:
             raise ValueError(f"三级小节尚无正文: {normalized}")
-        return section_content.markdown
+        section = state.get_section_plan(normalized)
+        return _render_section_with_status(section_content, section)
     chapter_id = int(parts[0])
     chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
     if chapter is None:
@@ -295,11 +300,21 @@ def _render_write_target(state: BookState, target: str) -> str:
     if len(parts) == 1:
         chapter_content = state.get_chapter_content(chapter_id)
         if chapter_content is not None and chapter_content.markdown.strip():
-            return chapter_content.markdown
+            return _render_chapter_with_status(state, chapter, chapter_content)
         section_contents = state.get_chapter_section_contents(chapter_id)
         if not section_contents:
             raise ValueError(f"第{chapter_id}章尚无正文")
-        return "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in section_contents)])
+        return "\n\n".join(
+            [
+                _chapter_status_block(chapter, chapter_content),
+                _chapter_section_status_block(state, chapter),
+                f"# 第{chapter.id}章 {chapter.title}",
+                *(
+                    _render_section_with_status(item, state.get_section_plan(item.section_id)).strip()
+                    for item in section_contents
+                ),
+            ]
+        )
 
     prefix = f"{normalized}."
     section_contents = [
@@ -310,7 +325,98 @@ def _render_write_target(state: BookState, target: str) -> str:
     ]
     if not section_contents:
         raise ValueError(f"二级节尚无正文: {normalized}")
-    return "\n\n".join(item.markdown.strip() for item in section_contents)
+    return "\n\n".join(
+        _render_section_with_status(item, state.get_section_plan(item.section_id)).strip() for item in section_contents
+    )
+
+
+def _render_chapter_with_status(state: BookState, chapter: ChapterPlan, content: ChapterContent) -> str:
+    return "\n\n".join(
+        [_chapter_status_block(chapter, content), _chapter_section_status_block(state, chapter), content.markdown.strip()]
+    ).strip()
+
+
+def _render_section_with_status(content: SectionContent, section: SectionPlan | None) -> str:
+    return "\n\n".join([_section_status_block(content, section), content.markdown.strip()]).strip()
+
+
+def _chapter_status_block(chapter: ChapterPlan, content: ChapterContent | None) -> str:
+    lines = ["<!-- write-status", "scope: chapter", f"id: {chapter.id}", f"status: {chapter.status}"]
+    if content is not None:
+        lines.append(f"revision_count: {content.revision_count}")
+        if chapter.status == "quality_failed":
+            lines.append("quality_failed: true")
+            lines.append(f"feedback: {_feedback_summary(_chapter_feedback_text(content))}")
+    lines.append("-->")
+    return "\n".join(lines)
+
+
+def _chapter_section_status_block(state: BookState, chapter: ChapterPlan) -> str:
+    lines = ["<!-- section-status"]
+    for section in chapter.sections:
+        content = state.get_section_content(section.id)
+        line = f"{section.id}: {section.status}"
+        if section.status == "review_failed" and content is not None:
+            line = f"{line}; feedback: {_feedback_summary(content.revision_feedback or content.review_feedback)}"
+        lines.append(line)
+    lines.append("-->")
+    return "\n".join(lines)
+
+
+def _section_status_block(content: SectionContent, section: SectionPlan | None) -> str:
+    status = section.status if section is not None else "unknown"
+    lines = ["<!-- write-status", "scope: section", f"id: {content.section_id}", f"status: {status}"]
+    lines.append(f"revision_count: {content.revision_count}")
+    if status == "review_failed":
+        lines.append("review_failed: true")
+        lines.append(f"feedback: {_feedback_summary(content.revision_feedback or content.review_feedback)}")
+    lines.append("-->")
+    return "\n".join(lines)
+
+
+def _chapter_feedback_text(content: ChapterContent) -> str:
+    return "\n\n".join(
+        item
+        for item in [
+            content.publication_feedback,
+            content.fact_feedback,
+            content.citation_feedback,
+            content.style_feedback,
+            content.review_feedback,
+            content.revision_feedback,
+        ]
+        if item
+    )
+
+
+def _feedback_summary(feedback: str, *, limit: int = 160) -> str:
+    text = re.sub(r"\s+", " ", feedback).strip()
+    if not text:
+        return "无反馈详情"
+    return text if len(text) <= limit else f"{text[:limit]}..."
+
+
+def _chapter_status_label(status: str) -> str:
+    return {
+        "pending": "待写作",
+        "researched": "已研究",
+        "written": "已合稿",
+        "fact_checked": "已事实核查",
+        "styled": "已风格校验",
+        "reviewed": "已审校",
+        "approved": "质量通过",
+        "quality_failed": "质量未通过",
+    }.get(status, status)
+
+
+def _section_status_label(status: str) -> str:
+    return {
+        "pending": "待写作",
+        "written": "待审校",
+        "assembled": "已合稿",
+        "reviewed": "审校通过",
+        "review_failed": "审校未通过",
+    }.get(status, status)
 
 
 @write_app.command("patch-section")
