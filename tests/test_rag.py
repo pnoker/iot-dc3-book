@@ -31,7 +31,7 @@ def test_index_books_indexes_pdf_and_markdown_with_unique_ids(tmp_path, monkeypa
         chunk_overlap=100,
         persist_dir=str(tmp_path / "chroma"),
     )
-    sources = [ReferenceSource(books, "books"), ReferenceSource(docs, "dc3")]
+    sources = [ReferenceSource(books, "books", categories=("iot",)), ReferenceSource(docs, "dc3", categories=("iot", "dc3"))]
 
     count = engine.index_books(sources, str(tmp_path / "manifest.json"))
 
@@ -94,7 +94,7 @@ def test_hybrid_retrieve_recalls_exact_term_via_bm25(tmp_path, monkeypatch) -> N
         persist_dir=str(tmp_path / "chroma"),
         bm25_path=str(tmp_path / "bm25.json"),
     )
-    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+    engine.index_books([ReferenceSource(docs, "dc3", categories=("iot", "dc3"))], str(tmp_path / "manifest.json"))
 
     hybrid_hits = engine.retrieve("Modbus 协议", top_k=2, hybrid=True)
     assert any("Modbus" in c.text for c in hybrid_hits)  # 混合检索召回精确术语
@@ -114,12 +114,29 @@ def test_retrieve_hybrid_false_is_pure_dense(tmp_path, monkeypatch) -> None:
         persist_dir=str(tmp_path / "chroma"),
         bm25_path=str(tmp_path / "bm25.json"),
     )
-    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+    engine.index_books([ReferenceSource(docs, "dc3", categories=("iot", "dc3"))], str(tmp_path / "manifest.json"))
 
     # hybrid=False 不应触碰 BM25
     monkeypatch.setattr(engine, "_get_bm25", lambda: (_ for _ in ()).throw(AssertionError("不应调用 BM25")))
     hits = engine.retrieve("内容", top_k=3, hybrid=False)
     assert hits  # 纯 dense 仍能返回
+
+
+def test_retrieve_hybrid_requires_bm25_path(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "a.md").write_text("# A\n" + "内容甲。" * 30, encoding="utf-8")
+
+    engine = RAGEngine(
+        embed_fn=lambda text: [1.0, 0.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+    engine.index_books([ReferenceSource(docs, "dc3", categories=("iot", "dc3"))], str(tmp_path / "manifest.json"))
+
+    with pytest.raises(RuntimeError, match="hybrid 检索需要配置 bm25_path"):
+        engine.retrieve("内容", top_k=3, hybrid=True)
 
 
 def test_retrieve_category_filter_scopes_results(tmp_path) -> None:
@@ -169,7 +186,7 @@ def test_retrieve_applies_injected_reranker(tmp_path) -> None:
         bm25_path=str(tmp_path / "bm25.json"),
         reranker=reranker,
     )
-    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+    engine.index_books([ReferenceSource(docs, "dc3", categories=("iot", "dc3"))], str(tmp_path / "manifest.json"))
 
     hits = engine.retrieve("物联网", top_k=2, hybrid=True)
 
@@ -198,7 +215,7 @@ def test_index_books_contextualizer_feeds_embedding_not_stored_text(tmp_path) ->
         persist_dir=str(tmp_path / "chroma"),
         contextualizer=contextualizer,
     )
-    engine.index_books([ReferenceSource(docs, "dc3")], str(tmp_path / "manifest.json"))
+    engine.index_books([ReferenceSource(docs, "dc3", categories=("iot", "dc3"))], str(tmp_path / "manifest.json"))
 
     # 存储正文为原文，不含情境前缀（避免污染最终引用事实）
     stored = engine.collection.get(include=["documents"])["documents"]
@@ -217,7 +234,7 @@ def test_index_books_skips_rebuild_when_manifest_unchanged(tmp_path, monkeypatch
         chunk_overlap=100,
         persist_dir=str(tmp_path / "chroma"),
     )
-    sources = [ReferenceSource(docs, "dc3")]
+    sources = [ReferenceSource(docs, "dc3", categories=("iot", "dc3"))]
     manifest = str(tmp_path / "manifest.json")
 
     first = engine.index_books(sources, manifest)
@@ -228,6 +245,62 @@ def test_index_books_skips_rebuild_when_manifest_unchanged(tmp_path, monkeypatch
 
     assert first == second
     assert calls == []  # 输入未变，跳过重建
+
+
+def test_index_books_incrementally_reindexes_changed_file_without_reset(tmp_path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "a.md").write_text("# A\n" + "旧内容说明。" * 20, encoding="utf-8")
+    (docs / "b.md").write_text("# B\n" + "保留内容说明。" * 20, encoding="utf-8")
+    engine = RAGEngine(
+        embed_fn=lambda text: [float(len(text) % 5), 1.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+    sources = [ReferenceSource(docs, "dc3", categories=("iot", "dc3"))]
+    manifest = str(tmp_path / "manifest.json")
+
+    first = engine.index_books(sources, manifest)
+    (docs / "a.md").write_text("# A\n" + "新内容说明。" * 25, encoding="utf-8")
+    calls: list[str] = []
+    monkeypatch.setattr(engine, "reset_index", lambda: calls.append("reset"))
+
+    second = engine.index_books(sources, manifest)
+
+    assert second == first
+    assert calls == []
+    a_docs = engine.collection.get(where={"source_file": "dc3/a.md"}, include=["documents"])["documents"]
+    b_docs = engine.collection.get(where={"source_file": "dc3/b.md"}, include=["documents"])["documents"]
+    assert a_docs and all("新内容" in doc for doc in a_docs)
+    assert b_docs and all("保留内容" in doc for doc in b_docs)
+
+
+def test_index_books_incrementally_removes_deleted_file_without_reset(tmp_path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "a.md").write_text("# A\n" + "保留内容说明。" * 20, encoding="utf-8")
+    (docs / "b.md").write_text("# B\n" + "删除内容说明。" * 20, encoding="utf-8")
+    engine = RAGEngine(
+        embed_fn=lambda text: [1.0, 0.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+    sources = [ReferenceSource(docs, "dc3", categories=("iot", "dc3"))]
+    manifest = str(tmp_path / "manifest.json")
+
+    engine.index_books(sources, manifest)
+    (docs / "b.md").unlink()
+    calls: list[str] = []
+    monkeypatch.setattr(engine, "reset_index", lambda: calls.append("reset"))
+
+    count = engine.index_books(sources, manifest)
+
+    assert count == 1
+    assert calls == []
+    metadatas = engine.collection.get()["metadatas"]
+    assert {meta["source_file"] for meta in metadatas} == {"dc3/a.md"}
 
 
 def test_rag_rejects_overlap_not_smaller_than_chunk_size(tmp_path) -> None:
@@ -243,6 +316,21 @@ def test_rag_status_reports_empty_index_as_unhealthy(tmp_path) -> None:
     assert status["chunk_count"] == 0
     assert status["healthy"] is False
     assert status["persist_dir"] == str(tmp_path)
+
+
+def test_index_books_raises_when_no_effective_chunks(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "empty.md").write_text("# 空\n短", encoding="utf-8")
+    engine = RAGEngine(
+        embed_fn=lambda text: [0.0],
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+    )
+
+    with pytest.raises(RuntimeError, match="未提取到有效分块"):
+        engine.index_books([ReferenceSource(docs, "dc3", categories=("iot",))], str(tmp_path / "manifest.json"))
 
 
 def test_split_text_uses_langchain_recursive_splitter(monkeypatch) -> None:

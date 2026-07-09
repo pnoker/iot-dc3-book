@@ -1,10 +1,15 @@
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
-from core.rag_manifest import build_manifest
+import pytest
+
+from core.rag_manifest import build_manifest, read_manifest
 from core.rag_markdown import extract_markdown_sections
 from core.rag_sources import ReferenceSource, iter_source_files
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def _write(path: Path, text: str) -> str:
@@ -81,7 +86,7 @@ def test_manifest_is_deterministic_and_namespaced(tmp_path) -> None:
     root_b.mkdir()
     _write(root_a / "index.md", "# A\nA 内容。")
     _write(root_b / "index.md", "# B\nB 内容。")
-    sources = [ReferenceSource(root_a, "sa"), ReferenceSource(root_b, "sb")]
+    sources = [ReferenceSource(root_a, "sa", categories=("a",)), ReferenceSource(root_b, "sb", categories=("b",))]
 
     m1 = build_manifest(sources, 1000, 200)
     m2 = build_manifest(sources, 1000, 200)
@@ -97,14 +102,14 @@ def test_manifest_changes_when_sources_or_chunking_change(tmp_path) -> None:
     root = tmp_path / "a"
     root.mkdir()
     _write(root / "x.md", "# X\nX 内容。")
-    base = [ReferenceSource(root, "sa")]
+    base = [ReferenceSource(root, "sa", categories=("a",))]
 
     m_base = build_manifest(base, 1000, 200)
     m_chunk = build_manifest(base, 800, 200)
     root2 = tmp_path / "b"
     root2.mkdir()
     _write(root2 / "y.md", "# Y\nY 内容。")
-    m_more = build_manifest([*base, ReferenceSource(root2, "sb")], 1000, 200)
+    m_more = build_manifest([*base, ReferenceSource(root2, "sb", categories=("b",))], 1000, 200)
 
     assert m_base != m_chunk  # chunk_size 变 → 触发重建
     assert m_base != m_more  # 增来源 → 触发重建
@@ -114,7 +119,7 @@ def test_manifest_changes_when_embed_model_or_contextualize_change(tmp_path) -> 
     root = tmp_path / "a"
     root.mkdir()
     _write(root / "x.md", "# X\nX 内容。")
-    base = [ReferenceSource(root, "sa")]
+    base = [ReferenceSource(root, "sa", categories=("a",))]
 
     m_base = build_manifest(base, 1000, 200, embed_model="model-a", contextualize=False)
     m_model = build_manifest(base, 1000, 200, embed_model="model-b", contextualize=False)
@@ -124,6 +129,14 @@ def test_manifest_changes_when_embed_model_or_contextualize_change(tmp_path) -> 
     assert m_base != m_ctx  # 开关情境化 → 触发重建（否则开关形同虚设）
 
 
+def test_read_manifest_corrupt_file_raises(tmp_path) -> None:
+    path = tmp_path / "manifest.json"
+    path.write_text("not json", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="RAG manifest 读取失败"):
+        read_manifest(str(path))
+
+
 def test_iter_source_files_ignores_noise_dirs(tmp_path) -> None:
     root = tmp_path / "docs"
     (root / "node_modules").mkdir(parents=True)
@@ -131,7 +144,7 @@ def test_iter_source_files_ignores_noise_dirs(tmp_path) -> None:
     _write(root / "node_modules" / "junk.md", "垃圾")
     _write(root / "ok" / "real.md", "真实")
 
-    files = iter_source_files([ReferenceSource(root, "d")])
+    files = iter_source_files([ReferenceSource(root, "d", categories=("docs",))])
 
     rels = {f.rel for f in files}
     assert "ok/real.md" in rels
@@ -162,11 +175,15 @@ def test_source_file_resolves_base_and_dir_categories(tmp_path) -> None:
     assert files["misc/b.md"].categories == ("dc3", "iot")
 
 
-def test_source_file_falls_back_to_label_when_no_categories(tmp_path) -> None:
+def test_source_file_requires_explicit_categories(tmp_path) -> None:
     root = tmp_path / "books"
     root.mkdir()
     _write(root / "x.md", "# X\n内容。")
 
-    files = iter_source_files([ReferenceSource(root, "mybooks")])
+    with pytest.raises(ValueError, match="未配置 categories"):
+        iter_source_files([ReferenceSource(root, "mybooks")])
 
-    assert files[0].categories == ("mybooks",)  # 无分类配置时回退 label，避免孤儿
+
+def test_iter_source_files_rejects_missing_source_dir(tmp_path) -> None:
+    with pytest.raises(FileNotFoundError, match="参考来源目录不存在"):
+        iter_source_files([ReferenceSource(tmp_path / "missing", "docs", categories=("docs",))])

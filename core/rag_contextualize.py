@@ -6,7 +6,7 @@ Contextual Retrieval - 入库前给分块补全局上下文
 拼在分块正文前一起嵌入，让零碎片段重新锚定到全局语境。
 
 成本敏感：对每个分块一次 LLM 调用。默认关闭，需在 references.yaml 显式开启。
-失败回退原文，绝不因精炼失败丢分块。
+启用后若 LLM 返回空内容或调用失败，直接报错，避免索引在半情境化状态下继续写入。
 """
 
 from __future__ import annotations
@@ -26,16 +26,12 @@ _CONTEXT_SYSTEM = """你为技术文档的检索分块生成简短情境说明�
 
 
 def contextualize_chunk(llm: Any, source: str, section: str, chunk_text: str) -> str:
-    """为单个分块生成情境前缀并拼接；失败返回原文。"""
+    """为单个分块生成情境前缀并拼接。"""
     user_prompt = f"# 文档来源\n{source}\n# 章节\n{section}\n# 正文\n{chunk_text[:800]}\n\n请输出一句情境说明。"
-    try:
-        context = llm.chat(_CONTEXT_SYSTEM, user_prompt, temperature=0.0, max_tokens=120).strip()
-        if not context:
-            return chunk_text
-        return f"[情境] {context}\n\n{chunk_text}"
-    except Exception:
-        logger.warning("分块情境化失败，使用原文", exc_info=True)
-        return chunk_text
+    context = llm.chat(_CONTEXT_SYSTEM, user_prompt, temperature=0.0, max_tokens=120).strip()
+    if not context:
+        raise ValueError(f"分块情境化返回空内容: {source} / {section}")
+    return f"[情境] {context}\n\n{chunk_text}"
 
 
 def contextualize_batch(

@@ -65,16 +65,53 @@ def _source_signature(source: ReferenceSource) -> dict[str, object]:
 
 def manifest_matches(index_path: str, manifest: dict[str, object]) -> bool:
     """判断现有索引签名是否与当前输入一致。"""
+    existing = read_manifest(index_path)
+    return bool(existing == manifest)
+
+
+def read_manifest(index_path: str) -> dict[str, object] | None:
+    """读取索引签名；不存在返回 None，损坏则报错。"""
     if not index_path:
-        return False
+        return None
     path = Path(index_path)
     if not path.exists():
-        return False
+        return None
     try:
         with open(path, encoding="utf-8") as f:
-            return bool(json.load(f) == manifest)
-    except (OSError, json.JSONDecodeError):
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"RAG manifest 读取失败或已损坏: {path}") from exc
+    if not isinstance(data, dict):
+        raise RuntimeError(f"RAG manifest 格式错误，顶层必须是对象: {path}")
+    return data
+
+
+def manifest_static_matches(old: dict[str, object] | None, new: dict[str, object]) -> bool:
+    """判断除文件列表外的索引配置是否一致。"""
+    if old is None:
         return False
+    for key in ("chunk_size", "chunk_overlap", "embed_model", "contextualize", "sources", "extensions"):
+        if old.get(key) != new.get(key):
+            return False
+    return True
+
+
+def manifest_file_map(manifest: dict[str, object] | None) -> dict[tuple[str, str], dict[str, object]]:
+    """把 manifest.files 转成 {(source, path): file_signature} 映射。"""
+    if manifest is None:
+        return {}
+    files = manifest.get("files")
+    if not isinstance(files, list):
+        return {}
+    result: dict[tuple[str, str], dict[str, object]] = {}
+    for item in files:
+        if not isinstance(item, dict):
+            continue
+        source = item.get("source")
+        path = item.get("path")
+        if isinstance(source, str) and isinstance(path, str):
+            result[(source, path)] = item
+    return result
 
 
 def write_manifest(index_path: str, manifest: dict[str, object]) -> None:

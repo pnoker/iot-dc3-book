@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from core.rag_rerank import _parse_ranking, rerank_chunks
 from core.state import ReferenceChunk
 
@@ -50,25 +52,23 @@ def test_rerank_rescore_without_llm_score_still_descends() -> None:
     assert result[0].relevance_score > result[1].relevance_score
 
 
-def test_rerank_falls_back_to_original_on_bad_response() -> None:
+def test_rerank_rejects_bad_response() -> None:
     chunks = [_chunk("A"), _chunk("B")]
     llm = FakeLLM({"garbage": True})
 
-    result = rerank_chunks(llm, "q", chunks, top_k=2)
+    with pytest.raises(ValueError, match="rerank 未返回有效排序"):
+        rerank_chunks(llm, "q", chunks, top_k=2)
 
-    assert [c.text for c in result] == ["A", "B"]  # 解析失败回退原顺序
 
-
-def test_rerank_falls_back_when_llm_raises() -> None:
+def test_rerank_raises_when_llm_raises() -> None:
     chunks = [_chunk("A"), _chunk("B")]
 
     class BoomLLM:
         def chat_json(self, *a, **k):
             raise RuntimeError("boom")
 
-    result = rerank_chunks(BoomLLM(), "q", chunks, top_k=1)
-
-    assert [c.text for c in result] == ["A"]  # LLM 异常不外抛，回退
+    with pytest.raises(RuntimeError, match="boom"):
+        rerank_chunks(BoomLLM(), "q", chunks, top_k=1)
 
 
 def test_rerank_single_candidate_skips_llm() -> None:

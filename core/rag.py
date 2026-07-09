@@ -18,7 +18,14 @@ from chromadb.config import Settings
 from core.log import get_logger
 from core.rag_bm25 import BM25Index
 from core.rag_chunking import split_text
-from core.rag_manifest import build_manifest, manifest_matches, write_manifest
+from core.rag_manifest import (
+    build_manifest,
+    manifest_file_map,
+    manifest_matches,
+    manifest_static_matches,
+    read_manifest,
+    write_manifest,
+)
 from core.rag_markdown import extract_markdown_sections
 from core.rag_pdf import extract_pdf_pages
 from core.rag_sources import ReferenceSource, SourceFile, iter_source_files
@@ -119,10 +126,7 @@ class RAGEngine:
         """清空并重建 Chroma collection。"""
         _ = self.collection
         if self._client is not None:
-            try:
-                self._client.delete_collection(name="books")
-            except Exception:
-                logger.debug("删除旧 collection 失败或不存在", exc_info=True)
+            self._client.delete_collection(name="books")
             self._collection = self._client.get_or_create_collection(
                 name="books",
                 metadata={"hnsw:space": "cosine"},
@@ -143,6 +147,99 @@ class RAGEngine:
             ]
         # .md / .markdown
         return [dict(section) for section in extract_markdown_sections(path)]
+
+    def _build_chunks(
+            self, source_files: Sequence[SourceFile]
+    ) -> tuple[list[str], list[str], list[str], list[dict[str, Any]]]:
+        """解析来源文件并构建 Chroma 所需的 ids/documents/embedding_texts/metadatas。"""
+        all_ids: list[str] = []
+        all_doc_texts: list[str] = []
+        all_embed_texts: list[str] = []
+        all_metadatas: list[dict[str, Any]] = []
+
+        for source_file in source_files:
+            logger.info("处理: %s/%s", source_file.label, source_file.rel)
+            blocks = self._extract_blocks(source_file)
+            for block in blocks:
+                text_parts = split_text(str(block["text"]), self.chunk_size, self.chunk_overlap)
+                for ci, chunk_text in enumerate(text_parts):
+                    if len(chunk_text) < 50:
+                        continue
+                    unit = int(block["unit"])
+                    embed_text = chunk_text
+                    if self._contextualizer is not None:
+                        embed_text = self._contextualizer(
+                            source_file.rel, str(block["section"]), chunk_text
+                        )
+                    all_ids.append(f"{source_file.label}__{_slug(source_file.rel)}__u{unit}_c{ci}")
+                    all_doc_texts.append(chunk_text)
+                    all_embed_texts.append(embed_text)
+                    all_metadatas.append(
+                        {
+                            "source_file": self._source_path(source_file),
+                            "chapter_or_section": str(block["section"]),
+                            "chunk_index": ci,
+                            "label": source_file.label,
+                            "categories": list(source_file.categories),
+                            "doc_type": source_file.doc_type,
+                            "language": source_file.language,
+                        }
+                    )
+        return all_ids, all_doc_texts, all_embed_texts, all_metadatas
+
+    def _add_chunks(
+            self,
+            all_ids: list[str],
+            all_doc_texts: list[str],
+            all_embed_texts: list[str],
+            all_metadatas: list[dict[str, Any]],
+            start_index: int = 0,
+    ) -> None:
+        """批量写入 ChromaDB。"""
+        batch_size = 500
+        for i in range(start_index, len(all_ids), batch_size):
+            batch_ids = all_ids[i: i + batch_size]
+            batch_docs = all_doc_texts[i: i + batch_size]
+            batch_metas = all_metadatas[i: i + batch_size]
+            batch_embeddings = self._embed_texts(all_embed_texts[i: i + batch_size])
+
+            self.collection.add(
+                ids=batch_ids,
+                documents=batch_docs,
+                embeddings=batch_embeddings,
+                metadatas=batch_metas,
+            )
+            logger.info("已索引 %d/%d", min(i + batch_size, len(all_ids)), len(all_ids))
+
+    def _delete_source_paths(self, source_paths: Sequence[str]) -> int:
+        """删除指定 source_file 对应的所有分块，返回删除数量。"""
+        deleted = 0
+        for source_path in source_paths:
+            existing = self.collection.get(where={"source_file": source_path})
+            ids = list(existing.get("ids") or [])
+            if not ids:
+                continue
+            self.collection.delete(ids=ids)
+            deleted += len(ids)
+        return deleted
+
+    def _rebuild_bm25_from_collection(self) -> None:
+        """从 Chroma 当前内容重建 BM25；用于增量更新后保持稀疏索引一致。"""
+        if not self._bm25_path:
+            return
+        logger.info("重建 BM25 稀疏索引...")
+        data = self.collection.get(include=["documents", "metadatas"])
+        ids = list(data.get("ids") or [])
+        docs = [str(value) for value in data.get("documents") or []]
+        metas = [dict(value) for value in data.get("metadatas") or []]
+        self._bm25 = BM25Index.build(ids, docs, metas)
+        self._bm25.save(self._bm25_path)
+        self._bm25_loaded = True
+        logger.info("BM25 索引完成: %d 个分块", len(ids))
+
+    @staticmethod
+    def _source_path(source_file: SourceFile) -> str:
+        return f"{source_file.label}/{source_file.rel}"
 
     def index_books(
             self, sources: Sequence[ReferenceSource], index_path: str = "", force_rebuild: bool = False
@@ -165,83 +262,56 @@ class RAGEngine:
             contextualize=self._contextualizer is not None,
         )
 
-        # 如果已有数据且输入未变化，跳过
         count = cast("int", self.collection.count())
         if count > 0 and not force_rebuild and manifest_matches(index_path, manifest):
             logger.info("已有索引: %d 条记录，跳过构建", count)
             return count
 
-        if count > 0:
-            logger.info("参考索引已过期或要求重建，清空旧索引: %d 条记录", count)
-            self.reset_index()
-
+        partial_index_path = f"{index_path}.partial" if index_path else ""
+        resume_partial = count > 0 and not force_rebuild and manifest_matches(partial_index_path, manifest)
         source_files = iter_source_files(sources)
         logger.info("发现 %d 个参考文件，开始索引...", len(source_files))
+        if not source_files:
+            raise RuntimeError("未发现可索引的参考文件，请检查 references.sources 配置。")
 
-        # 收集所有分块。区分两份文本：
-        # - doc_texts: 存入 Chroma 并在检索时返回的原文，不含 LLM 生成前缀，避免污染引用事实。
-        # - embed_texts: 用于向量嵌入与 BM25 的检索文本，情境化时带前缀以提升召回。
-        all_ids: list[str] = []
-        all_doc_texts: list[str] = []
-        all_embed_texts: list[str] = []
-        all_metadatas: list[dict[str, Any]] = []
+        if resume_partial:
+            logger.info("检测到未完成参考索引，续写已有 %d 条记录", count)
+            return self._index_full(source_files, manifest, index_path, partial_index_path, start_count=count)
 
-        for source_file in source_files:
-            logger.info("处理: %s/%s", source_file.label, source_file.rel)
-            try:
-                blocks = self._extract_blocks(source_file)
-                for block in blocks:
-                    text_parts = split_text(str(block["text"]), self.chunk_size, self.chunk_overlap)
-                    for ci, chunk_text in enumerate(text_parts):
-                        if len(chunk_text) < 50:
-                            continue
-                        unit = int(block["unit"])
-                        embed_text = chunk_text
-                        if self._contextualizer is not None:
-                            embed_text = self._contextualizer(
-                                source_file.rel, str(block["section"]), chunk_text
-                            )
-                        all_ids.append(f"{source_file.label}__{_slug(source_file.rel)}__u{unit}_c{ci}")
-                        all_doc_texts.append(chunk_text)
-                        all_embed_texts.append(embed_text)
-                        all_metadatas.append(
-                            {
-                                "source_file": f"{source_file.label}/{source_file.rel}",
-                                "chapter_or_section": str(block["section"]),
-                                "chunk_index": ci,
-                                "label": source_file.label,
-                                "categories": list(source_file.categories),
-                                "doc_type": source_file.doc_type,
-                                "language": source_file.language,
-                            }
-                        )
-            except Exception:
-                logger.exception("跳过 %s/%s", source_file.label, source_file.rel)
+        old_manifest = read_manifest(index_path)
+        if count > 0 and not force_rebuild and manifest_static_matches(old_manifest, manifest):
+            return self._index_incremental(source_files, old_manifest, manifest, index_path)
 
+        if count > 0:
+            logger.info("参考索引配置已变化或要求重建，清空旧索引: %d 条记录", count)
+            self.reset_index()
+        return self._index_full(source_files, manifest, index_path, partial_index_path, start_count=0)
+
+    def _index_full(
+            self,
+            source_files: Sequence[SourceFile],
+            manifest: dict[str, object],
+            index_path: str,
+            partial_index_path: str,
+            start_count: int = 0,
+    ) -> int:
+        """全量索引；start_count > 0 时用于中断续写。"""
+        all_ids, all_doc_texts, all_embed_texts, all_metadatas = self._build_chunks(source_files)
         if not all_ids:
-            logger.warning("没有提取到有效分块")
-            return 0
+            raise RuntimeError("参考索引未提取到有效分块，请检查源文件内容和 chunk 配置。")
 
-        # 批量写入 ChromaDB：documents 存原文（检索返回），embeddings 用检索文本（可能带情境前缀）
         logger.info("正在索引 %d 个分块到 ChromaDB...", len(all_ids))
-        batch_size = 100
-        for i in range(0, len(all_ids), batch_size):
-            batch_ids = all_ids[i: i + batch_size]
-            batch_docs = all_doc_texts[i: i + batch_size]
-            batch_metas = all_metadatas[i: i + batch_size]
-            batch_embeddings = self._embed_texts(all_embed_texts[i: i + batch_size])
-
-            self.collection.add(
-                ids=batch_ids,
-                documents=batch_docs,
-                embeddings=batch_embeddings,
-                metadatas=batch_metas,
-            )
-            logger.info("已索引 %d/%d", min(i + batch_size, len(all_ids)), len(all_ids))
-
+        if partial_index_path:
+            write_manifest(partial_index_path, manifest)
+        self._add_chunks(
+            all_ids,
+            all_doc_texts,
+            all_embed_texts,
+            all_metadatas,
+            start_index=min(start_count, len(all_ids)),
+        )
         logger.info("索引完成: %d 个分块", len(all_ids))
 
-        # 构建并落盘 BM25 稀疏索引（与 chroma 同源；字面召回用检索文本，与 dense 侧对齐）
         if self._bm25_path:
             logger.info("构建 BM25 稀疏索引...")
             self._bm25 = BM25Index.build(all_ids, all_embed_texts, all_metadatas)
@@ -250,7 +320,54 @@ class RAGEngine:
             logger.info("BM25 索引完成: %d 个分块", len(all_ids))
 
         write_manifest(index_path, manifest)
+        if partial_index_path:
+            Path(partial_index_path).unlink(missing_ok=True)
         return len(all_ids)
+
+    def _index_incremental(
+            self,
+            source_files: Sequence[SourceFile],
+            old_manifest: dict[str, object] | None,
+            manifest: dict[str, object],
+            index_path: str,
+    ) -> int:
+        """文件级增量索引：只重建新增/变更/删除文件对应的分块。"""
+        if self._contextualizer is not None:
+            logger.info("已启用 contextualize，文件变化需全量重建以保持 BM25 检索文本一致")
+            self.reset_index()
+            return self._index_full(source_files, manifest, index_path, f"{index_path}.partial" if index_path else "")
+
+        old_files = manifest_file_map(old_manifest)
+        new_files = manifest_file_map(manifest)
+        changed_keys = sorted(key for key, value in new_files.items() if old_files.get(key) != value)
+        removed_keys = sorted(key for key in old_files if key not in new_files)
+        if not changed_keys and not removed_keys:
+            logger.info("索引签名不一致但文件签名未变化，执行全量重建以避免复用旧格式索引")
+            self.reset_index()
+            return self._index_full(source_files, manifest, index_path, f"{index_path}.partial" if index_path else "")
+
+        by_key = {(source_file.label, source_file.rel): source_file for source_file in source_files}
+        changed_files = [by_key[key] for key in changed_keys if key in by_key]
+        delete_paths = [f"{source}/{rel}" for source, rel in [*changed_keys, *removed_keys]]
+        deleted = self._delete_source_paths(delete_paths)
+        logger.info(
+            "增量更新参考索引: 新增/变更 %d 个文件，删除 %d 个文件，移除 %d 个旧分块",
+            len(changed_files),
+            len(removed_keys),
+            deleted,
+        )
+
+        if changed_files:
+            all_ids, all_doc_texts, all_embed_texts, all_metadatas = self._build_chunks(changed_files)
+            if all_ids:
+                logger.info("正在增量索引 %d 个分块到 ChromaDB...", len(all_ids))
+                self._add_chunks(all_ids, all_doc_texts, all_embed_texts, all_metadatas)
+
+        self._rebuild_bm25_from_collection()
+        write_manifest(index_path, manifest)
+        count = cast("int", self.collection.count())
+        logger.info("增量索引完成: 当前 %d 个分块", count)
+        return count
 
     def _get_bm25(self) -> BM25Index | None:
         """延迟加载 BM25 索引（内存重建，无需重分词）。"""
@@ -272,7 +389,7 @@ class RAGEngine:
         """检索相关参考段落。
 
         - categories/doc_type/language: 可选的 metadata 过滤（categories 为多标签，任一命中即可）。
-        - hybrid: True 时 dense + BM25 双路 RRF 融合；False 退化为纯向量（保底/测试）。
+        - hybrid: True 时 dense + BM25 双路 RRF 融合；False 时显式使用纯向量。
         """
         if self.collection.count() == 0:
             logger.warning("RAG 索引为空，无法检索")
@@ -280,14 +397,17 @@ class RAGEngine:
 
         where = self._build_where(categories, doc_type, language)
         dense = self._dense_search(query, where)
-        bm25 = self._get_bm25() if hybrid else None
-
-        if bm25 is None:
+        if not hybrid:
             candidates = [
                 self._to_chunk(payload, score=1.0 / (_RRF_K + rank))
                 for rank, (_, payload) in enumerate(dense, 1)
             ]
         else:
+            if not self._bm25_path:
+                raise RuntimeError("hybrid 检索需要配置 bm25_path；如需纯向量检索请显式传入 hybrid=False。")
+            bm25 = self._get_bm25()
+            if bm25 is None:
+                raise RuntimeError("BM25 索引不存在，无法执行 hybrid 检索；请重建 RAG 索引。")
             sparse = bm25.search(query, top_n=_CANDIDATE_POOL, where=where)
             candidates = self._rrf_merge(dense, sparse)
 

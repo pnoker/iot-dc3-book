@@ -65,7 +65,7 @@ class BM25Index:
 
     @classmethod
     def load(cls, path: str) -> BM25Index | None:
-        """从磁盘加载；文件不存在或损坏返回 None。"""
+        """从磁盘加载；文件不存在返回 None，损坏则报错。"""
         p = Path(path)
         if not p.exists():
             return None
@@ -73,9 +73,8 @@ class BM25Index:
             with open(p, encoding="utf-8") as f:
                 data = json.load(f)
             return cls(data["ids"], data["tokens"], data["metadatas"])
-        except (OSError, json.JSONDecodeError, KeyError):
-            logger.warning("BM25 索引加载失败，将回退重建: %s", path)
-            return None
+        except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+            raise RuntimeError(f"BM25 索引读取失败或已损坏: {path}") from exc
 
     def search(
             self, query: str, top_n: int, where: dict[str, Any] | None = None

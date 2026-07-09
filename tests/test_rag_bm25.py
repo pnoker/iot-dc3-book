@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from core.rag_bm25 import BM25Index, tokenize
 
 
@@ -59,3 +61,11 @@ def test_bm25_save_load_roundtrip_without_retokenize(tmp_path, monkeypatch) -> N
 
 def test_bm25_load_missing_returns_none(tmp_path) -> None:
     assert BM25Index.load(str(tmp_path / "nope.json")) is None
+
+
+def test_bm25_load_corrupt_file_raises(tmp_path) -> None:
+    path = tmp_path / "bm25.json"
+    path.write_text("not json", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="BM25 索引读取失败"):
+        BM25Index.load(str(path))

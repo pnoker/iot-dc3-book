@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from core.rag_contextualize import contextualize_chunk
 
 
@@ -21,20 +23,20 @@ def test_contextualize_prepends_context() -> None:
     assert "Modbus 帧由地址域和功能码组成。" in out  # 原文保留
 
 
-def test_contextualize_returns_original_on_empty_reply() -> None:
+def test_contextualize_rejects_empty_reply() -> None:
     llm = FakeLLM("   ")
     original = "一段正文内容。"
-    out = contextualize_chunk(llm, "s", "sec", original)
 
-    assert out == original  # 空回复回退原文
+    with pytest.raises(ValueError, match="分块情境化返回空内容"):
+        contextualize_chunk(llm, "s", "sec", original)
 
 
-def test_contextualize_returns_original_on_llm_error() -> None:
+def test_contextualize_raises_on_llm_error() -> None:
     class BoomLLM:
         def chat(self, *a, **k):
             raise RuntimeError("boom")
 
     original = "一段正文内容。"
-    out = contextualize_chunk(BoomLLM(), "s", "sec", original)
 
-    assert out == original  # LLM 异常不外抛，回退原文
+    with pytest.raises(RuntimeError, match="boom"):
+        contextualize_chunk(BoomLLM(), "s", "sec", original)

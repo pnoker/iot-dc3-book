@@ -11,13 +11,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from core.log import get_logger
-
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from pathlib import Path
-
-logger = get_logger("rag")
 
 SUPPORTED_EXTENSIONS = frozenset({".pdf", ".md", ".markdown"})
 IGNORE_DIRS = frozenset({"node_modules", ".vitepress", ".git", "__pycache__"})
@@ -56,14 +52,14 @@ class SourceFile:
 
 
 def _resolve_categories(source: ReferenceSource, rel: str) -> tuple[str, ...]:
-    """base 分类 ∪ 子目录首段命中的标签；均为空时回退到 label，避免孤儿 chunk。"""
+    """base 分类 ∪ 子目录首段命中的标签。"""
     tags = set(source.categories)
     first_segment = rel.split("/", 1)[0]
     for dir_name, dir_tags in source.dir_categories:
         if dir_name == first_segment:
             tags.update(dir_tags)
     if not tags:
-        tags.add(source.label)
+        raise ValueError(f"参考来源 {source.label}/{rel} 未配置 categories 或 dir_categories")
     return tuple(sorted(tags))
 
 
@@ -73,8 +69,7 @@ def iter_source_files(sources: Sequence[ReferenceSource]) -> list[SourceFile]:
     for source in sources:
         root = source.path
         if not root.exists():
-            logger.warning("参考来源目录不存在，跳过: %s", root)
-            continue
+            raise FileNotFoundError(f"参考来源目录不存在: {root}")
         for path in root.rglob("*"):
             if not path.is_file():
                 continue

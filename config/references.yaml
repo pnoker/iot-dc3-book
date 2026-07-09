@@ -11,6 +11,12 @@ rerank_enabled: false
 rerank_candidates: 12
 # 知识精炼 Contextual Retrieval（默认关闭；开启需对每个分块额外 LLM 调用）
 contextualize: false
+# 可选在线资料补充：默认关闭。启用后只抓取显式配置的 URL 作为证据，不做无来源网络搜索。
+web_research:
+  enabled: false
+  urls: [ ]
+  timeout_seconds: 10
+  max_chars_per_url: 1800
 # 参考来源：PDF 书籍 + IoT DC3 官方中文文档（Markdown）
 # categories 为来源基础标签；dir_categories 按子目录首段追加主题标签（多标签）
 sources:

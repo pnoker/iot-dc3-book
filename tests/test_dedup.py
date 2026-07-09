@@ -5,6 +5,7 @@ from typing import Any
 from agents.research import ResearchAgent
 from agents.writer import WriterAgent
 from core.state import BookState, ChapterContent, ChapterPlan, PartPlan, ReferenceChunk
+from core.web_research import WebEvidence
 
 
 def _state_two_chapters() -> BookState:
@@ -77,3 +78,37 @@ def test_research_query_gen_receives_dedup_hint() -> None:
 
     assert "已在其他章节覆盖" in llm.user_prompt
     assert "第1章 物联网概述" in llm.user_prompt
+
+
+def test_research_dossier_uses_numbered_local_and_web_evidence(monkeypatch: Any) -> None:
+    state = _state_two_chapters()
+    chunk = ReferenceChunk(
+        source_file="books/iot.pdf",
+        chapter_or_section="第1节",
+        text="物联网通过传感器、网络和平台连接物理世界。",
+        relevance_score=0.9,
+    )
+
+    def fake_fetch(urls: list[str], timeout_seconds: float, max_chars_per_url: int) -> list[WebEvidence]:
+        assert urls == ["https://example.test/report"]
+        assert timeout_seconds == 3
+        assert max_chars_per_url == 100
+        return [WebEvidence(url=urls[0], title="Report", excerpt="在线报告摘录")]
+
+    monkeypatch.setattr("agents.research.fetch_web_evidence", fake_fetch)
+    agent = ResearchAgent(
+        _CapturingLLM(),
+        _StubRAG(),
+        web_enabled=True,
+        web_urls=["https://example.test/report"],
+        web_timeout_seconds=3,
+        web_max_chars_per_url=100,
+    )
+
+    dossier = agent.build_dossier(state, [chunk])
+
+    assert dossier is not None
+    assert [note.id for note in dossier.evidence_notes] == ["S1", "W1"]
+    assert "[S1] books/iot.pdf" in dossier.source_notes[0]
+    assert "[W1] Report" in dossier.web_notes[0]
+    assert "[S]/[W]" in dossier.evidence_policy
