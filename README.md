@@ -127,7 +127,7 @@ uv run python main.py write start --fresh
 1. 三级小节写作：生成 `.data/manuscript/chapter-XX/<section-id>.md`。
 2. 小节基础审校：检查空稿、明显过短、标题缺失和禁用词；不通过会自动修订。
 3. 章节合稿：当一章所有三级小节完成后，合成 `.data/manuscript/chapter-XX/chapter.md`。
-4. 章节质量门：依次执行出版确定性规则、事实核查、引用守门、风格校验和编辑审校；不通过会自动返修并重审。
+4. 章节质量门：依次执行出版确定性规则、事实核查、引用守门、风格校验和编辑审校；不通过时优先定位到具体三级小节局部返修，再重新合稿重审；无法定位到小节时才整章兜底返修。
 5. 全书终审：`write resume all` 写完整本书后触发总编辑终审，只有终审通过才设置 `publication_approved=true`。
 
 质量门不会无限循环。默认最多自动修订 `10` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作：
@@ -141,6 +141,25 @@ uv run python main.py write start --fresh
 `uv run python main.py write section 1`、`write section 1.1` 和 `write section 1.1.1` 会在输出的 Markdown 前追加 `write-status` 注释块，显示章节/小节状态、修订轮次和失败摘要，便于直接在正文视图中定位未通过原因。
 
 `write patch-section` 回写人工修改后也会重新进入小节审校与章节质量门，避免人工补丁绕过出版级检查。若希望质量门失败时直接中断，可将 `config/quality.yaml` 的 `continue_on_failure` 改为 `false`。
+
+### 出版级增强质量维度
+
+在上述基础闭环之上，章节质量门还叠加了三个出版级维度，全部通过 `config/quality.yaml` 开关控制：
+
+**对抗式复核（`adversarial_review_enabled`，默认 `true`）**
+
+事实核查、引用守门、风格校验和编辑审校四个门不再是"单次自评说通过就通过"，而是各自从 3 个互不重叠的审查视角、以"默认这一章有问题、请证伪"的立场独立判定，再按多数表决聚合（3 票中 ≥2 票不通过才判失败）。所有视角发现的问题都会合并进修订反馈。代价是每章每轮质量门的 LLM 调用从 4 次增至 12 次；draft 阶段或调试时可关闭退化为单次自评。
+
+**原创性/相似度门（`originality_check_enabled`，默认 `true`）**
+
+针对出版侵权风险：把正文按段落切分，逐段检索最相似的参考原文，只对**别人写的来源**（`config/references.yaml` 中 `label: books` 的源）计算字符 n-gram 重叠。某段与某本参考书重叠率超过 `originality_max_overlap`（默认 `0.35`）即判为疑似洗稿，**硬阻断**并触发改写，反馈形如"第 X 段与《source_file》重叠 Y%"。与自有内容（如 `label: dc3` 的 IoT DC3 文档）雷同不算侵权，直接放行。纯 n-gram 算法、零 LLM 成本，复用现有 RAG 检索。相关阈值：`originality_ngram`（默认 `5`）、`originality_min_paragraph_chars`（默认 `80`，短段落跳过）。
+
+> 这道门只防"洗自己 RAG 库里的参考书"这一最大风险源，**不做全网查重**。正式出版前建议再用专业查重工具兜底。
+
+**AI 腔软提示（写作侧治本 + 检测侧软提示）**
+
+- 写作侧：`WriterAgent` 的写作原则已内置"去 AI 腔"要求——避免套话开场/过渡、排比三连、空心总结句和均匀节奏，从源头让初稿少 AI 味。
+- 检测侧：章节通过质量门后，`core/ai_flavor.py` 用确定性规则检测 AI 套话短语和加粗滥用，结果写入 `ChapterContent.ai_flavor_feedback` 并打印日志。这是**软提示，不阻断质量门、不触发退修**，仅供人工参考决定是否润色。
 
 ### 配图规格标记
 
@@ -189,6 +208,13 @@ main.py              # 最小入口
 - `rag_manifest.py`：索引输入签名与过期判断。
 - `rag.py`：RAGEngine 编排 ChromaDB 与检索。
 - `web_research.py`：抓取显式配置的在线 URL，作为可选证据补充。
+
+出版级质量维度的独立实现：
+
+- `quality_rules.py`：确定性出版质量门与原创性检查（`check_originality`）。
+- `originality.py`：正文切段与字符 n-gram 重叠算法。
+- `ai_flavor.py`：AI 腔软提示的确定性检测。
+- `agents/base.py`：`_adversarial_vote` / `_aggregate_votes` 支撑四个门的多视角对抗式复核。
 
 ### 知识库与证据层
 
