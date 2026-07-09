@@ -50,6 +50,17 @@ def test_write_target_resolution_accepts_human_scopes() -> None:
     ]
 
 
+def test_parallel_chapters_only_for_complete_multi_chapter_targets() -> None:
+    project = object.__new__(BookProject)
+    state = _state_with_sections()
+    state.writing.parallel_chapters = True
+    state.writing.parallel_workers = 3
+
+    assert project._should_parallelize_chapters(state, project._resolve_write_target_sections(state, "all")) is True
+    assert project._should_parallelize_chapters(state, project._resolve_write_target_sections(state, "1")) is False
+    assert project._should_parallelize_chapters(state, project._resolve_write_target_sections(state, "1.1")) is False
+
+
 class _PassingCheck:
     def check(self, state: BookState) -> dict[str, object]:
         return {"pass": True, "issues": []}
@@ -58,6 +69,19 @@ class _PassingCheck:
 class _PassingReview:
     def review(self, state: BookState) -> dict[str, object]:
         return {"pass": True, "issues": [], "foreshadow_checks": []}
+
+
+class _ParallelWriter:
+    def write_planned_section(self, state: BookState, section: SectionPlan, previous_brief: str = "") -> str:
+        return f"### {section.heading}\n\n{section.id} " + "正文" * 120
+
+
+class _NoopResearcher:
+    def search(self, state: BookState) -> list[object]:
+        return []
+
+    def build_dossier(self, state: BookState, chunks: list[object]) -> None:
+        return None
 
 
 class _FailingCheck:
@@ -134,6 +158,36 @@ def _quality_project(tmp_path) -> BookProject:
     project.editor = _PassingReview()
     project.director = _CleanDirector()
     return project
+
+
+def test_parallel_chapters_write_and_merge_by_chapter(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.writer = _ParallelWriter()
+    project.assembler = _Assembler()
+    project.researcher = _NoopResearcher()
+    project.fact_checker = _PassingCheck()
+    project.citation_guard = _PassingCheck()
+    project.style_guard = _PassingCheck()
+    project.editor = _PassingReview()
+    project.director = _CleanDirector()
+    project._new_worker_project = lambda: project
+    project._save_write_checkpoint = lambda thread_id, state: None
+    project.write_status = lambda thread_id: {"thread_id": thread_id, "has_checkpoint": True}
+    state = _state_with_sections()
+    for section in state.get_all_sections_flat():
+        section.target_words = 1
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    state.writing.parallel_chapters = True
+    state.writing.parallel_workers = 2
+
+    status = project._write_chapters_parallel(state, state.get_all_sections_flat(), "book", "all")
+
+    assert status["parallel_chapters"] is True
+    assert status["chapters_processed"] == 2
+    assert status["sections_processed"] == 4
+    assert len(state.section_contents) == 4
+    assert {content.chapter_id for content in state.chapters} == {1, 2}
 
 
 def test_chapter_quality_gate_revises_short_chapter_then_approves(tmp_path) -> None:

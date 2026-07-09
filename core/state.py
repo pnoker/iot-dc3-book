@@ -45,6 +45,8 @@ class WritingSettings(BaseModel):
     core_chapter_ids: list[int] = Field(default_factory=list)
     sectional_drafting: bool = True
     require_research_dossier: bool = True
+    parallel_chapters: bool = True
+    parallel_workers: int = 3
 
     def target_for_chapter(self, chapter_id: int) -> int:
         """返回章节目标字数。"""
@@ -69,7 +71,7 @@ class QualitySettings(BaseModel):
     forbid_placeholder_images: bool = False
     forbid_unsourced_statistics: bool = False
     forbid_unresolved_final_review: bool = False
-    max_revision_rounds: int = 10
+    max_revision_rounds: int = 5
     max_final_revision_rounds: int = 1
     continue_on_failure: bool = True
     adversarial_review_enabled: bool = False

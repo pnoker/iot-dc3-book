@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, cast
 
@@ -201,11 +203,13 @@ class BookProject:
         """按目标范围从小节级 checkpoint 继续写作。每写完一个小节都会落盘。"""
         state = self.load_write_checkpoint(thread_id)
         target_sections = self._resolve_write_target_sections(state, target)
+        if self._should_parallelize_chapters(state, target_sections):
+            return self._write_chapters_parallel(state, target_sections, thread_id, target)
         processed = 0
         for section in target_sections:
             section_content = state.get_section_content(section.id)
             if section_content is None:
-                self._write_current_section(state, section, thread_id)
+                self._write_current_section(state, section, thread_id=thread_id)
                 processed += 1
                 self._save_write_checkpoint(thread_id, state)
             elif section.status == "written":
@@ -221,6 +225,131 @@ class BookProject:
         status["target"] = target
         status["sections_processed"] = processed
         return status
+
+    def _should_parallelize_chapters(self, state: BookState, target_sections: list[SectionPlan]) -> bool:
+        """仅在目标覆盖多个完整章节时启用章节并发，章内仍顺序写作。"""
+        if not state.writing.parallel_chapters or state.writing.parallel_workers <= 1:
+            return False
+        by_chapter: dict[int, list[str]] = {}
+        for section in target_sections:
+            by_chapter.setdefault(section.chapter_id, []).append(section.id)
+        if len(by_chapter) <= 1:
+            return False
+        for chapter_id, section_ids in by_chapter.items():
+            chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
+            if chapter is None:
+                return False
+            expected_ids = [section.id for section in chapter.sections]
+            if section_ids != expected_ids:
+                return False
+        return True
+
+    def _write_chapters_parallel(
+            self,
+            state: BookState,
+            target_sections: list[SectionPlan],
+            thread_id: str,
+            target: str,
+    ) -> dict[str, object]:
+        """按章节并发起草，主线程合并 checkpoint 并执行全书终审。"""
+        chapter_ids = list(dict.fromkeys(section.chapter_id for section in target_sections))
+        workers = min(state.writing.parallel_workers, len(chapter_ids))
+        processed = 0
+        logger.info("🚀 [并发写作] %d 个章节并发起草，workers=%d", len(chapter_ids), workers)
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            futures = {
+                executor.submit(self._write_chapter_in_isolated_state, state, chapter_id): chapter_id
+                for chapter_id in chapter_ids
+            }
+            for future in as_completed(futures):
+                chapter_id = futures[future]
+                isolated_state = future.result()
+                processed += self._merge_chapter_state(state, isolated_state, chapter_id)
+                self._save_write_checkpoint(thread_id, state)
+                logger.info("✅ [并发写作] 第%d章已合并 checkpoint", chapter_id)
+
+        self._move_to_next_unwritten_section(state, target_sections[-1].id, thread_id=thread_id)
+        self._save_write_checkpoint(thread_id, state)
+        status = self.write_status(thread_id)
+        status["target"] = target
+        status["sections_processed"] = processed
+        status["parallel_chapters"] = True
+        status["parallel_workers"] = workers
+        status["chapters_processed"] = len(chapter_ids)
+        return status
+
+    def _write_chapter_in_isolated_state(self, state: BookState, chapter_id: int) -> BookState:
+        """在独立状态副本中顺序写完一个章节，避免线程间抢写 checkpoint。"""
+        worker = self._new_worker_project()
+        isolated = deepcopy(state)
+        return worker._write_chapter_in_worker_state(isolated, chapter_id)
+
+    def _new_worker_project(self) -> BookProject:
+        """创建线程内独立项目实例，避免共享 LLM/RAG 客户端。"""
+        return type(self)(self.config_path)
+
+    def _write_chapter_in_worker_state(self, isolated: BookState, chapter_id: int) -> BookState:
+        """在线程私有项目实例中顺序写完一个章节。"""
+        if not isolated.set_current_chapter_by_id(chapter_id):
+            raise RuntimeError(f"章节不存在: {chapter_id}")
+        chapter = isolated.get_current_chapter()
+        if chapter is None:
+            raise RuntimeError(f"章节不存在: {chapter_id}")
+        for section in chapter.sections:
+            section_content = isolated.get_section_content(section.id)
+            if section_content is None:
+                self._write_current_section(isolated, section, thread_id=None)
+            elif section.status == "written":
+                previous_brief = self._previous_section_brief(isolated, section)
+                section_content = self._review_section_until_pass(
+                    isolated,
+                    section,
+                    section_content,
+                    previous_brief,
+                    thread_id=None,
+                )
+                isolated.upsert_section_content(section_content)
+                self._save_section_file(isolated, section_content)
+        self._assemble_chapter_if_ready(isolated, chapter_id, thread_id=None)
+        return isolated
+
+    def _merge_chapter_state(self, state: BookState, source: BookState, chapter_id: int) -> int:
+        """把隔离状态中的单章产物合回主 checkpoint。"""
+        processed = 0
+        source_chapter = next((item for item in source.get_all_chapters_flat() if item.id == chapter_id), None)
+        target_chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
+        if source_chapter is None or target_chapter is None:
+            raise RuntimeError(f"章节不存在: {chapter_id}")
+        target_chapter.status = source_chapter.status
+        target_chapter.research_dossier = source_chapter.research_dossier
+        target_chapter.foreshadows_planted = source_chapter.foreshadows_planted
+        target_chapter.foreshadows_resolved = source_chapter.foreshadows_resolved
+        for source_section in source_chapter.sections:
+            target_section = state.get_section_plan(source_section.id)
+            if target_section is not None:
+                target_section.status = source_section.status
+        for content in source.get_chapter_section_contents(chapter_id):
+            if state.get_section_content(content.section_id) is None:
+                processed += 1
+            state.upsert_section_content(content)
+        chapter_content = source.get_chapter_content(chapter_id)
+        if chapter_content is not None:
+            state.upsert_chapter_content(chapter_content)
+        self._merge_foreshadows(state, source)
+        return processed
+
+    @staticmethod
+    def _merge_foreshadows(state: BookState, source: BookState) -> None:
+        """合并并发章节对伏笔账本的状态更新，避免后完成的章节覆盖先完成章节。"""
+        by_id = {item.id: item for item in state.foreshadows}
+        precedence = {"planted": 0, "abandoned": 1, "resolved": 2}
+        for source_item in source.foreshadows:
+            target_item = by_id.get(source_item.id)
+            if target_item is None:
+                state.foreshadows.append(source_item)
+                continue
+            if precedence.get(source_item.status, 0) > precedence.get(target_item.status, 0):
+                target_item.status = source_item.status
 
     def write_export_output(self, thread_id: str) -> str:
         """根据小节级 checkpoint 中已组装章节导出 output。"""
@@ -399,7 +528,7 @@ class BookProject:
         state.current_phase = "completed"
         self._final_review_if_ready(state, thread_id=thread_id)
 
-    def _write_current_section(self, state: BookState, section: SectionPlan, thread_id: str) -> None:
+    def _write_current_section(self, state: BookState, section: SectionPlan, thread_id: str | None) -> None:
         if not state.set_current_section_by_id(section.id):
             raise RuntimeError(f"三级小节不存在: {section.id}")
         self._ensure_chapter_research(state)
@@ -415,7 +544,8 @@ class BookProject:
         state.upsert_section_content(content)
         state.mark_section_status(section.id, "written")
         self._save_section_file(state, content)
-        self._save_write_checkpoint(thread_id, state)
+        if thread_id is not None:
+            self._save_write_checkpoint(thread_id, state)
         content = self._review_section_until_pass(state, section, content, previous_brief, thread_id)
         state.upsert_section_content(content)
         self._save_section_file(state, content)
@@ -427,7 +557,7 @@ class BookProject:
             section: SectionPlan,
             content: SectionContent,
             previous_brief: str,
-            thread_id: str,
+            thread_id: str | None,
     ) -> SectionContent:
         """执行小节级基础质量闭环。"""
         for round_index in range(state.max_revision_count + 1):
@@ -451,13 +581,15 @@ class BookProject:
             content.revision_feedback = feedback
             state.upsert_section_content(content)
             self._save_section_file(state, content)
-            self._save_write_checkpoint(thread_id, state)
+            if thread_id is not None:
+                self._save_write_checkpoint(thread_id, state)
             if round_index >= state.max_revision_count:
                 content.revision_count = round_index
                 state.mark_section_status(section.id, "review_failed")
                 state.upsert_section_content(content)
                 self._save_section_file(state, content)
-                self._save_write_checkpoint(thread_id, state)
+                if thread_id is not None:
+                    self._save_write_checkpoint(thread_id, state)
                 message = f"小节 {section.id} 质量审校未通过，已达修订上限。"
                 logger.warning("⚠️ [小节审校] %s 已标记 review_failed 并继续", message)
                 if not state.quality.continue_on_failure:
@@ -482,7 +614,8 @@ class BookProject:
             )
             state.upsert_section_content(content)
             self._save_section_file(state, content)
-            self._save_write_checkpoint(thread_id, state)
+            if thread_id is not None:
+                self._save_write_checkpoint(thread_id, state)
 
         return content
 

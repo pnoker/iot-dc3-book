@@ -54,7 +54,7 @@ uv run python main.py write resume
 
 ### 日常续写
 
-写作阶段支持按自然目录目标续写。程序中断后，不需要重新生成大纲，也不需要重建知识库。
+写作阶段支持按自然目录目标续写。程序中断后，不需要重新生成大纲，也不需要重建知识库。`write resume all` 默认按章节并发起草，单章内部仍按三级小节顺序写作，以兼顾速度和章内连续性。
 
 ```bash
 # 查看当前写作断点
@@ -84,6 +84,8 @@ uv run python main.py write section 1.1.1
 # 导出当前已组装章节到 output/
 uv run python main.py write export-output
 ```
+
+章节并发由 `config/writing.yaml` 控制：`parallel_chapters: true`、`parallel_workers: 3`。只有目标覆盖多个完整章节时才会并发；`write resume 1`、`write resume 1.1`、`write resume 1.1.1` 仍保持顺序执行。
 
 ### 人工审稿与局部修复
 
@@ -130,7 +132,9 @@ uv run python main.py write start --fresh
 4. 章节质量门：依次执行出版确定性规则、事实核查、引用守门、风格校验和编辑审校；不通过时优先定位到具体三级小节局部返修，再重新合稿重审；无法定位到小节时才整章兜底返修。
 5. 全书终审：`write resume all` 写完整本书后触发总编辑终审，只有终审通过才设置 `publication_approved=true`。
 
-质量门不会无限循环。默认最多自动修订 `10` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作：
+并发写作完成后仍会进入全书终审。伏笔、术语统一、重复内容、章节递进和连续性问题不会在并发阶段强行判断，而是在终审中统一检查；终审发现问题后按章节返修，再重新进入章节质量门。
+
+质量门不会无限循环。默认最多自动修订 `5` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作；不建议继续调大，否则会显著拖慢写作并放大重复返修成本。
 
 - 小节未通过会标记为 `review_failed`。
 - 章节未通过会标记为 `quality_failed`。
