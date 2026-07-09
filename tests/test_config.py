@@ -72,6 +72,8 @@ def test_config_to_book_state():
     assert state.max_revision_count == 10
     assert state.max_final_revision_round == 1
     assert state.quality.continue_on_failure is True
+    assert state.writing.parallel_chapters is True
+    assert state.writing.parallel_workers == 3
 
 
 def test_config_to_app_config_returns_typed_models(monkeypatch):
@@ -86,6 +88,8 @@ def test_config_to_app_config_returns_typed_models(monkeypatch):
     assert app_config.llm.embedding.model == "qwen/qwen3-embedding-8b"
     assert app_config.references.chunk_size > app_config.references.chunk_overlap
     assert app_config.references.web_research.enabled is False
+    assert app_config.writing.parallel_chapters is True
+    assert app_config.writing.parallel_workers == 3
     assert app_config.quality.require_exercises is False
     assert app_config.quality.max_revision_rounds == 10
     assert app_config.quality.min_figures_per_section == 1

@@ -45,6 +45,8 @@ class WritingSettings(BaseModel):
     core_chapter_ids: list[int] = Field(default_factory=list)
     sectional_drafting: bool = True
     require_research_dossier: bool = True
+    parallel_chapters: bool = True
+    parallel_workers: int = 3
 
     def target_for_chapter(self, chapter_id: int) -> int:
         """返回章节目标字数。"""

@@ -163,6 +163,8 @@ class WritingConfig(StrictConfigModel):
     core_chapter_ids: list[int] = Field(default_factory=list)
     sectional_drafting: bool = True
     require_research_dossier: bool = True
+    parallel_chapters: bool = True
+    parallel_workers: int = 3
 
     @model_validator(mode="after")
     def validate_targets(self) -> WritingConfig:
@@ -171,6 +173,8 @@ class WritingConfig(StrictConfigModel):
         for field_name in ("default_chapter_target_words", "core_chapter_target_words", "light_chapter_target_words"):
             if getattr(self, field_name) <= 0:
                 raise ValueError(f"writing.{field_name} 必须大于 0")
+        if self.parallel_workers <= 0:
+            raise ValueError("writing.parallel_workers 必须大于 0")
         return self
 
 
