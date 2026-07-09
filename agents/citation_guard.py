@@ -18,6 +18,13 @@ _CITATION_GUARD_SYSTEM = """你是一位技术图书事实与引用编辑。
 - 真实项目案例、成本、比例、性能、市场规模、年份分界、标准状态必须能对应到资料包。
 - 没有证据时，建议必须具体到“删除数字”“改为定性表述”或“标注为假设场景并移除精确数据”。"""
 
+# 对抗式复核视角：每票聚焦一类引用/断言缺依据的模式。
+_PERSPECTIVES: list[tuple[str, str]] = [
+    ("硬数据溯源", "重点审查版本号、统计数字、性能与成本数据能否对应到研究资料包中的 [S]/[W] 编号。"),
+    ("项目/案例真实性", "重点审查真实项目案例、企业名称、落地成本与规模描述是否有资料支撑，警惕虚构或夸大。"),
+    ("趋势/市场断言", "重点审查行业趋势、市场规模、占比、增长率等宏观断言是否有据，警惕无来源的想当然结论。"),
+]
+
 
 class CitationGuardAgent(BaseAgent):
     """引用守门 Agent。"""
@@ -39,10 +46,17 @@ class CitationGuardAgent(BaseAgent):
 # 正文
 {content.markdown}
 
-请输出 JSON：{{"pass": true, "issues": [{{"severity": "major", "claim": "...", "suggestion": "..."}}], "summary": "..."}}。"""
+请输出 JSON：{{"pass": true, "issues": [{{"severity": "major", "section_id": "1.1.1", "claim": "...", "suggestion": "..."}}], "summary": "..."}}。
+issue 能定位到三级小节时必须填写 section_id；不能定位时 section_id 留空字符串。"""
         self.logger.info("引用守门检查第%d章...", chapter.id)
         try:
-            return self.llm.chat_json(_CITATION_GUARD_SYSTEM, user_prompt, temperature=0.2)
+            return self._adversarial_vote(
+                _CITATION_GUARD_SYSTEM,
+                user_prompt,
+                _PERSPECTIVES,
+                temperature=0.2,
+                enabled=state.quality.adversarial_review_enabled,
+            )
         except ValueError as exc:
             self.logger.error("引用检查报告解析失败")
             raise RuntimeError("引用检查报告解析失败，已阻断章节质量门。") from exc

@@ -29,7 +29,7 @@ _STYLE_GUARD_SYSTEM = """你是一位书籍排版与风格规范专家。
   "pass": true,
   "score": 8,
   "issues": [
-    {"type": "forbidden_word", "line_hint": "第3段", "description": "...", "fix": "..."}
+    {"type": "forbidden_word", "section_id": "1.1.1", "line_hint": "第3段", "description": "...", "fix": "..."}
   ],
   "statistics": {
     "word_count": 5000,
@@ -40,7 +40,15 @@ _STYLE_GUARD_SYSTEM = """你是一位书籍排版与风格规范专家。
   }
 }
 ```
-score < 6 时 pass = false"""
+score < 6 时 pass = false。
+issue 能定位到三级小节时必须填写 section_id；不能定位时 section_id 留空字符串。"""
+
+# 对抗式复核视角：每票聚焦一类风格/格式问题。
+_PERSPECTIVES: list[tuple[str, str]] = [
+    ("标题层级与章节结构", "重点审查 # ## ### #### 层级是否规范、层次是否清晰、章节是否自然收束。"),
+    ("术语规范与禁用词", "重点审查专业术语首次出现是否附英文原文、术语是否统一、是否包含禁用词汇。"),
+    ("图表规格与代码块", "重点审查 book-figure 规格块字段是否完整、是否被替换成图片占位/Mermaid/SVG/HTML/ASCII，以及代码块语言标注。"),
+]
 
 
 class StyleGuardAgent(BaseAgent):
@@ -75,7 +83,13 @@ class StyleGuardAgent(BaseAgent):
 
         self.logger.info("校验第%d章风格...", chapter.id)
         try:
-            return self.llm.chat_json(_STYLE_GUARD_SYSTEM, user_prompt, temperature=0.2)
+            return self._adversarial_vote(
+                _STYLE_GUARD_SYSTEM,
+                user_prompt,
+                _PERSPECTIVES,
+                temperature=0.2,
+                enabled=state.quality.adversarial_review_enabled,
+            )
         except ValueError as exc:
             self.logger.error("风格校验报告解析失败")
             raise RuntimeError("风格校验报告解析失败，已阻断章节质量门。") from exc

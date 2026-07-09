@@ -41,7 +41,7 @@ _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
     {"id": "F002", "type": "resolve", "done": false}
   ],
   "issues": [
-    {"severity": "minor", "dimension": "coherence", "description": "...", "suggestion": "..."}
+    {"severity": "minor", "dimension": "coherence", "section_id": "1.1.1", "description": "...", "suggestion": "..."}
   ],
   "summary": "总体评价"
 }
@@ -51,11 +51,26 @@ _EDITOR_SYSTEM = """你是一位严格的技术书籍审校编辑。
 - 存在 critical 级别问题: pass = false
 - overall_score < 6: pass = false
 - foreshadow 维度得分 < 5: pass = false
-- 存在 type=resolve 且 done=false 的伏笔（应回收却未回收）: pass = false"""
+- 存在 type=resolve 且 done=false 的伏笔（应回收却未回收）: pass = false
+- issue 能定位到三级小节时必须填写 section_id；不能定位时 section_id 留空字符串"""
+
+# 对抗式复核视角：每票聚焦一类审校维度。
+_PERSPECTIVES: list[tuple[str, str]] = [
+    ("逻辑连贯", "重点审查论述是否有逻辑跳跃、与前文衔接是否自然、内容是否准确充实。"),
+    ("前后一致性", "重点审查术语使用、观点立场、口径是否与前文一致，是否存在前后矛盾。"),
+    ("伏笔核验", "重点逐条核验伏笔任务清单：埋入类是否已自然植入、回收类是否已给出呼应/解答。"),
+]
 
 
 class EditorAgent(BaseAgent):
     """一致性审校 Agent"""
+
+    @staticmethod
+    def _aggregate_votes(reports: list[dict[str, Any]]) -> dict[str, Any]:
+        """在通用聚合基础上，额外按伏笔 id 对 foreshadow_checks 做多数表决。"""
+        aggregated = BaseAgent._aggregate_votes(reports)
+        aggregated["foreshadow_checks"] = _aggregate_foreshadow_checks(reports)
+        return aggregated
 
     def review(self, state: BookState) -> dict[str, Any]:
         """审校当前章节，返回审校报告"""
@@ -98,7 +113,39 @@ class EditorAgent(BaseAgent):
 
         self.logger.info("审校第%d章...", chapter.id)
         try:
-            return self.llm.chat_json(_EDITOR_SYSTEM, user_prompt, temperature=0.3)
+            return self._adversarial_vote(
+                _EDITOR_SYSTEM,
+                user_prompt,
+                _PERSPECTIVES,
+                temperature=0.3,
+                enabled=state.quality.adversarial_review_enabled,
+            )
         except ValueError as exc:
             self.logger.error("审校报告解析失败")
             raise RuntimeError("审校报告解析失败，已阻断章节质量门。") from exc
+
+
+def _aggregate_foreshadow_checks(reports: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """按伏笔 id 聚合多票的 foreshadow_checks，done 采用多数表决。"""
+    total = len(reports)
+    done_counts: dict[str, int] = {}
+    type_by_id: dict[str, str] = {}
+    order: list[str] = []
+    for report in reports:
+        checks = report.get("foreshadow_checks")
+        if not isinstance(checks, list):
+            continue
+        for item in checks:
+            if not isinstance(item, dict) or not item.get("id"):
+                continue
+            fid = str(item["id"])
+            if fid not in type_by_id:
+                type_by_id[fid] = str(item.get("type", ""))
+                order.append(fid)
+            if item.get("done") is True:
+                done_counts[fid] = done_counts.get(fid, 0) + 1
+    # 多数表决：过半票认为 done 才算 done。
+    return [
+        {"id": fid, "type": type_by_id[fid], "done": done_counts.get(fid, 0) * 2 >= total}
+        for fid in order
+    ]

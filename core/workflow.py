@@ -19,12 +19,13 @@ from agents.planner import PlannerAgent
 from agents.research import ResearchAgent
 from agents.style_guard import StyleGuardAgent
 from agents.writer import WriterAgent
+from core.ai_flavor import detect_ai_flavor
 from core.config import config_to_book_state, get_config_paths, get_embed_config, get_llm_config, load_app_config
 from core.llm_client import LLMClient
 from core.log import get_logger
 from core.markdown_assets import extract_book_figures, find_invalid_book_figures
 from core.output import generate_output
-from core.quality_rules import ensure_book_releasable, evaluate_chapter_quality
+from core.quality_rules import check_originality, ensure_book_releasable, evaluate_chapter_quality
 from core.rag import RAGEngine
 from core.rag_contextualize import contextualize_chunk
 from core.rag_rerank import rerank_chunks
@@ -603,17 +604,7 @@ class BookProject:
         chapter = state.get_current_chapter()
         if chapter is None:
             raise RuntimeError(f"章节不存在: {chapter_id}")
-        sections = state.get_chapter_section_contents(chapter_id)
-        if not sections:
-            raise RuntimeError(f"第{chapter_id}章尚无小节正文，无法合稿。")
-        raw_markdown = "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in sections)])
-        markdown = self.assembler.assemble(state, raw_markdown)
-        content = ChapterContent(
-            chapter_id=chapter.id,
-            title=chapter.title,
-            markdown=markdown,
-            word_count=count_words(markdown),
-        )
+        content = self._assemble_chapter_from_sections(state, chapter_id)
         state.upsert_chapter_content(content)
         state.mark_chapter_status(chapter.id, "written")
         self._save_chapter_file(state, content)
@@ -624,6 +615,30 @@ class BookProject:
             state.set_current_section_by_id(previous_section_id)
         self._save_chapter_file(state, content)
         logger.info("📚 [合稿] 第%d章完成，%d 字", chapter.id, content.word_count)
+
+    def _assemble_chapter_from_sections(
+            self,
+            state: BookState,
+            chapter_id: int,
+            *,
+            revision_count: int = 0,
+    ) -> ChapterContent:
+        """根据当前小节正文重新合成章节正文。"""
+        chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
+        if chapter is None:
+            raise RuntimeError(f"章节不存在: {chapter_id}")
+        sections = state.get_chapter_section_contents(chapter_id)
+        if not sections:
+            raise RuntimeError(f"第{chapter_id}章尚无小节正文，无法合稿。")
+        raw_markdown = "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in sections)])
+        markdown = self.assembler.assemble(state, raw_markdown)
+        return ChapterContent(
+            chapter_id=chapter.id,
+            title=chapter.title,
+            markdown=markdown,
+            word_count=count_words(markdown),
+            revision_count=revision_count,
+        )
 
     def _review_chapter_until_pass(
             self,
@@ -641,6 +656,19 @@ class BookProject:
 
         for round_index in range(state.max_revision_count + 1):
             deterministic_report = evaluate_chapter_quality(state, content, base_dir=self.paths.project_dir)
+            originality_issues = check_originality(
+                self.rag,
+                content,
+                state.quality,
+                categories=self.cfg.references.query_categories,
+            )
+            if originality_issues:
+                deterministic_report = deterministic_report.model_copy(
+                    update={
+                        "pass_": False,
+                        "issues": [*deterministic_report.issues, *originality_issues],
+                    }
+                )
             if not deterministic_report.pass_:
                 content.publication_feedback = deterministic_report.to_feedback()
                 content.revision_feedback = content.publication_feedback
@@ -651,11 +679,12 @@ class BookProject:
                 if round_index >= state.max_revision_count:
                     message = f"第{chapter_id}章出版质量门未通过，已达修订上限。"
                     return self._mark_chapter_quality_failed(state, content, message, thread_id=thread_id)
-                content = self._revise_chapter_from_feedback(
+                content = self._revise_chapter_or_sections_from_feedback(
                     state,
                     content,
                     deterministic_report.to_feedback(),
                     round_index + 1,
+                    thread_id=thread_id,
                 )
                 continue
 
@@ -689,6 +718,7 @@ class BookProject:
                 content.review_feedback = ""
                 content.publication_feedback = ""
                 content.revision_feedback = ""
+                self._annotate_ai_flavor(content)
                 state.upsert_chapter_content(content)
                 self._apply_foreshadow_checks(state, chapter_id, editor_report)
                 state.mark_chapter_status(chapter_id, "approved")
@@ -700,14 +730,148 @@ class BookProject:
                 state.upsert_chapter_content(content)
                 message = f"第{chapter_id}章 LLM 质量门未通过，已达修订上限。"
                 return self._mark_chapter_quality_failed(state, content, message, thread_id=thread_id)
-            content = self._revise_chapter_from_feedback(
+            content = self._revise_chapter_or_sections_from_feedback(
                 state,
                 content,
                 self._chapter_revision_feedback(content),
                 round_index + 1,
+                thread_id=thread_id,
             )
 
         return content
+
+    def _revise_chapter_or_sections_from_feedback(
+            self,
+            state: BookState,
+            content: ChapterContent,
+            feedback: str,
+            revision_count: int,
+            *,
+            thread_id: str | None,
+    ) -> ChapterContent:
+        """优先按反馈定位三级小节局部返修，定位不到再整章兜底。"""
+        section_ids = self._feedback_section_ids(state, content.chapter_id, feedback)
+        if section_ids:
+            return self._revise_sections_from_chapter_feedback(
+                state,
+                content,
+                section_ids,
+                feedback,
+                revision_count,
+                thread_id=thread_id,
+            )
+        return self._revise_chapter_from_feedback(state, content, feedback, revision_count)
+
+    def _revise_sections_from_chapter_feedback(
+            self,
+            state: BookState,
+            content: ChapterContent,
+            section_ids: list[str],
+            feedback: str,
+            revision_count: int,
+            *,
+            thread_id: str | None,
+    ) -> ChapterContent:
+        """仅修订被章节质量门定位到的三级小节，并重新合稿。"""
+        previous_section_id = state.current_section_id
+        revised_count = 0
+        for section_id in section_ids:
+            section = state.get_section_plan(section_id)
+            section_content = state.get_section_content(section_id)
+            if section is None or section_content is None:
+                continue
+            if not state.set_current_section_by_id(section_id):
+                continue
+            previous_brief = self._previous_section_brief(state, section)
+            revised_markdown = self.writer.revise_planned_section(
+                state,
+                section,
+                section_content.markdown,
+                feedback,
+                previous_brief=previous_brief,
+            )
+            revised_content = SectionContent(
+                section_id=section.id,
+                chapter_id=section.chapter_id,
+                title=section.title,
+                markdown=revised_markdown,
+                word_count=count_words(revised_markdown),
+                revision_feedback=feedback,
+                revision_count=revision_count,
+            )
+            state.upsert_section_content(revised_content)
+            state.mark_section_status(section.id, "written")
+            self._save_section_file(state, revised_content)
+            revised_count += 1
+
+        if previous_section_id:
+            state.set_current_section_by_id(previous_section_id)
+        if revised_count == 0:
+            return self._revise_chapter_from_feedback(state, content, feedback, revision_count)
+
+        assembled = self._assemble_chapter_from_sections(state, content.chapter_id, revision_count=revision_count)
+        assembled.revision_feedback = feedback
+        state.upsert_chapter_content(assembled)
+        self._save_chapter_file(state, assembled)
+        if thread_id is not None:
+            self._save_write_checkpoint(thread_id, state)
+        logger.info(
+            "🔁 [章节局部修订] 第%d章第%d轮修订 %d 个小节后重新合稿，%d 字",
+            content.chapter_id,
+            revision_count,
+            revised_count,
+            assembled.word_count,
+        )
+        return assembled
+
+    def _feedback_section_ids(self, state: BookState, chapter_id: int, feedback: str) -> list[str]:
+        """从质量反馈中提取可局部修订的三级小节编号。"""
+        known_ids = [section.id for section in state.get_all_sections_flat() if section.chapter_id == chapter_id]
+        known = set(known_ids)
+        result: list[str] = []
+        for section_id in self._section_ids_from_json_feedback(feedback, known):
+            if section_id not in result:
+                result.append(section_id)
+        for section_id in re.findall(rf"\b{chapter_id}\.\d+\.\d+\b", feedback):
+            if section_id in known and section_id not in result:
+                result.append(section_id)
+        return result
+
+    def _section_ids_from_json_feedback(self, feedback: str, known: set[str]) -> list[str]:
+        """解析 JSON 反馈中的 section_id 字段。"""
+        result: list[str] = []
+        for payload in self._json_objects_from_text(feedback):
+            self._collect_section_ids(payload, known, result)
+        return result
+
+    @staticmethod
+    def _json_objects_from_text(text: str) -> list[object]:
+        decoder = json.JSONDecoder()
+        payloads: list[object] = []
+        index = 0
+        while index < len(text):
+            start = text.find("{", index)
+            if start < 0:
+                break
+            try:
+                payload, end = decoder.raw_decode(text[start:])
+            except json.JSONDecodeError:
+                index = start + 1
+                continue
+            payloads.append(payload)
+            index = start + end
+        return payloads
+
+    def _collect_section_ids(self, payload: object, known: set[str], result: list[str]) -> None:
+        if isinstance(payload, dict):
+            section_id = payload.get("section_id")
+            if isinstance(section_id, str) and section_id in known and section_id not in result:
+                result.append(section_id)
+            for value in payload.values():
+                self._collect_section_ids(value, known, result)
+        elif isinstance(payload, list):
+            for item in payload:
+                self._collect_section_ids(item, known, result)
 
     def _revise_chapter_from_feedback(
             self,
@@ -807,6 +971,13 @@ class BookProject:
             check_type = done_by_id.get(item.id)
             if check_type == "resolve" and item.planned_resolve_chapter == chapter_id:
                 item.status = "resolved"
+
+    def _annotate_ai_flavor(self, content: ChapterContent) -> None:
+        """检测 AI 腔并记录为软提示，不阻断质量门。"""
+        issues = detect_ai_flavor(content.markdown)
+        content.ai_flavor_feedback = "\n".join(f"- {issue}" for issue in issues)
+        if issues:
+            logger.info("✍️ [AI 腔软提示] 第%d章发现 %d 类痕迹，已记录供人工参考", content.chapter_id, len(issues))
 
     def _final_review_if_ready(self, state: BookState, *, thread_id: str | None = None) -> None:
         """所有章节完成后执行全书终审。"""

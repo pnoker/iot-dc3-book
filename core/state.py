@@ -72,6 +72,11 @@ class QualitySettings(BaseModel):
     max_revision_rounds: int = 10
     max_final_revision_rounds: int = 1
     continue_on_failure: bool = True
+    adversarial_review_enabled: bool = False
+    originality_check_enabled: bool = False
+    originality_max_overlap: float = 0.35
+    originality_ngram: int = 5
+    originality_min_paragraph_chars: int = 80
 
 
 class BlueprintSection(BaseModel):
@@ -192,6 +197,8 @@ class ChapterContent(BaseModel):
     publication_feedback: str = ""
     revision_feedback: str = ""
     revision_count: int = 0
+    # AI 腔软提示（不阻断质量门，仅记录供人工参考）
+    ai_flavor_feedback: str = ""
     # Editor 对本章伏笔任务的核验结论 [{id, type, done}]，供质量门通过时转移伏笔状态
     foreshadow_checks: list[dict[str, Any]] = Field(default_factory=list)
 
@@ -219,6 +226,7 @@ class ReferenceChunk(BaseModel):
     chapter_or_section: str
     text: str
     relevance_score: float = 0.0
+    label: str = ""
 
 
 class BookState(BaseModel):

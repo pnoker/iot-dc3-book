@@ -40,7 +40,7 @@ _FACT_CHECKER_SYSTEM = """你是一位严格的技术事实核查编辑。
     {"claim": "被核查的关键断言", "status": "supported", "evidence": "依据摘要"}
   ],
   "issues": [
-    {"severity": "major", "description": "问题", "suggestion": "修改建议"}
+    {"severity": "major", "section_id": "1.1.1", "description": "问题", "suggestion": "修改建议"}
   ],
   "summary": "总体事实核查结论"
 }
@@ -48,7 +48,15 @@ _FACT_CHECKER_SYSTEM = """你是一位严格的技术事实核查编辑。
 
 ## 判定规则
 - 存在 major 或 critical 事实问题时 pass = false
-- score < 7 时 pass = false"""
+- score < 7 时 pass = false
+- issue 能定位到三级小节时必须填写 section_id；不能定位时 section_id 留空字符串"""
+
+# 对抗式复核视角：每票聚焦一类硬事实错误模式，覆盖互不重叠。
+_PERSPECTIVES: list[tuple[str, str]] = [
+    ("数字/版本/年份分界", "重点审查精确数字、版本号、标准版本、年份分界与时间线；这类断言最易出错且最误导读者。"),
+    ("架构/协议/标准断言", "重点审查协议能力、架构描述、标准名称与状态、产品能力边界是否与证据一致。"),
+    ("性能/成本/市场结论", "重点审查时延/吞吐/成本/市场金额/占比等量化结论，以及由其推出的工程实践结论是否有依据。"),
+]
 
 _HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*$", re.MULTILINE)
 
@@ -85,7 +93,13 @@ class FactCheckerAgent(BaseAgent):
 
         self.logger.info("事实核查第%d章（独立取证 %d 段）...", chapter.id, len(evidence))
         try:
-            return self.llm.chat_json(_FACT_CHECKER_SYSTEM, user_prompt, temperature=0.2)
+            return self._adversarial_vote(
+                _FACT_CHECKER_SYSTEM,
+                user_prompt,
+                _PERSPECTIVES,
+                temperature=0.2,
+                enabled=state.quality.adversarial_review_enabled,
+            )
         except ValueError as exc:
             self.logger.error("事实核查报告解析失败")
             raise RuntimeError("事实核查报告解析失败，已阻断章节质量门。") from exc

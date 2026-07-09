@@ -5,10 +5,36 @@ Agent 基类和共用工具
 from __future__ import annotations
 
 import json
+from math import ceil
+from typing import Any
 
 from core.llm_client import LLMClient
 from core.log import get_logger
 from core.state import BookState, StyleConfig
+
+# 对抗立场：追加到每个质量门 system 提示，让审查者默认"这一章有问题"，主动证伪而非放行。
+_ADVERSARIAL_STANCE = """
+
+## 审查立场
+你的默认立场是「这一章存在问题」。请主动尝试证伪、找出不应通过的理由，而不是找理由放行。
+只有在你认真尝试挑错后仍找不到实质问题时，才判 pass=true。
+本次你只从下面这个特定视角审查，聚焦该视角内的问题，不必覆盖其它视角。"""
+
+
+def _merge_by_text(reports: list[dict[str, Any]], key: str) -> list[Any]:
+    """合并多份报告的列表字段，按内容去重（保留首次出现顺序）。"""
+    merged: list[Any] = []
+    seen: set[str] = set()
+    for report in reports:
+        items = report.get(key)
+        if not isinstance(items, list):
+            continue
+        for item in items:
+            fingerprint = json.dumps(item, ensure_ascii=False, sort_keys=True) if isinstance(item, dict) else str(item)
+            if fingerprint not in seen:
+                seen.add(fingerprint)
+                merged.append(item)
+    return merged
 
 
 class BaseAgent:
@@ -17,6 +43,54 @@ class BaseAgent:
     def __init__(self, llm: LLMClient) -> None:
         self.llm = llm
         self.logger = get_logger(self.__class__.__name__)
+
+    def _adversarial_vote(
+            self,
+            base_system: str,
+            user_prompt: str,
+            perspectives: list[tuple[str, str]],
+            *,
+            temperature: float | None = None,
+            enabled: bool = True,
+    ) -> dict[str, Any]:
+        """多视角对抗式复核。
+
+        每个视角以「默认有问题」的立场独立判定一次，再多数表决聚合。
+        enabled=False 或视角数 <= 1 时退化为单次自评（向后兼容）。
+        """
+        if not enabled or len(perspectives) <= 1:
+            return self.llm.chat_json(base_system, user_prompt, temperature=temperature)
+
+        reports: list[dict[str, Any]] = []
+        for name, lens in perspectives:
+            system = f"{base_system}{_ADVERSARIAL_STANCE}\n\n### 本次审查视角：{name}\n{lens}"
+            reports.append(self.llm.chat_json(system, user_prompt, temperature=temperature))
+        return self._aggregate_votes(reports)
+
+    @staticmethod
+    def _aggregate_votes(reports: list[dict[str, Any]]) -> dict[str, Any]:
+        """多数表决聚合多份质量报告，保持与单次报告一致的字段形状。"""
+        total = len(reports)
+        fail_votes = sum(1 for r in reports if r.get("pass") is not True)
+        # 多数表决：≥ ceil(N/2) 票判失败才算失败（3 票需 ≥2 票）。
+        final_pass = fail_votes < ceil(total / 2)
+
+        merged_issues = _merge_by_text(reports, "issues")
+        merged_claims = _merge_by_text(reports, "claims")
+
+        scores = [r["score"] for r in reports if isinstance(r.get("score"), (int, float))]
+        summaries = [str(r.get("summary", "")).strip() for r in reports if str(r.get("summary", "")).strip()]
+
+        aggregated: dict[str, Any] = {
+            "pass": final_pass,
+            "issues": merged_issues,
+            "summary": f"{total} 票中 {fail_votes} 票判定不通过。" + " ".join(summaries),
+        }
+        if merged_claims:
+            aggregated["claims"] = merged_claims
+        if scores:
+            aggregated["score"] = min(scores)
+        return aggregated
 
     def _build_style_prompt(self, style: StyleConfig) -> str:
         """构建风格规范提示词"""

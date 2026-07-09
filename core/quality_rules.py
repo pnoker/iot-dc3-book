@@ -16,11 +16,15 @@ from core.markdown_assets import (
     find_placeholder_images,
     missing_local_images,
 )
+from core.originality import char_ngram_overlap, split_paragraphs
 from core.state import BookState, ChapterContent, QualitySettings
 from core.wordcount import count_words
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
     from pathlib import Path
+
+    from core.rag import RAGEngine
 
 
 class PublicationIssue(BaseModel):
@@ -129,6 +133,48 @@ def ensure_book_releasable(state: BookState, base_dir: Path | None = None) -> No
             raise RuntimeError("出版级 release 输出前质量复检失败：" + " | ".join(failed[:5]))
         return
     raise RuntimeError("出版级 release 模式要求终审通过后才能输出。当前书稿尚未 publication_approved。")
+
+
+def check_originality(
+        rag: RAGEngine,
+        content: ChapterContent,
+        settings: QualitySettings,
+        *,
+        categories: Sequence[str] | None = None,
+) -> list[PublicationIssue]:
+    """检测章节正文是否与参考书原文（label=books）高度雷同，产出侵权风险问题。
+
+    对每个正文段落检索最相似的参考原文，只对「别人写的」来源（label=books）计算字符
+    n-gram 重叠；与自有内容（如 label=dc3）雷同不算侵权，直接放行。
+    """
+    if not settings.originality_check_enabled:
+        return []
+
+    issues: list[PublicationIssue] = []
+    for index, paragraph in enumerate(split_paragraphs(content.markdown), start=1):
+        if len(paragraph) < settings.originality_min_paragraph_chars:
+            continue
+        best_overlap = 0.0
+        best_source = ""
+        for hit in rag.retrieve(paragraph, top_k=3, categories=categories):
+            if hit.label != "books":  # 只对别人写的材料判侵权；自有内容雷同放行
+                continue
+            overlap = char_ngram_overlap(paragraph, hit.text, n=settings.originality_ngram)
+            if overlap > best_overlap:
+                best_overlap = overlap
+                best_source = hit.source_file
+        if best_overlap >= settings.originality_max_overlap:
+            issues.append(
+                PublicationIssue(
+                    code="originality.suspected_copy",
+                    message=(
+                        f"第{index}段与《{best_source}》字符 {settings.originality_ngram}-gram 重叠 "
+                        f"{best_overlap:.0%}，疑似贴着原文改写，存在侵权风险。"
+                    ),
+                    suggestion="用自己的组织方式重写该段：改变论述结构、举例和措辞，而不是在原文上替换个别词。",
+                )
+            )
+    return issues
 
 
 def _check_word_count(

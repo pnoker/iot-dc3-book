@@ -195,6 +195,11 @@ class QualityConfig(StrictConfigModel):
     max_revision_rounds: int = 10
     max_final_revision_rounds: int = 1
     continue_on_failure: bool = True
+    adversarial_review_enabled: bool = True
+    originality_check_enabled: bool = True
+    originality_max_overlap: float = 0.35
+    originality_ngram: int = 5
+    originality_min_paragraph_chars: int = 80
 
     @model_validator(mode="after")
     def validate_thresholds(self) -> QualityConfig:
@@ -216,6 +221,12 @@ class QualityConfig(StrictConfigModel):
             raise ValueError("quality.max_revision_rounds 不能小于 0")
         if self.max_final_revision_rounds < 0:
             raise ValueError("quality.max_final_revision_rounds 不能小于 0")
+        if not 0.0 <= self.originality_max_overlap <= 1.0:
+            raise ValueError("quality.originality_max_overlap 必须在 0.0 到 1.0 之间")
+        if self.originality_ngram < 1:
+            raise ValueError("quality.originality_ngram 不能小于 1")
+        if self.originality_min_paragraph_chars < 0:
+            raise ValueError("quality.originality_min_paragraph_chars 不能小于 0")
         return self
 
 

@@ -461,6 +461,7 @@ class RAGEngine:
                             "chapter_or_section": str(m.get("chapter_or_section", "")),
                             "text": str(doc),
                             "similarity": 1.0 - float(dist),
+                            "label": str(m.get("label", "")),
                         },
                     )
                 )
@@ -504,6 +505,7 @@ class RAGEngine:
             "chapter_or_section": str(m.get("chapter_or_section", "")),
             "text": str(got["documents"][0]),
             "similarity": 0.0,
+            "label": str(m.get("label", "")),
         }
 
     @staticmethod
@@ -513,4 +515,5 @@ class RAGEngine:
             chapter_or_section=payload["chapter_or_section"],
             text=payload["text"],
             relevance_score=float(score),
+            label=payload.get("label", ""),
         )

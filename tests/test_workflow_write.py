@@ -84,9 +84,28 @@ class _Expander:
         return "# 第1章 第一章\n\n" + "正文" * 30
 
 
+class _Assembler:
+    def assemble(self, state: BookState, raw_markdown: str) -> str:
+        return raw_markdown
+
+
 class _UnusedWriter:
+    def __init__(self) -> None:
+        self.section_revision_calls: list[str] = []
+
     def revise(self, state: BookState, feedback: str) -> str:
         raise AssertionError("deterministic short chapter should be fixed by expander")
+
+    def revise_planned_section(
+            self,
+            state: BookState,
+            section: SectionPlan,
+            markdown: str,
+            feedback: str,
+            previous_brief: str = "",
+    ) -> str:
+        self.section_revision_calls.append(section.id)
+        return f"{markdown}\n\n已按质量门反馈修订。"
 
 
 class _CleanDirector:
@@ -94,11 +113,21 @@ class _CleanDirector:
         return {"pass": True, "overall_score": 9, "revise_chapters": [], "summary": "通过"}
 
 
+class _NoHitRAG:
+    """原创性门用的假 RAG：从不返回命中。"""
+
+    def retrieve(self, query: str, top_k: int = 3, *, categories: object = None) -> list:
+        return []
+
+
 def _quality_project(tmp_path) -> BookProject:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(references=SimpleNamespace(query_categories=[]))
+    project.rag = _NoHitRAG()
     project.expander = _Expander()
     project.writer = _UnusedWriter()
+    project.assembler = _Assembler()
     project.fact_checker = _PassingCheck()
     project.citation_guard = _PassingCheck()
     project.style_guard = _PassingCheck()
@@ -171,6 +200,30 @@ def test_chapter_deterministic_gate_marks_failed_and_continues_at_revision_limit
     chapter = state.get_current_chapter()
     assert chapter is not None
     assert chapter.status == "quality_failed"
+
+
+def test_chapter_quality_gate_revises_targeted_sections_before_chapter_fallback(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=True, min_words_per_chapter=1, min_figures_per_section=1)
+    state.max_revision_count = 1
+    state.set_current_chapter_by_id(1)
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown="### 1.1.1 一\n\n正文。",
+        )
+    )
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第1章 第一章\n\n正文。"))
+
+    content = project._review_chapter_until_pass(state, 1)
+
+    assert project.expander.calls == 0
+    assert project.writer.section_revision_calls == ["1.1.1"]
+    assert content.revision_count == 1
+    assert "已按质量门反馈修订" in state.get_section_content("1.1.1").markdown
 
 
 def test_chapter_llm_gate_marks_failed_and_continues_at_revision_limit(tmp_path) -> None:

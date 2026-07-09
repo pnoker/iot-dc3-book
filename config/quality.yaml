@@ -17,3 +17,9 @@ forbid_unresolved_final_review: true
 max_revision_rounds: 10
 max_final_revision_rounds: 1
 continue_on_failure: true
+adversarial_review_enabled: true
+# 原创性/相似度门：正文段落与参考书原文（label=books）字符 n-gram 重叠超阈值即判侵权风险
+originality_check_enabled: true
+originality_max_overlap: 0.35
+originality_ngram: 5
+originality_min_paragraph_chars: 80
