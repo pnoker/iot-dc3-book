@@ -163,6 +163,8 @@ def _quality_project(tmp_path) -> BookProject:
 def test_parallel_chapters_write_and_merge_by_chapter(tmp_path) -> None:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(references=SimpleNamespace(query_categories=[]))
+    project.rag = _NoHitRAG()
     project.writer = _ParallelWriter()
     project.assembler = _Assembler()
     project.researcher = _NoopResearcher()
