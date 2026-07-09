@@ -1,6 +1,6 @@
 """core.state 单元测试"""
 
-from core.state import BookState, ChapterContent, ChapterPlan, ForeshadowItem, PartPlan
+from core.state import BookState, ChapterContent, ChapterPlan, ForeshadowItem, PartPlan, SectionContent, SectionPlan
 
 
 def test_book_state_defaults():
@@ -8,6 +8,7 @@ def test_book_state_defaults():
     assert state.book_title == ""
     assert state.parts == []
     assert state.current_phase == "init"
+    assert state.quality.max_words_over_target_ratio == 1.2
 
 
 def test_advance_to_next_chapter():
@@ -82,6 +83,52 @@ def test_set_current_chapter_by_id_updates_indices():
     assert state.get_current_chapter().id == 3
 
 
+def test_section_checkpoint_navigation_uses_stable_ids():
+    state = BookState(
+        parts=[
+            PartPlan(
+                name="上篇",
+                prefix="一",
+                chapters=[
+                    ChapterPlan(
+                        id=1,
+                        title="第一章",
+                        sections=[
+                            SectionPlan(id="1.1.1", chapter_id=1, title="小节一", heading="1.1.1 小节一"),
+                            SectionPlan(id="1.1.2", chapter_id=1, title="小节二", heading="1.1.2 小节二"),
+                        ],
+                    ),
+                    ChapterPlan(
+                        id=2,
+                        title="第二章",
+                        sections=[SectionPlan(id="2.1.1", chapter_id=2, title="小节三", heading="2.1.1 小节三")],
+                    ),
+                ],
+            )
+        ]
+    )
+
+    assert state.set_current_section_by_id("1.1.2") is True
+    assert state.current_chapter_idx == 0
+    assert state.get_current_section().id == "1.1.2"
+    assert state.advance_to_next_section() is True
+    assert state.current_chapter_idx == 1
+    assert state.get_current_section().id == "2.1.1"
+    assert state.advance_to_next_section() is False
+
+
+def test_upsert_section_content_replaces_by_section_id():
+    state = BookState(
+        section_contents=[SectionContent(section_id="1.1.1", chapter_id=1, title="旧", markdown="旧正文")]
+    )
+
+    state.upsert_section_content(SectionContent(section_id="1.1.1", chapter_id=1, title="新", markdown="新正文"))
+
+    assert len(state.section_contents) == 1
+    assert state.get_section_content("1.1.1").title == "新"
+    assert state.get_section_content("1.1.1").markdown == "新正文"
+
+
 def test_clear_chapter_feedback_resets_revision_flags():
     state = BookState(
         needs_revision=True,
@@ -94,6 +141,8 @@ def test_clear_chapter_feedback_resets_revision_flags():
                 review_feedback="审校反馈",
                 style_feedback="风格反馈",
                 fact_feedback="事实反馈",
+                citation_feedback="引用反馈",
+                publication_feedback="出版反馈",
             )
         ],
     )
@@ -104,5 +153,7 @@ def test_clear_chapter_feedback_resets_revision_flags():
     assert content.review_feedback == ""
     assert content.style_feedback == ""
     assert content.fact_feedback == ""
+    assert content.citation_feedback == ""
+    assert content.publication_feedback == ""
     assert state.needs_revision is False
     assert state.revision_target_chapter == 0

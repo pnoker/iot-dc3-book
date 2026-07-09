@@ -37,7 +37,14 @@ def test_chat_preserves_zero_temperature() -> None:
 
 
 def test_embed_many_sends_single_batch_request() -> None:
-    client = LLMClient(base_url="http://example.test", api_key="key", model="model", embed_model="embed-model")
+    client = LLMClient(
+        base_url="http://example.test",
+        api_key="key",
+        model="model",
+        embed_base_url="http://embed.example.test",
+        embed_api_key="embed-key",
+        embed_model="embed-model",
+    )
     embeddings = _FakeEmbeddings()
     client._embed_client = SimpleNamespace(embeddings=embeddings)
 

@@ -3,6 +3,13 @@ from __future__ import annotations
 from typer.testing import CliRunner
 
 from cli import app
+from core.state import (
+    BookState,
+    ChapterPlan,
+    PartPlan,
+    SectionContent,
+    SectionPlan,
+)
 
 runner = CliRunner()
 
@@ -11,69 +18,246 @@ def test_cli_help_lists_commands() -> None:
     result = runner.invoke(app, ["--help"])
 
     assert result.exit_code == 0
-    assert "run" in result.output
-    assert "patch-chapter" in result.output
-    assert "dashboard" in result.output
+    assert "kb" in result.output
+    assert "outline" in result.output
+    assert "write" in result.output
+    assert "run" not in result.output
+    assert "patch-chapter" not in result.output
+    assert "status" not in result.output
+    assert "contents" not in result.output
+    assert "chapter" not in result.output
+    assert "toc" not in result.output
+    assert "show-chapter" not in result.output
+    assert "ls" not in result.output
+    assert "cat" not in result.output
 
 
-def test_dashboard_command_starts_uvicorn(monkeypatch) -> None:
-    calls: list[tuple[str, object]] = []
-
-    def fake_run(app_path: str, **kwargs: object) -> None:
-        calls.append((app_path, kwargs))
-
-    monkeypatch.setattr("cli.uvicorn.run", fake_run)
-
-    result = runner.invoke(app, ["dashboard", "--host", "127.0.0.1", "--port", "18080"])
-
-    assert result.exit_code == 0
-    assert calls == [("api.app:app", {"host": "127.0.0.1", "port": 18080, "reload": False})]
-
-
-def test_legacy_resume_flag_is_not_supported() -> None:
+def test_root_resume_flag_is_not_supported() -> None:
     result = runner.invoke(app, ["--resume", "--thread-id", "book-2"])
 
     assert result.exit_code != 0
     assert "No such option" in result.output or "no such option" in result.output.lower()
 
 
-def test_status_command_accepts_thread_id_without_executing(monkeypatch) -> None:
+def test_write_status_uses_section_checkpoint_workflow(monkeypatch) -> None:
     calls = []
 
-    class FakeWriter:
+    class FakeProject:
         def __init__(self, config_path: str) -> None:
             calls.append(("init", config_path))
 
-        def get_status(self, thread_id: str) -> dict[str, object]:
-            calls.append(("status", thread_id))
-            return {"thread_id": thread_id}
+        def write_status(self, thread_id: str) -> dict[str, object]:
+            calls.append(("write_status", thread_id))
+            return {"thread_id": thread_id, "current_section": {"id": "1.1.1", "title": "小节"}}
 
-    monkeypatch.setattr("cli.BookWriterGraph", FakeWriter)
-    result = runner.invoke(app, ["--thread-id", "book-2", "status"])
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "status"])
 
     assert result.exit_code == 0
-    assert '"thread_id": "book-2"' in result.output
-    assert calls == [("init", "config"), ("status", "book-2")]
+    assert '"id": "1.1.1"' in result.output
+    assert calls == [("init", "config"), ("write_status", "book-2")]
 
 
-def test_patch_chapter_reads_markdown_and_regenerates_output(tmp_path, monkeypatch) -> None:
-    markdown_file = tmp_path / "chapter.md"
-    markdown_file.write_text("# chapter", encoding="utf-8")
+def test_kb_build_passes_rebuild_flag(monkeypatch) -> None:
     calls = []
 
-    class FakeWriter:
+    class FakeProject:
         def __init__(self, config_path: str) -> None:
             calls.append(("init", config_path))
 
-        def patch_chapter(self, thread_id: str, chapter_id: int, markdown: str) -> None:
-            calls.append(("patch", thread_id, chapter_id, markdown))
+        def kb_build(self, *, rebuild: bool = False) -> dict[str, object]:
+            calls.append(("kb_build", rebuild))
+            return {"rebuild": rebuild}
 
-        def regenerate_output(self, thread_id: str) -> str:
-            calls.append(("output", thread_id))
-            return "output"
-
-    monkeypatch.setattr("cli.BookWriterGraph", FakeWriter)
-    result = runner.invoke(app, ["patch-chapter", "--chapter-id", "7", "--file", str(markdown_file), "--regenerate-output"])
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["kb", "build", "--rebuild"])
 
     assert result.exit_code == 0
-    assert calls == [("init", "config"), ("patch", "book-1", 7, "# chapter"), ("output", "book-1")]
+    assert '"rebuild": true' in result.output
+    assert calls == [("init", "config"), ("kb_build", True)]
+
+
+def test_write_section_prints_second_level_prefix(monkeypatch) -> None:
+    state = BookState(
+        parts=[
+            PartPlan(
+                name="基础篇",
+                prefix="一",
+                chapters=[
+                    ChapterPlan(
+                        id=1,
+                        title="第一章",
+                        sections=[
+                            SectionPlan(id="1.1.1", chapter_id=1, title="一", heading="1.1.1 一"),
+                            SectionPlan(id="1.1.2", chapter_id=1, title="二", heading="1.1.2 二"),
+                            SectionPlan(id="1.2.1", chapter_id=1, title="三", heading="1.2.1 三"),
+                        ],
+                    )
+                ],
+            )
+        ],
+        section_contents=[
+            SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n正文一"),
+            SectionContent(section_id="1.1.2", chapter_id=1, title="二", markdown="### 1.1.2 二\n\n正文二"),
+            SectionContent(section_id="1.2.1", chapter_id=1, title="三", markdown="### 1.2.1 三\n\n正文三"),
+        ],
+    )
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            pass
+
+        def load_write_checkpoint(self, thread_id: str) -> BookState:
+            return state
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "section", "1.1"])
+
+    assert result.exit_code == 0
+    assert "正文一" in result.output
+    assert "正文二" in result.output
+    assert "正文三" not in result.output
+
+
+def test_write_section_prints_partial_chapter(monkeypatch) -> None:
+    state = BookState(
+        parts=[
+            PartPlan(
+                name="基础篇",
+                prefix="一",
+                chapters=[
+                    ChapterPlan(
+                        id=1,
+                        title="第一章",
+                        sections=[
+                            SectionPlan(id="1.1.1", chapter_id=1, title="一", heading="1.1.1 一"),
+                            SectionPlan(id="1.1.2", chapter_id=1, title="二", heading="1.1.2 二"),
+                        ],
+                    )
+                ],
+            )
+        ],
+        section_contents=[
+            SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n正文一"),
+            SectionContent(section_id="1.1.2", chapter_id=1, title="二", markdown="### 1.1.2 二\n\n正文二"),
+        ],
+    )
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            pass
+
+        def load_write_checkpoint(self, thread_id: str) -> BookState:
+            return state
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "section", "1"])
+
+    assert result.exit_code == 0
+    assert "# 第1章 第一章" in result.output
+    assert "正文一" in result.output
+    assert "正文二" in result.output
+
+
+def test_write_contents_prints_section_checkpoint_outline(monkeypatch) -> None:
+    state = BookState(
+        current_phase="writing",
+        current_section_id="1.1.2",
+        parts=[
+            PartPlan(
+                name="基础篇",
+                prefix="一",
+                chapters=[
+                    ChapterPlan(
+                        id=1,
+                        title="第一章",
+                        sections=[
+                            SectionPlan(
+                                id="1.1.1",
+                                chapter_id=1,
+                                title="小节一",
+                                heading="1.1.1 小节一",
+                                parent_title="第一节",
+                            ),
+                            SectionPlan(
+                                id="1.1.2",
+                                chapter_id=1,
+                                title="小节二",
+                                heading="1.1.2 小节二",
+                                parent_title="第一节",
+                            ),
+                            SectionPlan(
+                                id="1.2.1",
+                                chapter_id=1,
+                                title="小节三",
+                                heading="1.2.1 小节三",
+                                parent_title="第二节",
+                            ),
+                        ],
+                    ),
+                    ChapterPlan(
+                        id=2,
+                        title="第二章",
+                        sections=[
+                            SectionPlan(
+                                id="2.1.1",
+                                chapter_id=2,
+                                title="小节四",
+                                heading="2.1.1 小节四",
+                                parent_title="第三节",
+                            )
+                        ],
+                    ),
+                ],
+            )
+        ],
+        section_contents=[
+            SectionContent(section_id="1.1.1", chapter_id=1, title="小节一", markdown="### 1.1.1 小节一\n\n正文")
+        ],
+    )
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            pass
+
+        def load_write_checkpoint(self, thread_id: str) -> BookState:
+            return state
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "contents"])
+
+    assert result.exit_code == 0
+    assert result.output.startswith("目录\n")
+    assert "一、基础篇" in result.output
+    assert "第1章 第一章（1/3，未合稿）" in result.output
+    assert "1.1 第一节" in result.output
+    assert "[✓] 1.1.1 小节一" in result.output
+    assert "[ ] 1.1.2 小节二 ← 当前" in result.output
+    assert "1.2 第二节" in result.output
+    assert "第2章 第二章（0/1，未合稿）" in result.output
+
+
+def test_root_contents_command_is_removed() -> None:
+    result = runner.invoke(app, ["contents"])
+
+    assert result.exit_code != 0
+    assert "No such command" in result.output or "No such command" in result.stderr
+
+
+def test_removed_root_commands_are_unavailable() -> None:
+    removed_commands = [
+        "run",
+        "resume",
+        "status",
+        "chapter",
+        "export-state",
+        "patch-chapter",
+        "revise-chapter",
+        "regenerate-output",
+        "reset",
+    ]
+    for command in removed_commands:
+        result = runner.invoke(app, [command])
+
+        assert result.exit_code != 0
+        assert "No such command" in result.output or "No such command" in result.stderr

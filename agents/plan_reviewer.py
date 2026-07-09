@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any
 
 from core.state import BookState
+
 from .base import BaseAgent
 
 _PLAN_REVIEWER_SYSTEM = """你是一位资深的技术书籍策划总监，负责评审全书大纲方案。
@@ -48,7 +49,7 @@ class PlanReviewerAgent(BaseAgent):
     def review(self, state: BookState, candidates: list[dict[str, Any]]) -> dict[str, Any]:
         """对候选大纲打分择优。返回 {pass, best_index, scores, reason}。"""
         if not candidates:
-            return {"pass": False, "best_index": -1, "scores": [], "reason": "无候选大纲"}
+            raise RuntimeError("Planner 未生成候选大纲，已阻断规划流程。")
         if len(candidates) == 1:
             # 单候选无从比较，仍打分判定是否达标
             listing = _format_candidate(0, candidates[0])
@@ -69,9 +70,9 @@ class PlanReviewerAgent(BaseAgent):
         self.logger.info("评审 %d 个候选大纲...", len(candidates))
         try:
             result = self.llm.chat_json(_PLAN_REVIEWER_SYSTEM, user_prompt, temperature=0.2)
-        except ValueError:
-            self.logger.error("大纲评审报告解析失败，默认选用首个候选")
-            return {"pass": True, "best_index": 0, "scores": [], "reason": "评审解析失败，回退首个候选"}
+        except ValueError as exc:
+            self.logger.error("大纲评审报告解析失败")
+            raise RuntimeError("大纲评审报告解析失败，已阻断规划流程。") from exc
         return _normalize_result(result, len(candidates))
 
 
@@ -93,11 +94,14 @@ def _format_candidate(index: int, candidate: dict[str, Any]) -> str:
 
 def _normalize_result(result: dict[str, Any], n: int) -> dict[str, Any]:
     """规整评审结果，确保 best_index 合法。"""
+    passed = result.get("pass")
+    if not isinstance(passed, bool):
+        raise RuntimeError("大纲评审报告缺少布尔 pass 字段")
     best = result.get("best_index")
     if not isinstance(best, int) or not (0 <= best < n):
-        best = 0
+        raise RuntimeError(f"大纲评审 best_index 无效: {best}")
     return {
-        "pass": bool(result.get("pass", True)),
+        "pass": passed,
         "best_index": best,
         "scores": result.get("scores", []),
         "reason": str(result.get("reason", "")),

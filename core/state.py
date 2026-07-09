@@ -9,6 +9,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 ChapterStatus = Literal["pending", "researched", "written", "fact_checked", "styled", "reviewed", "approved"]
+SectionStatus = Literal["pending", "written", "assembled", "reviewed"]
 
 
 class StyleConfig(BaseModel):
@@ -23,6 +24,111 @@ class StyleConfig(BaseModel):
     format_rules: dict[str, str] = Field(default_factory=dict)
 
 
+class WritingSettings(BaseModel):
+    """出版级写作流水线运行参数。"""
+
+    mode: Literal["draft", "publication"] = "publication"
+    target_total_words: int = 200000
+    default_chapter_target_words: int = 12000
+    core_chapter_target_words: int = 16000
+    light_chapter_target_words: int = 9000
+    core_chapter_ids: list[int] = Field(default_factory=list)
+    sectional_drafting: bool = True
+    require_research_dossier: bool = True
+
+    def target_for_chapter(self, chapter_id: int) -> int:
+        """返回章节目标字数。"""
+        return self.core_chapter_target_words if chapter_id in self.core_chapter_ids else self.default_chapter_target_words
+
+
+class QualitySettings(BaseModel):
+    """确定性出版质量门运行参数。"""
+
+    enabled: bool = False
+    mode: Literal["draft", "release"] = "draft"
+    min_words_per_chapter: int = 0
+    target_words_per_chapter: int = 0
+    max_words_over_target_ratio: float = 1.2
+    min_heading_count: int = 0
+    require_summary: bool = False
+    require_exercises: bool = False
+    min_exercise_count: int = 0
+    min_figures_or_tables: int = 0
+    require_existing_local_images: bool = False
+    forbid_placeholder_images: bool = False
+    forbid_unsourced_statistics: bool = False
+    forbid_unresolved_final_review: bool = False
+
+
+class BlueprintSection(BaseModel):
+    """章节蓝图中的一个小节。"""
+
+    section_id: str = ""
+    title: str = ""
+    parent_title: str = ""
+    heading: str
+    target_words: int = 1200
+    purpose: str = ""
+    key_points: list[str] = Field(default_factory=list)
+    evidence_needed: list[str] = Field(default_factory=list)
+    required_elements: list[str] = Field(default_factory=list)
+
+
+class ChapterBlueprint(BaseModel):
+    """出版级章节蓝图。"""
+
+    chapter_id: int
+    title: str
+    target_words: int = 12000
+    reader_outcome: str = ""
+    thesis: str = ""
+    sections: list[BlueprintSection] = Field(default_factory=list)
+    case_studies: list[str] = Field(default_factory=list)
+    figures: list[str] = Field(default_factory=list)
+    tables: list[str] = Field(default_factory=list)
+    code_examples: list[str] = Field(default_factory=list)
+    learning_goals: list[str] = Field(default_factory=list)
+
+
+class EvidenceNote(BaseModel):
+    """可用于写作和核查的证据摘录。"""
+
+    id: str
+    source_type: Literal["local", "web"] = "local"
+    source: str
+    locator: str = ""
+    excerpt: str
+
+
+class ResearchDossier(BaseModel):
+    """章节研究资料包。"""
+
+    chapter_id: int
+    queries: list[str] = Field(default_factory=list)
+    key_claims: list[str] = Field(default_factory=list)
+    evidence_notes: list[EvidenceNote] = Field(default_factory=list)
+    source_notes: list[str] = Field(default_factory=list)
+    web_notes: list[str] = Field(default_factory=list)
+    evidence_policy: str = ""
+    risks: list[str] = Field(default_factory=list)
+
+
+class SectionPlan(BaseModel):
+    """三级写作单元规划，例如 1.1.1。"""
+
+    id: str
+    chapter_id: int
+    title: str
+    heading: str
+    parent_title: str = ""
+    target_words: int = 1200
+    purpose: str = ""
+    key_points: list[str] = Field(default_factory=list)
+    evidence_needed: list[str] = Field(default_factory=list)
+    required_elements: list[str] = Field(default_factory=list)
+    status: SectionStatus = "pending"
+
+
 class ChapterPlan(BaseModel):
     """单章规划"""
 
@@ -31,6 +137,9 @@ class ChapterPlan(BaseModel):
     summary: str = ""
     outline: str = ""  # 详细大纲（Planner 生成）
     key_points: list[str] = Field(default_factory=list)
+    blueprint: ChapterBlueprint | None = None
+    sections: list[SectionPlan] = Field(default_factory=list)
+    research_dossier: ResearchDossier | None = None
     foreshadows_planted: list[str] = Field(default_factory=list)
     foreshadows_resolved: list[str] = Field(default_factory=list)
     status: ChapterStatus = "pending"
@@ -65,9 +174,28 @@ class ChapterContent(BaseModel):
     review_feedback: str = ""
     style_feedback: str = ""
     fact_feedback: str = ""
+    citation_feedback: str = ""
+    publication_feedback: str = ""
+    revision_feedback: str = ""
     revision_count: int = 0
     # Editor 对本章伏笔任务的核验结论 [{id, type, done}]，供质量门通过时转移伏笔状态
     foreshadow_checks: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class SectionContent(BaseModel):
+    """已写三级小节内容。"""
+
+    section_id: str
+    chapter_id: int
+    title: str
+    markdown: str
+    word_count: int = 0
+    review_feedback: str = ""
+    style_feedback: str = ""
+    fact_feedback: str = ""
+    citation_feedback: str = ""
+    revision_feedback: str = ""
+    revision_count: int = 0
 
 
 class ReferenceChunk(BaseModel):
@@ -81,7 +209,7 @@ class ReferenceChunk(BaseModel):
 
 class BookState(BaseModel):
     """
-    LangGraph 全局状态 - 所有 Agent 读写此状态。
+    出版级写作全局状态 - 所有 Agent 读写此状态。
 
     设计原则：
     - 所有字段使用 Pydantic BaseModel 以支持序列化
@@ -98,6 +226,8 @@ class BookState(BaseModel):
     parts: list[PartPlan] = Field(default_factory=list)
     foreshadows: list[ForeshadowItem] = Field(default_factory=list)
     style: StyleConfig = Field(default_factory=StyleConfig)
+    writing: WritingSettings = Field(default_factory=WritingSettings)
+    quality: QualitySettings = Field(default_factory=QualitySettings)
 
     # --- 当前执行位置 ---
     current_phase: Literal[
@@ -111,8 +241,10 @@ class BookState(BaseModel):
     ] = "init"
     current_part_idx: int = 0
     current_chapter_idx: int = 0
+    current_section_id: str = ""
 
     # --- 已完成内容 ---
+    section_contents: list[SectionContent] = Field(default_factory=list)
     chapters: list[ChapterContent] = Field(default_factory=list)
 
     # --- 参考资料 ---
@@ -131,6 +263,7 @@ class BookState(BaseModel):
     final_revision_chapters: list[int] = Field(default_factory=list)
     final_revision_round: int = 0
     max_final_revision_round: int = 1
+    publication_approved: bool = False
 
     # --- 最终输出 ---
     output_dir: str = ""
@@ -160,12 +293,68 @@ class BookState(BaseModel):
             result.extend(part.chapters)
         return result
 
+    def get_all_sections_flat(self) -> list[SectionPlan]:
+        """获取所有三级写作单元的扁平列表。"""
+        result: list[SectionPlan] = []
+        for chapter in self.get_all_chapters_flat():
+            result.extend(chapter.sections)
+        return result
+
+    def get_current_section(self) -> SectionPlan | None:
+        """获取当前三级写作单元。"""
+        if self.current_section_id:
+            return self.get_section_plan(self.current_section_id)
+        chapter = self.get_current_chapter()
+        return chapter.sections[0] if chapter and chapter.sections else None
+
+    def get_section_plan(self, section_id: str) -> SectionPlan | None:
+        """按稳定编号获取三级写作单元规划。"""
+        for section in self.get_all_sections_flat():
+            if section.id == section_id:
+                return section
+        return None
+
+    def set_current_section_by_id(self, section_id: str) -> bool:
+        """将当前执行位置切换到指定三级写作单元。"""
+        for part_idx, part in enumerate(self.parts):
+            for chapter_idx, chapter in enumerate(part.chapters):
+                for section in chapter.sections:
+                    if section.id == section_id:
+                        self.current_part_idx = part_idx
+                        self.current_chapter_idx = chapter_idx
+                        self.current_section_id = section_id
+                        return True
+        return False
+
     def get_chapter_content(self, chapter_id: int) -> ChapterContent | None:
         """按 ID 获取已写章节内容"""
         for ch in self.chapters:
             if ch.chapter_id == chapter_id:
                 return ch
         return None
+
+    def get_section_content(self, section_id: str) -> SectionContent | None:
+        """按稳定编号获取已写三级小节。"""
+        for section in self.section_contents:
+            if section.section_id == section_id:
+                return section
+        return None
+
+    def upsert_section_content(self, content: SectionContent) -> None:
+        """按三级小节编号新增或替换正文。"""
+        for idx, existing in enumerate(self.section_contents):
+            if existing.section_id == content.section_id:
+                self.section_contents[idx] = content
+                return
+        self.section_contents.append(content)
+
+    def get_chapter_section_contents(self, chapter_id: int) -> list[SectionContent]:
+        """按章节规划顺序返回该章已写小节。"""
+        chapter = next((item for item in self.get_all_chapters_flat() if item.id == chapter_id), None)
+        if chapter is None:
+            return []
+        by_id = {item.section_id: item for item in self.section_contents if item.chapter_id == chapter_id}
+        return [by_id[section.id] for section in chapter.sections if section.id in by_id]
 
     def upsert_chapter_content(self, content: ChapterContent) -> None:
         """按章节 ID 新增或替换正文，确保状态中同一章节只有一份正文。"""
@@ -186,6 +375,7 @@ class BookState(BaseModel):
                 if chapter.id == chapter_id:
                     self.current_part_idx = part_idx
                     self.current_chapter_idx = chapter_idx
+                    self.current_section_id = chapter.sections[0].id if chapter.sections else ""
                     return True
         return False
 
@@ -196,6 +386,8 @@ class BookState(BaseModel):
             content.review_feedback = ""
             content.style_feedback = ""
             content.fact_feedback = ""
+            content.citation_feedback = ""
+            content.publication_feedback = ""
         if self.revision_target_chapter in (0, chapter_id):
             self.needs_revision = False
             self.revision_target_chapter = 0
@@ -206,6 +398,12 @@ class BookState(BaseModel):
             if chapter.id == chapter_id:
                 chapter.status = status
                 return
+
+    def mark_section_status(self, section_id: str, status: SectionStatus) -> None:
+        """更新三级小节计划状态。"""
+        section = self.get_section_plan(section_id)
+        if section is not None:
+            section.status = status
 
     def get_planted_foreshadows(self) -> list[ForeshadowItem]:
         """获取已埋入但未回收的伏笔"""
@@ -218,12 +416,30 @@ class BookState(BaseModel):
             return False
         if self.current_chapter_idx < len(part.chapters) - 1:
             self.current_chapter_idx += 1
+            chapter = self.get_current_chapter()
+            self.current_section_id = chapter.sections[0].id if chapter and chapter.sections else ""
             return True
         if self.current_part_idx < len(self.parts) - 1:
             self.current_part_idx += 1
             self.current_chapter_idx = 0
+            chapter = self.get_current_chapter()
+            self.current_section_id = chapter.sections[0].id if chapter and chapter.sections else ""
             return True
         return False
+
+    def advance_to_next_section(self) -> bool:
+        """推进到下一三级写作单元，返回是否还有更多小节。"""
+        sections = self.get_all_sections_flat()
+        if not sections:
+            return False
+        current_id = self.current_section_id or sections[0].id
+        for index, section in enumerate(sections):
+            if section.id != current_id:
+                continue
+            if index + 1 >= len(sections):
+                return False
+            return self.set_current_section_by_id(sections[index + 1].id)
+        return self.set_current_section_by_id(sections[0].id)
 
     def get_previous_chapters_summary(self, last_n: int = 3) -> str:
         """获取前 N 章的摘要，用于上下文连贯"""

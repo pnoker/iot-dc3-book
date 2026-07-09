@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
+import pytest
+
 from agents.plan_reviewer import PlanReviewerAgent
 from core.state import BookState, ChapterPlan, PartPlan
-from graph.node_lifecycle import node_plan_review
-from graph.routes import route_after_plan_review
 
 
 class _ReviewerLLM:
@@ -41,50 +41,14 @@ def test_plan_reviewer_selects_best_candidate() -> None:
     assert result["best_index"] == 1
 
 
-def test_plan_reviewer_clamps_out_of_range_best_index() -> None:
+def test_plan_reviewer_rejects_out_of_range_best_index() -> None:
     llm = _ReviewerLLM({"pass": True, "best_index": 9, "scores": [], "reason": "越界"})
-    result = PlanReviewerAgent(llm).review(_state(), _candidates())
 
-    assert result["best_index"] == 0  # 越界回退 0
+    with pytest.raises(RuntimeError, match="best_index 无效"):
+        PlanReviewerAgent(llm).review(_state(), _candidates())
 
 
 def test_plan_reviewer_empty_candidates_fails() -> None:
-    result = PlanReviewerAgent(_ReviewerLLM({})).review(_state(), [])
-    assert result["pass"] is False
-    assert result["best_index"] == -1
+    with pytest.raises(RuntimeError, match="未生成候选大纲"):
+        PlanReviewerAgent(_ReviewerLLM({})).review(_state(), [])
 
-
-def test_plan_review_routes_back_to_planning_when_review_failed() -> None:
-    state = _state()
-    state.plan_needs_revision = True
-    state.plan_revision_count = 0
-
-    update = node_plan_review(state)
-    updated = BookState(**{**state.model_dump(), **update})
-
-    assert update["current_phase"] == "planning"
-    assert update["plan_revision_count"] == 1
-    assert route_after_plan_review(updated) == "revise_plan"
-
-
-def test_plan_review_accepts_when_revision_limit_reached() -> None:
-    state = _state()
-    state.plan_needs_revision = True
-    state.plan_revision_count = 2  # 已达上限
-
-    update = node_plan_review(state)
-    updated = BookState(**{**state.model_dump(), **update})
-
-    assert update["current_phase"] == "writing"
-    assert route_after_plan_review(updated) == "approved"
-
-
-def test_plan_review_approves_when_review_passed() -> None:
-    state = _state()
-    state.plan_needs_revision = False
-
-    update = node_plan_review(state)
-    updated = BookState(**{**state.model_dump(), **update})
-
-    assert update["current_phase"] == "writing"
-    assert route_after_plan_review(updated) == "approved"

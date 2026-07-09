@@ -6,19 +6,22 @@ from __future__ import annotations
 
 from typing import Any
 
-from core.state import BookState, ForeshadowItem, PartPlan
+from core.state import BookState, ChapterPlan, ForeshadowItem, PartPlan
+
 from .base import BaseAgent
 
 _PLANNER_SYSTEM = """你是一位资深的物联网技术书籍策划编辑。
-你的任务是根据书籍主题和章节框架，生成：
-1. 每章的详细大纲（含小节划分，最多 4 层子章节）
-2. 全书伏笔规划表（在哪些章节埋下伏笔，在哪些章节回收）
+你的任务是生成「全书级」高层规划，不生成章节蓝图或详细小节树。
+后续 ChapterArchitect 会为单章生成出版级蓝图；本阶段只决定章节边界、核心论题和伏笔布局。
 
-## 子章节编号规则
-- 第一层: {part_prefix}.{chapter_id} 标题
-- 第二层: {part_prefix}.{chapter_id}.{sub_id} 标题
-- 第三层: {part_prefix}.{chapter_id}.{sub_id}.{sub_id2} 标题
-- 第四层（最深）: {part_prefix}.{chapter_id}.{sub_id}.{sub_id2}.{sub_id3} 标题
+## 输出约束
+- 必须覆盖输入中的所有篇章和所有章节，每章只出现一次。
+- part.name 必须逐字复制输入篇章名，不得改名、缩写或合并。
+- 每章 outline 必须是单行字符串，80-180 个中文字，使用分号串联 4-6 个论述重点。
+- outline 禁止包含换行符、Markdown 标题、四级子章节树、长段落。
+- 每章 key_points 输出 3-5 个短语，每个短语不超过 24 个中文字。
+- foreshadows 输出 4-8 个，必须自然、具体，回收章节必须晚于埋入章节。
+- 输出必须是严格 JSON object，不要 Markdown 代码块，不要解释文字。
 
 ## 伏笔设计原则
 - 伏笔要自然，不能生硬
@@ -46,41 +49,76 @@ class PlannerAgent(BaseAgent):
                 # 递增温度制造方案差异，避免 n 个候选雷同
                 data = self.llm.chat_json(_PLANNER_SYSTEM, user_prompt, temperature=0.8 + 0.1 * i)
                 candidates.append(data)
-            except ValueError:
-                self.logger.error("第 %d 个候选大纲 JSON 解析失败，跳过", i)
+            except ValueError as exc:
+                self.logger.error("第 %d 个候选大纲 JSON 解析失败", i)
+                raise RuntimeError(f"第 {i + 1} 个候选大纲 JSON 解析失败，已阻断规划流程。") from exc
         return candidates
 
     def build_plan(self, state: BookState, data: dict[str, Any]) -> tuple[list[PartPlan], list[ForeshadowItem]]:
         """将一个候选大纲 JSON 落地为 (parts, 伏笔列表)。"""
-        raw_parts = _dict_items(data.get("parts"))
-        raw_foreshadows = _dict_items(data.get("foreshadows"))
+        raw_parts = _required_dict_list(data.get("parts"), "parts")
+        raw_foreshadows = _required_dict_list(data.get("foreshadows"), "foreshadows")
+        valid_chapter_ids = {chapter.id for part in state.parts for chapter in part.chapters}
 
-        parts = []
+        parts: list[PartPlan] = []
+        seen_parts: set[str] = set()
+        seen_chapters: set[int] = set()
         for part_data in raw_parts:
-            raw_chapters = _dict_items(part_data.get("chapters"))
-            orig_part = _match_original_part(state.parts, part_data, raw_chapters)
+            part_name = _required_str(part_data.get("name"), "parts[].name")
+            if part_name in seen_parts:
+                raise RuntimeError(f"候选大纲包含重复篇章: {part_name}")
+            seen_parts.add(part_name)
+            orig_part = next((part for part in state.parts if part.name == part_name), None)
             if orig_part is None:
-                continue
-            chapters = []
+                raise RuntimeError(f"候选大纲包含未知篇章: {part_name}")
+
+            raw_chapters = _required_dict_list(part_data.get("chapters"), f"parts[{part_name}].chapters")
+            chapters: list[ChapterPlan] = []
+            part_chapter_ids = {chapter.id for chapter in orig_part.chapters}
             for ch_data in raw_chapters:
-                ch_id = ch_data.get("id")
-                orig_ch = next((c for c in orig_part.chapters if c.id == ch_id), None)
-                if orig_ch is None:
-                    continue
-                orig_ch.outline = str(ch_data.get("outline", ""))
-                orig_ch.key_points = [str(item) for item in _list_items(ch_data.get("key_points"))]
-                chapters.append(orig_ch)
+                ch_id = _required_int(ch_data.get("id"), f"parts[{part_name}].chapters[].id")
+                if ch_id in seen_chapters:
+                    raise RuntimeError(f"候选大纲包含重复章节: 第{ch_id}章")
+                if ch_id not in part_chapter_ids:
+                    raise RuntimeError(f"候选大纲第{ch_id}章不属于篇章 {part_name}")
+                orig_ch = next(c for c in orig_part.chapters if c.id == ch_id)
+                outline = _required_outline(ch_data.get("outline"), f"第{ch_id}章 outline")
+                key_points = _required_str_list(
+                    ch_data.get("key_points"), f"第{ch_id}章 key_points", max_items=6, max_length=32
+                )
+                chapters.append(orig_ch.model_copy(update={"outline": outline, "key_points": key_points}))
+                seen_chapters.add(ch_id)
+            if {chapter.id for chapter in chapters} != part_chapter_ids:
+                missing_chapter_ids = sorted(part_chapter_ids - {chapter.id for chapter in chapters})
+                raise RuntimeError(f"候选大纲篇章 {part_name} 缺少章节: {missing_chapter_ids}")
             parts.append(type(orig_part)(name=orig_part.name, prefix=orig_part.prefix, chapters=chapters))
 
-        foreshadows = [
-            ForeshadowItem(
-                id=str(fs.get("id", "")),
-                description=str(fs.get("description", "")),
-                planted_chapter=_int_value(fs.get("planted_chapter")),
-                planned_resolve_chapter=_int_value(fs.get("planned_resolve_chapter")),
+        expected_part_names = {part.name for part in state.parts}
+        if seen_parts != expected_part_names:
+            missing_part_names = sorted(expected_part_names - seen_parts)
+            raise RuntimeError(f"候选大纲缺少篇章: {missing_part_names}")
+
+        foreshadows: list[ForeshadowItem] = []
+        seen_foreshadows: set[str] = set()
+        for fs in raw_foreshadows:
+            fs_id = _required_str(fs.get("id"), "foreshadows[].id")
+            if fs_id in seen_foreshadows:
+                raise RuntimeError(f"候选大纲包含重复伏笔: {fs_id}")
+            planted_chapter = _required_int(fs.get("planted_chapter"), f"伏笔 {fs_id} planted_chapter")
+            planned_resolve_chapter = _required_int(fs.get("planned_resolve_chapter"), f"伏笔 {fs_id} planned_resolve_chapter")
+            if planted_chapter not in valid_chapter_ids or planned_resolve_chapter not in valid_chapter_ids:
+                raise RuntimeError(f"伏笔 {fs_id} 引用了不存在的章节")
+            if planned_resolve_chapter <= planted_chapter:
+                raise RuntimeError(f"伏笔 {fs_id} 的回收章节必须晚于埋入章节")
+            foreshadows.append(
+                ForeshadowItem(
+                    id=fs_id,
+                    description=_required_str(fs.get("description"), f"伏笔 {fs_id} description"),
+                    planted_chapter=planted_chapter,
+                    planned_resolve_chapter=planned_resolve_chapter,
+                )
             )
-            for fs in raw_foreshadows
-        ]
+            seen_foreshadows.add(fs_id)
 
         self.logger.info("大纲落地: %d 篇, %d 个伏笔", len(parts), len(foreshadows))
         return parts, foreshadows
@@ -91,7 +129,7 @@ class PlannerAgent(BaseAgent):
             ch_list = [f"  第{ch.id}章 {ch.title}: {ch.summary}" for ch in part.chapters]
             parts_desc.append(f"\n【{part.name}】(编号前缀: {part.prefix})\n" + "\n".join(ch_list))
 
-        return f"""请为以下书籍生成详细大纲和伏笔规划。
+        return f"""请为以下书籍生成全书级紧凑大纲和伏笔规划。
 
 # 书籍信息
 - 书名: {state.book_title}
@@ -104,17 +142,17 @@ class PlannerAgent(BaseAgent):
 - {state.style.tone}
 - 术语规则: {state.style.terminology_rule}
 
-请输出以下 JSON 格式：
-```json
+请输出以下 JSON 结构。注意：不要输出 Markdown 代码块；outline 必须单行、简洁，详细小节蓝图由后续 Agent 生成。
+
 {{
   "parts": [
     {{
-      "name": "基础篇",
+      "name": "必须逐字复制输入篇章名",
       "chapters": [
         {{
           "id": 1,
-          "outline": "详细大纲，包含所有子章节，使用编号如 一.1.1 标题",
-          "key_points": ["要点1", "要点2"]
+          "outline": "本章定位；核心论题；工程主线；与前后章节边界；需避免的重复点",
+          "key_points": ["核心概念", "工程问题", "实践抓手"]
         }}
       ]
     }}
@@ -128,37 +166,54 @@ class PlannerAgent(BaseAgent):
     }}
   ]
 }}
-```"""
+"""
 
 
-def _dict_items(value: object) -> list[dict[str, Any]]:
+def _required_dict_list(value: object, location: str) -> list[dict[str, Any]]:
     if not isinstance(value, list):
-        return []
-    return [item for item in value if isinstance(item, dict)]
+        raise RuntimeError(f"候选大纲字段 {location} 必须是数组")
+    result: list[dict[str, Any]] = []
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            raise RuntimeError(f"候选大纲字段 {location}[{index}] 必须是对象")
+        result.append(item)
+    return result
 
 
-def _match_original_part(
-        parts: list[PartPlan], part_data: dict[str, Any], raw_chapters: list[dict[str, Any]]
-) -> PartPlan | None:
-    part_name = str(part_data.get("name", ""))
-    exact = next((part for part in parts if part.name == part_name), None)
-    if exact is not None:
-        return exact
-
-    chapter_ids = {_int_value(chapter.get("id")) for chapter in raw_chapters}
-    chapter_ids.discard(0)
-    if not chapter_ids:
-        return None
-    return next((part for part in parts if chapter_ids <= {chapter.id for chapter in part.chapters}), None)
+def _required_str(value: object, location: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise RuntimeError(f"候选大纲字段 {location} 必须是非空字符串")
+    return value.strip()
 
 
-def _list_items(value: object) -> list[object]:
-    return value if isinstance(value, list) else []
+def _required_outline(value: object, location: str) -> str:
+    outline = _required_str(value, location)
+    if "\n" in outline or "\r" in outline:
+        raise RuntimeError(f"候选大纲字段 {location} 必须是单行字符串，不得包含换行")
+    if len(outline) > 500:
+        raise RuntimeError(f"候选大纲字段 {location} 过长，必须保持全书级紧凑规划")
+    return outline
 
 
-def _int_value(value: object) -> int:
-    if isinstance(value, int):
-        return value
-    if isinstance(value, str) and value.isdigit():
-        return int(value)
-    return 0
+def _required_int(value: object, location: str) -> int:
+    if not isinstance(value, int):
+        raise RuntimeError(f"候选大纲字段 {location} 必须是整数")
+    return value
+
+
+def _required_str_list(
+        value: object, location: str, *, max_items: int | None = None, max_length: int | None = None
+) -> list[str]:
+    if not isinstance(value, list) or not value:
+        raise RuntimeError(f"候选大纲字段 {location} 必须是非空字符串数组")
+    if max_items is not None and len(value) > max_items:
+        raise RuntimeError(f"候选大纲字段 {location} 最多允许 {max_items} 项")
+    result: list[str] = []
+    for index, item in enumerate(value):
+        if not isinstance(item, str) or not item.strip():
+            raise RuntimeError(f"候选大纲字段 {location}[{index}] 必须是非空字符串")
+        text = item.strip()
+        if max_length is not None and len(text) > max_length:
+            raise RuntimeError(f"候选大纲字段 {location}[{index}] 过长")
+        result.append(text)
+    return result

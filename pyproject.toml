@@ -1,23 +1,18 @@
 [project]
 name = "book-writer"
 version = "0.1.0"
-description = "基于 LangGraph 的多 Agent 书籍写作系统"
+description = "分阶段多 Agent 出版级书籍写作系统"
 requires-python = ">=3.11"
 dependencies = [
-    "langgraph>=1.0.0",
     "openai>=1.0.0",
-    "json-repair>=0.30.0",
     "langchain-text-splitters>=0.3.0",
     "pymupdf4llm>=0.0.17",
+    "python-dotenv>=1.0.0",
     "pyyaml>=6.0",
-    "pydantic-settings>=2.0.0",
     "tenacity>=8.0.0",
     "typer>=0.12.0",
     "chromadb>=1.5.9",
-    "langgraph-checkpoint-sqlite>=3.1.0",
     "jinja2>=3.1.0",
-    "fastapi>=0.139.0",
-    "uvicorn>=0.49.0",
     "rank-bm25>=0.2.2",
     "jieba>=0.42.1",
 ]
@@ -38,7 +33,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["core", "agents", "graph"]
+packages = ["core", "agents"]
 force-include = { "cli.py" = "cli.py", "main.py" = "main.py" }
 artifacts = ["core/templates/*.md.j2"]
 
@@ -46,7 +41,7 @@ artifacts = ["core/templates/*.md.j2"]
 [tool.ruff]
 target-version = "py311"
 line-length = 120
-src = ["core", "agents", "graph", "."]
+src = ["core", "agents", "."]
 
 [tool.ruff.lint]
 select = [
@@ -71,7 +66,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["core", "agents", "graph"]
+known-first-party = ["core", "agents"]
 
 [tool.ruff.format]
 quote-style = "double"

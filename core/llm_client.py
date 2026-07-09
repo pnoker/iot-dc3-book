@@ -44,16 +44,16 @@ class LLMClient:
         self._client: OpenAI | None = None
 
         # Embedding config (OpenRouter)
-        self._embed_base_url = embed_base_url or base_url
-        self._embed_api_key = embed_api_key or api_key
-        self._embed_model = embed_model or "openai/text-embedding-3-small"
+        self._embed_base_url = embed_base_url
+        self._embed_api_key = embed_api_key
+        self._embed_model = embed_model
         self._embed_client: OpenAI | None = None
 
     @property
     def client(self) -> OpenAI:
         if self._client is None:
             if not self._api_key:
-                raise ValueError("未配置 Chat API Key。请设置 DEEPSEEK_API_KEY 或在 config.yaml 中配置。")
+                raise ValueError("未配置 Chat API Key。请在 config/llm.yaml 中引用 ${DEEPSEEK_API_KEY}，并在 .env 或 shell 环境变量中设置。")
             self._client = OpenAI(
                 base_url=self._base_url,
                 api_key=self._api_key,
@@ -65,8 +65,12 @@ class LLMClient:
     @property
     def embed_client(self) -> OpenAI:
         if self._embed_client is None:
+            if not self._embed_base_url:
+                raise ValueError("未配置 Embedding base_url。请在 config/llm.yaml 的 embedding.base_url 中显式设置。")
             if not self._embed_api_key:
-                raise ValueError("未配置 Embedding API Key。请设置 OPENROUTER_API_KEY 或在 config.yaml 中配置。")
+                raise ValueError("未配置 Embedding API Key。请在 config/llm.yaml 中引用 ${OPENROUTER_API_KEY}，并在 .env 或 shell 环境变量中设置。")
+            if not self._embed_model:
+                raise ValueError("未配置 Embedding model。请在 config/llm.yaml 的 embedding.model 中显式设置。")
             self._embed_client = OpenAI(
                 base_url=self._embed_base_url,
                 api_key=self._embed_api_key,
@@ -136,6 +140,7 @@ class LLMClient:
     )
     def embed(self, text: str) -> list[float]:
         """文本嵌入（自动重试 3 次）"""
+        self._require_embed_model()
         logger.debug("Embed 请求: model=%s, text_len=%d", self._embed_model, len(text))
         try:
             resp = self.embed_client.embeddings.create(
@@ -157,6 +162,7 @@ class LLMClient:
         """批量文本嵌入（自动重试 3 次）"""
         if not texts:
             return []
+        self._require_embed_model()
         logger.debug("Embed 批量请求: model=%s, count=%d", self._embed_model, len(texts))
         try:
             resp = self.embed_client.embeddings.create(
@@ -167,3 +173,7 @@ class LLMClient:
         except Exception:
             logger.exception("Embed 批量调用失败: model=%s", self._embed_model)
             raise
+
+    def _require_embed_model(self) -> None:
+        if not self._embed_model:
+            raise ValueError("未配置 Embedding model。请在 config/llm.yaml 的 embedding.model 中显式设置。")

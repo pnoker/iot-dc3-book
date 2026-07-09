@@ -4,20 +4,27 @@
 
 from __future__ import annotations
 
+import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
 
 import yaml
+from dotenv import dotenv_values
+from pydantic import SecretStr
 
-from core.config_models import AppConfig, EnvSettings
+from core.config_models import AppConfig
 from core.log import get_logger
 from core.rag_sources import ReferenceSource
-from core.state import BookState, ChapterPlan, PartPlan, StyleConfig
+from core.state import BookState, ChapterPlan, PartPlan, QualitySettings, StyleConfig, WritingSettings
 
 logger = get_logger("config")
 
 ConfigDict = dict[str, Any]
+EnvDict = dict[str, str]
+
+_ENV_PLACEHOLDER_RE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}")
 
 
 @dataclass(frozen=True)
@@ -26,11 +33,9 @@ class ConfigPaths:
 
     config_dir: Path
     project_dir: Path
-    books_dir: Path
     reference_sources: tuple[ReferenceSource, ...]
     output_dir: Path
     data_dir: Path
-    checkpoint_db: Path
     chroma_dir: Path
     rag_manifest: Path
     bm25_index: Path
@@ -60,10 +65,35 @@ def load_app_config(config_path: str = "config") -> AppConfig:
     return config_to_app_config(cfg, config_dir=config_dir)
 
 
-def load_env_settings(env_path: Path = Path(".env")) -> EnvSettings:
-    """使用 pydantic-settings 加载环境变量和 .env。"""
-    settings_cls = cast("Any", EnvSettings)
-    return cast("EnvSettings", settings_cls(_env_file=env_path))
+def load_env_settings(env_path: Path = Path(".env")) -> EnvDict:
+    """加载通用环境变量映射；shell 环境变量优先于 .env。"""
+    values: EnvDict = {key: value for key, value in dotenv_values(env_path).items() if value is not None}
+    values.update(os.environ)
+    return values
+
+
+def resolve_env_reference(value: str, env: EnvDict, *, location: str) -> str:
+    """解析单个字符串中的 ${VAR}，缺失变量立即报错。"""
+    missing: list[str] = []
+
+    def replace(match: re.Match[str]) -> str:
+        name = match.group(1)
+        env_value = env.get(name)
+        if env_value is None or env_value == "":
+            missing.append(name)
+            return ""
+        return env_value
+
+    resolved = _ENV_PLACEHOLDER_RE.sub(replace, value)
+    if missing:
+        names = "、".join(sorted(set(missing)))
+        raise ValueError(f"配置 {location} 引用了未设置的环境变量: {names}")
+    return resolved
+
+
+def reveal_secret(value: SecretStr | str) -> str:
+    """显式取出 SecretStr，仅用于构造外部客户端参数。"""
+    return value.get_secret_value() if isinstance(value, SecretStr) else value
 
 
 def _load_config_dir(config_dir: Path) -> ConfigDict:
@@ -100,14 +130,15 @@ def config_to_app_config(cfg: ConfigDict, config_dir: Path | None = None) -> App
     resolved_config_dir = (config_dir or Path("config")).resolve()
     project_dir = resolved_config_dir.parent
     env_path = project_dir / ".env"
+    resolved_cfg = _resolve_env_placeholders(cfg, load_env_settings(env_path))
     app_config = AppConfig.model_validate(
         {
-            **cfg,
+            **resolved_cfg,
             "config_dir": resolved_config_dir,
             "project_dir": project_dir,
         }
     )
-    return app_config.with_env_settings(load_env_settings(env_path))
+    return app_config
 
 
 def config_to_book_state(cfg: ConfigDict | AppConfig) -> BookState:
@@ -136,6 +167,8 @@ def config_to_book_state(cfg: ConfigDict | AppConfig) -> BookState:
         author=app_config.book.author,
         parts=parts,
         style=style,
+        writing=WritingSettings(**app_config.writing.model_dump()),
+        quality=QualitySettings(**app_config.quality.model_dump()),
     )
     logger.info("BookState 初始化: %s, %d 章", state.book_title, sum(len(p.chapters) for p in parts))
     return state
@@ -145,28 +178,19 @@ def get_config_paths(app_config: AppConfig) -> ConfigPaths:
     """根据强类型配置计算所有运行时路径。"""
     project_dir = app_config.project_dir.resolve()
     config_dir = app_config.config_dir.resolve()
-    books_dir = _resolve_path(app_config.references.books_dir, project_dir)
-    reference_sources = _resolve_reference_sources(app_config, project_dir, books_dir)
+    reference_sources = _resolve_reference_sources(app_config, project_dir)
     output_dir = _resolve_path(app_config.output.dir, project_dir)
     data_dir = project_dir / ".data"
     return ConfigPaths(
         config_dir=config_dir,
         project_dir=project_dir,
-        books_dir=books_dir,
         reference_sources=reference_sources,
         output_dir=output_dir,
         data_dir=data_dir,
-        checkpoint_db=data_dir / "checkpoint.db",
         chroma_dir=data_dir / "chroma",
         rag_manifest=data_dir / "rag_index.json",
         bm25_index=data_dir / "bm25_index.json",
     )
-
-
-def get_references_dir(cfg: ConfigDict | AppConfig, config_path: str = "config") -> Path:
-    """获取参考书籍目录的绝对路径"""
-    app_config = cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg, Path(config_path).resolve())
-    return get_config_paths(app_config).books_dir
 
 
 def get_llm_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
@@ -174,7 +198,7 @@ def get_llm_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
     llm = (cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg)).llm
     return {
         "base_url": llm.base_url,
-        "api_key": llm.api_key,
+        "api_key": reveal_secret(llm.api_key),
         "model": llm.model,
         "temperature": llm.temperature,
         "max_tokens": llm.max_tokens,
@@ -186,25 +210,21 @@ def get_embed_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
     emb = (cfg if isinstance(cfg, AppConfig) else config_to_app_config(cfg)).llm.embedding
     return {
         "embed_base_url": emb.base_url,
-        "embed_api_key": emb.api_key,
+        "embed_api_key": reveal_secret(emb.api_key),
         "embed_model": emb.model,
     }
 
 
-def _resolve_reference_sources(app_config: AppConfig, project_dir: Path, books_dir: Path) -> tuple[ReferenceSource, ...]:
-    """解析参考来源；未配置 sources 时回退为单个 books_dir，保证向后兼容。"""
-    sources = app_config.references.sources
-    if not sources:
-        return (ReferenceSource(path=books_dir, label="books"),)
+def _resolve_reference_sources(app_config: AppConfig, project_dir: Path) -> tuple[ReferenceSource, ...]:
+    """解析显式参考来源。"""
     resolved: list[ReferenceSource] = []
-    for source in sources:
+    for source in app_config.references.sources:
         path = _resolve_path(source.path, project_dir)
-        label = source.label or path.name
         dir_categories = tuple((name, tuple(tags)) for name, tags in source.dir_categories.items())
         resolved.append(
             ReferenceSource(
                 path=path,
-                label=label,
+                label=source.label,
                 categories=tuple(source.categories),
                 dir_categories=dir_categories,
                 language=source.language,
@@ -218,3 +238,13 @@ def _resolve_path(value: str, base_dir: Path) -> Path:
     if path.is_absolute():
         return path.resolve()
     return (base_dir / path).resolve()
+
+
+def _resolve_env_placeholders(value: Any, env: EnvDict, location: str = "配置") -> Any:
+    if isinstance(value, dict):
+        return {key: _resolve_env_placeholders(item, env, f"{location}.{key}") for key, item in value.items()}
+    if isinstance(value, list):
+        return [_resolve_env_placeholders(item, env, f"{location}[{index}]") for index, item in enumerate(value)]
+    if isinstance(value, str):
+        return resolve_env_reference(value, env, location=location)
+    return value
