@@ -14,6 +14,6 @@ require_existing_local_images: true
 forbid_placeholder_images: true
 forbid_unsourced_statistics: true
 forbid_unresolved_final_review: true
-max_revision_rounds: 10
+max_revision_rounds: 3
 max_final_revision_rounds: 1
 continue_on_failure: true
