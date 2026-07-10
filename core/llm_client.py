@@ -5,7 +5,7 @@ LLM 客户端 - DeepSeek (chat) + OpenRouter (embedding)
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from openai import APIConnectionError, APITimeoutError, InternalServerError, OpenAI, RateLimitError
 from tenacity import RetryCallState, Retrying, retry_if_exception_type, stop_after_attempt, wait_exponential
@@ -18,7 +18,7 @@ logger = get_logger("llm")
 # 需要重试的异常类型
 _RETRYABLE = (ConnectionError, TimeoutError, OSError, APIConnectionError, APITimeoutError, RateLimitError, InternalServerError)
 
-ResultT = Any
+ResultT = TypeVar("ResultT")
 
 if TYPE_CHECKING:
     from collections.abc import Callable
