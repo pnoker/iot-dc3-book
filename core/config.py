@@ -206,6 +206,11 @@ def get_llm_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
         "model": llm.model,
         "temperature": llm.temperature,
         "max_tokens": llm.max_tokens,
+        "timeout": llm.timeout_seconds,
+        "retry_attempts": llm.retry_attempts,
+        "retry_min_seconds": llm.retry_min_seconds,
+        "retry_max_seconds": llm.retry_max_seconds,
+        "json_retry_attempts": llm.json_retry_attempts,
     }
 
 

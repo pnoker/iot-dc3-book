@@ -81,7 +81,26 @@ class LLMConfig(StrictConfigModel):
     model: str
     temperature: float = 0.7
     max_tokens: int = 8192
+    timeout_seconds: float = 120.0
+    retry_attempts: int = 3
+    retry_min_seconds: float = 2.0
+    retry_max_seconds: float = 30.0
+    json_retry_attempts: int = 2
     embedding: EmbeddingConfig
+
+    @model_validator(mode="after")
+    def validate_runtime_policy(self) -> LLMConfig:
+        if self.timeout_seconds <= 0:
+            raise ValueError("llm.timeout_seconds 必须大于 0")
+        if self.retry_attempts <= 0:
+            raise ValueError("llm.retry_attempts 必须大于 0")
+        if self.retry_min_seconds < 0:
+            raise ValueError("llm.retry_min_seconds 不能小于 0")
+        if self.retry_max_seconds < self.retry_min_seconds:
+            raise ValueError("llm.retry_max_seconds 必须不小于 retry_min_seconds")
+        if self.json_retry_attempts <= 0:
+            raise ValueError("llm.json_retry_attempts 必须大于 0")
+        return self
 
 
 class ReferenceSourceConfig(StrictConfigModel):

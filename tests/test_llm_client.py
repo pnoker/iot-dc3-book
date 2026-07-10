@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+import pytest
+
 from core.llm_client import LLMClient
 
 
@@ -12,6 +14,21 @@ class _FakeChatCompletions:
     def create(self, **kwargs):
         self.kwargs = kwargs
         return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content='{"ok": true}'))])
+
+
+class _FlakyChatCompletions:
+    def __init__(self, responses: list[str | Exception]) -> None:
+        self.responses = responses
+        self.calls = 0
+        self.kwargs = None
+
+    def create(self, **kwargs):
+        self.kwargs = kwargs
+        self.calls += 1
+        response = self.responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=response))])
 
 
 class _FakeEmbeddings:
@@ -62,4 +79,58 @@ def test_chat_json_requests_json_object_response() -> None:
     result = client.chat_json("system", "return json")
 
     assert completions.kwargs["response_format"] == {"type": "json_object"}
+    assert result == {"ok": True}
+
+
+def test_chat_retries_retryable_network_errors() -> None:
+    client = LLMClient(
+        base_url="http://example.test",
+        api_key="key",
+        model="model",
+        retry_attempts=2,
+        retry_min_seconds=0,
+        retry_max_seconds=0,
+    )
+    completions = _FlakyChatCompletions([ConnectionError("network down"), '{"ok": true}'])
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+
+    result = client.chat("system", "user")
+
+    assert completions.calls == 2
+    assert result == '{"ok": true}'
+
+
+def test_chat_does_not_retry_non_retryable_errors() -> None:
+    client = LLMClient(
+        base_url="http://example.test",
+        api_key="key",
+        model="model",
+        retry_attempts=3,
+        retry_min_seconds=0,
+        retry_max_seconds=0,
+    )
+    completions = _FlakyChatCompletions([ValueError("bad request")])
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+
+    with pytest.raises(ValueError, match="bad request"):
+        client.chat("system", "user")
+
+    assert completions.calls == 1
+
+
+def test_chat_json_retries_parse_failures() -> None:
+    client = LLMClient(
+        base_url="http://example.test",
+        api_key="key",
+        model="model",
+        retry_min_seconds=0,
+        retry_max_seconds=0,
+        json_retry_attempts=2,
+    )
+    completions = _FlakyChatCompletions(["不是 JSON", '{"ok": true}'])
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+
+    result = client.chat_json("system", "return json")
+
+    assert completions.calls == 2
     assert result == {"ok": True}

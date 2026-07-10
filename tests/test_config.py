@@ -178,6 +178,56 @@ def test_get_llm_config_resolves_yaml_env_placeholder(tmp_path, monkeypatch):
     assert llm_cfg["api_key"] == "deepseek-from-env"
 
 
+def test_get_llm_config_includes_runtime_policy() -> None:
+    cfg = _minimal_config(
+        llm={
+            "base_url": "https://example.test",
+            "api_key": "test-chat-key",
+            "model": "model",
+            "temperature": 0.2,
+            "max_tokens": 4096,
+            "timeout_seconds": 60,
+            "retry_attempts": 5,
+            "retry_min_seconds": 1,
+            "retry_max_seconds": 20,
+            "json_retry_attempts": 3,
+            "embedding": {
+                "base_url": "https://embed.test",
+                "api_key": "test-embed-key",
+                "model": "embed-model",
+            },
+        }
+    )
+
+    llm_cfg = get_llm_config(cfg)
+
+    assert llm_cfg["timeout"] == 60
+    assert llm_cfg["retry_attempts"] == 5
+    assert llm_cfg["retry_min_seconds"] == 1
+    assert llm_cfg["retry_max_seconds"] == 20
+    assert llm_cfg["json_retry_attempts"] == 3
+
+
+def test_llm_runtime_policy_validates_retry_bounds() -> None:
+    cfg = _minimal_config(
+        llm={
+            "base_url": "https://example.test",
+            "api_key": "test-chat-key",
+            "model": "model",
+            "retry_min_seconds": 10,
+            "retry_max_seconds": 1,
+            "embedding": {
+                "base_url": "https://embed.test",
+                "api_key": "test-embed-key",
+                "model": "embed-model",
+            },
+        }
+    )
+
+    with pytest.raises(ValueError, match="retry_max_seconds"):
+        config_to_app_config(cfg)
+
+
 def test_get_embed_config_resolves_yaml_env_placeholder(tmp_path, monkeypatch):
     monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
     monkeypatch.chdir(tmp_path)

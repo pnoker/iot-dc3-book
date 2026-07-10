@@ -5,6 +5,11 @@ api_key: "${DEEPSEEK_API_KEY}"
 model: "deepseek-v4-flash"
 temperature: 0.7
 max_tokens: 8192
+timeout_seconds: 120
+retry_attempts: 3
+retry_min_seconds: 2
+retry_max_seconds: 30
+json_retry_attempts: 2
 
 # Embedding 配置（OpenRouter）
 embedding:
