@@ -64,7 +64,13 @@ class BaseAgent:
         reports: list[dict[str, Any]] = []
         for name, lens in perspectives:
             system = f"{base_system}{_ADVERSARIAL_STANCE}\n\n### 本次审查视角：{name}\n{lens}"
-            reports.append(self.llm.chat_json(system, user_prompt, temperature=temperature))
+            try:
+                reports.append(self.llm.chat_json(system, user_prompt, temperature=temperature))
+            except ValueError:
+                # 单个视角返回坏 JSON 时降级为剩余票，不浪费其它视角已花的调用。
+                self.logger.warning("对抗复核视角「%s」解析失败，本票作废，用剩余票聚合", name)
+        if not reports:
+            raise ValueError("所有对抗复核视角均解析失败，无法聚合。")
         return self._aggregate_votes(reports)
 
     @staticmethod
@@ -78,7 +84,11 @@ class BaseAgent:
         merged_issues = _merge_by_text(reports, "issues")
         merged_claims = _merge_by_text(reports, "claims")
 
-        scores = [r["score"] for r in reports if isinstance(r.get("score"), (int, float))]
+        scores = [
+            r["score"]
+            for r in reports
+            if isinstance(r.get("score"), (int, float)) and not isinstance(r.get("score"), bool)
+        ]
         summaries = [str(r.get("summary", "")).strip() for r in reports if str(r.get("summary", "")).strip()]
 
         aggregated: dict[str, Any] = {

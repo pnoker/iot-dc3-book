@@ -203,7 +203,7 @@ class QualityConfig(StrictConfigModel):
     originality_check_enabled: bool = True
     originality_max_overlap: float = 0.35
     originality_ngram: int = 5
-    originality_min_paragraph_chars: int = 80
+    originality_min_paragraph_chars: int = 150
 
     @model_validator(mode="after")
     def validate_thresholds(self) -> QualityConfig:

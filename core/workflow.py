@@ -255,15 +255,24 @@ class BookProject:
         chapter_ids = list(dict.fromkeys(section.chapter_id for section in target_sections))
         workers = min(state.writing.parallel_workers, len(chapter_ids))
         processed = 0
+        failed_chapters: list[int] = []
         logger.info("🚀 [并发写作] %d 个章节并发起草，workers=%d", len(chapter_ids), workers)
+        # 在主线程提交前一次性备好每章的隔离快照，避免 worker 线程内 deepcopy 与主线程合并同一 state 竞争。
+        snapshots = {chapter_id: deepcopy(state) for chapter_id in chapter_ids}
         with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {
-                executor.submit(self._write_chapter_in_isolated_state, state, chapter_id): chapter_id
+                executor.submit(self._write_chapter_in_isolated_state, snapshots[chapter_id], chapter_id): chapter_id
                 for chapter_id in chapter_ids
             }
             for future in as_completed(futures):
                 chapter_id = futures[future]
-                isolated_state = future.result()
+                try:
+                    isolated_state = future.result()
+                except Exception:
+                    # 单章失败不拖垮其它已完成章节：记录后继续合并剩余结果。
+                    logger.exception("⚠️ [并发写作] 第%d章起草失败，跳过合并，继续其它章节", chapter_id)
+                    failed_chapters.append(chapter_id)
+                    continue
                 processed += self._merge_chapter_state(state, isolated_state, chapter_id)
                 self._save_write_checkpoint(thread_id, state)
                 logger.info("✅ [并发写作] 第%d章已合并 checkpoint", chapter_id)
@@ -275,13 +284,17 @@ class BookProject:
         status["sections_processed"] = processed
         status["parallel_chapters"] = True
         status["parallel_workers"] = workers
-        status["chapters_processed"] = len(chapter_ids)
+        status["chapters_processed"] = len(chapter_ids) - len(failed_chapters)
+        if failed_chapters:
+            status["failed_chapters"] = failed_chapters
         return status
 
-    def _write_chapter_in_isolated_state(self, state: BookState, chapter_id: int) -> BookState:
-        """在独立状态副本中顺序写完一个章节，避免线程间抢写 checkpoint。"""
+    def _write_chapter_in_isolated_state(self, isolated: BookState, chapter_id: int) -> BookState:
+        """在独立状态副本中顺序写完一个章节，避免线程间抢写 checkpoint。
+
+        isolated 已由主线程在提交前 deepcopy 备好，本方法不再触碰共享 state。
+        """
         worker = self._new_worker_project()
-        isolated = deepcopy(state)
         return worker._write_chapter_in_worker_state(isolated, chapter_id)
 
     def _new_worker_project(self) -> BookProject:
@@ -789,19 +802,21 @@ class BookProject:
 
         for round_index in range(state.max_revision_count + 1):
             deterministic_report = evaluate_chapter_quality(state, content, base_dir=self.paths.project_dir)
-            originality_issues = check_originality(
-                self.rag,
-                content,
-                state.quality,
-                categories=self.cfg.references.query_categories,
-            )
-            if originality_issues:
-                deterministic_report = deterministic_report.model_copy(
-                    update={
-                        "pass_": False,
-                        "issues": [*deterministic_report.issues, *originality_issues],
-                    }
+            # 原创性检索开销大（每段一次 embedding）；仅在确定性门已通过时才跑，避免为必然失败的章节白付成本。
+            if deterministic_report.pass_:
+                originality_issues = check_originality(
+                    self.rag,
+                    content,
+                    state.quality,
+                    categories=self.cfg.references.query_categories,
                 )
+                if originality_issues:
+                    deterministic_report = deterministic_report.model_copy(
+                        update={
+                            "pass_": False,
+                            "issues": [*deterministic_report.issues, *originality_issues],
+                        }
+                    )
             if not deterministic_report.pass_:
                 content.publication_feedback = deterministic_report.to_feedback()
                 content.revision_feedback = content.publication_feedback
@@ -1039,6 +1054,7 @@ class BookProject:
             thread_id: str | None,
     ) -> ChapterContent:
         """章节达到修订上限后保留反馈、标记失败，并按配置决定是否继续。"""
+        self._annotate_ai_flavor(content)
         state.mark_chapter_status(content.chapter_id, "quality_failed")
         state.upsert_chapter_content(content)
         self._save_chapter_file(state, content)

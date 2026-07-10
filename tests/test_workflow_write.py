@@ -138,9 +138,13 @@ class _CleanDirector:
 
 
 class _NoHitRAG:
-    """原创性门用的假 RAG：从不返回命中。"""
+    """原创性门用的假 RAG：从不返回命中，并记录检索次数。"""
+
+    def __init__(self) -> None:
+        self.calls = 0
 
     def retrieve(self, query: str, top_k: int = 3, *, categories: object = None) -> list:
+        self.calls += 1
         return []
 
 
@@ -207,6 +211,21 @@ def test_chapter_quality_gate_revises_short_chapter_then_approves(tmp_path) -> N
     assert state.get_chapter_content(1).fact_feedback == ""
     assert state.get_chapter_content(1).review_feedback == ""
     assert state.get_current_chapter().status == "approved"
+
+
+def test_originality_skipped_when_deterministic_gate_fails(tmp_path) -> None:
+    # 确定性门必然失败（字数远低于下限）时，不应触发昂贵的原创性检索
+    project = _quality_project(tmp_path)
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=True, min_words_per_chapter=100000, originality_check_enabled=True)
+    state.max_revision_count = 0
+    state.set_current_chapter_by_id(1)
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 短"))
+
+    project._review_chapter_until_pass(state, 1)
+
+    assert project.rag.calls == 0  # 确定性门失败，原创性检索被跳过
+    assert state.get_current_chapter().status == "quality_failed"
 
 
 def test_section_review_marks_failed_and_continues_at_revision_limit(tmp_path) -> None:

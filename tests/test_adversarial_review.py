@@ -135,3 +135,52 @@ def test_editor_aggregate_includes_foreshadow_checks() -> None:
         ]
     )
     assert result["foreshadow_checks"] == [{"id": "F1", "type": "resolve", "done": True}]
+
+
+# ---- 单票 JSON 失败降级容错 ----
+
+
+class _FlakyLLM:
+    """按序对指定次数抛 ValueError，其余返回固定报告。"""
+
+    def __init__(self, fail_on: set[int], report: dict[str, Any]) -> None:
+        self._fail_on = fail_on
+        self._report = report
+        self.calls = 0
+
+    def chat_json(self, system: str, user: str, temperature: float | None = None) -> dict[str, Any]:
+        self.calls += 1
+        if self.calls in self._fail_on:
+            raise ValueError("坏 JSON")
+        return dict(self._report)
+
+
+_PERSPECTIVES = [("A", "视角A"), ("B", "视角B"), ("C", "视角C")]
+
+
+def test_single_vote_failure_degrades_to_remaining() -> None:
+    # 第 3 票解析失败，应用前 2 票聚合，不抛异常
+    llm = _FlakyLLM(fail_on={3}, report={"pass": True, "issues": []})
+    agent = BaseAgent(llm)  # type: ignore[arg-type]
+    result = agent._adversarial_vote("sys", "user", _PERSPECTIVES, enabled=True)
+    assert result["pass"] is True
+    assert llm.calls == 3  # 三票都尝试了，只是第三票作废
+
+
+def test_all_votes_failure_raises() -> None:
+    # 三票全部解析失败才抛 ValueError
+    llm = _FlakyLLM(fail_on={1, 2, 3}, report={"pass": True})
+    agent = BaseAgent(llm)  # type: ignore[arg-type]
+    try:
+        agent._adversarial_vote("sys", "user", _PERSPECTIVES, enabled=True)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("三票全失败时应抛 ValueError")
+
+
+def test_score_ignores_bool() -> None:
+    # pass 字段是 bool，不应被误当作 score 数值
+    result = BaseAgent._aggregate_votes([{"pass": True}, {"pass": True, "score": 7}])
+    assert result["score"] == 7
+
