@@ -21,6 +21,131 @@ write   → 基于 approved outline 按 1.1.1 小节级 checkpoint 续写
 - `.data/manuscript/chapter-XX/<section-id>.md`：三级小节中间稿，例如 `1.1.1.md`。
 - `output/`：最终导出的章节级出版稿。
 
+### 命令速查
+
+所有命令都通过 `uv run python main.py` 执行。全局参数必须放在 `kb`、`outline`、`write` 这些子命令之前。
+
+```bash
+# 查看根命令帮助
+uv run python main.py --help
+
+# 查看子命令帮助
+uv run python main.py kb --help
+uv run python main.py outline --help
+uv run python main.py write --help
+```
+
+**全局参数**
+
+```bash
+# 指定配置目录，默认 config
+uv run python main.py --config config write status
+
+# 指定写作线程 ID，默认 book-1；多本书或多版本并行时使用
+uv run python main.py --thread-id book-1 write status
+
+# 指定日志级别，默认 INFO
+uv run python main.py --log-level INFO write status
+
+# 指定日志文件；不指定时使用默认日志配置
+uv run python main.py --log-file logs/book-writer.log write status
+
+# 指定单个日志文件最大字节数和历史日志数量
+uv run python main.py --log-max-bytes 10485760 --log-backup-count 10 write status
+```
+
+**知识库命令**
+
+```bash
+# 查看知识库索引健康状态
+uv run python main.py kb status
+
+# 增量构建知识库；源文件未变化时不会重复重建
+uv run python main.py kb build
+
+# 清空现有 Chroma/BM25/manifest 后全量重建知识库
+uv run python main.py kb build --rebuild
+```
+
+**大纲命令**
+
+```bash
+# 查看 current/approved 大纲状态
+uv run python main.py outline status
+
+# 生成全书大纲和三级写作单元；已存在 current.json 时会拒绝覆盖
+uv run python main.py outline generate
+
+# 强制覆盖 .data/outlines/current.json
+uv run python main.py outline generate --force
+
+# 导出 current.json 给人工审阅
+uv run python main.py outline export --file ./drafts/outline.json
+
+# 导出 approved.json
+uv run python main.py outline export --approved --file ./drafts/approved-outline.json
+
+# 批准当前 .data/outlines/current.json 为写作大纲
+uv run python main.py outline approve
+
+# 批准人工编辑后的大纲文件
+uv run python main.py outline approve --source ./drafts/outline.json
+```
+
+**写作命令**
+
+```bash
+# 基于 approved outline 创建小节级写作 checkpoint
+uv run python main.py write start
+
+# 覆盖当前 thread-id 的小节级写作 checkpoint
+uv run python main.py write start --fresh
+
+# 查看小节级写作进度、质量失败摘要和终审状态
+uv run python main.py write status
+
+# 查看小节级目录、完成状态和当前断点
+uv run python main.py write contents
+
+# 从当前断点继续写 1 个三级小节；等价于 target=current
+uv run python main.py write resume
+
+# 显式从当前断点续写
+uv run python main.py write resume current
+
+# 写完整本书剩余内容；默认按完整章节并发，完成后触发全书终审
+uv run python main.py write resume all
+
+# 写完整个第 1 章
+uv run python main.py write resume 1
+
+# 写完 1.1 这个二级节下的所有三级小节
+uv run python main.py write resume 1.1
+
+# 只写 1.1.1 这个三级小节
+uv run python main.py write resume 1.1.1
+
+# 查看第 1 章正文和状态
+uv run python main.py write section 1
+
+# 查看 1.1 二级节正文和状态
+uv run python main.py write section 1.1
+
+# 查看 1.1.1 三级小节正文和状态
+uv run python main.py write section 1.1.1
+
+# 用本地 Markdown 覆盖指定三级小节，并重新合成所在章节
+uv run python main.py write patch-section --section-id 1.1.1 --file .data/manuscript/chapter-01/1.1.1.md
+
+# 把已有 .data/manuscript 草稿显式导入 checkpoint；用于异常中断后的进度修复
+uv run python main.py write recover-manuscript
+
+# 根据小节级 checkpoint 导出 output/
+uv run python main.py write export-output
+```
+
+> 旧的一步式根命令已经移除；不要使用 `uv run python main.py generate`、`uv run python main.py resume` 或 `uv run python main.py contents`。现在统一通过 `kb`、`outline`、`write` 三组命令执行。
+
 ### 从零开始
 
 第一次跑出版级流程时，按下面顺序执行。知识库、大纲和写作彼此独立，任何一步失败都只需要重跑该阶段。
@@ -100,6 +225,9 @@ uv run python main.py write patch-section --section-id 1.1.1 --file .data/manusc
 
 # 回写后查看断点和统计
 uv run python main.py write status
+
+# 如果异常中断后发现 manuscript 文件多于 checkpoint 进度，先恢复草稿入账
+uv run python main.py write recover-manuscript
 
 # 需要出版稿时再导出 output/
 uv run python main.py write export-output
