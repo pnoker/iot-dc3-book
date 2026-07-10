@@ -152,6 +152,44 @@ render_notes: "HTML/SVG 统一绘制。"
     assert report.statistics["figure_or_table_count"] == 1
 
 
+def test_publication_quality_accepts_engineering_closure_without_textbook_summary() -> None:
+    markdown = """# 第1章 概述
+
+## 1.1 工程问题
+这是一个足够长的段落，用来解释工程背景、技术约束、系统边界、风险来源、实践方法和读者需要掌握的核心能力。
+
+```book-figure
+id: "fig-01-01"
+type: "architecture"
+title: "图1-1 平台分层架构"
+purpose: "说明平台层次与职责边界。"
+layout: "自下而上分层。"
+elements:
+  - "设备层"
+relationships:
+  - "设备层连接平台层"
+legend:
+  - "蓝色=核心平台服务"
+caption: "图1-1 展示平台分层架构。"
+render_notes: "HTML/SVG 统一绘制。"
+```
+
+### 1.2.1 工程检查表：上线前必须确认的边界
+这一节不是课后总结，而是把前面的工程判断收束成上线前需要确认的系统边界、风险承担方式和团队协作约定。
+"""
+    content = ChapterContent(chapter_id=1, title="概述", markdown=markdown)
+    state = _state(content)
+    state.quality.min_words_per_chapter = 20
+    state.quality.min_heading_count = 2
+    state.quality.require_exercises = False
+    state.quality.require_existing_local_images = False
+
+    report = evaluate_chapter_quality(state, content)
+
+    codes = {issue.code for issue in report.issues}
+    assert "structure.missing_closure" not in codes
+
+
 def test_publication_quality_rejects_incomplete_book_figure_spec() -> None:
     markdown = """# 第1章 概述
 

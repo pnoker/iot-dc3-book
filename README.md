@@ -331,7 +331,7 @@ caption: "图2-1 展示 AIoT 平台从设备接入到智能编排的主要层次
 render_notes: "HTML/SVG 渲染，浅色背景，圆角矩形，统一 12px 间距，箭头带文字标签。"
 ```
 
-统一配色、图例、允许的图表类型和必填字段配置在 `config/style.yaml` 的 `illustrations` 节点。质量门会把完整的 `book-figure` 规格块计为图表，并阻止缺少 `purpose/layout/elements/relationships/legend/caption/render_notes` 等关键字段的不完整规格块。每节最少图表数由 `config/quality.yaml` 的 `min_figures_per_section` 控制，默认值为 `1`。
+统一配色、图例、允许的图表类型和必填字段配置在 `config/style.yaml` 的 `illustrations` 节点。质量门会把完整的 `book-figure` 规格块计为图表，并阻止缺少 `purpose/layout/elements/relationships/legend/caption/render_notes` 等关键字段的不完整规格块。每节最少图表数由 `config/quality.yaml` 的 `min_figures_per_section` 控制，默认值为 `0`；图表只在架构、流程、演进路径或关键对比确有必要时使用。
 
 ## 代码结构
 

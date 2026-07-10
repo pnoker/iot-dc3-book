@@ -92,7 +92,8 @@ def test_config_to_app_config_returns_typed_models(monkeypatch):
     assert app_config.writing.parallel_workers == 3
     assert app_config.quality.require_exercises is False
     assert app_config.quality.max_revision_rounds == 5
-    assert app_config.quality.min_figures_per_section == 1
+    assert app_config.quality.require_summary is False
+    assert app_config.quality.min_figures_per_section == 0
     assert app_config.quality.continue_on_failure is True
     assert app_config.style.illustrations.marker == "book-figure"
     assert "architecture" in app_config.style.illustrations.allowed_types

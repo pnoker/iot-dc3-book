@@ -206,11 +206,11 @@ class QualityConfig(StrictConfigModel):
     target_words_per_chapter: int = 12000
     max_words_over_target_ratio: float = 1.2
     min_heading_count: int = 8
-    require_summary: bool = True
+    require_summary: bool = False
     require_exercises: bool = False
     min_exercise_count: int = 0
     min_figures_or_tables: int = 1
-    min_figures_per_section: int = 1
+    min_figures_per_section: int = 0
     require_existing_local_images: bool = True
     forbid_placeholder_images: bool = True
     forbid_unsourced_statistics: bool = True

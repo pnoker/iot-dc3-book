@@ -17,7 +17,8 @@ if TYPE_CHECKING:
 
 _RESEARCH_SYSTEM = """你是一位物联网领域的技术研究员。
 你的任务是根据当前要写的章节主题，生成最佳的检索查询词，
-以便从参考书籍库中找到最有价值的参考资料。
+以便从参考资料库中找到可校准事实、术语、标准和技术边界的资料。
+参考资料库里可能包含较早期教材；查询应服务于事实核验，不要把教材结构当成写作结构。
 请输出 3-5 个检索查询，每行一个，不要包含其他内容。"""
 
 
@@ -61,7 +62,7 @@ class ResearchAgent(BaseAgent):
             else ""
         )
         user_prompt = (
-            f"当前要写的章节：\n{query_context}\n\n请生成检索查询词，用于从物联网参考书籍中查找相关资料。{dedup_hint}"
+            f"当前要写的章节：\n{query_context}\n\n请生成检索查询词，用于从物联网参考资料中查找事实校准依据。{dedup_hint}"
         )
 
         self.logger.info("检索第%d章 %s 的参考资料...", chapter.id, chapter.title)

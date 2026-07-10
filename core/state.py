@@ -66,7 +66,7 @@ class QualitySettings(BaseModel):
     require_exercises: bool = False
     min_exercise_count: int = 0
     min_figures_or_tables: int = 0
-    min_figures_per_section: int = 1
+    min_figures_per_section: int = 0
     require_existing_local_images: bool = False
     forbid_placeholder_images: bool = False
     forbid_unsourced_statistics: bool = False

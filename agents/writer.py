@@ -8,27 +8,28 @@ from core.state import BlueprintSection, BookState, ChapterBlueprint, SectionPla
 
 from .base import BaseAgent
 
-_WRITER_SYSTEM = """你是一位资深的物联网技术书籍作者。
-你的任务是根据详细大纲和参考资料，撰写高质量的技术书籍章节。
+_WRITER_SYSTEM = """你是一位有十多年物联网工程经验的技术作者。
+你的任务不是写教材，也不是给学生讲课；你要写一本面向 IoT 从业者、工程师、架构师和技术负责人的物联网工程著作。
 
 ## 写作原则
 1. 内容专业准确，参考资料需融合改写，不能直接复制
-2. 语言通俗易懂，面向工程师和高校师生
-3. 适当使用示例、类比来解释复杂概念
-4. 按照指定的章节结构撰写：自然开篇 → 正文分节 → 章节收束；不要机械使用“引言”“思考与练习”模板
+2. 语言专业、克制、有人类工程判断，面向 IoT 从业者、工程师、架构师和技术负责人
+3. 少做定义式铺陈，多写架构取舍、系统边界、工程权衡、行业演进和 AI 时代的新判断
+4. 不写教科书式“引言/学习目标/思考与练习/课后总结”；章节可以用方法论回扣、工程检查表、实践边界、趋势判断或延伸阅读自然收束
 5. 在合适的地方埋入或回收伏笔，使全书前后呼应
 6. 严格遵守格式规范和术语规范
 7. 证据优先：统计数字、年份分界、版本号、标准状态、成本、性能、市场规模、项目效果、企业案例等硬事实，必须能在参考资料或研究资料包中找到明确依据
 8. 没有证据的硬事实不要写；需要讲解时改为定性分析、作者归纳、假设场景或方法论步骤，并明确标注“假设场景/示意”
 9. 扩充篇幅时优先增加原理解释、工程权衡、检查清单、流程步骤、风险分析、对比表和实践清单，不得用虚构数字、虚构真实项目或伪来源凑字数
-10. 每个三级小节必须至少包含一个完整 `book-figure` 规格块，用于后续统一 HTML/SVG 绘制
-11. 去除 AI 腔，写得像人写的：不用"在当今…时代""随着…的发展""综上所述""值得注意的是"这类套话开场和过渡；不把内容硬凑成"不仅…而且…更…"的排比三连；不在每段结尾加"这为…奠定了基础""具有重要意义"这类空心总结句；敢下明确判断和取舍，而不是一味"既要…也要"的中立平滑；长短句交错、段落有疏密，不要句句等长节奏均匀；克制加粗和冒号列表，用论述代替罗列
+10. 图表只在架构、流程、演进路径、关键对比确有必要时使用；不要为了满足形式在每个小节硬塞图
+11. 知识库只用于事实校准，不能模仿旧教材的段落组织、定义口吻、讲课式语气或原文表达
+12. 去除 AI 腔，写得像人写的：不用"在当今…时代""随着…的发展""综上所述""值得注意的是"这类套话开场和过渡；不把内容硬凑成"不仅…而且…更…"的排比三连；不在每段结尾加"这为…奠定了基础""具有重要意义"这类空心总结句；敢下明确判断和取舍，而不是一味"既要…也要"的中立平滑；长短句交错、段落有疏密，不要句句等长节奏均匀；克制加粗和冒号列表，用论述代替罗列
 
 ## 输出要求
 - 输出完整的 Markdown 格式章节正文
 - 使用正确的标题层级（# ## ### ####）
 - 不要输出章节编号以外的元信息
-- 确保内容充实，达到目标字数"""
+- 确保内容充实，但不要用教材式知识点堆砌凑字数"""
 
 _EVIDENCE_DISCIPLINE = """## 证据纪律（必须遵守）
 - 凡是统计数字、百分比、年份分界、版本号、标准冻结时间、市场规模、成本、时延、吞吐、节省比例、渗透率、项目效果等硬事实，必须来自“参考资料/研究资料包”中明确出现的信息。
@@ -37,6 +38,11 @@ _EVIDENCE_DISCIPLINE = """## 证据纪律（必须遵守）
 - 不要编造 Gartner、IDC、IoT Analytics、Cisco、3GPP、企业项目、城市项目等来源；资料包没有的来源不得写入正文。
 - 可以用表格、流程、检查清单、风险矩阵、架构解释、伪代码和实践清单扩充内容，这些不需要虚构统计数据。
 - 章节宁可少一些硬数字，也不能出现无法核验的硬数字。"""
+
+_REFERENCE_ROLE = """## 参考资料角色（必须遵守）
+- 本地知识库多为较早期教材和学术资料，只用于校准术语、事实、标准和技术边界。
+- 不要沿用知识库的教材式结构、定义式展开、课堂讲解口吻、例题风格或原文表达。
+- 写作主线应来自本书自身的方法论：工程经验、架构判断、AIoT 时代变化、系统设计取舍和实践边界。"""
 
 
 class WriterAgent(BaseAgent):
@@ -180,6 +186,7 @@ class WriterAgent(BaseAgent):
         if chapter is None:
             return markdown
         base_prompt = self._build_section_base_prompt(state)
+        figure_contract = self._figure_contract_prompt(state)
         user_prompt = f"""请只修订当前三级小节，不要输出整章。
 
 # 全章写作上下文
@@ -196,9 +203,10 @@ class WriterAgent(BaseAgent):
 - 必备元素: {"；".join(section.required_elements) if section.required_elements else "无特殊元素要求"}
 
 # 小节级配图约束
-- 不要用 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图充当占位图；必须在本小节保留或补充至少一个完整 `book-figure` 规格块。
-- 即使必备元素中没有显式写 `book-figure`，也要根据本小节内容选择合适的 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix 或 timeline 图表类型。
-- `book-figure` 规格块必须清晰描述图表类型、专业图例、元素、关系、图注和 HTML/SVG 渲染说明。
+- 只有当本小节确实涉及架构、流程、时序、层次、拓扑、演进路径或关键对比时，才输出完整 `book-figure` 规格块。
+- 不要用 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图充当占位图。
+- 如果输出 `book-figure`，规格块必须清晰描述图表类型、专业图例、元素、关系、图注和 HTML/SVG 渲染说明。
+{figure_contract}
 
 # 前一个小节摘要
 {previous_brief or "这是本章第一个小节。"}
@@ -240,6 +248,7 @@ class WriterAgent(BaseAgent):
 {ref_prompt}
 
 {_EVIDENCE_DISCIPLINE}
+{_REFERENCE_ROLE}
 {dedup_prompt}
 
 {style_prompt}"""
@@ -268,6 +277,7 @@ class WriterAgent(BaseAgent):
             previous_brief: str,
     ) -> str:
         chapter = state.get_current_chapter()
+        figure_contract = self._figure_contract_prompt(state)
         section_prompt = f"""请只撰写当前小节，不要输出整章。
 
 # 全章写作上下文
@@ -291,9 +301,9 @@ class WriterAgent(BaseAgent):
 
 # 小节级出版约束
 - 如果使用虚构案例、设想场景、未来年份或工程数字，必须明确标注“假设场景/示意”，不得伪装成真实项目。
-- 不要用 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图充当占位图；必须在本小节输出至少一个完整 `book-figure` 规格块，清晰描述图表类型、专业图例、元素、关系、图注和 HTML/SVG 渲染说明。
-- 即使必备元素中没有显式写 `book-figure`，也要根据本小节内容选择合适的 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix 或 timeline 图表类型。
+- 不要用 Markdown 图片、Mermaid、SVG、HTML 或 ASCII 图充当占位图；只有本小节确实需要表达架构、流程、时序、层次、拓扑、演进路径或关键对比时，才输出完整 `book-figure` 规格块。
 - 不要为了衔接后文而重复本章其他小节会展开的主体内容；本小节只完成当前编号的任务。
+{figure_contract}
 
 # 前一个小节摘要
 {previous_brief or "这是本章第一个小节。"}
@@ -301,3 +311,33 @@ class WriterAgent(BaseAgent):
 请输出该小节的 Markdown。必须使用合适的 ## 或 ### 标题，不要输出整章标题。"""
         self.logger.info("撰写第%d章小节: %s", chapter.id if chapter else 0, section.heading)
         return self.llm.chat(_WRITER_SYSTEM, section_prompt, temperature=0.75, max_tokens=8192)
+
+    def _figure_contract_prompt(self, state: BookState) -> str:
+        """构建图表规格约束；只有本小节需要配图时才适用。"""
+        illustrations = state.style.illustrations or {}
+        marker = str(illustrations.get("marker", "book-figure"))
+        required_fields = illustrations.get("required_fields")
+        if not isinstance(required_fields, list):
+            required_fields = [
+                "id",
+                "type",
+                "title",
+                "purpose",
+                "layout",
+                "elements",
+                "relationships",
+                "legend",
+                "caption",
+                "render_notes",
+            ]
+        allowed_types = illustrations.get("allowed_types")
+        allowed = "、".join(str(item) for item in allowed_types) if isinstance(allowed_types, list) else "architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix、timeline"
+        example = str(illustrations.get("example", "")).strip()
+        required = "、".join(str(item) for item in required_fields)
+        example_block = f"\n\n字段格式参考：\n{example}" if example else ""
+        return f"""
+- 如果本小节输出 `{marker}` 代码块，必须逐项包含这些字段，字段名不能省略或翻译：{required}。
+- `type` 只能从这些类型中选择：{allowed}。
+- `id` 使用 `fig-章节号-两位序号`，`title` 使用“图章号-序号 标题”，`caption` 必须是可直接出版的图注。
+- `elements`、`relationships`、`legend` 必须使用 YAML 列表，不能只写一句概述。
+{example_block}"""

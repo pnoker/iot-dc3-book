@@ -55,7 +55,12 @@ class PublicationQualityReport(BaseModel):
         )
 
 
-_SUMMARY_RE = re.compile(r"(^|\n)##\s*(本章小结|小结|章节小结)\s*$", re.MULTILINE)
+_CHAPTER_CLOSURE_RE = re.compile(
+    r"(^|\n)#{2,4}\s*(?:\d+(?:\.\d+){1,2}\s*)?"
+    r"(本章小结|小结|章节小结|本章核心要点|核心要点.*回顾|关键概念回顾|知识体系回顾|"
+    r"工程检查(?:表|清单)|实践清单|实践边界|方法论回扣|趋势判断|延伸阅读)",
+    re.MULTILINE,
+)
 _EXERCISE_RE = re.compile(r"(^|\n)##\s*(思考与练习|练习|实践练习)\s*$", re.MULTILINE)
 _EXERCISE_ITEM_RE = re.compile(r"(^|\n)\s*(?:[-*+]\s+|\d+[.)、]\s+).+")
 _VAGUE_STAT_RE = re.compile(
@@ -217,12 +222,12 @@ def _check_structure(
                 suggestion="补齐二级/三级小节，按问题、原理、工程实践、风险和小结展开。",
             )
         )
-    if settings.require_summary and not _SUMMARY_RE.search(markdown):
+    if settings.require_summary and not _CHAPTER_CLOSURE_RE.search(markdown):
         issues.append(
             PublicationIssue(
-                code="structure.missing_summary",
-                message="缺少“本章小结”章节。",
-                suggestion="增加本章核心观点、工程判断和读者应掌握能力的回顾。",
+                code="structure.missing_closure",
+                message="缺少自然的章节收束。",
+                suggestion="按内容需要增加方法论回扣、工程检查表、实践边界、趋势判断或延伸阅读；不要写课后练习式总结。",
             )
         )
     if settings.require_exercises:

@@ -10,15 +10,15 @@ from core.state import BlueprintSection, BookState, ChapterBlueprint
 from .base import BaseAgent
 
 _ARCHITECT_SYSTEM = """你是一位出版级技术图书章节架构师。
-你的任务不是写正文，而是把章节设计成可出版的写作蓝图。
+你的任务不是写正文，也不是设计教材课时；你要把章节设计成面向 IoT 从业者、工程师、架构师和技术负责人的工程著作蓝图。
 
 ## 设计要求
-1. 明确读者读完本章能解决什么工程问题
+1. 明确本章要形成的工程判断、架构取舍、方法论主张和实践边界
 2. 为每个三级写作单元分配目标字数，合计接近章节目标字数
-3. 每章至少规划一个工程案例和必要的代码/配置示例；真实案例必须依赖资料来源，无法确认时规划为“假设场景/示意案例”
+3. 每章至少规划一个工程场景、架构取舍或方法论落点；真实案例必须依赖资料来源，无法确认时规划为“假设场景/示意案例”
 4. 标明每节需要的事实证据或资料来源类型，避免无依据断言
-5. 不要把每章设计成教科书模板；避免固定“引言/思考与练习”，按章节内容选择自然开篇、工程检查表、实践清单或延伸阅读
-6. 每个三级写作单元都必须规划至少一个 `book-figure` 配图规格块，图表类型必须明确，例如 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix、timeline
+5. 不要把每章设计成教科书模板；避免固定“引言/学习目标/思考与练习/课后总结”，按章节内容选择自然开篇、工程判断、方法论回扣、实践边界、工程检查表或延伸阅读
+6. 只在架构、流程、时序、层次、拓扑、演进路径或关键对比确有必要时规划 `book-figure`；不要为了形式给每个三级写作单元硬塞图
 7. sections 必须是扁平数组，每个元素都是三级写作单元，编号形如 1.1.1、1.1.2；不要只生成 1.1 或 1.2
 8. 每个三级写作单元应该足够小，便于断点恢复、人工审稿和局部重写；每章通常 10-18 个三级写作单元
 9. 输出严格 JSON，不要输出 Markdown 正文
@@ -41,14 +41,14 @@ _ARCHITECT_SYSTEM = """你是一位出版级技术图书章节架构师。
       "purpose": "小节目的",
       "key_points": ["要点"],
       "evidence_needed": ["需要查证的资料"],
-    "required_elements": ["book-figure: 图表类型 + 图名 + 主要元素 + 关系 + 图例", "案例/代码/风险分析"]
+      "required_elements": ["必要时：book-figure 图表类型 + 图名 + 主要元素 + 关系 + 图例", "工程判断/架构取舍/风险分析"]
     }
   ],
   "case_studies": ["案例"],
   "figures": ["图表规划"],
   "tables": ["表格规划"],
   "code_examples": ["代码或配置示例规划"],
-  "learning_goals": ["学习目标"]
+  "learning_goals": ["本章形成的工程判断或方法论主张"]
 }
 ```"""
 
@@ -84,11 +84,11 @@ class ChapterArchitectAgent(BaseAgent):
 {chr(10).join(f"- {point}" for point in chapter.key_points) if chapter.key_points else "暂无，请补齐。"}
 
 # 出版要求
-- 面向工程师和高校师生
-- 必须包含工程案例、实践建议；无来源案例只能规划为“假设场景/示意案例”
-- 每个三级小节都必须配置至少一张图：在 figures 中写清图表编号建议、图表类型、图表目的、主要元素、关系、图例和应放入哪个三级小节；在每个 section.required_elements 中写入 `book-figure: 图表类型 + 图名 + 必备元素`
-- 优先使用 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix、timeline 等专业图表类型；不要规划泛泛的“配图”
-- 不强制“引言”和“思考与练习”，章节收束可规划为本章小结、工程检查表、实践清单或延伸阅读
+- 面向 IoT 从业者、工程师、架构师和技术负责人；不是课堂教材，不写课后练习题
+- 必须包含工程场景、架构取舍、实践建议或方法论判断；无来源案例只能规划为“假设场景/示意案例”
+- 只在确实需要图表表达架构、流程、时序、拓扑、层次、演进路径或关键对比时规划图表；在 figures 中写清图表编号建议、图表类型、图表目的、主要元素、关系、图例和应放入哪个三级小节
+- 使用图表时优先选择 architecture、sequence、flowchart、dataflow、pyramid、layered、topology、lifecycle、matrix、timeline 等专业图表类型；不要规划泛泛的“配图”
+- 不强制“引言”“本章小结”和“思考与练习”，章节收束可规划为方法论回扣、工程检查表、实践边界、趋势判断或延伸阅读
 - 对统计数据、版本号、平台能力等硬事实标明需要证据
 - sections 必须生成到三级目录，section_id 必须以 {chapter.id}. 开头，例如 {chapter.id}.1.1、{chapter.id}.1.2、{chapter.id}.2.1
 - 不要生成二级目录作为写作单元；二级目录只能通过 parent_title 表达

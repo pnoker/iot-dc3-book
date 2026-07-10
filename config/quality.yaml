@@ -5,11 +5,11 @@ min_words_per_chapter: 9000
 target_words_per_chapter: 12000
 max_words_over_target_ratio: 1.2
 min_heading_count: 8
-require_summary: true
+require_summary: false
 require_exercises: false
 min_exercise_count: 0
 min_figures_or_tables: 1
-min_figures_per_section: 1
+min_figures_per_section: 0
 require_existing_local_images: true
 forbid_placeholder_images: true
 forbid_unsourced_statistics: true
