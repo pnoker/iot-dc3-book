@@ -434,6 +434,16 @@ def write_patch_section(
     _execute_project(ctx, patch)
 
 
+@write_app.command("recover-manuscript")
+def write_recover_manuscript(ctx: typer.Context) -> None:
+    """把现有 manuscript 草稿显式导入小节级 checkpoint。"""
+
+    def recover(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.recover_manuscript(thread_id), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, recover)
+
+
 @write_app.command("export-output")
 def write_export_output(ctx: typer.Context) -> None:
     """根据小节级 checkpoint 导出 output。"""

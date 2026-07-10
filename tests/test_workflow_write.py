@@ -196,6 +196,66 @@ def test_parallel_chapters_write_and_merge_by_chapter(tmp_path) -> None:
     assert {content.chapter_id for content in state.chapters} == {1, 2}
 
 
+def test_parallel_worker_does_not_write_manuscript_before_merge(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(references=SimpleNamespace(query_categories=[]))
+    project.rag = _NoHitRAG()
+    project.writer = _ParallelWriter()
+    project.assembler = _Assembler()
+    project.researcher = _NoopResearcher()
+    project.fact_checker = _PassingCheck()
+    project.citation_guard = _PassingCheck()
+    project.style_guard = _PassingCheck()
+    project.editor = _PassingReview()
+    project.director = _CleanDirector()
+    project._new_worker_project = lambda: project
+    state = _state_with_sections()
+    for section in state.get_all_sections_flat():
+        section.target_words = 1
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+
+    isolated = project._write_chapter_in_isolated_state(state, 1)
+
+    assert isolated.get_chapter_content(1) is not None
+    assert not (tmp_path / "manuscript").exists()
+
+    project._merge_chapter_state(state, isolated, 1)
+    project._save_chapter_artifacts(state, 1)
+
+    assert (tmp_path / "manuscript" / "chapter-01" / "1.1.1.md").exists()
+    assert (tmp_path / "manuscript" / "chapter-01" / "chapter.md").exists()
+
+
+def test_recover_manuscript_imports_orphan_sections_and_chapters(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings())
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    state.upsert_section_content(
+        SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n已有正文")
+    )
+    project._save_write_checkpoint("book", state)
+    chapter_dir = tmp_path / "manuscript" / "chapter-01"
+    chapter_dir.mkdir(parents=True)
+    (chapter_dir / "1.1.2.md").write_text("### 1.1.2 二\n\n" + "正文" * 120, encoding="utf-8")
+    (chapter_dir / "1.2.1.md").write_text("### 1.2.1 三\n\n" + "正文" * 120, encoding="utf-8")
+    (chapter_dir / "chapter.md").write_text("# 第1章 第一章\n\n" + "正文" * 120, encoding="utf-8")
+
+    result = project.recover_manuscript("book")
+    recovered = project.load_write_checkpoint("book")
+
+    assert result["sections_recovered"] == 2
+    assert result["chapters_recovered"] == 1
+    assert result["current_section"] == "2.1.1"
+    assert recovered.get_section_content("1.1.2") is not None
+    assert recovered.get_section_content("1.2.1") is not None
+    assert recovered.get_chapter_content(1) is not None
+    assert recovered.current_section_id == "2.1.1"
+    assert result["backup"] is not None
+
+
 def test_chapter_quality_gate_revises_short_chapter_then_approves(tmp_path) -> None:
     project = _quality_project(tmp_path)
     state = _state_with_sections()

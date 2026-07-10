@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from copy import deepcopy
+from datetime import datetime
 from pathlib import Path
 from typing import Any, cast
 
@@ -51,10 +53,13 @@ WRITE_CHECKPOINT_VERSION = 1
 class BookProject:
     """面向出版流程的显式三阶段编排器。"""
 
+    _write_artifacts = True
+
     def __init__(self, config_path: str = "config") -> None:
         self.cfg = load_app_config(config_path)
         self.paths = get_config_paths(self.cfg)
         self.config_path = config_path
+        self._write_artifacts = True
 
         llm_cfg = get_llm_config(self.cfg)
         embed_cfg = get_embed_config(self.cfg)
@@ -275,6 +280,7 @@ class BookProject:
                     continue
                 processed += self._merge_chapter_state(state, isolated_state, chapter_id)
                 self._save_write_checkpoint(thread_id, state)
+                self._save_chapter_artifacts(state, chapter_id)
                 logger.info("✅ [并发写作] 第%d章已合并 checkpoint", chapter_id)
 
         self._move_to_next_unwritten_section(state, target_sections[-1].id, thread_id=thread_id)
@@ -295,7 +301,12 @@ class BookProject:
         isolated 已由主线程在提交前 deepcopy 备好，本方法不再触碰共享 state。
         """
         worker = self._new_worker_project()
-        return worker._write_chapter_in_worker_state(isolated, chapter_id)
+        previous = worker._write_artifacts
+        worker._write_artifacts = False
+        try:
+            return worker._write_chapter_in_worker_state(isolated, chapter_id)
+        finally:
+            worker._write_artifacts = previous
 
     def _new_worker_project(self) -> BookProject:
         """创建线程内独立项目实例，避免共享 LLM/RAG 客户端。"""
@@ -322,7 +333,6 @@ class BookProject:
                     thread_id=None,
                 )
                 isolated.upsert_section_content(section_content)
-                self._save_section_file(isolated, section_content)
         self._assemble_chapter_if_ready(isolated, chapter_id, thread_id=None)
         return isolated
 
@@ -350,6 +360,14 @@ class BookProject:
             state.upsert_chapter_content(chapter_content)
         self._merge_foreshadows(state, source)
         return processed
+
+    def _save_chapter_artifacts(self, state: BookState, chapter_id: int) -> None:
+        """把 checkpoint 中指定章节的正文同步到 manuscript 文件。"""
+        for content in state.get_chapter_section_contents(chapter_id):
+            self._save_section_file(state, content)
+        chapter_content = state.get_chapter_content(chapter_id)
+        if chapter_content is not None:
+            self._save_chapter_file(state, chapter_content)
 
     @staticmethod
     def _merge_foreshadows(state: BookState, source: BookState) -> None:
@@ -396,6 +414,99 @@ class BookProject:
         self._save_section_file(state, content)
         self._save_write_checkpoint(thread_id, state)
         return state
+
+    def recover_manuscript(self, thread_id: str) -> dict[str, object]:
+        """把现有 manuscript 草稿显式导入小节级 checkpoint。"""
+        state = self.load_write_checkpoint(thread_id)
+        checkpoint_path = self.write_checkpoint_path(thread_id)
+        backup_path = self._backup_checkpoint(checkpoint_path)
+        recovered_sections: list[str] = []
+        failed_sections: list[str] = []
+        recovered_chapters: list[int] = []
+        quality_failed_chapters: list[int] = []
+
+        for chapter in state.get_all_chapters_flat():
+            for section in chapter.sections:
+                if state.get_section_content(section.id) is not None:
+                    continue
+                section_path = self._section_file_path(chapter.id, section.id)
+                if not section_path.exists():
+                    continue
+                markdown = section_path.read_text(encoding="utf-8")
+                section_content = SectionContent(
+                    section_id=section.id,
+                    chapter_id=section.chapter_id,
+                    title=section.title,
+                    markdown=markdown,
+                    word_count=count_words(markdown),
+                )
+                issues = self._section_quality_issues(state, section, section_content)
+                if issues:
+                    feedback = self._json_feedback({"pass": False, "section_id": section.id, "issues": issues})
+                    section_content.review_feedback = feedback
+                    section_content.revision_feedback = feedback
+                    section_content.revision_count = state.max_revision_count
+                    state.mark_section_status(section.id, "review_failed")
+                    failed_sections.append(section.id)
+                else:
+                    state.mark_section_status(section.id, "reviewed")
+                state.upsert_section_content(section_content)
+                recovered_sections.append(section.id)
+
+            chapter_path = self._chapter_file_path(chapter.id)
+            if chapter_path.exists() and state.get_chapter_content(chapter.id) is None:
+                markdown = chapter_path.read_text(encoding="utf-8")
+                chapter_content = ChapterContent(
+                    chapter_id=chapter.id,
+                    title=chapter.title,
+                    markdown=markdown,
+                    word_count=count_words(markdown),
+                )
+                report = evaluate_chapter_quality(state, chapter_content, base_dir=self.paths.project_dir)
+                if report.pass_:
+                    state.mark_chapter_status(chapter.id, "written")
+                else:
+                    feedback = report.to_feedback()
+                    chapter_content.publication_feedback = feedback
+                    chapter_content.revision_feedback = feedback
+                    chapter_content.revision_count = state.max_revision_count
+                    state.mark_chapter_status(chapter.id, "quality_failed")
+                    quality_failed_chapters.append(chapter.id)
+                state.upsert_chapter_content(chapter_content)
+                recovered_chapters.append(chapter.id)
+
+        self._move_to_first_missing_section(state)
+        self._save_write_checkpoint(thread_id, state)
+        return {
+            "thread_id": thread_id,
+            "checkpoint": str(checkpoint_path),
+            "backup": str(backup_path) if backup_path is not None else None,
+            "sections_recovered": len(recovered_sections),
+            "recovered_sections": recovered_sections,
+            "review_failed_sections": failed_sections,
+            "chapters_recovered": len(recovered_chapters),
+            "recovered_chapters": recovered_chapters,
+            "quality_failed_chapters": quality_failed_chapters,
+            "current_section": state.current_section_id,
+            "sections_written": len(state.section_contents),
+            "chapters_assembled": len(state.chapters),
+        }
+
+    def _move_to_first_missing_section(self, state: BookState) -> None:
+        for section in state.get_all_sections_flat():
+            if state.get_section_content(section.id) is None:
+                state.set_current_section_by_id(section.id)
+                state.current_phase = "writing"
+                return
+        state.current_phase = "completed"
+
+    def _backup_checkpoint(self, checkpoint_path: Path) -> Path | None:
+        if not checkpoint_path.exists():
+            return None
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        backup_path = checkpoint_path.with_name(f"{checkpoint_path.stem}.before-recover-{timestamp}{checkpoint_path.suffix}")
+        shutil.copy2(checkpoint_path, backup_path)
+        return backup_path
 
     def load_write_checkpoint(self, thread_id: str) -> BookState:
         """读取小节级写作 checkpoint。"""
@@ -1234,20 +1345,30 @@ class BookProject:
                     raise RuntimeError(f"第{chapter.id}章包含非法三级小节编号: {section.id}")
 
     def _save_section_file(self, state: BookState, content: SectionContent) -> None:
+        if not self._write_artifacts:
+            return
         chapter = next((item for item in state.get_all_chapters_flat() if item.id == content.chapter_id), None)
         if chapter is None:
             return
-        path = self.manuscript_dir / f"chapter-{chapter.id:02d}" / f"{content.section_id}.md"
+        path = self._section_file_path(chapter.id, content.section_id)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content.markdown, encoding="utf-8")
 
     def _save_chapter_file(self, state: BookState, content: ChapterContent) -> None:
+        if not self._write_artifacts:
+            return
         chapter = next((item for item in state.get_all_chapters_flat() if item.id == content.chapter_id), None)
         if chapter is None:
             return
-        path = self.manuscript_dir / f"chapter-{chapter.id:02d}" / "chapter.md"
+        path = self._chapter_file_path(chapter.id)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content.markdown, encoding="utf-8")
+
+    def _section_file_path(self, chapter_id: int, section_id: str) -> Path:
+        return self.manuscript_dir / f"chapter-{chapter_id:02d}" / f"{section_id}.md"
+
+    def _chapter_file_path(self, chapter_id: int) -> Path:
+        return self.manuscript_dir / f"chapter-{chapter_id:02d}" / "chapter.md"
 
     def _save_write_checkpoint(self, thread_id: str, state: BookState) -> None:
         self._save_state_envelope(self.write_checkpoint_path(thread_id), state, kind="write.checkpoint")

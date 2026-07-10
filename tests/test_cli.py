@@ -90,6 +90,25 @@ def test_write_resume_passes_human_target(monkeypatch) -> None:
     assert calls == [("init", "config"), ("write_resume", "book-2", "1.1")]
 
 
+def test_write_recover_manuscript_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def recover_manuscript(self, thread_id: str) -> dict[str, object]:
+            calls.append(("recover_manuscript", thread_id))
+            return {"sections_recovered": 2}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "recover-manuscript"])
+
+    assert result.exit_code == 0
+    assert '"sections_recovered": 2' in result.output
+    assert calls == [("init", "config"), ("recover_manuscript", "book-1")]
+
+
 def test_write_resume_max_sections_option_is_removed() -> None:
     result = runner.invoke(app, ["write", "resume", "--max-sections", "1"])
 
