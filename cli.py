@@ -209,6 +209,16 @@ def write_status(ctx: typer.Context) -> None:
     _execute_project(ctx, show)
 
 
+@write_app.command("audit")
+def write_audit(ctx: typer.Context) -> None:
+    """诊断 checkpoint、稿件漂移、失败原因和出版审计问题。"""
+
+    def audit(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.write_audit(thread_id), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, audit)
+
+
 @write_app.command("contents")
 def write_contents(ctx: typer.Context) -> None:
     """查看小节级目录和完成状态。"""

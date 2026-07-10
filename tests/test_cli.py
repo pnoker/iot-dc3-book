@@ -52,6 +52,25 @@ def test_write_status_uses_section_checkpoint_workflow(monkeypatch) -> None:
     assert calls == [("init", "config"), ("write_status", "book-2")]
 
 
+def test_write_audit_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_audit(self, thread_id: str) -> dict[str, object]:
+            calls.append(("write_audit", thread_id))
+            return {"thread_id": thread_id, "publication_audit": {"pass": False}}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "audit"])
+
+    assert result.exit_code == 0
+    assert '"pass": false' in result.output
+    assert calls == [("init", "config"), ("write_audit", "book-2")]
+
+
 def test_kb_build_passes_rebuild_flag(monkeypatch) -> None:
     calls = []
 

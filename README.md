@@ -18,6 +18,8 @@ write   → 基于 approved outline 按 1.1.1 小节级 checkpoint 续写
 - `.data/outlines/current.json`：可审阅、可导出的当前大纲。
 - `.data/outlines/approved.json`：写作阶段唯一读取的已批准大纲。
 - `.data/write/<thread-id>.json`：小节级写作 checkpoint。
+- `.data/write/<thread-id>.lock`：写作进程锁，防止同一任务被多个进程同时写坏。
+- `.data/write/workers/<thread-id>/chapter-XX.json`：并发章节 worker 的临时 checkpoint，成功合并后自动删除。
 - `.data/manuscript/chapter-XX/<section-id>.md`：三级小节中间稿，例如 `1.1.1.md`。
 - `output/`：最终导出的章节级出版稿。
 
@@ -104,6 +106,9 @@ uv run python main.py write start --fresh
 # 查看小节级写作进度、质量失败摘要和终审状态
 uv run python main.py write status
 
+# 诊断 checkpoint、稿件漂移、失败原因和出版审计问题
+uv run python main.py write audit
+
 # 查看小节级目录、完成状态和当前断点
 uv run python main.py write contents
 
@@ -185,6 +190,9 @@ uv run python main.py write resume
 # 查看当前写作断点
 uv run python main.py write status
 
+# 查看 checkpoint 健康、manuscript 漂移、质量失败分类和出版审计
+uv run python main.py write audit
+
 # 查看小节级目录与完成状态
 uv run python main.py write contents
 
@@ -211,6 +219,10 @@ uv run python main.py write export-output
 ```
 
 章节并发由 `config/writing.yaml` 控制：`parallel_chapters: true`、`parallel_workers: 3`。只有目标覆盖多个完整章节时才会并发；`write resume 1`、`write resume 1.1`、`write resume 1.1.1` 仍保持顺序执行。
+
+失败恢复按自然编号执行：`write resume 1.1.1` 命中 `review_failed` 小节时会重新进入小节审校与自动修订；`write resume 1` 命中 `quality_failed` 章节时会重新进入章节质量门。这样可以继续利用已有正文，不需要删除 checkpoint 或手工改状态。
+
+写作阶段具备长任务容错：同一 `thread-id` 同一时间只允许一个写操作运行；主 checkpoint 和 worker checkpoint 都使用临时文件、`fsync` 和原子替换写入。并发写作时，每个章节 worker 会把已完成的小节、审校结果、合稿和章节质量门状态写入 `.data/write/workers/<thread-id>/chapter-XX.json`；如果电脑关机或进程被中断，下次执行 `uv run python main.py write resume all` 会优先从对应 worker checkpoint 继续，不会因为主 checkpoint 尚未合并就丢掉整章进度。worker 成功合并进 `.data/write/<thread-id>.json` 后，该 worker checkpoint 会自动清理。
 
 ### 人工审稿与局部修复
 
@@ -257,10 +269,11 @@ uv run python main.py write start --fresh
 1. 三级小节写作：生成 `.data/manuscript/chapter-XX/<section-id>.md`。
 2. 小节基础审校：检查空稿、明显过短、标题缺失和禁用词；不通过会自动修订。
 3. 章节合稿：当一章所有三级小节完成后，合成 `.data/manuscript/chapter-XX/chapter.md`。
-4. 章节质量门：依次执行出版确定性规则、事实核查、引用守门、风格校验和编辑审校；不通过时优先定位到具体三级小节局部返修，再重新合稿重审；无法定位到小节时才整章兜底返修。
-5. 全书终审：`write resume all` 写完整本书后触发总编辑终审，只有终审通过才设置 `publication_approved=true`。
+4. 章节质量门：先执行出版确定性规则；通过后并行执行事实核查、引用守门、风格校验和编辑审校，以减少单章审校等待时间。不通过时优先定位到具体三级小节局部返修，再重新合稿重审；无法定位到小节时才整章兜底返修。
+5. 全书确定性出版审计：终审前先检查未完成小节、未通过章节、未回收伏笔、跨章重复段落和术语英文释义不一致；未通过会写入 `final_report` 并阻断 LLM 终审，避免误批准。
+6. 全书 LLM 终审：确定性出版审计通过后，总编辑 Agent 检查伏笔、连续性、术语统一、重复内容、章节递进和实用价值；只有终审通过才设置 `publication_approved=true`。
 
-并发写作完成后仍会进入全书终审。伏笔、术语统一、重复内容、章节递进和连续性问题不会在并发阶段强行判断，而是在终审中统一检查；终审发现问题后按章节返修，再重新进入章节质量门。
+并发写作完成后仍会进入全书终审。确定性出版审计先做硬阻断，总编辑终审再做语义判断；终审发现问题后按章节返修，再重新进入章节质量门。
 
 质量门不会无限循环。默认最多自动修订 `5` 轮（`config/quality.yaml` 的 `max_revision_rounds`），全书终审默认最多返修 `1` 轮（`max_final_revision_rounds`）。达到上限仍未通过时，系统会保留失败反馈、标记状态并继续后续写作；不建议继续调大，否则会显著拖慢写作并放大重复返修成本。
 
@@ -269,6 +282,10 @@ uv run python main.py write start --fresh
 - 全书终审未通过会保留 `final_report`，且 `publication_approved=false`。
 
 运行 `uv run python main.py write status` 可以查看 `review_failed_sections`、`quality_failed_chapters` 和 `final_review.feedback` 的失败原因摘要；运行 `uv run python main.py write contents` 可以快速定位目录中的失败小节或章节。
+
+运行 `uv run python main.py write audit` 可以查看更完整的诊断报告：进程锁状态、worker checkpoint、章节/小节状态分布、稿件文件与 checkpoint 的漂移、失败问题代码统计、确定性出版审计和推荐下一步命令。
+
+`write status` 还会展示 `worker_checkpoints`。如果这里存在章节记录，表示上一次并发 worker 已有未合并的中间进度；继续执行 `write resume all` 即可自动恢复并合并。
 
 `uv run python main.py write section 1`、`write section 1.1` 和 `write section 1.1.1` 会在输出的 Markdown 前追加 `write-status` 注释块，显示章节/小节状态、修订轮次和失败摘要，便于直接在正文视图中定位未通过原因。
 
@@ -374,6 +391,7 @@ web_research:
 - `.env` 固定从项目根目录读取，shell 环境变量仍可覆盖 `.env`。
 - `references.sources[*].path` 和 `output.dir` 都相对项目根目录解析；参考来源必须显式配置。
 - checkpoint、RAG 索引和 manifest 固定写入 `.data/`。
+- 写作进程启动后会固定当前已解析的 `AppConfig` 配置快照；并发 worker 不会重新读取磁盘 YAML，避免运行中改配置导致旧进程和新配置 schema 不一致。
 
 ## 环境变量
 

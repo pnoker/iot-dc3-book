@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import json
+import os
 from types import SimpleNamespace
 
+import pytest
+
+from core.config import config_to_app_config
 from core.state import BookState, ChapterContent, ChapterPlan, PartPlan, QualitySettings, SectionContent, SectionPlan
 from core.workflow import BookProject
 
@@ -32,6 +37,22 @@ def _state_with_sections() -> BookState:
         ],
         current_section_id="1.1.2",
     )
+
+
+def _mark_book_ready_for_final_review(state: BookState) -> None:
+    for chapter in state.get_all_chapters_flat():
+        chapter.status = "approved"
+        for section in chapter.sections:
+            section.status = "reviewed"
+            if state.get_section_content(section.id) is None:
+                state.upsert_section_content(
+                    SectionContent(
+                        section_id=section.id,
+                        chapter_id=chapter.id,
+                        title=section.title,
+                        markdown=f"### {section.heading}\n\n正文",
+                    )
+                )
 
 
 def test_write_target_resolution_accepts_human_scopes() -> None:
@@ -72,7 +93,11 @@ class _PassingReview:
 
 
 class _ParallelWriter:
+    def __init__(self) -> None:
+        self.calls: list[str] = []
+
     def write_planned_section(self, state: BookState, section: SectionPlan, previous_brief: str = "") -> str:
+        self.calls.append(section.id)
         return f"### {section.heading}\n\n{section.id} " + "正文" * 120
 
 
@@ -132,9 +157,30 @@ class _UnusedWriter:
         return f"{markdown}\n\n已按质量门反馈修订。"
 
 
+class _SuccessfulSectionReviser:
+    def __init__(self) -> None:
+        self.calls: list[str] = []
+
+    def revise_planned_section(
+            self,
+            state: BookState,
+            section: SectionPlan,
+            markdown: str,
+            feedback: str,
+            previous_brief: str = "",
+    ) -> str:
+        self.calls.append(section.id)
+        return f"### {section.heading}\n\n{section.id} " + "正文" * 220
+
+
 class _CleanDirector:
     def final_review(self, state: BookState) -> dict[str, object]:
         return {"pass": True, "overall_score": 9, "revise_chapters": [], "summary": "通过"}
+
+
+class _UnexpectedDirector:
+    def final_review(self, state: BookState) -> dict[str, object]:
+        raise AssertionError("deterministic publication audit should run before LLM final review")
 
 
 class _NoHitRAG:
@@ -151,7 +197,7 @@ class _NoHitRAG:
 def _quality_project(tmp_path) -> BookProject:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
-    project.cfg = SimpleNamespace(references=SimpleNamespace(query_categories=[]))
+    project.cfg = SimpleNamespace(quality=QualitySettings(enabled=False, min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
     project.rag = _NoHitRAG()
     project.expander = _Expander()
     project.writer = _UnusedWriter()
@@ -164,10 +210,71 @@ def _quality_project(tmp_path) -> BookProject:
     return project
 
 
+def _workflow_app_config():
+    return config_to_app_config(
+        {
+            "book": {"title": "Test", "subtitle": "Sub"},
+            "parts": [
+                {
+                    "name": "Part1",
+                    "prefix": "一",
+                    "chapters": [{"id": 1, "title": "Ch1", "summary": "Summary"}],
+                }
+            ],
+            "style": {
+                "tone": "面向 IoT 工程师和架构师的工程著作口吻",
+                "chapter_structure": ["按工程判断自然收束，不强制本章小结"],
+            },
+            "writing": {"parallel_workers": 2},
+            "quality": {
+                "require_summary": False,
+                "min_figures_per_section": 0,
+                "max_revision_rounds": 2,
+                "max_final_revision_rounds": 1,
+            },
+            "llm": {
+                "base_url": "https://example.test",
+                "api_key": "test-chat-key",
+                "model": "model",
+                "embedding": {
+                    "base_url": "https://embed.test",
+                    "api_key": "test-embed-key",
+                    "model": "embed-model",
+                },
+            },
+            "references": {"sources": [{"path": "../books", "label": "books", "categories": ["iot"]}]},
+        }
+    )
+
+
+def test_load_write_checkpoint_refreshes_runtime_settings_from_current_config(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = _workflow_app_config()
+    checkpoint_state = _state_with_sections()
+    checkpoint_state.style.tone = "旧教材口吻"
+    checkpoint_state.style.chapter_structure = ["必须写本章小结"]
+    checkpoint_state.writing.parallel_workers = 9
+    checkpoint_state.quality = QualitySettings(require_summary=True, min_figures_per_section=1, max_revision_rounds=9)
+    checkpoint_state.max_revision_count = 9
+
+    project._save_write_checkpoint("book", checkpoint_state)
+
+    loaded = project.load_write_checkpoint("book")
+
+    assert loaded.style.tone == project.cfg.style.tone
+    assert loaded.style.chapter_structure == project.cfg.style.chapter_structure
+    assert loaded.writing.parallel_workers == project.cfg.writing.parallel_workers
+    assert loaded.quality.require_summary is False
+    assert loaded.quality.min_figures_per_section == 0
+    assert loaded.max_revision_count == project.cfg.quality.max_revision_rounds
+    assert loaded.get_section_plan("1.1.1") is not None
+
+
 def test_parallel_chapters_write_and_merge_by_chapter(tmp_path) -> None:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
-    project.cfg = SimpleNamespace(references=SimpleNamespace(query_categories=[]))
+    project.cfg = SimpleNamespace(quality=QualitySettings(enabled=False, min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
     project.rag = _NoHitRAG()
     project.writer = _ParallelWriter()
     project.assembler = _Assembler()
@@ -215,7 +322,7 @@ def test_parallel_worker_does_not_write_manuscript_before_merge(tmp_path) -> Non
         section.target_words = 1
     state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
 
-    isolated = project._write_chapter_in_isolated_state(state, 1)
+    isolated = project._write_chapter_in_isolated_state(state, 1, "book")
 
     assert isolated.get_chapter_content(1) is not None
     assert not (tmp_path / "manuscript").exists()
@@ -225,6 +332,124 @@ def test_parallel_worker_does_not_write_manuscript_before_merge(tmp_path) -> Non
 
     assert (tmp_path / "manuscript" / "chapter-01" / "1.1.1.md").exists()
     assert (tmp_path / "manuscript" / "chapter-01" / "chapter.md").exists()
+
+
+def test_parallel_worker_checkpoint_persists_isolated_progress(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(enabled=False, min_figures_per_section=0),
+        references=SimpleNamespace(query_categories=[]),
+    )
+    project.rag = _NoHitRAG()
+    project.writer = _ParallelWriter()
+    project.assembler = _Assembler()
+    project.researcher = _NoopResearcher()
+    project.fact_checker = _PassingCheck()
+    project.citation_guard = _PassingCheck()
+    project.style_guard = _PassingCheck()
+    project.editor = _PassingReview()
+    project.director = _CleanDirector()
+    project._new_worker_project = lambda: project
+    state = _state_with_sections()
+    for section in state.get_all_sections_flat():
+        section.target_words = 1
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+
+    project._write_chapter_in_isolated_state(state, 1, "book")
+
+    worker_checkpoint = project.worker_checkpoint_path("book", 1)
+    assert worker_checkpoint.exists()
+    recovered = project._load_worker_checkpoint("book", 1)
+    assert recovered.get_chapter_content(1) is not None
+    assert recovered.get_section_content("1.1.1") is not None
+    assert not (tmp_path / "manuscript").exists()
+
+
+def test_parallel_worker_resumes_from_worker_checkpoint(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(enabled=False, min_figures_per_section=0),
+        references=SimpleNamespace(query_categories=[]),
+    )
+    project.rag = _NoHitRAG()
+    writer = _ParallelWriter()
+    project.writer = writer
+    project.assembler = _Assembler()
+    project.researcher = _NoopResearcher()
+    project.fact_checker = _PassingCheck()
+    project.citation_guard = _PassingCheck()
+    project.style_guard = _PassingCheck()
+    project.editor = _PassingReview()
+    project.director = _CleanDirector()
+    project._new_worker_project = lambda: project
+    checkpoint_state = _state_with_sections()
+    for section in checkpoint_state.get_all_sections_flat():
+        section.target_words = 1
+    checkpoint_state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    checkpoint_state.upsert_section_content(
+        SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n已有正文", word_count=10)
+    )
+    checkpoint_state.mark_section_status("1.1.1", "reviewed")
+    project._save_state_envelope(project.worker_checkpoint_path("book", 1), checkpoint_state, kind="write.worker.checkpoint")
+
+    fresh_snapshot = _state_with_sections()
+    for section in fresh_snapshot.get_all_sections_flat():
+        section.target_words = 1
+    fresh_snapshot.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    recovered = project._write_chapter_in_isolated_state(fresh_snapshot, 1, "book")
+
+    assert recovered.get_section_content("1.1.1").markdown == "### 1.1.1 一\n\n已有正文"
+    assert "1.1.1" not in writer.calls
+    assert {"1.1.2", "1.2.1"}.issubset(set(writer.calls))
+
+
+def test_write_lock_rejects_live_process(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(data_dir=tmp_path)
+    lock_path = project.write_lock_path("book")
+    lock_path.parent.mkdir(parents=True)
+    lock_path.write_text(
+        json.dumps({"pid": os.getpid(), "operation": "write.resume", "started_at": "now", "token": "active"}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(RuntimeError, match="已有写作任务正在运行"), project._write_operation_lock("book", "write.resume"):
+        pass
+
+
+def test_write_lock_cleans_stale_process_lock(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(data_dir=tmp_path)
+    lock_path = project.write_lock_path("book")
+    lock_path.parent.mkdir(parents=True)
+    lock_path.write_text(
+        json.dumps({"pid": -1, "operation": "write.resume", "started_at": "old", "token": "stale"}),
+        encoding="utf-8",
+    )
+
+    with project._write_operation_lock("book", "write.resume"):
+        assert lock_path.exists()
+
+    assert not lock_path.exists()
+
+
+def test_worker_project_uses_runtime_config_snapshot(monkeypatch) -> None:
+    calls: list[tuple[str, object]] = []
+    cfg = SimpleNamespace(name="snapshot")
+    project = object.__new__(BookProject)
+    project.config_path = "config"
+    project.cfg = cfg
+
+    def fake_init(self, config_path: str = "config", *, cfg: object | None = None) -> None:
+        calls.append((config_path, cfg))
+
+    monkeypatch.setattr(BookProject, "__init__", fake_init)
+
+    project._new_worker_project()
+
+    assert calls == [("config", cfg)]
 
 
 def test_recover_manuscript_imports_orphan_sections_and_chapters(tmp_path) -> None:
@@ -320,6 +545,36 @@ def test_section_review_requires_book_figure(tmp_path) -> None:
     assert section.status == "review_failed"
 
 
+def test_write_resume_retries_review_failed_section(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings(min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
+    writer = _SuccessfulSectionReviser()
+    project.writer = writer
+    state = _state_with_sections()
+    state.quality = QualitySettings(min_figures_per_section=0)
+    section = state.get_section_plan("1.1.1")
+    assert section is not None
+    section.status = "review_failed"
+    section.target_words = 1
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown="短",
+            revision_feedback='{"issues":[{"code":"section.too_short","section_id":"1.1.1"}]}',
+        )
+    )
+    project._save_write_checkpoint("book", state)
+
+    status = project.write_resume("book", target="1.1.1")
+    recovered = project.load_write_checkpoint("book")
+
+    assert status["sections_processed"] == 1
+    assert writer.calls == ["1.1.1"]
+    assert recovered.get_section_plan("1.1.1").status == "reviewed"
+
+
 def test_chapter_deterministic_gate_marks_failed_and_continues_at_revision_limit(tmp_path) -> None:
     project = _quality_project(tmp_path)
     state = _state_with_sections()
@@ -385,6 +640,7 @@ def test_final_review_marks_report_and_continues_at_revision_limit(tmp_path) -> 
     state = _state_with_sections()
     state.quality = QualitySettings(continue_on_failure=True)
     state.max_final_revision_round = 0
+    _mark_book_ready_for_final_review(state)
     state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
     state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
 
@@ -393,6 +649,22 @@ def test_final_review_marks_report_and_continues_at_revision_limit(tmp_path) -> 
     assert state.publication_approved is False
     assert state.final_revision_chapters == [1]
     assert "未达到出版标准" in state.final_report
+
+
+def test_final_review_blocks_on_publication_audit_before_llm(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    project.director = _UnexpectedDirector()
+    state = _state_with_sections()
+    state.quality = QualitySettings(continue_on_failure=True)
+    state.max_final_revision_round = 1
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
+    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+
+    project._final_review_if_ready(state)
+
+    assert state.publication_approved is False
+    assert "deterministic_publication_audit" in state.final_report
+    assert state.final_revision_chapters
 
 
 def test_quality_failure_status_helpers_return_feedback() -> None:
@@ -419,6 +691,7 @@ def test_final_review_marks_completed_book_publication_approved(tmp_path) -> Non
     project = _quality_project(tmp_path)
     state = _state_with_sections()
     state.current_phase = "completed"
+    _mark_book_ready_for_final_review(state)
     state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
     state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
 
