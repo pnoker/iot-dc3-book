@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
+
 import pytest
 
 from core.rag import RAGEngine
@@ -7,6 +11,41 @@ from core.rag_chunking import split_text
 from core.rag_pdf import _page_has_ocr_candidate, extract_pdf_pages
 from core.rag_sources import ReferenceSource
 
+
+def test_chroma_client_initialization_is_serialized_across_engines(tmp_path, monkeypatch) -> None:
+    active_calls = 0
+    max_active_calls = 0
+    call_lock = threading.Lock()
+
+    class FakeCollection:
+        def count(self) -> int:
+            return 0
+
+    class FakeClient:
+        def get_or_create_collection(self, *, name: str, metadata: dict[str, str]) -> FakeCollection:
+            assert name == "books"
+            assert metadata == {"hnsw:space": "cosine"}
+            return FakeCollection()
+
+    def fake_persistent_client(*, path: str, settings: object) -> FakeClient:
+        nonlocal active_calls, max_active_calls
+        assert path == str(tmp_path / "chroma")
+        assert settings is not None
+        with call_lock:
+            active_calls += 1
+            max_active_calls = max(max_active_calls, active_calls)
+        time.sleep(0.02)
+        with call_lock:
+            active_calls -= 1
+        return FakeClient()
+
+    monkeypatch.setattr("core.rag.chromadb.PersistentClient", fake_persistent_client)
+    engines = [RAGEngine(embed_fn=lambda text: [0.0], persist_dir=str(tmp_path / "chroma")) for _ in range(6)]
+
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        list(executor.map(lambda engine: engine.collection, engines))
+
+    assert max_active_calls == 1
 
 def test_index_books_indexes_pdf_and_markdown_with_unique_ids(tmp_path, monkeypatch) -> None:
     # 两个来源：一个含 PDF，一个含 Markdown（含同名 index.md 场景由 label 前缀保证唯一）

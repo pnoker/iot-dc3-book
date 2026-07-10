@@ -6,6 +6,7 @@ RAG 模块 - PDF 参考书籍索引与检索
 from __future__ import annotations
 
 import re
+import threading
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
@@ -42,6 +43,7 @@ logger = get_logger("rag")
 _TEXT_KEYS = ("text", "source_file", "chapter_or_section", "chunk_index")
 
 _SLUG_RE = re.compile(r"[^0-9A-Za-z_]+")
+_CHROMA_CLIENT_INIT_LOCK = threading.RLock()
 
 
 def _slug(rel: str) -> str:
@@ -100,16 +102,18 @@ class RAGEngine:
     @property
     def collection(self) -> Any:
         if self._collection is None:
-            Path(self._persist_dir).mkdir(parents=True, exist_ok=True)
-            self._client = chromadb.PersistentClient(
-                path=self._persist_dir,
-                settings=Settings(anonymized_telemetry=False),
-            )
-            self._collection = self._client.get_or_create_collection(
-                name="books",
-                metadata={"hnsw:space": "cosine"},
-            )
-            logger.info("ChromaDB 初始化: %s (已有 %d 条记录)", self._persist_dir, self._collection.count())
+            with _CHROMA_CLIENT_INIT_LOCK:
+                if self._collection is None:
+                    Path(self._persist_dir).mkdir(parents=True, exist_ok=True)
+                    self._client = chromadb.PersistentClient(
+                        path=self._persist_dir,
+                        settings=Settings(anonymized_telemetry=False),
+                    )
+                    self._collection = self._client.get_or_create_collection(
+                        name="books",
+                        metadata={"hnsw:space": "cosine"},
+                    )
+                    logger.info("ChromaDB 初始化: %s (已有 %d 条记录)", self._persist_dir, self._collection.count())
         return self._collection
 
     def get_status(self) -> dict[str, object]:
