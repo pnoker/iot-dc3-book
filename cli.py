@@ -258,25 +258,86 @@ def write_section(
 
 
 def _format_write_contents(state: BookState) -> str:
-    lines = ["目录"]
+    lines = [
+        "目录进度",
+        "状态说明：",
+        "  小节审校：✅ 通过｜❌ 未通过｜🟡 待审校｜⬜ 待写作",
+        "  章节质量门：✅ 通过｜❌ 未通过｜🟡 审核中｜⬜ 待合稿｜📘 已合稿",
+        _write_contents_summary(state),
+        "",
+    ]
     current_section_id = state.current_section_id
     for part in state.parts:
         lines.append(f"{part.prefix}、{part.name}")
         for chapter in part.chapters:
             written_count = sum(1 for section in chapter.sections if state.get_section_content(section.id) is not None)
-            assembled = "已合稿" if state.get_chapter_content(chapter.id) is not None else "未合稿"
-            chapter_status = _chapter_status_label(chapter.status)
-            lines.append(f"  第{chapter.id}章 {chapter.title}（{written_count}/{len(chapter.sections)}，{assembled}，{chapter_status}）")
+            assembled = "📘 已合稿" if state.get_chapter_content(chapter.id) is not None else "⬜ 未合稿"
+            chapter_badge = _chapter_status_badge(state, chapter)
+            lines.append(f"  第{chapter.id}章 {chapter.title}")
+            lines.append(f"    章节质量门：{chapter_badge}｜合稿：{assembled}｜小节：{written_count}/{len(chapter.sections)}")
             if chapter.status == "quality_failed" and (chapter_content := state.get_chapter_content(chapter.id)) is not None:
-                lines.append(f"    ⚠ 章节质量门未通过：{_feedback_summary(_chapter_feedback_text(chapter_content))}")
+                lines.append(f"    质量原因：{_feedback_summary(_chapter_feedback_text(chapter_content), limit=220)}")
             for section_group_id, group_title, sections in _group_chapter_sections(chapter):
                 lines.append(f"    {section_group_id} {group_title}")
                 for section in sections:
-                    done = "✓" if state.get_section_content(section.id) is not None else " "
-                    status_note = f"（{_section_status_label(section.status)}）"
+                    section_content = state.get_section_content(section.id)
+                    status_note = _section_status_badge(section, section_content)
+                    failure_note = _section_failure_note(section, section_content)
                     current = " ← 当前" if section.id == current_section_id else ""
-                    lines.append(f"      [{done}] {section.id} {section.title}{status_note}{current}")
+                    lines.append(f"      小节审校：{status_note}｜{section.id} {section.title}{failure_note}{current}")
     return "\n".join(lines).rstrip()
+
+
+def _write_contents_summary(state: BookState) -> str:
+    sections = state.get_all_sections_flat()
+    chapters = state.get_all_chapters_flat()
+    reviewed = sum(1 for section in sections if section.status == "reviewed")
+    failed = sum(1 for section in sections if section.status == "review_failed")
+    waiting_review = sum(
+        1
+        for section in sections
+        if state.get_section_content(section.id) is not None and section.status not in {"reviewed", "review_failed"}
+    )
+    missing = sum(1 for section in sections if state.get_section_content(section.id) is None)
+    approved_chapters = sum(1 for chapter in chapters if chapter.status == "approved")
+    failed_chapters = sum(1 for chapter in chapters if chapter.status == "quality_failed")
+    assembled_chapters = sum(1 for chapter in chapters if state.get_chapter_content(chapter.id) is not None)
+    checking_chapters = max(assembled_chapters - approved_chapters - failed_chapters, 0)
+    missing_chapters = len(chapters) - assembled_chapters
+    return (
+        f"总览：\n"
+        f"  小节审校：已写 {len(state.section_contents)}/{len(sections)}｜✅ 通过 {reviewed}｜❌ 未通过 {failed}｜"
+        f"🟡 待审校 {waiting_review}｜⬜ 待写作 {missing}\n"
+        f"  章节质量门：已合稿 {assembled_chapters}/{len(chapters)}｜✅ 通过 {approved_chapters}｜"
+        f"❌ 未通过 {failed_chapters}｜🟡 审核中 {checking_chapters}｜⬜ 待合稿 {missing_chapters}"
+    )
+
+
+def _chapter_status_badge(state: BookState, chapter: ChapterPlan) -> str:
+    if chapter.status == "approved":
+        return "✅ 通过"
+    if chapter.status == "quality_failed":
+        return "❌ 未通过"
+    if state.get_chapter_content(chapter.id) is not None:
+        return "🟡 审核中"
+    return "⬜ 待合稿"
+
+
+def _section_status_badge(section: SectionPlan, content: SectionContent | None) -> str:
+    if section.status == "reviewed":
+        return "✅ 通过"
+    if section.status == "review_failed":
+        return "❌ 未通过"
+    if content is not None:
+        return "🟡 待审校"
+    return "⬜ 待写作"
+
+
+def _section_failure_note(section: SectionPlan, content: SectionContent | None) -> str:
+    if section.status != "review_failed" or content is None:
+        return ""
+    feedback = content.revision_feedback or content.review_feedback
+    return f"｜原因：{_feedback_summary(feedback, limit=140)}"
 
 
 def _group_chapter_sections(chapter: ChapterPlan) -> list[tuple[str, str, list[SectionPlan]]]:
@@ -403,7 +464,68 @@ def _feedback_summary(feedback: str, *, limit: int = 160) -> str:
     text = re.sub(r"\s+", " ", feedback).strip()
     if not text:
         return "无反馈详情"
+    if issue_summary := _feedback_issue_summary(text):
+        text = issue_summary
     return text if len(text) <= limit else f"{text[:limit]}..."
+
+
+def _feedback_issue_summary(text: str) -> str:
+    issues: list[dict[str, object]] = []
+    for payload in _feedback_json_payloads(text):
+        if not isinstance(payload, dict):
+            continue
+        payload_issues = payload.get("issues")
+        if isinstance(payload_issues, list):
+            issues.extend(issue for issue in payload_issues if isinstance(issue, dict))
+    if not issues:
+        return ""
+    grouped_messages: dict[str, list[str]] = {}
+    grouped_counts: dict[str, int] = {}
+    for issue in issues:
+        code = str(issue.get("code") or issue.get("type") or "").strip()
+        message = str(issue.get("message") or issue.get("detail") or "").strip()
+        label = code or _trim_feedback_text(message, 72) or "issue"
+        grouped_counts[label] = grouped_counts.get(label, 0) + 1
+        if code and message:
+            grouped_messages.setdefault(label, [])
+            if message not in grouped_messages[label]:
+                grouped_messages[label].append(message)
+        else:
+            grouped_messages.setdefault(label, [])
+    summaries = []
+    for label, messages in list(grouped_messages.items())[:3]:
+        count = grouped_counts[label]
+        count_note = f" ×{count}" if count > 1 else ""
+        if messages:
+            summaries.append(f"{label}{count_note}：{_trim_feedback_text(messages[0], 72)}")
+        else:
+            summaries.append(f"{label}{count_note}")
+    remaining_groups = len(grouped_messages) - len(summaries)
+    if remaining_groups > 0:
+        summaries.append(f"另有 {remaining_groups} 类")
+    return "；".join(summaries)
+
+
+def _trim_feedback_text(text: str, limit: int) -> str:
+    return text if len(text) <= limit else f"{text[:limit].rstrip()}..."
+
+
+def _feedback_json_payloads(text: str) -> list[object]:
+    decoder = json.JSONDecoder()
+    payloads = []
+    cursor = 0
+    while cursor < len(text):
+        start = text.find("{", cursor)
+        if start == -1:
+            break
+        try:
+            payload, end = decoder.raw_decode(text[start:])
+        except json.JSONDecodeError:
+            cursor = start + 1
+            continue
+        payloads.append(payload)
+        cursor = start + end
+    return payloads
 
 
 def _chapter_status_label(status: str) -> str:

@@ -392,14 +392,118 @@ def test_write_contents_prints_section_checkpoint_outline(monkeypatch) -> None:
     result = runner.invoke(app, ["write", "contents"])
 
     assert result.exit_code == 0
-    assert result.stdout.startswith("目录\n")
+    assert result.stdout.startswith("目录进度\n")
+    assert "小节审校：✅ 通过｜❌ 未通过｜🟡 待审校｜⬜ 待写作" in result.stdout
+    assert "章节质量门：✅ 通过｜❌ 未通过｜🟡 审核中｜⬜ 待合稿｜📘 已合稿" in result.stdout
+    assert "小节审校：已写 1/4｜✅ 通过 0｜❌ 未通过 0｜🟡 待审校 1｜⬜ 待写作 3" in result.stdout
+    assert "章节质量门：已合稿 0/2｜✅ 通过 0｜❌ 未通过 0｜🟡 审核中 0｜⬜ 待合稿 2" in result.stdout
     assert "一、基础篇" in result.stdout
-    assert "第1章 第一章（1/3，未合稿，待写作）" in result.stdout
+    assert "第1章 第一章" in result.stdout
+    assert "章节质量门：⬜ 待合稿｜合稿：⬜ 未合稿｜小节：1/3" in result.stdout
     assert "1.1 第一节" in result.stdout
-    assert "[✓] 1.1.1 小节一（待写作）" in result.stdout
-    assert "[ ] 1.1.2 小节二（待写作） ← 当前" in result.stdout
+    assert "小节审校：🟡 待审校｜1.1.1 小节一" in result.stdout
+    assert "小节审校：⬜ 待写作｜1.1.2 小节二 ← 当前" in result.stdout
     assert "1.2 第二节" in result.stdout
-    assert "第2章 第二章（0/1，未合稿，待写作）" in result.stdout
+    assert "第2章 第二章" in result.stdout
+    assert "章节质量门：⬜ 待合稿｜合稿：⬜ 未合稿｜小节：0/1" in result.stdout
+
+
+def test_write_contents_distinguishes_review_and_quality_status(monkeypatch) -> None:
+    state = BookState(
+        current_phase="writing",
+        parts=[
+            PartPlan(
+                name="基础篇",
+                prefix="一",
+                chapters=[
+                    ChapterPlan(
+                        id=1,
+                        title="第一章",
+                        status="quality_failed",
+                        sections=[
+                            SectionPlan(
+                                id="1.1.1",
+                                chapter_id=1,
+                                title="小节一",
+                                heading="1.1.1 小节一",
+                                parent_title="第一节",
+                                status="reviewed",
+                            ),
+                            SectionPlan(
+                                id="1.1.2",
+                                chapter_id=1,
+                                title="小节二",
+                                heading="1.1.2 小节二",
+                                parent_title="第一节",
+                                status="review_failed",
+                            ),
+                        ],
+                    ),
+                    ChapterPlan(
+                        id=2,
+                        title="第二章",
+                        status="approved",
+                        sections=[
+                            SectionPlan(
+                                id="2.1.1",
+                                chapter_id=2,
+                                title="小节三",
+                                heading="2.1.1 小节三",
+                                parent_title="第二节",
+                                status="reviewed",
+                            )
+                        ],
+                    ),
+                ],
+            )
+        ],
+        section_contents=[
+            SectionContent(section_id="1.1.1", chapter_id=1, title="小节一", markdown="正文"),
+            SectionContent(
+                section_id="1.1.2",
+                chapter_id=1,
+                title="小节二",
+                markdown="正文",
+                revision_feedback="缺少 book-figure",
+            ),
+            SectionContent(section_id="2.1.1", chapter_id=2, title="小节三", markdown="正文"),
+        ],
+        chapters=[
+            ChapterContent(
+                chapter_id=1,
+                title="第一章",
+                markdown="正文",
+                publication_feedback=(
+                    '{"pass": false, "issues": '
+                    '[{"code": "asset.invalid_book_figure", "message": "图表规格块不完整"}]}'
+                ),
+                fact_feedback=(
+                    '{"pass": false, "issues": '
+                    '[{"code": "fact.unsourced_statistics", "message": "统计数据缺少来源"}]}'
+                ),
+            ),
+            ChapterContent(chapter_id=2, title="第二章", markdown="正文"),
+        ],
+    )
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            pass
+
+        def load_write_checkpoint(self, thread_id: str) -> BookState:
+            return state
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "contents"])
+
+    assert result.exit_code == 0
+    assert "章节质量门：已合稿 2/2｜✅ 通过 1｜❌ 未通过 1｜🟡 审核中 0｜⬜ 待合稿 0" in result.stdout
+    assert "章节质量门：❌ 未通过｜合稿：📘 已合稿｜小节：2/2" in result.stdout
+    assert "质量原因：asset.invalid_book_figure：图表规格块不完整" in result.stdout
+    assert "fact.unsourced_statistics：统计数据缺少来源" in result.stdout
+    assert "小节审校：✅ 通过｜1.1.1 小节一" in result.stdout
+    assert "小节审校：❌ 未通过｜1.1.2 小节二｜原因：缺少 book-figure" in result.stdout
+    assert "章节质量门：✅ 通过｜合稿：📘 已合稿｜小节：1/1" in result.stdout
 
 
 def test_root_contents_command_is_removed() -> None:
