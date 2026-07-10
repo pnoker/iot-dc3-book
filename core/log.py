@@ -5,13 +5,18 @@
 from __future__ import annotations
 
 import logging
-import sys
-from logging.handlers import RotatingFileHandler
+from logging.config import dictConfig
 from pathlib import Path
+
+from rich.console import Console
+from rich.highlighter import NullHighlighter
 
 DEFAULT_LOG_FILE = "logs/book-writer.log"
 DEFAULT_LOG_MAX_BYTES = 10 * 1024 * 1024
 DEFAULT_LOG_BACKUP_COUNT = 10
+LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+FILE_LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+CONSOLE_LOG_FORMAT = "%(message)s"
 
 
 def setup_logging(
@@ -32,35 +37,59 @@ def setup_logging(
     Returns:
         根 logger
     """
-    root = logging.getLogger("book_writer")
-    root.setLevel(getattr(logging, level.upper(), logging.INFO))
-
-    # 避免重复添加 handler
-    if root.handlers:
-        return root
-
-    formatter = logging.Formatter(
-        fmt="%(asctime)s | %(levelname)-7s | %(name)-20s | %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-
-    # Console handler
-    console = logging.StreamHandler(sys.stdout)
-    console.setFormatter(formatter)
-    root.addHandler(console)
-
     log_path = Path(log_file or DEFAULT_LOG_FILE)
     log_path.parent.mkdir(parents=True, exist_ok=True)
-    file_handler = RotatingFileHandler(
-        str(log_path),
-        maxBytes=log_max_bytes,
-        backupCount=log_backup_count,
-        encoding="utf-8",
-    )
-    file_handler.setFormatter(formatter)
-    root.addHandler(file_handler)
 
-    return root
+    log_level = level.upper()
+
+    dictConfig(
+        {
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "console": {
+                    "format": CONSOLE_LOG_FORMAT,
+                    "datefmt": LOG_DATE_FORMAT,
+                },
+                "file": {
+                    "format": FILE_LOG_FORMAT,
+                    "datefmt": LOG_DATE_FORMAT,
+                },
+            },
+            "handlers": {
+                "console": {
+                    "class": "rich.logging.RichHandler",
+                    "level": log_level,
+                    "formatter": "console",
+                    "console": Console(stderr=True, markup=False, highlight=False),
+                    "highlighter": NullHighlighter(),
+                    "markup": False,
+                    "rich_tracebacks": False,
+                    "show_path": True,
+                    "enable_link_path": False,
+                    "log_time_format": LOG_DATE_FORMAT,
+                },
+                "file": {
+                    "class": "logging.handlers.RotatingFileHandler",
+                    "level": log_level,
+                    "formatter": "file",
+                    "filename": str(log_path),
+                    "maxBytes": log_max_bytes,
+                    "backupCount": log_backup_count,
+                    "encoding": "utf-8",
+                },
+            },
+            "loggers": {
+                "book_writer": {
+                    "level": log_level,
+                    "handlers": ["console", "file"],
+                    "propagate": False,
+                }
+            },
+        }
+    )
+
+    return logging.getLogger("book_writer")
 
 
 def get_logger(name: str) -> logging.Logger:

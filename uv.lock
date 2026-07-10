@@ -314,6 +314,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "rank-bm25" },
+    { name = "rich" },
     { name = "tenacity" },
     { name = "typer" },
 ]
@@ -340,6 +341,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "rank-bm25", specifier = ">=0.2.2" },
+    { name = "rich", specifier = ">=15.0.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
     { name = "tenacity", specifier = ">=8.0.0" },
     { name = "typer", specifier = ">=0.12.0" },

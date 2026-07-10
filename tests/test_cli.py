@@ -309,14 +309,14 @@ def test_write_contents_prints_section_checkpoint_outline(monkeypatch) -> None:
     result = runner.invoke(app, ["write", "contents"])
 
     assert result.exit_code == 0
-    assert result.output.startswith("目录\n")
-    assert "一、基础篇" in result.output
-    assert "第1章 第一章（1/3，未合稿，待写作）" in result.output
-    assert "1.1 第一节" in result.output
-    assert "[✓] 1.1.1 小节一（待写作）" in result.output
-    assert "[ ] 1.1.2 小节二（待写作） ← 当前" in result.output
-    assert "1.2 第二节" in result.output
-    assert "第2章 第二章（0/1，未合稿，待写作）" in result.output
+    assert result.stdout.startswith("目录\n")
+    assert "一、基础篇" in result.stdout
+    assert "第1章 第一章（1/3，未合稿，待写作）" in result.stdout
+    assert "1.1 第一节" in result.stdout
+    assert "[✓] 1.1.1 小节一（待写作）" in result.stdout
+    assert "[ ] 1.1.2 小节二（待写作） ← 当前" in result.stdout
+    assert "1.2 第二节" in result.stdout
+    assert "第2章 第二章（0/1，未合稿，待写作）" in result.stdout
 
 
 def test_root_contents_command_is_removed() -> None:
