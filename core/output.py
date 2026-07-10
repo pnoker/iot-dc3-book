@@ -1,9 +1,10 @@
-"""
-输出模块 - 将书稿生成为结构化的 Markdown 文件
-"""
+"""输出模块：生成出版稿 Markdown，并通过 Pandoc 转换 Word。"""
 
 from __future__ import annotations
 
+import os
+import shutil
+import subprocess
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -29,9 +30,9 @@ def get_template_environment() -> Environment:
     )
 
 
-def generate_output(state: BookState, output_dir: str, cfg: dict[str, Any] | None = None) -> str:
+def generate_markdown_output(state: BookState, output_dir: str, cfg: dict[str, Any] | None = None) -> dict[str, object]:
     """
-    将全书内容输出为层级化的 Markdown 文件结构。
+    将全书内容输出为层级化 Markdown 与单文件 Markdown。
 
     输出结构：
     output/
@@ -47,40 +48,60 @@ def generate_output(state: BookState, output_dir: str, cfg: dict[str, Any] | Non
     ├── 07-应用篇/
     ├── 08-附录.md
     ├── 09-伏笔报告.md
-    └── 10-终审报告.md
+    ├── 10-终审报告.md
+    └── book.md
     """
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
     env = get_template_environment()
     cfg = cfg or {}
+    output_cfg = cfg.get("output", {})
+    if not isinstance(output_cfg, dict):
+        output_cfg = {}
+    book_markdown_name = str(output_cfg.get("book_markdown") or "book.md")
 
-    _write_file(out / "00-封面.md", _render(env, "cover.md.j2", state=state))
+    manuscript_parts: list[str] = []
+    generated_files: list[str] = []
+
+    cover = _render(env, "cover.md.j2", state=state)
+    _write_file(out / "00-封面.md", cover, generated_files)
+    manuscript_parts.append(cover)
 
     author_cfg = cfg.get("author", {})
     profile = author_cfg.get("profile")
     if profile:
-        _write_file(out / "01-作者简介.md", _render(env, "author_profile.md.j2", profile=profile))
+        author_profile = _render(env, "author_profile.md.j2", profile=profile)
+        _write_file(out / "01-作者简介.md", author_profile, generated_files)
+        manuscript_parts.append(author_profile)
 
     preface = author_cfg.get("preface")
     if preface:
-        _write_file(out / "02-序.md", _render(env, "preface.md.j2", preface=preface))
-        _write_file(out / "03-导读.md", _render(env, "reading_guide.md.j2", preface=preface, state=state))
+        preface_markdown = _render(env, "preface.md.j2", preface=preface)
+        reading_guide = _render(env, "reading_guide.md.j2", preface=preface, state=state)
+        _write_file(out / "02-序.md", preface_markdown, generated_files)
+        _write_file(out / "03-导读.md", reading_guide, generated_files)
+        manuscript_parts.extend([preface_markdown, reading_guide])
 
     toc_content = state.toc_markdown or _render(env, "toc.md.j2", state=state)
-    _write_file(out / "04-目录.md", toc_content)
+    _write_file(out / "04-目录.md", toc_content, generated_files)
+    manuscript_parts.append(toc_content)
 
     part_dirs = ["05-基础篇", "06-技术篇", "07-应用篇"]
     for part_idx, part in enumerate(state.parts):
         dir_name = part_dirs[part_idx] if part_idx < len(part_dirs) else f"{part_idx + 1:02d}-{part.name}"
         part_dir = out / dir_name
         part_dir.mkdir(parents=True, exist_ok=True)
+        manuscript_parts.append(f"# {part.prefix}、{part.name}\n")
         for chapter in part.chapters:
             content = state.get_chapter_content(chapter.id)
             if content:
                 filename = f"{chapter.id:02d}-{chapter.title}.md"
-                _write_file(part_dir / filename, content.markdown)
+                _write_file(part_dir / filename, content.markdown, generated_files)
+                manuscript_parts.append(content.markdown)
 
-    _write_file(out / "08-附录.md", _render(env, "appendix.md.j2"))
+    appendix = _render(env, "appendix.md.j2")
+    _write_file(out / "08-附录.md", appendix, generated_files)
+    manuscript_parts.append(appendix)
     _write_file(
         out / "09-伏笔报告.md",
         _render(
@@ -89,20 +110,72 @@ def generate_output(state: BookState, output_dir: str, cfg: dict[str, Any] | Non
             state=state,
             resolved_count=sum(1 for item in state.foreshadows if item.status == "resolved"),
         ),
+        generated_files,
     )
 
     if state.final_report:
-        _write_file(out / "10-终审报告.md", state.final_report)
+        _write_file(out / "10-终审报告.md", state.final_report, generated_files)
+
+    book_markdown = out / book_markdown_name
+    _write_file(book_markdown, _join_markdown_parts(manuscript_parts), generated_files)
 
     logger.info("输出完成: %s", out)
-    return str(out)
+    return {"output_dir": str(out), "book_markdown": str(book_markdown), "files": generated_files}
+
+
+def generate_word_output(
+        markdown_file: str | Path,
+        word_file: str | Path,
+        *,
+        reference_docx: str | Path | None = None,
+        pandoc_bin: str = "pandoc",
+) -> str:
+    """使用 Pandoc 将单文件 Markdown 转为 Word docx。"""
+    markdown_path = Path(markdown_file)
+    if not markdown_path.exists():
+        raise FileNotFoundError(f"Markdown 文件不存在: {markdown_path}")
+    resolved_pandoc = shutil.which(pandoc_bin)
+    if resolved_pandoc is None:
+        raise RuntimeError("未找到 pandoc，无法生成 Word。请先安装 pandoc，或在 output.pandoc_bin 配置可执行文件路径。")
+
+    word_path = Path(word_file)
+    word_path.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        resolved_pandoc,
+        str(markdown_path),
+        "--from",
+        "gfm+pipe_tables+fenced_code_blocks+yaml_metadata_block",
+        "--to",
+        "docx",
+        "--output",
+        str(word_path),
+        "--resource-path",
+        os.pathsep.join([str(markdown_path.parent), str(markdown_path.parent.parent)]),
+    ]
+    if reference_docx:
+        reference_path = Path(reference_docx)
+        if not reference_path.exists():
+            raise FileNotFoundError(f"Word 样式模板不存在: {reference_path}")
+        cmd.extend(["--reference-doc", str(reference_path)])
+
+    completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    if completed.returncode != 0:
+        stderr = completed.stderr.strip() or completed.stdout.strip()
+        raise RuntimeError(f"Pandoc 生成 Word 失败: {stderr}")
+    logger.info("Word 输出完成: %s", word_path)
+    return str(word_path)
 
 
 def _render(env: Environment, template_name: str, **context: Any) -> str:
     return env.get_template(template_name).render(**context)
 
 
-def _write_file(path: Path, content: str) -> None:
+def _join_markdown_parts(parts: list[str]) -> str:
+    return "\n\n".join(part.strip() for part in parts if part.strip()) + "\n"
+
+
+def _write_file(path: Path, content: str, generated_files: list[str]) -> None:
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
+    generated_files.append(str(path))
     logger.debug("已生成: %s", path)

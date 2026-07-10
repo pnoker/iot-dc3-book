@@ -454,13 +454,17 @@ def write_recover_manuscript(ctx: typer.Context) -> None:
     _execute_project(ctx, recover)
 
 
-@write_app.command("export-output")
-def write_export_output(ctx: typer.Context) -> None:
-    """根据小节级 checkpoint 导出 output。"""
+@write_app.command("export")
+def write_export(
+        ctx: typer.Context,
+        target: Annotated[str, typer.Argument(help="导出目标：markdown、word 或 all")] = "all",
+) -> None:
+    """导出出版稿 Markdown、Word 或全部格式。"""
 
     def export(project: BookProject, thread_id: str) -> None:
-        output_dir = project.write_export_output(thread_id)
-        get_logger("main").info("✅ 输出已生成: %s", output_dir)
+        result = project.write_export(thread_id, target=target)
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+        get_logger("main").info("✅ 输出已生成: %s", result.get("output_dir"))
 
     _execute_project(ctx, export)
 

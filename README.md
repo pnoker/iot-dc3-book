@@ -21,7 +21,7 @@ write   → 基于 approved outline 按 1.1.1 小节级 checkpoint 续写
 - `.data/write/<thread-id>.lock`：写作进程锁，防止同一任务被多个进程同时写坏。
 - `.data/write/workers/<thread-id>/chapter-XX.json`：并发章节 worker 的临时 checkpoint，成功合并后自动删除。
 - `.data/manuscript/chapter-XX/<section-id>.md`：三级小节中间稿，例如 `1.1.1.md`。
-- `output/`：最终导出的章节级出版稿。
+- `output/`：最终导出的出版稿目录，包含结构化 Markdown、`book.md` 和可选 `book.docx`。
 
 ### 命令速查
 
@@ -145,8 +145,14 @@ uv run python main.py write patch-section --section-id 1.1.1 --file .data/manusc
 # 把已有 .data/manuscript 草稿显式导入 checkpoint；用于异常中断后的进度修复
 uv run python main.py write recover-manuscript
 
-# 根据小节级 checkpoint 导出 output/
-uv run python main.py write export-output
+# 全书终审通过后导出 Markdown 与 Word
+uv run python main.py write export all
+
+# 只导出结构化 Markdown 与单文件 output/book.md
+uv run python main.py write export markdown
+
+# 基于 output/book.md 生成 output/book.docx
+uv run python main.py write export word
 ```
 
 > 旧的一步式根命令已经移除；不要使用 `uv run python main.py generate`、`uv run python main.py resume` 或 `uv run python main.py contents`。现在统一通过 `kb`、`outline`、`write` 三组命令执行。
@@ -214,8 +220,8 @@ uv run python main.py write resume all
 # 查看某个已写小节
 uv run python main.py write section 1.1.1
 
-# 导出当前已组装章节到 output/
-uv run python main.py write export-output
+# 全书终审通过后导出 Markdown 与 Word
+uv run python main.py write export all
 ```
 
 章节并发由 `config/writing.yaml` 控制：`parallel_chapters: true`、`parallel_workers: 3`。只有目标覆盖多个完整章节时才会并发；`write resume 1`、`write resume 1.1`、`write resume 1.1.1` 仍保持顺序执行。
@@ -241,9 +247,26 @@ uv run python main.py write status
 # 如果异常中断后发现 manuscript 文件多于 checkpoint 进度，先恢复草稿入账
 uv run python main.py write recover-manuscript
 
-# 需要出版稿时再导出 output/
-uv run python main.py write export-output
+# 需要出版稿时再导出 Markdown 与 Word
+uv run python main.py write export all
 ```
+
+### 出版导出
+
+导出命令只面向最终出版稿：必须所有三级小节审校通过、所有章节质量门通过、全书终审通过并写入 `publication_approved=true`，否则会拒绝导出并提示未通过项。
+
+```bash
+# 只生成 output/ 下的结构化 Markdown 和单文件 output/book.md
+uv run python main.py write export markdown
+
+# 先生成 output/book.md，再生成 output/book.docx
+uv run python main.py write export word
+
+# 一次性生成 Markdown 与 Word
+uv run python main.py write export all
+```
+
+Word 生成使用 Pandoc，这是 Markdown 到 `.docx` 的出版级转换工具。macOS 可先执行 `brew install pandoc`；如需统一出版社样式，可在 `config/output.yaml` 配置 `word_reference_docx` 指向 `reference.docx` 模板。
 
 ### 重建与覆盖规则
 
@@ -389,7 +412,8 @@ web_research:
 
 - 未知 YAML 字段会直接报错，避免配置拼写错误静默失效。
 - `.env` 固定从项目根目录读取，shell 环境变量仍可覆盖 `.env`。
-- `references.sources[*].path` 和 `output.dir` 都相对项目根目录解析；参考来源必须显式配置。
+- `references.sources[*].path`、`output.dir` 和 `output.word_reference_docx` 都相对项目根目录解析；参考来源必须显式配置。
+- `output.book_markdown` 与 `output.word_file` 分别控制单文件 Markdown 和 Word 的输出文件名。
 - checkpoint、RAG 索引和 manifest 固定写入 `.data/`。
 - 写作进程启动后会固定当前已解析的 `AppConfig` 配置快照；并发 worker 不会重新读取磁盘 YAML，避免运行中改配置导致旧进程和新配置 schema 不一致。
 

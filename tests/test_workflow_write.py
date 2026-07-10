@@ -699,3 +699,72 @@ def test_final_review_marks_completed_book_publication_approved(tmp_path) -> Non
 
     assert state.publication_approved is True
     assert '"pass": true' in state.final_report
+
+
+def test_write_export_rejects_unapproved_book(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output")
+    project.cfg = _workflow_app_config()
+    project.cfg.quality.enabled = False
+    project._write_checkpoint_path_override = None
+    project._write_checkpoint_kind_override = None
+    state = _state_with_sections()
+    state.current_phase = "completed"
+    _mark_book_ready_for_final_review(state)
+    project._save_write_checkpoint("book-1", state)
+
+    with pytest.raises(RuntimeError, match="publication_approved=false"):
+        project.write_export("book-1", target="markdown")
+
+
+def test_write_export_markdown_generates_book_file(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output")
+    project.cfg = _workflow_app_config()
+    project.cfg.quality.enabled = False
+    project._write_checkpoint_path_override = None
+    project._write_checkpoint_kind_override = None
+    state = _state_with_sections()
+    state.book_title = "测试书"
+    state.current_phase = "completed"
+    state.publication_approved = True
+    _mark_book_ready_for_final_review(state)
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
+    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+    project._save_write_checkpoint("book-1", state)
+
+    result = project.write_export("book-1", target="markdown")
+
+    assert result["target"] == "markdown"
+    assert result["book_markdown"] == str(tmp_path / "output" / "book.md")
+    assert "word_file" not in result
+    assert "# 第一章" in (tmp_path / "output" / "book.md").read_text(encoding="utf-8")
+
+
+def test_write_export_all_generates_word_from_markdown(tmp_path, monkeypatch) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output")
+    project.cfg = _workflow_app_config()
+    project.cfg.quality.enabled = False
+    project._write_checkpoint_path_override = None
+    project._write_checkpoint_kind_override = None
+    state = _state_with_sections()
+    state.current_phase = "completed"
+    state.publication_approved = True
+    _mark_book_ready_for_final_review(state)
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
+    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+    project._save_write_checkpoint("book-1", state)
+    calls = []
+
+    def fake_word(markdown_file, word_file, *, reference_docx=None, pandoc_bin="pandoc") -> str:
+        calls.append((str(markdown_file), str(word_file), reference_docx, pandoc_bin))
+        return str(word_file)
+
+    monkeypatch.setattr("core.workflow.generate_word_output", fake_word)
+
+    result = project.write_export("book-1", target="all")
+
+    assert result["target"] == "all"
+    assert result["word_file"] == str(tmp_path / "output" / "book.docx")
+    assert calls == [(str(tmp_path / "output" / "book.md"), str(tmp_path / "output" / "book.docx"), None, "pandoc")]

@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import os
+import subprocess
 from typing import TYPE_CHECKING
 
-from core.output import generate_output, get_template_environment
+import pytest
+
+from core.output import generate_markdown_output, generate_word_output, get_template_environment
 from core.state import BookState, ChapterContent, ChapterPlan, ForeshadowItem, PartPlan
 
 if TYPE_CHECKING:
@@ -16,7 +20,7 @@ def test_output_templates_are_loaded_by_jinja() -> None:
     assert "foreshadow_report.md.j2" in env.list_templates()
 
 
-def test_generate_output_renders_markdown_templates(tmp_path: Path) -> None:
+def test_generate_markdown_output_renders_structured_files_and_book_markdown(tmp_path: Path) -> None:
     state = BookState(
         book_title="测试书",
         book_subtitle="专业写作",
@@ -48,11 +52,64 @@ def test_generate_output_renders_markdown_templates(tmp_path: Path) -> None:
         }
     }
 
-    output_dir = generate_output(state, str(tmp_path), cfg)
+    result = generate_markdown_output(state, str(tmp_path), cfg)
 
-    assert output_dir == str(tmp_path)
+    assert result["output_dir"] == str(tmp_path)
+    assert result["book_markdown"] == str(tmp_path / "book.md")
     assert (tmp_path / "00-封面.md").read_text(encoding="utf-8").startswith("# 测试书")
     assert "- IoT" in (tmp_path / "01-作者简介.md").read_text(encoding="utf-8")
     assert "- **基础篇**（第1章《总览》）" in (tmp_path / "03-导读.md").read_text(encoding="utf-8")
     assert (tmp_path / "05-基础篇" / "01-总览.md").read_text(encoding="utf-8") == "# 正文"
     assert "已回收: 1 / 1" in (tmp_path / "09-伏笔报告.md").read_text(encoding="utf-8")
+    book_markdown = (tmp_path / "book.md").read_text(encoding="utf-8")
+    assert "# 测试书" in book_markdown
+    assert "# 一、基础篇" in book_markdown
+    assert "# 正文" in book_markdown
+    assert "伏笔报告" not in book_markdown
+
+
+def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> None:
+    markdown = tmp_path / "book.md"
+    markdown.write_text("# 标题\n\n正文", encoding="utf-8")
+    reference = tmp_path / "reference.docx"
+    reference.write_bytes(b"docx")
+    calls: list[list[str]] = []
+
+    def fake_run(cmd: list[str], *, check: bool, capture_output: bool, text: bool) -> subprocess.CompletedProcess[str]:
+        calls.append(cmd)
+        assert check is False
+        assert capture_output is True
+        assert text is True
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
+    monkeypatch.setattr("core.output.shutil.which", lambda name: "/usr/local/bin/pandoc")
+    monkeypatch.setattr("core.output.subprocess.run", fake_run)
+
+    word_file = generate_word_output(markdown, tmp_path / "book.docx", reference_docx=reference, pandoc_bin="pandoc")
+
+    assert word_file == str(tmp_path / "book.docx")
+    assert calls == [
+        [
+            "/usr/local/bin/pandoc",
+            str(markdown),
+            "--from",
+            "gfm+pipe_tables+fenced_code_blocks+yaml_metadata_block",
+            "--to",
+            "docx",
+            "--output",
+            str(tmp_path / "book.docx"),
+            "--resource-path",
+            os.pathsep.join([str(tmp_path), str(tmp_path.parent)]),
+            "--reference-doc",
+            str(reference),
+        ]
+    ]
+
+
+def test_generate_word_output_requires_pandoc(tmp_path: Path, monkeypatch) -> None:
+    markdown = tmp_path / "book.md"
+    markdown.write_text("# 标题", encoding="utf-8")
+    monkeypatch.setattr("core.output.shutil.which", lambda name: None)
+
+    with pytest.raises(RuntimeError, match="未找到 pandoc"):
+        generate_word_output(markdown, tmp_path / "book.docx")

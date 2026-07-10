@@ -169,6 +169,10 @@ class ReferenceConfig(StrictConfigModel):
 class OutputConfig(StrictConfigModel):
     dir: str = "./output"
     structure: str = "hierarchical"
+    book_markdown: str = "book.md"
+    word_file: str = "book.docx"
+    word_reference_docx: str = ""
+    pandoc_bin: str = "pandoc"
 
 
 class WritingConfig(StrictConfigModel):

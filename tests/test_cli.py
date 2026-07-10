@@ -128,6 +128,51 @@ def test_write_recover_manuscript_command(monkeypatch) -> None:
     assert calls == [("init", "config"), ("recover_manuscript", "book-1")]
 
 
+def test_write_export_command_passes_target(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_export(self, thread_id: str, *, target: str = "all") -> dict[str, object]:
+            calls.append(("write_export", thread_id, target))
+            return {"target": target, "output_dir": "output", "book_markdown": "output/book.md"}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "export", "markdown"])
+
+    assert result.exit_code == 0
+    assert '"target": "markdown"' in result.output
+    assert calls == [("init", "config"), ("write_export", "book-2", "markdown")]
+
+
+def test_write_export_defaults_to_all(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_export(self, thread_id: str, *, target: str = "all") -> dict[str, object]:
+            calls.append(("write_export", thread_id, target))
+            return {"target": target, "output_dir": "output", "book_markdown": "output/book.md", "word_file": "output/book.docx"}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "export"])
+
+    assert result.exit_code == 0
+    assert '"target": "all"' in result.output
+    assert calls == [("init", "config"), ("write_export", "book-1", "all")]
+
+
+def test_write_export_output_command_is_removed() -> None:
+    result = runner.invoke(app, ["write", "export-output"])
+
+    assert result.exit_code != 0
+    assert "No such command" in result.output or "No such command" in result.stderr
+
+
 def test_write_resume_max_sections_option_is_removed() -> None:
     result = runner.invoke(app, ["write", "resume", "--max-sections", "1"])
 

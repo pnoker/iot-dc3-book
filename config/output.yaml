@@ -1,3 +1,7 @@
 # 输出配置
 dir: "./output"
 structure: "hierarchical"
+book_markdown: "book.md"
+word_file: "book.docx"
+word_reference_docx: ""
+pandoc_bin: "pandoc"

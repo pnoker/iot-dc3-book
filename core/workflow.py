@@ -34,7 +34,7 @@ from core.config_models import AppConfig
 from core.llm_client import LLMClient
 from core.log import get_logger
 from core.markdown_assets import extract_book_figures, find_invalid_book_figures
-from core.output import generate_output
+from core.output import generate_markdown_output, generate_word_output
 from core.publication_audit import audit_has_blocking_issues, summarize_publication_audit
 from core.quality_rules import check_originality, ensure_book_releasable, evaluate_chapter_quality
 from core.rag import RAGEngine
@@ -445,13 +445,55 @@ class BookProject:
             if precedence.get(source_item.status, 0) > precedence.get(target_item.status, 0):
                 target_item.status = source_item.status
 
-    def write_export_output(self, thread_id: str) -> str:
-        """根据小节级 checkpoint 中已组装章节导出 output。"""
-        with self._write_operation_lock(thread_id, "write.export_output"):
+    def write_export(self, thread_id: str, target: str = "all") -> dict[str, object]:
+        """导出出版稿 Markdown、Word 或全部格式。"""
+        export_target = target.strip().lower()
+        if export_target not in {"markdown", "word", "all"}:
+            raise ValueError("导出目标无效，请使用 markdown、word 或 all")
+        with self._write_operation_lock(thread_id, f"write.export.{export_target}"):
             state = self.load_write_checkpoint(thread_id)
-            if state.current_phase == "completed":
-                ensure_book_releasable(state, base_dir=self.paths.project_dir)
-            return generate_output(state, str(self.paths.output_dir), self.cfg.model_dump(mode="python"))
+            self._ensure_export_ready(state)
+            cfg = self.cfg.model_dump(mode="python")
+            markdown_result = generate_markdown_output(state, str(self.paths.output_dir), cfg)
+            result: dict[str, object] = {"target": export_target, **markdown_result}
+            if export_target in {"word", "all"}:
+                result["word_file"] = generate_word_output(
+                    str(markdown_result["book_markdown"]),
+                    self.paths.output_dir / self.cfg.output.word_file,
+                    reference_docx=self._word_reference_docx_path(),
+                    pandoc_bin=self.cfg.output.pandoc_bin,
+                )
+            return result
+
+    def _ensure_export_ready(self, state: BookState) -> None:
+        """导出前强制确认整书已经达到出版状态。"""
+        issues: list[str] = []
+        if state.current_phase != "completed":
+            issues.append(f"当前阶段不是 completed: {state.current_phase}")
+        if not state.publication_approved:
+            issues.append("全书终审尚未通过: publication_approved=false")
+        missing_sections = [section.id for section in state.get_all_sections_flat() if state.get_section_content(section.id) is None]
+        failed_sections = [section.id for section in state.get_all_sections_flat() if section.status != "reviewed"]
+        missing_chapters = [chapter.id for chapter in state.get_all_chapters_flat() if state.get_chapter_content(chapter.id) is None]
+        failed_chapters = [chapter.id for chapter in state.get_all_chapters_flat() if chapter.status != "approved"]
+        if missing_sections:
+            issues.append("缺少小节正文: " + ", ".join(missing_sections[:10]))
+        if failed_sections:
+            issues.append("小节审校未全部通过: " + ", ".join(failed_sections[:10]))
+        if missing_chapters:
+            issues.append("缺少章节合稿: " + ", ".join(str(item) for item in missing_chapters[:10]))
+        if failed_chapters:
+            issues.append("章节质量门未全部通过: " + ", ".join(str(item) for item in failed_chapters[:10]))
+        if issues:
+            raise RuntimeError("导出被拒绝，书稿尚未达到出版状态。" + " | ".join(issues))
+        ensure_book_releasable(state, base_dir=self.paths.project_dir)
+
+    def _word_reference_docx_path(self) -> Path | None:
+        reference_docx = self.cfg.output.word_reference_docx.strip()
+        if not reference_docx:
+            return None
+        reference_path = Path(reference_docx)
+        return reference_path if reference_path.is_absolute() else self.paths.project_dir / reference_path
 
     def patch_section(self, thread_id: str, section_id: str, markdown: str) -> BookState:
         """用人工编辑后的 Markdown 覆盖指定三级小节。"""
@@ -862,7 +904,7 @@ class BookProject:
         if audit_has_blocking_issues(publication_audit):
             commands.append("uv run python main.py write audit")
         if not commands and state.current_phase == "completed" and state.publication_approved:
-            commands.append("uv run python main.py write export-output")
+            commands.append("uv run python main.py write export all")
         return list(dict.fromkeys(commands))
 
     def _load_worker_checkpoint(self, thread_id: str, chapter_id: int) -> BookState:
