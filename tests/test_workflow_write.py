@@ -405,6 +405,41 @@ def test_parallel_worker_resumes_from_worker_checkpoint(tmp_path) -> None:
     assert {"1.1.2", "1.2.1"}.issubset(set(writer.calls))
 
 
+def test_parallel_worker_retries_review_failed_sections(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(enabled=False, min_figures_per_section=0),
+        references=SimpleNamespace(query_categories=[]),
+    )
+    project.rag = _NoHitRAG()
+    writer = _SuccessfulSectionReviser()
+    project.writer = writer
+    project.assembler = _Assembler()
+    project.fact_checker = _PassingCheck()
+    project.citation_guard = _PassingCheck()
+    project.style_guard = _PassingCheck()
+    project.editor = _PassingReview()
+    project.director = _CleanDirector()
+    project._new_worker_project = lambda: project
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    for section in state.get_all_sections_flat():
+        section.target_words = 1
+        state.upsert_section_content(
+            SectionContent(section_id=section.id, chapter_id=section.chapter_id, title=section.title, markdown=f"### {section.heading}\n\n已有正文" * 40)
+        )
+        state.mark_section_status(section.id, "reviewed")
+    failed = state.get_section_plan("1.1.1")
+    assert failed is not None
+    failed.status = "review_failed"
+
+    recovered = project._write_chapter_in_isolated_state(state, 1, "book")
+
+    assert writer.calls == ["1.1.1"]
+    assert recovered.get_section_plan("1.1.1").status == "reviewed"
+
+
 def test_write_lock_rejects_live_process(tmp_path) -> None:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(data_dir=tmp_path)

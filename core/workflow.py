@@ -314,6 +314,8 @@ class BookProject:
         processed = 0
         failed_chapters: list[int] = []
         logger.info("🚀 [并发写作] %d 个章节并发起草，workers=%d", len(chapter_ids), workers)
+        for chapter_id in chapter_ids:
+            logger.info("🧭 [并发写作] 第%d章待处理: %s", chapter_id, self._chapter_resume_plan(state, chapter_id))
         # 在主线程提交前一次性备好每章的隔离快照，避免 worker 线程内 deepcopy 与主线程合并同一 state 竞争。
         snapshots = {chapter_id: deepcopy(state) for chapter_id in chapter_ids}
         with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -386,7 +388,8 @@ class BookProject:
             section_content = isolated.get_section_content(section.id)
             if section_content is None:
                 self._write_current_section(isolated, section, thread_id=thread_id)
-            elif section.status == "written":
+            elif section.status in {"written", "review_failed"}:
+                logger.info("🔁 [小节重审] %s %s", section.id, section.title)
                 previous_brief = self._previous_section_brief(isolated, section)
                 section_content = self._review_section_until_pass(
                     isolated,
@@ -398,6 +401,27 @@ class BookProject:
                 isolated.upsert_section_content(section_content)
         self._assemble_chapter_if_ready(isolated, chapter_id, thread_id=thread_id, retry_failed=True)
         return isolated
+
+    def _chapter_resume_plan(self, state: BookState, chapter_id: int) -> str:
+        """返回并发章节恢复时会优先处理的小节摘要，供日志诊断。"""
+        chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
+        if chapter is None:
+            return "章节不存在"
+        pending = []
+        for section in chapter.sections:
+            section_content = state.get_section_content(section.id)
+            if section_content is None:
+                pending.append(f"{section.id}(待写作)")
+            elif section.status == "written":
+                pending.append(f"{section.id}(待审校)")
+            elif section.status == "review_failed":
+                pending.append(f"{section.id}(审校未通过)")
+        if pending:
+            return ", ".join(pending[:8]) + (f" 等 {len(pending)} 个" if len(pending) > 8 else "")
+        chapter_status = chapter.status
+        if chapter_status == "quality_failed":
+            return "章节质量门未通过，重跑章节质量闭环"
+        return "无待处理小节"
 
     def _merge_chapter_state(self, state: BookState, source: BookState, chapter_id: int) -> int:
         """把隔离状态中的单章产物合回主 checkpoint。"""
