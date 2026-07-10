@@ -70,10 +70,16 @@ def find_invalid_book_figures(
     ]
     invalid: list[str] = []
     for index, figure in enumerate(extract_book_figures(markdown, marker), start=1):
-        missing = [field for field in required if not re.search(rf"^\s*{re.escape(field)}\s*:", figure.body, re.MULTILINE)]
+        missing = [field for field in required if not _has_book_figure_field(figure.body, field)]
         if missing:
             invalid.append(f"第{index}个 `{marker}` 缺少字段: {', '.join(missing)}")
     return invalid
+
+
+def _has_book_figure_field(body: str, field: str) -> bool:
+    """判断规格块是否包含 YAML 或 JSON 风格字段。"""
+    escaped = re.escape(field)
+    return re.search(rf'^\s*(?:{escaped}|["\']{escaped}["\'])\s*:', body, re.MULTILINE) is not None
 
 
 def count_headings(markdown: str) -> int:
