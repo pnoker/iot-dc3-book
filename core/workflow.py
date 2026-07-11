@@ -1571,6 +1571,15 @@ class BookProject:
             state.upsert_section_content(revised_content)
             state.mark_section_status(section.id, "written")
             self._save_section_file(state, revised_content)
+            reviewed_content = self._review_section_until_pass(
+                state,
+                section,
+                revised_content,
+                previous_brief,
+                thread_id,
+            )
+            state.upsert_section_content(reviewed_content)
+            self._save_section_file(state, reviewed_content)
             revised_count += 1
 
         if previous_section_id:

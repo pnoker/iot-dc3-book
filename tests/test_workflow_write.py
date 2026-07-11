@@ -725,9 +725,44 @@ def test_chapter_quality_gate_revises_targeted_sections_before_chapter_fallback(
     content = project._review_chapter_until_pass(state, 1)
 
     assert project.expander.calls == 0
-    assert project.writer.section_revision_calls == ["1.1.1"]
+    assert project.writer.section_revision_calls == ["1.1.1", "1.1.1"]
     assert content.revision_count == 1
     assert "已按质量门反馈修订" in state.get_section_content("1.1.1").markdown
+    assert state.get_section_plan("1.1.1").status == "review_failed"
+
+
+def test_chapter_targeted_revision_reviews_revised_section(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    state.max_revision_count = 1
+    state.set_current_chapter_by_id(1)
+    section = state.get_section_plan("1.1.1")
+    assert section is not None
+    section.target_words = 1
+    state.mark_section_status("1.1.1", "reviewed")
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown="### 1.1.1 一\n\n" + "正文" * 260,
+            word_count=520,
+        )
+    )
+    chapter_content = ChapterContent(chapter_id=1, title="第一章", markdown="# 第1章 第一章\n\n正文。")
+
+    project._revise_sections_from_chapter_feedback(
+        state,
+        chapter_content,
+        ["1.1.1"],
+        '{"issues":[{"section_id":"1.1.1","description":"补强论述"}]}',
+        1,
+        thread_id=None,
+    )
+
+    assert project.writer.section_revision_calls == ["1.1.1"]
+    assert state.get_section_plan("1.1.1").status == "reviewed"
 
 
 def test_chapter_llm_gate_marks_failed_and_continues_at_revision_limit(tmp_path) -> None:
