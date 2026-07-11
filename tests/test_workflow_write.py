@@ -133,6 +133,11 @@ class _Expander:
         return "# 第1章 第一章\n\n" + "正文" * 30
 
 
+class _ShrinkingExpander:
+    def expand(self, state: BookState, markdown: str, feedback: str = "") -> str:
+        return "```markdown\n# 第1章 第一章\n\n过短摘要。\n```"
+
+
 class _Assembler:
     def assemble(self, state: BookState, raw_markdown: str) -> str:
         return raw_markdown
@@ -189,7 +194,7 @@ class _NoHitRAG:
     def __init__(self) -> None:
         self.calls = 0
 
-    def retrieve(self, query: str, top_k: int = 3, *, categories: object = None) -> list:
+    def retrieve_sparse(self, query: str, top_k: int = 3, *, categories: object = None) -> list:
         self.calls += 1
         return []
 
@@ -625,6 +630,29 @@ def test_chapter_deterministic_gate_marks_failed_and_continues_at_revision_limit
     chapter = state.get_current_chapter()
     assert chapter is not None
     assert chapter.status == "quality_failed"
+
+
+def test_normalize_markdown_output_unwraps_outer_markdown_fence() -> None:
+    markdown = "```markdown\n# 标题\n\n正文\n```"
+
+    assert BookProject._normalize_markdown_output(markdown) == "# 标题\n\n正文"
+
+
+def test_chapter_revision_rejects_catastrophic_shrink(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    project.expander = _ShrinkingExpander()
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=True, min_words_per_chapter=9000)
+    state.set_current_chapter_by_id(1)
+    original = "# 第1章 第一章\n\n" + "这是完整章节正文。" * 1200
+    content = ChapterContent(chapter_id=1, title="第一章", markdown=original, word_count=10806)
+    state.upsert_chapter_content(content)
+
+    revised = project._revise_chapter_from_feedback(state, content, "反馈", 1)
+
+    assert revised.markdown == original
+    assert revised.word_count == 10806
+    assert revised.revision_count == 1
 
 
 def test_chapter_quality_gate_revises_targeted_sections_before_chapter_fallback(tmp_path) -> None:

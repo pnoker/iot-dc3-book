@@ -37,6 +37,10 @@ class LLMClient:
             embed_base_url: str = "",
             embed_api_key: str = "",
             embed_model: str = "",
+            embed_timeout: float | None = None,
+            embed_retry_attempts: int | None = None,
+            embed_retry_min_seconds: float | None = None,
+            embed_retry_max_seconds: float | None = None,
             timeout: float = 120.0,
             retry_attempts: int = 3,
             retry_min_seconds: float = 2.0,
@@ -51,6 +55,18 @@ class LLMClient:
             raise ValueError("retry_max_seconds 必须不小于 retry_min_seconds")
         if json_retry_attempts <= 0:
             raise ValueError("json_retry_attempts 必须大于 0")
+        resolved_embed_timeout = timeout if embed_timeout is None else embed_timeout
+        resolved_embed_retry_attempts = retry_attempts if embed_retry_attempts is None else embed_retry_attempts
+        resolved_embed_retry_min_seconds = retry_min_seconds if embed_retry_min_seconds is None else embed_retry_min_seconds
+        resolved_embed_retry_max_seconds = retry_max_seconds if embed_retry_max_seconds is None else embed_retry_max_seconds
+        if resolved_embed_timeout <= 0:
+            raise ValueError("embed_timeout 必须大于 0")
+        if resolved_embed_retry_attempts <= 0:
+            raise ValueError("embed_retry_attempts 必须大于 0")
+        if resolved_embed_retry_min_seconds < 0:
+            raise ValueError("embed_retry_min_seconds 不能小于 0")
+        if resolved_embed_retry_max_seconds < resolved_embed_retry_min_seconds:
+            raise ValueError("embed_retry_max_seconds 必须不小于 embed_retry_min_seconds")
         # Chat config (DeepSeek)
         self._base_url = base_url
         self._api_key = api_key
@@ -68,6 +84,10 @@ class LLMClient:
         self._embed_base_url = embed_base_url
         self._embed_api_key = embed_api_key
         self._embed_model = embed_model
+        self._embed_timeout = resolved_embed_timeout
+        self._embed_retry_attempts = resolved_embed_retry_attempts
+        self._embed_retry_min_seconds = resolved_embed_retry_min_seconds
+        self._embed_retry_max_seconds = resolved_embed_retry_max_seconds
         self._embed_client: OpenAI | None = None
 
     @property
@@ -102,15 +122,15 @@ class LLMClient:
             self._embed_client = OpenAI(
                 base_url=self._embed_base_url,
                 api_key=self._embed_api_key,
-                timeout=self._timeout,
+                timeout=self._embed_timeout,
                 max_retries=0,
             )
             logger.info(
                 "Embedding 客户端初始化: %s / %s, timeout=%ss, retry=%d",
                 self._embed_base_url,
                 self._embed_model,
-                self._timeout,
-                self._retry_attempts,
+                self._embed_timeout,
+                self._embed_retry_attempts,
             )
         return self._embed_client
 
@@ -171,7 +191,13 @@ class LLMClient:
         self._require_embed_model()
         logger.debug("Embed 请求: model=%s, text_len=%d", self._embed_model, len(text))
         try:
-            return self._run_with_retry("Embed", lambda: self._embed_once(text))
+            return self._run_with_retry(
+                "Embed",
+                lambda: self._embed_once(text),
+                retry_attempts=self._embed_retry_attempts,
+                retry_min_seconds=self._embed_retry_min_seconds,
+                retry_max_seconds=self._embed_retry_max_seconds,
+            )
         except Exception:
             logger.exception("Embed 调用失败: model=%s", self._embed_model)
             raise
@@ -183,7 +209,13 @@ class LLMClient:
         self._require_embed_model()
         logger.debug("Embed 批量请求: model=%s, count=%d", self._embed_model, len(texts))
         try:
-            return self._run_with_retry("Embed 批量", lambda: self._embed_many_once(texts))
+            return self._run_with_retry(
+                "Embed 批量",
+                lambda: self._embed_many_once(texts),
+                retry_attempts=self._embed_retry_attempts,
+                retry_min_seconds=self._embed_retry_min_seconds,
+                retry_max_seconds=self._embed_retry_max_seconds,
+            )
         except Exception:
             logger.exception("Embed 批量调用失败: model=%s", self._embed_model)
             raise
@@ -226,19 +258,30 @@ class LLMClient:
         )
         return [item.embedding for item in resp.data]
 
-    def _run_with_retry(self, operation: str, action: Callable[[], ResultT]) -> ResultT:
+    def _run_with_retry(
+            self,
+            operation: str,
+            action: Callable[[], ResultT],
+            *,
+            retry_attempts: int | None = None,
+            retry_min_seconds: float | None = None,
+            retry_max_seconds: float | None = None,
+    ) -> ResultT:
+        attempts = self._retry_attempts if retry_attempts is None else retry_attempts
+        min_seconds = self._retry_min_seconds if retry_min_seconds is None else retry_min_seconds
+        max_seconds = self._retry_max_seconds if retry_max_seconds is None else retry_max_seconds
         for attempt in Retrying(
-                stop=stop_after_attempt(self._retry_attempts),
-                wait=wait_exponential(multiplier=1, min=self._retry_min_seconds, max=self._retry_max_seconds),
+                stop=stop_after_attempt(attempts),
+                wait=wait_exponential(multiplier=1, min=min_seconds, max=max_seconds),
                 retry=retry_if_exception_type(_RETRYABLE),
-                before_sleep=lambda retry_state: self._log_retry(operation, retry_state),
+                before_sleep=lambda retry_state: self._log_retry(operation, retry_state, attempts),
                 reraise=True,
         ):
             with attempt:
                 return action()
         raise RuntimeError(f"{operation} 重试未执行")
 
-    def _log_retry(self, operation: str, retry_state: RetryCallState) -> None:
+    def _log_retry(self, operation: str, retry_state: RetryCallState, attempts: int) -> None:
         exc = retry_state.outcome.exception() if retry_state.outcome else None
         sleep_seconds = retry_state.next_action.sleep if retry_state.next_action else 0.0
         logger.warning(
@@ -246,7 +289,7 @@ class LLMClient:
             operation,
             sleep_seconds,
             retry_state.attempt_number,
-            self._retry_attempts,
+            attempts,
             exc,
         )
 

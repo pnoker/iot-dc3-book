@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shutil
+import threading
 import time
 import uuid
 from collections import Counter
@@ -60,6 +61,7 @@ OUTLINE_VERSION = 1
 WRITE_CHECKPOINT_VERSION = 1
 WORKER_CHECKPOINT_VERSION = 1
 WRITE_LOCK_STALE_SECONDS = 300
+_HEAVY_CHAPTER_REVISION_LOCK = threading.Lock()
 
 
 class BookProject:
@@ -530,8 +532,8 @@ class BookProject:
                 section_id=section.id,
                 chapter_id=section.chapter_id,
                 title=section.title,
-                markdown=markdown,
-                word_count=count_words(markdown),
+                markdown=self._normalize_markdown_output(markdown),
+                word_count=count_words(self._normalize_markdown_output(markdown)),
             )
             state.upsert_section_content(content)
             state.mark_section_status(section.id, "written")
@@ -567,7 +569,7 @@ class BookProject:
                 section_path = self._section_file_path(chapter.id, section.id)
                 if not section_path.exists():
                     continue
-                markdown = section_path.read_text(encoding="utf-8")
+                markdown = self._normalize_markdown_output(section_path.read_text(encoding="utf-8"))
                 section_content = SectionContent(
                     section_id=section.id,
                     chapter_id=section.chapter_id,
@@ -590,7 +592,7 @@ class BookProject:
 
             chapter_path = self._chapter_file_path(chapter.id)
             if chapter_path.exists() and state.get_chapter_content(chapter.id) is None:
-                markdown = chapter_path.read_text(encoding="utf-8")
+                markdown = self._normalize_markdown_output(chapter_path.read_text(encoding="utf-8"))
                 chapter_content = ChapterContent(
                     chapter_id=chapter.id,
                     title=chapter.title,
@@ -1069,7 +1071,7 @@ class BookProject:
             raise RuntimeError(f"三级小节不存在: {section.id}")
         self._ensure_chapter_research(state)
         previous_brief = self._previous_section_brief(state, section)
-        markdown = self.writer.write_planned_section(state, section, previous_brief=previous_brief)
+        markdown = self._normalize_markdown_output(self.writer.write_planned_section(state, section, previous_brief=previous_brief))
         content = SectionContent(
             section_id=section.id,
             chapter_id=section.chapter_id,
@@ -1086,6 +1088,32 @@ class BookProject:
         state.upsert_section_content(content)
         self._save_section_file(state, content)
         logger.info("✅ [小节] %s 写作完成，%d 字", section.id, content.word_count)
+
+    @staticmethod
+    def _normalize_markdown_output(markdown: str) -> str:
+        """移除 LLM 偶发包裹整篇正文的 Markdown 代码围栏。"""
+        text = markdown.strip()
+        if not text.startswith("```") or not text.endswith("```"):
+            return text
+        first_line_end = text.find("\n")
+        if first_line_end < 0:
+            return text
+        fence_info = text[3:first_line_end].strip().lower()
+        if fence_info not in {"markdown", "md"}:
+            return text
+        return text[first_line_end + 1:-3].strip()
+
+    @staticmethod
+    def _chapter_revision_shrank_too_much(state: BookState, original: str, revised: str) -> bool:
+        """防止整章修订被 LLM 异常压缩成摘要或代码块残片。"""
+        original_words = count_words(original)
+        revised_words = count_words(revised)
+        if original_words < 2000:
+            return False
+        min_acceptable = int(original_words * 0.45)
+        if state.quality.enabled and original_words >= state.quality.min_words_per_chapter:
+            min_acceptable = max(min_acceptable, state.quality.min_words_per_chapter)
+        return revised_words < min_acceptable
 
     def _review_section_until_pass(
             self,
@@ -1132,13 +1160,13 @@ class BookProject:
                     raise RuntimeError(message)
                 return content
 
-            revised = self.writer.revise_planned_section(
+            revised = self._normalize_markdown_output(self.writer.revise_planned_section(
                 state,
                 section,
                 content.markdown,
                 feedback,
                 previous_brief=previous_brief,
-            )
+            ))
             content = SectionContent(
                 section_id=section.id,
                 chapter_id=section.chapter_id,
@@ -1307,7 +1335,7 @@ class BookProject:
         if not sections:
             raise RuntimeError(f"第{chapter_id}章尚无小节正文，无法合稿。")
         raw_markdown = "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in sections)])
-        markdown = self.assembler.assemble(state, raw_markdown)
+        markdown = self._normalize_markdown_output(self.assembler.assemble(state, raw_markdown))
         return ChapterContent(
             chapter_id=chapter.id,
             title=chapter.title,
@@ -1477,13 +1505,13 @@ class BookProject:
             if not state.set_current_section_by_id(section_id):
                 continue
             previous_brief = self._previous_section_brief(state, section)
-            revised_markdown = self.writer.revise_planned_section(
+            revised_markdown = self._normalize_markdown_output(self.writer.revise_planned_section(
                 state,
                 section,
                 section_content.markdown,
                 feedback,
                 previous_brief=previous_brief,
-            )
+            ))
             revised_content = SectionContent(
                 section_id=section.id,
                 chapter_id=section.chapter_id,
@@ -1575,9 +1603,31 @@ class BookProject:
             revision_count: int,
     ) -> ChapterContent:
         """按反馈修订章节，并在偏薄时优先扩写。"""
-        revised = self.expander.expand(state, content.markdown, feedback)
-        if revised.strip() == content.markdown.strip():
-            revised = self.writer.revise(state, feedback)
+        current_markdown = self._normalize_markdown_output(content.markdown)
+        revised = self._normalize_markdown_output(self.expander.expand(state, current_markdown, feedback))
+        if revised.strip() == current_markdown.strip():
+            with _HEAVY_CHAPTER_REVISION_LOCK:
+                logger.info("🚦 [章节修订] 第%d章进入整章重写限流区", content.chapter_id)
+                revised = self._normalize_markdown_output(self.writer.revise(state, feedback))
+        if self._chapter_revision_shrank_too_much(state, current_markdown, revised):
+            original_words = count_words(current_markdown)
+            revised_words = count_words(revised)
+            logger.warning(
+                "⚠️ [章节修订] 第%d章修订结果异常缩水，已拒收: %d → %d 字",
+                content.chapter_id,
+                original_words,
+                revised_words,
+            )
+            guarded = content.model_copy(
+                update={
+                    "markdown": current_markdown,
+                    "word_count": original_words,
+                    "revision_feedback": feedback,
+                    "revision_count": revision_count,
+                }
+            )
+            state.upsert_chapter_content(guarded)
+            return guarded
         new_content = ChapterContent(
             chapter_id=content.chapter_id,
             title=content.title,
@@ -1744,7 +1794,16 @@ class BookProject:
                 "review": review,
             }
         )
-        revised = self.writer.revise(state, feedback)
+        revised = self._normalize_markdown_output(self.writer.revise(state, feedback))
+        current_markdown = self._normalize_markdown_output(content.markdown)
+        if self._chapter_revision_shrank_too_much(state, current_markdown, revised):
+            logger.warning(
+                "⚠️ [终审返修] 第%d章修订结果异常缩水，已拒收: %d → %d 字",
+                chapter_id,
+                count_words(current_markdown),
+                count_words(revised),
+            )
+            return
         new_content = ChapterContent(
             chapter_id=content.chapter_id,
             title=content.title,

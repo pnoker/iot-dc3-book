@@ -221,6 +221,10 @@ def get_embed_config(cfg: ConfigDict | AppConfig) -> ConfigDict:
         "embed_base_url": emb.base_url,
         "embed_api_key": reveal_secret(emb.api_key),
         "embed_model": emb.model,
+        "embed_timeout": emb.timeout_seconds,
+        "embed_retry_attempts": emb.retry_attempts,
+        "embed_retry_min_seconds": emb.retry_min_seconds,
+        "embed_retry_max_seconds": emb.retry_max_seconds,
     }
 
 

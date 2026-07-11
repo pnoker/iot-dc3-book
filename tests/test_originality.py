@@ -16,7 +16,7 @@ class _StubRAG:
         self._chunks = chunks
         self.calls = 0
 
-    def retrieve(self, query: str, top_k: int = 3, *, categories: Any = None) -> list[ReferenceChunk]:
+    def retrieve_sparse(self, query: str, top_k: int = 3, *, categories: Any = None) -> list[ReferenceChunk]:
         self.calls += 1
         return self._chunks
 

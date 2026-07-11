@@ -420,6 +420,37 @@ class RAGEngine:
             return self._reranker(query, candidates, top_k)
         return candidates[:top_k]
 
+    def retrieve_sparse(
+            self,
+            query: str,
+            top_k: int = 5,
+            *,
+            categories: Sequence[str] | None = None,
+            doc_type: str | None = None,
+            language: str | None = None,
+    ) -> list[ReferenceChunk]:
+        """仅使用本地 BM25 检索，不触发远程 embedding。"""
+        if self.collection.count() == 0:
+            logger.warning("RAG 索引为空，无法检索")
+            return []
+        if not self._bm25_path:
+            raise RuntimeError("sparse 检索需要配置 bm25_path；请重建 RAG 索引。")
+        bm25 = self._get_bm25()
+        if bm25 is None:
+            raise RuntimeError("BM25 索引不存在，无法执行 sparse 检索；请重建 RAG 索引。")
+
+        where = self._build_where(categories, doc_type, language)
+        sparse = bm25.search(query, top_n=max(top_k, _CANDIDATE_POOL), where=where)
+        chunks: list[ReferenceChunk] = []
+        for cid, score in sparse:
+            payload = self._fetch_payload(cid)
+            if payload is None:
+                continue
+            chunks.append(self._to_chunk(payload, score=score))
+            if len(chunks) >= top_k:
+                break
+        return chunks
+
     def _build_where(
             self, categories: Sequence[str] | None, doc_type: str | None, language: str | None
     ) -> dict[str, Any] | None:

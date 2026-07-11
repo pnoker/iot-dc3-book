@@ -72,6 +72,22 @@ class EmbeddingConfig(StrictConfigModel):
     base_url: str
     api_key: SecretStr
     model: str
+    timeout_seconds: float = 60.0
+    retry_attempts: int = 2
+    retry_min_seconds: float = 2.0
+    retry_max_seconds: float = 10.0
+
+    @model_validator(mode="after")
+    def validate_runtime_policy(self) -> EmbeddingConfig:
+        if self.timeout_seconds <= 0:
+            raise ValueError("llm.embedding.timeout_seconds 必须大于 0")
+        if self.retry_attempts <= 0:
+            raise ValueError("llm.embedding.retry_attempts 必须大于 0")
+        if self.retry_min_seconds < 0:
+            raise ValueError("llm.embedding.retry_min_seconds 不能小于 0")
+        if self.retry_max_seconds < self.retry_min_seconds:
+            raise ValueError("llm.embedding.retry_max_seconds 必须不小于 retry_min_seconds")
+        return self
 
 
 class LLMConfig(StrictConfigModel):

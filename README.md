@@ -324,7 +324,7 @@ uv run python main.py write start --fresh
 
 **原创性/相似度门（`originality_check_enabled`，默认 `true`）**
 
-针对出版侵权风险：把正文按段落切分，逐段检索最相似的参考原文，只对**别人写的来源**（`config/references.yaml` 中 `label: books` 的源）计算字符 n-gram 重叠。某段与某本参考书重叠率超过 `originality_max_overlap`（默认 `0.35`）即判为疑似洗稿，**硬阻断**并触发改写，反馈形如"第 X 段与《source_file》重叠 Y%"。与自有内容（如 `label: dc3` 的 IoT DC3 文档）雷同不算侵权，直接放行。纯 n-gram 算法、零 LLM 成本，复用现有 RAG 检索。相关阈值：`originality_ngram`（默认 `5`）、`originality_min_paragraph_chars`（默认 `80`，短段落跳过）。
+针对出版侵权风险：把正文按段落切分，用本地 BM25 稀疏索引检索最相似的参考原文，只对**别人写的来源**（`config/references.yaml` 中 `label: books` 的源）计算字符 n-gram 重叠。某段与某本参考书重叠率超过 `originality_max_overlap`（默认 `0.35`）即判为疑似洗稿，**硬阻断**并触发改写，反馈形如"第 X 段与《source_file》重叠 Y%"。与自有内容（如 `label: dc3` 的 IoT DC3 文档）雷同不算侵权，直接放行。该门不调用 LLM，也不调用远程 embedding；相关阈值：`originality_ngram`（默认 `5`）、`originality_min_paragraph_chars`（默认 `80`，短段落跳过）。
 
 > 这道门只防"洗自己 RAG 库里的参考书"这一最大风险源，**不做全网查重**。正式出版前建议再用专业查重工具兜底。
 
@@ -394,6 +394,7 @@ main.py              # 最小入口
 
 - RAG 索引会根据来源文件路径、大小、`mtime_ns`、chunk 配置和 embedding 模型生成 manifest；源文件变化后，下次 `kb build` 会增量更新新增、修改和删除的文件。
 - 只有 `kb build --rebuild` 会清空并全量重建知识库；写作恢复不会隐式重建知识库。
+- Chat 与 embedding 的运行策略在 `config/llm.yaml` 中分开配置；长篇修订可给 Chat 较长 `timeout_seconds`，embedding 应保持较短超时，避免证据检索被外部向量服务长时间拖住。
 - `ResearchDossier` 会给本地证据编号为 `[S1]`、在线证据编号为 `[W1]`，写作与引用守门都以这些证据为硬事实依据。
 - `references.web_research` 默认关闭；启用后只抓取显式配置的 URL，不做无来源网络搜索。
 

@@ -161,7 +161,7 @@ def check_originality(
             continue
         best_overlap = 0.0
         best_source = ""
-        for hit in rag.retrieve(paragraph, top_k=3, categories=categories):
+        for hit in rag.retrieve_sparse(paragraph, top_k=3, categories=categories):
             if hit.label != "books":  # 只对别人写的材料判侵权；自有内容雷同放行
                 continue
             overlap = char_ngram_overlap(paragraph, hit.text, n=settings.originality_ngram)

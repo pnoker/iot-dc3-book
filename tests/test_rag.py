@@ -141,6 +141,34 @@ def test_hybrid_retrieve_recalls_exact_term_via_bm25(tmp_path, monkeypatch) -> N
     assert engine._get_bm25() is not None
 
 
+def test_sparse_retrieve_uses_bm25_without_embedding(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "modbus.md").write_text("# 协议\n" + "Modbus 是主从式工业串行通信协议规范。" * 6, encoding="utf-8")
+
+    embed_calls = {"count": 0}
+
+    def embed(text: str) -> list[float]:
+        embed_calls["count"] += 1
+        return [1.0, 0.0]
+
+    engine = RAGEngine(
+        embed_fn=embed,
+        chunk_size=1000,
+        chunk_overlap=100,
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+    )
+    engine.index_books([ReferenceSource(docs, "books", categories=("iot", "protocol"))], str(tmp_path / "manifest.json"))
+    embed_calls["count"] = 0
+
+    hits = engine.retrieve_sparse("Modbus 协议", top_k=2, categories=["protocol"])
+
+    assert hits
+    assert any("Modbus" in hit.text for hit in hits)
+    assert embed_calls["count"] == 0
+
+
 def test_retrieve_hybrid_false_is_pure_dense(tmp_path, monkeypatch) -> None:
     docs = tmp_path / "docs"
     docs.mkdir()

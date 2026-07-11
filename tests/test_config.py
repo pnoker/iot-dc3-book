@@ -196,17 +196,26 @@ def test_get_llm_config_includes_runtime_policy() -> None:
                 "base_url": "https://embed.test",
                 "api_key": "test-embed-key",
                 "model": "embed-model",
+                "timeout_seconds": 30,
+                "retry_attempts": 2,
+                "retry_min_seconds": 0,
+                "retry_max_seconds": 5,
             },
         }
     )
 
     llm_cfg = get_llm_config(cfg)
+    embed_cfg = get_embed_config(cfg)
 
     assert llm_cfg["timeout"] == 60
     assert llm_cfg["retry_attempts"] == 5
     assert llm_cfg["retry_min_seconds"] == 1
     assert llm_cfg["retry_max_seconds"] == 20
     assert llm_cfg["json_retry_attempts"] == 3
+    assert embed_cfg["embed_timeout"] == 30
+    assert embed_cfg["embed_retry_attempts"] == 2
+    assert embed_cfg["embed_retry_min_seconds"] == 0
+    assert embed_cfg["embed_retry_max_seconds"] == 5
 
 
 def test_llm_runtime_policy_validates_retry_bounds() -> None:

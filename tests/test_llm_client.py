@@ -42,6 +42,19 @@ class _FakeEmbeddings:
         )
 
 
+class _FlakyEmbeddings:
+    def __init__(self, responses: list[list[float] | Exception]) -> None:
+        self.responses = responses
+        self.calls = 0
+
+    def create(self, **kwargs):
+        self.calls += 1
+        response = self.responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return SimpleNamespace(data=[SimpleNamespace(embedding=response)])
+
+
 def test_chat_preserves_zero_temperature() -> None:
     client = LLMClient(base_url="http://example.test", api_key="key", model="model")
     completions = _FakeChatCompletions()
@@ -69,6 +82,30 @@ def test_embed_many_sends_single_batch_request() -> None:
 
     assert embeddings.kwargs["input"] == ["第一段", "第二段"]
     assert result == [[1.0, 0.0], [0.0, 1.0]]
+
+
+def test_embed_retries_use_embedding_runtime_policy() -> None:
+    client = LLMClient(
+        base_url="http://example.test",
+        api_key="key",
+        model="model",
+        retry_attempts=1,
+        retry_min_seconds=0,
+        retry_max_seconds=0,
+        embed_base_url="http://embed.example.test",
+        embed_api_key="embed-key",
+        embed_model="embed-model",
+        embed_retry_attempts=2,
+        embed_retry_min_seconds=0,
+        embed_retry_max_seconds=0,
+    )
+    embeddings = _FlakyEmbeddings([ConnectionError("embed down"), [1.0, 0.0]])
+    client._embed_client = SimpleNamespace(embeddings=embeddings)
+
+    result = client.embed("第一段")
+
+    assert embeddings.calls == 2
+    assert result == [1.0, 0.0]
 
 
 def test_chat_json_requests_json_object_response() -> None:
