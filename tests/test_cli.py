@@ -210,7 +210,7 @@ def test_write_section_prints_second_level_prefix(monkeypatch) -> None:
         def __init__(self, config_path: str) -> None:
             pass
 
-        def load_write_checkpoint(self, thread_id: str) -> BookState:
+        def load_write_checkpoint_with_workers(self, thread_id: str) -> BookState:
             return state
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
@@ -251,7 +251,7 @@ def test_write_section_prints_partial_chapter(monkeypatch) -> None:
         def __init__(self, config_path: str) -> None:
             pass
 
-        def load_write_checkpoint(self, thread_id: str) -> BookState:
+        def load_write_checkpoint_with_workers(self, thread_id: str) -> BookState:
             return state
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
@@ -312,7 +312,7 @@ def test_write_section_prints_failure_status_for_existing_chapter(monkeypatch) -
         def __init__(self, config_path: str) -> None:
             pass
 
-        def load_write_checkpoint(self, thread_id: str) -> BookState:
+        def load_write_checkpoint_with_workers(self, thread_id: str) -> BookState:
             return state
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
@@ -385,7 +385,7 @@ def test_write_contents_prints_section_checkpoint_outline(monkeypatch) -> None:
         def __init__(self, config_path: str) -> None:
             pass
 
-        def load_write_checkpoint(self, thread_id: str) -> BookState:
+        def load_write_checkpoint_with_workers(self, thread_id: str) -> BookState:
             return state
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
@@ -490,7 +490,7 @@ def test_write_contents_distinguishes_review_and_quality_status(monkeypatch) -> 
         def __init__(self, config_path: str) -> None:
             pass
 
-        def load_write_checkpoint(self, thread_id: str) -> BookState:
+        def load_write_checkpoint_with_workers(self, thread_id: str) -> BookState:
             return state
 
     monkeypatch.setattr("cli.BookProject", FakeProject)

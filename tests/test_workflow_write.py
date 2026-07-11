@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from copy import deepcopy
 from types import SimpleNamespace
 
 import pytest
@@ -408,6 +409,55 @@ def test_parallel_worker_resumes_from_worker_checkpoint(tmp_path) -> None:
     assert recovered.get_section_content("1.1.1").markdown == "### 1.1.1 一\n\n已有正文"
     assert "1.1.1" not in writer.calls
     assert {"1.1.2", "1.2.1"}.issubset(set(writer.calls))
+
+
+def test_read_status_overlays_newer_worker_checkpoint(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(enabled=False, min_figures_per_section=0),
+        references=SimpleNamespace(query_categories=[]),
+    )
+    main_state = _state_with_sections()
+    main_state.upsert_section_content(
+        SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n主正文")
+    )
+    main_state.mark_section_status("1.1.1", "written")
+    project._save_write_checkpoint("book", main_state)
+
+    worker_state = deepcopy(main_state)
+    worker_state.mark_section_status("1.1.1", "reviewed")
+    worker_state.upsert_section_content(
+        SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\nworker正文")
+    )
+    project._save_state_envelope(project.worker_checkpoint_path("book", 1), worker_state, kind="write.worker.checkpoint")
+
+    displayed = project.load_write_checkpoint_with_workers("book")
+    main_reloaded = project.load_write_checkpoint("book")
+
+    assert displayed.get_section_plan("1.1.1").status == "reviewed"
+    assert displayed.get_section_content("1.1.1").markdown.endswith("worker正文")
+    assert main_reloaded.get_section_plan("1.1.1").status == "written"
+    assert main_reloaded.get_section_content("1.1.1").markdown.endswith("主正文")
+
+
+def test_interrupt_shutdown_waits_through_repeated_ctrl_c() -> None:
+    class InterruptingExecutor:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def shutdown(self, *, wait: bool, cancel_futures: bool) -> None:
+            self.calls += 1
+            assert wait is True
+            assert cancel_futures is True
+            if self.calls == 1:
+                raise KeyboardInterrupt
+
+    executor = InterruptingExecutor()
+
+    BookProject._shutdown_executor_after_interrupt(executor)  # type: ignore[arg-type]
+
+    assert executor.calls == 2
 
 
 def test_parallel_worker_retries_review_failed_sections(tmp_path) -> None:

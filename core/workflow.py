@@ -201,7 +201,7 @@ class BookProject:
         path = self.write_checkpoint_path(thread_id)
         if not path.exists():
             return {"thread_id": thread_id, "has_checkpoint": False, "path": str(path)}
-        state = self.load_write_checkpoint(thread_id)
+        state = self.load_write_checkpoint_with_workers(thread_id)
         section = state.get_current_section()
         chapter = state.get_current_chapter()
         sections = state.get_all_sections_flat()
@@ -239,7 +239,7 @@ class BookProject:
         if not path.exists():
             result["recommended_commands"] = ["uv run python main.py write start"]
             return result
-        state = self.load_write_checkpoint(thread_id)
+        state = self.load_write_checkpoint_with_workers(thread_id)
         publication_audit = summarize_publication_audit(state)
         result.update(
             {
@@ -316,15 +316,18 @@ class BookProject:
         processed = 0
         failed_chapters: list[int] = []
         logger.info("🚀 [并发写作] %d 个章节并发起草，workers=%d", len(chapter_ids), workers)
+        display_state = self._overlay_worker_checkpoints_for_read(thread_id, deepcopy(state))
         for chapter_id in chapter_ids:
-            logger.info("🧭 [并发写作] 第%d章待处理: %s", chapter_id, self._chapter_resume_plan(state, chapter_id))
+            logger.info("🧭 [并发写作] 第%d章待处理: %s", chapter_id, self._chapter_resume_plan(display_state, chapter_id))
         # 在主线程提交前一次性备好每章的隔离快照，避免 worker 线程内 deepcopy 与主线程合并同一 state 竞争。
         snapshots = {chapter_id: deepcopy(state) for chapter_id in chapter_ids}
-        with ThreadPoolExecutor(max_workers=workers) as executor:
-            futures = {
-                executor.submit(self._write_chapter_in_isolated_state, snapshots[chapter_id], chapter_id, thread_id): chapter_id
-                for chapter_id in chapter_ids
-            }
+        executor = ThreadPoolExecutor(max_workers=workers)
+        shutdown_done = False
+        futures = {
+            executor.submit(self._write_chapter_in_isolated_state, snapshots[chapter_id], chapter_id, thread_id): chapter_id
+            for chapter_id in chapter_ids
+        }
+        try:
             for future in as_completed(futures):
                 chapter_id = futures[future]
                 try:
@@ -339,6 +342,16 @@ class BookProject:
                 self._save_chapter_artifacts(state, chapter_id)
                 self._clear_worker_checkpoint(thread_id, chapter_id)
                 logger.info("✅ [并发写作] 第%d章已合并 checkpoint", chapter_id)
+        except KeyboardInterrupt:
+            logger.warning("⏹️ [并发写作] 收到中断，等待运行中的章节 worker 保存 checkpoint 后退出")
+            for future in futures:
+                future.cancel()
+            self._shutdown_executor_after_interrupt(executor)
+            shutdown_done = True
+            raise
+        finally:
+            if not shutdown_done:
+                executor.shutdown(wait=True)
 
         self._move_to_next_unwritten_section(state, target_sections[-1].id, thread_id=thread_id)
         self._save_write_checkpoint(thread_id, state)
@@ -351,6 +364,16 @@ class BookProject:
         if failed_chapters:
             status["failed_chapters"] = failed_chapters
         return status
+
+    @staticmethod
+    def _shutdown_executor_after_interrupt(executor: ThreadPoolExecutor) -> None:
+        """中断并发写作时等待 worker 收尾，避免锁释放后后台线程继续写 checkpoint。"""
+        while True:
+            try:
+                executor.shutdown(wait=True, cancel_futures=True)
+                return
+            except KeyboardInterrupt:
+                logger.warning("⏳ [并发写作] 正在等待 worker checkpoint 落盘，请勿重复中断")
 
     def _write_chapter_in_isolated_state(self, isolated: BookState, chapter_id: int, thread_id: str) -> BookState:
         """在独立状态副本中顺序写完一个章节，避免线程间抢写 checkpoint。
@@ -650,6 +673,34 @@ class BookProject:
         state = self._load_state_envelope(self.write_checkpoint_path(thread_id), expected_kind="write.checkpoint")
         self._refresh_runtime_settings(state)
         return state
+
+    def load_write_checkpoint_with_workers(self, thread_id: str) -> BookState:
+        """读取主 checkpoint，并叠加尚未合并的章节 worker checkpoint 供只读展示。"""
+        state = self.load_write_checkpoint(thread_id)
+        return self._overlay_worker_checkpoints_for_read(thread_id, state)
+
+    def _overlay_worker_checkpoints_for_read(self, thread_id: str, state: BookState) -> BookState:
+        checkpoint_path = self.write_checkpoint_path(thread_id)
+        checkpoint_mtime = checkpoint_path.stat().st_mtime if checkpoint_path.exists() else 0.0
+        for worker_path in sorted(self.worker_checkpoint_dir(thread_id).glob("chapter-*.json")):
+            if worker_path.stat().st_mtime <= checkpoint_mtime:
+                continue
+            chapter_id = self._chapter_id_from_worker_checkpoint(worker_path)
+            if chapter_id is None:
+                continue
+            try:
+                worker_state = self._load_state_envelope(worker_path, expected_kind="write.worker.checkpoint")
+                self._refresh_runtime_settings(worker_state)
+            except RuntimeError:
+                logger.exception("worker checkpoint 读取失败，已跳过只读叠加: %s", worker_path)
+                continue
+            self._merge_chapter_state(state, worker_state, chapter_id)
+        return state
+
+    @staticmethod
+    def _chapter_id_from_worker_checkpoint(path: Path) -> int | None:
+        match = re.fullmatch(r"chapter-(\d+)\.json", path.name)
+        return int(match.group(1)) if match else None
 
     def _refresh_runtime_settings(self, state: BookState) -> None:
         """用当前配置刷新可调运行策略，保留已生成的大纲和正文。"""

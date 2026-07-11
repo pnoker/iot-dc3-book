@@ -224,7 +224,7 @@ def write_contents(ctx: typer.Context) -> None:
     """查看小节级目录和完成状态。"""
 
     def show(project: BookProject, thread_id: str) -> None:
-        state = project.load_write_checkpoint(thread_id)
+        state = project.load_write_checkpoint_with_workers(thread_id)
         typer.echo(_format_write_contents(state))
 
     _execute_project(ctx, show)
@@ -251,7 +251,7 @@ def write_section(
     """查看小节级 checkpoint 中的章节、二级节或三级小节正文。"""
 
     def show(project: BookProject, thread_id: str) -> None:
-        state = project.load_write_checkpoint(thread_id)
+        state = project.load_write_checkpoint_with_workers(thread_id)
         typer.echo(_render_write_target(state, target))
 
     _execute_project(ctx, show)
