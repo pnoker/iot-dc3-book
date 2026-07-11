@@ -431,6 +431,7 @@ def test_read_status_overlays_newer_worker_checkpoint(tmp_path) -> None:
         SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\nworker正文")
     )
     project._save_state_envelope(project.worker_checkpoint_path("book", 1), worker_state, kind="write.worker.checkpoint")
+    project._save_write_checkpoint("book", main_state)
 
     displayed = project.load_write_checkpoint_with_workers("book")
     main_reloaded = project.load_write_checkpoint("book")

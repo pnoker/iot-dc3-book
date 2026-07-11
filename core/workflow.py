@@ -680,11 +680,7 @@ class BookProject:
         return self._overlay_worker_checkpoints_for_read(thread_id, state)
 
     def _overlay_worker_checkpoints_for_read(self, thread_id: str, state: BookState) -> BookState:
-        checkpoint_path = self.write_checkpoint_path(thread_id)
-        checkpoint_mtime = checkpoint_path.stat().st_mtime if checkpoint_path.exists() else 0.0
         for worker_path in sorted(self.worker_checkpoint_dir(thread_id).glob("chapter-*.json")):
-            if worker_path.stat().st_mtime <= checkpoint_mtime:
-                continue
             chapter_id = self._chapter_id_from_worker_checkpoint(worker_path)
             if chapter_id is None:
                 continue
