@@ -141,14 +141,20 @@ class LLMClient:
             temperature: float | None = None,
             max_tokens: int | None = None,
             response_format: dict[str, str] | None = None,
+            timeout: float | None = None,
+            retry_attempts: int | None = None,
     ) -> str:
         """单轮对话（按配置自动重试）。"""
         logger.debug("Chat 请求: model=%s, user_len=%d", self.model, len(user_prompt))
         try:
             return self._run_with_retry(
                 "Chat",
-                lambda: self._chat_once(system_prompt, user_prompt, temperature, max_tokens, response_format),
+                lambda: self._chat_once(system_prompt, user_prompt, temperature, max_tokens, response_format, timeout),
+                retry_attempts=retry_attempts,
             )
+        except _RETRYABLE as exc:
+            logger.warning("Chat 调用失败: model=%s, %s", self.model, exc)
+            raise
         except Exception:
             logger.exception("Chat 调用失败: model=%s", self.model)
             raise
@@ -159,27 +165,35 @@ class LLMClient:
             user_prompt: str,
             temperature: float | None = None,
             max_tokens: int | None = None,
+            timeout: float | None = None,
+            retry_attempts: int | None = None,
+            json_retry_attempts: int | None = None,
     ) -> dict[str, object]:
         """请求 JSON object 响应并解析。"""
+        attempts = self._json_retry_attempts if json_retry_attempts is None else json_retry_attempts
+        if attempts <= 0:
+            raise ValueError("json_retry_attempts 必须大于 0")
         last_error: ValueError | None = None
-        for attempt in range(1, self._json_retry_attempts + 1):
+        for attempt in range(1, attempts + 1):
             content = self.chat(
                 system_prompt,
                 user_prompt,
                 temperature=temperature,
                 max_tokens=max_tokens,
                 response_format={"type": "json_object"},
+                timeout=timeout,
+                retry_attempts=retry_attempts,
             )
             try:
                 return parse_json_from_llm(content)
             except ValueError as exc:
                 last_error = exc
-                if attempt >= self._json_retry_attempts:
+                if attempt >= attempts:
                     break
                 logger.warning(
                     "JSON 响应解析失败，准备重新请求 (%d/%d): %s",
                     attempt,
-                    self._json_retry_attempts,
+                    attempts,
                     exc,
                 )
         if last_error is not None:
@@ -227,6 +241,7 @@ class LLMClient:
             temperature: float | None,
             max_tokens: int | None,
             response_format: dict[str, str] | None,
+            timeout: float | None,
     ) -> str:
         kwargs: dict[str, Any] = {
             "model": self.model,
@@ -239,6 +254,8 @@ class LLMClient:
         }
         if response_format is not None:
             kwargs["response_format"] = response_format
+        if timeout is not None:
+            kwargs["timeout"] = timeout
         resp = self.client.chat.completions.create(**kwargs)
         content = resp.choices[0].message.content or ""
         logger.debug("Chat 响应: len=%d", len(content))

@@ -153,6 +153,9 @@ uv run python main.py write export markdown
 
 # 基于 output/book.md 生成 output/book.docx
 uv run python main.py write export word
+
+# 预览当前草稿：生成 output/draft/book.md、book.docx 和 figures 资产
+uv run python main.py write export all --draft
 ```
 
 > 旧的一步式根命令已经移除；不要使用 `uv run python main.py generate`、`uv run python main.py resume` 或 `uv run python main.py contents`。现在统一通过 `kb`、`outline`、`write` 三组命令执行。
@@ -222,6 +225,9 @@ uv run python main.py write section 1.1.1
 
 # 全书终审通过后导出 Markdown 与 Word
 uv run python main.py write export all
+
+# 当前草稿预览导出；跳过出版门禁，仅用于人工检查
+uv run python main.py write export all --draft
 ```
 
 章节并发由 `config/writing.yaml` 控制：`parallel_chapters: true`、`parallel_workers: 3`。只有目标覆盖多个完整章节时才会并发；`write resume 1`、`write resume 1.1`、`write resume 1.1.1` 仍保持顺序执行。
@@ -253,7 +259,7 @@ uv run python main.py write export all
 
 ### 出版导出
 
-导出命令只面向最终出版稿：必须所有三级小节审校通过、所有章节质量门通过、全书终审通过并写入 `publication_approved=true`，否则会拒绝导出并提示未通过项。
+正式导出只面向最终出版稿：必须所有三级小节审校通过、所有章节质量门通过、全书终审通过并写入 `publication_approved=true`，且在 `config/style.yaml` 开启 `polished_required_for_export: true` 时，所有最终入书图都必须有出版级精品图资产，否则会拒绝导出并提示未通过项。需要预览当前草稿时加 `--draft`，输出到 `output/draft/`，跳过出版门禁但仍会严格构建图表；只要存在无法渲染的 `book-figure`，导出就会拒绝并在 `figures/manifest.json` 中记录失败原因。
 
 ```bash
 # 只生成 output/ 下的结构化 Markdown 和单文件 output/book.md
@@ -264,7 +270,30 @@ uv run python main.py write export word
 
 # 一次性生成 Markdown 与 Word
 uv run python main.py write export all
+
+# 草稿预览导出到 output/draft/，同时生成图表资产
+uv run python main.py write export all --draft
 ```
+
+正式出版前如需处理正文中的内部证据标记 `（资料：[S1]）`、`（资料：[W1]）`，先审计再清理：
+
+```bash
+# 查看全书内部证据标记数量、缺失映射和所在上下文
+uv run python main.py write references audit
+
+# 移除内部证据标记，适合出版社不要求逐条脚注的版本
+uv run python main.py write references clean --mode remove
+
+# 转成 Markdown 脚注，适合需要逐条溯源的审校版
+uv run python main.py write references clean --mode footnote
+
+# 转成章节末尾“参考文献说明”，适合出版前人工整理参考文献
+uv run python main.py write references clean --mode endnote
+```
+
+`write references clean` 会先备份 `.data/write/<thread-id>.json` 和 `.data/manuscript/`，再同时更新 checkpoint 与 manuscript；如果仍有未合并的并发 worker checkpoint，会拒绝清理，避免旧 worker 内容覆盖已清理稿件。
+
+导出会先扫描全书 `book-figure` 规格块，优先使用 `assets/figures/polished/chapter-XX/<figure-id>.html|.svg|.png` 中的精品图资产；缺少精品图且当前模式允许草稿预览时，才退回“AI 结构化蓝图 + 本地 SVG 渲染”。随后系统生成 `figures/chapter-XX/*.html`、`*.svg` 和 `*.png`，再把 Markdown 中的规格块替换为 PNG 图片引用；Word 由替换后的 Markdown 生成，因此 `.docx` 会内嵌 PNG。正式导出归档在 `output/figures/`，草稿导出归档在 `output/draft/figures/`，`manifest.json` 记录每张图的源章节、标题、HTML、SVG、PNG 路径、`source`、`quality_tier` 和失败项。
 
 Word 生成使用 Pandoc，这是 Markdown 到 `.docx` 的出版级转换工具。macOS 可先执行 `brew install pandoc`；如需统一出版社样式，可在 `config/output.yaml` 配置 `word_reference_docx` 指向 `reference.docx` 模板。
 
@@ -335,26 +364,90 @@ uv run python main.py write start --fresh
 
 ### 配图规格标记
 
-本项目不在写作阶段生成图片文件。每个三级小节至少需要一个完整 `book-figure` 规格块，后续由 HTML/SVG 统一绘制。需要架构图、时序图、流程图、数据流图、金字塔图、分层图、拓扑图、生命周期图、矩阵图或时间线时，正文中输出 `book-figure` 规格块。
+写作阶段只生成 `book-figure` 规格块，不直接插入图片路径。图表阶段会先尝试让图表设计 Agent 生成短结构化蓝图，再由本地出版级 SVG 渲染器统一生成 HTML/SVG/PNG；外部模型超时或 JSON 不合法时，会自动切换为本地语义蓝图兜底，不阻断整书导出。HTML 便于后期逐张微调，PNG 用于插入 Markdown 和 Word。需要架构图、时序图、流程图、数据流图、金字塔图、分层图、拓扑图、生命周期图、矩阵图或时间线时，正文中输出 `book-figure` 规格块。
 
 ```book-figure
 id: "fig-02-01"
 type: "architecture"
 title: "图2-1 AIoT 平台分层架构"
 purpose: "说明设备接入、平台服务、智能编排与业务应用之间的边界和主链路。"
+audience_takeaway: "读者应理解 AIoT 平台不是单一服务，而是设备接入、数据治理、智能决策和业务应用之间的责任边界。"
+visual_focus: "从设备与边缘域进入平台服务域，再进入智能决策域的主链路；智能层用橙色强调。"
+design_level: "logical"
 layout: "自下而上分层架构，设备层→接入层→平台层→智能层→应用层。"
 elements:
   - "设备层：传感器、网关、PLC，使用青绿色节点。"
   - "平台层：认证、设备管理、数据中心，使用蓝色服务块。"
 relationships:
   - "设备层通过 MQTT/Modbus/OPC UA 接入平台层，实线箭头。"
+regions:
+  - id: "edge_domain"
+    label: "设备与边缘域"
+    role: "现场异构资源边界"
+  - id: "platform_domain"
+    label: "平台服务域"
+    role: "设备、数据与规则能力"
+components:
+  - id: "device_edge"
+    label: "设备与边缘"
+    type: "edge"
+    subtitle: "传感器、PLC、网关"
+    group: "edge_domain"
+    priority: "normal"
+    shape: "card"
+  - id: "platform_service"
+    label: "平台服务"
+    type: "platform"
+    subtitle: "设备、数据、规则"
+    group: "platform_domain"
+    priority: "primary"
+    shape: "card"
+connections:
+  - from: "device_edge"
+    to: "platform_service"
+    label: "协议接入"
+    style: "solid"
+    direction: "bottom-to-top"
+callouts:
+  - "节点只写短标签，解释性文字放在 callouts 或正文。"
 legend:
   - "蓝色=核心平台服务；青绿色=设备与边缘；橙色=AI 智能能力。"
 caption: "图2-1 展示 AIoT 平台从设备接入到智能编排的主要层次和职责边界。"
-render_notes: "HTML/SVG 渲染，浅色背景，圆角矩形，统一 12px 间距，箭头带文字标签。"
+visual_constraints:
+  - "最多 6 个主节点，图例放在底部，不遮挡边界。"
+render_notes: "HTML/SVG 渲染，浅色背景，圆角矩形，边界虚线，箭头带短标签，底部图例和出版级图注。"
 ```
 
-统一配色、图例、允许的图表类型和必填字段配置在 `config/style.yaml` 的 `illustrations` 节点。质量门会把完整的 `book-figure` 规格块计为图表，并阻止缺少 `purpose/layout/elements/relationships/legend/caption/render_notes` 等关键字段的不完整规格块。每节最少图表数由 `config/quality.yaml` 的 `min_figures_per_section` 控制，默认值为 `0`；图表只在架构、流程、演进路径或关键对比确有必要时使用。
+统一配色、图例、允许的图表类型和必填字段配置在 `config/style.yaml` 的 `illustrations` 节点。`renderer: ai-html-svg` 表示“AI 结构化蓝图 + 本地 SVG 渲染”，并通过 `ai_timeout_seconds`、`ai_max_tokens`、`ai_retry_attempts`、`ai_json_retry_attempts` 控制图表设计 Agent 的独立运行策略，避免占用写作侧长超时。质量门会把完整的 `book-figure` 规格块计为图表，并阻止缺少 `purpose/layout/elements/relationships/legend/caption/render_notes` 等关键字段、无法解析 YAML/JSON、`type` 不在允许清单内、仍使用“节点1/节点2/最右侧/container/service/user”等占位标签，或把多条连接塞进一句 `relationships` 的不合格规格块。每节最少图表数由 `config/quality.yaml` 的 `min_figures_per_section` 控制，默认值为 `0`；图表只在架构、流程、演进路径或关键对比确有必要时使用。
+
+小节文件中的 `book-figure` 是图表素材池，章节合稿 `chapter.md` 中的 `book-figure` 才是最终入书图。`write figures upgrade-briefs` 会先把所有小节与章节图表升级为结构化 brief，再用小节素材池同步章节合稿中的同名/同号图；如果某章合稿没有任何图，会自动精选该章小节中的一张核心图插入对应章节，确保最终导出的每章至少有一张图。导出和 Word 只使用章节合稿中的入书图，不会把全部小节素材图盲目塞进成书。
+
+出版级插图采用“双轨制”：批量生成轨用于快速预览和兜底，精品资产轨用于最终出版。`architecture-diagram` 是 Codex 侧制图技能，不是项目内 Python API；项目通过 `write figures polish-plan` 生成逐图重绘 prompt，再把外部精修得到的 HTML/SVG/PNG 放回 `assets/figures/polished/chapter-XX/`。构建和导出时，精品资产永远优先于缓存、AI 兜底和模板渲染，即使使用 `--force` 也不会把精品图降级成普通图。
+
+```bash
+# 先预览旧版 book-figure 将被升级的数量，不写入任何文件
+uv run python main.py write figures upgrade-briefs --dry-run
+
+# 把 checkpoint 与 .data/manuscript 中的旧版 book-figure 升级为出版级结构化 brief
+uv run python main.py write figures upgrade-briefs
+
+# 只构建图表资产，不导出整书；默认写入 output/figures
+uv run python main.py write figures build
+
+# 构建当前草稿图表资产，写入 output/draft/figures
+uv run python main.py write figures build --draft
+
+# 规格或渲染器代码调整后强制重建全部图表资产
+uv run python main.py write figures build --draft --force
+
+# 审计草稿图表：查看总数、精品图覆盖率、缺失项和 manifest 状态
+uv run python main.py write figures audit --draft
+
+# 生成出版级精品图重绘计划和逐图 prompt
+uv run python main.py write figures polish-plan
+```
+
+图表产物目录示例：`output/draft/figures/chapter-01/fig-01-01.html`、`output/draft/figures/chapter-01/fig-01-01.svg`、`output/draft/figures/chapter-01/fig-01-01.png`、`output/draft/figures/manifest.json`。精品源目录示例：`assets/figures/polished/chapter-01/fig-01-01.html`、`assets/figures/polished/chapter-01/fig-01-01.svg`、`assets/figures/polished/chapter-01/fig-01-01.png`。`manifest.json` 会记录渲染器版本、生成数量、精品数量和失败项；失败数不为 0 时导出会拒绝继续。如需人工调整图形，优先编辑 `assets/figures/polished/` 下的源 HTML/SVG/PNG，再重新构建或导出，避免直接改 `output/` 后被下一次构建覆盖。
 
 ## 代码结构
 
@@ -390,12 +483,16 @@ main.py              # 最小入口
 
 ### 知识库与证据层
 
-本地向量知识库定位为“证据层”，不是自动写作的万能素材池：
+本地向量知识库定位为“证据层”，不是唯一来源，也不是自动写作的万能素材池：
 
+- 知识库只负责事实校准、术语校准、标准边界校准和引用核查；不能把知识库当成章节结构来源、观点来源或全文素材上限。
+- 书稿主线应来自本书自身的方法论：工程经验、架构判断、AIoT 时代变化、系统设计取舍、实践边界和作者归纳。
+- 原理解释、工程权衡、流程步骤、检查清单、风险矩阵、架构推理和定性判断不要求逐句来自知识库；但统计数字、版本号、标准状态、成本、性能、市场规模、真实项目案例等硬事实必须有 `[S]` 或 `[W]` 证据。
 - RAG 索引会根据来源文件路径、大小、`mtime_ns`、chunk 配置和 embedding 模型生成 manifest；源文件变化后，下次 `kb build` 会增量更新新增、修改和删除的文件。
 - 只有 `kb build --rebuild` 会清空并全量重建知识库；写作恢复不会隐式重建知识库。
 - Chat 与 embedding 的运行策略在 `config/llm.yaml` 中分开配置；长篇修订可给 Chat 较长 `timeout_seconds`，embedding 应保持较短超时，避免证据检索被外部向量服务长时间拖住。
 - `ResearchDossier` 会给本地证据编号为 `[S1]`、在线证据编号为 `[W1]`，写作与引用守门都以这些证据为硬事实依据。
+- `[S]/[W]` 是写作阶段的内部证据锚点，不是必须原样进入出版稿；正式出版前可用 `write references clean` 移除或转换为脚注/尾注。
 - `references.web_research` 默认关闭；启用后只抓取显式配置的 URL，不做无来源网络搜索。
 
 ```yaml

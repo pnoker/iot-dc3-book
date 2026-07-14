@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
+<title>电子工业出版社</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="shortcut icon" href="#" />
+<link href="/cns/templates/stylesheets/global.css" rel="stylesheet" />
+<link href="/cns/templates/stylesheets/member_center.css" rel="stylesheet" />
+<link href="/cns/templates/stylesheets/web_base.css" rel="stylesheet" />
+<script src="/cns/templates/javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="/cns/templates/javascript/ajax.js" type="text/javascript"></script>
+<script src="/cns/templates/javascript/page_script.js" type="text/javascript"></script>
+<script src="/module/contribution/manager/templates/My97DatePicker/WdatePicker.js" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+   $(document).ready(function () {
+	   //left menu mouseover
+	   /*
+	   $(".column_left_menu ul li").hover(function(){
+		  $(".column_left_menu ul li").removeClass("li_menu_on");
+		  $(this).addClass("li_menu_on");   
+		},function(){
+		
+		});
+		
+		*/
+	   	   
+	   //侧边栏
+	   $(".web_sider ul li").hover(function(){
+		  $(this).removeClass("sider_off").addClass("sider_on");   
+	   },function(){
+		  $(this).removeClass("sider_on").addClass("sider_off");  
+	   });
+	   //go to top
+       $(".web_sider ul li .icon_top").click(function() {   
+       $("html, body").animate({ scrollTop: 0 }, 120);
+         })
+       $backToTopFun = function() {
+       var st = $(document).scrollTop(), winh = $(window).height();
+       (st > 200)? $(".web_sider ul li").show(): $(".web_sider ul li").hide();
+	  // (st > 200)? $(".web_sider ul li:last").show(): $(".web_sider ul li:last").hide();
+        if (!window.XMLHttpRequest) {
+            $(".web_sider ul li:last").css("top", st + winh - 306);
+        }
+    };
+  $(window).bind("scroll", $backToTopFun); 
+  $backToTopFun();
+	 
+	 //date 日期---2018-01-21
+	 $(".date_slect").click(function(){
+		 $(this).children(".date_area").show(); 
+	 }).bind(".icon_date");	
+	 
+	   	  
+   }); 
+</script>
+<script>
+function triggerSubmit(){
+	var username = document.getElementById("username");
+	var birthday = document.getElementById("birthday");
+	var duties = document.getElementById("duties");
+	var education = document.getElementById("education");
+	var research = document.getElementById("research");
+	var company = document.getElementById("company");
+	var remark = document.getElementById("remark");
+	var email = document.getElementById("email");
+	var address = document.getElementById("address");
+	var postalcode = document.getElementById("postalcode");
+	var telephone = document.getElementById("telephone");
+	var articlename = document.getElementById("articlename");
+	var ctime = document.getElementById("ctime");
+	var field1 = document.getElementById("field1");
+	var TextGpic = document.getElementById("TextGpic");
+	var introduction = document.getElementById("introduction");
+	
+	var features = document.getElementById("features");
+	var pluralcomparison = document.getElementById("pluralcomparison");
+	var comparison = document.getElementById("comparison");
+	var plant = document.getElementById("plant");
+	var brief = document.getElementById("brief");
+	
+	if(isNull(username.value)){
+		alert("请输入您的姓名！");
+		username.focus();
+		username.value="";
+		return false;
+	}else if(isNull(remark.value)){
+		alert("请输入您的 简历！");
+		remark.focus();
+		remark.value="";
+		return false;
+	}else if(isNull(birthday.value)){
+		alert("请输入您的 生日！");
+		birthday.focus();
+		birthday.value="";
+		return false;
+	}else if(isNull(duties.value)){
+		alert("请输入您的 职称或职务！");
+		duties.focus();
+		duties.value="";
+		return false;
+	}else if(isNull(education.value)){
+		alert("请输入您的 学历！");
+		education.focus();
+		education.value="";
+		return false;
+	}else if(isNull(research.value)){
+		alert("请输入您的 研究方向 或 教学科目！");
+		research.focus();
+		research.value="";
+		return false;
+	}else if(isNull(company.value)){
+		alert("请输入您的 单位！");
+		company.focus();
+		company.value="";
+		return false;
+	}else if(isNull(email.value)){
+		alert("请输入您的 E-mail地址！");
+		email.focus();
+		email.value="";
+		return false;
+	}else if(isNull(address.value)){
+		alert("请填写您的 通信地址！");
+		address.focus();
+		address.value="";
+		return false
+	}else if(isNull(postalcode.value)){
+		alert("请填写您的 邮编！");
+		postalcode.focus();
+		postalcode.value="";
+		return false;
+	}else if(!isZipcode(postalcode.value)){
+		alert("您输入的 邮编 格式有误！");
+		postalcode.focus();
+		postalcode.select();
+		return false;
+	}else if(isNull(telephone.value)){
+		alert("请填写您的联系电话！");
+		telephone.focus();
+		telephone.value="";
+		return false;
+	/*}else if(!isTel(telephone.value)){
+		if(!checkMobile(telephone.value)){
+			alert("您填写的 联系电话 格式有误！");
+			telephone.focus();
+			telephone.select();
+			return false;
+		}*/
+	}else if(isNull(articlename.value)){
+		alert("请填写您的 申报选题名称！");
+		articlename.focus();
+		articlename.value="";
+		return false;
+	}else if(isNull(ctime.value)){
+		alert("请填写您的 预计交稿时间！");
+		ctime.focus();
+		ctime.value="";
+		return false;
+	}else if(isNull(field1.value)){
+		alert("请选择您的 选题板块！");
+		field1.focus();
+		field1.value="";
+		return false;
+	}else if(isNull(introduction.value)){
+		alert("请编写书的内容简介、读者对象！");
+		introduction.focus();
+		introduction.value="";
+		return false;
+	}else if(isNull(TextGpic.value)){
+		alert("请您按照图片输入正确的 验证码！");
+		TextGpic.focus();
+		TextGpic.value="";
+		return false;
+	}else if(isNull(features.value)){
+		alert("请填写该选题的特色技术背景和必要性！");
+		features.focus();
+		features.value="";
+		return false;
+	}else if(isNull(pluralcomparison.value)){
+		alert("请填写同类书比较如果没有请填写-无！");
+		pluralcomparison.focus();
+		pluralcomparison.value="";
+		return false;
+	}else if(isNull(comparison.value)){
+		alert("请填写同类书比较如果没有请填写-无！");
+		comparison.focus();
+		comparison.value="";
+		return false;
+	}else if(isNull(plant.value)){
+		alert("请填写您的 编著计划！");
+		plant.focus();
+		plant.value="";
+		return false;
+	}else if(isNull(brief.value)){
+		alert("请填写章节目录和编著此书的重要参考资料！");
+		brief.focus();
+		brief.value="";
+		return false;
+	}else{
+	
+		document.frm.submit();
+		return true;
+	}
+}
+
+/* 验证是否为空值 */
+function isNull(str) { 
+	if (str == "") return true;
+	var regu = "^[ ]+$"; 
+	var re = new RegExp(regu);
+	return re.test(str); 
+}
+
+/* 验证E-mali是否正确 */
+function isEmail(str) { 
+	var myReg = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
+	if (myReg.test(str)) return true; 
+	return false; 
+}  
+
+/* 验证邮政编码 */
+function isZipcode(str) {  
+    var reg = /^\d+$/;
+
+
+    if (!reg.test(str)) {
+       return false; 
+	}
+    if(str.length!=6) {  
+        //alert("邮政编码长度必须是6位");  
+        return false;  
+    }  
+    return true;  
+}  
+
+/* 验证手机号码 */
+function checkMobile(s) { 
+	var regu = /^[1][0-9][0-9]{9}$/; 
+	var re = new RegExp(regu); 
+	if (re.test(s)) { 
+		return true; 
+	} else { 
+		return false; 
+	} 
+} 
+//{=/^([0-9]|[\-])+$/g 
+/* 验证国内固话或传真格式 */
+function isTel(s){
+	var reg=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/; 
+	if(!reg.test(s)) {
+		return false;
+	}
+  	return true;   
+} 
+
+function chongzhi(){
+frm111.reset();
+}
+
+function refresh(){
+	var src = "/module/membercenter/ValidateImage.jsp?time="+new Date().getTime();
+	$("#VCodeImg").attr('src',src); 
+}
+</script>
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="#">
+</head>
+<body>
+    <!--header beigin-->
+     ﻿<link ref="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+<link href="/templates/stylesheets/global1.css" rel="stylesheet" />
+<script>
+if(location.href.indexOf('ehm.phei.com.cn') != -1){
+	//location.href='http://www.phei.com.cn';
+	alert('本站点目前为测试站点，请不要下单。');
+}
+</script>
+<header>
+        <div class="web_top_wrapper">
+             <p class="top_logo">
+                <a href="#" title="电子工业出版社有限公司"><img src="/templates/images/img_logo.jpg" width="225" height="81" /></a>
+             </p>
+             <nav>
+                 <ul>
+                     <li>
+                         <a href="/" title="首页">首页</a>
+                     </li>
+                     <li>
+                         <a href="/gywm/index.shtml">关于我社<i class="i_arr"></i></a>
+                         <p>
+                         <!--EHM_SystemNav?pcid=18&showlocation=0-->
+                  		
+                         <a href="/gywm/cbsjj/2010-11-19/47.shtml">出版社简介</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/szzc/2010-11-19/48.shtml">社长致辞</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/smsh/2010-11-19/49.shtml">社名社徽</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/jgsz/2010-11-19/50.shtml">机构设置</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/gjhz/2010-11-19/39.shtml">国际合作</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/qkjs1/2018-10-14/836.shtml">期刊介绍</a>
+                  		
+               	   	     <!--/EHM_SystemNav-->
+                          
+                         </p>
+                     </li>
+
+                     <li>
+                         <a href="/xwxx/index.shtml">新闻中心</a>
+                     </li>
+<li>
+                         <a href="https://www.phei.com.cn/qydj/index.shtml">党的建设</a>
+                         <p  style="width:100px;">
+			    <a href="https://www.phei.com.cn/shzyw/index.shtml">时政要闻</a>
+                            <a href="https://www.phei.com.cn/qydj/index.shtml" title="">企业党建</a>
+                         </p>
+                     </li>
+                     <li>
+                         <a href="/module/goods/wssd_index.jsp" title="网上书店">网上书店</a>
+                     </li>
+                     <li>
+                         <a href="/module/contribution/wstg_index.jsp" title="网上投稿">网上投稿</a>
+                     </li>
+                     <!-- 
+                     <li>
+                         <a href="http://drm.hxpress.com.cn/shop/">数字资源<i class="i_arr"></i></a>
+                         <p>
+                          <a target="_blank" href="http://www.hxedu.com.cn/" title="">在线资源</a>
+                          <a target="_blank" href="http://drm.hxpress.com.cn/shop/" title="">电子书</a>
+                         </p>
+                     </li>
+                      -->
+                     <li>
+                         <a href="/lxwm/wsdz/2018-10-14/854.shtml" title="联系我们">联系我们<i class="i_arr"></i></a>
+                         <p>
+			<a href="https://www.phei.com.cn/jingxiaoshang">授权书查询</a>
+                          <a href="/lxwm/wsdz/2018-10-14/854.shtml" title="">联系方式</a>
+                          <a target="_blank" href="https://www.phei.com.cn/jsxxgs/index.shtml" title="">诚邀英才</a>
+                         </p>
+                     </li>
+                 </ul>
+             </nav>
+             <div  id="loginp" class="top_login_after" style="display:none;">
+                <div class="layer_login_after" style="display:none;">
+                     <p><a href="/module/membercenter/hyzx.jsp">会员中心</a></p>
+                     <p><a href="/module/membercenter/membertoplogin.jsp?logout=true">退出登录</a></p>
+                </div>
+                <i class="pad_l8r22 login_hover"><a href="/module/membercenter/hyzx.jsp" id="topLoginUsernameHref" title=""></a></i>
+                <i class="pad_l10"><a href="/ens/index.shtml" title="ENGLISH" target="_blank">ENGLISH</a></i>
+             </div>
+             <p id="noLoginP" class="top_reg_login">
+                <i class="pad_l20"><a href="/module/membercenter/memberregister.jsp" title="注册">注册</a></i>
+                <i class="pad_l41"><a href="/module/membercenter/memberlogin.jsp" title="登录">登录</a></i>
+                <i class="pad_l16"><a href="/ens/index.shtml" title="ENGLISH" target="_blank">ENGLISH</a></i>
+                
+             </p>
+            
+             
+        </div>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?661ca74856e211b2aec41a10c215cf52";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+jQuery(document).ready(function(){
+	jQuery(".top_login_after").hover(function(){
+			jQuery(this).children(".layer_login_after").show();
+		},function(){
+			jQuery(this).children(".layer_login_after").hide();	
+		})	
+	
+	})
+</script>
+    </header>
+
+    <!--header beigin-->
+    <!--localtion beigin-->
+    <section>
+        <div class="web_localtion">
+             <a href="/">首页</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="/module/contribution/wstg_index.jsp">作译者服务</a>&nbsp;&nbsp;>&nbsp;&nbsp;<span>网上投稿</span>
+        </div>
+    </section>
+    <!--localtion beigin-->
+    <!--middle beigin-->
+    <section>
+        
+        <div class="web_column_line">
+             <div class="column_left_menu">
+                  <div class="menu_title">
+                       <img src="/cns/templates/images/img_title_zyz_service.jpg" width="250" height="80" />
+                  </div>
+                  <ul>
+                      <li class="li_menu_on">
+                          <a href="/module/contribution/wstg_index.jsp" title="">网上投稿</a>
+                      </li>
+                      <li class="li_menu_off">
+                          <a href="/wstg/csfx/index.shtml" title="">出书方向</a>
+                      </li>
+                      <li class="li_menu_off">
+                          <a href="/wstg/bjbm/index.shtml" title="">编辑部门</a>
+                      </li>
+                      <li class="li_menu_off">
+                          <a href="/wstg/zyzxz/index.shtml" title="">作译者须知</a>
+                      </li>
+                      <li class="li_menu_off">
+                          <a href="/module/membercenter/hyzx.jsp" title="">您的著作</a>
+                      </li>
+                  </ul>
+             </div>
+             <form name="frm" action="" method="post">
+             <div class="column_right_content">
+                  <h1>网上投稿</h1>
+                  <div class="column_wstg">
+                       <form action="#" method="post">
+                       <div class="unit_wstg_line">
+                            <div class="unit_wstg_title_line">
+                                <p class="unit_wstg_line_title">个人资料</p>
+                            </div>
+                            <div class="unit_wstg_line_inner">
+                                 <ul>
+                                     <li class="li_left">
+                                        <p class="li_title_l">姓名：</p>
+                                        <p class="li_input"><input id="username" name="username" type="text"></p>
+                                     </li>
+                                     <li class="li_right">
+                                         <p class="li_title_r">性别：</p>
+                                         <p class="li_input" style="padding:6px 0 0 10px;">
+                                             <label>
+                                                  <input type="radio" checked="checked" name="gender" type="radio" value="0"  style="float:none;width:auto;height:auto;border:0;" />
+                                                  男
+                                             </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                             <label>
+                                                  <input type="radio"  name="gender" value="1"  style="float:none;width:auto;height:auto;border:0;"  />
+                                                  女
+                                             </label>
+                                         </p>
+                                     </li>
+                                     <li class="li_left">
+                                        <p class="li_title_l">出生年月：</p>
+                                        <div class="li_input date_slect" style=" z-index:10;">
+                                           <input type="text"  id="birthday" name="birthday" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd '})" class="">
+                                        </div>
+                                     </li>
+                                     <li class="li_right">
+                                         <p class="li_title_r">职称或职务：</p>
+                                         <p class="li_input"><input id="duties" name="duties" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_left">
+                                        <p class="li_title_l">学历：</p>
+                                        <p class="li_input"><input id="education" name="education" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_right">
+                                         <p class="li_title_r">研究方向或教学科目：</p>
+                                         <p class="li_input"><input id="research" name="research" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_left">
+                                        <p class="li_title_l">单位：</p>
+                                        <p class="li_input"><input id="company" name="company" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_right">
+                                         <p class="li_title_r">E-mail地址：</p>
+                                         <p class="li_input"><input id="email" name="email" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_left">
+                                        <p class="li_title_l">通信地址：</p>
+                                        <p class="li_input"><input id="address" name="address" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_right">
+                                         <p class="li_title_r">邮政编码：</p>
+                                         <p class="li_input"><input id="postalcode" name="postalcode" type="text" size="15"></p>
+                                     </li>
+                                     <li class="li_left">
+                                        <p class="li_title_l">电话：</p>
+                                        <p class="li_input"><input  id="telephone" name="telephone" type="text" size="15"></p>
+                                     </li>
+                                  </ul>
+                            </div>
+                       </div> 
+                       <div class="unit_wstg_line">
+                            <div class="unit_wstg_title_line">
+                                <p class="unit_wstg_line_title">个人简历</p>
+                                <p class="unit_wstg_tips">毕业院校、专业、从事过的以及目前正在从事的项目、发表过的论文及出版过的著作</p>
+                            </div>
+                            <div class="unit_wstg_line_inner">
+                                 <textarea id="remark" name="remark" ></textarea>
+                            </div>
+                       </div>
+                       <div class="unit_wstg_line">
+                            <div class="unit_wstg_title_line">
+                                <p class="unit_wstg_line_title">申报资料</p>
+                            </div>
+                            <div class="unit_wstg_line_inner">
+                                 <dl>
+                                     <dt>申报选题名称：</dt>
+                                     <dd><input id="articlename" name="articlename" class="dd_input_title"></dd>
+                                     <dt>预计交稿时间：</dt>
+                                     <dd style=" z-index:11" class="date_slect">
+                                         <input name="ctime" id="ctime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd '})" class="dd_input_date">
+                                     </dd>
+                                     <dt>选题板块划分：</dt>
+                                     
+                                     <dd>
+			<select id="field1" name="field1" class="select_1_w" style="margin-top:12px;">
+                                                   <option value="">==> 请选择 <== </option>
+                                                   <option value='工业技术'>工业技术</option><option value='计算机'>计算机</option><option value='教材教辅'>教材教辅</option><option value='经管'>经管</option><option value='汽车交通'>汽车交通</option><option value='少儿'>少儿</option><option value='社科/人文'>社科/人文</option><option value='生活/健康'>生活/健康</option><option value='通信与网络'>通信与网络</option><option value='艺术设计'>艺术设计</option><option value='电子电工'>电子电工</option><option value='学术专著'>学术专著</option><option value='航空航天'>航空航天</option><option value='其他'>其他</option>
+                                                  </select>
+									</dd>
+                                 </dl>
+                                 <p class="p_line">您有意向编写书的内容简介、读者对象：</p>
+                                 <p class="p_line"><textarea id="introduction" name="introduction" cols="70" rows="6"></textarea></p>
+                                 <div class="unit_yj_book">
+                                      <p class="unit_yj_book_title">引进版图书原著相关内容：( 如果是引进版图书，请填写关于原著的以下内容，否则请跳过以下内容。)</p>
+                                      <div class="unit_yj_book_inner">
+                                           <ul>
+                                               <li>
+                                                   <p class="li_yj_title">书名：</p>
+                                                   <p class="li_yj_input"><input id="subhead" name="subhead" type="text" size="15" ></p>
+                                               </li>
+                                               <li>
+                                                   <p class="li_yj_title">作者：</p>
+                                                   <p class="li_yj_input"><input id="firstauth" name="firstauth" type="text" size="15"></p>
+                                               </li>
+                                               <li>
+                                                   <p class="li_yj_title">出版社：</p>
+                                                   <p class="li_yj_input"><input id="press" name="press" type="text" size="15" ></p>
+                                               </li>
+                                               <li>
+                                                   <p class="li_yj_title">出版年月：</p>
+                                                   <div class="li_yj_input date_slect" style=" z-index:12;">
+                                                        <input type="text" name="publication" id="publication" onFocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月'})">
+                                                   </div>
+                                               </li>
+                                               <li>
+                                                   <p class="li_yj_title">页码：</p>
+                                                   <p class="li_yj_input"><input id="pagenumber" name="pagenumber" type="text" size="15"></p>
+                                               </li>
+                                               <li>
+                                                   <p class="li_yj_title">ISBN号：</p>
+                                                   <p class="li_yj_input"><input id="postil" name="postil" type="text" size="15"></p>
+                                               </li>
+                                           </ul>
+                                      </div>
+                                 </div>
+                                 <p class="p_line">该选题的特色技术背景和必要性：</p>
+                                 <p class="p_line"><textarea id="features" name="features"></textarea></p>
+                            </div>
+                       </div>
+                       <div class="unit_wstg_line">
+                            <div class="unit_wstg_title_line">
+                                <p class="unit_wstg_line_title_1">与同类书比较</p>
+                            </div>
+                            <div class="unit_wstg_line_inner">
+                                 <p class="p_line">列出已出版的同类书的出版社、印数、定价、作者及出版时间</p>
+                                 <p class="p_line"><textarea id="pluralcomparison" name="pluralcomparison"></textarea></p>
+                                 <p class="p_line">本书与同类书比较</p>
+                                 <p class="p_line"><textarea id="comparison" name="comparison" ></textarea></p>
+                                 <p class="p_line">编著计划：（计划何时写完此书，有无合作者，拟请谁对本稿进行审阅）</p>
+                                 <p class="p_line"><textarea id="plant" name="plant" ></textarea></p>
+                                 <p class="p_line">章节目录和编著此书的重要参考资料</p>
+                                 <p class="p_line"><textarea id="brief" name="brief" > </textarea></p>
+                            </div>
+                       </div>
+                       <div class="unit_wstg_yzm">
+                            <div class="unit_wstg_title_line">
+                                 <div class="wstg_yzm_title">验证码：</div>
+                                 <div class="wstg_yzm_input"><input type="text"  name="TextGpic" id="TextGpic" ></div>
+                                 <div class="wstg_yzm_img"><img src="/module/membercenter/ValidateImage.jsp" width="77" height="38" id="VCodeImg" /></div>
+                                 <div class="wstg_yzm_tips"><a href="javascript:void(0)"  onclick="refresh()">看不清楚点击刷新</a></div>
+                            </div>
+                        </div>
+                        <div class="btn_wstg">
+                             <input type="button" onclick="triggerSubmit()" value="提交申报">
+                        </div>
+                       </form> 
+                  </div>
+             </div>
+        </form>
+        </div>
+    </section>
+    <!--middle end-->
+    <!--bottom menu beigin-->
+    ﻿<section class="web_bottom">
+        <div class="web_bottom_inner">
+             <div class="web_bottom_inner_left">
+                  <dl>
+                      <dt>关于我社</dt>
+                      <dd>
+                      <!--EHM_SystemNav?pcid=18&showlocation=0-->
+                  		
+                         <a href="/gywm/cbsjj/2010-11-19/47.shtml">出版社简介</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/szzc/2010-11-19/48.shtml">社长致辞</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/smsh/2010-11-19/49.shtml">社名社徽</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/jgsz/2010-11-19/50.shtml">机构设置</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/gjhz/2010-11-19/39.shtml">国际合作</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/qkjs1/2018-10-14/836.shtml">期刊介绍</a>
+                  		
+               	   	     <!--/EHM_SystemNav-->
+               	   	     <!--EHM_SystemNav?pcid=18&showlocation=1--><!--/EHM_SystemNav-->
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>读者服务</dt>
+                      <dd>
+                       
+                        <a href="/xssl/gszn/2011-07-28/336.shtml" title="">购书指南</a>
+                       
+                        <a href="/xssl/cpfw/2011-07-28/334.shtml" title="">产品范围</a>
+                       
+                        <a href="/xssl/wzjs/2011-07-25/330.shtml" title="">网站介绍</a>
+                       
+
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>作译者服务</dt>
+                      <dd>
+                          
+                        <a href="/module/contribution/wstg_index.jsp" title="">网上投稿</a>
+                       
+                        <a href="/wstg/csfx/index.shtml" title="">出书方向</a>
+                       
+                        <a href="/wstg/bjbm/index.shtml" title="">编辑部门</a>
+                       
+                        <a href="/wstg/zyzxz/index.shtml" title="">作译者须知</a>
+                       
+                        <a href="/module/membercenter/hyzx.jsp" title="">您的著作</a>
+                       
+
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>数字资源</dt>
+                      <dd>
+                          
+                        <a href="http://www.hxedu.com.cn" title="">华信教育资源网</a>
+                       
+                        <a href="https://yd.51zhy.cn/" title="">悦读</a>
+                       
+                        <a href="https://yx.51zhy.cn/" title="">悦学</a>
+                       
+                        <a href="https://yz.51zhy.cn" title="">悦知</a>
+                       
+                        <a href="https://znzz.51zhy.cn" title="">悦智</a>
+                       
+
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>联系我们</dt>
+                      <dd>
+                          
+                        <a href="/lxwm/wsdz/2018-10-14/854.shtml" title="">联系方式</a>
+                       
+                        <a href="https://phei.zhiye.com/" title="">诚邀英才</a>
+                       
+
+                      </dd>
+                  </dl>
+             </div>
+             <div class="web_bottom_inner_right">
+                  <p>
+                      <span class="bg_visit">关注我们&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="/module/goods/smxz.jsp"><font size="4">书目下载</font></a>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://mp.weixin.qq.com/s?__biz=MjM5OTEzMjg3Mw==&mid=212390993&idx=1&sn=f5b3fb3097af79ce5fcce64e34826cb0&chksm=2f9c5ff718ebd6e14a8cda34ea8f310d5696da3cddbeccb4c46bdec607f28afd96ad42df48a5&mpshare=1&scene=1&srcid=12278jdXq2Umf05cTGLL9Dro#rd">微信矩阵</a></span> 
+                  </p>
+                  <p>
+                  	<a id="erweima"></a>
+                     <a href="https://dzgycbs.tmall.com/shop/view_shop.htm?spm=a220m.1000862.1000730.2.67db3d8ctVzbmz&user_number_id=1932014659&rn=f10e85f71f9f4ac1f4082e951efc341f" target="_blank"><img src="/templates/images/img_tmall.jpg" width="108" height="108" /></a>
+                     <img src="/templates/images/img_ewm_weibo.jpg" width="108" height="126" />
+                     <img src="/templates/images/img_ewm_weixin.jpg" width="108" height="126" />
+                  </p>
+             </div>   
+        </div>
+        <div style=" clear:both"></div>
+    </section>
+    <!--bottom menu beigin-->
+    <!--footer beigin-->
+    <footer>
+        <div class="web_footer">
+             <span>电子工业出版社有限公司地址：北京市万寿路南口金家村288号华信大厦</span></br>
+<span>版权所有(C)2017电子工业出版社有限公司</span><span><a href="https://beian.miit.gov.cn" target="_blank">京ICP备11030724</a></span>
+<span><a target="_blank" href="/jyxkz.jpg">出版物经营许可证：新出发京批字第版130001号</span><span><a target="_blank" href="/yyzz.jpg">营业执照：91110000400001942G</span></br><span><a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010602100307"><img src="/batb.png"/>京公网安备 11010602100307号</a></span>
+</div>
+		 
+    </footer>
+    <!--footer beigin-->
+  
+ <script src="/templates/javascript/public.js" type="text/javascript"></script>
+ <script src="/templates/javascript/imageSrcConvert.js" type="text/javascript"></script>
+
+    <!--footer beigin-->
+   
+</body>
+</html>
+
+

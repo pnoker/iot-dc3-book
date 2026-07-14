@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, TypeVar
 
@@ -28,9 +29,13 @@ app = typer.Typer(
 kb_app = typer.Typer(help="知识库索引管理", add_completion=False)
 outline_app = typer.Typer(help="大纲生成、导出、批准", add_completion=False)
 write_app = typer.Typer(help="小节级写作与断点恢复", add_completion=False)
+figures_app = typer.Typer(help="图表资产生成", add_completion=False)
+references_app = typer.Typer(help="出版前引用标记审计与清理", add_completion=False)
 app.add_typer(kb_app, name="kb")
 app.add_typer(outline_app, name="outline")
 app.add_typer(write_app, name="write")
+write_app.add_typer(figures_app, name="figures")
+write_app.add_typer(references_app, name="references")
 
 ResultT = TypeVar("ResultT")
 
@@ -210,11 +215,18 @@ def write_status(ctx: typer.Context) -> None:
 
 
 @write_app.command("audit")
-def write_audit(ctx: typer.Context) -> None:
+def write_audit(
+        ctx: typer.Context,
+        json_output: Annotated[bool, typer.Option("--json", help="输出原始 JSON，便于脚本处理")] = False,
+) -> None:
     """诊断 checkpoint、稿件漂移、失败原因和出版审计问题。"""
 
     def audit(project: BookProject, thread_id: str) -> None:
-        typer.echo(json.dumps(project.write_audit(thread_id), ensure_ascii=False, indent=2))
+        report = project.write_audit(thread_id)
+        if json_output:
+            typer.echo(json.dumps(report, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(_format_write_audit(report))
 
     _execute_project(ctx, audit)
 
@@ -286,6 +298,236 @@ def _format_write_contents(state: BookState) -> str:
                     current = " ← 当前" if section.id == current_section_id else ""
                     lines.append(f"      小节审校：{status_note}｜{section.id} {section.title}{failure_note}{current}")
     return "\n".join(lines).rstrip()
+
+
+def _format_write_audit(report: dict[str, object]) -> str:
+    lines = ["出版审计报告"]
+    thread_id = str(report.get("thread_id") or "-")
+    checkpoint_exists = report.get("checkpoint_exists") is True
+    lines.append(f"  线程：{thread_id}")
+    lines.append(f"  Checkpoint：{'✅ 存在' if checkpoint_exists else '❌ 不存在'}")
+    lines.append(f"  写作进程：{_audit_lock_label(_as_dict(report.get('lock')))}")
+    lines.append(f"  Worker checkpoint：{_audit_worker_checkpoint_label(_as_dict(report.get('worker_checkpoints')))}")
+
+    if not checkpoint_exists:
+        _append_recommended_commands(lines, report)
+        return "\n".join(lines)
+
+    progress = _as_dict(report.get("progress"))
+    lines.extend(["", "进度概览"])
+    lines.append(f"  阶段：{progress.get('phase') or '-'}")
+    lines.append(f"  小节：{_audit_progress_line(progress, 'sections', 'section_contents', _SECTION_AUDIT_LABELS)}")
+    lines.append(f"  章节：{_audit_progress_line(progress, 'chapters', 'chapter_contents', _CHAPTER_AUDIT_LABELS)}")
+    if total_words := _int_value(progress.get("total_words")):
+        lines.append(f"  总字数：{total_words}")
+
+    _append_quality_failures(lines, report)
+    _append_manuscript_drift(lines, report)
+    _append_publication_audit(lines, report)
+    _append_recommended_commands(lines, report)
+    return "\n".join(lines)
+
+
+_SECTION_AUDIT_LABELS = {
+    "reviewed": "✅ 通过",
+    "review_failed": "❌ 未通过",
+    "written": "🟡 待审校",
+    "pending": "⬜ 待写作",
+    "assembled": "📘 已合稿",
+}
+_CHAPTER_AUDIT_LABELS = {
+    "approved": "✅ 通过",
+    "quality_failed": "❌ 未通过",
+    "written": "🟡 审核中",
+    "pending": "⬜ 待合稿",
+    "reviewed": "🟡 待批准",
+}
+
+
+def _audit_lock_label(lock: dict[str, object]) -> str:
+    if lock.get("exists") is not True:
+        return "✅ 未运行"
+    pid = lock.get("pid") or "?"
+    operation = lock.get("operation") or "unknown"
+    started_at = lock.get("started_at") or "未知时间"
+    if lock.get("stale") is True:
+        return f"⚠️ 陈旧锁 pid={pid} operation={operation} started_at={started_at}"
+    return f"🟡 运行中 pid={pid} operation={operation} started_at={started_at}"
+
+
+def _audit_worker_checkpoint_label(worker_checkpoints: dict[str, object]) -> str:
+    count = _int_value(worker_checkpoints.get("count"))
+    chapters = []
+    for item in _as_list(worker_checkpoints.get("chapters")):
+        chapter_id = _as_dict(item).get("chapter_id")
+        if chapter_id is not None:
+            chapters.append(f"第{chapter_id}章")
+    suffix = f"（{_compact_values(chapters, limit=6)}）" if chapters else ""
+    return f"{count} 个{suffix}"
+
+
+def _audit_progress_line(
+        progress: dict[str, object],
+        count_key: str,
+        content_key: str,
+        labels: dict[str, str],
+) -> str:
+    counts = _as_dict(progress.get(count_key))
+    total = _sum_count_values(counts)
+    written = _int_value(progress.get(content_key))
+    count_text = _format_status_counts(counts, labels)
+    return f"已写 {written}/{total}｜{count_text}"
+
+
+def _format_status_counts(counts: dict[str, object], labels: dict[str, str]) -> str:
+    parts = []
+    for status, label in labels.items():
+        value = _int_value(counts.get(status))
+        if value:
+            parts.append(f"{label} {value}")
+    for status, raw_value in counts.items():
+        if status in labels:
+            continue
+        value = _int_value(raw_value)
+        if value:
+            parts.append(f"{status} {value}")
+    return "｜".join(parts) if parts else "无"
+
+
+def _append_quality_failures(lines: list[str], report: dict[str, object]) -> None:
+    failures = _as_dict(report.get("quality_failures"))
+    failed_sections = [str(item) for item in _as_list(failures.get("failed_sections"))]
+    failed_chapters = [f"第{item}章" for item in _as_list(failures.get("failed_chapters"))]
+    section_codes = _as_dict(failures.get("section_issue_codes"))
+    chapter_codes = _as_dict(failures.get("chapter_issue_codes"))
+    if not failed_sections and not failed_chapters and not section_codes and not chapter_codes:
+        return
+    lines.extend(["", "质量失败"])
+    if failed_sections:
+        lines.append(f"  小节未通过：{_compact_values(failed_sections, limit=12)}")
+    if failed_chapters:
+        lines.append(f"  章节未通过：{_compact_values(failed_chapters, limit=12)}")
+    if section_codes:
+        lines.append(f"  小节原因：{_format_code_counts(section_codes)}")
+    if chapter_codes:
+        lines.append(f"  章节原因：{_format_code_counts(chapter_codes)}")
+
+
+def _append_manuscript_drift(lines: list[str], report: dict[str, object]) -> None:
+    drift = _as_dict(report.get("manuscript_drift"))
+    labels = {
+        "missing_section_files": "缺少小节文件",
+        "missing_chapter_files": "缺少章节文件",
+        "orphan_section_files": "孤儿小节文件",
+        "orphan_chapter_files": "孤儿章节文件",
+    }
+    items = []
+    for key, label in labels.items():
+        values = [str(item) for item in _as_list(drift.get(key))]
+        if values:
+            items.append(f"{label}: {_compact_values(values, limit=8)}")
+    lines.extend(["", "稿件文件"])
+    if items:
+        lines.extend(f"  ⚠️ {item}" for item in items)
+    else:
+        lines.append("  ✅ manuscript 文件与 checkpoint 对齐")
+
+
+def _append_publication_audit(lines: list[str], report: dict[str, object]) -> None:
+    audit = _as_dict(report.get("publication_audit"))
+    if not audit:
+        return
+    pass_label = "✅ 通过" if audit.get("pass") is True else "❌ 未通过"
+    issue_count = _int_value(audit.get("issue_count"))
+    blocking_count = _int_value(audit.get("blocking_issue_count"))
+    lines.extend(["", "出版审计"])
+    lines.append(f"  结论：{pass_label}｜阻断 {blocking_count}｜总问题 {issue_count}")
+    if summary := str(audit.get("summary") or "").strip():
+        lines.append(f"  摘要：{_trim_feedback_text(summary, 120)}")
+    issues = [_as_dict(item) for item in _as_list(audit.get("issues"))]
+    if issues:
+        lines.append("  主要问题：")
+        lines.extend(_format_audit_issue_groups(issues, limit=8))
+
+
+def _format_audit_issue_groups(issues: list[dict[str, object]], *, limit: int) -> list[str]:
+    grouped: defaultdict[tuple[str, str], list[dict[str, object]]] = defaultdict(list)
+    for issue in issues:
+        code = str(issue.get("code") or "issue")
+        severity = str(issue.get("severity") or "major")
+        grouped[(code, severity)].append(issue)
+
+    lines: list[str] = []
+    groups = list(grouped.items())
+    for (code, severity), group in groups[:limit]:
+        message = str(group[0].get("message") or "").strip()
+        suggestion = str(group[0].get("suggestion") or "").strip()
+        scope = _audit_issue_scope(group)
+        count_note = f" ×{len(group)}" if len(group) > 1 else ""
+        lines.append(f"    - {_severity_icon(severity)} {code}{count_note}{scope}：{_trim_feedback_text(message, 90)}")
+        if suggestion:
+            lines.append(f"      建议：{_trim_feedback_text(suggestion, 100)}")
+    remaining = len(groups) - limit
+    if remaining > 0:
+        lines.append(f"    - 另有 {remaining} 类问题，执行 `uv run python main.py write audit --json` 查看完整数据。")
+    return lines
+
+
+def _audit_issue_scope(issues: list[dict[str, object]]) -> str:
+    chapters = []
+    sections = []
+    for issue in issues:
+        if chapter_id := issue.get("chapter_id"):
+            chapters.append(f"第{chapter_id}章")
+        if section_id := issue.get("section_id"):
+            sections.append(str(section_id))
+    scope_parts = []
+    if chapters:
+        scope_parts.append(_compact_values(list(dict.fromkeys(chapters)), limit=8))
+    if sections:
+        scope_parts.append(_compact_values(list(dict.fromkeys(sections)), limit=8))
+    return f"（{'; '.join(scope_parts)}）" if scope_parts else ""
+
+
+def _append_recommended_commands(lines: list[str], report: dict[str, object]) -> None:
+    commands = [str(item) for item in _as_list(report.get("recommended_commands"))]
+    if not commands:
+        return
+    lines.extend(["", "下一步"])
+    lines.extend(f"  - `{command}`" for command in commands)
+
+
+def _format_code_counts(counts: dict[str, object]) -> str:
+    items = [(str(code), _int_value(value)) for code, value in counts.items()]
+    items = [(code, count) for code, count in items if count]
+    items.sort(key=lambda item: (-item[1], item[0]))
+    return "｜".join(f"{code} ×{count}" for code, count in items) if items else "无"
+
+
+def _compact_values(values: list[str], *, limit: int) -> str:
+    shown = values[:limit]
+    suffix = f" 等 {len(values)} 项" if len(values) > limit else ""
+    return "、".join(shown) + suffix
+
+
+def _severity_icon(severity: str) -> str:
+    return {"blocker": "⛔", "major": "⚠️", "minor": "ℹ️"}.get(severity, "⚠️")
+
+
+def _sum_count_values(counts: dict[str, object]) -> int:
+    return sum(_int_value(value) for value in counts.values())
+
+
+def _int_value(value: object) -> int:
+    return value if isinstance(value, int) and not isinstance(value, bool) else 0
+
+
+def _as_dict(value: object) -> dict[str, object]:
+    return value if isinstance(value, dict) else {}
+
+
+def _as_list(value: object) -> list[object]:
+    return value if isinstance(value, list) else []
 
 
 def _write_contents_summary(state: BookState) -> str:
@@ -576,15 +818,98 @@ def write_recover_manuscript(ctx: typer.Context) -> None:
     _execute_project(ctx, recover)
 
 
+@figures_app.command("build")
+def write_figures_build(
+        ctx: typer.Context,
+        draft: Annotated[bool, typer.Option("--draft", help="输出到 output/draft/figures，用于草稿预览")] = False,
+        force: Annotated[bool, typer.Option("--force", help="忽略 manifest 缓存，强制重新生成全部图表")] = False,
+) -> None:
+    """从当前 checkpoint 生成 HTML/SVG/PNG 图表资产。"""
+
+    def build(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.write_figures_build(thread_id, draft=draft, force=force), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, build)
+
+
+@figures_app.command("audit")
+def write_figures_audit(
+        ctx: typer.Context,
+        draft: Annotated[bool, typer.Option("--draft", help="审计 output/draft/figures 草稿图表资产")] = False,
+) -> None:
+    """审计最终入书图表的生成状态和精品图覆盖率。"""
+
+    def audit(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.write_figures_audit(thread_id, draft=draft), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, audit)
+
+
+@figures_app.command("polish-plan")
+def write_figures_polish_plan(ctx: typer.Context) -> None:
+    """生成出版级精品图重绘计划和逐图 prompt。"""
+
+    def plan(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.write_figures_polish_plan(thread_id), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, plan)
+
+
+@figures_app.command("upgrade-briefs")
+def write_figures_upgrade_briefs(
+        ctx: typer.Context,
+        dry_run: Annotated[bool, typer.Option("--dry-run", help="只统计将要升级的 book-figure，不写入 checkpoint 和 manuscript")] = False,
+) -> None:
+    """把旧版 book-figure 描述升级为出版级结构化 brief。"""
+
+    def upgrade(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.write_figures_upgrade_briefs(thread_id, dry_run=dry_run), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, upgrade)
+
+
+@references_app.command("audit")
+def write_references_audit(ctx: typer.Context) -> None:
+    """审计全书 `资料：[S]/[W]` 内部证据标记。"""
+
+    def audit(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.write_references_audit(thread_id), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, audit)
+
+
+@references_app.command("clean")
+def write_references_clean(
+        ctx: typer.Context,
+        mode: Annotated[str, typer.Option("--mode", help="清理模式：remove、footnote 或 endnote")] = "footnote",
+) -> None:
+    """移除内部证据标记，或转换为脚注/尾注。"""
+
+    def clean(project: BookProject, thread_id: str) -> None:
+        normalized_mode = mode.strip().lower()
+        if normalized_mode == "remove":
+            result = project.write_references_clean(thread_id, mode="remove")
+        elif normalized_mode == "footnote":
+            result = project.write_references_clean(thread_id, mode="footnote")
+        elif normalized_mode == "endnote":
+            result = project.write_references_clean(thread_id, mode="endnote")
+        else:
+            raise typer.BadParameter("--mode 必须是 remove、footnote 或 endnote")
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, clean)
+
+
 @write_app.command("export")
 def write_export(
         ctx: typer.Context,
         target: Annotated[str, typer.Argument(help="导出目标：markdown、word 或 all")] = "all",
+        draft: Annotated[bool, typer.Option("--draft", help="导出当前草稿到 output/draft，跳过出版门禁，仅用于预览")] = False,
 ) -> None:
-    """导出出版稿 Markdown、Word 或全部格式。"""
+    """导出出版稿 Markdown、Word 或预览草稿。"""
 
     def export(project: BookProject, thread_id: str) -> None:
-        result = project.write_export(thread_id, target=target)
+        result = project.write_export(thread_id, target=target, draft=draft)
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
         get_logger("main").info("✅ 输出已生成: %s", result.get("output_dir"))
 

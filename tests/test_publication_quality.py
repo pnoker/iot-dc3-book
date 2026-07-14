@@ -71,6 +71,31 @@ def test_publication_quality_flags_unsourced_precise_hard_facts() -> None:
     assert "fact.unsourced_hard_fact" in codes
 
 
+def test_publication_quality_locates_unsourced_hard_facts_to_section() -> None:
+    content = ChapterContent(
+        chapter_id=1,
+        title="概述",
+        markdown="# 第1章 概述\n\n### 1.1.1 小节一\n\n工程背景。\n\n### 1.1.2 小节二\n\n2023年，平台将端到端时延稳定控制在50ms。",
+    )
+    state = _state(content)
+    state.parts[0].chapters[0].sections = [
+        SectionPlan(id="1.1.1", chapter_id=1, title="小节一", heading="1.1.1 小节一"),
+        SectionPlan(id="1.1.2", chapter_id=1, title="小节二", heading="1.1.2 小节二"),
+    ]
+    state.section_contents = [
+        SectionContent(section_id="1.1.1", chapter_id=1, title="小节一", markdown="### 1.1.1 小节一\n\n工程背景。"),
+        SectionContent(section_id="1.1.2", chapter_id=1, title="小节二", markdown="### 1.1.2 小节二\n\n2023年，平台将端到端时延稳定控制在50ms。"),
+    ]
+
+    report = evaluate_chapter_quality(state, content)
+    issue = next(issue for issue in report.issues if issue.code == "fact.unsourced_hard_fact")
+
+    assert issue.scope == "section"
+    assert issue.section_id == "1.1.2"
+    assert issue.section_title == "小节二"
+    assert '"section_id": "1.1.2"' in report.to_feedback()
+
+
 def test_publication_quality_allows_sourced_or_hypothetical_hard_facts() -> None:
     sourced = ChapterContent(
         chapter_id=1,
@@ -215,6 +240,43 @@ caption: "图1-1 展示处理流程。"
 
     codes = {issue.code for issue in report.issues}
     assert "asset.invalid_book_figure" in codes
+
+
+def test_publication_quality_rejects_unsupported_book_figure_type() -> None:
+    markdown = """# 第1章 概述
+
+## 1.1 工程问题
+这是一个足够长的段落，用来解释工程背景、技术约束、系统边界、风险来源、实践方法和读者需要掌握的核心能力。
+
+```book-figure
+id: "fig-01-01"
+type: "layered-architecture"
+title: "图1-1 分层架构"
+purpose: "说明平台层次与职责边界。"
+layout: "自下而上分层。"
+elements:
+  - "设备层"
+relationships:
+  - "设备层连接平台层"
+legend:
+  - "蓝色=核心平台服务"
+caption: "图1-1 展示平台分层架构。"
+render_notes: "HTML/SVG 统一绘制。"
+```
+
+## 本章小结
+本章总结核心概念、工程判断和实践路径，帮助读者建立稳定的知识结构。
+"""
+    content = ChapterContent(chapter_id=1, title="概述", markdown=markdown)
+    state = _state(content)
+    state.style.illustrations = {"allowed_types": ["layered"], "marker": "book-figure"}
+    state.quality.min_words_per_chapter = 20
+    state.quality.min_heading_count = 2
+
+    report = evaluate_chapter_quality(state, content)
+
+    invalid_issue = next(issue for issue in report.issues if issue.code == "asset.invalid_book_figure")
+    assert "不支持 type: layered-architecture" in invalid_issue.message
 
 
 def test_publication_quality_requires_book_figure_per_section() -> None:

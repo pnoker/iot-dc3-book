@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+from core.figures import FigureAsset
 from core.output import generate_markdown_output, generate_word_output, get_template_environment
 from core.state import BookState, ChapterContent, ChapterPlan, ForeshadowItem, PartPlan
 
@@ -68,6 +69,51 @@ def test_generate_markdown_output_renders_structured_files_and_book_markdown(tmp
     assert "伏笔报告" not in book_markdown
 
 
+def test_generate_markdown_output_replaces_book_figures_with_png(tmp_path: Path) -> None:
+    figure_block = '''```book-figure
+id: "fig-01-01"
+type: "architecture"
+title: "图1-1 架构"
+purpose: "说明架构。"
+layout: "分层。"
+elements:
+  - "设备层"
+relationships:
+  - "设备到平台"
+legend:
+  - "蓝色=平台"
+caption: "图1-1 展示架构。"
+render_notes: "HTML/SVG。"
+```'''
+    state = BookState(
+        book_title="测试书",
+        parts=[PartPlan(name="基础篇", prefix="一", chapters=[ChapterPlan(id=1, title="总览")])],
+        chapters=[ChapterContent(chapter_id=1, title="总览", markdown=f"# 第1章 总览\n\n{figure_block}")],
+    )
+    asset = FigureAsset(
+        chapter_id=1,
+        section_id="1.1.1",
+        occurrence=1,
+        figure_id="fig-01-01",
+        figure_type="architecture",
+        title="图1-1 架构",
+        caption="图1-1 展示架构。",
+        svg_path="output/figures/chapter-01/fig-01-01.svg",
+        html_path="output/figures/chapter-01/fig-01-01.html",
+        png_path="output/figures/chapter-01/fig-01-01.png",
+        markdown_path="figures/chapter-01/fig-01-01.png",
+        body_hash="hash",
+    )
+
+    generate_markdown_output(state, str(tmp_path), {}, figure_assets=[asset])
+
+    chapter_markdown = (tmp_path / "05-基础篇" / "01-总览.md").read_text(encoding="utf-8")
+    book_markdown = (tmp_path / "book.md").read_text(encoding="utf-8")
+    assert "```book-figure" not in chapter_markdown
+    assert "![图1-1 架构](../figures/chapter-01/fig-01-01.png){width=15cm}" in chapter_markdown
+    assert "![图1-1 架构](figures/chapter-01/fig-01-01.png){width=15cm}" in book_markdown
+
+
 def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> None:
     markdown = tmp_path / "book.md"
     markdown.write_text("# 标题\n\n正文", encoding="utf-8")
@@ -93,7 +139,7 @@ def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> Non
             "/usr/local/bin/pandoc",
             str(markdown),
             "--from",
-            "gfm+pipe_tables+fenced_code_blocks+yaml_metadata_block",
+            "markdown+pipe_tables+fenced_code_blocks+yaml_metadata_block",
             "--to",
             "docx",
             "--output",

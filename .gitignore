@@ -24,9 +24,12 @@ node_modules/
 
 # RAG 索引缓存
 .rag_index.json
+.data/chroma/
+.data/backups/
 
-# 输出目录
-output/
+# 临时工作产物（保留可复用脚本）
+.tmp/*
+!.tmp/*.py
 
 # 日志
 *.log
@@ -37,6 +40,3 @@ output/
 # OS
 .DS_Store
 Thumbs.db
-
-# 数据库
-.data/

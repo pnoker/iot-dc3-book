@@ -24,6 +24,7 @@ from agents.director import DirectorAgent
 from agents.editor import EditorAgent
 from agents.expander import ExpanderAgent
 from agents.fact_checker import FactCheckerAgent
+from agents.figure_designer import FigureDesignerAgent
 from agents.plan_reviewer import PlanReviewerAgent
 from agents.planner import PlannerAgent
 from agents.research import ResearchAgent
@@ -32,6 +33,18 @@ from agents.writer import WriterAgent
 from core.ai_flavor import detect_ai_flavor
 from core.config import config_to_book_state, get_config_paths, get_embed_config, get_llm_config, load_app_config
 from core.config_models import AppConfig
+from core.figure_brief_migration import (
+    FigureBriefSyncResult,
+    FigureBriefUpgradeResult,
+    sync_chapter_figure_briefs_from_sections,
+    upgrade_book_figure_briefs,
+)
+from core.figures import (
+    audit_figure_assets,
+    build_figure_assets,
+    collect_figure_assets_for_export,
+    write_figure_polish_plan,
+)
 from core.llm_client import LLMClient
 from core.log import get_logger
 from core.markdown_assets import extract_book_figures, find_invalid_book_figures
@@ -41,6 +54,7 @@ from core.quality_rules import check_originality, ensure_book_releasable, evalua
 from core.rag import RAGEngine
 from core.rag_contextualize import contextualize_chunk
 from core.rag_rerank import rerank_chunks
+from core.reference_markers import ReferenceCleanMode, audit_reference_markers, clean_reference_markers
 from core.state import (
     BookState,
     ChapterContent,
@@ -103,6 +117,16 @@ class BookProject:
         self.style_guard = StyleGuardAgent(self.llm)
         self.editor = EditorAgent(self.llm)
         self.director = DirectorAgent(self.llm)
+        self.figure_designer = FigureDesignerAgent(
+            self.llm,
+            polish_rounds=max(0, int(getattr(self.cfg.style.illustrations, "ai_polish_rounds", 1))),
+            timeout_seconds=float(getattr(self.cfg.style.illustrations, "ai_timeout_seconds", 25.0)),
+            max_tokens=int(getattr(self.cfg.style.illustrations, "ai_max_tokens", 2048)),
+            retry_attempts=int(getattr(self.cfg.style.illustrations, "ai_retry_attempts", 1)),
+            json_retry_attempts=int(getattr(self.cfg.style.illustrations, "ai_json_retry_attempts", 1)),
+            circuit_breaker_failures=int(getattr(self.cfg.style.illustrations, "ai_circuit_breaker_failures", 3)),
+            skill_dir=self.paths.project_dir / ".claude" / "skills" / "architecture-diagram",
+        )
 
     def kb_status(self) -> dict[str, object]:
         """返回知识库状态。"""
@@ -494,25 +518,135 @@ class BookProject:
             if precedence.get(source_item.status, 0) > precedence.get(target_item.status, 0):
                 target_item.status = source_item.status
 
-    def write_export(self, thread_id: str, target: str = "all") -> dict[str, object]:
-        """导出出版稿 Markdown、Word 或全部格式。"""
+    def write_export(self, thread_id: str, target: str = "all", *, draft: bool = False) -> dict[str, object]:
+        """导出出版稿或当前草稿 Markdown、Word。"""
         export_target = target.strip().lower()
         if export_target not in {"markdown", "word", "all"}:
             raise ValueError("导出目标无效，请使用 markdown、word 或 all")
+        if draft:
+            state = self.load_write_checkpoint_with_workers(thread_id)
+            return self._generate_export(state, export_target, output_dir=self.paths.output_dir / "draft", draft=True)
         with self._write_operation_lock(thread_id, f"write.export.{export_target}"):
             state = self.load_write_checkpoint(thread_id)
             self._ensure_export_ready(state)
-            cfg = self.cfg.model_dump(mode="python")
-            markdown_result = generate_markdown_output(state, str(self.paths.output_dir), cfg)
-            result: dict[str, object] = {"target": export_target, **markdown_result}
-            if export_target in {"word", "all"}:
-                result["word_file"] = generate_word_output(
-                    str(markdown_result["book_markdown"]),
-                    self.paths.output_dir / self.cfg.output.word_file,
-                    reference_docx=self._word_reference_docx_path(),
-                    pandoc_bin=self.cfg.output.pandoc_bin,
+            return self._generate_export(state, export_target, output_dir=self.paths.output_dir, draft=False)
+
+    def write_figures_build(self, thread_id: str, *, draft: bool = False, force: bool = False) -> dict[str, object]:
+        """从当前 checkpoint 生成 HTML/SVG/PNG 图表资产，落到 .data/figures 权威存储。"""
+        state = self.load_write_checkpoint_with_workers(thread_id)
+        result = build_figure_assets(
+            state,
+            self.paths.data_dir,
+            figures_dir=self.paths.figures_dir,
+            illustrations=state.style.illustrations,
+            designer=getattr(self, "figure_designer", None),
+            force=force,
+            project_dir=self.paths.project_dir,
+            require_polished=self._require_polished_figures(draft=draft),
+        )
+        return result.to_dict()
+
+    def write_figures_audit(self, thread_id: str, *, draft: bool = False) -> dict[str, object]:
+        """审计最终入书图表的生成状态与精品图覆盖率。"""
+        state = self.load_write_checkpoint_with_workers(thread_id)
+        return audit_figure_assets(
+            state,
+            self.paths.data_dir,
+            figures_dir=self.paths.figures_dir,
+            illustrations=state.style.illustrations,
+            project_dir=self.paths.project_dir,
+        )
+
+    def write_figures_polish_plan(self, thread_id: str) -> dict[str, object]:
+        """生成出版级精品图重绘计划和逐图 prompt。"""
+        state = self.load_write_checkpoint_with_workers(thread_id)
+        plan_path = self.paths.project_dir / "assets" / "figures" / "polished" / "polish-plan.json"
+        return write_figure_polish_plan(
+            state,
+            plan_path,
+            illustrations=state.style.illustrations,
+            project_dir=self.paths.project_dir,
+        )
+
+    def write_references_audit(self, thread_id: str) -> dict[str, object]:
+        """审计全书内部资料标记 `[S]/[W]`。"""
+        state = self.load_write_checkpoint_with_workers(thread_id)
+        return audit_reference_markers(state).to_dict()
+
+    def write_references_clean(self, thread_id: str, *, mode: ReferenceCleanMode) -> dict[str, object]:
+        """把内部资料标记移除或转换为出版注释。"""
+        with self._write_operation_lock(thread_id, f"write.references.clean.{mode}"):
+            active_workers = self._active_worker_checkpoint_paths(thread_id)
+            if active_workers:
+                raise RuntimeError(
+                    "引用清理被拒绝：仍存在未合并的章节 worker checkpoint。"
+                    "请先执行 write resume 合并或确认无并发写作后再清理。"
+                    f" 未合并文件: {', '.join(str(path) for path in active_workers[:5])}"
                 )
-            return result
+            state = self.load_write_checkpoint(thread_id)
+            checkpoint_path = self.write_checkpoint_path(thread_id)
+            checkpoint_backup = self._backup_checkpoint_for_operation(checkpoint_path, f"references-clean-{mode}")
+            manuscript_backup = self._backup_manuscript_for_operation(f"references-clean-{mode}")
+            result = clean_reference_markers(state, mode=mode)
+            if result.changed_files:
+                for section_content in state.section_contents:
+                    self._save_section_file(state, section_content)
+                for chapter_content in state.chapters:
+                    self._save_chapter_file(state, chapter_content)
+                state.publication_approved = False
+                self._save_write_checkpoint(thread_id, state)
+            payload = result.to_dict()
+            payload.update(
+                {
+                    "thread_id": thread_id,
+                    "checkpoint": str(checkpoint_path),
+                    "checkpoint_backup": str(checkpoint_backup) if checkpoint_backup is not None else None,
+                    "manuscript_backup": str(manuscript_backup) if manuscript_backup is not None else None,
+                    "publication_approved": state.publication_approved,
+                }
+            )
+            return payload
+
+    def _generate_export(
+            self,
+            state: BookState,
+            export_target: str,
+            *,
+            output_dir: Path,
+            draft: bool,
+    ) -> dict[str, object]:
+        cfg = self.cfg.model_dump(mode="python")
+        figure_result = collect_figure_assets_for_export(
+            state,
+            output_dir / "figures",
+            source_figures_dir=self.paths.figures_dir,
+            illustrations=state.style.illustrations,
+        )
+        if figure_result.missing:
+            first = figure_result.missing[0]
+            raise RuntimeError(
+                "导出被拒绝：图表资产缺失。请先执行 `figures build` 生成全部图表。"
+                f"缺失 {len(figure_result.missing)} 个，权威 manifest: {figure_result.manifest}，"
+                f"首个缺失: 第{first.chapter_id}章 {first.figure_id} - {first.reason}"
+            )
+        markdown_result = generate_markdown_output(state, str(output_dir), cfg, figure_assets=figure_result.assets)
+        result: dict[str, object] = {"target": export_target, "draft": draft, **markdown_result}
+        result["figures_dir"] = figure_result.figures_dir
+        result["figure_manifest"] = figure_result.manifest
+        result["figures_generated"] = len(figure_result.assets)
+        if draft:
+            audit_report = summarize_publication_audit(state)
+            result["publication_ready"] = audit_report.get("pass") is True
+            result["warning"] = "草稿导出仅用于预览，未通过出版门禁，不能作为定稿。"
+            result["blocking_issue_count"] = audit_report.get("blocking_issue_count", 0)
+        if export_target in {"word", "all"}:
+            result["word_file"] = generate_word_output(
+                str(markdown_result["book_markdown"]),
+                output_dir / self.cfg.output.word_file,
+                reference_docx=self._word_reference_docx_path(),
+                pandoc_bin=self.cfg.output.pandoc_bin,
+            )
+        return result
 
     def _ensure_export_ready(self, state: BookState) -> None:
         """导出前强制确认整书已经达到出版状态。"""
@@ -533,9 +667,32 @@ class BookProject:
             issues.append("缺少章节合稿: " + ", ".join(str(item) for item in missing_chapters[:10]))
         if failed_chapters:
             issues.append("章节质量门未全部通过: " + ", ".join(str(item) for item in failed_chapters[:10]))
+        if self._require_polished_figures(draft=False):
+            figure_audit = audit_figure_assets(
+                state,
+                self.paths.data_dir,
+                figures_dir=self.paths.figures_dir,
+                illustrations=state.style.illustrations,
+                project_dir=self.paths.project_dir,
+            )
+            if figure_audit.get("pass") is not True:
+                blocking = figure_audit.get("blocking", [])
+                preview: list[str] = []
+                if isinstance(blocking, list):
+                    for item in blocking[:10]:
+                        if isinstance(item, dict):
+                            preview.append(str(item.get("figure_id") or item.get("title") or "unknown"))
+                suffix = ": " + ", ".join(preview) if preview else ""
+                issues.append(f"出版级精品图未全部就绪{suffix}")
         if issues:
             raise RuntimeError("导出被拒绝，书稿尚未达到出版状态。" + " | ".join(issues))
         ensure_book_releasable(state, base_dir=self.paths.project_dir)
+
+    def _require_polished_figures(self, *, draft: bool) -> bool:
+        illustrations = self.cfg.style.illustrations
+        return bool(
+            illustrations.polished_required_for_draft if draft else illustrations.polished_required_for_export
+        )
 
     def _word_reference_docx_path(self) -> Path | None:
         reference_docx = self.cfg.output.word_reference_docx.strip()
@@ -575,6 +732,119 @@ class BookProject:
         """把现有 manuscript 草稿显式导入小节级 checkpoint。"""
         with self._write_operation_lock(thread_id, "write.recover_manuscript"):
             return self._recover_manuscript_unlocked(thread_id)
+
+    def write_figures_upgrade_briefs(self, thread_id: str, *, dry_run: bool = False) -> dict[str, object]:
+        """把 checkpoint 和 manuscript 中的旧版 `book-figure` 升级为出版级结构化 brief。"""
+        with self._write_operation_lock(thread_id, "write.figures.upgrade_briefs"):
+            state = self.load_write_checkpoint(thread_id)
+            checkpoint_path = self.write_checkpoint_path(thread_id)
+            backup_path = None if dry_run else self._backup_checkpoint_for_operation(checkpoint_path, "figure-brief-upgrade")
+            manuscript_backup = None if dry_run else self._backup_manuscript_for_operation("figure-brief-upgrade")
+
+            section_stats = self._upgrade_section_figure_briefs(state, write_files=not dry_run)
+            chapter_stats = self._upgrade_chapter_figure_briefs(state, write_files=not dry_run)
+            sync_stats = self._sync_chapter_figure_briefs_from_sections(state, write_files=not dry_run)
+            if not dry_run:
+                state.publication_approved = False
+                self._save_write_checkpoint(thread_id, state)
+
+            total = self._merge_upgrade_stats(section_stats, chapter_stats)
+            return {
+                "thread_id": thread_id,
+                "dry_run": dry_run,
+                "checkpoint": str(checkpoint_path),
+                "checkpoint_backup": str(backup_path) if backup_path is not None else None,
+                "manuscript_backup": str(manuscript_backup) if manuscript_backup is not None else None,
+                "sections": section_stats,
+                "chapters": chapter_stats,
+                "chapter_section_sync": sync_stats,
+                "total": total,
+            }
+
+    def _upgrade_section_figure_briefs(self, state: BookState, *, write_files: bool) -> dict[str, object]:
+        changed_files: list[str] = []
+        results: list[FigureBriefUpgradeResult] = []
+        for content in state.section_contents:
+            result = upgrade_book_figure_briefs(content.markdown)
+            results.append(result)
+            if result.changed_blocks:
+                content.markdown = result.markdown
+                content.word_count = count_words(result.markdown)
+                changed_files.append(f"chapter-{content.chapter_id:02d}/{content.section_id}.md")
+                if write_files:
+                    self._save_section_file(state, content)
+        return self._upgrade_stats(results, changed_files)
+
+    def _upgrade_chapter_figure_briefs(self, state: BookState, *, write_files: bool) -> dict[str, object]:
+        changed_files: list[str] = []
+        results: list[FigureBriefUpgradeResult] = []
+        for content in state.chapters:
+            result = upgrade_book_figure_briefs(content.markdown)
+            results.append(result)
+            if result.changed_blocks:
+                content.markdown = result.markdown
+                content.word_count = count_words(result.markdown)
+                changed_files.append(f"chapter-{content.chapter_id:02d}/chapter.md")
+                if write_files:
+                    self._save_chapter_file(state, content)
+        return self._upgrade_stats(results, changed_files)
+
+    def _sync_chapter_figure_briefs_from_sections(self, state: BookState, *, write_files: bool) -> dict[str, object]:
+        changed_files: list[str] = []
+        results: list[FigureBriefSyncResult] = []
+        for content in state.chapters:
+            section_markdowns = [section.markdown for section in state.get_chapter_section_contents(content.chapter_id)]
+            result = sync_chapter_figure_briefs_from_sections(content.markdown, section_markdowns)
+            results.append(result)
+            if result.changed_blocks:
+                content.markdown = result.markdown
+                content.word_count = count_words(result.markdown)
+                changed_files.append(f"chapter-{content.chapter_id:02d}/chapter.md")
+                if write_files:
+                    self._save_chapter_file(state, content)
+        return self._sync_stats(results, changed_files)
+
+    @staticmethod
+    def _upgrade_stats(results: list[FigureBriefUpgradeResult], changed_files: list[str]) -> dict[str, object]:
+        failures = [failure for result in results for failure in result.failures]
+        return {
+            "files_scanned": len(results),
+            "files_changed": len(changed_files),
+            "changed_files": changed_files,
+            "total_blocks": sum(result.total_blocks for result in results),
+            "changed_blocks": sum(result.changed_blocks for result in results),
+            "repaired_blocks": sum(result.repaired_blocks for result in results),
+            "failed_blocks": sum(result.failed_blocks for result in results),
+            "failures": failures[:20],
+        }
+
+    @staticmethod
+    def _merge_upgrade_stats(*groups: dict[str, object]) -> dict[str, object]:
+        return {
+            "files_scanned": sum(BookProject._upgrade_stat_int(group, "files_scanned") for group in groups),
+            "files_changed": sum(BookProject._upgrade_stat_int(group, "files_changed") for group in groups),
+            "total_blocks": sum(BookProject._upgrade_stat_int(group, "total_blocks") for group in groups),
+            "changed_blocks": sum(BookProject._upgrade_stat_int(group, "changed_blocks") for group in groups),
+            "repaired_blocks": sum(BookProject._upgrade_stat_int(group, "repaired_blocks") for group in groups),
+            "failed_blocks": sum(BookProject._upgrade_stat_int(group, "failed_blocks") for group in groups),
+        }
+
+    @staticmethod
+    def _sync_stats(results: list[FigureBriefSyncResult], changed_files: list[str]) -> dict[str, object]:
+        return {
+            "files_scanned": len(results),
+            "files_changed": len(changed_files),
+            "changed_files": changed_files,
+            "total_blocks": sum(result.total_blocks for result in results),
+            "changed_blocks": sum(result.changed_blocks for result in results),
+            "unmatched_blocks": sum(result.unmatched_blocks for result in results),
+            "inserted_blocks": sum(result.inserted_blocks for result in results),
+        }
+
+    @staticmethod
+    def _upgrade_stat_int(group: dict[str, object], key: str) -> int:
+        value = group.get(key, 0)
+        return value if isinstance(value, int) else 0
 
     def _recover_manuscript_unlocked(self, thread_id: str) -> dict[str, object]:
         state = self.load_write_checkpoint(thread_id)
@@ -668,6 +938,22 @@ class BookProject:
         shutil.copy2(checkpoint_path, backup_path)
         return backup_path
 
+    def _backup_checkpoint_for_operation(self, checkpoint_path: Path, operation: str) -> Path | None:
+        if not checkpoint_path.exists():
+            return None
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        backup_path = checkpoint_path.with_name(f"{checkpoint_path.stem}.before-{operation}-{timestamp}{checkpoint_path.suffix}")
+        shutil.copy2(checkpoint_path, backup_path)
+        return backup_path
+
+    def _backup_manuscript_for_operation(self, operation: str) -> Path | None:
+        if not self.manuscript_dir.exists():
+            return None
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        backup_dir = self.paths.data_dir / "backups" / f"manuscript.before-{operation}-{timestamp}"
+        shutil.copytree(self.manuscript_dir, backup_dir)
+        return backup_dir
+
     def load_write_checkpoint(self, thread_id: str) -> BookState:
         """读取小节级写作 checkpoint。"""
         state = self._load_state_envelope(self.write_checkpoint_path(thread_id), expected_kind="write.checkpoint")
@@ -697,6 +983,13 @@ class BookProject:
     def _chapter_id_from_worker_checkpoint(path: Path) -> int | None:
         match = re.fullmatch(r"chapter-(\d+)\.json", path.name)
         return int(match.group(1)) if match else None
+
+    def _active_worker_checkpoint_paths(self, thread_id: str) -> list[Path]:
+        return [
+            path
+            for path in sorted(self.worker_checkpoint_dir(thread_id).glob("chapter-*.json"))
+            if self._chapter_id_from_worker_checkpoint(path) is not None
+        ]
 
     def _refresh_runtime_settings(self, state: BookState) -> None:
         """用当前配置刷新可调运行策略，保留已生成的大纲和正文。"""
@@ -1138,17 +1431,20 @@ class BookProject:
 
     @staticmethod
     def _normalize_markdown_output(markdown: str) -> str:
-        """移除 LLM 偶发包裹整篇正文的 Markdown 代码围栏。"""
+        """移除 LLM 偶发的解释前缀和整篇 Markdown 代码围栏。"""
         text = markdown.strip()
-        if not text.startswith("```") or not text.endswith("```"):
+        fence_match = re.search(r"```(?:markdown|md)\s*\n", text, flags=re.IGNORECASE)
+        heading_match = re.search(r"^#{1,6}\s+", text, flags=re.MULTILINE)
+        if fence_match and (heading_match is None or fence_match.start() < heading_match.start()):
+            text = text[fence_match.end():].strip()
+            if text.endswith("```"):
+                text = text[:-3].strip()
             return text
-        first_line_end = text.find("\n")
-        if first_line_end < 0:
-            return text
-        fence_info = text[3:first_line_end].strip().lower()
-        if fence_info not in {"markdown", "md"}:
-            return text
-        return text[first_line_end + 1:-3].strip()
+        if heading_match and heading_match.start() > 0:
+            prefix = text[:heading_match.start()].strip()
+            if re.search(r"(以下是|完整.*Markdown|合稿后的完整|我将按照|已统一标题)", prefix):
+                return text[heading_match.start():].strip()
+        return text
 
     @staticmethod
     def _chapter_revision_shrank_too_much(state: BookState, original: str, revised: str) -> bool:
@@ -1178,6 +1474,10 @@ class BookProject:
                 content.revision_feedback = ""
                 content.revision_count = round_index
                 state.mark_section_status(section.id, "reviewed")
+                state.upsert_section_content(content)
+                self._save_section_file(state, content)
+                if thread_id is not None:
+                    self._save_write_checkpoint(thread_id, state)
                 logger.info("✅ [小节审校] %s 通过", section.id)
                 return content
 
@@ -1277,7 +1577,15 @@ class BookProject:
         required_fields = (state.style.illustrations or {}).get("required_fields")
         if not isinstance(required_fields, list):
             required_fields = None
-        invalid_figures = find_invalid_book_figures(markdown, marker=marker, required_fields=required_fields)
+        allowed_types = (state.style.illustrations or {}).get("allowed_types")
+        if not isinstance(allowed_types, list):
+            allowed_types = None
+        invalid_figures = find_invalid_book_figures(
+            markdown,
+            marker=marker,
+            required_fields=required_fields,
+            allowed_types=allowed_types,
+        )
         if invalid_figures:
             issues.append(
                 {
@@ -1521,6 +1829,7 @@ class BookProject:
         """优先按反馈定位三级小节局部返修，定位不到再整章兜底。"""
         section_ids = self._feedback_section_ids(state, content.chapter_id, feedback)
         if section_ids:
+            logger.info("🎯 [章节质量门] 第%d章定位到局部小节: %s", content.chapter_id, ", ".join(section_ids))
             return self._revise_sections_from_chapter_feedback(
                 state,
                 content,
@@ -1529,6 +1838,7 @@ class BookProject:
                 revision_count,
                 thread_id=thread_id,
             )
+        logger.info("🧩 [章节质量门] 第%d章反馈无法定位三级小节，进入章节级修订", content.chapter_id)
         return self._revise_chapter_from_feedback(state, content, feedback, revision_count)
 
     def _revise_sections_from_chapter_feedback(

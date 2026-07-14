@@ -1,0 +1,46 @@
+{
+  "citation": {
+    "pass": true,
+    "issues": [
+      {
+        "severity": "minor",
+        "claim": "表1-1中时间跨度列：PC互联网“约1990–2005”、移动互联网“约2007–2015”、万物互联“约2015–至今”",
+        "suggestion": "资料包中仅提供“20世纪90年代”和“21世纪初”等模糊时间范围，无精确年份分界。建议删除具体年份，改用“20世纪90年代至21世纪初”“21世纪初至2010年代”“2010年代至今”等基于资料包中已有描述的表述，或补充权威来源。"
+      },
+      {
+        "severity": "minor",
+        "claim": "表1-1中万物互联的网络类型包括“LPWAN/5G/Wi-Fi 6”",
+        "suggestion": "资料包中仅提及LPWAN（如NB-IoT），未涉及5G和Wi-Fi 6。建议删除“5G/Wi-Fi 6”或补充这些技术作为物联网网络类型的来源。"
+      }
+    ],
+    "summary": "章节核心断言均有资料包证据支持，但表1-1中时间分界和部分网络类型缺少直接依据，建议修改为更宽泛或确有所本的表述。"
+  },
+  "style": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "statistics": {
+      "word_count": 10000,
+      "heading_count": {
+        "#": 1,
+        "##": 5,
+        "###": 18
+      },
+      "figure_count": 3,
+      "table_count": 2,
+      "code_block_count": 2
+    }
+  },
+  "publication": {
+    "pass": true,
+    "issues": [],
+    "statistics": {
+      "word_count": 12279,
+      "min_words": 9000,
+      "target_words": 12000,
+      "max_words": 14400,
+      "heading_count": 33,
+      "figure_or_table_count": 2
+    }
+  }
+}

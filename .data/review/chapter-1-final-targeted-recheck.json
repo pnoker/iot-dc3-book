@@ -1,0 +1,48 @@
+{
+  "citation": {
+    "pass": true,
+    "issues": [],
+    "summary": "章节中的关键断言均有明确研究资料支持，引用标注正确，未发现缺少依据的重要断言。"
+  },
+  "style": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      {
+        "type": "term_standard",
+        "line_hint": "第1.1.1节",
+        "description": "专业术语'物联网'首次出现时未附英文原文（Internet of Things, IoT）",
+        "fix": "在首次出现'物联网概念'处添加括号说明，例如：'物联网（Internet of Things, IoT）概念'"
+      },
+      {
+        "type": "term_standard",
+        "line_hint": "第1.2.2节",
+        "description": "专业术语'传感网'首次出现时未附英文原文（sensor network）",
+        "fix": "在'传感网概念'后添加括号说明，例如：'传感网（sensor network）概念'"
+      }
+    ],
+    "statistics": {
+      "word_count": 11000,
+      "heading_count": {
+        "#": 1,
+        "##": 5,
+        "###": 18
+      },
+      "figure_count": 3,
+      "table_count": 2,
+      "code_block_count": 2
+    }
+  },
+  "publication": {
+    "pass": true,
+    "issues": [],
+    "statistics": {
+      "word_count": 12049,
+      "min_words": 9000,
+      "target_words": 12000,
+      "max_words": 14400,
+      "heading_count": 33,
+      "figure_or_table_count": 2
+    }
+  }
+}

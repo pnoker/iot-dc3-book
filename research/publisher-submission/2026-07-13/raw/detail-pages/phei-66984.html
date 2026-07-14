@@ -1,0 +1,1232 @@
+
+
+﻿<!DOCTYPE HTML>
+<html  ng-app="topDivApp"  ng-controller="topDivCtrl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
+<title>电子工业出版社-网上书店</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="shortcut icon" href="#" />
+<link href="/cns/templates/stylesheets/global_book.css" rel="stylesheet" />
+<link href="/cns/templates/stylesheets/web_base_book.css" rel="stylesheet" />
+<script src="/cns/templates/javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="/cns/templates/javascript/ajax.js" type="text/javascript"></script>
+<script src="/cns/templates/javascript/page_script.js" type="text/javascript"></script>
+<script src="/cns/templates/javascript/angular/angular.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/module/goods/js/jquerycookie.js"></script>
+<script src="/cns/templates/javascript/jquery.qrcode.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+function refresh(){
+	var src = "/module/membercenter/ValidateImage.jsp?time="+new Date().getTime();
+	$("#VCodeImg").attr('src',src); 
+}
+function addcookie(name,value){
+	$.cookie(name,value);
+}
+
+function redcookie(name){
+	//alert($.cookie(name));
+	return $.cookie(name);
+}
+
+function delcookie(name){
+	$.cookie(name,null)
+}
+ $(document).ready(function(){
+	 
+	//二级分类导航
+	$(".all_book_sort dl:last").css("padding-bottom","14px");
+	$(".arr_sec_sort").hide();
+	$(".book_sec_sort").hide();
+	$(".all_book_sort dl").removeClass("dl_on").addClass("dl_off");
+	var len = $(".book_sec_sort").length;
+	for(i=0;i<len;i++){
+		$(".book_sec_sort").eq(i).css("top","-" + i*90 +"px");
+		}
+	$(".all_book_sort dl").hover(function(){
+		$(this).addClass("dl_on");
+	    $(this).find("b").hide();
+		$(this).find(".arr_sec_sort").show();
+		$(this).find(".book_sec_sort").show();
+	},function(){
+		$(".all_book_sort dl").removeClass("dl_on").addClass("dl_off");
+		$(this).find("b").show();
+		$(this).find(".arr_sec_sort").hide();
+		$(this).find(".book_sec_sort").hide();
+		
+	});
+	
+	//购物车
+	$(".bookline_cart").hover(function(){
+      $(this).removeClass("cart_off").addClass("cart_on"); 
+	  $(this).children(".book_cart_inner").show();
+	},function(){
+	  $(this).removeClass("cart_on").addClass("cart_off");
+	  $(this).children(".book_cart_inner").hide();  
+	});
+	
+	//top我的电子社
+	$(".booktop_mydzs").hover(function(){
+	   $(this).removeClass("mydzs_off").addClass("mydzs_on");	
+	   $(this).children("p").show();
+	},function(){
+	   $(this).removeClass("mydzs_on").addClass("mydzs_off");	
+	   $(this).children("p").hide();
+	});
+	
+	//下拉菜单
+	$(".all_book_sort").hide();
+	$(".boor_sort").hover(function(){
+	   $(".all_book_sort").show(); 
+	},function(){
+	   $(".all_book_sort").hide();
+	});
+	//翻页居中
+		var w_gopage = $(".book_page_inner").innerWidth();
+		$(".book_page_inner").css("margin-left",(1200-w_gopage)/2 + "px"); 
+		
+	//book内容切换
+	$(".book_inner_area .book_inner_content").hide();
+	$(".book_inner_area .book_inner_content:first").show();
+	$(".book_content_inner .book_content_inner_title p").hover(function(){
+		$(".book_content_inner .book_content_inner_title p").removeClass("p_hover");
+	    $(this).addClass("p_hover");
+		var index = $(".book_content_inner .book_content_inner_title p").index(this);
+	    var divId = $(".book_inner_area .book_inner_content");
+		divId.hide();
+	    $(divId[index]).fadeIn();
+			
+	},function(){	
+	});	
+	
+	//	微信分享	
+	$(".share_weixin").hover(function(){
+	   $(this).parent("div").find(".share_erwm").show(); 
+	},function(){
+	  $(this).parent("div").find(".share_erwm").hide(); 
+	});	
+ });
+ 
+ 
+ //收藏
+  function addmyfavourite(bid){
+	_BFD.UserAction("favorites",{iid:bid,name:recName,category:recCategory,isbn:recISBN,object_type:"104"});
+	location.href="/module/goods/favourite.jsp?bookid="+bid+"&method=addfavourite";
+}
+ 
+  function seeoneseemore(num,str,bid){
+		var url = "/module/goods/llgbsdgkhkg_include.jsp?shownum="+num+"&liststr="+str+"&bookid="+bid;
+		getAjaxRequestText(url,str);
+	}
+  //购买
+   function buyUrl(bid){
+	  var thirdHrefCode = '908290320675';
+	  // _BFD.UserAction("buy",{iid:bid,name:recName,category:recCategory,isbn:""});
+                  	var pcounts = document.getElementById("buynum").value;
+                        var patrn = /^[0-9]{1,4}$/;
+                        if (!patrn.exec(pcounts)) {
+                            pcounts = 1;
+                        }
+                        else {
+                            if (pcounts <= 0)
+                                pcounts = 1;
+                            if (pcounts >= 1000)
+                                pcounts = 999;
+                        }
+                      var hid_miaosha = document.getElementById("miaosha").value;
+                      if(hid_miaosha.length>1){//说明是秒杀
+							alert(hid_miaosha);
+                      }  
+					location.href="./shopcar0.jsp?bookid="+bid+"&num="+pcounts;
+                  	
+    }
+
+                  //这里是买电子书
+                  function buyDzsUrl(bid){
+					location.href="./shopcar0.jsp?ebookid="+bid;
+                  }
+                  
+
+      
+
+                  function locationGoRootType(str){
+                  	 var name = encodeURIComponent(str);
+                  	 location.href='/module/goods/searchkey.jsp?goodtypeid=1&goodtypename='+name;
+                  }
+</script>
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="#">
+</head>
+<body ng-cloak>
+    <!--header beigin-->
+   ﻿<link ref="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+<script>
+if(location.href.indexOf('ehm.phei.com.cn') != -1){
+	location.href='http://www.phei.com.cn';
+}
+</script>
+<header>
+
+          <div class="web_booktop_wrapper">
+               <div class="booktop_wrapper_inner">
+                    <p class="booktop_inner_left">
+                       <a href="/" title="官网首页">官网首页</a>
+                       <span>|</span>
+                       您好，欢迎光临电子工业出版社有限公司！
+                    </p>  
+                    <div class="booktop_inner_right">
+                         <p id="loginp" class="booktop_login_reg" style="display:none;">
+                            <span>
+                                <a href="/module/membercenter/hyzx.jsp" id="topLoginUsernameHref"></a>
+                            </span>
+                            <span>
+                                <a href="/module/membercenter/membertoplogin.jsp?logout=true">退出登录</a>
+                            </span>
+                              <span>
+                                <a href="/module/membercenter/hyzx.jsp">我的电子社</a>
+                            </span>
+                        </p>
+                         <p id="noLoginP" class="booktop_login_reg">
+                            <span>
+                                <a href="/module/membercenter/memberlogin.jsp">请登录</a>
+                            </span>
+                            <span>
+                                <a href="/module/membercenter/memberregister.jsp">免费注册</a>
+                            </span>
+                        </p>
+                      
+                    </div> 
+                </div>
+           </div>
+           <div class="web_bookline_wrapper">
+                <p class="bookline_logo">
+                   <a href="/" title="电子工业出版社">
+                      <img src="/cns/templates/images/bookstore/logo_bookstore.jpg" width="225" height="41" />
+                   </a>
+                </p>
+                <div class="bookline_search" style="position:relative;">
+                     <div class="book_search_form">
+                          <form name="searchForm" action="/module/goods/searchkey.jsp" onkeyup="suggest()" method="post">
+                                <input type="text" name="searchKey" id="searchKey" class="input_book_text">
+                                <input type="button" onclick="document.searchForm.submit()" class="input_book_btn">
+                          </form>
+                          <a href="/module/goods/gjsearch.jsp" title="高级搜索">高级搜索</a>
+                     </div>
+                     <div id="suggest" style="position:absolute; left:100px; top:41px; width:610px;font-size:16px;z-index:30;"><table style="width:100%;padding:0 15px;line-height:26px; background:#EEF8FD;">
+											         <tbody id="content" ></tbody>
+											      </table></div>
+                     <p>
+                       <span>热搜：</span>
+                       <span><a href='/module/goods/searchkey.jsp?Page=1&searchKey=电子'><font color=#FF0000><strong>计算机</strong></font></a></span><span><a href='计算'><font color=#FF0000><strong>计算</strong></font></a></span><span><a href='工业'>工业</a></span>
+
+                     </p>
+                </div>
+                <div style="display:none;" class="bookline_cart cart_off">
+                     我的购物车(<i ng-if="noTopCartBook">0</i><i ng-if="!noTopCartBook">{{topCartTotalNum}}</i>)
+                     <div ng-if="!noTopCartBook" class="book_cart_inner">
+                     <div class="book_cart_inner_top">
+                          您加入的商品
+                     </div>
+                     <div  class="book_cart_inner_middle">
+                          <!--empty cart begin-->
+                          <p >您的购物车中还没有商品，赶紧去够选吧！</p>
+                          <!--empty cart end-->  
+                          <!--product begin-->
+                          <dl ng-if="!noTopCartBook" ng-repeat="data in dataArray['cartBookList']" >
+                              <dt>
+                                  <a href="/module/goods/wssd_content.jsp?bookid={{data.bookId}}" title=""><img src="{{data.pic}}" /></a>
+                              </dt>
+                              <dd class="cart_book_title">
+                                  <a href="/module/goods/wssd_content.jsp?bookid={{data.bookId}}" title="">{{data.name}}</a>
+                              </dd>
+                              <dd class="cart_book_price">
+                                  ¥{{data.price}} * {{data.num}}<br/>
+                                 <!--   <a href="#">删除</a>-->
+                              </dd>
+                          </dl>
+                         
+                          <!--product end-->
+                          
+                            
+                     </div>
+                     <div class="book_cart_inner_bottom">
+                          共<i>{{topCartTotalNum}}</i>件商品　共计<b>¥{{topCartTotalPrice}}</b>
+                          <a href="/module/goods/shoppingcart.jsp" title="去购物车">去购物车</a>                          
+                     </div>
+                </div>
+                </div>
+           </div>
+           <nav class="book_nav">
+                <div class="boor_sort">
+                     图书所有分类
+                     <i></i>
+                     <div class="all_book_sort">
+                          <dl ng-repeat="data in dataArray['rootType']"  class="dl_on">
+                              <dt>
+                                  <a href="javascript:void(0)" title="">{{data.name}}</a>
+                                  <b></b>
+                              </dt>
+                              <dd>
+                                  <a ng-repeat="sdata in data.secondType"  href="javascript:void(0)" ng-click="gotopage(sdata.name)" title="">{{sdata.name}}</a>
+                              </dd>
+                              <div class="arr_sec_sort"></div>
+                              <div class="book_sec_sort">
+                                   <div  ng-repeat="sdata in data.secondType"  class="sec_sort_line">
+                                        <p class="sec_sort_title"><a  href="javascript:void(0)" ng-click="gotopage(sdata.name)" title="">{{sdata.name}}</a></p>
+                                        <p class="third_sort">
+                                           <span ng-repeat="tdata in sdata.thirdType" ><a href="javascript:void(0)" ng-click="goPageNew(tdata)" title="">{{tdata.name}}</a></span>
+                                       </p>
+                                   </div>
+                              </div>
+                          </dl>
+                        
+                     </div>
+                     
+                </div>
+                <ul>
+                    <li>
+                        <a href="/module/goods/wssd_index.jsp" title="网上书店">网上书店</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="goRootType(1047,'科技')" title="科技图书">科技图书</a>
+                    </li>
+                    <li>
+                        <a  href="javascript:void(0)" onclick="goRootType(1048,'教育')">教育图书</a>
+                    </li>
+                    <li>
+                        <a  href="javascript:void(0)" onclick="goRootType(1049,'经济管理')">经济管理</a>
+                    </li>
+                    <li>
+                        <a  href="javascript:void(0)" onclick="goRootType(1050,'少儿')">少儿图书</a>
+                    </li>
+                    <li>
+                        <a  href="javascript:void(0)" onclick="goRootType(1051,'大众')">大众图书</a>
+                    </li>
+                    <li>
+                        <a href="/" title="出版社官网">官网首页</a>
+                    </li>
+                </ul>
+           </nav>
+           <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?661ca74856e211b2aec41a10c215cf52";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+function goRootType(id,str){
+	 var name = encodeURIComponent(str);
+	 location.href='/module/goods/searchkey.jsp?goodtypeid=1&goodtypename='+name;
+}
+
+function createXMLHttpRequest() {
+    if (window.XMLHttpRequest) {
+         //Mozilla 浏览器 
+         XMLHttpReq = new XMLHttpRequest();
+      } else{
+          // IE浏览器
+          if (window.ActiveXObject) {
+            try {
+                   XMLHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
+                }catch (e) {
+                   try {
+                          XMLHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+                       }catch (e) { }
+                }
+           }
+      }
+  } 
+function suggest()
+{
+     var key = document.getElementById("searchKey").value;
+		var newstr = encodeURIComponent(key);
+     sendRequest("/module/goods/searchajax.jsp?searchKey="+newstr);
+}
+function showSearchResult(data){
+	console.info(data);
+}
+function sendRequest(url) {
+    createXMLHttpRequest();
+    XMLHttpReq.open("GET", url, true);
+    //指定响应函数
+    XMLHttpReq.onreadystatechange = handleResponse;
+    // 发送请求
+    XMLHttpReq.send(null); 
+}   
+function clearTable()
+{
+    var content = document.getElementById("content");
+    while(content.childNodes.length>0)
+    {
+        content.removeChild(content.childNodes[0]);
+    }    
+    
+}
+function handleResponse() {
+    // 判断对象状态
+    if (XMLHttpReq.readyState == 4) { 
+        // 信息已经成功返回，开始处理信息
+       if (XMLHttpReq.status == 200) { 
+            clearTable();
+            var out = "";
+            var res = XMLHttpReq.responseXML;
+			//alert("res="+res);
+			
+            var items = res.getElementsByTagName("item");
+			//alert("items="+items.length);
+			
+			//alert("adassssssss=>>>>="+items[0].firstChild.nodeValue);
+            for(var i=0;i<items.length;i++)
+            {
+               //addRow(items(i).firstChild.nodeValue);
+			   addRow(items[i].firstChild.nodeValue);
+            }
+            setDivStyle();
+         }
+     }
+   }
+function setDivStyle()
+{
+   var suggest = document.getElementById("suggest");
+    suggest.style.border = "#CCE0EB 1px solid";
+    //suggest.style.left = 213;
+    //suggest.style.top = 140;
+   //suggest.style.width = 195;
+    //suggest.style.backgroundColor = "#EEF8FD"
+    document.getElementById("suggest").style.visibility="visible"
+}
+function searchhidden(){
+	document.getElementById("suggest").style.visibility="hidden";
+}
+
+function addRow(item)
+{	
+    var content = document.getElementById("content");
+    var row = document.createElement("tr");
+    var cell = document.createElement("td");
+    cell.appendChild(document.createTextNode(item));
+    cell.onmouseover = function(){this.style.background="#97D0EC"};
+    cell.onmouseout = function(){this.style.background="#EEF8FD"};
+    cell.onclick = function(){
+    document.getElementById("searchKey").value=this.innerHTML;
+    document.getElementById("suggest").style.visibility="hidden"};
+    row.appendChild(cell);
+    content.appendChild(row);
+    
+}
+</script>
+<script type="text/javascript">    
+
+    document.onkeydown=keyDownSearch;
+    
+    function keyDownSearch(e) {  
+        // 兼容FF和IE和Opera  
+        var theEvent = e || window.event;  
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;  
+        if (code == 13) {  
+        	document.searchForm.submit()
+           // console.info(code);
+            return;  
+        }  
+        return;  
+    }
+</script>
+    </header>
+    <!--header beigin-->
+    <!--search beigin-->
+    <section>
+        
+			  <script src="/cns/templates/javascript/public.js" type="text/javascript"></script>
+
+    <!--header beigin-->
+    <!--search beigin-->
+    <section>
+        <div class="wrapper_book_content">
+             <div class="web_book_localtion">
+             <a href="/">首页</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="locationGoRootType('科技')">科技</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="locationGoRootType('通信与网络')">通信与网络</a>&nbsp;&nbsp;>&nbsp;&nbsp;<span>通信网络</span>
+             </div>
+        </div>
+        <div class="book_content_line">
+             <div class="book_img_large">
+                  <img src="https://www.phei.com.cn/covers/9787121497186.jpg" />
+             </div>
+             <div class="content_book_info">
+                  <h1>工业物联网原理&nbsp;&nbsp; </h1>
+                  <p style="display:none;">著&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者：</p>
+                  <p>作&nbsp;&nbsp;译&nbsp;&nbsp;者：邵汉舒</p>
+                  <p>
+                     <span>出版时间：2025-03</span>
+                     <span>千 字 数：220</span>
+                     <span>版&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次：01-01  </span>
+                     <span>页     数：184</span>
+                  </p>
+                  <p>
+                     <span>开&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本：16开          </span>
+                     <span>装&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;帧：</span>
+                     <span style="width:200px;">I S B N ：9787121497186</span>
+                  </p>
+                  <p>换&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版：</p>
+                  <p class="book_price">
+                     <span>纸质书定价：￥88.0</span>
+                  </p>
+                  <p class="book_buy">
+                     <span><i>库存:有</i></span>
+                  </p>
+                  <div class="book_buy_btn">
+                       <div class="btn_add_collection">
+                          <a href="javascript:void(0)" onclick="addmyfavourite(66984)"></a>
+                       </div>
+                       <div id="buyHrefDiv" style="display:none;margin-right:30px;" class="btn_book_buy">
+                          <a target="_blank" href="http://detail.tmall.com/item.htm?id=908290320675"></a>
+                       </div>
+                       <div id="eBookHref" style="display:none;float:left;width: 177px;height:45px;margin-right:50px;clear:none;background:url(/cns/templates/images/ebook.png);">
+                          <a style="float:left;width: 177px;height:45px;" target="_blank" href="https://yd.51zhy.cn/ebook/web/newBook/queryNewBookById?id=249479291"></a>
+                       </div>
+                       
+                       <div style="margin-top:9px;" class="btn_book_share" style="width:320px;">
+                          <span>分享到：</span>
+                          <span class="share_sina"><a target="_blank" id="shareWeiboHref" ></a></span>
+                          <span class="share_weixin"><a href="javascript:void(0)"></a></span>
+                          <div class="share_erwm" id="weicinQRCodeDiv" style="display: none;"></div>
+                       </div>
+                  </div>
+                  <p>
+                     <span>共有图书评论0条</span>
+                     <a href="#comment" >【查看评论摘要】</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  </p>
+             </div>
+        </div>
+        <script >
+        var temestorenum_str_new = '有';
+        if(temestorenum_str_new == "有"){
+        	jQuery("#eBookHref").show();
+        }
+        </script>
+        <div class="book_content_line">
+             <div class="book_content_view">
+                  <p class="book_content_view_title">看了又看</p>
+                  <ul>
+                      <!--loop begin-->
+                      <li ng-repeat="data in dataArray['seeOneSeeMoreList']" data-id="{{$index+1}}">
+                          <a href="/module/goods/wssd_content.jsp?bookid={{data.bookId}}" title="">
+                             <img style="width:65px" src="{{data.bookImg.replace('http://218.249.32.138/thumbs', 'https://www.phei.com.cn/covers')}}" />
+                          </a>
+                          <p class="view_li_title">
+                             <a href="/module/goods/wssd_content.jsp?bookid={{data.bookId}}" title="">{{data.bookName}}</a>
+                          </p>
+                          <p class="view_book_price">￥{{data.price}}</p>
+                      </li>
+                      <!--loop end-->
+                  </ul>
+             </div>
+             <div class="book_content_container">
+                  <div class="book_content_inner">
+                       <div class="book_content_inner_title">
+                       <p class="p_hover">内容简介</p>
+                       <p>目&nbsp;录</p>
+                       <p>前&nbsp;言</p>
+                       <p>上架建议</p>
+                       <p>作者简介</p>
+                       <p style="display:none">获奖信息</p>
+                       <p>编辑推荐</p>
+                       <p id="peitaoziyuanP" style="display:none;" >配套资源</p>
+                       <p id="audioVideoP">音视频专区</p>
+                  </div>
+                       <div class="book_inner_area">
+                       <div class="book_inner_content" style=" display:none;">
+                           <p>本书旨在为读者提供一个深入理解工业物联网结构及其运行机制的平台。全书系统地介绍了工业物联网的基本概念、主要类型、结构框架、信息运行等核心内容。本书以自主创新的"三体系五平台”物联网理论为基础框架，风格鲜明。本书通过深入浅出的阐述，力求为读者提供一个立体化的理论结构，使读者能够掌握工业物联网的基本原理，并将这些原理应用于实际的工业场景中。 本书适用于普通高等教育或高等职业院校物联网、智能制造相关专业学生的学习，也可供物联网与智能制造相关的研究人员与从业者使用。</p>
+                       </div>
+                       <div class="book_inner_content" style=" display:none;">
+                          <textarea cols=78 rows=20  readonly>第一章
+工业物联网
+第一节 工业物联网概述 / 002
+第二节 智能制造工业物联网 / 004
+第三节 智慧工厂工业物联网 / 005
+第四节 云制造工业物联网 / 005
+第二章
+智能制造工业物联网体系
+第一节 智能制造工业物联网结构 / 008
+第二节 智能制造工业物联网类型 / 011
+第三节 智能制造工业物联网组网过程 / 018
+第三章
+智能制造工业物联网用户平台
+第一节 用户平台的功能体系 / 024
+Chapter 3
+x
+Chapter 5
+Chapter 6
+Chapter 4
+第二节 用户平台的信息体系 / 029
+第三节 用户平台的物理体系 / 037
+第四章
+智能制造工业物联网服务平台
+第一节 服务平台的功能体系 / 040
+第二节 服务平台的信息体系 / 044
+第三节 服务平台的物理体系 / 051
+第五章
+智能制造工业物联网管理平台
+第一节 管理平台的功能体系 / 056
+第二节 管理平台的信息体系 / 063
+第三节 管理平台的物理体系 / 083
+第六章
+智能制造工业物联网传感网络平台
+第一节 传感网络平台的功能体系 / 088
+第二节 传感网络平台的信息体系 / 091
+第三节 传感网络平台的物理体系 / 098
+工业物联网原理
+xi
+Chapter 7
+Chapter 8
+Chapter 9
+第七章
+智能制造工业物联网感知控制平台
+第一节 感知控制平台的功能体系 / 104
+第二节 感知控制平台的信息体系 / 108
+第三节 感知控制平台的物理体系 / 116
+第八章
+智慧工厂工业物联网
+第一节 智慧工厂工业物联网的整体结构 / 120
+第二节 智慧工厂业务物联网 / 124
+第三节 智慧工厂职能物联网 / 129
+第四节 智慧工厂行政物联网 / 132
+第五节 智慧工厂自组物联网 / 136
+第九章
+云制造工业物联网
+第一节 工业物联网云平台 / 140
+第二节 智慧工业园工业物联网 / 147
+第三节 智慧工业区工业物联网 / 157
+第四节 广域云制造工业物联网 / 160
+结语 / 167
+参考文献 / 169</textarea>
+                       </div>
+                       <div class="book_inner_content" style=" display:none;">
+                           <textarea cols=78 rows=20 readonly>《工业物联网原理》是对工业物联网组建和运行逻辑的阐述。在工业
+物联网这一概念诞生之前，物联网并未被明确应用于工业领域，各领域也
+没有对物联网形成统一的认识。在当时对物联网的众多解释中，最主要的
+有 3 种：M2M、IoT、CPS。
+M2M（Machine to Machine，机器对机器）由通信行业提出，是指机
+器与机器之间的通信连接，后又衍生出人与机器（Man to Machine）之间
+的通信连接这一内涵。M2M 强调人、设备、信息系统三者之间的信息互
+通和互动，关注通信的实现，网络在其技术框架中处于核心地位。
+IoT（Internet of Things，物联网技术）由 IT 行业提出，是指信息传
+感设备与互联网的连接。IoT 强调物和物之间通过互联网进行的通信，互
+联网的全球化、开放性、互操作性、社交性是支撑 IoT 这一理念的基础。
+CPS（Cyber Physical System，信息物理系统）于 2006 年在美国被提
+出，是指工业制造中嵌入式、自动化的信息系统。CPS 深度融合了传感
+器、嵌入式计算、云计算、网络通信、软件等各类信息技术，使得各类信
+息技术高度协同和自治，实现了生产应用系统自主、智能、动态、系统化
+地监视并改变物理世界的性状。CPS 强调物理世界和信息世界之间实时
+的、动态的信息反馈与循环过程。
+M2M、IoT、CPS 之间并不是彼此独立的，其中大量技术功能存在交
+叉或互补，三者代表了物联网的不同侧重领域。在融合以上三类概念的基
+础上，“工业 4.0”与“工业互联网”的概念得以诞生，进而发展出“工业
+物联网”这一概念。
+从第一次工业革命至今，工业的诞生与发展已经历了多个阶段，自工
+业 1.0 开始，已演进到工业 4.0。工业 1.0 是机械制造时代，18 世纪的第
+一次工业革命，以蒸汽动力驱动机器从而代替人力，实现了工业生产的蒸
+汽化，工业化进程启动。工业 2.0 是电气化时代，19 世纪下半叶到 20 世
+纪初的第二次工业革命，以电力替代蒸汽，实现了工业生产的电气化，通
+过零部件生产与产品装配的成功分离，开创了产品批量生产的新模式。工
+业 3.0 是电子信息化时代，20 世纪 70 年代至今，电子与信息技术的发展
+和应用，使制造过程的自动化程度进一步提高，实现了工业生产的信息化
+和自动化，以 PLC（Programmble Logic Controller，可编程逻辑控制器）
+与 PC（Personal Computer，个人计算机）的应用为标志，实现了机器对
+人工的进一步替代。
+工业 3.0 在近 20 年实现了高速的发展，催生出工业 4.0。工业 4.0 这
+一概念，最早于 2013 年由德国提出，其主要目标是建设信息物理系统，
+并积极布局智能工厂，推进智能生产，最终形成一个提供高度灵活的个性
+化和数字化产品与服务的生产模式。工业 4.0 是智能制造时代，智能化的
+机器将实现对人工的高度替代。此外，工业 4.0 不仅涉及生产制造过程，
+还涵盖研发设计、仿真模拟、工艺设计、生产实施、物流仓储和售后服务
+等多个方面。工业 4.0 旨在通过智能化、网络化、集成化的技术实现工业
+的高度自动化，为企业提供更高效、更精确的生产能力，为消费者提供更
+优质、更具个性化的产品和服务。
+基于工业 4.0 这一趋势和愿景，工业物联网应运而生。The Industrial
+Internet of Things（工业物联网）这一概念源自 2012 年由美国通用电气公
+司（GE）提出的 Industrial Internet（工业互联网）概念。工业互联网并非
+互联网在工业中的简单应用，而是新一代信息通信技术与工业经济深度融
+合的新型基础设施、应用模式和工业生态，通过对人、机、物、系统等的
+全面连接，构建起覆盖全产业链、全价值链的全新制造和服务体系，为工
+业乃至产业的数字化、网络化、智能化发展提供了实现途径。工业互联网
+将虚拟消费转化成实体消费，互联网与生产领域紧密联系，从而建立工业
+互联的网络结构，实现工业生产的智能化、自动化。工业互联网强调工业
+生产中的联网特性，在此基础上，工业物联网将这种联网特性建立在工业
+生产中物与物的关系之上，相较于工业互联网更为全面、本质地把握了新
+阶段工业生产的特点，故本书采用“工业物联网”作为统一指称，将“工
+业互联网”涵盖在内。
+工业物联网和工业 4.0 在理念层面具有较高的契合度，都依托于互联
+网、物联网与大数据等技术实现集成与互联，都利用信息化、智能化手段
+改造当前的生产制造与服务模式，以提高企业的生产效率，提升产品和服
+务的市场竞争力。
+同时，相较于工业 4.0，工业物联网这一概念内涵更为丰富，外延更
+为全面。工业 4.0 战略偏重生产制造的“硬”环节；工业物联网强调工业
+生产的“软”“硬”结合。工业 4.0 偏重生产与制造过程，由集中式控制向
+分散式增强型控制转变；工业物联网关注生产、制造过程与设计、服务环
+节的有机融合，旨在形成开放且全球化的工业物联网络，通过通信、控制
+和计算在智能制造设备和系统上的集合，实现生产管理与服务水平的同步
+提升。工业 4.0 强调生产过程的智能化；工业物联网强调工业企业内外部
+运行全流程的智能化。工业 4.0 倡导通过以 CPS 为核心的产品与生产设备
+之间、工厂与工厂之间的横向集成，实现生产系统的有机整合，进而推动
+生产效率的提升；工业物联网则立足于全行业的信息资源，追求全行业的
+制造升级。
+2015 年，工业 4.0 联盟和工业互联网联盟开始合作，以解决两种物联
+网标准因存在较大差异而产生的矛盾。工业 4.0 立足于德国工业中小企业
+不具备“数字化转型”能力的问题，重点帮助德国中小企业降低数字化转
+型的成本，以及通过大企业的落地项目，带动产业链上下游的中小企业优
+先发展，进而促使德国大、中、小企业共同参与到新的全球化产业格局
+中。工业互联网则立足于美国信息与互联网产业发达，而制造业衰退的
+“产业空心化”问题，着重于美国产业结构的重新平衡，以重新实现美国
+对工业领域全盘掌控。
+工业 4.0 和工业互联网各有优势和短板，在此基础上，工业物联网将
+二者优势互补，在最大程度上克服了二者的短板。工业物联网将“硬件
+化”和“软件化”升级路线相结合，既关注复杂生产场景中的工业自动
+化、软 / 硬件的融合和内部信息系统的智能化，也强调将大数据、人工智
+能等新型信息技术注入工业领域的企业系统，以推动产业链整体的智能
+化。工业物联网既是制造业的价值链重新构建，也是跨领域的工业互联
+架构。
+工业物联网这一概念，在现阶段得到了进一步发展。现阶段的工业制
+造作为工业物联网的新型实践场域，将工业物联网指向当前工业领域存在
+的主要问题：其一，信息孤岛，在工业数字化过程中，由于系统不兼容、
+数据格式不统一等因素，未实现工业企业、用户之间的流程整合与数据共
+享，无法支持一体化流转；其二，低效决策，生产管理系统数据采集不
+全，导致数据质量不佳或数据不完整，无法支持相应的高效决策；其三，
+数据分散，工业企业基于多系统集成的方式进行生产制造管理，系统之间
+互通性不足，数据被独立分散存储；其四，自动化程度较低，多数工业企
+业未实现全流程自动化生产，不利于生产效率的提高和生产成本的降低；
+其五，管理效率低下，多数工业企业未实现信息化、体系化管理，各系
+统、各环节独立运作，阻碍了管理水平的提升。
+工业物联网的建设、完善与应用是解决上述问题、实现工业转型的必
+经之路，是推动高质高效发展的重要引擎。具体而言，工业物联网的价值
+与意义主要体现在以下三个方面。
+第一，工业物联网是实现人们日益增长的需求的重要途径。人们对美
+好生活的向往和追求，生发出丰富多样的物质和精神需求。工业生产是产
+品和服务得以实现的核心环节，相较于传统工业生产，工业物联网的应用
+能够提供更多高质量产品与服务，进一步满足人们的需求，作用于人们生
+活水平和幸福感的提升。
+第二，工业物联网是推动产业转型与升级的必由道路。目前，工业发
+展面临着老龄化社会带来的劳动力减少、资源匮乏背景下的能效不足、
+产业转移带来的国内制造业空心化、全球化背景下的制造业竞争加剧等
+问题。制造业产值是 GDP 的重要组成部分，工业物联网将以制造业为抓
+手，进一步推动产业的转型与升级，实现传统制造向智能制造的转变。
+第三，工业物联网是顺应经济发展规律、响应市场需求的必然选择。
+现阶段的全球市场，是充满差异化、个性化的消费者需求的市场。为适应
+这些需求，需要利用工业物联网推动工业生产实现从“大规模生产”向
+“大规模定制”的转变。“大规模定制”，以顾客为中心，以快速响应赢得
+市场；根据客户定点安排生产，属于拉动式生产方式；通过灵活性和快速
+响应来实现多样化和定制化；实行差异化战略，通过快速反应、提供个性
+化产品和服务来获取竞争优势。
+本书正是立足于工业发展的新阶段，为工业创新贡献新思路，将工业
+物联网原理以结构清晰、体系完整的形式向读者呈现。本书将工业物联网
+的基础理论与应用实际相结合，以明晰的工业物联网组建和运行逻辑为指
+导，系统地介绍了工业物联网的基本概念、主要类型、结构框架、信息运
+行等核心内容。本书通过深入浅出的阐述，力求为读者提供一个立体化的
+理论结构，使读者能够掌握工业物联网的基本原理，并将这些原理应用于
+实际的工业场景中。</textarea>　　                                                                                                                                 
+                       </div>
+                       <div class="book_inner_content" style=" display:none;">
+                            <textarea cols=78 rows=20 readonly></textarea>                                                                    
+                       </div>
+                       <div class="book_inner_content" style=" display:none;">
+ 							 <textarea cols=78 rows=20 readonly>邵汉舒，成都秦川物联网科技股份有限公司理论与技术研究员，哥伦比亚大学应用数学硕士。主要从事物联网理论与技术研究、标准研究以及智慧城市与应用数学相关研究。获得物联网与智慧城市相关中国发明专利10项授权维持，4项授权办理登记，1项在审；相关美国发明专利4项授权办理登记，12项在审。参编多个物联网与智慧城市相关国家标准和行业标准。发表多篇物联网、智慧城市以及应用数学相关SCI论文。     </textarea>                                                                                                
+                       </div>
+                       <div class="book_inner_content" style=" display:none;">
+							<ul>
+							
+							</ul>
+							                                                                                                     
+                       </div>
+                       <div class="book_inner_content" style=" display:none;">
+						　 <textarea cols=78 rows=20  readonly>  </textarea>  
+						</div>                           
+                       <div id="peitaoziyuanDiv" style="display:none;" class="book_inner_content" >
+                       <style>
+a.test1:link{
+    font-size:17px; 
+    color: #666;
+    text-decoration: none;
+}
+a.test1:visited{
+    font-size: 17px; 
+    color: #666;
+    text-decoration: none;
+}
+a.test1:hover{
+    font-size: 17px; 
+    color: #333;
+    text-decoration: underline;
+}
+a.test1:active{
+    font-size: 17px; 
+    color: #666;
+    text-decoration: none;
+}
+a.test2:link{
+font:20px/24px Arial,"Microsoft YaHei";
+    font-size:14px; 
+    color: #666;
+    text-decoration: none;
+}
+a.test2:visited{
+font:20px/24px Arial,"Microsoft YaHei";
+    font-size: 14px; 
+    color: #666;
+    text-decoration: none;
+}
+a.test2:hover{
+font:20px/24px Arial,"Microsoft YaHei";
+    font-size: 14px; 
+    color: #333;
+    text-decoration: underline;
+}
+a.test2:active{
+font:20px/24px Arial,"Microsoft YaHei";
+    font-size: 14px; 
+    color: #666;
+    text-decoration: none;
+}
+                       </style>
+                       
+                           <p ng-if="!hasBookSource"></p>
+                           <div ng-if="hasBookSource" class="book_content_zy">
+                                <ul>
+                                    <li>
+                                        <a id="sourceHref"  target="_blank" href="http://www.hxedu.com.cn/hxedu/fg/book/bookinfo.html?code={{urlBookCode}}" title="">本书配套资源下载</a>
+                                    </li>
+                                </ul>
+                           </div> 
+          <div class="book_content_zy">
+                                <div ng-if="hasBookSource" class="book_zy_title">
+                                <a style="display:none;" class="test1" target="_blank" href="http://www.hxedu.com.cn/hxedu/fg/book/bookinfo.html?code={{urlBookCode}}">本书配套资源</a>
+                                <br /><br />
+                                <a style="display:none;" id="sourceHref" class="test2"  title="">本书其他配套资料下载</a>
+                                <script>
+                              //资源
+                            	var source = '';
+                            	if(source == ""){
+                            		//jQuery("#sourceHref").html("本书暂无其他配套资料");
+                            	}else{
+                            		//jQuery("#sourceHref").html("本书其他配套资料下载");
+                            		//jQuery("#sourceHref").attr("href","/module/goods/manager/templates/uploadfile/"+source);
+                            	}
+                                </script>
+                                </div>
+                           </div>                                                                                                    
+                       </div>
+                       <div  class="book_inner_content"  style=" display:none;">
+                           <p id="noMediaDiv">对不起，暂无音视频资源！</p>
+                           <div id="hasMediaDiv" class="book_audio_video">
+                                <div id="bookAudioDescDiv" style="display:none;" class="book_audio_video_title">本书音频资源</div>
+                                <div id="bookAudioDiv" style="display:none;" class="book_audio">
+                                    <!-- 音频开始 -->
+                                    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="350" height="30"
+    codebase="/player/mp3/swflash.cab">
+    <param name="movie" value="/player/mp3/EasyMp3Player.swf?showDownload=false&file=/module/goods/manager/templates/uploadfile/" />
+    <param name="wmode" value="transparent" />
+    <embed wmode="transparent" width="350" height="30" src="/player/mp3/EasyMp3Player.swf?showDownload=false&file=/module/goods/manager/templates/uploadfile/"
+    type="application/x-shockwave-flash" pluginspage="" />
+</object>
+                                    <!-- 音频结束 -->
+                                </div>
+                                <div id="bookVideoDescDiv" style="display:none;" class="book_audio_video_title">本书视频资源</div>
+                                <div id="bookVideoDiv" style="display:none;" class="book_video">
+                                <!-- 视频开始 -->
+                                     <div class="video" id="CuPlayer">
+<script type="text/javascript">
+
+var vID        = "c1";                   //vID
+var vWidth     = "600";                  //宽度设定，配合CSS实现
+var vHeight    = "400";                  //高度设定，配合CSS实现
+var vFile      = "/player/CuSunV4set.xml";       //配置文件地址:支持五种广告设定
+var vPlayer    = "/player/player.swf?v=4.0";     //播放器文件地址
+var vPic       = "/player/pic/pic01.jpg?1=1";        //视频缩略图
+var vCssurl    = "/player/css/videos.min.css";   //CSS文件
+var vAutoPlay  = "no";                  //是否自动播放
+var vEndTime   = 0;                      //预览时间(秒数),默认为0
+var vLogoPath  = "";      //Logo地址
+var vPlayMod   = 0;                      //播放模式优先级,默认=0,html5优先=1,flash优先=2
+var vMp4url    = "/module/goods/manager/templates/uploadfile/";//视频文件地址推荐用mp4文件(h264编码)
+
+
+</script>
+<script class="CuPlayerVideo" data-mce-role="CuPlayerVideo" type="text/javascript" src="/player/js/player.min.js"></script>
+
+</div>
+                                <!-- 视频结束 -->
+                                </div>
+                           </div>                                                                                                    
+                       </div>
+                  </div>
+                  </div>
+                  <div class="book_content_pinglun">
+                       <div class="content_pinglun_title">
+                       <a  name="comment"></a>
+                            <span><a href="/module/goods/wssd_content_comment.jsp?bookid=66984">查看更多 ></a></span>
+                            图书评论 
+                       </div>
+                       <div class="book_content_pinglun_form">
+                            <p id="noCommentP" class="no_pinglun">暂无评论</p>
+                            <div class="pinglun_area">
+                                 <ul>
+                                 
+                                 </ul>
+                            </div>
+                            <div class="pinglun_form_title">发表图书评论</div>
+                            <dl>
+                            <form name="formcomment" method="post" action="/module/comment/commentalllogin.jsp">
+                            <input type="hidden" name="goodid" value="66984"/>
+                            <input type="hidden" name="locationHref" value="bookInfo"/>
+                            <input  type="hidden" name="rank" id="radio" value="5" />
+                                <dt>评论标题：</dt>
+                                <dd><input type="text" name="title" class="dd_input_title"></dd>
+                                <dt>评论内容：</dt>
+                                <dd><textarea name="textcontent" onKeyDown='if (this.value.length>=100){event.returnValue=false}' class="dd_itextarea"></textarea></dd>
+                                <dt>验 证 码：</dt>
+                                <dd>
+                                    <input type="text" name="VCode" class="dd_input_yzm">
+                                    <span><img id="VCodeImg" src="/module/membercenter/ValidateImage.jsp" width="77" height="38" /></span>
+                                    <i><a  href="javascript:void(0)" onclick="refresh()">看不清楚<br/>点击刷新</a></i>
+                                </dd>
+                                <dt>&nbsp;</dt>
+                                <dd ng-if="isLogined">
+                                    <input type="button" class="dd_btn_tj" onclick="commentBook()" style=" border:0;color:#fff;" value="发表评论">
+                                </dd>
+                                </form>
+                                <dd ng-if="!isLogined">
+                                    <input type="button" class="dd_btn_tj" style=" border:0;color:#fff;" value="发表评论">
+                                    <p class="p_tip">您还没有登录，请登录后再评论。</p><span  class="span_login"><a href="/module/membercenter/memberlogin.jsp?backUrl=/module/goods/wssd_content.jsp?bookid=34544">点击“登录”</a></span>
+                                </dd>
+                            </dl>
+                       </div>  
+                  </div>
+                  <div class="book_buy_view">
+                       <div class="book_buy_view_title">购买过本书的顾客还买过</div>
+                       <ul>
+	                       <li ng-repeat="data in dataArray['buyOneBuyMoreList']" data-id="{{$index+1}}">
+	                          <a href="/module/goods/wssd_content.jsp?bookid={{data.bookId}}">
+                              <p class="li_book_img">
+                                 <img src="{{data.bookImg.replace('http://218.249.32.138/thumbs', 'https://www.phei.com.cn/covers')}}" />
+                              </p> 
+                              <p class="li_book_title">{{data.bookName}}</p>
+                              <p class="li_price">￥{{data.price}}</p>
+                              </a>
+	                      </li>
+                       </ul>
+                  </div>
+                  <div class="book_buy_view">
+                       <div class="book_buy_view_title">最近浏览</div>
+                       <ul>
+                           <li ng-repeat="data in dataArray['history']" data-id="{{$index+1}}">
+                              <a href="/module/goods/wssd_content.jsp?bookid={{data.bookId}}">
+                              <p class="li_book_img">
+                                 <img src="{{data.bookImg.replace('http://218.249.32.138/thumbs', 'https://www.phei.com.cn/covers')}}" />
+                              </p>
+                              <p class="li_book_title">{{data.bookName}}</p>
+                              <p class="li_price">￥{{data.price}}</p>
+                              </a>
+                           </li>
+                       </ul>
+                  </div>
+             </div>
+            
+        </div>
+    </section>
+    <!--bottom menu beigin-->
+     ﻿<section class="web_book_bottom">
+        <div class="web_book_bottom_inner">
+             <div class="web_book_bottom_innerleft">
+                   <dl>
+                      <dt>关于我社</dt>
+                      <dd>
+                      <!--EHM_SystemNav?pcid=18&showlocation=0-->
+                  		
+                         <a href="/gywm/cbsjj/2010-11-19/47.shtml">出版社简介</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/szzc/2010-11-19/48.shtml">社长致辞</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/smsh/2010-11-19/49.shtml">社名社徽</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/jgsz/2010-11-19/50.shtml">机构设置</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/gjhz/2010-11-19/39.shtml">国际合作</a>
+                  		
+               	   	     
+                  		
+                         <a href="/gywm/qkjs1/2018-10-14/836.shtml">期刊介绍</a>
+                  		
+               	   	     <!--/EHM_SystemNav-->
+               	   	     <!--EHM_SystemNav?pcid=18&showlocation=1--><!--/EHM_SystemNav-->
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>读者服务</dt>
+                      <dd>
+                       
+                        <a href="/xssl/gszn/2011-07-28/336.shtml" title="">购书指南</a>
+                       
+                        <a href="/xssl/cpfw/2011-07-28/334.shtml" title="">产品范围</a>
+                       
+                        <a href="/xssl/wzjs/2011-07-25/330.shtml" title="">网站介绍</a>
+                       
+
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>作译者服务</dt>
+                      <dd>
+                          
+                        <a href="/module/contribution/wstg_index.jsp" title="">网上投稿</a>
+                       
+                        <a href="/wstg/csfx/index.shtml" title="">出书方向</a>
+                       
+                        <a href="/wstg/bjbm/index.shtml" title="">编辑部门</a>
+                       
+                        <a href="/wstg/zyzxz/index.shtml" title="">作译者须知</a>
+                       
+                        <a href="/module/membercenter/hyzx.jsp" title="">您的著作</a>
+                       
+
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>数字资源</dt>
+                      <dd>
+                          
+                        <a href="http://www.hxedu.com.cn" title="">华信教育资源网</a>
+                       
+                        <a href="https://yd.51zhy.cn/" title="">悦读</a>
+                       
+                        <a href="https://yx.51zhy.cn/" title="">悦学</a>
+                       
+                        <a href="https://yz.51zhy.cn" title="">悦知</a>
+                       
+                        <a href="https://znzz.51zhy.cn" title="">悦智</a>
+                       
+
+                      </dd>
+                  </dl>
+                  <dl>
+                      <dt>联系我们</dt>
+                      <dd>
+                          
+                        <a href="/lxwm/wsdz/2018-10-14/854.shtml" title="">联系方式</a>
+                       
+                        <a href="https://phei.zhiye.com/" title="">诚邀英才</a>
+                       
+
+                      </dd>
+                  </dl>
+             </div>
+             <div class="web_book_bottom_innerright">
+                  <p>
+                      <span class="bg_visit">关注我们&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="/module/goods/smxz.jsp">书目下载</a>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://mp.weixin.qq.com/s?__biz=MjM5OTEzMjg3Mw==&mid=212390993&idx=1&sn=f5b3fb3097af79ce5fcce64e34826cb0&chksm=2f9c5ff718ebd6e14a8cda34ea8f310d5696da3cddbeccb4c46bdec607f28afd96ad42df48a5&mpshare=1&scene=1&srcid=12278jdXq2Umf05cTGLL9Dro#rd">微信矩阵</a></span> 
+                  </p>
+                  <p>
+                     <a href="https://dzgycbs.tmall.com/shop/view_shop.htm?spm=a220m.1000862.1000730.2.67db3d8ctVzbmz&user_number_id=1932014659&rn=f10e85f71f9f4ac1f4082e951efc341f" target="_blank"><img src="/templates/images/img_tmall.jpg" width="108" height="108" /></a>
+                     <img src="/templates/images/img_ewm_weibo.jpg" width="108" height="126" />
+                     <img src="/templates/images/img_ewm_weixin.jpg" width="108" height="126" />
+                  </p>
+             </div>   
+        </div>
+        <div style=" clear:both"></div>
+    </section>
+    <!--bottom menu end-->
+    <!--footer beigin-->
+    <footer>
+        <div class="web_book_footer">
+             <span>电子工业出版社地址：北京市万寿路南口金家村288号华信大厦</span></br>
+<span>版权所有(C)2017电子工业出版社</span><span><a href="https://beian.miit.gov.cn/" target="_blank">京ICP备11030724</a></span>
+<span>出版物经营许可证：新出发京批字第版130001号</span>
+        </div>
+    </footer>
+     <script src="/templates/javascript/imageSrcConvert.js" type="text/javascript"></script>
+
+    <!--footer beigin-->
+     <script src="/module/goods/manager/newjs/goodTypeNew.js" type="text/javascript"></script>
+    <script src="/module/goods/js/wssd.js" type="text/javascript"></script>
+    <script>
+    //是否有电子课件在线资源，链接到华信教育资源网
+    $(document).ready(function(){
+    	
+    //buyHrefDiv	
+    var thirdHrefCode = '908290320675';
+    if(thirdHrefCode!= ""){
+    	jQuery("#buyHrefDiv").show();
+    }
+    var url = "/module/goods/abookSource.jsp?isbn=9787121497186";
+    handleTrans(url,{},showHasSource);
+    function showHasSource(jsonData){
+    	 var appElement = document.querySelector('[ng-controller=topDivCtrl]');
+         var $scope = angular.element(appElement).scope();
+         if(jsonData.code == 0){
+			$scope.hasBookSource = true;    
+			var source = '';
+			$scope.showziyuan= false;
+			if(source != "" || $scope.hasBookSource ){
+				$scope.showziyuan= true;
+				jQuery("#peitaoziyuanP").show();
+				jQuery("#peitaoziyuanDiv").show();
+			}else{
+				jQuery("#peitaoziyuanP").hide();
+				jQuery("#peitaoziyuanDiv").hide();
+			}
+			$scope.urlBookCode = jsonData.bookCode;        	 
+         	$scope.$apply();
+         }
+    }
+    //看了又看
+    var seeoneseemoreUrl = "/module/goods/llgbsdgkhkg_include.jsp?shownum=10&liststr=seeoneseemorelist&bookid=66984";
+    handleTrans(seeoneseemoreUrl,{},showSeeOneSeeMore);
+    function showSeeOneSeeMore(jsonData){
+    	 var appElement = document.querySelector('[ng-controller=topDivCtrl]');
+    	var $scope = angular.element(appElement).scope();
+    	if(!$scope.dataArray){
+    		$scope.dataArray = [];
+    	}
+        if(jsonData.code == 0){
+			$scope.dataArray['seeOneSeeMoreList'] = jsonData.bookList;        	 
+        }
+        $scope.$apply();
+    	 
+    }
+    //买了又买
+    var buyOneBuyMoreUrl = "/module/goods/haimaile_include.jsp?shownum=6&liststr=haimailelist&bookid=66984";
+    handleTrans(buyOneBuyMoreUrl,{},showBuyOneBuyMore);
+    function showBuyOneBuyMore(jsonData){
+    	var appElement = document.querySelector('[ng-controller=topDivCtrl]');
+    	var $scope = angular.element(appElement).scope();
+        if(jsonData.code == 0){
+        	if(!$scope.dataArray){
+        		$scope.dataArray = [];
+        		$scope.dataArray['buyOneBuyMoreList'] = [];
+        	}
+			$scope.dataArray['buyOneBuyMoreList'] = jsonData.bookList;        	 
+        }
+        $scope.$apply();
+    	 
+    }
+    //最近浏览
+    var url = "/module/goods/goodcookie.jsp?shownum=12&liststr=cookielist&bookid=66984&c="+redcookie('phei');
+    handleTrans(url,{},showHistory);
+   
+    function showHistory(jsonDate){
+    	 var appElement = document.querySelector('[ng-controller=topDivCtrl]');
+         var $scope = angular.element(appElement).scope();
+         if(!$scope.dataArray){
+         	$scope.dataArray = [];
+         	$scope.dataArray['history'] = [];
+         }
+         //console.info(angular.element(appElement).scope());
+     	$scope.dataArray['history'] = jsonDate.historyList;
+         $scope.$apply();
+        
+    }
+    });
+    </script>
+    <script>
+    $(document).ready(function(){
+//分享功能
+		var url = 'http://service.weibo.com/share/share.php?url='+location.href+'&title=工业物联网原理&searchPic=true';
+		var sharePic = "";
+		jQuery("img").each(function(){
+			if($(this)[0].width >= 300 && $(this)[0].height >=300){
+				sharePic = $(this)[0].src;
+				 return false; //跳出循环
+			}
+		});
+		if(sharePic != ""){
+			url += "&pic="+sharePic;
+		}
+		jQuery("#shareWeiboHref").attr("href",url);
+		var domain = window.location.host; 
+		var qrcodeurl = "http://"+domain+"/module/wap/sbookcd.jsp?goodid=66984"
+		jQuery('#weicinQRCodeDiv').qrcode(qrcodeurl);
+		//jQuery('#weicinQRCodeDiv').show();	
+		
+		var hasComment = "false";
+		if(hasComment == "true"){
+			jQuery("#noCommentP").hide();
+		}
+		//评论
+function commentBook(){
+	document.formcomment.submit();
+}
+	
+	//音频视频
+	var video = '';
+	var audio = '';
+	
+	var haveNoMedia = (video == "" && audio =="");
+	if(haveNoMedia){
+		jQuery("#noMediaDiv").show();
+		jQuery("#audioVideoP").hide();
+	}else{
+		jQuery("#audioVideoP").show();
+		jQuery("#noMediaDiv").hide();
+	}
+	if(video != ""){
+		jQuery("#bookVideoDescDiv").show();
+		jQuery("#bookVideoDiv").show();
+	}
+	if(audio != ""){
+		jQuery("#bookAudioDescDiv").show();
+		jQuery("#bookAudioDiv").show();
+	}
+
+ 
+
+    });
+    var recCategory = "科技";
+    var recName = "工业物联网原理";
+    var recId = "66984";
+    var recISBN = "9787121497186";
+</script>
+<script type="text/javascript" src="/module/goods/js/topCart.js"></script>
+<script>
+/*function isMobile() {
+    var userAgentInfo = navigator.userAgent;
+
+    var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+    var mobile_flag = false;
+
+    //根据userAgent判断是否是手机
+    for (var v = 0; v < mobileAgents.length; v++) {
+        if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+            mobile_flag = true;
+            break;
+        }
+    }
+
+     var screen_width = window.screen.width;
+     var screen_height = window.screen.height;    
+
+     //根据屏幕分辨率判断是否是手机
+     if(screen_width < 500 && screen_height < 800){
+         mobile_flag = true;
+     }
+
+     return mobile_flag;
+}*/
+
+//if(isMobile()){
+	///location.href="/module/wap/sbookcd.jsp?goodid=66984";
+//}
+</script>
+<script type="text/javascript" src="/cns/templates/javascript/a.js"></script>
+</body>
+</html>
+

@@ -131,7 +131,9 @@ class BaseAgent:
 ## 配图规格标记
 - 需要架构图、时序图、流程图、数据流图、金字塔图、分层图、拓扑图、生命周期图、矩阵图或时间线时，必须输出 fenced code block：```{marker}。
 - `{marker}` 代码块只描述图表规格，供后续 HTML/SVG 统一绘制；不要在正文中生成 Markdown 图片路径、Mermaid、SVG、HTML 或 ASCII 图。
-- 图表规格必须包含图名、用途、布局、元素、关系、图例、图注和渲染说明；配色和视觉语义必须遵守以下全书统一配置。
+- 图表规格必须先写清 `audience_takeaway` 和 `visual_focus`，再用结构化 `components`、`connections`、`regions` 表达节点、连线和边界；不要把图表写成自然语言占位说明。
+- `components` 必须使用短标签和稳定 id；`connections` 必须引用这些 id；禁止出现“节点1/节点2/最右侧/container/service/user”这类占位标签。
+- 图名、用途、布局、元素、关系、图例、图注、渲染说明、配色和视觉语义必须遵守以下全书统一配置。
 ```json
 {rules}
 ```"""

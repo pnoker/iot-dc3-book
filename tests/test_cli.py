@@ -61,14 +61,73 @@ def test_write_audit_command(monkeypatch) -> None:
 
         def write_audit(self, thread_id: str) -> dict[str, object]:
             calls.append(("write_audit", thread_id))
-            return {"thread_id": thread_id, "publication_audit": {"pass": False}}
+            return {
+                "thread_id": thread_id,
+                "checkpoint_exists": True,
+                "lock": {"exists": True, "pid": 123, "operation": "write.resume", "started_at": "2026-07-11T12:00:00"},
+                "worker_checkpoints": {"count": 1, "chapters": [{"chapter_id": 3}]},
+                "progress": {
+                    "phase": "completed",
+                    "sections": {"reviewed": 3},
+                    "chapters": {"approved": 1, "quality_failed": 1},
+                    "section_contents": 3,
+                    "chapter_contents": 2,
+                    "total_words": 12345,
+                },
+                "manuscript_drift": {
+                    "missing_section_files": [],
+                    "missing_chapter_files": [],
+                    "orphan_section_files": [],
+                    "orphan_chapter_files": [],
+                },
+                "quality_failures": {
+                    "failed_sections": [],
+                    "failed_chapters": [2],
+                    "section_issue_codes": {},
+                    "chapter_issue_codes": {"fact.unsourced_hard_fact": 2},
+                },
+                "publication_audit": {
+                    "pass": False,
+                    "issue_count": 1,
+                    "blocking_issue_count": 1,
+                    "issues": [
+                        {
+                            "code": "chapter.quality_failed",
+                            "severity": "blocker",
+                            "chapter_id": 2,
+                            "message": "第2章章节质量门未通过。",
+                            "suggestion": "执行 write resume 2。",
+                        }
+                    ],
+                },
+                "recommended_commands": ["uv run python main.py write resume all"],
+            }
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
     result = runner.invoke(app, ["--thread-id", "book-2", "write", "audit"])
 
     assert result.exit_code == 0
-    assert '"pass": false' in result.output
+    assert "出版审计报告" in result.output
+    assert "写作进程：🟡 运行中 pid=123 operation=write.resume" in result.output
+    assert "章节未通过：第2章" in result.output
+    assert "chapter.quality_failed" in result.output
+    assert "uv run python main.py write resume all" in result.output
     assert calls == [("init", "config"), ("write_audit", "book-2")]
+
+
+def test_write_audit_json_option(monkeypatch) -> None:
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            pass
+
+        def write_audit(self, thread_id: str) -> dict[str, object]:
+            return {"thread_id": thread_id, "publication_audit": {"pass": False}}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "audit", "--json"])
+
+    assert result.exit_code == 0
+    assert '"pass": false' in result.output
 
 
 def test_kb_build_passes_rebuild_flag(monkeypatch) -> None:
@@ -128,6 +187,120 @@ def test_write_recover_manuscript_command(monkeypatch) -> None:
     assert calls == [("init", "config"), ("recover_manuscript", "book-1")]
 
 
+def test_write_figures_build_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_figures_build(self, thread_id: str, *, draft: bool = False, force: bool = False) -> dict[str, object]:
+            calls.append(("write_figures_build", thread_id, draft, force))
+            return {"generated_count": 2, "failed_count": 0, "draft": draft, "force": force}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "figures", "build", "--draft", "--force"])
+
+    assert result.exit_code == 0
+    assert '"generated_count": 2' in result.output
+    assert calls == [("init", "config"), ("write_figures_build", "book-2", True, True)]
+
+
+def test_write_figures_upgrade_briefs_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_figures_upgrade_briefs(self, thread_id: str, *, dry_run: bool = False) -> dict[str, object]:
+            calls.append(("write_figures_upgrade_briefs", thread_id, dry_run))
+            return {"total": {"changed_blocks": 3}, "dry_run": dry_run}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "figures", "upgrade-briefs", "--dry-run"])
+
+    assert result.exit_code == 0
+    assert '"changed_blocks": 3' in result.output
+    assert calls == [("init", "config"), ("write_figures_upgrade_briefs", "book-2", True)]
+
+
+def test_write_figures_audit_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_figures_audit(self, thread_id: str, *, draft: bool = False) -> dict[str, object]:
+            calls.append(("write_figures_audit", thread_id, draft))
+            return {"total": 2, "polished": 1, "draft": draft}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "figures", "audit", "--draft"])
+
+    assert result.exit_code == 0
+    assert '"polished": 1' in result.output
+    assert calls == [("init", "config"), ("write_figures_audit", "book-2", True)]
+
+
+def test_write_figures_polish_plan_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_figures_polish_plan(self, thread_id: str) -> dict[str, object]:
+            calls.append(("write_figures_polish_plan", thread_id))
+            return {"total": 51, "pending": 51, "plan_path": "assets/figures/polished/polish-plan.json"}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "figures", "polish-plan"])
+
+    assert result.exit_code == 0
+    assert '"pending": 51' in result.output
+    assert calls == [("init", "config"), ("write_figures_polish_plan", "book-2")]
+
+
+def test_write_references_audit_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_references_audit(self, thread_id: str) -> dict[str, object]:
+            calls.append(("write_references_audit", thread_id))
+            return {"marker_count": 3, "missing_count": 0}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "references", "audit"])
+
+    assert result.exit_code == 0
+    assert '"marker_count": 3' in result.output
+    assert calls == [("init", "config"), ("write_references_audit", "book-2")]
+
+
+def test_write_references_clean_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_references_clean(self, thread_id: str, *, mode: str) -> dict[str, object]:
+            calls.append(("write_references_clean", thread_id, mode))
+            return {"mode": mode, "changed_count": 2}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["--thread-id", "book-2", "write", "references", "clean", "--mode", "endnote"])
+
+    assert result.exit_code == 0
+    assert '"mode": "endnote"' in result.output
+    assert calls == [("init", "config"), ("write_references_clean", "book-2", "endnote")]
+
+
 def test_write_export_command_passes_target(monkeypatch) -> None:
     calls = []
 
@@ -135,16 +308,16 @@ def test_write_export_command_passes_target(monkeypatch) -> None:
         def __init__(self, config_path: str) -> None:
             calls.append(("init", config_path))
 
-        def write_export(self, thread_id: str, *, target: str = "all") -> dict[str, object]:
-            calls.append(("write_export", thread_id, target))
-            return {"target": target, "output_dir": "output", "book_markdown": "output/book.md"}
+        def write_export(self, thread_id: str, *, target: str = "all", draft: bool = False) -> dict[str, object]:
+            calls.append(("write_export", thread_id, target, draft))
+            return {"target": target, "draft": draft, "output_dir": "output", "book_markdown": "output/book.md"}
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
     result = runner.invoke(app, ["--thread-id", "book-2", "write", "export", "markdown"])
 
     assert result.exit_code == 0
     assert '"target": "markdown"' in result.output
-    assert calls == [("init", "config"), ("write_export", "book-2", "markdown")]
+    assert calls == [("init", "config"), ("write_export", "book-2", "markdown", False)]
 
 
 def test_write_export_defaults_to_all(monkeypatch) -> None:
@@ -154,16 +327,35 @@ def test_write_export_defaults_to_all(monkeypatch) -> None:
         def __init__(self, config_path: str) -> None:
             calls.append(("init", config_path))
 
-        def write_export(self, thread_id: str, *, target: str = "all") -> dict[str, object]:
-            calls.append(("write_export", thread_id, target))
-            return {"target": target, "output_dir": "output", "book_markdown": "output/book.md", "word_file": "output/book.docx"}
+        def write_export(self, thread_id: str, *, target: str = "all", draft: bool = False) -> dict[str, object]:
+            calls.append(("write_export", thread_id, target, draft))
+            return {"target": target, "draft": draft, "output_dir": "output", "book_markdown": "output/book.md", "word_file": "output/book.docx"}
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
     result = runner.invoke(app, ["write", "export"])
 
     assert result.exit_code == 0
     assert '"target": "all"' in result.output
-    assert calls == [("init", "config"), ("write_export", "book-1", "all")]
+    assert calls == [("init", "config"), ("write_export", "book-1", "all", False)]
+
+
+def test_write_export_draft_option(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def write_export(self, thread_id: str, *, target: str = "all", draft: bool = False) -> dict[str, object]:
+            calls.append(("write_export", thread_id, target, draft))
+            return {"target": target, "draft": draft, "output_dir": "output/draft", "book_markdown": "output/draft/book.md"}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["write", "export", "markdown", "--draft"])
+
+    assert result.exit_code == 0
+    assert '"draft": true' in result.output
+    assert calls == [("init", "config"), ("write_export", "book-1", "markdown", True)]
 
 
 def test_write_export_output_command_is_removed() -> None:

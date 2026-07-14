@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="图12-2 作物病害识别CNN处理流程（架构示意）" data-style="architecture-diagram-white-book">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="760" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#22D3EE"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">图12-2 作物病害识别CNN处理流程（架构示意）</text>
+<text x="82.0" y="78.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="start">读者应理解CNN推理的主链路——从输入图像经多次卷积池化、展平到全连接分类，以及各层的数据尺寸变化</text>
+<rect x="1008.0" y="30.0" width="132.0" height="32.0" rx="6.0" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+<text x="1074" y="51" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">FLOWCHART</text>
+<line x1="58" y1="103" x2="1142" y2="103" stroke="#CBD5E1" stroke-width="1"/>
+  <line x1="304.5" y1="201.0" x2="346.5" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+<line x1="579.0" y1="201.0" x2="621.0" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+<line x1="853.5" y1="201.0" x2="895.5" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+<line x1="1011.8" y1="242.0" x2="1011.8" y2="314.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+<line x1="895.5" y1="355.0" x2="853.5" y2="355.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+<line x1="621.0" y1="355.0" x2="579.0" y2="355.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+<rect x="72.0" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="82.0" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">01</text>
+<text x="188.2" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">输入图像 (224×224×3)</text>
+<rect x="346.5" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="356.5" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">02</text>
+<text x="462.8" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">Conv+Pool (16×112×112)</text>
+<rect x="621.0" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="631.0" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">03</text>
+<text x="737.2" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">Conv+Pool (32×56×56)</text>
+<rect x="895.5" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="905.5" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">04</text>
+<text x="1011.8" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">Conv+Pool (64×28×28)</text>
+<rect x="895.5" y="314.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="905.5" y="330.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">05</text>
+<text x="1011.8" y="362.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">展平层 (Flatten)</text>
+<rect x="621.0" y="314.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="631.0" y="330.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">06</text>
+<text x="737.2" y="362.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">全连接层 (128)</text>
+<rect x="346.5" y="314.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
+<text x="356.5" y="330.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">07</text>
+<text x="462.8" y="354.5" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">输出层 (C类别)</text>
+<text x="462.8" y="373.5" fill="#64748B" font-size="10" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="middle">Softmax</text>
+  <line x1="58" y1="675" x2="1142" y2="675" stroke="#CBD5E1" stroke-width="1"/>
+<circle cx="66.0" cy="704.0" r="4" fill="#34D399"/>
+<text x="80.0" y="708.0" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="600" text-anchor="start">平台服务</text>
+</svg>

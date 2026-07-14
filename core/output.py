@@ -11,6 +11,7 @@ from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from core.figures import FigureAsset, replace_book_figures_with_images
 from core.log import get_logger
 from core.state import BookState
 
@@ -30,7 +31,13 @@ def get_template_environment() -> Environment:
     )
 
 
-def generate_markdown_output(state: BookState, output_dir: str, cfg: dict[str, Any] | None = None) -> dict[str, object]:
+def generate_markdown_output(
+        state: BookState,
+        output_dir: str,
+        cfg: dict[str, Any] | None = None,
+        *,
+        figure_assets: list[FigureAsset] | None = None,
+) -> dict[str, object]:
     """
     将全书内容输出为层级化 Markdown 与单文件 Markdown。
 
@@ -59,6 +66,9 @@ def generate_markdown_output(state: BookState, output_dir: str, cfg: dict[str, A
     if not isinstance(output_cfg, dict):
         output_cfg = {}
     book_markdown_name = str(output_cfg.get("book_markdown") or "book.md")
+    illustration_cfg = cfg.get("style", {}).get("illustrations", {}) if isinstance(cfg.get("style"), dict) else {}
+    figure_marker = str(illustration_cfg.get("marker") or "book-figure") if isinstance(illustration_cfg, dict) else "book-figure"
+    assets = figure_assets or []
 
     manuscript_parts: list[str] = []
     generated_files: list[str] = []
@@ -96,8 +106,21 @@ def generate_markdown_output(state: BookState, output_dir: str, cfg: dict[str, A
             content = state.get_chapter_content(chapter.id)
             if content:
                 filename = f"{chapter.id:02d}-{chapter.title}.md"
-                _write_file(part_dir / filename, content.markdown, generated_files)
-                manuscript_parts.append(content.markdown)
+                chapter_markdown = replace_book_figures_with_images(
+                    content.markdown,
+                    chapter.id,
+                    assets,
+                    marker=figure_marker,
+                    image_prefix="../",
+                )
+                book_chapter_markdown = replace_book_figures_with_images(
+                    content.markdown,
+                    chapter.id,
+                    assets,
+                    marker=figure_marker,
+                )
+                _write_file(part_dir / filename, chapter_markdown, generated_files)
+                manuscript_parts.append(book_chapter_markdown)
 
     appendix = _render(env, "appendix.md.j2")
     _write_file(out / "08-附录.md", appendix, generated_files)
@@ -144,7 +167,7 @@ def generate_word_output(
         resolved_pandoc,
         str(markdown_path),
         "--from",
-        "gfm+pipe_tables+fenced_code_blocks+yaml_metadata_block",
+        "markdown+pipe_tables+fenced_code_blocks+yaml_metadata_block",
         "--to",
         "docx",
         "--output",

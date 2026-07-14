@@ -1,0 +1,397 @@
+[
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AIoT应用开发与实践",
+    "url": "https://www.cmpedu.com/books/book/5608439.htm",
+    "book_id": "5608439",
+    "authors": "张金 宫晓利 李浩然",
+    "isbn": "978-7-111-74520-4",
+    "price": "59.0元",
+    "publish_date": "2024-09-04",
+    "matched_queries": [
+      "AIoT"
+    ],
+    "relevance_score": 9
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "智能物联网导论",
+    "url": "https://www.cmpedu.com/books/book/5605884.htm",
+    "book_id": "5605884",
+    "authors": "吴功宜 吴英",
+    "isbn": "978-7-111-71217-6",
+    "price": "59.0元",
+    "publish_date": "2022-08-23",
+    "matched_queries": [
+      "智能物联网",
+      "MCP 物联网"
+    ],
+    "relevance_score": 8
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "智能物联网导论",
+    "url": "https://www.cmpedu.com/books/book/5606556.htm",
+    "book_id": "5606556",
+    "authors": "郭斌 刘思聪 王柱 等著",
+    "isbn": "978-7-111-72511-4",
+    "price": "70.0元",
+    "publish_date": "2023-04-27",
+    "matched_queries": [
+      "智能物联网"
+    ],
+    "relevance_score": 7
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AIRIOT物联网平台开发框架应用与实战",
+    "url": "https://www.cmpedu.com/books/book/5607312.htm",
+    "book_id": "5607312",
+    "authors": "主编：袁宁副主编：郭禄鹏 赵娥",
+    "isbn": "978-7-111-67273-9",
+    "price": "69.0元",
+    "publish_date": "2021-01-14",
+    "matched_queries": [
+      "物联网平台"
+    ],
+    "relevance_score": 7
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "建筑物联网技术",
+    "url": "https://www.cmpedu.com/books/book/5609580.htm",
+    "book_id": "5609580",
+    "authors": "马鸿雁",
+    "isbn": "978-7-111-78265-0",
+    "price": "58.0元",
+    "publish_date": "2025-07-30",
+    "matched_queries": [
+      "物联网技术",
+      "MCP 物联网"
+    ],
+    "relevance_score": 6
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术与应用 第3版",
+    "url": "https://www.cmpedu.com/books/book/5606971.htm",
+    "book_id": "5606971",
+    "authors": "武奇生 姚博彬 高荣 许唐雯",
+    "isbn": "978-7-111-73468-0",
+    "price": "63.8元",
+    "publish_date": "2023-08-29",
+    "matched_queries": [
+      "物联网技术",
+      "MCP 物联网"
+    ],
+    "relevance_score": 6
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术概论",
+    "url": "https://www.cmpedu.com/books/book/5602596.htm",
+    "book_id": "5602596",
+    "authors": "季顺宁",
+    "isbn": "978-7-111-65977-8",
+    "price": "49.0元",
+    "publish_date": "2020-09-02",
+    "matched_queries": [
+      "物联网技术",
+      "MCP 物联网"
+    ],
+    "relevance_score": 6
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术导论 第2版",
+    "url": "https://www.cmpedu.com/books/book/5601282.htm",
+    "book_id": "5601282",
+    "authors": "强世锦",
+    "isbn": "978-7-111-63888-9",
+    "price": "42.0元",
+    "publish_date": "2019-12-31",
+    "matched_queries": [
+      "物联网技术",
+      "MCP 物联网"
+    ],
+    "relevance_score": 6
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AI辅助论文写作实战：从选题到发表的全流程大模型辅助",
+    "url": "https://www.cmpedu.com/books/book/5610567.htm",
+    "book_id": "5610567",
+    "authors": "国高教育",
+    "isbn": "978-7-111-80001-9",
+    "price": "59.0元",
+    "publish_date": "2026-02-25",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "Spring Boot+Vue.js 前后端分离项目开发实战",
+    "url": "https://www.cmpedu.com/books/book/5610528.htm",
+    "book_id": "5610528",
+    "authors": "王得燕 杨文珺",
+    "isbn": "978-7-111-80103-0",
+    "price": "56.5元",
+    "publish_date": "2026-02-03",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AI大模型开发实战",
+    "url": "https://www.cmpedu.com/books/book/5610611.htm",
+    "book_id": "5610611",
+    "authors": "唐春明 等",
+    "isbn": "978-7-111-79703-6",
+    "price": "79.0元",
+    "publish_date": "2025-12-18",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术概论 第2版",
+    "url": "https://www.cmpedu.com/books/book/5609350.htm",
+    "book_id": "5609350",
+    "authors": "季顺宁",
+    "isbn": "978-7-111-78200-1",
+    "price": "65.0元",
+    "publish_date": "2025-06-13",
+    "matched_queries": [
+      "物联网技术"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AI芯片应用开发实践：深度学习算法与芯片设计",
+    "url": "https://www.cmpedu.com/books/book/5609075.htm",
+    "book_id": "5609075",
+    "authors": "曾维 王洪辉 朱星",
+    "isbn": "978-7-111-77354-2",
+    "price": "69.0元",
+    "publish_date": "2025-03-13",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网应用开发项目教程（C51和STM32版）",
+    "url": "https://www.cmpedu.com/books/book/5606400.htm",
+    "book_id": "5606400",
+    "authors": "主编 沈敏 曹阳",
+    "isbn": "978-7-111-71835-2",
+    "price": "69.0元",
+    "publish_date": "2023-02-18",
+    "matched_queries": [
+      "物联网应用开发"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术应用——智能家居 第3版",
+    "url": "https://www.cmpedu.com/books/book/5605767.htm",
+    "book_id": "5605767",
+    "authors": "刘修文",
+    "isbn": "978-7-111-70958-9",
+    "price": "59.0元",
+    "publish_date": "2022-07-28",
+    "matched_queries": [
+      "物联网技术"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术及应用 第2版",
+    "url": "https://www.cmpedu.com/books/book/5602475.htm",
+    "book_id": "5602475",
+    "authors": "徐颖秦 熊伟丽 主编杜天旭 汤泽 副主编",
+    "isbn": "978-7-111-65958-7",
+    "price": "59.8元",
+    "publish_date": "2020-08-10",
+    "matched_queries": [
+      "物联网技术"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网技术与应用 第2版",
+    "url": "https://www.cmpedu.com/books/book/2066845.htm",
+    "book_id": "2066845",
+    "authors": "吴功宜 吴英",
+    "isbn": "978-7-111-59949-4",
+    "price": "39.0元",
+    "publish_date": "2018-06-20",
+    "matched_queries": [
+      "物联网技术"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网安全——理论与技术",
+    "url": "https://www.cmpedu.com/books/book/2062421.htm",
+    "book_id": "2062421",
+    "authors": "胡向东",
+    "isbn": "978-7-111-55679-4",
+    "price": "49.0元",
+    "publish_date": "2017-02-14",
+    "matched_queries": [
+      "物联网安全"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网应用开发",
+    "url": "https://www.cmpedu.com/books/book/2052744.htm",
+    "book_id": "2052744",
+    "authors": "张军朝",
+    "isbn": "978-7-111-52789-3",
+    "price": "39.8元",
+    "publish_date": "2016-03-04",
+    "matched_queries": [
+      "物联网应用开发"
+    ],
+    "relevance_score": 5
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AI智能体概念、技术与应用",
+    "url": "https://www.cmpedu.com/books/book/5610970.htm",
+    "book_id": "5610970",
+    "authors": "魏建国",
+    "isbn": "978-7-111-80948-7",
+    "price": "79.0元",
+    "publish_date": "2026-06-13",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 3
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AI +汽车技术应用——典型应用场景案例",
+    "url": "https://www.cmpedu.com/books/book/5610242.htm",
+    "book_id": "5610242",
+    "authors": "王芃等",
+    "isbn": "978-7-111-80003-3",
+    "price": "45.0元",
+    "publish_date": "2026-01-27",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 3
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "你的智能教学助手：应用AI工具高效辅助教学",
+    "url": "https://www.cmpedu.com/books/book/5609625.htm",
+    "book_id": "5609625",
+    "authors": "AI知学社",
+    "isbn": "978-7-111-78698-6",
+    "price": "79.9元",
+    "publish_date": "2025-07-23",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 3
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "AI+智能服务机器人应用基础",
+    "url": "https://www.cmpedu.com/books/book/5603372.htm",
+    "book_id": "5603372",
+    "authors": "谢志坚 熊邦宏 庞 春 主编",
+    "isbn": "978-7-111-66174-0",
+    "price": "55.0元",
+    "publish_date": "2020-09-28",
+    "matched_queries": [
+      "Spring AI"
+    ],
+    "relevance_score": 3
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网控制技术",
+    "url": "https://www.cmpedu.com/books/book/5607342.htm",
+    "book_id": "5607342",
+    "authors": "彭力",
+    "isbn": "978-7-111-73376-8",
+    "price": "49.0元",
+    "publish_date": "2024-01-03",
+    "matched_queries": [
+      "MCP 物联网"
+    ],
+    "relevance_score": 1
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "Java物联网程序设计基础 第2版",
+    "url": "https://www.cmpedu.com/books/book/5604786.htm",
+    "book_id": "5604786",
+    "authors": "胡锦丽 薛文龙 刘晓东",
+    "isbn": "978-7-111-68341-4",
+    "price": "49.8元",
+    "publish_date": "2021-08-31",
+    "matched_queries": [
+      "MCP 物联网"
+    ],
+    "relevance_score": 1
+  },
+  {
+    "source": "cmpedu",
+    "page": 1,
+    "title": "物联网移动应用开发",
+    "url": "https://www.cmpedu.com/books/book/5601963.htm",
+    "book_id": "5601963",
+    "authors": "季云峰 刘丽 副主编 马丽红 伊力夏提•阿不都热",
+    "isbn": "978-7-111-64720-1",
+    "price": "49.9元",
+    "publish_date": "2020-05-06",
+    "matched_queries": [
+      "MCP 物联网"
+    ],
+    "relevance_score": 1
+  }
+]

@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>机工教育服务网——用户登录</title>
+	<!-- Bootstrap -->
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/swiper.min.css">
+	<link href="/css/mechself.my.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="/js/jquery/1.12.4/jquery-1.12.4.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/js/superslide/jquery.slideunlock.js"></script>
+	<script src="/assets/layer/layer.js"></script>
+	<script type="text/javascript" src="/js/jquery.form.js"></script>
+   <script type="text/javascript" src="/js/libs/common.js"></script>
+    <script src="/js/superslide/jquery.SuperSlide.2.1.1.js"></script>
+    <link rel="stylesheet" href="/css/drag.css">	
+	<!-- <script src="/js/libs/jquery.min.js"></script>	 -->
+	<script type="text/javascript" src="/js/libs/drag.js?2020"></script>
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/jquery/html5shiv.min.js"></script>
+	<script src="js/jquery/respond.min.js"></script>
+	
+	<![endif]-->
+    <!-- CUSTOM SCRIPT-->
+	<script>
+	
+	//获取浏览器的高度
+	function getSizeH(){
+	    var winHeight = $(window).height();
+		return winHeight;
+	}
+	//获取浏览器的宽度
+	function getSizeW(){
+	    var winWidth = $(window).width();
+		return winWidth;
+	}
+	
+	var load_ex = function(msg){
+		if(msg){
+			layer.msg(msg,{icon:1});
+			setTimeout(function(){
+				layer.closeAll();
+				reload_list();
+			},1500);
+		}else{
+			reload_list();
+			layer.closeAll();
+		}
+	}; 
+	function get_json(url,succ,err){
+    	return _get_json(url,succ,err);
+    }
+    function _get_json(url,succ,err){
+    	//从url中截取参数，并封装成data
+    	var data = {};
+    	var url2 = url;
+    	var index = url.indexOf('?');
+    	if(index>-1){
+    		var ur = url.substring(index+1);
+    		var arr = ur.split('&');
+    		for(var i=0;i<arr.length;i++){
+    			var a = arr[i];
+    			if(a!=null){
+    				var keys = a.split('=');
+    				if(keys!=null && keys.length==2){
+    					data[keys[0]]=keys[1];
+    				}
+    			}
+    		}
+    	}
+    	if(index>-1){
+    		url = url.substr(0,index);
+    	}
+    	
+    	var sUsrAgent=navigator.userAgent;
+    	var isSF=sUsrAgent.indexOf("Safari")!=-1;
+    	if(isSF){
+    		
+    		$.ajax({
+        		type : "post",
+        		url : url,
+        		data : data,
+        		global : false,
+        		dataType : "json",
+        		success :function(data, textStatus) {
+        			succ(data);
+        		},
+        		error : function(xhr, textStatus, errorThrown) {
+        			if( (typeof eval(err) )=='function'){err();}
+        		}
+        	});
+    	
+    	}else{
+    		$.ajax({
+        		type : "post",
+        		url : url,
+        		data : data,
+        		global : false,
+        		dataType : "json",
+        		success :function(data, textStatus) {
+        			succ(data);
+        		},
+        		error : function(xhr, textStatus, errorThrown) {
+        			if( (typeof eval(err) )=='function'){err();}
+        		}
+        	});
+    	}
+    }
+	var reload_list = function(){
+		var load_url = $(".cw_fenyecurrent").attr('data-url');
+		var max = 20;
+	    if (typeof($('.selectNum')) != 'undefined') {
+	        max = $('.selectNum').val();
+	    }
+		if(load_url != '' && typeof(load_url) != 'undefined'){
+			$('#tabledata').load(load_url + '&max=' + max, {},function() {});
+		}else{
+			load_url = $("#tabledata").attr('data-url');
+			if(load_url != '' && typeof(load_url) != 'undefined'){
+				$('#tabledata').load(load_url + '&max=' + max, {},function() {});
+			}else{
+				location.reload();
+			}
+		}
+	}
+	function tuichu(){
+		if(confirm("确认退出?")){
+			 location.href="/logout.htm";
+			}
+	}
+    $(function() {
+    	 $(document).off("click",".open_tab",function(){});
+    	$(document).on("click",".open_tab",function(){
+    		var self = this;
+    		var url = $(self).attr("data-url");
+    		var title = $(self).attr("data-title");
+    		parent.open_tab(url,title);
+    		
+    	});
+    	$(document).off("click",".open_frame",function(){});
+    	$(document).on("click",".open_frame",function(){
+    		
+    		var self = this;
+    		var w = $(self).attr("data-width");
+    		if(w=='undefined' || w==''){
+    			w = "100%";
+    		}
+    		var h = $(self).attr("data-height");
+    		if(h=='undefined' || h==''){
+    			h = "100%";
+    		}
+    		
+    		//固定高度  为了适应小屏幕的电脑
+    		var fh = $(self).attr("fixed-height");//新定义的参数
+    		//浏览器高度
+    		var screamH = getSizeH();
+    		
+    		if(fh != undefined && fh !=''){
+    			//去掉高度值 的 单位
+    			if(fh.split("px").length>1){
+    				fh = fh.split("px")[0];
+    			}
+    			if(fh.split("PX").length>1){
+    				fh = fh.split("PX")[0];
+    			}
+    			
+    			//固定高度值 和 浏览器高度值 进行比较
+    			if(fh > screamH){
+    				
+    				h = screamH - 20;
+    				
+    			}else{
+    				h = fh;
+    			}
+    			h = h+"px;";//给高度值 加上单位
+    		}
+    		
+    		var url = $(self).attr("data-url");
+    		var title = $(self).attr("data-title");
+    		if(title=='undefined' || title==''){
+    			title = false;
+    		}
+    		//parent.open_tab(url,title);
+    	  	var index = layer.open({
+                type:2,//打开弹层类型为iframe
+                title:title,//弹层标题
+                content:url,//iframe开发的地址
+                area:[w,h],//打开窗口的大小
+               // closeBtn:false,
+                shadeClose: true, //点击遮罩关闭层
+                //btn:["确定","取消"],//用于显示窗口中自定义按钮，一般不需要，直接把按钮定义在层内部较好
+                /* yes:function(){//此处就是 如果定义了按钮后的按钮方法} */
+                /* cancel:function(){//此处就是 如果定义了按钮后的按钮方法} */
+            });
+    	        
+    	});
+    	 
+    	$(document).keyup(function(event){
+    		switch(event.keyCode) {
+    		case 27:
+    			layer.closeAll();
+    	 	}
+    	});
+    	
+    	
+    	
+    	 $("#key").keydown(function(e) {  
+	           if (e.keyCode == 13) {  
+	        	var k = $("#key").val();
+	       		location.href='/video/so_'+encodeURIComponent(k)+'.htm';
+	           }  
+	      }); 
+    	
+    })
+    
+    </script>
+    <meta name="decorator" content="login" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<script src="/js/jquery.json-2.2.js"></script>
+	<script src="/js/superslide/jquery.slideunlock.js"></script>
+	<script src="/js/ajaxfileupload.js"></script>
+	
+<style>
+.cls_login_title{    -webkit-text-size-adjust: none;
+    font-family: -apple-system,BlinkMacSystemFont,PingFang SC,Microsoft YaHei,sans-serif;
+    color: #959da6;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 50px;
+    text-align: center;
+    width: 47%;}
+.cls_login_title_active{
+    color:#000;
+    }
+    .cls_login_yzm{display:none}
+    #drag{margin-top:10px;width:386px;height:46px;line-height:46px;font-size:18px}
+    #drag .drag_text{width:382px;height:46px}
+    #drag .handler {width:55px;height:46px}
+    #drag .drag_bg {height:46px}
+    /*  .jd_jsyanzcode{display:block}*/
+    
+    #vcode{width:226px;height:32px}
+    .jd_regformbtnyzm{width:132px;height:32px;margin-left:10px}
+</style>
+<script>
+$(function() {
+	var drag = new Drag({select_div:'#drag',dragOk:function(){
+		//console.log('drag OK了');
+		var phone = $("#phone").val();
+		console.log(phone)
+		if(phone.length != 11){
+			drag.error();
+			layer.msg('请输入正确的手机号码');
+			return false;
+		}
+		//需要从这里发起一个post请求。
+		_get_json("/user/validation_sendsms.htm?phone="+phone,function(json){
+			//成功返回，不代表code=0，只是请求成功了
+			if(json.code==0){
+				settime();
+				$(".jd_jsyanz").hide();
+				$(".jd_jsyanzcode").show();
+				$("#save").attr("disabled",false);
+			}else{
+				layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+				drag.error();
+				//手机号码肯定有问题。把json.msg 显示给用户
+			}
+			
+		},function(){});
+	}});
+	$(".vl_phone_cg").hide();
+	$(".vl_phone_er").hide();
+	
+});
+	$(function() {
+		var accredit_info = '';
+		if(accredit_info != ''){
+			layer.msg(accredit_info,{time:5000});
+		}
+		$('.cls_login_title').click(function(){
+			$('.cls_login_title').removeClass('cls_login_title_active')
+			if($(this).attr('attr')==2){
+				$('#login_form').attr('action','/account/login_phone')
+				$('.cls_login_yzm').show()
+				$('.cls_login_paws').hide()
+			}else{
+				$('#login_form').attr('action','/account/logincheck')
+				$('.cls_login_paws').show()
+				$('.cls_login_yzm').hide()
+			}
+			$(this).addClass('cls_login_title_active')
+		})
+		
+		$("#login_save").click(function() {
+			var load = layer.load();//显示等待层
+			var options = {
+				success : function(json) {
+					
+					if(typeof json !='object'){
+						json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+					}
+					layer.close(load);//关闭等待层
+					if (isEmpty(json) || typeof (json) == "undefined"
+							|| json.code != 0) {
+						layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+						return;
+					}
+					var backurl = $("#backurl").val();
+					if(backurl.length>0){
+						window.location.href=backurl;
+						return ;
+					}
+					
+					window.location.href='http://www.cmpedu.com/index.htm';
+					//window.location.reload();
+				}
+			};
+			$("#login_psave").click(function() {
+				var load = layer.load();//显示等待层
+				var options = {
+					success : function(json) {
+						
+						if(typeof json !='object'){
+							json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+						}
+						layer.close(load);//关闭等待层
+						if (isEmpty(json) || typeof (json) == "undefined"
+								|| json.code != 0) {
+							layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+							return;
+						}
+						var backurl = $("#backurl").val();
+						if(backurl.length>0){
+							window.location.href=backurl;
+							return ;
+						}
+						
+						window.location.href='http://www.cmpedu.com/index.htm';
+						//window.location.reload();
+					}
+				};
+			
+			$(".form_post").ajaxForm(options);
+			$(".form_post").submit();
+			return false;
+		});
+	})
+
+	function beforeSubmit(aForm) {
+		if (!checkLeng(aForm.j_userName, 1, 50, false, "用户名称"))
+			return false;
+		if (!checkLeng(aForm.j_password, 1, 50, false, "密码"))
+			return false;
+		return true;
+	}
+
+	if (window.parent != null && window.parent.document.URL != document.URL) {
+		window.parent.location = document.URL;
+	}
+</script></head>
+<body>
+
+<div class="navbar navbar-inverse js_nav_fixed">
+	<div class="container navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/index.htm"><img src="/images/logo.jpg" /></a>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse has-feedback">
+		<div class="jg_nav">
+			<div class="container">
+				<ul class="nav navbar-nav">
+<li class=''>
+						<a href="/index.htm">首 页</a>
+					</li>
+<li class=''>
+						<a href="/books/index.htm">图 书</a>
+					</li>
+<li class=''>
+						<a href="/books/apply.htm" class="mustlogin">样书申请</a>
+					</li>
+<li class=''>
+						<a href="/ziyuans/index.htm">资源下载</a>
+					</li>
+<li class=''>
+						<a href="/videos/index.htm" target="_blank">机工教育大讲堂</a>
+					</li>
+
+
+					</li>
+<li class=''>
+						<a href="/chuban/index.htm">教材出版</a>
+					</li>
+<li class=''>
+						<a href="/news/index.html">资讯公告</a>
+					</li>
+<li class=''>
+						<a href="/shumus/index.htm">书目下载</a>
+					</li>
+
+
+<li class=''>
+						<a href="/lianxi/yingxiao.htm">联系我们</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<ul class="navbar-right container">
+			
+<script>
+	$(function() {
+		if(navigator.appName == "Microsoft Internet Explorer"&&parseInt(navigator.appVersion.split(";")[1].replace(/[ ]/g, "").replace("MSIE",""))<9){
+		 
+		    alert("您的浏览器版本过低，为了获得更好的体验,请更换浏览器或升级到IE9及以上版本")
+		        }
+		//进行用户登录的异步判断，需要发起一个异步请
+		//右侧菜单
+		/*
+		$(".index_cebian ul li").hover(function(){
+			$(this).addClass("on");
+		},function(){
+			$(this).removeClass("on");
+		})
+	
+		$(".slideBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
+		
+		$(".tabBar").slide({trigger:"click"});
+		$(".shoptype1").slide({trigger:"click"});
+		
+		$(".index_jplist").mouseover(function(){
+			$(this).addClass("index_jpliston")	
+		})
+		$(".index_jplist").mouseleave(function(){
+			$(this).removeClass("index_jpliston")	
+		})
+		*/
+	});
+</script>
+<ul class="navbar-right container" >
+<div class="jg_top">
+	<div class="jg_topL" >
+		<li class="jg_topL_name" id="div_user_name" style="z-index:9999;"></li>
+		<li class="jg_topL_newsmsg my_message" style="z-index:9999;">
+   			
+    	</li> 
+	</div> 
+	<div class="jg_topR" id="div_user_info">
+		<li><a href="/quanzi/index.htm" target="_blank">教师圈</a></li>
+		<li class="jg_topRline">|</li>
+
+	</div>
+</div>
+<div class="jg_botso">
+	<div class="navbar_so">
+		<form action="/so.htm" id="so_form" method="GET">
+			<input type="text" placeholder="请输入书名、ISBN、作者等关键字" class="navbar_sotext" id="__KEY2" name="KEY" value=""/>
+			<input type="submit" value="搜索" class="navbar_sobtn" id="__so2" />
+		</form>
+	</div>
+	<div class="jg_topcode">
+		<div class="jg_topcodeL">
+			<p>扫码微信公众号</p>
+			<p>关注有惊喜</p>
+		</div>
+		<img src="/images/img_code.jpg" class="jg_topcodeR" />
+	</div>
+</div>
+</ul>
+		</ul>
+	</div>
+</div>
+<div class=""></div>
+<form id="login_form" class="validator" class="form_post" action="/account/logincheck" method="post">
+			
+	<input type="hidden" id="backurl" value="" />
+	<input type="hidden" id="accredit_info" value="" />
+	<div class="container">
+	<div class="row jg_login">
+		<div class="col-sm-12 col-md-6 jg_loginLeft">
+			<div class="cls_loginBmian">
+				<div class="cls_login_title cls_login_title_active" attr="1">密码登录</div>
+				<div class="cls_login_title "  attr="2">验证码登录</div>
+<!--密码登陆 -->				
+<div class = "cls_login_paws">
+	<div class="cls_loginM">
+					<input id="j_username" name="j_username" placeholder="邮箱/用户名/已验证手机" type="text" class="cls_loginM_put" type="text" value=""/>
+				</div>
+				<div class="cls_loginM">
+					<input id="j_password" name="j_password" placeholder="密码" type="password" class="cls_loginM_put" type="text" value=""/>
+				</div>
+<!-- 			<div class="text-error">错误提示</div> -->
+				<span class="kt_logerrortip"></span>
+				<div class="cls_loginM">
+					<input type="submit" value="登录" class="cls_loginM_btn" id="login_save"/>
+				</div>
+				<div class="cls_loginM cls_loginMzd">
+					<label><input id="rememberme" name="_spring_security_remember_me" class="ipt-c" tabindex="4" checked="true" type="checkbox" value="true"/><input type="hidden" name="__spring_security_remember_me" value="on"/>自动登录</label>
+					<span><!-- <a href="/lianxi/liuyan.htm">意见反馈</a> --><a href="/register/reg.htm">点击注册</a><a href="/user/change_check2.htm">忘记密码</a></span>
+				</div>
+</div>
+<!--验证码登陆  -->
+                <div class = "cls_login_yzm">
+	        	<div class="cls_loginM">
+					<input id="phone" name="j_username" name="phone" placeholder="已验证手机号" type="text" class="cls_loginM_put" type="text" value=""/>
+					<span class="vl_phone_cg"><img src="/images/icon_logsuc.png"></span>
+						<span class="vl_phone_er"><img src="/images/icon_logfalse.png"></span>
+				</div> 
+				<div id="drag">					
+							<div class="drag_text" onselectstart="return false;" unselectable="on">拖动滑块验证</div>
+							<div class="handler handler_bg" style="left: 0px;"></div>
+						</div>
+				<div class="jd_jsyanzcode">
+					<dt>验证码</dt>
+					<dd>
+						<input type="text"  class="jd_regformtextyzm" name="vcode" id="vcode" />
+						<input type="button" value="重发验证码(45s)" class="jd_regformbtnyzm" onclick="sendCMS()"/>
+						<div class="jd_regform_grayyzm">验证码已发送至您的手机，请查收</div>
+					</dd>	
+				</div>
+				<div class="cls_loginM">
+					<input type="submit" value="登录" class="cls_loginM_btn" id="login_psave"/>
+				</div>
+				<div class="cls_loginM cls_loginMzd">
+					<label><input id="rememberme" name="_spring_security_remember_me" class="ipt-c" tabindex="4" checked="true" type="checkbox" value="true"/><input type="hidden" name="__spring_security_remember_me" value="on"/>自动登录</label>
+					<span><!-- <a href="/lianxi/liuyan.htm">意见反馈</a> --><a href="/register/reg.htm">点击注册</a><a href="/user/change_check2.htm">忘记密码</a></span>
+				</div></div> 
+			</div></div>
+		<div class="col-sm-12 col-md-6">
+			<div class="cls_loginBmian_title"><span></span>使用第三方账号登录<span></span></div>
+			<div class="cls_loginBmian_other">
+				<ul>
+					<li><a href="/login/qq.htm"><img src="/images/icon_qq.jpg" /></a></li>
+					<li><a href="/login/weibo.htm"><img src="/images/icon_wb.jpg" /></a></li>
+					<li><a href="/login/weixin.htm"><img src="/images/icon_wx.jpg" /></a></li>
+				</ul>
+			</div>
+			<div class="cls_loginBmia_stit">登录机工教育服务网，享受一站式教育服务！</div>
+		</div>	
+</form>		
+	
+<script type="text/javascript">
+$(function() {
+	//异步验证手机号码的合法性，这里需要写代码
+	$("#phone").change(function(){
+		var phone = $(this).val();
+
+		if(phone.length!=11){
+			$(this).css("background-color","#FFFFCC");
+		}else{
+			$(this).css("background-color","");
+		}
+	});
+  
+	$("#save").click(function() {
+		var phone = $("#phone").val();
+		
+		if(!jisoyan_phone()){
+			layer.msg("请输入正确的手机号码");
+			return false;
+		}
+		if($("#vcode").val() == ''){
+			layer.msg("请输入验证码");
+			return false;
+		}
+		
+		var load = layer.load();//显示等待层
+		var options = {
+			success : function(json) {
+				if(typeof json !='object'){
+					json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+				}
+				layer.close(load);//关闭等待层
+				if (json == "" || typeof (json) == "undefined" || json.code != 0) {
+					layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+					return;
+				}
+				
+				location.href="/user/change_forget.htm";
+			}
+		};
+		$("#form_post").ajaxForm(options);
+		$("#form_post").submit();
+		return false;
+	});
+	
+	load_val_phone();
+});
+
+
+function val_phone(){
+	var phone = $("#phone").val();
+	if(phone == ""){
+		$(".vl_phone_cg").hide();
+		$(".vl_phone_er").show();
+	}else{
+		$(".vl_phone_cg").show();
+		$(".vl_phone_er").hide();
+	}
+	if(!jisoyan_phone()){		
+		$(".vl_phone_cg").hide();
+		$(".vl_phone_er").show();
+	}else{		
+		$(".vl_phone_cg").show();
+		$(".vl_phone_er").hide();
+	}
+}
+
+function load_val_phone(){
+	$(".vl_phone_cg").hide();
+	$(".vl_phone_er").hide();
+}
+
+//校验手机格式是否正确
+function jisoyan_phone(){
+//	var myreg =/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1})|(19[0-9]{1})|(16[0-9]{1}))+\d{8})$/; 
+	var myreg =  /^(((1[0-9]{2}))+\d{8})$/;
+	var p_num = $("#phone").val();
+	if(!myreg.test(p_num)){
+		return false;
+	}else{
+		return true;
+	}
+}
+
+var countdown = 45;
+function settime(){
+	if(countdown == 0){
+		countdown = 45;
+		$(".jd_regformbtnyzm").attr("disabled",false);
+		$(".jd_regformbtnyzm").val("免费获取验证码");	
+		return false;
+	}else{
+		$(".jd_regformbtnyzm").attr("disabled",true);
+		$(".jd_regformbtnyzm").val("重发验证码(" + countdown + "s)");
+		countdown--; 
+	}
+	setTimeout(function() {
+		settime() 
+	},1000)
+}
+
+var sendCMS = function(){
+	var phone = $("#phone").val();
+	if(phone.length != 11){
+		layer.msg('请输入正确的手机号码');
+		return false;
+	}
+	
+	if(!jisoyan_phone()){
+		layer.msg("手机格式错误");
+		return false;
+	}
+	
+	_get_json("/user/validation_sendsms.htm?phone="+phone,function(json){	
+		if(json.code==0){
+			settime();
+			$("#save").attr("disabled",false);
+		}else{
+			layer.msg(json.msg);			
+		}
+		
+	},function(){});	
+}
+
+</script>
+			
+			</form>
+<script type="text/javascript">
+$(function() {
+	//进行用户登录的异步判断，需要发起一个异步请
+	//右侧菜单
+	$(".index_cebian ul li").hover(function(){
+		$(this).addClass("on");
+	},function(){
+		$(this).removeClass("on");
+	})
+
+});
+</script>
+<style>
+ .jyxkz{  
+ position: absolute;
+      width: 246px;
+    margin-right: 0;
+    margin-top: 0;
+    }
+    
+    
+    /* 绘制三角形（白色主体） */
+    
+#down-messages::before {
+  content: ''!important;
+  position: absolute;
+  top: -8px;           /* 向上突出菜单边框 */
+  right: 36px;         /* 距离右侧的距离，按需调整 */
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent!important;
+  border-right: 8px solid transparent!important;
+  border-bottom: 8px solid #ffffff!important; /* 与菜单背景色一致 */
+  z-index: 1000;
+}
+</style>
+
+<div class="navbar navbar-inverse navbar-fixed-top index_nav">
+    <div class="container">
+		<div id="navbar" class="navbar-collapse collapse has-feedback"> 
+			<div class="jgnavmenu_logo"><img src="/images/logo_pwd.png" /></div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/index.htm">首 页</a></li>
+                <li><a href="/books/index.htm">图 书</a></li>
+                <li><a href="/books/num_index.htm">数字教材</a></li>
+                <li><a href="/books/apply.htm" class="mustlogin">样书申请</a></li>
+                <li><a href="/ziyuans/index.htm">资源下载</a></li>
+                <li><a href="/videos/index.htm" target="_blank">机工大讲堂</a></li>
+                <li><a href="/lianxi/content.htm">联系我们</a></li>
+            </ul>
+            <div class="index_navR">
+            	<div class="index_navRL">
+            		<input type="text" class="index_navRLtext" id="__KEY" value="" />
+            		<input type="button" value="搜索" class="index_navRLbtn" id="__so"/>
+            	</div>
+            	<div class="index_navRR gensuimokuai">
+            		<!-- <a href="#">注册</a> |
+            		<a href="#">登录</a> -->
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cls-foot hidden-xs">
+	<div class="container" style='position:relative'>
+		<div class="row">
+			<div class="cls-foot-main">
+				<div class="col-xs-12 col-sm-6 col-md-2 cls-foot-logo">
+					<div class="cls-f14">精彩服务</div>
+					<p><a href="/books/apply.htm" class="mustlogin">样书申请</a></p>
+					<p><a href="/ziyuans/index.htm">资源下载</a></p>
+					<!-- <p><a href="/kejians/index.htm">淘课件</a></p> -->
+					<p><a href="/videos/index.htm" target="_blank">机工大讲堂</a></p>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-2 cls-foot-friend">
+					<div class="cls-f14">友情链接</div>
+											  <a href="/friendlink/goto.htm?ID=9"  target="_blank">机械工业出版社官方网站</a> 
+												  |<a href="/friendlink/goto.htm?ID=8" target="_blank" >中国科技金书网</a> 
+												  |<a href="/friendlink/goto.htm?ID=7" target="_blank" >中国高校教材图书网</a> 
+												  |<a href="/friendlink/goto.htm?ID=3" target="_blank" >电气时代网</a> 
+												  |<a href="/friendlink/goto.htm?ID=6" target="_blank" > 北京华章图文信息有限公司</a> 
+												  |<a href="/friendlink/goto.htm?ID=2" target="_blank" > 机械工程学报</a> 
+												  |<a href="/friendlink/goto.htm?ID=1" target="_blank" >金属加工在线</a> 
+												  |<a href="/friendlink/goto.htm?ID=12" target="_blank" >机电工程百科</a> 
+						
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-2 cls-foot-help">
+					<div class="cls-f14">帮助中心</div>
+											<p><a href="/help/yssq.html" target="_blank">样书申请流程</a></p>
+											<p><a href="/help/jfsq.html" target="_blank">积分申请流程</a></p>
+					
+				</div>
+
+	
+				
+				<div class="col-xs-12 col-sm-6 col-md-3 cls-foot-addr">
+					<div class="cls-f14">联系我们</div>
+					<p>北京西城区百万庄大街22号</p>
+					<p>邮编:100037</p>
+					<p>电子邮箱：<a href="mailto:cmpedu@cmpedu.com">cmpedu@cmpedu.com</a></p>
+					<p>教材网咨询：010-88379833   </p> 
+				</div>
+				 <div class="col-xs-12 col-sm-6 col-md-2 cls-foot-code">
+					<div class="cls-f14">官方二维码</div>
+					<img src="/images/img_code.jpg" />
+					<p>随手扫一扫～了解多多</p>
+				</div> 
+				<!-- <img class ='jyxkz' src = 'http://s.cmpedu.com/2022/jyxkz.jpg'> -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="jgindex_copy hidden-xs">版权所有：机械工业出版社有限公司<a href='http://beian.miit.gov.cn'>京ICP备14043556号-4</a> Copyright (C) 2017 CmpEdu. All Rights Reserved</div>
+<div class="index_cebian">
+    <ul>
+        <li>
+    		<div class="index_cebianD"><a href="/lianxi/yingxiao.htm"><img src="/images/icon_cedh.png" /></a></div>
+    		<div class="index_cebianB">
+    			<span><a href="/lianxi/yingxiao.htm">营销人员</a></span>	
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><a target='_blank' href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf"><img src="/images/icon_ceqq.png" /></a></div>
+    		<!-- WPA Button Begin -->
+<script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf"></script>
+<!-- WPA Button END -->
+    		<div class="index_cebianB">
+    			<span><a target='_blank' href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf">咨询客服</a></span>		
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><a href="/lianxi/liuyan.htm"><img src="/images/icon_cefk.png" /></a></div>
+    		<div class="index_cebianB">
+    			<span><a href="/lianxi/liuyan.htm">意见反馈</a></span>		
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><a href="https://weibo.com/cmp1952" target="_blank"><img src="/images/icon_cewb.png" /></a></div>
+    		<div class="index_cebianB">
+    			<!-- <div class="index_cebianB_wb">
+        			<p>新浪微博</p>
+        			<img src="/images/img_wbcode.jpg" />
+        			<p>~扫一扫~</p>
+    			</div> -->
+    			<span><a href="https://weibo.com/cmpedu?ssl_rnd=1509529849.6862&is_hot=1" target="_blank">机工教育</a></span>	
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><img src="/images/icon_ceer.png" /></div>
+    		<div class="index_cebianB">
+    			<div class="index_cebianB_wx">
+        			<p>公众号</p>
+        			<img src="/images/img_codereg.jpg" />
+        			<p>~扫一扫~</p>
+        		</div>
+    		</div>
+        </li>
+        
+        <li class="index_cebianKong" style="height: 50px;"></li>
+        <li>
+        	<a href="#">
+        		<div class="index_cebianD"><img src="/images/icon_ceup.png" /></div>
+        	</a>
+        </li>
+        <li>
+        	<a href="#">
+        		<div class="index_cebianD"><img src="/images/icon_cedown.png" /></div>
+        	</a>
+       	</li>
+    </ul>
+</div>
+
+
+<script>	
+ 
+	
+$(function() {
+	
+	var get_message = function() {
+
+		get_json(
+				'/user/getmessage.htm',
+				function(data) {
+					if (typeof (data) != "undefined" && data.code == 0) {
+						var ref = '<a href="javascript:void(0);" class="dropdown-toggle wave in"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="z-index:9999;">消息';
+						var items = data.data.list;
+						if (items != 'undefined'
+								&& typeof items == 'object') {
+							var len = data.data.list.length;
+							
+							if (len > 0) {
+								ref += '<span class="badge"  style="z-index:9999;">';
+								if (data.data.count > 0) {
+									ref += data.data.count;
+								}
+								if(data.data.count>0){
+									$('.my_message ').addClass('open')
+									}
+								ref += '</span></a>';
+								ref += '<ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages " id = "down-messages" style="width:300px;"  style="z-index:9999;">';
+								for (var i = 0; i < data.data.count; i++) {
+									var item = items[i];
+									if ((typeof item.icon === 'undefined')
+											|| item.icon == '') {
+										item.icon = '/images/user_pic.jpg';
+									}
+									ref += '<li><a target="_blank" href="/message/read_message.htm?id='
+											+ item.id
+											+ '">';
+									ref += '<div class="message"  style="z-index:9999;">';
+									ref += '<span class="message-sender"  style="z-index:9999;">';
+									if (item.status == 0) {
+										ref += '<i></i>';
+									}
+									ref += '' + item.sendername + '</span>';
+									ref += '<span class="message-time"  style="z-index:9999;">'
+											+ item.ztime + '</span>';
+									var vvv = item.title;
+									/* vvv = $("#x").text(vvv).html(); */
+									ref += '<span class="message-subject"  style="z-index:9999;">'
+											+ vvv + '</span>';
+									ref += '</div></a>';
+									ref += '</li>';
+								}
+								ref += '</ul>';
+								
+							} else {
+								ref += '<span class="badge"  style="z-index:9999;"></span></a>';
+							}
+						}
+
+						$(".my_message").append(ref);
+					} else {
+						//用户没有登录
+						//$("#login_div").html("<a href=\"/account/login.htm\">会员登录</a>");
+					}
+				});
+
+	}
+
+	get_json(
+			'/account/getuserlogin.htm',
+			function(data) {
+				if (typeof (data) != "undefined" && data.code == 0) {
+					//登录成功
+					//console.log(data.data);
+					var ret = '';
+					ret += '<li><a href="/blog/'+data.data.id+'/taokejian.htm">个人主页</a></li><li class="jg_topRline">|</li>';
+					ret += '<li><a href="/user/change_check1.htm">修改密码</a></li><li class="jg_topRline">|</li>';
+					ret += '<li><a href="/logout.htm">退出</a></li>';
+
+					$("#div_user_name").html('<a href="/user/index.htm">您好，'+ data.data.realname + '(<span style="color:red">个人中心</span>)</a>');
+					$("#div_user_info").append(ret);
+					get_message();
+					$(".gensuimokuai").html('<a href="/user/index.htm">'+ data.data.realname + '</a> | <a href="/logout.htm">退出</a>');
+					/* $("#message").show(); */
+					
+				} else {
+					//用户没有登录
+					var ret = '';
+					var newHref="javascript:showDialogForBack('dialog_log','');"
+					ret += '<li><a href="'+newHref+'"> 登录 </li><li class="jg_topRline">|</a></li><li><a href="/register/reg.htm"> 注册  </li><li class="jg_topRline"></a></li>';
+					$("#div_user_info").append(ret);
+					$('a.mustlogin').each(function(){
+					//$('#navbar li a.mustlogin').each(function(){
+						var href = $(this).attr("href");
+						$(this).attr("href","javascript:showDialogForBack('dialog_log','"+href+"');");
+					});
+					$(".gensuimokuai").html('<a href="'+newHref+'"> 登录 </a> | <a href="/register/reg.htm"> 注册  </a>');
+				}
+			});
+});
+</script>
+<script>
+$(function() {
+	
+	$('.cang').each(function(){
+			var self = this;
+			var book_id = $(self).attr("data-id");
+			$.ajax({
+				 url: "/rest/iscang.htm?book_id="+book_id,
+				 data: {},
+				 global : false,
+				 type: 'GET',
+				 dataType :'json'
+			 }).done(function(data) {
+				
+				if(data!=null && data !='undefined' && data.code==0){
+					//已收藏
+					$(self).removeClass("cangoff");
+					$(self).addClass("cangon");
+					$(self).text("已收藏");
+				}else {
+					//未收藏
+					$(self).removeClass("cangon");
+					$(self).addClass("cangoff");
+					$(self).text("收藏");
+				}
+				
+			 });
+		});
+		
+		$('.cang').on('click',function(){
+			var self = this;
+			var book_id = $(self).attr("data-id");
+			var url='';
+			if($(self).hasClass("cangon")){
+				//取消收藏
+				url= "/rest/addcang.htm?book_id="+book_id+"&type=remove";
+				$.ajax({
+					 url: url,
+					 data: {},
+					 global : false,
+					 type: 'GET',
+					 dataType :'json'
+				 }).done(function(data) {
+					
+					if(data!=null && data !='undefined' && data.code==0){
+						//已经取消收藏
+						$(self).removeClass("cangon");
+						$(self).addClass("cangoff");
+						$(self).text("收藏");
+					}else if(data!=null && data !='undefined' && data.code==2){
+						layer.msg(data.msg);
+					}else {
+						
+					}
+					
+				 });
+			}else{
+				//添加收藏
+				url= "/rest/addcang.htm?book_id="+book_id+"&type=add";
+				$.ajax({
+					 url: url,
+					 data: {},
+					 global : false,
+					 type: 'GET',
+					 dataType :'json'
+				 }).done(function(data) {
+					
+					if(data!=null && data !='undefined' && data.code==0){
+						//已收藏
+						$(self).removeClass("cangoff");
+						$(self).addClass("cangon");
+						$(self).text("已收藏");
+					}else if(data!=null && data !='undefined' && data.code==2){
+						//需要登录
+						layer.msg(data.msg);
+					}
+					
+				 });
+			}
+			
+			
+		});
+		
+	})
+	</script>
+</body>
+</html>

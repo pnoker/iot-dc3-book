@@ -1,5 +1,5 @@
 # 全书篇章结构 - 三篇 14 章
-- name: "基础篇 · 万物互联"
+- name: "基础篇 · 物联网平台底座"
   prefix: "一"
   chapters:
     - id: 1
@@ -35,7 +35,7 @@
         数据从设备到云端的完整链路：采集→传输→存储→计算→可视化。
         AI 驱动的数据处理：异常检测、预测性分析、自动告警。
 
-- name: "技术篇 · 万物智联"
+- name: "技术篇 · AIoT 与智能体能力"
   prefix: "二"
   chapters:
     - id: 6
@@ -45,7 +45,7 @@
         微服务架构下的物联网系统开发方法论。
         IoT DC3 的工程实践：Spring Boot 4 + Spring Cloud 2025 技术栈。
     - id: 7
-      title: "AI 与物联网融合"
+      title: "AIoT 与智能体应用"
       summary: |
         AIoT 的技术全景：大模型、Agent、RAG、Tool-Calling、MCP。
         Spring AI 在物联网中的应用：ChatClient、Function Calling、对话记忆。
@@ -68,7 +68,7 @@
         MCP（Model Context Protocol）：AI 与物联网设备交互的新协议标准。
         从协议适配到语义互操作：物联网标准化的演进方向。
 
-- name: "应用篇 · 智能落地"
+- name: "应用篇 · 场景实践与智能体应用"
   prefix: "三"
   chapters:
     - id: 10
@@ -96,7 +96,7 @@
         去中心化物联网架构：从中心化平台到分布式协作。
         AI + 区块链 + 物联网：可信智能的三角范式。
     - id: 14
-      title: "物联网项目实战与工程方法论"
+      title: "IoT DC3 项目实战：从平台到智能体应用"
       summary: |
         需求分析、架构设计、开发流程、部署运维、项目案例。
         IoT DC3 完整项目实战：从零搭建一个支持 AI 运维的物联网平台。

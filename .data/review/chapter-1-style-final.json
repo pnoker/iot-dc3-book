@@ -1,0 +1,26 @@
+{
+  "style": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      {
+        "type": "term_no_english",
+        "line_hint": "第1.2.4节",
+        "description": "专业术语“边缘计算”首次出现时未附英文原文（Edge Computing）",
+        "fix": "在“关键词之一是边缘计算（Edge Computing）”处补全英文"
+      }
+    ]
+  },
+  "publication": {
+    "pass": true,
+    "issues": [],
+    "statistics": {
+      "word_count": 12059,
+      "min_words": 9000,
+      "target_words": 12000,
+      "max_words": 14400,
+      "heading_count": 33,
+      "figure_or_table_count": 2
+    }
+  }
+}

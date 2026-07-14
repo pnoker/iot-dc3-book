@@ -163,6 +163,19 @@ class _UnusedWriter:
         return f"{markdown}\n\n已按质量门反馈修订。"
 
 
+class _FactFixingSectionWriter(_UnusedWriter):
+    def revise_planned_section(
+            self,
+            state: BookState,
+            section: SectionPlan,
+            markdown: str,
+            feedback: str,
+            previous_brief: str = "",
+    ) -> str:
+        self.section_revision_calls.append(section.id)
+        return f"### {section.heading}\n\n" + "正文" * 700 + "\n\n在示意场景中，平台延迟保持在较低水平，市场判断改为定性描述。"
+
+
 class _SuccessfulSectionReviser:
     def __init__(self) -> None:
         self.calls: list[str] = []
@@ -636,6 +649,27 @@ def test_section_review_requires_book_figure(tmp_path) -> None:
     assert section.status == "review_failed"
 
 
+def test_section_review_persists_reviewed_checkpoint(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    state = _state_with_sections()
+    state.quality = QualitySettings(min_figures_per_section=0)
+    state.max_revision_count = 0
+    section = state.get_section_plan("1.1.1")
+    assert section is not None
+    section.target_words = 1
+    markdown = f"### {section.heading}\n\n" + "正文" * 220
+    content = SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown=markdown, word_count=440)
+    state.mark_section_status("1.1.1", "written")
+    state.upsert_section_content(content)
+    project._save_write_checkpoint("book", state)
+
+    project._review_section_until_pass(state, section, content, "", "book")
+    reloaded = project.load_write_checkpoint("book")
+
+    assert reloaded.get_section_plan("1.1.1").status == "reviewed"
+    assert reloaded.get_section_content("1.1.1").review_feedback == ""
+
+
 def test_write_resume_retries_review_failed_section(tmp_path) -> None:
     project = _quality_project(tmp_path)
     project.cfg = SimpleNamespace(quality=QualitySettings(min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
@@ -689,6 +723,17 @@ def test_normalize_markdown_output_unwraps_outer_markdown_fence() -> None:
     assert BookProject._normalize_markdown_output(markdown) == "# 标题\n\n正文"
 
 
+def test_normalize_markdown_output_strips_explanation_before_unclosed_fence() -> None:
+    markdown = "好的，以下是合稿后的完整章节。\n\n```markdown\n# 第5章 标题\n\n正文\n\n```book-figure\nid: fig-1\n```"
+
+    normalized = BookProject._normalize_markdown_output(markdown)
+
+    assert normalized.startswith("# 第5章 标题")
+    assert "好的" not in normalized
+    assert "```markdown" not in normalized
+    assert "```book-figure" in normalized
+
+
 def test_chapter_revision_rejects_catastrophic_shrink(tmp_path) -> None:
     project = _quality_project(tmp_path)
     project.expander = _ShrinkingExpander()
@@ -729,6 +774,36 @@ def test_chapter_quality_gate_revises_targeted_sections_before_chapter_fallback(
     assert content.revision_count == 1
     assert "已按质量门反馈修订" in state.get_section_content("1.1.1").markdown
     assert state.get_section_plan("1.1.1").status == "review_failed"
+
+
+def test_chapter_fact_gate_revises_located_section_without_chapter_rewrite(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    writer = _FactFixingSectionWriter()
+    project.writer = writer
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=True, min_words_per_chapter=1, forbid_unsourced_statistics=True)
+    state.max_revision_count = 1
+    state.set_current_chapter_by_id(1)
+    section = state.get_section_plan("1.1.1")
+    assert section is not None
+    markdown = f"### {section.heading}\n\n2023年，平台将端到端时延稳定控制在50ms，市场规模达到100亿元。" + "正文" * 700
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown=markdown,
+            word_count=1400,
+        )
+    )
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown=f"# 第1章 第一章\n\n{markdown}"))
+
+    content = project._review_chapter_until_pass(state, 1)
+
+    assert writer.section_revision_calls == ["1.1.1"]
+    assert project.expander.calls == 0
+    assert content.publication_feedback == ""
+    assert state.get_current_chapter().status == "approved"
 
 
 def test_chapter_targeted_revision_reviews_revised_section(tmp_path) -> None:
@@ -852,7 +927,7 @@ def test_final_review_marks_completed_book_publication_approved(tmp_path) -> Non
 
 def test_write_export_rejects_unapproved_book(tmp_path) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output")
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -866,9 +941,32 @@ def test_write_export_rejects_unapproved_book(tmp_path) -> None:
         project.write_export("book-1", target="markdown")
 
 
+def test_write_export_draft_allows_unapproved_preview(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.cfg = _workflow_app_config()
+    project.cfg.quality.enabled = False
+    project._write_checkpoint_path_override = None
+    project._write_checkpoint_kind_override = None
+    state = _state_with_sections()
+    state.current_phase = "completed"
+    _mark_book_ready_for_final_review(state)
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
+    project._save_write_checkpoint("book-1", state)
+
+    result = project.write_export("book-1", target="markdown", draft=True)
+
+    assert result["draft"] is True
+    assert result["publication_ready"] is False
+    assert result["output_dir"] == str(tmp_path / "output" / "draft")
+    assert result["book_markdown"] == str(tmp_path / "output" / "draft" / "book.md")
+    assert "草稿导出" in result["warning"]
+    assert (tmp_path / "output" / "draft" / "book.md").exists()
+
+
 def test_write_export_markdown_generates_book_file(tmp_path) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output")
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -892,7 +990,7 @@ def test_write_export_markdown_generates_book_file(tmp_path) -> None:
 
 def test_write_export_all_generates_word_from_markdown(tmp_path, monkeypatch) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output")
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None

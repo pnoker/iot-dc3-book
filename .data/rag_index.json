@@ -1,0 +1,841 @@
+{
+  "chunk_size": 1000,
+  "chunk_overlap": 200,
+  "embed_model": "qwen/qwen3-embedding-8b",
+  "contextualize": false,
+  "sources": [
+    {
+      "label": "books",
+      "path": "/Users/pnoker/Code/micode/tool/mi-book/books",
+      "categories": [
+        "iot"
+      ],
+      "dir_categories": [
+        [
+          "sensing-identification",
+          [
+            "sensing",
+            "hardware"
+          ]
+        ],
+        [
+          "communication-networking",
+          [
+            "network",
+            "protocol"
+          ]
+        ],
+        [
+          "platform-cloud-bigdata",
+          [
+            "platform",
+            "cloud",
+            "bigdata"
+          ]
+        ],
+        [
+          "security-technology",
+          [
+            "security"
+          ]
+        ],
+        [
+          "app-dev-programming",
+          [
+            "development"
+          ]
+        ],
+        [
+          "industry-business-strategy",
+          [
+            "industry",
+            "business"
+          ]
+        ],
+        [
+          "introductions-overviews",
+          [
+            "overview"
+          ]
+        ]
+      ],
+      "language": "zh"
+    },
+    {
+      "label": "dc3",
+      "path": "/Users/pnoker/Code/pnoker/IoTDC3/github/iot-dc3/docs/zh",
+      "categories": [
+        "iot",
+        "dc3"
+      ],
+      "dir_categories": [
+        [
+          "ai",
+          [
+            "ai",
+            "agentic"
+          ]
+        ],
+        [
+          "architecture",
+          [
+            "architecture"
+          ]
+        ],
+        [
+          "drivers",
+          [
+            "driver",
+            "protocol"
+          ]
+        ],
+        [
+          "development",
+          [
+            "development"
+          ]
+        ],
+        [
+          "foundations",
+          [
+            "foundation"
+          ]
+        ],
+        [
+          "operation",
+          [
+            "operation"
+          ]
+        ],
+        [
+          "modules",
+          [
+            "architecture"
+          ]
+        ],
+        [
+          "automation",
+          [
+            "automation"
+          ]
+        ],
+        [
+          "quickstart",
+          [
+            "overview"
+          ]
+        ],
+        [
+          "introduction",
+          [
+            "overview"
+          ]
+        ]
+      ],
+      "language": "zh"
+    }
+  ],
+  "extensions": [
+    ".markdown",
+    ".md",
+    ".pdf"
+  ],
+  "files": [
+    {
+      "source": "books",
+      "path": "app-dev-programming/aiot-development-practice-vol1.pdf",
+      "size": 6213165,
+      "mtime_ns": 1782957445562457220
+    },
+    {
+      "source": "books",
+      "path": "app-dev-programming/aiot-development-practice-vol2.pdf",
+      "size": 8161611,
+      "mtime_ns": 1782957445554935711
+    },
+    {
+      "source": "books",
+      "path": "app-dev-programming/enterprise-iot-design.pdf",
+      "size": 5964589,
+      "mtime_ns": 1782957445508291032
+    },
+    {
+      "source": "books",
+      "path": "app-dev-programming/iot-python-development-practice.pdf",
+      "size": 45614804,
+      "mtime_ns": 1782957445495287100
+    },
+    {
+      "source": "books",
+      "path": "app-dev-programming/iot-system-development-from-zero-to-one.pdf",
+      "size": 2915953,
+      "mtime_ns": 1782957445499134396
+    },
+    {
+      "source": "books",
+      "path": "app-dev-programming/iot-technology-application-development.pdf",
+      "size": 9719603,
+      "mtime_ns": 1782957445541344612
+    },
+    {
+      "source": "books",
+      "path": "catalog.md",
+      "size": 1182,
+      "mtime_ns": 1782962371006979693
+    },
+    {
+      "source": "books",
+      "path": "communication-networking/nb-iot-technology-analysis-and-cases-ed2.pdf",
+      "size": 10398687,
+      "mtime_ns": 1782957444713014001
+    },
+    {
+      "source": "books",
+      "path": "industry-business-strategy/haier-iot-era-management-paradigm.pdf",
+      "size": 11535585,
+      "mtime_ns": 1782957444565638826
+    },
+    {
+      "source": "books",
+      "path": "industry-business-strategy/ibm-business-value-report-iot-vol1.pdf",
+      "size": 12105821,
+      "mtime_ns": 1782957444582034221
+    },
+    {
+      "source": "books",
+      "path": "industry-business-strategy/iot-application-industry-analysis-and-cases.pdf",
+      "size": 29185767,
+      "mtime_ns": 1782957444549743265
+    },
+    {
+      "source": "books",
+      "path": "introductions-overviews/future-of-interaction-iot-design-principles.pdf",
+      "size": 2958481,
+      "mtime_ns": 1782957444199564308
+    },
+    {
+      "source": "books",
+      "path": "introductions-overviews/illustrated-iot-turing-series.pdf",
+      "size": 13395867,
+      "mtime_ns": 1782957444232502555
+    },
+    {
+      "source": "books",
+      "path": "platform-cloud-bigdata/iot-and-cloud-computing-strategic-industries.pdf",
+      "size": 12043108,
+      "mtime_ns": 1782957445273639169
+    },
+    {
+      "source": "books",
+      "path": "platform-cloud-bigdata/iot-cloud-platform-and-big-data-processing.pdf",
+      "size": 13807920,
+      "mtime_ns": 1782957444790285427
+    },
+    {
+      "source": "books",
+      "path": "platform-cloud-bigdata/iot-system-architecture-edge-computing-2nd-ed.pdf",
+      "size": 14065173,
+      "mtime_ns": 1782957444772336572
+    },
+    {
+      "source": "books",
+      "path": "platform-cloud-bigdata/smart-iot-blockchain-fog-computing-2020.pdf",
+      "size": 3172815,
+      "mtime_ns": 1782957445277919299
+    },
+    {
+      "source": "books",
+      "path": "security-technology/iot-communication-security-and-solutions.pdf",
+      "size": 52669545,
+      "mtime_ns": 1782957445384212592
+    },
+    {
+      "source": "books",
+      "path": "sensing-identification/iot-beidou-applications.pdf",
+      "size": 20431112,
+      "mtime_ns": 1782957445640011688
+    },
+    {
+      "source": "books",
+      "path": "sensing-identification/iot-rfid-core-technology-tutorial.pdf",
+      "size": 14675522,
+      "mtime_ns": 1782957445660046545
+    },
+    {
+      "source": "books",
+      "path": "sensing-identification/iot-rfid-multi-domain-solutions.pdf",
+      "size": 22035912,
+      "mtime_ns": 1782957445610902820
+    },
+    {
+      "source": "books",
+      "path": "sensing-identification/iot-sensor-technology-vol1.pdf",
+      "size": 20366048,
+      "mtime_ns": 1782957445722749536
+    },
+    {
+      "source": "books",
+      "path": "sensing-identification/iot-sensor-technology-vol2.pdf",
+      "size": 5800932,
+      "mtime_ns": 1782957445731121046
+    },
+    {
+      "source": "books",
+      "path": "sensing-identification/iot-source-cyber-physical-sensing-basics-ed2.pdf",
+      "size": 27203393,
+      "mtime_ns": 1782957445693873585
+    },
+    {
+      "source": "dc3",
+      "path": "ai/agentic.md",
+      "size": 16755,
+      "mtime_ns": 1782463767496101122
+    },
+    {
+      "source": "dc3",
+      "path": "ai/index.md",
+      "size": 3633,
+      "mtime_ns": 1783565395415661221
+    },
+    {
+      "source": "dc3",
+      "path": "ai/mcp.md",
+      "size": 13718,
+      "mtime_ns": 1782639734382077559
+    },
+    {
+      "source": "dc3",
+      "path": "ai/spring-ai-deep-dive.md",
+      "size": 13353,
+      "mtime_ns": 1783565395047645984
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/auth-rbac.md",
+      "size": 16150,
+      "mtime_ns": 1783565392346403345
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/command-plane.md",
+      "size": 12797,
+      "mtime_ns": 1782893789576768984
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/data-plane.md",
+      "size": 16038,
+      "mtime_ns": 1782893789577118192
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/domain-model.md",
+      "size": 15245,
+      "mtime_ns": 1782639734382669309
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/facade-modes.md",
+      "size": 7630,
+      "mtime_ns": 1782639734382904476
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/index.md",
+      "size": 11312,
+      "mtime_ns": 1782893789577546359
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/modules.md",
+      "size": 15110,
+      "mtime_ns": 1782639734383065060
+    },
+    {
+      "source": "dc3",
+      "path": "architecture/services.md",
+      "size": 14195,
+      "mtime_ns": 1782639734383218685
+    },
+    {
+      "source": "dc3",
+      "path": "automation/cli.md",
+      "size": 13349,
+      "mtime_ns": 1783414200496787270
+    },
+    {
+      "source": "dc3",
+      "path": "automation/index.md",
+      "size": 2088,
+      "mtime_ns": 1782639734383519435
+    },
+    {
+      "source": "dc3",
+      "path": "community/code-of-conduct.md",
+      "size": 4455,
+      "mtime_ns": 1782656530205401359
+    },
+    {
+      "source": "dc3",
+      "path": "community/contributing.md",
+      "size": 7212,
+      "mtime_ns": 1782463767498211958
+    },
+    {
+      "source": "dc3",
+      "path": "community/faq.md",
+      "size": 7767,
+      "mtime_ns": 1782656530205666814
+    },
+    {
+      "source": "dc3",
+      "path": "community/security.md",
+      "size": 6859,
+      "mtime_ns": 1782463767498358003
+    },
+    {
+      "source": "dc3",
+      "path": "development/api-documentation.md",
+      "size": 13277,
+      "mtime_ns": 1783565395765530328
+    },
+    {
+      "source": "dc3",
+      "path": "development/changelog.md",
+      "size": 6768,
+      "mtime_ns": 1782660723241721463
+    },
+    {
+      "source": "dc3",
+      "path": "development/driver-authoring.md",
+      "size": 23474,
+      "mtime_ns": 1782639734384261477
+    },
+    {
+      "source": "dc3",
+      "path": "development/index.md",
+      "size": 9979,
+      "mtime_ns": 1782656530207564500
+    },
+    {
+      "source": "dc3",
+      "path": "development/testing.md",
+      "size": 10042,
+      "mtime_ns": 1782656530208244951
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/bacnet-ip.md",
+      "size": 14523,
+      "mtime_ns": 1782639734384713727
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/ble.md",
+      "size": 12686,
+      "mtime_ns": 1782463767499537111
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/can.md",
+      "size": 12700,
+      "mtime_ns": 1782463767499636363
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/coap.md",
+      "size": 14645,
+      "mtime_ns": 1782639734385017893
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/dlms.md",
+      "size": 14020,
+      "mtime_ns": 1782639734385181060
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/ethernet-ip.md",
+      "size": 12355,
+      "mtime_ns": 1782639734385342560
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/fins.md",
+      "size": 11966,
+      "mtime_ns": 1782639734385504185
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/http.md",
+      "size": 12755,
+      "mtime_ns": 1782463767500577091
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/iec104.md",
+      "size": 13203,
+      "mtime_ns": 1782639734385655477
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/index.md",
+      "size": 4966,
+      "mtime_ns": 1783565395997211907
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/listening-virtual.md",
+      "size": 11213,
+      "mtime_ns": 1782639734385826310
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/lwm2m.md",
+      "size": 12197,
+      "mtime_ns": 1782639734385993310
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/matrix.md",
+      "size": 8670,
+      "mtime_ns": 1783565396250321755
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/melsec.md",
+      "size": 9989,
+      "mtime_ns": 1782463767501613487
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/modbus-rtu.md",
+      "size": 10625,
+      "mtime_ns": 1782463767501879368
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/modbus-tcp.md",
+      "size": 11934,
+      "mtime_ns": 1782639734386159310
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/mqtt.md",
+      "size": 13681,
+      "mtime_ns": 1782639734386500560
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/mysql.md",
+      "size": 13185,
+      "mtime_ns": 1782639734386683686
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/opc-da.md",
+      "size": 9833,
+      "mtime_ns": 1782639734386851686
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/opc-ua.md",
+      "size": 10718,
+      "mtime_ns": 1782639734387041894
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/oracle.md",
+      "size": 15749,
+      "mtime_ns": 1782639734387231977
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/plcs7.md",
+      "size": 9631,
+      "mtime_ns": 1782639734387492894
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/postgresql.md",
+      "size": 11603,
+      "mtime_ns": 1782463767502966182
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/serial.md",
+      "size": 15074,
+      "mtime_ns": 1782639734387660436
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/sl651.md",
+      "size": 10934,
+      "mtime_ns": 1782639734387831353
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/snmp.md",
+      "size": 12726,
+      "mtime_ns": 1782639734388003353
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/sqlserver.md",
+      "size": 14845,
+      "mtime_ns": 1782639734388177144
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/tcp-udp.md",
+      "size": 10923,
+      "mtime_ns": 1782639734388336603
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/virtual.md",
+      "size": 10511,
+      "mtime_ns": 1782463767503729323
+    },
+    {
+      "source": "dc3",
+      "path": "drivers/zigbee.md",
+      "size": 11893,
+      "mtime_ns": 1782463767503870618
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/aiot.md",
+      "size": 14306,
+      "mtime_ns": 1782639734388531728
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/data-pipeline.md",
+      "size": 12260,
+      "mtime_ns": 1782639734388692145
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/edge-cloud.md",
+      "size": 12795,
+      "mtime_ns": 1782639734388865478
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/fieldbus.md",
+      "size": 12861,
+      "mtime_ns": 1783565394829065136
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/identification.md",
+      "size": 13836,
+      "mtime_ns": 1783565914294334871
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/index.md",
+      "size": 3580,
+      "mtime_ns": 1782893789579024150
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/iot-protocols.md",
+      "size": 17106,
+      "mtime_ns": 1783565395120193543
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/security.md",
+      "size": 14097,
+      "mtime_ns": 1782639734389619311
+    },
+    {
+      "source": "dc3",
+      "path": "foundations/sensing.md",
+      "size": 12123,
+      "mtime_ns": 1783565393802318299
+    },
+    {
+      "source": "dc3",
+      "path": "frontend/index.md",
+      "size": 4364,
+      "mtime_ns": 1782663472926286773
+    },
+    {
+      "source": "dc3",
+      "path": "frontend/test-debugging.md",
+      "size": 5109,
+      "mtime_ns": 1782656530208846902
+    },
+    {
+      "source": "dc3",
+      "path": "guide/index.md",
+      "size": 5982,
+      "mtime_ns": 1783414176857094954
+    },
+    {
+      "source": "dc3",
+      "path": "guide/logging.md",
+      "size": 11000,
+      "mtime_ns": 1782639908715133187
+    },
+    {
+      "source": "dc3",
+      "path": "guide/observability.md",
+      "size": 9494,
+      "mtime_ns": 1782639734390232353
+    },
+    {
+      "source": "dc3",
+      "path": "guide/troubleshooting.md",
+      "size": 13731,
+      "mtime_ns": 1783414164593798771
+    },
+    {
+      "source": "dc3",
+      "path": "guide/usage.md",
+      "size": 12122,
+      "mtime_ns": 1783414172078221352
+    },
+    {
+      "source": "dc3",
+      "path": "index.md",
+      "size": 3961,
+      "mtime_ns": 1782893789580372858
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts.md",
+      "size": 7377,
+      "mtime_ns": 1782639734390749645
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/attribute-config.md",
+      "size": 9904,
+      "mtime_ns": 1782639734390879728
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/command.md",
+      "size": 9913,
+      "mtime_ns": 1782639734391019937
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/device.md",
+      "size": 6241,
+      "mtime_ns": 1782639734391318812
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/driver.md",
+      "size": 9176,
+      "mtime_ns": 1782639734391480812
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/event.md",
+      "size": 5724,
+      "mtime_ns": 1782639734391676312
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/point-value.md",
+      "size": 6917,
+      "mtime_ns": 1782639734391879645
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/point.md",
+      "size": 6588,
+      "mtime_ns": 1782639734392089520
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/profile.md",
+      "size": 7077,
+      "mtime_ns": 1782639734392322979
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/concepts/tenant.md",
+      "size": 7288,
+      "mtime_ns": 1782639734392574270
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/glossary.md",
+      "size": 8919,
+      "mtime_ns": 1783565395347740726
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/index.md",
+      "size": 6396,
+      "mtime_ns": 1782639734392793270
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/license.md",
+      "size": 3140,
+      "mtime_ns": 1782656530209315272
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/paths.md",
+      "size": 3196,
+      "mtime_ns": 1782639734392947646
+    },
+    {
+      "source": "dc3",
+      "path": "modules/index.md",
+      "size": 8980,
+      "mtime_ns": 1782463767509595237
+    },
+    {
+      "source": "dc3",
+      "path": "operation/alarms.md",
+      "size": 11861,
+      "mtime_ns": 1782639734393118437
+    },
+    {
+      "source": "dc3",
+      "path": "operation/data-commands.md",
+      "size": 11567,
+      "mtime_ns": 1782639734393268229
+    },
+    {
+      "source": "dc3",
+      "path": "operation/device-onboarding.md",
+      "size": 13744,
+      "mtime_ns": 1782639734393426854
+    },
+    {
+      "source": "dc3",
+      "path": "operation/index.md",
+      "size": 7687,
+      "mtime_ns": 1783414182674893593
+    },
+    {
+      "source": "dc3",
+      "path": "quickstart/environment.md",
+      "size": 26171,
+      "mtime_ns": 1782639751162431072
+    },
+    {
+      "source": "dc3",
+      "path": "quickstart/first-device.md",
+      "size": 15696,
+      "mtime_ns": 1783565393427744447
+    },
+    {
+      "source": "dc3",
+      "path": "quickstart/index.md",
+      "size": 11046,
+      "mtime_ns": 1783414185894235626
+    }
+  ]
+}

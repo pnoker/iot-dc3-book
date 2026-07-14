@@ -48,13 +48,49 @@ class IllustrationConfig(StrictConfigModel):
 
     marker: str = "book-figure"
     renderer: str = "html-svg"
+    ai_polish_rounds: int = 1
+    ai_timeout_seconds: float = 120.0
+    ai_max_tokens: int = 8192
+    ai_retry_attempts: int = 1
+    ai_json_retry_attempts: int = 1
+    ai_circuit_breaker_failures: int = 3
+    polished_assets_dir: str = "assets/figures/polished"
+    polished_required_for_export: bool = False
+    polished_required_for_draft: bool = False
+    polished_min_png_bytes: int = 4096
     theme: str = "technical-publication-light"
     palette: dict[str, str] = Field(default_factory=dict)
     allowed_types: list[str] = Field(default_factory=list)
     required_fields: list[str] = Field(default_factory=list)
+    professional_fields: list[str] = Field(default_factory=list)
+    design_principles: list[str] = Field(default_factory=list)
+    component_schema: dict[str, str] = Field(default_factory=dict)
+    connection_schema: dict[str, str] = Field(default_factory=dict)
+    region_schema: dict[str, str] = Field(default_factory=dict)
+    forbidden_labels: list[str] = Field(default_factory=list)
     legend: list[str] = Field(default_factory=list)
     constraints: list[str] = Field(default_factory=list)
     example: str = ""
+
+    @model_validator(mode="after")
+    def validate_ai_runtime_policy(self) -> IllustrationConfig:
+        if self.ai_polish_rounds < 0:
+            raise ValueError("style.illustrations.ai_polish_rounds 不能小于 0")
+        if self.ai_timeout_seconds <= 0:
+            raise ValueError("style.illustrations.ai_timeout_seconds 必须大于 0")
+        if self.ai_max_tokens <= 0:
+            raise ValueError("style.illustrations.ai_max_tokens 必须大于 0")
+        if self.ai_retry_attempts <= 0:
+            raise ValueError("style.illustrations.ai_retry_attempts 必须大于 0")
+        if self.ai_json_retry_attempts <= 0:
+            raise ValueError("style.illustrations.ai_json_retry_attempts 必须大于 0")
+        if self.ai_circuit_breaker_failures <= 0:
+            raise ValueError("style.illustrations.ai_circuit_breaker_failures 必须大于 0")
+        if not self.polished_assets_dir.strip():
+            raise ValueError("style.illustrations.polished_assets_dir 不能为空")
+        if self.polished_min_png_bytes < 0:
+            raise ValueError("style.illustrations.polished_min_png_bytes 不能小于 0")
+        return self
 
 
 class StyleConfigModel(StrictConfigModel):

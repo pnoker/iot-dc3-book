@@ -171,3 +171,21 @@ def test_chat_json_retries_parse_failures() -> None:
 
     assert completions.calls == 2
     assert result == {"ok": True}
+
+
+def test_chat_json_allows_per_call_json_retry_override() -> None:
+    client = LLMClient(
+        base_url="http://example.test",
+        api_key="key",
+        model="model",
+        retry_min_seconds=0,
+        retry_max_seconds=0,
+        json_retry_attempts=2,
+    )
+    completions = _FlakyChatCompletions(["不是 JSON", '{"ok": true}'])
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+
+    with pytest.raises(ValueError, match="无法从 LLM 响应中解析 JSON"):
+        client.chat_json("system", "return json", json_retry_attempts=1)
+
+    assert completions.calls == 1

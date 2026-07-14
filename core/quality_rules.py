@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from pydantic import BaseModel
 
@@ -17,7 +17,7 @@ from core.markdown_assets import (
     missing_local_images,
 )
 from core.originality import char_ngram_overlap, split_paragraphs
-from core.state import BookState, ChapterContent, QualitySettings
+from core.state import BookState, ChapterContent, QualitySettings, SectionContent
 from core.wordcount import count_words
 
 if TYPE_CHECKING:
@@ -32,6 +32,10 @@ class PublicationIssue(BaseModel):
 
     code: str
     severity: str = "major"
+    scope: Literal["chapter", "section"] = "chapter"
+    section_id: str = ""
+    section_title: str = ""
+    excerpt: str = ""
     message: str
     suggestion: str = ""
 
@@ -48,11 +52,21 @@ class PublicationQualityReport(BaseModel):
         return json.dumps(
             {
                 "pass": self.pass_,
-                "issues": [issue.model_dump() for issue in self.issues],
+                "issues": [_issue_feedback_payload(issue) for issue in self.issues],
                 "statistics": self.statistics,
             },
             ensure_ascii=False,
         )
+
+
+def _issue_feedback_payload(issue: PublicationIssue) -> dict[str, object]:
+    payload = issue.model_dump()
+    if payload.get("scope") == "chapter":
+        payload.pop("scope", None)
+    for key in ["section_id", "section_title", "excerpt"]:
+        if not payload.get(key):
+            payload.pop(key, None)
+    return payload
 
 
 _CHAPTER_CLOSURE_RE = re.compile(
@@ -98,6 +112,9 @@ def evaluate_chapter_quality(
     required_figure_fields = illustration_cfg.get("required_fields")
     if not isinstance(required_figure_fields, list):
         required_figure_fields = None
+    allowed_figure_types = illustration_cfg.get("allowed_types")
+    if not isinstance(allowed_figure_types, list):
+        allowed_figure_types = None
     actual_words = count_words(markdown)
     target_words = max(settings.target_words_per_chapter, state.writing.target_for_chapter(content.chapter_id))
     max_words = int(target_words * settings.max_words_over_target_ratio) if settings.max_words_over_target_ratio else 0
@@ -108,9 +125,9 @@ def evaluate_chapter_quality(
     _check_word_count(settings, actual_words, target_words, max_words, issues)
     _check_structure(settings, markdown, heading_count, figure_or_table_count, issues)
     _check_section_figures(state, content, figure_marker, issues)
-    _check_book_figure_specs(markdown, figure_marker, required_figure_fields, issues)
+    _check_book_figure_specs(markdown, figure_marker, required_figure_fields, allowed_figure_types, issues)
     _check_assets(settings, markdown, base_dir, issues)
-    _check_unsourced_hard_facts(settings, markdown, issues)
+    _check_unsourced_hard_facts(settings, state, content, issues)
 
     statistics = {
         "word_count": actual_words,
@@ -307,9 +324,10 @@ def _check_book_figure_specs(
         markdown: str,
         marker: str,
         required_fields: list[str] | None,
+        allowed_types: list[str] | None,
         issues: list[PublicationIssue],
 ) -> None:
-    invalid = find_invalid_book_figures(markdown, marker=marker, required_fields=required_fields)
+    invalid = find_invalid_book_figures(markdown, marker=marker, required_fields=required_fields, allowed_types=allowed_types)
     if invalid:
         issues.append(
             PublicationIssue(
@@ -320,9 +338,26 @@ def _check_book_figure_specs(
         )
 
 
-def _check_unsourced_hard_facts(settings: QualitySettings, markdown: str, issues: list[PublicationIssue]) -> None:
+def _check_unsourced_hard_facts(
+        settings: QualitySettings,
+        state: BookState,
+        content: ChapterContent,
+        issues: list[PublicationIssue],
+) -> None:
     if not settings.forbid_unsourced_statistics:
         return
+    section_contents = state.get_chapter_section_contents(content.chapter_id)
+    if section_contents:
+        for section_content in section_contents:
+            vague_statistics, hard_facts = _unsourced_claim_excerpts(section_content.markdown)
+            _append_unsourced_claim_issues(issues, vague_statistics, hard_facts, section_content=section_content)
+        return
+
+    vague_statistics, hard_facts = _unsourced_claim_excerpts(content.markdown)
+    _append_unsourced_claim_issues(issues, vague_statistics, hard_facts, section_content=None)
+
+
+def _unsourced_claim_excerpts(markdown: str) -> tuple[list[str], list[str]]:
     vague_statistics: list[str] = []
     hard_facts: list[str] = []
     for paragraph in re.split(r"\n\s*\n", markdown):
@@ -334,11 +369,29 @@ def _check_unsourced_hard_facts(settings: QualitySettings, markdown: str, issues
             continue
         if _HARD_FACT_RE.search(text) and not _HYPOTHETICAL_HINT_RE.search(text):
             hard_facts.append(text[:120])
+    return vague_statistics, hard_facts
+
+
+def _append_unsourced_claim_issues(
+        issues: list[PublicationIssue],
+        vague_statistics: list[str],
+        hard_facts: list[str],
+        *,
+        section_content: SectionContent | None,
+) -> None:
+    scope: Literal["chapter", "section"] = "section" if section_content is not None else "chapter"
+    section_id = section_content.section_id if section_content is not None else ""
+    section_title = section_content.title if section_content is not None else ""
+    section_prefix = f"{section_id} {section_title}: " if section_content is not None else ""
     if vague_statistics:
         issues.append(
             PublicationIssue(
                 code="fact.unsourced_statistics",
-                message=f"存在疑似无明确来源的统计或趋势断言: {'；'.join(vague_statistics[:3])}",
+                scope=scope,
+                section_id=section_id,
+                section_title=section_title,
+                excerpt=vague_statistics[0],
+                message=f"{section_prefix}存在疑似无明确来源的统计或趋势断言: {'；'.join(vague_statistics[:3])}",
                 suggestion="补充具体来源，或改写为非统计化、低风险表述。",
             )
         )
@@ -346,7 +399,11 @@ def _check_unsourced_hard_facts(settings: QualitySettings, markdown: str, issues
         issues.append(
             PublicationIssue(
                 code="fact.unsourced_hard_fact",
-                message=f"存在疑似无明确来源的精确硬事实: {'；'.join(hard_facts[:3])}",
+                scope=scope,
+                section_id=section_id,
+                section_title=section_title,
+                excerpt=hard_facts[0],
+                message=f"{section_prefix}存在疑似无明确来源的精确硬事实: {'；'.join(hard_facts[:3])}",
                 suggestion="为年份、版本、时延、吞吐、金额等精确断言补充 [S]/[W] 证据，或改写为定性/假设场景。",
             )
         )

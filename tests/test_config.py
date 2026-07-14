@@ -84,7 +84,7 @@ def test_config_to_app_config_returns_typed_models(monkeypatch):
     app_config = config_to_app_config(cfg)
 
     assert isinstance(app_config, AppConfig)
-    assert app_config.book.title == "物联网技术与实践"
+    assert app_config.book.title == "AIoT 技术与实践"
     assert app_config.llm.embedding.model == "qwen/qwen3-embedding-8b"
     assert app_config.references.chunk_size > app_config.references.chunk_overlap
     assert app_config.references.web_research.enabled is False
@@ -313,7 +313,7 @@ def test_load_config_dir():
     assert "parts" in cfg
     assert "style" in cfg
     assert "llm" in cfg
-    assert cfg["book"]["title"] == "物联网技术与实践"
+    assert cfg["book"]["title"] == "AIoT 技术与实践"
 
 
 def test_load_config_dir_has_author():

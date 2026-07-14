@@ -16,6 +16,7 @@ dependencies = [
     "rank-bm25>=0.2.2",
     "jieba>=0.42.1",
     "rich>=15.0.0",
+    "playwright>=1.60.0",
 ]
 
 [project.optional-dependencies]

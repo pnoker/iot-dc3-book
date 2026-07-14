@@ -36,6 +36,7 @@ class ConfigPaths:
     reference_sources: tuple[ReferenceSource, ...]
     output_dir: Path
     data_dir: Path
+    figures_dir: Path
     chroma_dir: Path
     rag_manifest: Path
     bm25_index: Path
@@ -191,6 +192,7 @@ def get_config_paths(app_config: AppConfig) -> ConfigPaths:
         reference_sources=reference_sources,
         output_dir=output_dir,
         data_dir=data_dir,
+        figures_dir=data_dir / "figures",
         chroma_dir=data_dir / "chroma",
         rag_manifest=data_dir / "rag_index.json",
         bm25_index=data_dir / "bm25_index.json",
