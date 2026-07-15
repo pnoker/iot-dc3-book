@@ -2,7 +2,7 @@
 enabled: true
 mode: "release"
 min_words_per_chapter: 9000
-target_words_per_chapter: 12000
+target_words_per_chapter: 50000
 max_words_over_target_ratio: 1.2
 min_heading_count: 8
 require_summary: false
