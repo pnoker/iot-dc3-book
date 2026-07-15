@@ -27,6 +27,10 @@ node_modules/
 .data/chroma/
 .data/backups/
 
+# 数据库与索引缓存（大二进制生成产物，不入版本控制）
+.data/checkpoint.db
+.data/bm25_index.json
+
 # 临时工作产物（保留可复用脚本）
 .tmp/*
 !.tmp/*.py
