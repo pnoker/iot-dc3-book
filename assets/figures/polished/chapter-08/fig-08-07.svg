@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- ===== Title ===== -->
+  <circle cx="44" cy="42" r="6" fill="#2563EB"/>
+  <text x="64" y="40" font-size="22" font-weight="700" fill="#0F172A">图8-8 CoAP 的 OSCORE 安全处理流程示意</text>
+  <text x="64" y="62" font-size="12" fill="#64748B">OSCORE 一体化安全处理：加密 / 完整性校验 / 防重放（主链路：Client 生成原始请求 → Server 终点验证）</text>
+  <rect x="1666" y="26" width="104" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1718" y="43" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1">DATAFLOW</text>
+  <line x1="64" y1="103" x2="1736" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Platform domain boundary (server-side responsibility) ===== -->
+  <rect x="800" y="270" width="720" height="450" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="812" y="258" width="120" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="872" y="273" font-size="11" fill="#2563EB" text-anchor="middle" font-weight="600">平台服务域</text>
+
+  <!-- ===== CoAP Client (edge, green) ===== -->
+  <rect x="70" y="300" width="360" height="300" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <circle cx="88" cy="324" r="4" fill="#10B981"/>
+  <text x="100" y="328" font-size="15" font-weight="700" fill="#0F172A">CoAP Client</text>
+  <text x="100" y="346" font-size="10" fill="#64748B">受限设备 · 发起请求，携带原始载荷</text>
+
+  <!-- OSCORE 处理 submodule (inside Client) -->
+  <rect x="100" y="362" width="300" height="218" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="250" y="384" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">OSCORE 处理</text>
+
+  <rect x="120" y="398" width="260" height="30" rx="4" fill="#FFFFFF" stroke="#10B981"/>
+  <text x="132" y="417" font-size="11" fill="#0F172A">1 · 加密载荷（AES-CCM-16）</text>
+
+  <rect x="120" y="436" width="260" height="30" rx="4" fill="#FFFFFF" stroke="#10B981"/>
+  <text x="132" y="455" font-size="11" fill="#0F172A">2 · 计算 HMAC-MAC</text>
+
+  <rect x="120" y="474" width="260" height="30" rx="4" fill="#FFFFFF" stroke="#10B981"/>
+  <text x="132" y="493" font-size="11" fill="#0F172A">3 · 打包 Kid + 序列号 seq</text>
+
+  <text x="250" y="558" font-size="9" fill="#64748B" text-anchor="middle">输出 Object{ciphertext, tag, Kid, seq}</text>
+
+  <!-- ===== Network link (UDP, gray dashed) ===== -->
+  <line x1="430" y1="450" x2="816" y2="450" stroke="#64748B" stroke-width="2.4" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <rect x="552" y="412" width="156" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="630" y="428" font-size="11" fill="#475569" text-anchor="middle">CoAP 请求 /p/1.0/sensor/temp</text>
+  <text x="630" y="466" font-size="10" fill="#94A3B8" text-anchor="middle">UDP · 受链路层 MTU 约束</text>
+
+  <!-- ===== CoAP Server (platform, blue) ===== -->
+  <rect x="820" y="300" width="360" height="300" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="838" cy="324" r="4" fill="#2563EB"/>
+  <text x="850" y="328" font-size="15" font-weight="700" fill="#0F172A">CoAP Server（平台）</text>
+  <text x="850" y="346" font-size="10" fill="#64748B">接收验证 · 终点反处理</text>
+
+  <!-- OSCORE 反处理 submodule (inside Server) -->
+  <rect x="850" y="362" width="300" height="218" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="1000" y="384" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">OSCORE 反处理</text>
+
+  <rect x="870" y="398" width="260" height="30" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="882" y="417" font-size="11" fill="#0F172A">1 · 解密载荷</text>
+
+  <rect x="870" y="436" width="260" height="30" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="882" y="455" font-size="11" fill="#0F172A">2 · 校验 MAC（HMAC）</text>
+
+  <rect x="870" y="474" width="260" height="30" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="882" y="493" font-size="11" fill="#0F172A">3 · 序列号滑动窗口检查</text>
+
+  <text x="1000" y="558" font-size="9" fill="#64748B" text-anchor="middle">seq 从持久化位点续传，睡眠后无需重握手</text>
+
+  <!-- ===== Pass branch (green, up) ===== -->
+  <path d="M1180,415 C1280,415 1290,338 1380,338" fill="none" stroke="#10B981" stroke-width="2.2" marker-end="url(#ah-green)"/>
+  <rect x="1238" y="360" width="186" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="1331" y="375" font-size="10" fill="#334155" text-anchor="middle">完整性验证成功 · seq=42 首次接收</text>
+
+  <!-- document icon -->
+  <path d="M1398,300 L1462,300 L1484,322 L1484,392 L1398,392 Z" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <path d="M1462,300 L1462,322 L1484,322" fill="none" stroke="#10B981" stroke-width="2"/>
+  <line x1="1412" y1="342" x2="1470" y2="342" stroke="#10B981" stroke-width="1.2"/>
+  <line x1="1412" y1="358" x2="1470" y2="358" stroke="#10B981" stroke-width="1.2"/>
+  <line x1="1412" y1="374" x2="1450" y2="374" stroke="#10B981" stroke-width="1.2"/>
+  <text x="1441" y="412" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">恢复原始请求（通过）</text>
+
+  <!-- ===== Reject branch (red, down) ===== -->
+  <path d="M1180,485 C1280,485 1290,568 1380,568" fill="none" stroke="#E11D48" stroke-width="2.2" marker-end="url(#ah-red)"/>
+  <rect x="1238" y="538" width="186" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="1331" y="553" font-size="10" fill="#334155" text-anchor="middle">序列号已存在 / MAC 校验失败</text>
+
+  <!-- error icon -->
+  <circle cx="1441" cy="600" r="34" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <line x1="1421" y1="580" x2="1461" y2="620" stroke="#E11D48" stroke-width="2.4"/>
+  <line x1="1461" y1="580" x2="1421" y2="620" stroke="#E11D48" stroke-width="2.4"/>
+  <text x="1441" y="658" font-size="11" font-weight="600" fill="#E11D48" text-anchor="middle">返回 4.01 Unauthorized（拒绝）</text>
+
+  <!-- ===== main-chain highlight badge ===== -->
+  <text x="70" y="288" font-size="10" fill="#64748B">主链路</text>
+  <line x1="106" y1="285" x2="1180" y2="285" stroke="#2563EB" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>
+
+  <!-- ===== Legend ===== -->
+  <line x1="64" y1="745" x2="1736" y2="745" stroke="#E2E8F0"/>
+  <text x="64" y="770" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="120" y="760" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="148" y="772" font-size="10" fill="#475569">设备 / 边缘（Client）</text>
+
+  <rect x="320" y="760" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="348" y="772" font-size="10" fill="#475569">平台（Server）</text>
+
+  <line x1="500" y1="767" x2="540" y2="767" stroke="#64748B" stroke-width="2.4" stroke-dasharray="5 4"/>
+  <text x="548" y="772" font-size="10" fill="#475569">UDP 网络链路</text>
+
+  <line x1="690" y1="767" x2="728" y2="767" stroke="#10B981" stroke-width="2.2" marker-end="url(#ah-green)"/>
+  <text x="740" y="772" font-size="10" fill="#475569">通过（低风险自动）</text>
+
+  <line x1="910" y1="767" x2="948" y2="767" stroke="#E11D48" stroke-width="2.2" marker-end="url(#ah-red)"/>
+  <text x="960" y="772" font-size="10" fill="#475569">拒绝（高风险）</text>
+
+  <rect x="1130" y="760" width="20" height="14" rx="2" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="1158" y="772" font-size="10" fill="#475569">OSCORE 子模块（虚框）</text>
+
+  <rect x="1340" y="760" width="20" height="14" rx="2" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <text x="1368" y="772" font-size="10" fill="#475569">责任边界（平台服务域）</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="810" font-size="10" fill="#94A3B8" text-anchor="middle">OSCORE 在 Client 端用预共享密钥加密载荷并计算 HMAC-MAC，打包 Kid 与序列号；Server 端解密、校验 MAC 并比对滑动窗口。</text>
+  <text x="900" y="828" font-size="10" fill="#94A3B8" text-anchor="middle">序列号从持久化位点续传，设备睡眠后重新上线无需重新握手——加密、完整性、防重放一体化完成。</text>
+</svg>

@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="53.600" width="1152.000" height="652.800" viewBox="0 0 1800.000 1020.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1020" fill="#FFFFFF"/>
+
+  <!-- ===== Title region ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">BLE GATT 协议栈与服务-特征层次结构</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">垂直协议栈分层（硬件 → 应用） × GATT Profile 内 Service / Characteristic / Descriptor 嵌套</text>
+  <rect x="1690" y="28" width="84" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1732" y="45" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">LAYERED</text>
+  <line x1="64" y1="103" x2="1736" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Section headers ===== -->
+  <text x="100" y="138" font-size="14" font-weight="700" fill="#2563EB">协议栈分层</text>
+  <text x="100" y="156" font-size="11" fill="#64748B">底层硬件承载，顶层应用封装；越往上抽象越强</text>
+  <text x="640" y="138" font-size="14" font-weight="700" fill="#7C3AED">GATT 属性层次（嵌套展开）</text>
+  <text x="640" y="156" font-size="11" fill="#64748B">Device ▸ Service ▸ Characteristic ▸ Descriptor</text>
+
+  <!-- ===== LEFT: Protocol stack ===== -->
+  <!-- stack boundary -->
+  <rect x="80" y="172" width="480" height="540" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="96" y="192" font-size="10" font-weight="700" fill="#2563EB" letter-spacing="1">PROTOCOL STACK</text>
+
+  <!-- abstraction direction arrow (right side of stack) -->
+  <line x1="500" y1="690" x2="500" y2="222" stroke="#64748B" stroke-width="1.4" marker-end="url(#ah-gray)"/>
+  <text x="510" y="262" font-size="10" fill="#64748B" writing-mode="tb" letter-spacing="2">抽象 / 封装方向</text>
+  <text x="510" y="660" font-size="10" fill="#64748B" writing-mode="tb" letter-spacing="2">硬件承载方向</text>
+
+  <!-- L4 GATT Profile (top, application, lightest) -->
+  <rect x="110" y="210" width="360" height="92" rx="8" fill="#2563EB" fill-opacity="0.10" stroke="#2563EB" stroke-width="2"/>
+  <text x="290" y="248" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">GATT Profile</text>
+  <text x="290" y="270" font-size="11" fill="#475569" text-anchor="middle">应用层 · 服务模型（Profile / Service）</text>
+  <text x="290" y="288" font-size="9" fill="#64748B" text-anchor="middle">向上提供面向应用的语义</text>
+
+  <!-- L3 ATT -->
+  <rect x="110" y="320" width="360" height="92" rx="8" fill="#2563EB" fill-opacity="0.22" stroke="#2563EB" stroke-width="2"/>
+  <text x="290" y="358" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Attribute Protocol (ATT)</text>
+  <text x="290" y="380" font-size="11" fill="#475569" text-anchor="middle">属性读写原语 · 属性数据库</text>
+  <text x="290" y="398" font-size="9" fill="#64748B" text-anchor="middle">Read / Write / Notify 等操作</text>
+
+  <!-- L2 L2CAP -->
+  <rect x="110" y="430" width="360" height="92" rx="8" fill="#2563EB" fill-opacity="0.40" stroke="#2563EB" stroke-width="2"/>
+  <text x="290" y="468" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">L2CAP</text>
+  <text x="290" y="490" font-size="11" fill="#475569" text-anchor="middle">逻辑链路层 · 协议复用与分片</text>
+  <text x="290" y="508" font-size="9" fill="#64748B" text-anchor="middle">面向连接 / 无连接信道</text>
+
+  <!-- L1 PHY + Link Layer (bottom, hardware, darkest) -->
+  <rect x="110" y="540" width="360" height="92" rx="8" fill="#2563EB" fill-opacity="0.65" stroke="#2563EB" stroke-width="2"/>
+  <text x="290" y="578" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">PHY + Link Layer</text>
+  <text x="290" y="600" font-size="11" fill="#E0E7FF" text-anchor="middle">BLE 射频层与链路层</text>
+  <text x="290" y="618" font-size="9" fill="#DBEAFE" text-anchor="middle">2.4GHz PHY · 广播 / 连接状态机</text>
+
+  <!-- inter-layer tick lines -->
+  <line x1="470" y1="302" x2="490" y2="320" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="470" y1="412" x2="490" y2="430" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="470" y1="522" x2="490" y2="540" stroke="#94A3B8" stroke-width="1"/>
+
+  <!-- connector: GATT layer -> GATT hierarchy (right) -->
+  <path d="M 470 256 L 600 256 L 600 226 L 632 226" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="538" y="246" font-size="10" font-weight="700" fill="#2563EB">展开 GATT 内部</text>
+
+  <!-- ===== RIGHT: GATT hierarchy nesting ===== -->
+  <!-- L0 GATT Server / Device -->
+  <rect x="640" y="172" width="1096" height="600" rx="12" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="660" y="160" width="230" height="24" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="775" y="177" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">GATT Server（Device）</text>
+
+  <!-- L1 Service -->
+  <rect x="680" y="246" width="1036" height="500" rx="12" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="700" y="234" width="320" height="24" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="860" y="251" font-size="11" font-weight="700" fill="#F59E0B" text-anchor="middle">Service · 0x180D 心率服务</text>
+  <text x="1696" y="262" font-size="10" fill="#64748B" text-anchor="end">1 Device : N Service</text>
+
+  <!-- L2 Characteristic -->
+  <rect x="720" y="332" width="976" height="392" rx="12" fill="#FFFFFF" stroke="#10B981" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="740" y="320" width="380" height="24" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="930" y="337" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle">Characteristic · 0x2A37 心率测量</text>
+  <text x="1686" y="348" font-size="10" fill="#64748B" text-anchor="end">1 Service : N Characteristic</text>
+
+  <!-- composition connector from Characteristic label to three sub-cards -->
+  <path d="M 930 344 L 930 380 L 860 380 L 860 410" fill="none" stroke="#10B981" stroke-width="1.4" marker-end="url(#ah-green)"/>
+  <path d="M 1180 380 L 1180 410" fill="none" stroke="#10B981" stroke-width="1.4" marker-end="url(#ah-green)"/>
+  <path d="M 930 380 L 1500 380 L 1500 410" fill="none" stroke="#10B981" stroke-width="1.4" marker-end="url(#ah-green)"/>
+  <line x1="860" y1="380" x2="1500" y2="380" stroke="#10B981" stroke-width="1.4"/>
+
+  <!-- sub-card: Properties -->
+  <rect x="720" y="410" width="280" height="160" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="860" y="438" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Properties</text>
+  <line x1="740" y1="450" x2="980" y2="450" stroke="#E2E8F0"/>
+  <text x="860" y="472" font-size="11" fill="#475569" text-anchor="middle">属性位掩码</text>
+  <text x="860" y="494" font-size="10" fill="#64748B" text-anchor="middle">Read · Notify</text>
+  <text x="860" y="528" font-size="9" fill="#94A3B8" text-anchor="middle">声明客户端可执行的操作</text>
+
+  <!-- sub-card: Value (primary, highlighted) -->
+  <rect x="1040" y="410" width="280" height="160" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="1180" y="438" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">Value</text>
+  <line x1="1060" y1="450" x2="1300" y2="450" stroke="#BFDBFE"/>
+  <text x="1180" y="472" font-size="11" fill="#475569" text-anchor="middle">心率测量值</text>
+  <text x="1180" y="494" font-size="10" fill="#64748B" text-anchor="middle">uint8 · 单位 BPM</text>
+  <text x="1180" y="528" font-size="9" fill="#94A3B8" text-anchor="middle">实际承载数据的最小单元</text>
+
+  <!-- sub-card: Descriptor (gray) -->
+  <rect x="1360" y="410" width="280" height="160" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1500" y="438" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Descriptor · 0x2902</text>
+  <line x1="1380" y1="450" x2="1620" y2="450" stroke="#E2E8F0"/>
+  <text x="1500" y="472" font-size="11" fill="#475569" text-anchor="middle">CCCD 客户端特征配置</text>
+  <text x="1500" y="494" font-size="10" fill="#64748B" text-anchor="middle">开关 Notify / Indicate</text>
+  <text x="1500" y="528" font-size="9" fill="#94A3B8" text-anchor="middle">1 Characteristic : 1..N Descriptor</text>
+
+  <!-- multiplicity note inside Characteristic -->
+  <text x="1208" y="640" font-size="11" fill="#475569" text-anchor="middle">一个 Characteristic = Properties（能力声明） + Value（数据） + 可选 Descriptor（配置）</text>
+  <text x="1208" y="664" font-size="10" fill="#64748B" text-anchor="middle">GATT 基于 ATT 的属性读写原语，向上抽象为面向应用的服务模型</text>
+  <text x="1208" y="688" font-size="10" fill="#64748B" text-anchor="middle">主链路：PHY ▸ L2CAP ▸ ATT ▸ GATT ▸ Service ▸ Characteristic ▸ Value</text>
+
+  <!-- ===== Callouts ===== -->
+  <rect x="80" y="800" width="800" height="74" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="100" y="824" font-size="11" font-weight="700" fill="#2563EB">协议栈取舍</text>
+  <text x="100" y="846" font-size="11" fill="#334155">ATT 只提供"属性读写"原语，不关心语义；GATT 在其上规定 Service / Characteristic 的组织方式。</text>
+  <text x="100" y="864" font-size="11" fill="#334155">因此同一套 ATT 机制可承载心率、电池、温度等任意 Profile——这是 BLE 可扩展性的根因。</text>
+
+  <rect x="920" y="800" width="816" height="74" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="940" y="824" font-size="11" font-weight="700" fill="#7C3AED">嵌套语义</text>
+  <text x="940" y="846" font-size="11" fill="#334155">Characteristic 是最小数据单元；CCCD（0x2902）决定服务端是否主动推送 Notify。</text>
+  <text x="940" y="864" font-size="11" fill="#334155">客户端写 CCCD 使能位 → 服务端按 Value 变化推送，省去轮询、降低功耗。</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="64" y1="908" x2="1736" y2="908" stroke="#E2E8F0"/>
+  <text x="100" y="940" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="160" y="930" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="186" y="941" font-size="11" fill="#475569">协议栈分层（深→浅 = 硬件→应用）</text>
+
+  <rect x="430" y="930" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="456" y="941" font-size="11" fill="#475569">Service</text>
+
+  <rect x="540" y="930" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="566" y="941" font-size="11" fill="#475569">Characteristic</text>
+
+  <rect x="680" y="930" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="706" y="941" font-size="11" fill="#475569">Descriptor</text>
+
+  <rect x="810" y="930" width="18" height="13" rx="2" fill="#F8FAFC" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="836" y="941" font-size="11" fill="#475569">主链路 / 数据承载焦点</text>
+
+  <line x1="1010" y1="937" x2="1052" y2="937" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1062" y="941" font-size="11" fill="#475569">承载 / 抽象方向</text>
+
+  <line x1="1230" y1="937" x2="1272" y2="937" stroke="#64748B" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="1282" y="941" font-size="11" fill="#475569">嵌套包含（区域边界）</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="990" font-size="10" fill="#94A3B8" text-anchor="middle">图9-10 BLE GATT 协议栈与服务-特征层次结构</text>
+  </svg>
+</svg>

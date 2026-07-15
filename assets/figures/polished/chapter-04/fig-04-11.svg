@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1080" viewBox="0 0 1600 1080" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1080" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="86" y="46" font-size="22" font-weight="700" fill="#0F172A">智能路灯系统总体拓扑</text>
+  <text x="86" y="68" font-size="12" fill="#64748B">NB-IoT 与 LoRa 异构链路经统一接入层收敛，业务层只感知设备影子</text>
+  <rect x="1438" y="26" width="132" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1504" y="44" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="60" y1="103" x2="1540" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Layer band labels (left margin) ===== -->
+  <text x="68" y="178" font-size="11" font-weight="700" fill="#94A3B8" letter-spacing="1">应用层</text>
+  <text x="68" y="360" font-size="11" font-weight="700" fill="#94A3B8" letter-spacing="1">接入层</text>
+  <text x="68" y="720" font-size="11" font-weight="700" fill="#94A3B8" letter-spacing="1">感知层</text>
+
+  <!-- ===== Layer 1: Application ===== -->
+  <rect x="600" y="135" width="400" height="86" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">应用层 · 统一管控</text>
+  <text x="800" y="190" font-size="11" fill="#475569" text-anchor="middle">可视化大屏  ·  API 网关（统一接口）</text>
+  <text x="800" y="208" font-size="9" fill="#64748B" text-anchor="middle">下发统一属性指令 / 订阅设备状态</text>
+
+  <!-- ===== Layer 2: Unified Access Domain ===== -->
+  <rect x="295" y="250" width="1010" height="225" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="312" y="240" width="118" height="22" rx="4" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+  <text x="371" y="255" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">统一接入域</text>
+
+  <!-- Device Shadow (database cylinder, hero) -->
+  <ellipse cx="800" cy="265" rx="135" ry="18" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="665" y="265" width="270" height="90" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <line x1="665" y1="265" x2="665" y2="355" stroke="#7C3AED" stroke-width="2"/>
+  <line x1="935" y1="265" x2="935" y2="355" stroke="#7C3AED" stroke-width="2"/>
+  <ellipse cx="800" cy="355" rx="135" ry="18" fill="none" stroke="#7C3AED" stroke-width="2"/>
+  <text x="800" y="300" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备影子 Device Shadow</text>
+  <text x="800" y="322" font-size="11" fill="#475569" text-anchor="middle">switch  ·  brightness  ·  faultCode</text>
+  <text x="800" y="340" font-size="9" fill="#64748B" text-anchor="middle">状态缓冲 / 屏蔽协议时延差异</text>
+
+  <!-- Drivers -->
+  <rect x="435" y="395" width="200" height="62" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="535" y="421" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">NB-IoT 驱动</text>
+  <text x="535" y="440" font-size="10" fill="#64748B" text-anchor="middle">LwM2M / CoAP</text>
+
+  <rect x="965" y="395" width="200" height="62" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1065" y="421" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LoRa 驱动</text>
+  <text x="1065" y="440" font-size="10" fill="#64748B" text-anchor="middle">LoRaWAN 1.0.3</text>
+
+  <!-- ===== Layer 3 regions ===== -->
+  <!-- NB-IoT path region -->
+  <rect x="295" y="495" width="480" height="475" rx="12" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="312" y="485" width="150" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="387" y="500" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">NB-IoT 通信路径</text>
+
+  <!-- LoRa path region -->
+  <rect x="825" y="495" width="480" height="475" rx="12" fill="none" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="842" y="485" width="130" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="907" y="500" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle">LoRa 通信路径</text>
+
+  <!-- NB-IoT middle nodes (thin long boxes) -->
+  <rect x="405" y="535" width="260" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="535" y="560" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">运营商核心网</text>
+  <text x="535" y="578" font-size="9" fill="#64748B" text-anchor="middle">授权频段 / LTE 核心网</text>
+
+  <rect x="405" y="650" width="260" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="535" y="675" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">eNodeB 基站</text>
+  <text x="535" y="693" font-size="9" fill="#64748B" text-anchor="middle">蜂窝无线接入</text>
+
+  <!-- LoRa middle nodes -->
+  <rect x="935" y="535" width="260" height="54" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1065" y="560" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">LoRa NS</text>
+  <text x="1065" y="578" font-size="9" fill="#64748B" text-anchor="middle">Network Server</text>
+
+  <rect x="935" y="650" width="260" height="54" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1065" y="675" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">LoRa 网关</text>
+  <text x="1065" y="693" font-size="9" fill="#64748B" text-anchor="middle">免授权频段 / 自建</text>
+
+  <!-- NB-IoT lamp card -->
+  <rect x="360" y="770" width="350" height="180" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.6"/>
+  <text x="535" y="796" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">NB-IoT 路灯阵列</text>
+  <g fill="#D1FAE5" stroke="#10B981" stroke-width="1">
+    <rect x="378" y="850" width="8" height="22" rx="2"/>
+    <rect x="404" y="850" width="8" height="22" rx="2"/>
+    <rect x="430" y="850" width="8" height="22" rx="2"/>
+    <rect x="456" y="850" width="8" height="22" rx="2"/>
+    <rect x="482" y="850" width="8" height="22" rx="2"/>
+    <rect x="508" y="850" width="8" height="22" rx="2"/>
+    <rect x="534" y="850" width="8" height="22" rx="2"/>
+    <rect x="560" y="850" width="8" height="22" rx="2"/>
+    <rect x="586" y="850" width="8" height="22" rx="2"/>
+    <rect x="612" y="850" width="8" height="22" rx="2"/>
+    <rect x="638" y="850" width="8" height="22" rx="2"/>
+    <rect x="664" y="850" width="8" height="22" rx="2"/>
+    <rect x="690" y="850" width="8" height="22" rx="2"/>
+  </g>
+  <text x="535" y="915" font-size="16" font-weight="700" fill="#10B981" text-anchor="middle">× 1200 盏</text>
+  <text x="535" y="935" font-size="9" fill="#64748B" text-anchor="middle">示意数量</text>
+
+  <!-- LoRa lamp card -->
+  <rect x="890" y="770" width="350" height="180" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1065" y="796" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">LoRa 路灯阵列</text>
+  <g fill="#D1FAE5" stroke="#10B981" stroke-width="1">
+    <rect x="908" y="850" width="8" height="22" rx="2"/>
+    <rect x="934" y="850" width="8" height="22" rx="2"/>
+    <rect x="960" y="850" width="8" height="22" rx="2"/>
+    <rect x="986" y="850" width="8" height="22" rx="2"/>
+    <rect x="1012" y="850" width="8" height="22" rx="2"/>
+    <rect x="1038" y="850" width="8" height="22" rx="2"/>
+    <rect x="1064" y="850" width="8" height="22" rx="2"/>
+    <rect x="1090" y="850" width="8" height="22" rx="2"/>
+    <rect x="1116" y="850" width="8" height="22" rx="2"/>
+    <rect x="1142" y="850" width="8" height="22" rx="2"/>
+    <rect x="1168" y="850" width="8" height="22" rx="2"/>
+    <rect x="1194" y="850" width="8" height="22" rx="2"/>
+    <rect x="1220" y="850" width="8" height="22" rx="2"/>
+  </g>
+  <text x="1065" y="915" font-size="16" font-weight="700" fill="#10B981" text-anchor="middle">× 800 盏</text>
+  <text x="1065" y="935" font-size="9" fill="#64748B" text-anchor="middle">示意数量</text>
+
+  <!-- ===== Connections ===== -->
+  <!-- app -> device shadow (main link) -->
+  <line x1="800" y1="221" x2="800" y2="244" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="812" y="226" width="96" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="0.8"/>
+  <text x="860" y="239" font-size="10" fill="#2563EB" text-anchor="middle">统一属性读写</text>
+
+  <!-- device shadow -> NB driver -->
+  <path d="M 720,350 L 720,378 L 535,378 L 535,392" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="600" y="372" font-size="10" fill="#2563EB" text-anchor="middle">指令路由</text>
+  <!-- device shadow -> LoRa driver -->
+  <path d="M 880,350 L 880,378 L 1065,378 L 1065,392" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="970" y="372" font-size="10" fill="#2563EB" text-anchor="middle">指令路由</text>
+
+  <!-- NB driver -> core network -->
+  <line x1="535" y1="457" x2="535" y2="532" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="552" y="481" width="78" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="0.8"/>
+  <text x="591" y="494" font-size="10" fill="#2563EB" text-anchor="middle">CoAP 报文</text>
+  <!-- core network -> enb -->
+  <line x1="535" y1="589" x2="535" y2="647" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <!-- enb -> nb lamp -->
+  <line x1="535" y1="704" x2="535" y2="767" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- LoRa driver -> NS -->
+  <line x1="1065" y1="457" x2="1065" y2="532" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <rect x="1082" y="481" width="92" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="0.8"/>
+  <text x="1128" y="494" font-size="10" fill="#10B981" text-anchor="middle">LoRaWAN 帧</text>
+  <!-- NS -> gateway (dashed, async/backhaul) -->
+  <line x1="1065" y1="589" x2="1065" y2="647" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <!-- gateway -> lora lamp -->
+  <line x1="1065" y1="704" x2="1065" y2="767" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+  <!-- ===== Callout (right margin) ===== -->
+  <rect x="1335" y="250" width="235" height="280" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1352" y="278" font-size="13" font-weight="700" fill="#0F172A">统一接入层的价值</text>
+  <line x1="1352" y1="288" x2="1553" y2="288" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1352" y="312" font-size="11" fill="#334155">业务层只操作设备影子，</text>
+  <text x="1352" y="332" font-size="11" fill="#334155">不感知底层是 LTE 窄带</text>
+  <text x="1352" y="352" font-size="11" fill="#334155">还是 LoRa 扩频。</text>
+  <text x="1352" y="382" font-size="11" fill="#334155">影子是状态缓冲，掩盖</text>
+  <text x="1352" y="402" font-size="11" fill="#334155">不同协议的上报时延差异。</text>
+  <text x="1352" y="432" font-size="11" fill="#334155">新增设备类型只需开发</text>
+  <text x="1352" y="452" font-size="11" fill="#334155">驱动插件，业务层与</text>
+  <text x="1352" y="472" font-size="11" fill="#334155">前端界面完全不变。</text>
+  <text x="1352" y="508" font-size="10" font-weight="700" fill="#7C3AED">→ 主结论：异构协议无感融合</text>
+
+  <!-- ===== Legend (right margin, below callout) ===== -->
+  <rect x="1335" y="555" width="235" height="415" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1352" y="580" font-size="12" font-weight="700" fill="#0F172A">图例</text>
+  <line x1="1352" y1="590" x2="1553" y2="590" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="1352" y="606" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="1380" y="616" font-size="11" fill="#334155">NB-IoT 链路</text>
+
+  <rect x="1352" y="632" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1380" y="642" font-size="11" fill="#334155">LoRa 链路 / 边缘设备</text>
+
+  <rect x="1352" y="658" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+  <text x="1380" y="668" font-size="11" fill="#334155">设备影子（数据抽象）</text>
+
+  <rect x="1352" y="684" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="1380" y="694" font-size="11" fill="#334155">应用层（主链路）</text>
+
+  <line x1="1352" y1="722" x2="1370" y2="722" stroke="#2563EB" stroke-width="2"/>
+  <text x="1380" y="726" font-size="11" fill="#334155">实线：强依赖 / 主数据流</text>
+
+  <line x1="1352" y1="748" x2="1370" y2="748" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="1380" y="752" font-size="11" fill="#334155">虚线：异步 / 回传链路</text>
+
+  <line x1="1352" y1="778" x2="1553" y2="778" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1352" y="800" font-size="10" font-weight="700" fill="#475569">读图要点</text>
+  <text x="1352" y="820" font-size="10" fill="#64748B">① 业务只读写设备影子属性</text>
+  <text x="1352" y="838" font-size="10" fill="#64748B">② 驱动按设备 ID 路由指令</text>
+  <text x="1352" y="856" font-size="10" fill="#64748B">③ 驱动转换协议特定报文</text>
+  <text x="1352" y="874" font-size="10" fill="#64748B">④ 上报沿反向路径更新影子</text>
+  <text x="1352" y="892" font-size="10" fill="#64748B">⑤ 业务全程不感知协议差异</text>
+  <text x="1352" y="924" font-size="10" font-weight="700" fill="#7C3AED">主链路：应用→影子→驱动</text>
+  <text x="1352" y="942" font-size="10" font-weight="700" fill="#7C3AED">→通信通路→路灯</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="1058" font-size="10" fill="#94A3B8" text-anchor="middle">图4-7 智能路灯系统总体拓扑 —— 混合使用 NB-IoT 与 LoRa 的路灯经统一接入层实现异构协议融合，上层应用无感知。</text>
+</svg>

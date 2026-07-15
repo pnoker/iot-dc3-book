@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- ===== DEFS ===== -->
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  </defs>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">AIoT 数据闭环流程</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">感知 → 学习 → 决策 → 执行 → 反馈，持续自我优化的循环，区别于传统 IoT 单向数据管道</text>
+
+  <!-- 右上角类型标签 -->
+  <rect x="1660" y="24" width="100" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1710" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">FLOWCHART</text>
+
+  <line x1="0" y1="103" x2="1800" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 区域边界框：平台服务域 ===== -->
+  <rect x="50" y="230" width="1700" height="300" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="64" y="218" width="220" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="78" y="236" font-size="12" font-weight="600" fill="#2563EB">平台服务域 · 核心服务能力边界</text>
+
+  <!-- ===== 主链路：四步 ===== -->
+  <!-- 卡片公共尺寸：w=280 h=200，y=300 -->
+  <!-- step1 感知 (绿) x=90 -->
+  <g>
+    <rect x="90" y="300" width="280" height="200" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <rect x="90" y="300" width="280" height="38" rx="6" fill="#10B981" fill-opacity="0.08"/>
+    <text x="230" y="325" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">STEP 1 · 感知</text>
+    <!-- 传感器图标 -->
+    <g transform="translate(230,395)" stroke="#10B981" stroke-width="2" fill="none" stroke-linecap="round">
+      <circle cx="0" cy="0" r="7" fill="#10B981" fill-opacity="0.12"/>
+      <path d="M -16 0 A 16 16 0 0 1 16 0"/>
+      <path d="M -26 0 A 26 26 0 0 1 26 0"/>
+    </g>
+    <text x="230" y="450" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">感知 Perception</text>
+    <text x="230" y="474" font-size="10" fill="#475569" text-anchor="middle">采集物理世界信号</text>
+    <text x="230" y="490" font-size="9" fill="#64748B" text-anchor="middle">传感器 / 边缘网关接入</text>
+  </g>
+
+  <!-- step2 学习 (蓝) x=533 -->
+  <g>
+    <rect x="533" y="300" width="280" height="200" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="533" y="300" width="280" height="38" rx="6" fill="#2563EB" fill-opacity="0.08"/>
+    <text x="673" y="325" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">STEP 2 · 学习</text>
+    <!-- 大脑图标 -->
+    <g transform="translate(673,395)" stroke="#2563EB" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -7 -12 A 10 10 0 0 0 -7 12 M 7 -12 A 10 10 0 0 1 7 12 M 0 -12 V 12 M -10 -4 H 10 M -10 4 H 10"/>
+    </g>
+    <text x="673" y="450" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">学习 Learning</text>
+    <text x="673" y="474" font-size="10" fill="#475569" text-anchor="middle">模型推理与训练</text>
+    <text x="673" y="490" font-size="9" fill="#64748B" text-anchor="middle">特征提取 / 在线学习</text>
+  </g>
+
+  <!-- step3 决策 (橙) x=976 -->
+  <g>
+    <rect x="976" y="300" width="280" height="200" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <rect x="976" y="300" width="280" height="38" rx="6" fill="#F59E0B" fill-opacity="0.08"/>
+    <text x="1116" y="325" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="middle">STEP 3 · 决策</text>
+    <!-- 齿轮图标 -->
+    <g transform="translate(1116,395)" stroke="#F59E0B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="0" r="6"/>
+      <path d="M 0 -14 V -9 M 0 14 V 9 M -14 0 H -9 M 14 0 H 9 M -10 -10 L -6 -6 M 10 -10 L 6 -6 M -10 10 L -6 6 M 10 10 L 6 6"/>
+    </g>
+    <text x="1116" y="450" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">决策 Decision</text>
+    <text x="1116" y="474" font-size="10" fill="#475569" text-anchor="middle">策略选择与规划</text>
+    <text x="1116" y="490" font-size="9" fill="#64748B" text-anchor="middle">规则引擎 / 强化学习</text>
+  </g>
+
+  <!-- step4 执行 (红) x=1419 -->
+  <g>
+    <rect x="1419" y="300" width="280" height="200" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+    <rect x="1419" y="300" width="280" height="38" rx="6" fill="#E11D48" fill-opacity="0.08"/>
+    <text x="1559" y="325" font-size="11" font-weight="600" fill="#E11D48" text-anchor="middle">STEP 4 · 执行</text>
+    <!-- 执行/电机图标 -->
+    <g transform="translate(1559,395)" stroke="#E11D48" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-12" y="-10" width="20" height="20" rx="2"/>
+      <path d="M 8 -4 H 16 M 8 4 H 16"/>
+      <path d="M -4 -4 L 2 0 L -4 4 Z" fill="#E11D48" fill-opacity="0.2"/>
+    </g>
+    <text x="1559" y="450" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">执行 Execution</text>
+    <text x="1559" y="474" font-size="10" fill="#475569" text-anchor="middle">下发控制指令</text>
+    <text x="1559" y="490" font-size="9" fill="#64748B" text-anchor="middle">执行器 / 设备控制</text>
+  </g>
+
+  <!-- ===== 前向连接（主链路 蓝） ===== -->
+  <!-- r1 → r2 数据流 -->
+  <line x1="372" y1="400" x2="529" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="410" y="376" width="80" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="450" y="390" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">数据流</text>
+
+  <!-- r2 → r3 推理结果 -->
+  <line x1="815" y1="400" x2="972" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="845" y="376" width="96" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="893" y="390" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">推理结果</text>
+
+  <!-- r3 → r4 控制指令 -->
+  <line x1="1258" y1="400" x2="1415" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="1290" y="376" width="96" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="1338" y="390" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">控制指令</text>
+
+  <!-- ===== 反馈弧线 r4 → r1（闭环 灰虚线） ===== -->
+  <path d="M 1559 502 V 615 Q 1559 635 1539 635 H 251 Q 231 635 231 615 V 504"
+        fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <rect x="844" y="624" width="120" height="22" rx="4" fill="#FFFFFF"/>
+  <text x="904" y="640" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle">闭环反馈 Feedback</text>
+
+  <!-- ===== callout ===== -->
+  <rect x="50" y="668" width="1700" height="74" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="68" y="690" font-size="11" font-weight="700" fill="#334155">设计要点</text>
+  <text x="68" y="710" font-size="11" fill="#334155">· 主链路（蓝色实线）承载前向数据流：感知采集 → 学习推理 → 决策规划 → 执行控制。</text>
+  <text x="68" y="728" font-size="11" fill="#334155">· 反馈弧线（灰色虚线）将执行结果回送至感知，构成自我优化的闭环——这是 AIoT 区别于传统 IoT 单向管道的本质。</text>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="0" y1="768" x2="1800" y2="768" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="64" y="794" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <!-- 核心环节 -->
+  <rect x="130" y="784" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="152" y="794" font-size="11" fill="#475569">感知</text>
+  <rect x="200" y="784" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="222" y="794" font-size="11" fill="#475569">学习</text>
+  <rect x="270" y="784" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="292" y="794" font-size="11" fill="#475569">决策</text>
+  <rect x="340" y="784" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+  <text x="362" y="794" font-size="11" fill="#475569">执行</text>
+
+  <!-- 数据流向 -->
+  <line x1="440" y1="790" x2="490" y2="790" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="500" y="794" font-size="11" fill="#475569">前向数据流（主链路）</text>
+
+  <!-- 反馈 -->
+  <line x1="700" y1="790" x2="750" y2="790" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <text x="760" y="794" font-size="11" fill="#475569">闭环反馈（回传）</text>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="850" font-size="10" fill="#94A3B8" text-anchor="middle">图 1-5-1　AIoT 数据闭环流程——感知、学习、决策、执行形成持续自我优化的循环，区别于传统 IoT 的单向数据管道。</text>
+</svg>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-4 Function Calling 交互流程：从自然语言到设备操作</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="30.400" y="24.000" width="1139.200" height="712.000" viewBox="0 0 1600.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图7-4 Function Calling 交互流程：从自然语言到设备操作</text>
+  <text x="88" y="62" font-size="12" fill="#64748B">Spring AI Function Calling 调用链路 · 以“关A区灯”为例 · 操作员 / ChatClient / LLM / LightTool 时序交换</text>
+  <rect x="1450" y="22" width="110" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1505" y="39" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">SEQUENCE</text>
+  <line x1="60" y1="103" x2="1540" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 区域边界 ===== -->
+  <!-- 平台服务域 (操作员/ChatClient/LightTool) -->
+  <rect x="150" y="125" width="1110" height="710" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="170" y="115" width="150" height="22" rx="4" fill="#FFFFFF"/>
+  <text x="245" y="131" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">平台服务域</text>
+  <!-- 智能决策域 (LLM) -->
+  <rect x="900" y="125" width="200" height="710" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="920" y="115" width="150" height="22" rx="4" fill="#FFFFFF"/>
+  <text x="995" y="131" font-size="11" font-weight="700" fill="#F59E0B" text-anchor="middle">智能决策域</text>
+
+  <!-- ===== 参与者生命线 ===== -->
+  <!-- 操作员 -->
+  <rect x="200" y="150" width="140" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="270" y="175" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">操作员</text>
+  <text x="270" y="193" font-size="10" fill="#64748B" text-anchor="middle">Operator</text>
+  <line x1="270" y1="204" x2="270" y2="820" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- ChatClient -->
+  <rect x="540" y="150" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="620" y="175" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">ChatClient</text>
+  <text x="620" y="193" font-size="10" fill="#64748B" text-anchor="middle">Spring AI 编排</text>
+  <line x1="620" y1="204" x2="620" y2="820" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- LLM -->
+  <rect x="930" y="150" width="140" height="54" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1000" y="175" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LLM</text>
+  <text x="1000" y="193" font-size="10" fill="#64748B" text-anchor="middle">推理 · 函数决策</text>
+  <line x1="1000" y1="204" x2="1000" y2="820" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- LightTool Bean -->
+  <rect x="1240" y="150" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1320" y="175" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LightTool</text>
+  <text x="1320" y="193" font-size="10" fill="#64748B" text-anchor="middle">@Tool · toggleLight</text>
+  <line x1="1320" y1="204" x2="1320" y2="820" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- ===== 激活条 (activation bars) ===== -->
+  <!-- ChatClient 几乎全程活跃 -->
+  <rect x="615" y="245" width="10" height="540" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <!-- LLM 活跃段1: 推理 JSON -->
+  <rect x="995" y="315" width="10" height="70" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <!-- LLM 活跃段2: 生成最终回复 -->
+  <rect x="995" y="665" width="10" height="70" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <!-- LightTool 活跃段 -->
+  <rect x="1315" y="455" width="10" height="70" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+
+  <!-- ===== 消息 ===== -->
+  <!-- M1: 操作员 -> ChatClient  发送请求 -->
+  <text x="20" y="248" font-size="10" font-weight="700" fill="#94A3B8">①</text>
+  <line x1="280" y1="245" x2="610" y2="245" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="445" y="237" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">帮我把A区灯关了</text>
+  <text x="445" y="263" font-size="10" fill="#64748B" text-anchor="middle">自然语言请求</text>
+
+  <!-- M2: ChatClient -> LLM  发送消息 + Tool 定义 -->
+  <text x="20" y="318" font-size="10" font-weight="700" fill="#94A3B8">②</text>
+  <line x1="630" y1="315" x2="990" y2="315" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="810" y="307" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">Prompt + Tool 描述</text>
+  <text x="810" y="333" font-size="10" fill="#64748B" text-anchor="middle">messages + @Tool 注册表</text>
+
+  <!-- M3: LLM -> ChatClient  返回 JSON 函数调用 (响应,虚线) -->
+  <text x="20" y="388" font-size="10" font-weight="700" fill="#94A3B8">③</text>
+  <line x1="990" y1="385" x2="630" y2="385" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
+  <text x="810" y="377" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">function.call = toggleLight</text>
+  <text x="810" y="403" font-size="10" fill="#64748B" text-anchor="middle">结构化 JSON 参数 {zone:"A", on:false}</text>
+
+  <!-- M4: ChatClient -> LightTool  调用 toggleLight 方法 -->
+  <text x="20" y="458" font-size="10" font-weight="700" fill="#94A3B8">④</text>
+  <line x1="630" y1="455" x2="1310" y2="455" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="970" y="447" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">invoke toggleLight(zone,on)</text>
+  <text x="970" y="473" font-size="10" fill="#64748B" text-anchor="middle">反射调用 @Tool 方法</text>
+
+  <!-- M5: LightTool -> ChatClient  返回执行结果 (响应,虚线) -->
+  <text x="20" y="528" font-size="10" font-weight="700" fill="#94A3B8">⑤</text>
+  <line x1="1310" y1="525" x2="630" y2="525" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="970" y="517" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">result = true</text>
+  <text x="970" y="543" font-size="10" fill="#64748B" text-anchor="middle">设备已关灯</text>
+
+  <!-- M6: ChatClient -> LLM  回填结果 -->
+  <text x="20" y="598" font-size="10" font-weight="700" fill="#94A3B8">⑥</text>
+  <line x1="630" y1="595" x2="990" y2="595" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="810" y="587" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">ToolResponse 回填</text>
+  <text x="810" y="613" font-size="10" fill="#64748B" text-anchor="middle">把工具结果作为新 message 发送</text>
+
+  <!-- M7: LLM -> ChatClient  返回自然语言回复 (响应,虚线) -->
+  <text x="20" y="668" font-size="10" font-weight="700" fill="#94A3B8">⑦</text>
+  <line x1="990" y1="665" x2="630" y2="665" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
+  <text x="810" y="657" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">“已为您关闭A区灯”</text>
+  <text x="810" y="683" font-size="10" fill="#64748B" text-anchor="middle">基于结果生成自然语言</text>
+
+  <!-- M8: ChatClient -> 操作员  显示最终回复 (响应,虚线) -->
+  <text x="20" y="738" font-size="10" font-weight="700" fill="#94A3B8">⑧</text>
+  <line x1="610" y1="735" x2="280" y2="735" stroke="#2563EB" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
+  <text x="445" y="727" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">渲染最终回复</text>
+  <text x="445" y="753" font-size="10" fill="#64748B" text-anchor="middle">返回操作员界面</text>
+
+  <!-- 主链路结论 callout -->
+  <rect x="150" y="790" width="1110" height="40" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <circle cx="172" cy="810" r="4" fill="#2563EB"/>
+  <text x="186" y="814" font-size="11" fill="#334155">主链路：自然语言 → ChatClient 编排 → LLM 决策为函数调用 → ChatClient 调度 @Tool → 结果回填 → LLM 生成回复。责任边界清晰，LLM 不直接接触设备。</text>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="60" y1="855" x2="1540" y2="855" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="60" y="882" font-size="12" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="120" y="872" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <line x1="120" y1="878" x2="136" y2="878" stroke="#2563EB" stroke-width="2"/>
+  <text x="146" y="883" font-size="11" fill="#475569">实线 = 同步请求/调用（主链路）</text>
+
+  <rect x="380" y="872" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2" stroke-dasharray="3 2"/>
+  <text x="406" y="883" font-size="11" fill="#475569">虚线 = 同步返回/响应</text>
+
+  <rect x="590" y="872" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="616" y="883" font-size="11" fill="#475569">平台服务域</text>
+
+  <rect x="720" y="872" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="746" y="883" font-size="11" fill="#475569">智能决策域</text>
+
+  <rect x="850" y="872" width="16" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <text x="876" y="883" font-size="11" fill="#475569">蓝色激活条 = 参与者执行中</text>
+
+  <rect x="1080" y="872" width="16" height="12" rx="2" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <text x="1106" y="883" font-size="11" fill="#475569">橙色激活条 = LLM 推理中</text>
+
+  <!-- ===== caption ===== -->
+  <text x="800" y="975" font-size="10" fill="#94A3B8" text-anchor="middle">图7-4 Spring AI Function Calling 完整调用链路：操作员自然语言请求经 ChatClient 编排，由 LLM 决策为函数调用后调度 @Tool 执行，结果回填再生成最终回复。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">纵向顺序排列参与者，箭头从上至下表示时序。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,39 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="图1-1 三次浪潮演进时间线示意" data-style="architecture-diagram-white-book">
-  <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
-    </marker>
-  </defs>
-  <rect x="0" y="0" width="1200" height="760" fill="#FFFFFF"/>
-  <circle cx="64" cy="40" r="6" fill="#22D3EE"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">图1-1 三次浪潮演进时间线示意</text>
-<text x="82.0" y="78.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="start">读者应理解三次浪潮演进时间线示意中的主链路、责任边界和工程取舍</text>
-<rect x="1008.0" y="30.0" width="132.0" height="32.0" rx="6.0" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
-<text x="1074" y="51" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">TIMELINE</text>
-<line x1="58" y1="103" x2="1142" y2="103" stroke="#CBD5E1" stroke-width="1"/>
-  <line x1="100" y1="376" x2="1100" y2="376" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrowhead)"/>
-<circle cx="100.0" cy="376.0" r="12" fill="#FFFFFF" stroke="#34D399" stroke-width="1.8"/>
-<circle cx="100.0" cy="376.0" r="5" fill="#34D399"/>
-<rect x="58.0" y="241.0" width="210.0" height="78.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="163.0" y="287.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">从PC互联网</text>
-<line x1="100.0" y1="388.0" x2="100.0" y2="319.0" stroke="#CBD5E1" stroke-width="1.1"/>
-<circle cx="433.3" cy="376.0" r="12" fill="#FFFFFF" stroke="#34D399" stroke-width="1.8"/>
-<circle cx="433.3" cy="376.0" r="5" fill="#34D399"/>
-<rect x="328.3" y="421.0" width="210.0" height="78.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="433.3" y="467.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">移动互联网</text>
-<line x1="433.3" y1="364.0" x2="433.3" y2="421.0" stroke="#CBD5E1" stroke-width="1.1"/>
-<circle cx="766.7" cy="376.0" r="12" fill="#FFFFFF" stroke="#34D399" stroke-width="1.8"/>
-<circle cx="766.7" cy="376.0" r="5" fill="#34D399"/>
-<rect x="661.7" y="241.0" width="210.0" height="78.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="766.7" y="287.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">从移动互联网</text>
-<line x1="766.7" y1="388.0" x2="766.7" y2="319.0" stroke="#CBD5E1" stroke-width="1.1"/>
-<circle cx="1100.0" cy="376.0" r="12" fill="#FFFFFF" stroke="#34D399" stroke-width="1.8"/>
-<circle cx="1100.0" cy="376.0" r="5" fill="#34D399"/>
-<rect x="932.0" y="421.0" width="210.0" height="78.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="1037.0" y="467.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">万物互联</text>
-<line x1="1100.0" y1="364.0" x2="1100.0" y2="421.0" stroke="#CBD5E1" stroke-width="1.1"/>
-<text x="600.0" y="384.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="middle">从移动互联网到万物互联</text>
-  <line x1="58" y1="675" x2="1142" y2="675" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="66.0" cy="704.0" r="4" fill="#34D399"/>
-<text x="80.0" y="708.0" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="600" text-anchor="start">平台服务</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="680" viewBox="0 0 1600 680" role="img" aria-label="图1-1 三次浪潮演进时间线示意" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+  <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+  <marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+
+<rect x="0" y="0" width="1600" height="680" fill="#FFFFFF"/>
+
+<!-- 标题区 -->
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图1-1 三次浪潮演进时间线示意</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">三阶段时间跨度、连接主体、连接规模与驱动力的递进演进</text>
+<rect x="1462" y="28" width="96" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1510" y="41" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="central">TIMELINE</text>
+
+<!-- 标题分隔线 -->
+<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<!-- 区域边界：平台服务域 -->
+<text x="126" y="132" fill="#2563EB" font-size="11" font-weight="600">平台服务域 · 核心服务能力边界</text>
+<rect x="110" y="140" width="1380" height="170" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+
+<!-- 时间轴主线 -->
+<line x1="120" y1="375" x2="1480" y2="375" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<!-- 轴上刻度与节点圆点 -->
+<line x1="270" y1="355" x2="270" y2="375" stroke="#94A3B8" stroke-width="1"/>
+<circle cx="270" cy="375" r="4.5" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.5"/>
+<line x1="800" y1="355" x2="800" y2="375" stroke="#94A3B8" stroke-width="1"/>
+<circle cx="800" cy="375" r="4.5" fill="#F59E0B" stroke="#FFFFFF" stroke-width="1.5"/>
+<line x1="1330" y1="355" x2="1330" y2="375" stroke="#94A3B8" stroke-width="1"/>
+<circle cx="1330" cy="375" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.5"/>
+<!-- 年份标签 -->
+<text x="270" y="398" fill="#475569" font-size="11.5" font-weight="600" text-anchor="middle">1995 — 2007</text>
+<text x="800" y="398" fill="#475569" font-size="11.5" font-weight="600" text-anchor="middle">2007 — 2015</text>
+<text x="1330" y="398" fill="#475569" font-size="11.5" font-weight="600" text-anchor="middle">2015 — 至今</text>
+
+<!-- 演进箭头：主链路（先于节点绘制） -->
+<line x1="402" y1="225" x2="668" y2="225" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<rect x="505" y="198" width="60" height="18" rx="3" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1"/>
+<text x="535" y="207" fill="#F59E0B" font-size="10" font-weight="600" text-anchor="middle" dominant-baseline="central">技术演进</text>
+
+<line x1="932" y1="225" x2="1198" y2="225" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+<rect x="1035" y="198" width="60" height="18" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+<text x="1065" y="207" fill="#10B981" font-size="10" font-weight="600" text-anchor="middle" dominant-baseline="central">技术演进</text>
+
+<!-- 节点卡片 -->
+<rect x="140" y="165" width="260" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="270" y="203" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">PC互联网</text>
+<text x="270" y="232" fill="#475569" font-size="11" font-weight="500" text-anchor="middle">连接主体：人—机</text>
+<text x="270" y="258" fill="#475569" font-size="11" font-weight="500" text-anchor="middle">驱动力：PC · 浏览器</text>
+
+<rect x="670" y="165" width="260" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="800" y="203" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">移动互联网</text>
+<text x="800" y="232" fill="#475569" font-size="11" font-weight="500" text-anchor="middle">连接主体：人—人 / 服务</text>
+<text x="800" y="258" fill="#475569" font-size="11" font-weight="500" text-anchor="middle">驱动力：智能手机 · 4G</text>
+
+<rect x="1200" y="165" width="260" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="1330" y="203" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">万物互联</text>
+<text x="1330" y="232" fill="#475569" font-size="11" font-weight="500" text-anchor="middle">连接主体：物—物 / 人—物</text>
+<text x="1330" y="258" fill="#475569" font-size="11" font-weight="500" text-anchor="middle">驱动力：传感 · 5G · AIoT</text>
+
+<!-- 连接规模 callout -->
+<rect x="150" y="418" width="240" height="72" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="270" y="442" fill="#64748B" font-size="10" font-weight="600" text-anchor="middle">连接规模</text>
+<text x="270" y="472" fill="#2563EB" font-size="16" font-weight="700" text-anchor="middle">亿级（≈10⁸）</text>
+
+<rect x="680" y="418" width="240" height="72" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="800" y="442" fill="#64748B" font-size="10" font-weight="600" text-anchor="middle">连接规模</text>
+<text x="800" y="472" fill="#F59E0B" font-size="16" font-weight="700" text-anchor="middle">十亿级（≈10⁹）</text>
+
+<rect x="1210" y="418" width="240" height="72" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="1330" y="442" fill="#64748B" font-size="10" font-weight="600" text-anchor="middle">连接规模</text>
+<text x="1330" y="472" fill="#10B981" font-size="16" font-weight="700" text-anchor="middle">百亿级（≈10¹⁰）</text>
+
+<!-- 图例 -->
+<line x1="58" y1="560" x2="1542" y2="560" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="150" y="585" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="172" y="594" fill="#64748B" font-size="11" font-weight="600">第一次浪潮 · PC互联网</text>
+<rect x="475" y="585" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="497" y="594" fill="#64748B" font-size="11" font-weight="600">第二次浪潮 · 移动互联网</text>
+<rect x="825" y="585" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="847" y="594" fill="#64748B" font-size="11" font-weight="600">第三次浪潮 · 万物互联</text>
+<line x1="1175" y1="590" x2="1199" y2="590" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+<text x="1207" y="594" fill="#64748B" font-size="11" font-weight="600">技术演进主链路</text>
+
+<!-- caption -->
+<text x="800" y="636" fill="#94A3B8" font-size="10" text-anchor="middle">图1-1 三次浪潮演进时间线示意 · 横轴为时间，箭头标示技术演进方向，下方标注各阶段连接规模</text>
+
 </svg>

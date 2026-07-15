@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图4-9 多种协议设备的接入困境</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="124.000" width="1152.000" height="512.000" viewBox="0 0 1800.000 800.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-hollow" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto"><polygon points="0 0,13 7,0 14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/></marker>
+    <marker id="diamond-green" markerWidth="16" markerHeight="10" refX="1" refY="5" orient="auto"><polygon points="1 5,8 0,15 5,8 10" fill="#10B981"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="800" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图4-4 协议适配器接口与驱动实现架构</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">ProtocolAdapter 接口层与协议驱动实现层 · UML 静态结构（泛化 + 组合）</text>
+  <rect x="1666" y="26" width="104" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1718" y="43" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Region boundary: 平台服务域 ===== -->
+  <rect x="50" y="116" width="1700" height="580" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="64" y="108" width="232" height="20" fill="#FFFFFF"/>
+  <text x="70" y="123" font-size="11" fill="#2563EB" font-weight="600">平台服务域 · 核心服务能力边界</text>
+
+  <!-- ===== Interface layer: ProtocolAdapter ===== -->
+  <rect x="650" y="135" width="500" height="205" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="650" y="135" width="500" height="46" rx="6" fill="#EFF6FF"/>
+  <rect x="650" y="170" width="500" height="11" fill="#EFF6FF"/>
+  <text x="900" y="155" font-size="11" fill="#2563EB" text-anchor="middle" font-style="italic">«interface»</text>
+  <text x="900" y="174" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">ProtocolAdapter</text>
+  <!-- methods -->
+  <text x="686" y="204" font-size="12" fill="#334155">+ init() : void</text>
+  <text x="686" y="225" font-size="12" fill="#334155">+ connect() : void</text>
+  <text x="686" y="246" font-size="12" fill="#334155">+ disconnect() : void</text>
+  <text x="686" y="267" font-size="12" fill="#334155">+ read() : byte[]</text>
+  <text x="686" y="288" font-size="12" fill="#334155">+ write(data) : int</text>
+  <text x="940" y="204" font-size="12" fill="#334155">+ isConnected() : bool</text>
+  <text x="940" y="225" font-size="12" fill="#334155">+ onHeartbeat() : void</text>
+  <text x="940" y="248" font-size="10" fill="#64748B">统一设备接入契约</text>
+  <line x1="660" y1="288" x2="1140" y2="288" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="900" y="312" font-size="10" fill="#64748B" text-anchor="middle">抽象层 · 对上层只暴露通用读写与心跳接口</text>
+
+  <!-- ===== Realization tree (hollow triangle into interface) ===== -->
+  <path d="M 900 340 L 900 375" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="6 4" marker-start="url(#ah-hollow)"/>
+  <path d="M 300 375 L 1500 375" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <path d="M 300 375 L 300 410" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <path d="M 700 375 L 700 410" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <path d="M 1100 375 L 1100 410" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <path d="M 1500 375 L 1500 410" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="1512" y="372" font-size="10" fill="#64748B" font-style="italic">realize</text>
+
+  <!-- ===== Implementation layer: 4 adapters ===== -->
+  <!-- ModbusRtuAdapter -->
+  <rect x="120" y="410" width="360" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="120" y="410" width="360" height="26" rx="6" fill="#ECFDF5"/>
+  <rect x="120" y="424" width="360" height="12" fill="#ECFDF5"/>
+  <text x="300" y="428" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">ModbusRtuAdapter</text>
+  <text x="300" y="460" font-size="10" fill="#64748B" text-anchor="middle">«adapter» · 串行总线协议</text>
+
+  <!-- MqttAdapter -->
+  <rect x="520" y="410" width="360" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="520" y="410" width="360" height="26" rx="6" fill="#ECFDF5"/>
+  <rect x="520" y="424" width="360" height="12" fill="#ECFDF5"/>
+  <text x="700" y="428" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MqttAdapter</text>
+  <text x="700" y="460" font-size="10" fill="#64748B" text-anchor="middle">«adapter» · 消息中间件</text>
+
+  <!-- BluetoothGattAdapter -->
+  <rect x="920" y="410" width="360" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="920" y="410" width="360" height="26" rx="6" fill="#ECFDF5"/>
+  <rect x="920" y="424" width="360" height="12" fill="#ECFDF5"/>
+  <text x="1100" y="428" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">BluetoothGattAdapter</text>
+  <text x="1100" y="460" font-size="10" fill="#64748B" text-anchor="middle">«adapter» · 低功耗蓝牙</text>
+
+  <!-- LoRaWanAdapter -->
+  <rect x="1320" y="410" width="360" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="1320" y="410" width="360" height="26" rx="6" fill="#ECFDF5"/>
+  <rect x="1320" y="424" width="360" height="12" fill="#ECFDF5"/>
+  <text x="1500" y="428" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">LoRaWanAdapter</text>
+  <text x="1500" y="460" font-size="10" fill="#64748B" text-anchor="middle">«adapter» · 远距离低功耗广域网</text>
+
+  <!-- ===== Composition connectors (filled diamond at adapter) ===== -->
+  <path d="M 300 480 L 300 510" fill="none" stroke="#10B981" stroke-width="1.6" marker-start="url(#diamond-green)" marker-end="url(#ah-green)"/>
+  <path d="M 700 480 L 700 510" fill="none" stroke="#10B981" stroke-width="1.6" marker-start="url(#diamond-green)" marker-end="url(#ah-green)"/>
+  <path d="M 1100 480 L 1100 510" fill="none" stroke="#10B981" stroke-width="1.6" marker-start="url(#diamond-green)" marker-end="url(#ah-green)"/>
+  <path d="M 1500 480 L 1500 510" fill="none" stroke="#10B981" stroke-width="1.6" marker-start="url(#diamond-green)" marker-end="url(#ah-green)"/>
+
+  <!-- ===== Component containers (dashed) + components ===== -->
+  <!-- Container 1: Modbus -->
+  <rect x="120" y="510" width="360" height="160" rx="8" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.7"/>
+  <rect x="130" y="520" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="300" y="538" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">SerialPortManager</text>
+  <text x="300" y="553" font-size="9" fill="#64748B" text-anchor="middle">端口管理</text>
+  <rect x="130" y="568" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="300" y="586" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">ModbusSlaveTable</text>
+  <text x="300" y="601" font-size="9" fill="#64748B" text-anchor="middle">从机配置表</text>
+  <rect x="130" y="616" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="300" y="634" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">TimeoutScheduler</text>
+  <text x="300" y="649" font-size="9" fill="#64748B" text-anchor="middle">超时调度器</text>
+
+  <!-- Container 2: Mqtt -->
+  <rect x="520" y="510" width="360" height="112" rx="8" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.7"/>
+  <rect x="530" y="520" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="700" y="538" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">MqttClient</text>
+  <text x="700" y="553" font-size="9" fill="#64748B" text-anchor="middle">MQTT 客户端</text>
+  <rect x="530" y="568" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="700" y="586" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">TopicMapper</text>
+  <text x="700" y="601" font-size="9" fill="#64748B" text-anchor="middle">主题映射</text>
+
+  <!-- Container 3: BLE -->
+  <rect x="920" y="510" width="360" height="160" rx="8" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.7"/>
+  <rect x="930" y="520" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1100" y="538" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">BleScanner</text>
+  <text x="1100" y="553" font-size="9" fill="#64748B" text-anchor="middle">设备扫描</text>
+  <rect x="930" y="568" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1100" y="586" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">BleGattConnection</text>
+  <text x="1100" y="601" font-size="9" fill="#64748B" text-anchor="middle">GATT 连接</text>
+  <rect x="930" y="616" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1100" y="634" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">GattCharacteristicResolver</text>
+  <text x="1100" y="649" font-size="9" fill="#64748B" text-anchor="middle">特征解析</text>
+
+  <!-- Container 4: LoRaWan -->
+  <rect x="1320" y="510" width="360" height="160" rx="8" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.7"/>
+  <rect x="1330" y="520" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1500" y="538" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">LoraNetworkClient</text>
+  <text x="1500" y="553" font-size="9" fill="#64748B" text-anchor="middle">网络客户端</text>
+  <rect x="1330" y="568" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1500" y="586" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">DevAddrMapper</text>
+  <text x="1500" y="601" font-size="9" fill="#64748B" text-anchor="middle">设备地址映射</text>
+  <rect x="1330" y="616" width="340" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1500" y="634" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">FPortDispatcher</text>
+  <text x="1500" y="649" font-size="9" fill="#64748B" text-anchor="middle">端口分发</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="60" y1="712" x2="1740" y2="712" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="60" y="732" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <!-- swatch blue -->
+  <rect x="130" y="722" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="156" y="733" font-size="11" fill="#334155">接口定义层（统一抽象）</text>
+
+  <!-- swatch green -->
+  <rect x="370" y="722" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="396" y="733" font-size="11" fill="#334155">具体协议驱动实现</text>
+
+  <!-- hollow triangle -->
+  <line x1="600" y1="729" x2="628" y2="729" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <polygon points="628 722,640 729,628 736" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="650" y="733" font-size="11" fill="#334155">泛化 / 实现关系（空心三角）</text>
+
+  <!-- filled diamond -->
+  <polygon points="930 729,940 722,950 729,940 736" fill="#10B981"/>
+  <line x1="950" y1="729" x2="980" y2="729" stroke="#10B981" stroke-width="1.6"/>
+  <polygon points="980 725,988 729,980 733" fill="#10B981"/>
+  <text x="996" y="733" font-size="11" fill="#334155">组合（强依赖，实心菱形）</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="772" font-size="10" fill="#94A3B8" text-anchor="middle">图4-4 协议适配器接口与驱动实现的架构示意。每个具体驱动通过组合持有底层通信组件，对上层只暴露通用接口。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">layered</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">上下三层纵向排布：设备层→协议转换层→平台层。设备层多个图标水平排列，每个设备向下引出独立路径穿过转换层到达平台层。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

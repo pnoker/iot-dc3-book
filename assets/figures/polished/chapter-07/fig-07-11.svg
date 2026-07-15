@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="980" fill="#FFFFFF"/>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">私有化与混合部署架构</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">Agentic Center → 路由决策 → 本地 / 云端推理引擎</text>
+
+  <rect x="1440" y="24" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1500" y="43" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  <line x1="60" y1="103" x2="1540" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 区域边界 ===== -->
+  <!-- 企业内部网络 (private) -->
+  <rect x="90" y="170" width="1180" height="480" rx="12" fill="#F8FAFC" fill-opacity="0.6" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="108" y="156" width="170" height="28" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="193" y="174" font-size="12" font-weight="700" fill="#10B981" text-anchor="middle">企业内部网络</text>
+  <text x="288" y="174" font-size="10" fill="#64748B">敏感数据不出域</text>
+
+  <!-- 云外网 (public) -->
+  <rect x="1040" y="690" width="500" height="200" rx="12" fill="#FFFBEB" fill-opacity="0.5" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="1058" y="676" width="120" height="28" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1118" y="694" font-size="12" font-weight="700" fill="#F59E0B" text-anchor="middle">云外网</text>
+  <text x="1188" y="694" font-size="10" fill="#64748B">开放 API 可达</text>
+
+  <!-- ===== 组件 ===== -->
+  <!-- Agentic Center -->
+  <g>
+    <rect x="140" y="380" width="220" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="140" y="380" width="220" height="6" rx="3" fill="#2563EB"/>
+    <text x="250" y="420" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Agentic Center</text>
+    <text x="250" y="442" font-size="10" fill="#64748B" text-anchor="middle">对话入口与工具编排</text>
+    <text x="250" y="470" font-size="9" fill="#94A3B8" text-anchor="middle">请求带敏感标签</text>
+    <text x="250" y="485" font-size="9" fill="#94A3B8" text-anchor="middle">+ 复杂度评分</text>
+  </g>
+
+  <!-- 路由决策 (菱形) -->
+  <g>
+    <polygon points="590,340 720,440 590,540 460,440" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="590" y="432" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">路由决策</text>
+    <text x="590" y="452" font-size="10" fill="#64748B" text-anchor="middle">敏感度 / 复杂度</text>
+    <text x="590" y="468" font-size="10" fill="#64748B" text-anchor="middle">分流判断</text>
+  </g>
+
+  <!-- 本地推理引擎 -->
+  <g>
+    <rect x="950" y="250" width="260" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <rect x="950" y="250" width="260" height="6" rx="3" fill="#10B981"/>
+    <text x="1080" y="290" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">本地推理引擎</text>
+    <text x="1080" y="312" font-size="10" fill="#64748B" text-anchor="middle">Ollama / vLLM / LocalAI</text>
+    <text x="1080" y="340" font-size="9" fill="#94A3B8" text-anchor="middle">OpenAI 兼容端点</text>
+    <text x="1080" y="355" font-size="9" fill="#94A3B8" text-anchor="middle">本地模型，数据不出域</text>
+  </g>
+
+  <!-- 云端推理引擎 -->
+  <g>
+    <rect x="1160" y="750" width="300" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <rect x="1160" y="750" width="300" height="6" rx="3" fill="#F59E0B"/>
+    <text x="1310" y="790" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云端推理引擎</text>
+    <text x="1310" y="812" font-size="10" fill="#64748B" text-anchor="middle">GPT-4o / Claude / 通义千问</text>
+    <text x="1310" y="840" font-size="9" fill="#94A3B8" text-anchor="middle">公有云大模型</text>
+    <text x="1310" y="855" font-size="9" fill="#94A3B8" text-anchor="middle">承接复杂任务</text>
+  </g>
+
+  <!-- ===== 连接 ===== -->
+  <!-- Agentic Center → 路由决策 (主链路 蓝) -->
+  <line x1="360" y1="440" x2="455" y2="440" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="372" y="418" width="72" height="20" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="408" y="432" font-size="10" fill="#2563EB" text-anchor="middle" font-weight="600">请求分流</text>
+
+  <!-- 路由决策 → 本地推理 (数据安全路径 绿 实线) -->
+  <polyline points="590,340 590,300 945,300" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <rect x="690" y="280" width="96" height="20" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="738" y="294" font-size="10" fill="#10B981" text-anchor="middle" font-weight="600">敏感 / 简单</text>
+
+  <!-- 路由决策 → 云端推理 (跨网络路径 橙 虚线) -->
+  <polyline points="590,540 590,810 1155,810" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+  <rect x="610" y="616" width="96" height="20" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="658" y="630" font-size="10" fill="#F59E0B" text-anchor="middle" font-weight="600">复杂任务</text>
+
+  <!-- 跨网络穿越提示 -->
+  <text x="606" y="660" font-size="9" fill="#94A3B8" font-style="italic">穿越安全边界 → 公网调用</text>
+
+  <!-- ===== callout ===== -->
+  <g>
+    <rect x="420" y="565" width="330" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <text x="435" y="585" font-size="11" fill="#334155">· 路由决策在 Agentic Center 内部实现，</text>
+    <text x="435" y="602" font-size="11" fill="#334155">  不引入额外中间件。</text>
+  </g>
+
+  <g>
+    <rect x="950" y="400" width="300" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <text x="965" y="420" font-size="11" fill="#334155">· 本地推理引擎暴露 OpenAI 兼容端点，</text>
+    <text x="965" y="437" font-size="11" fill="#334155">  与云端对接接口一致。</text>
+  </g>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="60" y1="900" x2="1540" y2="900" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <!-- 蓝 -->
+    <rect x="80" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="104" y="928">Agentic Center 核心</text>
+    <!-- 绿 -->
+    <rect x="260" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="284" y="928">本地推理组件</text>
+    <!-- 橙 -->
+    <rect x="410" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="434" y="928">云端服务</text>
+    <!-- 实线 -->
+    <line x1="540" y1="924" x2="572" y2="924" stroke="#2563EB" stroke-width="2"/>
+    <text x="580" y="928">数据安全路径（实线）</text>
+    <!-- 虚线 -->
+    <line x1="760" y1="924" x2="792" y2="924" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="800" y="928">跨网络路径（虚线）</text>
+    <!-- 边界 -->
+    <line x1="980" y1="924" x2="1012" y2="924" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6 3"/>
+    <text x="1020" y="928">企业内部网络边界</text>
+  </g>
+
+  <!-- ===== caption ===== -->
+  <text x="800" y="968" font-size="10" fill="#94A3B8" text-anchor="middle">图7-13  展示私有化部署中 Agentic Center 与本地 / 云端推理引擎之间的路由关系</text>
+</svg>

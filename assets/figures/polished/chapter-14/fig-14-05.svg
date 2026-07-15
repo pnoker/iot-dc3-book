@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" width="1800" height="1020" viewBox="0 0 1800 1020">
+  <rect x="0" y="0" width="1800" height="1020" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-orange-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0,0 3.5,10 7" fill="#F59E0B"/></marker>
+  </defs>
+
+  <!-- ============ 标题区 ============ -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图14-5 AGI 时代物联网架构演进</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">传统 IoT 平台 → AGI 时代自治平台：智能层升级为 Agent 编排 + 动态模型调度，安全护栏层独立并旁路所有自动决策</text>
+  <rect x="1640" y="28" width="130" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1705" y="45" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ============ 列标题 ============ -->
+  <text x="450" y="135" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">传统 IoT 平台架构</text>
+  <text x="450" y="152" font-size="10" fill="#94A3B8" text-anchor="middle">规则引擎 + 固定预训练模型</text>
+  <text x="1350" y="135" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AGI 时代平台架构</text>
+  <text x="1350" y="152" font-size="10" fill="#94A3B8" text-anchor="middle">Agent 编排 + 动态模型调度 + 安全护栏</text>
+
+  <!-- ============ 中间演进箭头 ============ -->
+  <line x1="830" y1="430" x2="965" y2="430" stroke="#2563EB" stroke-width="3" marker-end="url(#ah-blue)"/>
+  <text x="897" y="418" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">架构演进</text>
+  <text x="897" y="452" font-size="10" fill="#64748B" text-anchor="middle">自治化</text>
+
+  <!-- ================================================================
+       左列：传统 IoT  (x 90-810)
+       应用 160-220 / 智能 250-340 / 平台 370-460 / 接入 490-550 / 设备 580-650
+       ================================================================ -->
+
+  <!-- 应用层 (gray) -->
+  <rect x="90" y="160" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="100" y="150" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
+  <text x="138" y="164" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle">应用层</text>
+  <rect x="270" y="178" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
+  <text x="450" y="198" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">业务应用 · 大屏 · 开放 API</text>
+
+  <!-- 智能层 (orange) -->
+  <rect x="90" y="250" width="720" height="90" rx="10" fill="#F8FAFC" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="100" y="240" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
+  <text x="138" y="254" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">智能层</text>
+  <rect x="200" y="275" width="250" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="325" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">规则引擎</text>
+  <text x="325" y="313" font-size="9" fill="#64748B" text-anchor="middle">阈值 / 联动 / 静态策略</text>
+  <rect x="480" y="275" width="250" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="605" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">预训练模型</text>
+  <text x="605" y="313" font-size="9" fill="#64748B" text-anchor="middle">固定版本 · 离线推理</text>
+
+  <!-- 平台层 (blue) -->
+  <rect x="90" y="370" width="720" height="90" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="100" y="360" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="138" y="374" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">平台层</text>
+  <rect x="120" y="395" width="200" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="220" y="417" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">认证授权</text>
+  <text x="220" y="433" font-size="9" fill="#64748B" text-anchor="middle">身份 · 权限</text>
+  <rect x="340" y="395" width="200" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="440" y="417" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">设备管理</text>
+  <text x="440" y="433" font-size="9" fill="#64748B" text-anchor="middle">影子 · 生命周期</text>
+  <rect x="560" y="395" width="200" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="660" y="417" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">数据中心</text>
+  <text x="660" y="433" font-size="9" fill="#64748B" text-anchor="middle">时序 · 历史存储</text>
+
+  <!-- 接入层 (blue) -->
+  <rect x="90" y="490" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="100" y="480" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="138" y="494" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">接入层</text>
+  <rect x="270" y="508" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="450" y="528" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT · CoAP · Modbus</text>
+
+  <!-- 设备层 (green) -->
+  <rect x="90" y="580" width="720" height="70" rx="10" fill="#F8FAFC" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="100" y="570" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
+  <text x="138" y="584" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">设备层</text>
+  <rect x="200" y="600" width="500" height="38" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="450" y="624" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">异构设备 · 传感器 · 执行器 · 边缘网关</text>
+
+  <!-- 左列内部箭头 -->
+  <!-- 设备 -> 接入 -> 平台 (灰，数据上行) -->
+  <line x1="450" y1="580" x2="450" y2="554" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <line x1="450" y1="490" x2="450" y2="464" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <!-- 平台 <-> 智能 -->
+  <line x1="325" y1="370" x2="325" y2="344" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
+  <text x="300" y="362" font-size="10" fill="#2563EB" text-anchor="end" font-weight="600">数据源</text>
+  <line x1="605" y1="340" x2="605" y2="366" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="630" y="358" font-size="10" fill="#64748B" font-weight="600">告警 / 控制</text>
+
+  <!-- 左列 callout -->
+  <rect x="100" y="678" width="700" height="44" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="116" y="697" font-size="11" font-weight="700" fill="#334155">传统模式</text>
+  <text x="116" y="714" font-size="11" fill="#334155">平台向智能层提供数据源 → 规则/固定模型产生告警与控制指令回注平台执行；智能与安全耦合在策略中。</text>
+
+  <!-- ================================================================
+       右列：AGI 时代  (x 990-1710)
+       应用 160-220 / 安全护栏 250-340 / 智能 370-480 / 平台 510-580 / 接入 610-670 / 设备 700-770
+       ================================================================ -->
+
+  <!-- 应用层 (gray) -->
+  <rect x="990" y="160" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="1000" y="150" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
+  <text x="1038" y="164" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle">应用层</text>
+  <rect x="1170" y="178" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
+  <text x="1350" y="198" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">自治应用 · 人机协同 UI</text>
+
+  <!-- 安全护栏层 (red) -->
+  <rect x="990" y="250" width="720" height="90" rx="10" fill="#FFF1F2" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="8 4"/>
+  <rect x="1000" y="240" width="100" height="20" rx="4" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.2"/>
+  <text x="1050" y="254" font-size="10" font-weight="700" fill="#E11D48" text-anchor="middle">安全护栏层</text>
+  <rect x="1010" y="275" width="220" height="50" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1120" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">决策校验服务</text>
+  <text x="1120" y="313" font-size="9" fill="#64748B" text-anchor="middle">意图合规 · 越权拦截</text>
+  <rect x="1250" y="275" width="220" height="50" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1360" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">操作区间约束</text>
+  <text x="1360" y="313" font-size="9" fill="#64748B" text-anchor="middle">边界 · 回滚 · 限流</text>
+  <rect x="1490" y="275" width="210" height="50" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1595" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">人工接管接口</text>
+  <text x="1595" y="313" font-size="9" fill="#64748B" text-anchor="middle">高危审批 · 介入</text>
+
+  <!-- 智能层 (orange) -->
+  <rect x="990" y="370" width="720" height="110" rx="10" fill="#F8FAFC" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="1000" y="360" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
+  <text x="1038" y="374" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">智能层</text>
+
+  <!-- Agent 编排层 -->
+  <rect x="1010" y="390" width="330" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1175" y="412" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Agent 编排层</text>
+  <line x1="1040" y1="420" x2="1310" y2="420" stroke="#FEF3C7"/>
+  <text x="1175" y="436" font-size="10" fill="#475569" text-anchor="middle">多 Agent 调度 · 上下文管理</text>
+  <text x="1175" y="452" font-size="10" fill="#475569" text-anchor="middle">推理链追踪 · 任务分解</text>
+  <text x="1175" y="466" font-size="9" fill="#94A3B8" text-anchor="middle">输出 = 待校验决策</text>
+
+  <!-- 模型调度网关 -->
+  <rect x="1360" y="390" width="330" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1525" y="412" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">模型调度网关</text>
+  <line x1="1390" y1="420" x2="1660" y2="420" stroke="#FEF3C7"/>
+  <text x="1525" y="436" font-size="10" fill="#475569" text-anchor="middle">端 / 云模型路由</text>
+  <text x="1525" y="452" font-size="10" fill="#475569" text-anchor="middle">模型版本管理 · 灰度</text>
+  <text x="1525" y="466" font-size="9" fill="#94A3B8" text-anchor="middle">按代价 / 时延动态选择</text>
+
+  <!-- Agent <-> 模型调度网关 (动态路由, 橙色虚线) -->
+  <line x1="1340" y1="430" x2="1360" y2="430" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)" marker-start="url(#ah-orange-start)"/>
+  <text x="1350" y="421" font-size="9" font-weight="700" fill="#F59E0B" text-anchor="middle">动态路由</text>
+
+  <!-- 平台层 (blue) -->
+  <rect x="990" y="510" width="720" height="70" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="1000" y="500" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="1038" y="514" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">平台层</text>
+  <rect x="1090" y="528" width="600" height="38" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="1390" y="552" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">认证授权 · 设备管理 · 数据中心（数据源沉淀）</text>
+
+  <!-- 接入层 (blue) -->
+  <rect x="990" y="610" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="1000" y="600" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="1038" y="614" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">接入层</text>
+  <rect x="1170" y="628" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="1350" y="648" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT · CoAP · Modbus</text>
+
+  <!-- 设备层 (green) -->
+  <rect x="990" y="700" width="720" height="70" rx="10" fill="#F8FAFC" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="1000" y="690" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
+  <text x="1038" y="704" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">设备层</text>
+  <rect x="1100" y="720" width="500" height="38" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1350" y="744" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">异构设备 · 传感器 · 执行器 · 边缘网关</text>
+
+  <!-- 右列主链路 (蓝色实线，上行) -->
+  <!-- 设备 -> 接入 -->
+  <line x1="1030" y1="700" x2="1030" y2="674" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- 接入 -> 平台 -->
+  <line x1="1030" y1="610" x2="1030" y2="584" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- 平台 -> Agent编排 (数据源) -->
+  <line x1="1030" y1="510" x2="1030" y2="474" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <text x="1020" y="495" font-size="10" fill="#2563EB" font-weight="700" text-anchor="end">数据源</text>
+  <!-- Agent编排 -> 安全护栏 (输出校验) -->
+  <line x1="1100" y1="370" x2="1100" y2="328" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <text x="1112" y="352" font-size="10" fill="#2563EB" font-weight="700">输出校验</text>
+
+  <!-- 安全护栏 -> 平台 (指令回注执行，蓝色虚线，右侧 L 型) -->
+  <path d="M 1700 295 L 1740 295 L 1740 545 L 1714 545" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
+  <text x="1748" y="420" font-size="10" fill="#2563EB" font-weight="700">通过后</text>
+  <text x="1748" y="434" font-size="10" fill="#2563EB" font-weight="700">回注执行</text>
+
+  <!-- 安全护栏 -> 应用 (人工确认独立通道，红色虚线) -->
+  <line x1="1350" y1="250" x2="1350" y2="224" stroke="#E11D48" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-red)"/>
+  <text x="1362" y="240" font-size="10" fill="#E11D48" font-weight="700">人工确认通道</text>
+
+  <!-- 右列 callout -->
+  <rect x="1000" y="790" width="700" height="44" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="1016" y="809" font-size="11" font-weight="700" fill="#E11D48">AGI 模式</text>
+  <text x="1016" y="826" font-size="11" fill="#334155">Agent 编排调用模型调度网关动态路由端/云模型；其输出必须经安全护栏层校验通过后才回注平台执行，高危决策走人工确认。</text>
+
+  <!-- ============ 图例 ============ -->
+  <line x1="60" y1="855" x2="1740" y2="855" stroke="#E2E8F0"/>
+  <text x="64" y="880" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="110" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="134" y="882" font-size="11" fill="#334155">设备与边缘</text>
+
+  <rect x="240" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="264" y="882" font-size="11" fill="#334155">接入与平台基础</text>
+
+  <rect x="400" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.6"/>
+  <text x="424" y="882" font-size="11" fill="#334155">AI / Agent 能力</text>
+
+  <rect x="550" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.6"/>
+  <text x="574" y="882" font-size="11" fill="#334155">安全与管控</text>
+
+  <rect x="680" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
+  <text x="704" y="882" font-size="11" fill="#334155">外部应用 / UI</text>
+
+  <line x1="840" y1="878" x2="880" y2="878" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
+  <text x="888" y="882" font-size="11" fill="#334155">实线 = 同步调用 / 强依赖（主链路）</text>
+
+  <line x1="1180" y1="878" x2="1220" y2="878" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1228" y="882" font-size="11" fill="#334155">虚线 = 异步事件 / 可选路由</text>
+
+  <!-- ============ caption ============ -->
+  <text x="900" y="1000" font-size="10" fill="#94A3B8" text-anchor="middle">图14-5 AGI 时代物联网架构演进｜右侧独立的 Agent 编排层、动态模型调度网关与旁路所有自动决策的安全护栏层，是从「规则 + 固定模型」走向自治系统的关键结构变化。</text>
+</svg>

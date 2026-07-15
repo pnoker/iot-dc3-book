@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>传统物联网端-云架构与AIoT边-端-云协同架构对比</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===== Title ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">传统物联网端-云架构与 AIoT 边-端-云协同架构对比</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">大模型介入前后物联网拓扑演变 · 边缘层作为推理枢纽的责任边界与主链路</text>
+  <rect x="1610" y="24" width="150" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="1685" y="45" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Left region: 传统架构 ===== -->
+  <rect x="130" y="160" width="640" height="620" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="150" y="148" width="232" height="26" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+  <text x="266" y="166" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">传统物联网 · 端-云两层架构</text>
+
+  <!-- 端侧设备 (感知层) -->
+  <rect x="310" y="270" width="280" height="130" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="450" y="305" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">感知层 · 端侧设备</text>
+  <text x="450" y="330" font-size="10" fill="#64748B" text-anchor="middle">sensors / actuators</text>
+  <line x1="350" y1="348" x2="550" y2="348" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="450" y="370" font-size="11" fill="#475569" text-anchor="middle">数据采集 · 状态上报</text>
+  <text x="450" y="388" font-size="11" fill="#475569" text-anchor="middle">执行器动作</text>
+
+  <!-- 云平台层 -->
+  <rect x="310" y="560" width="280" height="130" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="450" y="595" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云平台层 · 云服务器</text>
+  <text x="450" y="620" font-size="10" fill="#64748B" text-anchor="middle">cloud platform</text>
+  <line x1="350" y1="638" x2="550" y2="638" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="450" y="660" font-size="11" fill="#475569" text-anchor="middle">存储 · 应用 · 规则引擎</text>
+  <text x="450" y="678" font-size="11" fill="#475569" text-anchor="middle">集中式决策</text>
+
+  <!-- 双向箭头：数据上传 / 指令下发 -->
+  <line x1="390" y1="560" x2="390" y2="406" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="378" y="486" font-size="11" font-weight="600" fill="#2563EB" text-anchor="end">数据上传</text>
+
+  <line x1="510" y1="400" x2="510" y2="554" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="522" y="486" font-size="11" font-weight="600" fill="#64748B" text-anchor="start">指令下发</text>
+
+  <!-- callout -->
+  <rect x="180" y="720" width="540" height="44" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="200" y="740" font-size="11" fill="#334155">主链路：端 ⇄ 云 直接往返，数据流与控制流均穿透到云端，</text>
+  <text x="200" y="757" font-size="11" fill="#334155">实时性受带宽与往返时延制约，云端为唯一决策点。</text>
+
+  <!-- ===== Right region: AIoT 新架构 ===== -->
+  <rect x="900" y="160" width="780" height="620" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="920" y="148" width="262" height="26" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="1051" y="166" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">AIoT · 边-端-云三层协同架构</text>
+
+  <!-- 端侧 -->
+  <rect x="1135" y="210" width="320" height="115" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1295" y="244" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">端侧 · 端侧设备</text>
+  <text x="1295" y="268" font-size="10" fill="#64748B" text-anchor="middle">end devices</text>
+  <line x1="1180" y1="284" x2="1410" y2="284" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1295" y="305" font-size="11" fill="#475569" text-anchor="middle">采集 · 执行 · 唤醒</text>
+
+  <!-- 边缘侧 (推理枢纽，高亮) -->
+  <rect x="1115" y="395" width="360" height="160" rx="8" fill="#F8FAFC" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="1295" y="432" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">边缘侧 · 边缘网关</text>
+  <text x="1295" y="456" font-size="10" fill="#64748B" text-anchor="middle">edge gateway · inference hub</text>
+  <line x1="1160" y1="472" x2="1430" y2="472" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1295" y="494" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="middle">蒸馏模型推理 · 实时决策</text>
+  <text x="1295" y="513" font-size="11" fill="#475569" text-anchor="middle">本地控制闭环 · 事件聚合</text>
+  <text x="1295" y="535" font-size="9" fill="#94A3B8" text-anchor="middle">（新引入的推理枢纽：吸收端-云直连，承担实时性职责）</text>
+
+  <!-- 云侧 -->
+  <rect x="1135" y="620" width="320" height="115" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="1295" y="654" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云侧 · 云服务器</text>
+  <text x="1295" y="678" font-size="10" fill="#64748B" text-anchor="middle">cloud server</text>
+  <line x1="1180" y1="694" x2="1410" y2="694" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1295" y="715" font-size="11" fill="#475569" text-anchor="middle">大模型训练 · 复杂推理 · 知识更新</text>
+
+  <!-- 端 ⇄ 边缘 -->
+  <line x1="1225" y1="325" x2="1225" y2="389" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1213" y="362" font-size="11" font-weight="600" fill="#2563EB" text-anchor="end">采集数据</text>
+
+  <line x1="1365" y1="395" x2="1365" y2="331" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="1377" y="362" font-size="11" font-weight="600" fill="#64748B" text-anchor="start">实时控制</text>
+
+  <!-- 边缘 ⇄ 云 -->
+  <line x1="1225" y1="555" x2="1225" y2="614" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1213" y="590" font-size="11" font-weight="600" fill="#2563EB" text-anchor="end">事件上报</text>
+
+  <line x1="1365" y1="620" x2="1365" y2="561" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <text x="1377" y="590" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="start">模型/知识更新</text>
+
+  <!-- callout -->
+  <rect x="940" y="752" width="700" height="44" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="960" y="772" font-size="11" fill="#334155">主链路：端 → 边缘 → 云，端侧与云侧解耦，边缘侧承担实时推理与本地闭环；</text>
+  <text x="960" y="789" font-size="11" fill="#334155">云侧退居模型训练与知识更新，按周期下推权重，非实时流量不再穿透到端。</text>
+
+  <!-- 演进箭头 (左→右) -->
+  <line x1="790" y1="470" x2="890" y2="470" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="840" y="458" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">引入大模型</text>
+  <text x="840" y="488" font-size="10" fill="#64748B" text-anchor="middle">边缘层介入</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="828" x2="1760" y2="828" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="40" y="852" font-size="11" font-weight="700" fill="#475569" letter-spacing="1">图例 / LEGEND</text>
+
+  <!-- row 1: 组件色块 -->
+  <rect x="120" y="862" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="144" y="873" font-size="11" fill="#334155">端侧设备：感知、执行、状态上报</text>
+
+  <rect x="400" y="862" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="424" y="873" font-size="11" fill="#334155">边缘节点：实时推理、本地决策、控制闭环</text>
+
+  <rect x="760" y="862" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="784" y="873" font-size="11" fill="#334155">云端服务：大模型、知识库、训练与管理</text>
+
+  <!-- row 2: 箭头线型 -->
+  <line x1="120" y1="897" x2="150" y2="897" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="160" y="901" font-size="11" fill="#334155">数据上传 / 事件上报</text>
+
+  <line x1="400" y1="897" x2="430" y2="897" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="440" y="901" font-size="11" fill="#334155">实时控制 / 指令下发</text>
+
+  <line x1="760" y1="897" x2="790" y2="897" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <text x="800" y="901" font-size="11" fill="#334155">模型 / 知识更新（周期下推）</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="975" font-size="10" fill="#94A3B8" text-anchor="middle">图 1-10　传统物联网端-云架构（左）为两层，数据与控制直连穿透云端；AIoT 边-端-云协同架构（右）引入边缘侧作为实时推理与决策枢纽，端云解耦，云侧聚焦模型训练与知识更新并周期下推。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">架构布局，强调边界、组件职责和主链路。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

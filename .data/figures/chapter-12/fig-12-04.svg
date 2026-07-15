@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="27.200" width="1152.000" height="705.600" viewBox="0 0 1600.000 980.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="980" fill="#FFFFFF"/>
+
+  <!-- ============ 标题区 ============ -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图12-4 智慧果园综合监测系统架构（示意）</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">混合组网：LoRaWAN 承载低频小包环境数据，4G 承载高频大包图像；边缘推理削减回传流量，云端规则引擎下行控制电磁阀</text>
+
+  <!-- 右上角类型标签 -->
+  <rect x="1448" y="28" width="112" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1504" y="48" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+
+  <!-- 分隔线 -->
+  <line x1="0" y1="103" x2="1600" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ============ 区域边界框 ============ -->
+  <!-- 云服务平台域 -->
+  <rect x="80" y="140" width="1440" height="160" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="96" y="128" width="150" height="24" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="171" y="145" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">云服务平台域</text>
+  <text x="256" y="145" font-size="10" fill="#64748B">数据汇聚 · 决策 · 存储 · 服务</text>
+
+  <!-- 混合通信域 -->
+  <rect x="80" y="340" width="1440" height="150" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="96" y="328" width="150" height="24" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="171" y="345" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">混合通信域</text>
+  <text x="256" y="345" font-size="10" fill="#64748B">双通道收发 · 协议适配边界</text>
+
+  <!-- 田间感知域 -->
+  <rect x="80" y="540" width="1440" height="170" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="96" y="528" width="150" height="24" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="171" y="545" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle">田间感知域</text>
+  <text x="256" y="545" font-size="10" fill="#64748B">异构传感与数据源边界</text>
+
+  <!-- ============ 云端组件 ============ -->
+  <!-- 云规则引擎 -->
+  <rect x="620" y="180" width="360" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="210" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云规则引擎</text>
+  <text x="800" y="232" font-size="10" fill="#475569" text-anchor="middle">灌溉决策 + 告警 · 设备管理 · 可视化看板</text>
+  <text x="800" y="252" font-size="9" fill="#64748B" text-anchor="middle">数据汇聚 / 规则触发 / 下行控制</text>
+
+  <!-- ============ 通信层组件 ============ -->
+  <!-- LoRaWAN 网关 -->
+  <rect x="320" y="375" width="300" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="470" y="405" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LoRaWAN 网关</text>
+  <text x="470" y="427" font-size="10" fill="#475569" text-anchor="middle">8 通道 · 以太网 / 4G 回传</text>
+  <text x="470" y="447" font-size="9" fill="#64748B" text-anchor="middle">集中式拓扑 · 上行环境数据 / 下行控制</text>
+
+  <!-- 4G 基站 -->
+  <rect x="1000" y="375" width="300" height="90" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1150" y="405" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">4G 基站</text>
+  <text x="1150" y="427" font-size="10" fill="#475569" text-anchor="middle">运营商蜂窝网络 · Cat-1</text>
+  <text x="1150" y="447" font-size="9" fill="#64748B" text-anchor="middle">仅承载图像节点回传</text>
+
+  <!-- ============ 田间组件 ============ -->
+  <!-- 土壤传感器节点 -->
+  <rect x="110" y="590" width="240" height="100" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="230" y="620" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">土壤传感器节点</text>
+  <text x="230" y="642" font-size="10" fill="#475569" text-anchor="middle">三合一 · LoRaWAN</text>
+  <text x="230" y="662" font-size="9" fill="#64748B" text-anchor="middle">温湿度 / EC · ×20</text>
+
+  <!-- 气象站 -->
+  <rect x="410" y="590" width="240" height="100" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="530" y="620" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">气象站</text>
+  <text x="530" y="642" font-size="10" fill="#475569" text-anchor="middle">LoRaWAN · ×1</text>
+  <text x="530" y="662" font-size="9" fill="#64748B" text-anchor="middle">风速 / 雨量 / 辐射</text>
+
+  <!-- 图像采集节点 (primary, 含边缘AI) -->
+  <rect x="730" y="582" width="300" height="116" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2.5"/>
+  <text x="880" y="610" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">图像采集节点</text>
+  <text x="880" y="630" font-size="10" fill="#475569" text-anchor="middle">内置 AI 推理 · ×5</text>
+  <!-- 边缘AI 子块 (橙/AI域) -->
+  <rect x="750" y="642" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="880" y="660" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">边缘 AI · EfficientNet-Lite</text>
+  <text x="880" y="676" font-size="9" fill="#64748B" text-anchor="middle">本地判定 → 异常 / 无异常</text>
+
+  <!-- 电磁阀节点 -->
+  <rect x="1130" y="590" width="240" height="100" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1250" y="620" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">电磁阀节点</text>
+  <text x="1250" y="642" font-size="10" fill="#475569" text-anchor="middle">LoRaWAN · ×5</text>
+  <text x="1250" y="662" font-size="9" fill="#64748B" text-anchor="middle">灌溉开关执行</text>
+
+  <!-- ============ 上行数据流 (实线) ============ -->
+  <!-- soil → lorawan -->
+  <polyline points="230,590 230,525 390,525 390,465" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="250" y="518" font-size="10" fill="#10B981">定时上报 200B</text>
+
+  <!-- weather → lorawan -->
+  <polyline points="530,590 530,505 470,505 470,465" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="500" y="498" font-size="10" fill="#10B981" text-anchor="end">定时上报</text>
+
+  <!-- camera → cellular -->
+  <polyline points="880,582 880,515 1150,515 1150,465" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="1015" y="508" font-size="10" fill="#10B981" text-anchor="middle">异常图像 200–300KB</text>
+
+  <!-- lorawan → rule_engine (主链路 蓝) -->
+  <polyline points="470,375 470,320 720,320 720,270" fill="none" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <text x="560" y="313" font-size="10" font-weight="700" fill="#2563EB">环境数据汇聚</text>
+
+  <!-- cellular → rule_engine -->
+  <polyline points="1150,375 1150,320 880,320 880,270" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="1080" y="313" font-size="10" fill="#64748B" text-anchor="end">图像回传</text>
+
+  <!-- ============ 下行控制 (红虚线) ============ -->
+  <!-- rule_engine → lorawan -->
+  <polyline points="800,270 800,295 560,295 560,375" fill="none" stroke="#E11D48" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-red)"/>
+  <text x="650" y="288" font-size="10" font-weight="700" fill="#E11D48">下行：电磁阀指令</text>
+
+  <!-- lorawan → valve -->
+  <polyline points="560,465 560,560 1250,560 1250,590" fill="none" stroke="#E11D48" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-red)"/>
+  <text x="900" y="553" font-size="10" font-weight="700" fill="#E11D48">开关控制（秒~分钟级延迟）</text>
+
+  <!-- ============ callouts ============ -->
+  <rect x="80" y="745" width="460" height="70" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="98" y="770" font-size="11" font-weight="700" fill="#2563EB">① 双通道分工</text>
+  <text x="98" y="790" font-size="11" fill="#334155">LoRaWAN 与 4G 各承不同量级与频次的数据，</text>
+  <text x="98" y="806" font-size="11" fill="#334155">不存在"谁替代谁"——按数据切口理性分工。</text>
+
+  <rect x="570" y="745" width="460" height="70" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="588" y="770" font-size="11" font-weight="700" fill="#F59E0B">② 边缘推理省流量</text>
+  <text x="588" y="790" font-size="11" fill="#334155">图像节点本地推理只在"异常"时回传，</text>
+  <text x="588" y="806" font-size="11" fill="#334155">是边缘计算在农业中最典型的应用之一。</text>
+
+  <rect x="1060" y="745" width="460" height="70" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1078" y="770" font-size="11" font-weight="700" fill="#E11D48">③ 下行延迟可接受</text>
+  <text x="1078" y="790" font-size="11" fill="#334155">灌溉指令经 LoRaWAN 下行，延迟秒级到分钟级，</text>
+  <text x="1078" y="806" font-size="11" fill="#334155">对灌溉场景完全适用。</text>
+
+  <!-- ============ 图例 ============ -->
+  <line x1="0" y1="845" x2="1600" y2="845" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="120" y="878" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="148" y="890" font-size="11" fill="#475569">田间感知设备 / 数据源</text>
+
+  <rect x="380" y="878" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="408" y="890" font-size="11" fill="#475569">网关 · 云平台 · 通信设施</text>
+
+  <rect x="660" y="878" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="688" y="890" font-size="11" fill="#475569">边缘 AI 推理模块</text>
+
+  <line x1="900" y1="885" x2="950" y2="885" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="960" y="890" font-size="11" fill="#475569">数据上行（实线）</text>
+
+  <line x1="1180" y1="885" x2="1230" y2="885" stroke="#E11D48" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-red)"/>
+  <text x="1240" y="890" font-size="11" fill="#475569">下行控制（红虚线）</text>
+
+  <!-- ============ caption ============ -->
+  <text x="800" y="940" font-size="10" fill="#94A3B8" text-anchor="middle">图12-4 智慧果园混合组网完整数据路径：土壤与气象数据经 LoRaWAN 周期上报；图像在边缘完成病害推理后经 4G 回传；灌溉指令由云端规则引擎经 LoRaWAN 下行通道执行。</text>
+  </svg>
+</svg>

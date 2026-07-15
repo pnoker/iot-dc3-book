@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTTP、MQTT、CoAP应用层协议角色对比</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+  </defs>
+
+  <!-- 标题区 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">HTTP、MQTT、CoAP 应用层协议角色对比</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">传输层 → 通信模型 → 典型场景：三种协议在物联网通信架构中的定位与选型</text>
+  <rect x="1660" y="24" width="100" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1710" y="42" font-size="12" fill="#64748B" text-anchor="middle" letter-spacing="1">MATRIX</text>
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0"/>
+
+  <!-- 列轴标签（左侧三层语义） -->
+  <text x="100" y="220" font-size="11" fill="#94A3B8" text-anchor="middle">典型场景</text>
+  <text x="100" y="360" font-size="11" fill="#94A3B8" text-anchor="middle">通信模型</text>
+  <text x="100" y="500" font-size="11" fill="#94A3B8" text-anchor="middle">传输层</text>
+  <text x="100" y="615" font-size="11" fill="#94A3B8" text-anchor="middle">供电特征</text>
+
+  <!-- 层间浅灰分隔线 -->
+  <line x1="140" y1="278" x2="1660" y2="278" stroke="#E2E8F0" stroke-dasharray="2 4"/>
+  <line x1="140" y1="418" x2="1660" y2="418" stroke="#E2E8F0" stroke-dasharray="2 4"/>
+  <line x1="140" y1="558" x2="1660" y2="558" stroke="#E2E8F0" stroke-dasharray="2 4"/>
+
+  <!-- ============ 列1 HTTP ============ -->
+  <!-- 区域边界 -->
+  <rect x="160" y="135" width="400" height="600" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="176" y="126" width="84" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="218" y="140" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">HTTP</text>
+  <text x="268" y="140" font-size="10" fill="#64748B">Web API 与网关北向通信</text>
+
+  <!-- scenario 浅蓝 -->
+  <rect x="180" y="170" width="360" height="92" rx="6" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+  <text x="360" y="210" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备配网 / 网关北向</text>
+  <text x="360" y="234" font-size="10" fill="#475569" text-anchor="middle">HTTP · 典型场景</text>
+
+  <!-- model 浅绿 -->
+  <rect x="180" y="310" width="360" height="92" rx="6" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="360" y="350" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">请求 / 响应</text>
+  <text x="360" y="374" font-size="10" fill="#475569" text-anchor="middle">HTTP · 通信模型</text>
+
+  <!-- transport 浅黄 -->
+  <rect x="180" y="450" width="360" height="92" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <text x="360" y="490" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">TCP + TLS</text>
+  <text x="360" y="514" font-size="10" fill="#475569" text-anchor="middle">HTTP · 传输层</text>
+
+  <!-- ============ 列2 MQTT ============ -->
+  <rect x="700" y="135" width="400" height="600" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="716" y="126" width="84" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="758" y="140" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">MQTT</text>
+  <text x="808" y="140" font-size="10" fill="#64748B">Broker 中转与双向消息</text>
+
+  <!-- scenario 浅蓝 -->
+  <rect x="720" y="170" width="360" height="92" rx="6" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+  <text x="900" y="210" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">远程监控 / 双向指令</text>
+  <text x="900" y="234" font-size="10" fill="#475569" text-anchor="middle">MQTT · 典型场景</text>
+
+  <!-- model 浅绿（主链路高亮，加粗描边） -->
+  <rect x="720" y="310" width="360" height="92" rx="6" fill="#D1FAE5" stroke="#10B981" stroke-width="3"/>
+  <text x="900" y="350" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">发布 / 订阅（Broker 中转）</text>
+  <text x="900" y="374" font-size="10" fill="#475569" text-anchor="middle">MQTT · 通信模型 · 主链路</text>
+
+  <!-- transport 浅黄 -->
+  <rect x="720" y="450" width="360" height="92" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <text x="900" y="490" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">TCP</text>
+  <text x="900" y="514" font-size="10" fill="#475569" text-anchor="middle">MQTT · 传输层</text>
+
+  <!-- ============ 列3 CoAP ============ -->
+  <rect x="1240" y="135" width="400" height="600" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="1256" y="126" width="84" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="1298" y="140" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">CoAP</text>
+  <text x="1348" y="140" font-size="10" fill="#64748B">受限设备低功耗通信</text>
+
+  <!-- scenario 浅蓝 -->
+  <rect x="1260" y="170" width="360" height="92" rx="6" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+  <text x="1440" y="210" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">传感器采集 / 状态上报</text>
+  <text x="1440" y="234" font-size="10" fill="#475569" text-anchor="middle">CoAP · 典型场景</text>
+
+  <!-- model 浅绿 -->
+  <rect x="1260" y="310" width="360" height="92" rx="6" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="1440" y="350" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">请求/响应 + Observe</text>
+  <text x="1440" y="374" font-size="10" fill="#475569" text-anchor="middle">CoAP · 通信模型</text>
+
+  <!-- transport 浅黄 -->
+  <rect x="1260" y="450" width="360" height="92" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1440" y="490" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">UDP + DTLS</text>
+  <text x="1440" y="514" font-size="10" fill="#475569" text-anchor="middle">CoAP · 传输层</text>
+
+  <!-- ============ 列内向上箭头（直接点对点，深灰实线） ============ -->
+  <!-- HTTP 列 -->
+  <line x1="330" y1="450" x2="330" y2="406" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="318" y="432" font-size="9" fill="#64748B" text-anchor="end">承载</text>
+  <line x1="330" y1="310" x2="330" y2="266" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="318" y="292" font-size="9" fill="#64748B" text-anchor="end">适用</text>
+  <!-- MQTT 列 -->
+  <line x1="870" y1="450" x2="870" y2="406" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="858" y="432" font-size="9" fill="#64748B" text-anchor="end">承载</text>
+  <line x1="870" y1="310" x2="870" y2="266" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="858" y="292" font-size="9" fill="#64748B" text-anchor="end">适用</text>
+  <!-- CoAP 列 -->
+  <line x1="1410" y1="450" x2="1410" y2="406" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="1398" y="432" font-size="9" fill="#64748B" text-anchor="end">承载</text>
+  <line x1="1410" y1="310" x2="1410" y2="266" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="1398" y="292" font-size="9" fill="#64748B" text-anchor="end">适用</text>
+
+  <!-- ============ Broker 中转横向虚线箭头 ============ -->
+  <line x1="716" y1="356" x2="544" y2="356" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="630" y="349" font-size="10" fill="#64748B" text-anchor="middle">Broker 中转</text>
+  <line x1="1084" y1="356" x2="1256" y2="356" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1170" y="349" font-size="10" fill="#64748B" text-anchor="middle">Broker 中转</text>
+
+  <!-- ============ 底部设备供电特征图标 ============ -->
+  <!-- HTTP 列：闪电 AC -->
+  <g transform="translate(360,605)">
+    <polygon points="0,-30 -22,8 -6,8 -14,34 24,-12 6,-12 14,-30" fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/>
+    <text x="0" y="56" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">AC 供电网关</text>
+    <text x="0" y="74" font-size="10" fill="#64748B" text-anchor="middle">稳定电源 · 算力充足</text>
+  </g>
+  <!-- MQTT 列：Wi-Fi 低功耗模组 -->
+  <g transform="translate(900,605)">
+    <g fill="none" stroke="#10B981" stroke-width="2.4" stroke-linecap="round">
+      <path d="M -34,-2 A 34,34 0 0 1 34,-2"/>
+      <path d="M -22,-2 A 22,22 0 0 1 22,-2"/>
+      <path d="M -11,-2 A 11,11 0 0 1 11,-2"/>
+    </g>
+    <circle cx="0" cy="-2" r="4" fill="#10B981"/>
+    <text x="0" y="30" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">低功耗模组</text>
+    <text x="0" y="48" font-size="10" fill="#64748B" text-anchor="middle">电池 / 能量采集</text>
+  </g>
+  <!-- CoAP 列：电池 传感器 -->
+  <g transform="translate(1440,605)">
+    <rect x="-16" y="-30" width="32" height="48" rx="4" fill="#7C3AED" stroke="#5B21B6" stroke-width="1.5"/>
+    <rect x="-6" y="-36" width="12" height="6" rx="2" fill="#5B21B6"/>
+    <rect x="-12" y="-8" width="24" height="8" fill="#FFFFFF" opacity="0.85"/>
+    <text x="0" y="42" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">电池供电传感器</text>
+    <text x="0" y="60" font-size="10" fill="#64748B" text-anchor="middle">功耗极度敏感</text>
+  </g>
+
+  <!-- ============ 图例 ============ -->
+  <line x1="60" y1="760" x2="1740" y2="760" stroke="#E2E8F0"/>
+  <text x="64" y="784" font-size="12" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="120" y="775" width="16" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB"/>
+  <text x="144" y="785" font-size="11" fill="#334155">典型场景</text>
+
+  <rect x="240" y="775" width="16" height="12" rx="2" fill="#D1FAE5" stroke="#10B981"/>
+  <text x="264" y="785" font-size="11" fill="#334155">通信模型</text>
+
+  <rect x="360" y="775" width="16" height="12" rx="2" fill="#FEF3C7" stroke="#F59E0B"/>
+  <text x="384" y="785" font-size="11" fill="#334155">传输层</text>
+
+  <line x1="480" y1="781" x2="520" y2="781" stroke="#475569" stroke-width="2" marker-end="url(#ah-dark)"/>
+  <text x="528" y="785" font-size="11" fill="#334155">直接点对点通信（承载 / 适用）</text>
+
+  <line x1="770" y1="781" x2="810" y2="781" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="818" y="785" font-size="11" fill="#334155">经 Broker 中转的消息流</text>
+
+  <text x="1010" y="785" font-size="11" fill="#334155">⚡ / 📶 / 🔋 底端图标 = 设备供电特征（AC / 电池 / 能量采集）</text>
+
+  <!-- caption -->
+  <text x="900" y="828" font-size="10" fill="#94A3B8" text-anchor="middle">HTTP 适合设备配网、平台 API 与网关北向通信，复用现有 Web 基础设施、调试方便、安全成熟；MQTT 与 CoAP 面向受限设备——MQTT 擅长双向消息与大规模管理，CoAP 聚焦最小功耗与单对单通信。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">matrix</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">三列水平排列，每列自顶向下分为三层“典型场景 → 通信模型 → 传输层”。三层之间用浅灰隔线分隔。 - 左列（HTTP）： - 顶层（典型场景/浅蓝矩形块）：“设备配网”、“网关北向” - 中层（通信模型/浅绿矩形块）：“请求/响应” - 底层（传输层/浅黄矩形块）：“TCP + TLS” - 中列（MQTT）： - 顶层（典型场景/浅蓝矩形块）：“远程监控”、“双向指令” - 中层（通信模型/浅绿矩形块）：“发布/订阅（Broker中转）” - 底层（传输层/浅黄矩形块）：“TCP” - 右列（CoAP）： - 顶层（典型场景/浅蓝矩形块）：“传感器采集”、“状态上报” - 中层（通信模型/浅绿矩形块）：“请求/响应 + Observe” - 底层（传输层/浅黄矩形块）：“UDP + DTLS”</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

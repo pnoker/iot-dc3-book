@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" width="1600" height="1040" viewBox="0 0 1600 1040">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1040" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图9-8 CoAP/LwM2M 与 NB-IoT 协议协同架构</text>
+  <text x="82" y="70" font-size="12" fill="#64748B">LwM2M 对象模型经 CoAP 消息承载，CoAP 消息封装于 NB-IoT 无线帧中（共享停车位地磁传感器场景）</text>
+
+  <!-- type tag -->
+  <rect x="1468" y="24" width="108" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1522" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+
+  <!-- column headers -->
+  <text x="180" y="126" font-size="11" font-weight="600" fill="#94A3B8" text-anchor="middle" letter-spacing="1">标准组织</text>
+  <text x="800" y="126" font-size="11" font-weight="600" fill="#94A3B8" text-anchor="middle" letter-spacing="1">协议分层（上层运行于下层之上）</text>
+  <text x="1430" y="126" font-size="11" font-weight="600" fill="#94A3B8" text-anchor="middle" letter-spacing="1">典型报文大小</text>
+
+  <line x1="56" y1="103" x2="1544" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="56" y1="138" x2="1544" y2="138" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 4"/>
+
+  <!-- ===== Layer 1: Application ===== -->
+  <g>
+    <rect x="300" y="150" width="1000" height="110" rx="8" fill="#F8FAFC" stroke="#64748B" stroke-width="2"/>
+    <rect x="300" y="150" width="8" height="110" rx="4" fill="#64748B"/>
+    <text x="332" y="182" font-size="15" font-weight="700" fill="#0F172A">应用层 · 业务应用</text>
+    <text x="332" y="204" font-size="11" fill="#475569">停车管理、计费系统</text>
+    <text x="332" y="226" font-size="9" fill="#64748B">业务系统 ｜ 报文大小不固定，由业务逻辑决定</text>
+    <text x="1270" y="182" font-size="10" fill="#94A3B8" text-anchor="end">application</text>
+    <!-- left org -->
+    <line x1="220" y1="205" x2="296" y2="205" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="180" y="200" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">业务系统</text>
+    <text x="180" y="216" font-size="9" fill="#94A3B8" text-anchor="middle">vendor</text>
+    <!-- right size -->
+    <line x1="1304" y1="205" x2="1380" y2="205" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="1430" y="200" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">不固定</text>
+    <text x="1430" y="216" font-size="9" fill="#94A3B8" text-anchor="middle">业务载荷</text>
+  </g>
+
+  <!-- arrow: mgmt -> app -->
+  <g>
+    <line x1="800" y1="305" x2="800" y2="264" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <rect x="848" y="276" width="132" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <text x="914" y="291" font-size="10" fill="#334155" text-anchor="middle">提供设备抽象</text>
+  </g>
+
+  <!-- ===== Layer 2: Device management (LwM2M) ===== -->
+  <g>
+    <rect x="300" y="310" width="1000" height="110" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+    <rect x="300" y="310" width="8" height="110" rx="4" fill="#10B981"/>
+    <text x="332" y="342" font-size="15" font-weight="700" fill="#0F172A">设备管理层 · LwM2M 客户端</text>
+    <text x="332" y="364" font-size="11" fill="#475569">对象树（设备 / 传感器 / 固件更新）、配置下发</text>
+    <text x="332" y="386" font-size="9" fill="#64748B">将设备能力抽象为标准对象，统一资源读写与通知</text>
+    <text x="1270" y="342" font-size="10" fill="#94A3B8" text-anchor="end">edge / device mgmt</text>
+    <line x1="220" y1="365" x2="296" y2="365" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="180" y="360" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">OMA</text>
+    <text x="180" y="376" font-size="9" fill="#94A3B8" text-anchor="middle">SpecWorks</text>
+    <line x1="1304" y1="365" x2="1380" y2="365" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="1430" y="360" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">百字节级</text>
+    <text x="1430" y="376" font-size="9" fill="#94A3B8" text-anchor="middle">对象 TLV</text>
+  </g>
+
+  <!-- arrow: coap -> lwm2m -->
+  <g>
+    <line x1="800" y1="465" x2="800" y2="424" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <rect x="848" y="436" width="132" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <text x="914" y="451" font-size="10" fill="#334155" text-anchor="middle">携带 LwM2M 消息</text>
+  </g>
+
+  <!-- ===== Layer 3: Message (CoAP) ===== -->
+  <g>
+    <rect x="300" y="470" width="1000" height="110" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="300" y="470" width="8" height="110" rx="4" fill="#2563EB"/>
+    <text x="332" y="502" font-size="15" font-weight="700" fill="#0F172A">消息协议层 · CoAP 栈</text>
+    <text x="332" y="524" font-size="11" fill="#475569">CON / NON 消息、块传输（Blockwise）、端口 5683 / 5684</text>
+    <text x="332" y="546" font-size="9" fill="#64748B">轻量 RESTful：GET/POST/PUT/DELETE，支持确认与非确认两种模式</text>
+    <text x="1270" y="502" font-size="10" fill="#94A3B8" text-anchor="end">platform / transport</text>
+    <line x1="220" y1="525" x2="296" y2="525" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="180" y="520" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">IETF</text>
+    <text x="180" y="536" font-size="9" fill="#94A3B8" text-anchor="middle">RFC 7252</text>
+    <line x1="1304" y1="525" x2="1380" y2="525" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="1430" y="520" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">4–20 B 头部</text>
+    <text x="1430" y="536" font-size="9" fill="#94A3B8" text-anchor="middle">固定 4 B + 选项</text>
+  </g>
+
+  <!-- arrow: nbiot -> coap -->
+  <g>
+    <line x1="800" y1="625" x2="800" y2="584" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <rect x="848" y="596" width="132" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <text x="914" y="611" font-size="10" fill="#334155" text-anchor="middle">承载无线帧</text>
+  </g>
+
+  <!-- ===== Layer 4: Radio access (NB-IoT) ===== -->
+  <g>
+    <rect x="300" y="630" width="1000" height="110" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
+    <rect x="300" y="630" width="8" height="110" rx="4" fill="#2563EB"/>
+    <text x="332" y="662" font-size="15" font-weight="700" fill="#0F172A">无线接入层 · NB-IoT 模组</text>
+    <text x="332" y="684" font-size="11" fill="#475569">eDRX / PSM 省电模式、深度覆盖、广覆盖低功耗物理连接</text>
+    <text x="332" y="706" font-size="9" fill="#64748B">空口承载 CoAP/UDP 数据帧，提供广覆盖、低功耗、高穿透的底层管道</text>
+    <text x="1270" y="662" font-size="10" fill="#94A3B8" text-anchor="end">access / radio</text>
+    <line x1="220" y1="685" x2="296" y2="685" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="180" y="680" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">3GPP</text>
+    <text x="180" y="696" font-size="9" fill="#94A3B8" text-anchor="middle">Rel-13/14</text>
+    <line x1="1304" y1="685" x2="1380" y2="685" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="1430" y="680" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">空口几十 B</text>
+    <text x="1430" y="696" font-size="9" fill="#94A3B8" text-anchor="middle">MAC/RLC 开销</text>
+  </g>
+
+  <!-- main-link side rail annotation -->
+  <g>
+    <line x1="260" y1="205" x2="260" y2="685" stroke="#2563EB" stroke-width="1" stroke-dasharray="4 4" opacity="0.55"/>
+    <circle cx="260" cy="205" r="3" fill="#2563EB"/>
+    <circle cx="260" cy="365" r="3" fill="#2563EB"/>
+    <circle cx="260" cy="525" r="3" fill="#2563EB"/>
+    <circle cx="260" cy="685" r="3" fill="#2563EB"/>
+    <text x="248" y="450" font-size="10" font-weight="600" fill="#2563EB" text-anchor="middle" transform="rotate(-90 248 450)">主链路 · 承载方向（下→上）</text>
+  </g>
+
+  <!-- separator before legend -->
+  <line x1="56" y1="782" x2="1544" y2="782" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Legend ===== -->
+  <text x="64" y="808" font-size="12" font-weight="700" fill="#0F172A">图例</text>
+
+  <g transform="translate(64,824)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+    <text x="24" y="10" font-size="11" fill="#475569">应用层（业务系统）</text>
+
+    <rect x="200" y="0" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+    <text x="224" y="10" font-size="11" fill="#475569">设备管理层（LwM2M）</text>
+
+    <rect x="430" y="0" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <text x="454" y="10" font-size="11" fill="#475569">消息传输层（CoAP）</text>
+
+    <rect x="650" y="0" width="16" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
+    <text x="674" y="10" font-size="11" fill="#475569">无线接入层（NB-IoT）</text>
+
+    <line x1="890" y1="6" x2="930" y2="6" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="940" y="10" font-size="11" fill="#475569">承载 / 提供抽象（主链路，下→上）</text>
+  </g>
+
+  <!-- ===== Callouts ===== -->
+  <g>
+    <rect x="64" y="858" width="1480" height="62" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <circle cx="84" cy="878" r="4" fill="#F59E0B"/>
+    <text x="98" y="882" font-size="11" font-weight="600" fill="#0F172A">工程取舍</text>
+    <text x="98" y="902" font-size="11" fill="#334155">① NB-IoT 的 eDRX/PSM 省电模式与 LwM2M 休眠调度配合，可显著延长电池更换周期；</text>
+    <text x="98" y="916" font-size="11" fill="#334155">② 应用层协议从不单独工作——它与无线网络、设备管理模型形成合力，NON 消息用于周期上报，CON 消息用于远程配置与固件升级。</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="952" font-size="10" fill="#94A3B8" text-anchor="middle">图9-8 CoAP/LwM2M 与 NB-IoT 协议协同架构：左侧标注各层标准组织，右侧标注典型报文字节大小边界；箭头自下而上表示"承载/提供抽象"。</text>
+  <text x="800" y="970" font-size="10" fill="#94A3B8" text-anchor="middle">假设场景：共享停车位地磁传感器——NON 消息用于周期性上报，CON 消息用于远程配置和固件升级。</text>
+</svg>

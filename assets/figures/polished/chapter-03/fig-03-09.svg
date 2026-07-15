@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <pattern id="grid-minor" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 L0 0 0 40" fill="none" stroke="#EEF2F7" stroke-width="1"/>
+    </pattern>
+    <pattern id="grid-major" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0 L0 0 0 200" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">三角测量定位原理示意</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">三点定位几何 · 测量噪声导致的交叠区域 · 最小二乘修正</text>
+
+  <rect x="1620" y="26" width="150" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1695" y="45" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 主体：平台服务域边界 ===== -->
+  <rect x="70" y="128" width="1660" height="720" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="84" y="118" width="150" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="159" y="134" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务域 · 定位解算</text>
+
+  <!-- 坐标系网格 -->
+  <g id="grid">
+    <rect x="240" y="180" width="1320" height="600" fill="url(#grid-minor)"/>
+    <rect x="240" y="180" width="1320" height="600" fill="url(#grid-major)"/>
+    <rect x="240" y="180" width="1320" height="600" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+
+    <!-- 坐标轴标注 -->
+    <text x="900" y="808" font-size="10" fill="#94A3B8" text-anchor="middle">x（东向坐标 / m）</text>
+    <text x="226" y="480" font-size="10" fill="#94A3B8" text-anchor="middle" transform="rotate(-90 226 480)">y（北向坐标 / m）</text>
+    <!-- 原点标记 -->
+    <circle cx="240" cy="780" r="2.5" fill="#64748B"/>
+    <text x="230" y="796" font-size="9" fill="#94A3B8" text-anchor="end">O</text>
+  </g>
+
+  <!-- ===== 三锚点测距圆（虚线 + 半透明 fill 自然叠加出交叠区） ===== -->
+  <!-- 圆 A: center (900,300) r=360  (理想 340, +5.9% 噪声) -->
+  <!-- 圆 B: center (540,700) r=395  (理想 370, +6.8% 噪声) -->
+  <!-- 圆 C: center (1260,700) r=405 (理想 380, +6.6% 噪声) -->
+  <g id="measurement-circles">
+    <circle cx="900" cy="300" r="360" fill="#64748B" fill-opacity="0.07" stroke="#64748B" stroke-width="1.4" stroke-dasharray="6 5"/>
+    <circle cx="540" cy="700" r="395" fill="#64748B" fill-opacity="0.07" stroke="#64748B" stroke-width="1.4" stroke-dasharray="6 5"/>
+    <circle cx="1260" cy="700" r="405" fill="#64748B" fill-opacity="0.07" stroke="#64748B" stroke-width="1.4" stroke-dasharray="6 5"/>
+  </g>
+
+  <!-- 交叠区注记（指向三圆公共重叠处 ≈ (905,545)） -->
+  <line x1="905" y1="545" x2="1080" y2="430" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 3"/>
+  <rect x="1080" y="406" width="232" height="48" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1092" y="424" font-size="11" font-weight="600" fill="#334155">三圆交叠区域</text>
+  <text x="1092" y="442" font-size="10" fill="#475569">定位不确定度（RSSI/ToA 噪声）</text>
+
+  <!-- ===== 锚点节点 A/B/C（蓝色核心能力） ===== -->
+  <!-- 测距线：从锚点到估计点（蓝色主链路） -->
+  <line x1="900" y1="300" x2="905" y2="545" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="540" y1="700" x2="905" y2="545" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="1260" y1="700" x2="905" y2="545" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text x="690" y="634" font-size="11" font-weight="600" fill="#2563EB">d₂</text>
+  <text x="1110" y="634" font-size="11" font-weight="600" fill="#2563EB">d₃</text>
+  <text x="916" y="430" font-size="11" font-weight="600" fill="#2563EB">d₁</text>
+
+  <!-- 锚点 A -->
+  <rect x="858" y="258" width="84" height="84" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="900" cy="300" r="9" fill="#2563EB"/>
+  <text x="900" y="304" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">A</text>
+  <text x="900" y="358" font-size="10" fill="#475569" text-anchor="middle">锚点 (x₁,y₁)</text>
+
+  <!-- 锚点 B -->
+  <rect x="498" y="658" width="84" height="84" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="540" cy="700" r="9" fill="#2563EB"/>
+  <text x="540" y="704" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">B</text>
+  <text x="540" y="758" font-size="10" fill="#475569" text-anchor="middle">锚点 (x₂,y₂)</text>
+
+  <!-- 锚点 C -->
+  <rect x="1218" y="658" width="84" height="84" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="1260" cy="700" r="9" fill="#2563EB"/>
+  <text x="1260" y="704" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">C</text>
+  <text x="1260" y="758" font-size="10" fill="#475569" text-anchor="middle">锚点 (x₃,y₃)</text>
+
+  <!-- 半径标注（沿圆周） -->
+  <text x="588" y="360" font-size="10" fill="#64748B">r₁ ≈ 360m</text>
+  <text x="320" y="660" font-size="10" fill="#64748B">r₂ ≈ 395m</text>
+  <text x="1390" y="660" font-size="10" fill="#64748B">r₃ ≈ 405m</text>
+
+  <!-- ===== 估计点（最小二乘，橙色智能路径） ===== -->
+  <circle cx="905" cy="545" r="9" fill="#F59E0B"/>
+  <circle cx="905" cy="545" r="15" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-opacity="0.6"/>
+  <text x="922" y="540" font-size="11" font-weight="700" fill="#B45309">P̂ 最小二乘估计</text>
+  <text x="922" y="556" font-size="9" fill="#92400E">min Σ(dᵢ − r̂ᵢ)²</text>
+
+  <!-- ===== 真实坐标（红色，参考基准） ===== -->
+  <g id="true-point" stroke="#E11D48" stroke-width="2">
+    <line x1="883" y1="495" x2="907" y2="519"/>
+    <line x1="907" y1="495" x2="883" y2="519"/>
+  </g>
+  <text x="812" y="490" font-size="11" font-weight="700" fill="#E11D48" text-anchor="end">P 真实坐标</text>
+  <line x1="816" y1="494" x2="890" y2="505" stroke="#E11D48" stroke-width="1" stroke-dasharray="3 3"/>
+  <!-- 误差向量 ε -->
+  <line x1="895" y1="507" x2="905" y2="545" stroke="#E11D48" stroke-width="1.6" marker-end="url(#ah-orange)" opacity="0.0"/>
+  <path d="M895 507 Q902 524 905 541" fill="none" stroke="#E11D48" stroke-width="1.4" stroke-dasharray="3 3"/>
+  <text x="838" y="528" font-size="10" font-weight="600" fill="#E11D48">ε 估计误差</text>
+
+  <!-- ===== 右侧方法说明 callout ===== -->
+  <rect x="1390" y="190" width="320" height="210" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1406" y="216" font-size="12" font-weight="700" fill="#0F172A">解算流程</text>
+  <line x1="1406" y1="226" x2="1694" y2="226" stroke="#E2E8F0"/>
+  <text x="1406" y="248" font-size="10" fill="#475569">① 三锚点测距 r̂ᵢ（含噪声）</text>
+  <text x="1406" y="270" font-size="10" fill="#475569">② 三圆理想交于一点 → 实际为交叠区</text>
+  <text x="1406" y="292" font-size="10" fill="#475569">③ 列超定方程组：</text>
+  <text x="1420" y="310" font-size="10" font="#334155" fill="#334155">(x−xᵢ)²+(y−yᵢ)² = r̂ᵢ²</text>
+  <text x="1406" y="334" font-size="10" fill="#475569">④ 最小二乘求解 P̂，使残差平方和最小</text>
+  <text x="1406" y="362" font-size="10" font-weight="600" fill="#B45309">→ 输出 P̂ 作为最终坐标</text>
+  <text x="1406" y="384" font-size="9" fill="#94A3B8">噪声越大，交叠区越大，ε 越显著</text>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="60" y1="876" x2="1740" y2="876" stroke="#E2E8F0"/>
+  <g id="legend" font-size="11" fill="#475569">
+    <rect x="80" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="104" y="906">蓝色 · 锚点 / 测距主链路（核心能力）</text>
+
+    <rect x="360" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <text x="384" y="906">橙色 · 最小二乘估计点（智能解算）</text>
+
+    <rect x="640" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+    <text x="664" y="906">红色 · 真实坐标 / 估计误差</text>
+
+    <rect x="900" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="924" y="906">灰色虚线 · 含噪声的测距圆</text>
+
+    <rect x="1180" y="898" width="16" height="9" rx="2" fill="#64748B" fill-opacity="0.22" stroke="#94A3B8" stroke-width="1"/>
+    <text x="1204" y="906">灰色叠加 · 三圆交叠不确定区</text>
+  </g>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="968" font-size="10" fill="#94A3B8" text-anchor="middle">图 3-9　三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在 RSSI 波动或 ToA 时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
+</svg>

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1050" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">AI + 区块链 + 物联网 三角范式关系图</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">三节点互补关系 · 主链路闭环：数据供给 → 推理存证 → 信任执行</text>
+
+  <rect x="1448" y="24" width="108" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1502" y="41" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Triangle connector lines (drawn first, under cards) ===== -->
+  <!-- IoT -> AI : solid, primary data path -->
+  <line x1="455" y1="695" x2="668" y2="342" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- AI -> Blockchain : dashed, audit/write -->
+  <line x1="932" y1="342" x2="1145" y2="695" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-blue)"/>
+  <!-- Blockchain -> IoT : dashed, control execution -->
+  <line x1="1120" y1="760" x2="486" y2="760" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== Center closed-loop region ===== -->
+  <ellipse cx="800" cy="560" rx="104" ry="92" fill="#FFFFFF" stroke="#10B981" stroke-width="2.4" stroke-dasharray="8 4"/>
+  <text x="800" y="552" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">可信智能</text>
+  <text x="800" y="580" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">闭环</text>
+  <text x="800" y="606" font-size="10" fill="#64748B" text-anchor="middle">Trusted Intelligence Loop</text>
+
+  <!-- ===== Edge labels (white pills on top of lines) ===== -->
+  <!-- IoT -> AI label -->
+  <g>
+    <rect x="438" y="492" width="148" height="52" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="512" y="514" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">数据供给</text>
+    <text x="512" y="532" font-size="10" fill="#475569" text-anchor="middle">MQTT / HTTP · 边缘网关</text>
+  </g>
+  <!-- AI -> Blockchain label -->
+  <g>
+    <rect x="1014" y="492" width="148" height="52" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="1088" y="514" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">推理存证</text>
+    <text x="1088" y="532" font-size="10" fill="#475569" text-anchor="middle">模型哈希 · 训练摘要</text>
+  </g>
+  <!-- Blockchain -> IoT label -->
+  <g>
+    <rect x="726" y="734" width="148" height="52" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="800" y="756" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">信任执行</text>
+    <text x="800" y="774" font-size="10" fill="#475569" text-anchor="middle">预言机 · 智能合约</text>
+  </g>
+
+  <!-- ===== Node cards ===== -->
+  <!-- IoT node (green, bottom-left) -->
+  <g>
+    <rect x="200" y="690" width="280" height="140" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2.5"/>
+    <rect x="200" y="690" width="280" height="30" rx="8" fill="#10B981" fill-opacity="0.08"/>
+    <text x="340" y="711" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">IoT 物联网</text>
+    <text x="222" y="742" font-size="11" fill="#475569">· 感知层设备 / 传感器</text>
+    <text x="222" y="762" font-size="11" fill="#475569">· 边缘节点与网关</text>
+    <text x="222" y="782" font-size="11" fill="#475569">· 实时数据采集流</text>
+    <text x="222" y="808" font-size="9" fill="#64748B">感知 · 连接 · 采集</text>
+  </g>
+
+  <!-- AI node (orange, top) -->
+  <g>
+    <rect x="660" y="180" width="280" height="140" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.5"/>
+    <rect x="660" y="180" width="280" height="30" rx="8" fill="#F59E0B" fill-opacity="0.10"/>
+    <text x="800" y="201" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AI 智能决策</text>
+    <text x="682" y="232" font-size="11" fill="#475569">· 推理引擎 / 模型服务</text>
+    <text x="682" y="252" font-size="11" fill="#475569">· 联邦学习聚合器</text>
+    <text x="682" y="272" font-size="11" fill="#475569">· 模型训练与预测</text>
+    <text x="682" y="298" font-size="9" fill="#64748B">推理 · 预测 · 训练</text>
+  </g>
+
+  <!-- Blockchain node (blue, bottom-right) -->
+  <g>
+    <rect x="1120" y="690" width="280" height="140" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+    <rect x="1120" y="690" width="280" height="30" rx="8" fill="#2563EB" fill-opacity="0.08"/>
+    <text x="1260" y="711" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Blockchain 区块链</text>
+    <text x="1142" y="742" font-size="11" fill="#475569">· 分布式账本 / 存证</text>
+    <text x="1142" y="762" font-size="11" fill="#475569">· 智能合约</text>
+    <text x="1142" y="782" font-size="11" fill="#475569">· 共识节点 / 预言机</text>
+    <text x="1142" y="808" font-size="9" fill="#64748B">存证 · 共识 · 去中心化信任</text>
+  </g>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="880" x2="1560" y2="880" stroke="#E2E8F0"/>
+  <text x="40" y="908" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <g>
+    <rect x="100" y="898" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+    <text x="124" y="908" font-size="11" fill="#475569">物联网 / 边缘域</text>
+
+    <rect x="262" y="898" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.6"/>
+    <text x="286" y="908" font-size="11" fill="#475569">AI 智能能力</text>
+
+    <rect x="402" y="898" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="426" y="908" font-size="11" fill="#475569">区块链平台层</text>
+
+    <line x1="558" y1="904" x2="600" y2="904" stroke="#2563EB" stroke-width="2.2"/>
+    <text x="610" y="908" font-size="11" fill="#475569">实线 = 数据流（主链路）</text>
+
+    <line x1="822" y1="904" x2="864" y2="904" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="6 5"/>
+    <text x="874" y="908" font-size="11" fill="#475569">虚线 = 控制 / 审计流</text>
+
+    <ellipse cx="1118" cy="904" rx="10" ry="7" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6" stroke-dasharray="3 2"/>
+    <text x="1136" y="908" font-size="11" fill="#475569">闭环价值区</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="1010" font-size="10" fill="#94A3B8" text-anchor="middle">图13-4 AI、区块链、物联网三者形成 数据可信 → 模型可靠 → 决策可审计 的闭环</text>
+</svg>

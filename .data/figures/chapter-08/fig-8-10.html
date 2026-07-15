@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>智能家居多租户系统架构</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="34.400" width="1152.000" height="691.200" viewBox="0 0 1800.000 1080.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1080" fill="#FFFFFF"/>
+
+  <!-- ========== 标题区 ========== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">智能家居多租户系统架构</text>
+  <text x="82" y="68" font-size="12" fill="#64748B">混合隔离策略 · 数据 / 计算 / 网络三维度隔离与资源分配</text>
+  <g>
+    <rect x="1660" y="26" width="104" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1712" y="43" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  </g>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ========== 层级背景带 ========== -->
+  <g opacity="0.55">
+    <rect x="40" y="120" width="1720" height="120" rx="10" fill="#F8FAFC"/>
+    <rect x="40" y="252" width="1720" height="120" rx="10" fill="#F8FAFC"/>
+    <rect x="40" y="384" width="1720" height="150" rx="10" fill="#F8FAFC"/>
+    <rect x="40" y="546" width="1720" height="158" rx="10" fill="#F8FAFC"/>
+    <rect x="40" y="716" width="1720" height="158" rx="10" fill="#F8FAFC"/>
+  </g>
+  <!-- 层级标签 -->
+  <g font-size="11" fill="#94A3B8" letter-spacing="1">
+    <text x="56" y="140">L1 · 租户边界层</text>
+    <text x="56" y="272">L2 · 网关与认证层</text>
+    <text x="56" y="404">L3 · 微服务层</text>
+    <text x="56" y="566">L4 · 数据存储层</text>
+    <text x="56" y="736">L5 · 基础设施层</text>
+  </g>
+
+  <!-- ========== L1 租户边界层 ========== -->
+  <!-- 租户 A -->
+  <g>
+    <rect x="320" y="152" width="220" height="78" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="320" y="152" width="6" height="78" rx="3" fill="#2563EB"/>
+    <text x="430" y="184" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">租户 A</text>
+    <text x="430" y="206" font-size="11" fill="#64748B" text-anchor="middle">家居品牌商 · 共享</text>
+    <text x="430" y="221" font-size="9" fill="#94A3B8" text-anchor="middle">tenant_id=A</text>
+  </g>
+  <!-- 租户 B -->
+  <g>
+    <rect x="790" y="152" width="220" height="78" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+    <rect x="790" y="152" width="6" height="78" rx="3" fill="#E11D48"/>
+    <text x="900" y="184" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">租户 B</text>
+    <text x="900" y="206" font-size="11" fill="#64748B" text-anchor="middle">大型地产商 · 独享</text>
+    <text x="900" y="221" font-size="9" fill="#94A3B8" text-anchor="middle">tenant_id=B</text>
+  </g>
+  <!-- 租户 C -->
+  <g>
+    <rect x="1260" y="152" width="220" height="78" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <rect x="1260" y="152" width="6" height="78" rx="3" fill="#10B981"/>
+    <text x="1370" y="184" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">租户 C</text>
+    <text x="1370" y="206" font-size="11" fill="#64748B" text-anchor="middle">连锁酒店 · 共享</text>
+    <text x="1370" y="221" font-size="9" fill="#94A3B8" text-anchor="middle">tenant_id=C</text>
+  </g>
+
+  <!-- ========== L2 网关与认证层 ========== -->
+  <g>
+    <rect x="640" y="280" width="520" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="900" y="312" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">API Gateway</text>
+    <text x="900" y="334" font-size="11" fill="#64748B" text-anchor="middle">JWT 解析 · tenant_id 提取 · 配额限流</text>
+    <text x="900" y="350" font-size="9" fill="#94A3B8" text-anchor="middle">按 tenant_id 路由到对应 Pod 池</text>
+  </g>
+  <!-- 平台服务域边界标签 -->
+  <text x="640" y="276" font-size="10" fill="#2563EB" font-weight="600">platform_domain · 平台服务域</text>
+
+  <!-- A/B/C → Gateway -->
+  <path d="M 430 230 L 430 260 Q 430 270 440 270 L 770 270 Q 780 270 780 280 L 780 280" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <path d="M 900 230 L 900 280" fill="none" stroke="#E11D48" stroke-width="2.4" marker-end="url(#ah-red)"/>
+  <path d="M 1370 230 L 1370 260 Q 1370 270 1360 270 L 1030 270 Q 1020 270 1020 280" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+  <!-- ========== L3 微服务层 ========== -->
+  <!-- 共享 Pod 池（虚线框 = 共享资源） -->
+  <g>
+    <rect x="340" y="420" width="500" height="104" rx="12" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="8 4"/>
+    <rect x="340" y="406" width="150" height="22" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1"/>
+    <text x="415" y="421" font-size="11" fill="#64748B" text-anchor="middle">共享 Pod 池（A/C）</text>
+    <!-- 内部 Pod 卡片 -->
+    <g>
+      <rect x="362" y="442" width="106" height="66" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+      <text x="415" y="468" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">设备服务</text>
+      <text x="415" y="486" font-size="9" fill="#64748B" text-anchor="middle">device-svc</text>
+      <text x="415" y="500" font-size="9" fill="#94A3B8" text-anchor="middle">replica×4</text>
+    </g>
+    <g>
+      <rect x="486" y="442" width="106" height="66" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+      <text x="539" y="468" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">场景引擎</text>
+      <text x="539" y="486" font-size="9" fill="#64748B" text-anchor="middle">scene-svc</text>
+      <text x="539" y="500" font-size="9" fill="#94A3B8" text-anchor="middle">replica×4</text>
+    </g>
+    <g>
+      <rect x="610" y="442" width="106" height="66" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+      <text x="663" y="468" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">AI 推理</text>
+      <text x="663" y="486" font-size="9" fill="#64748B" text-anchor="middle">ai-svc</text>
+      <text x="663" y="500" font-size="9" fill="#94A3B8" text-anchor="middle">replica×2</text>
+    </g>
+    <g>
+      <rect x="722" y="442" width="100" height="66" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+      <text x="772" y="468" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">数据网关</text>
+      <text x="772" y="486" font-size="9" fill="#64748B" text-anchor="middle">data-svc</text>
+      <text x="772" y="500" font-size="9" fill="#94A3B8" text-anchor="middle">replica×3</text>
+    </g>
+  </g>
+
+  <!-- 独享 Pod 池 B（实线框 = 独享资源） -->
+  <g>
+    <rect x="1120" y="420" width="400" height="104" rx="12" fill="none" stroke="#E11D48" stroke-width="2"/>
+    <rect x="1120" y="406" width="160" height="22" rx="4" fill="#FFFFFF" stroke="#E11D48" stroke-width="1"/>
+    <text x="1200" y="421" font-size="11" fill="#E11D48" text-anchor="middle">独享 Pod 池（B）</text>
+    <g>
+      <rect x="1148" y="442" width="120" height="66" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.8"/>
+      <text x="1208" y="468" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">设备服务</text>
+      <text x="1208" y="486" font-size="9" fill="#64748B" text-anchor="middle">device-svc-B</text>
+      <text x="1208" y="500" font-size="9" fill="#94A3B8" text-anchor="middle">独享副本</text>
+    </g>
+    <g>
+      <rect x="1290" y="442" width="120" height="66" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.8"/>
+      <text x="1350" y="468" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">场景引擎</text>
+      <text x="1350" y="486" font-size="9" fill="#64748B" text-anchor="middle">scene-svc-B</text>
+      <text x="1350" y="500" font-size="9" fill="#94A3B8" text-anchor="middle">独享副本</text>
+    </g>
+  </g>
+
+  <!-- Gateway → 共享Pod池（细蓝 = 共享流量） -->
+  <path d="M 780 360 L 780 390 Q 780 400 590 400 L 590 420" fill="none" stroke="#2563EB" stroke-width="1.6" marker-end="url(#ah-blue)"/>
+  <text x="660" y="394" font-size="10" fill="#2563EB">tenant_id ∈ {A,C}</text>
+  <!-- Gateway → 独享Pod池B（粗红 = 独享流量） -->
+  <path d="M 1020 360 L 1020 390 Q 1020 400 1320 400 L 1320 420" fill="none" stroke="#E11D48" stroke-width="2.6" marker-end="url(#ah-red)"/>
+  <text x="1110" y="394" font-size="10" fill="#E11D48" font-weight="600">tenant_id=B · 独享链路</text>
+
+  <!-- ========== L4 数据存储层 ========== -->
+  <!-- 共享 MySQL（虚线圆柱 = 共享 Schema） -->
+  <g>
+    <ellipse cx="440" cy="590" rx="78" ry="14" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 3"/>
+    <path d="M 362 590 L 362 668 Q 362 682 440 682 Q 518 682 518 668 L 518 590" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 3"/>
+    <ellipse cx="440" cy="590" rx="78" ry="14" fill="none" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="440" y="628" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">MySQL 集群</text>
+    <text x="440" y="646" font-size="10" fill="#64748B" text-anchor="middle">共享 Schema</text>
+    <text x="440" y="662" font-size="9" fill="#94A3B8" text-anchor="middle">tenant_a / tenant_c</text>
+  </g>
+  <!-- 共享 Redis -->
+  <g>
+    <ellipse cx="680" cy="590" rx="78" ry="14" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 3"/>
+    <path d="M 602 590 L 602 668 Q 602 682 680 682 Q 758 682 758 668 L 758 590" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 3"/>
+    <ellipse cx="680" cy="590" rx="78" ry="14" fill="none" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="680" y="628" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Redis 集群</text>
+    <text x="680" y="646" font-size="10" fill="#64748B" text-anchor="middle">共享缓存</text>
+    <text x="680" y="662" font-size="9" fill="#94A3B8" text-anchor="middle">key 前缀隔离</text>
+  </g>
+  <!-- 独享 MySQL B（实线圆柱） -->
+  <g>
+    <ellipse cx="1320" cy="590" rx="90" ry="14" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <path d="M 1230 590 L 1230 668 Q 1230 682 1320 682 Q 1410 682 1410 668 L 1410 590" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <ellipse cx="1320" cy="590" rx="90" ry="14" fill="none" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1320" y="626" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">MySQL 独享实例</text>
+    <text x="1320" y="644" font-size="10" fill="#64748B" text-anchor="middle">专库 tenant_b</text>
+    <text x="1320" y="660" font-size="9" fill="#94A3B8" text-anchor="middle">物理隔离</text>
+  </g>
+
+  <!-- 共享Pod → 共享存储（细蓝） -->
+  <path d="M 415 524 L 415 560 Q 415 572 440 572 L 440 576" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <path d="M 663 524 L 663 560 Q 663 572 680 572 L 680 576" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <!-- 独享PodB → 独享MySQL（粗红实线） -->
+  <path d="M 1350 524 L 1350 560 Q 1350 572 1320 572 L 1320 576" fill="none" stroke="#E11D48" stroke-width="2.4" marker-end="url(#ah-red)"/>
+
+  <!-- ========== L5 基础设施层 ========== -->
+  <!-- VPC-1（虚线框 = 共享网络域，承载 A/C） -->
+  <g>
+    <rect x="300" y="752" width="560" height="110" rx="14" fill="none" stroke="#64748B" stroke-width="1.8" stroke-dasharray="8 4"/>
+    <rect x="300" y="738" width="120" height="22" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1"/>
+    <text x="360" y="753" font-size="11" fill="#64748B" text-anchor="middle">VPC-1（共享）</text>
+    <text x="580" y="800" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">共享网络域</text>
+    <text x="580" y="820" font-size="11" fill="#64748B" text-anchor="middle">逻辑隔离 · 承载租户 A 与 C 的全部资源</text>
+    <text x="580" y="840" font-size="10" fill="#94A3B8" text-anchor="middle">子网路由 + 安全组 + NACL</text>
+  </g>
+  <!-- VPC-2（实线框 = 独享网络域，承载 B） -->
+  <g>
+    <rect x="1140" y="752" width="380" height="110" rx="14" fill="none" stroke="#E11D48" stroke-width="2.2"/>
+    <rect x="1140" y="738" width="140" height="22" rx="4" fill="#FFFFFF" stroke="#E11D48" stroke-width="1"/>
+    <text x="1210" y="753" font-size="11" fill="#E11D48" text-anchor="middle">VPC-2（B 独享）</text>
+    <text x="1330" y="800" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">独享网络域</text>
+    <text x="1330" y="820" font-size="11" fill="#64748B" text-anchor="middle">物理隔离 · 承载租户 B 的全部资源</text>
+    <text x="1330" y="840" font-size="10" fill="#94A3B8" text-anchor="middle">独立 VPC + 专属网段</text>
+  </g>
+  <!-- L4→L5 归属虚线 -->
+  <path d="M 440 684 L 440 720 Q 440 740 460 740 L 460 752" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="3 3"/>
+  <path d="M 680 684 L 680 720 Q 680 740 660 740 L 660 752" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="3 3"/>
+  <path d="M 1320 684 L 1320 752" fill="none" stroke="#E11D48" stroke-width="1.4" stroke-dasharray="3 3"/>
+
+  <!-- ========== 图例 ========== -->
+  <line x1="40" y1="892" x2="1760" y2="892" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="56" y="912" font-size="11" fill="#64748B" font-weight="600">图例</text>
+
+  <g font-size="11" fill="#475569">
+    <!-- 租户色 -->
+    <rect x="56" y="924" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="78" y="934">租户 A（蓝）</text>
+
+    <rect x="176" y="924" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+    <text x="198" y="934">租户 B（红 · 独享）</text>
+
+    <rect x="338" y="924" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <text x="360" y="934">租户 C（绿）</text>
+
+    <!-- 框线语义 -->
+    <rect x="470" y="924" width="16" height="12" rx="2" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="4 2"/>
+    <text x="492" y="934">虚线框 = 共享资源</text>
+
+    <rect x="626" y="924" width="16" height="12" rx="2" fill="none" stroke="#0F172A" stroke-width="1.8"/>
+    <text x="648" y="934">实线框 = 独享资源</text>
+
+    <!-- 箭头语义 -->
+    <line x1="770" y1="930" x2="810" y2="930" stroke="#2563EB" stroke-width="1.6" marker-end="url(#ah-blue)"/>
+    <text x="818" y="934">细箭头 = 共享流量</text>
+
+    <line x1="958" y1="930" x2="998" y2="930" stroke="#E11D48" stroke-width="2.6" marker-end="url(#ah-red)"/>
+    <text x="1006" y="934">粗箭头 = 独享流量</text>
+
+    <line x1="1148" y1="930" x2="1188" y2="930" stroke="#64748B" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <text x="1196" y="934">虚线箭头 = 异步回写</text>
+
+    <!-- 域色 -->
+    <rect x="1336" y="924" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="1358" y="934">data 域 · 存储</text>
+
+    <rect x="1470" y="924" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="1492" y="934">platform 域 · 服务</text>
+  </g>
+
+  <!-- callout -->
+  <g>
+    <rect x="56" y="952" width="1704" height="44" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <text x="72" y="971" font-size="11" fill="#334155" font-weight="600">主结论</text>
+    <text x="72" y="988" font-size="11" fill="#334155">租户 A/C 走共享链路（共享 Pod 池 + 共享 Schema + VPC-1 逻辑隔离）；租户 B 走独享链路（独享 Pod 池 + 独享 MySQL 实例 + VPC-2 物理隔离）——按租户价值分层隔离，而非一刀切。</text>
+  </g>
+
+  <!-- caption -->
+  <text x="900" y="1024" font-size="10" fill="#94A3B8" text-anchor="middle">图8-12 智能家居多租户系统架构（基于“智家云”假设场景） · 混合隔离策略选择可参照 8.6.1 实践清单</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">分层架构图，从上到下依次为：租户边界层（三个租户图标）、网关与认证层（API Gateway + JWT解析）、微服务层（共享Pod池与独享Pod池）、数据存储层（MySQL集群和Redis集群，共享与独享分别标记）、基础设施层（VPC-1与VPC-2）</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

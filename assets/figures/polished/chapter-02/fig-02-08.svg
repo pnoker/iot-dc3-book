@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- ============ 标题区 ============ -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">Data 中心数据流示意：从设备采集到时序存储</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">IoT DC3 · 设备 → 驱动 → Gateway → Data 中心 → 消息队列 → 时序数据库 → 订阅方</text>
+  <rect x="1652" y="28" width="128" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1716" y="45" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">DATAFLOW</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ============ 区域边界框（dashed, 按域） ============ -->
+  <!-- edge 域 -->
+  <rect x="98" y="338" width="174" height="144" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="110" y="330" font-size="11" font-weight="700" fill="#10B981">① 设备与边缘域</text>
+  <text x="110" y="318" font-size="9" fill="#94A3B8">现场异构资源边界</text>
+
+  <!-- platform 域（driver + gateway） -->
+  <rect x="288" y="338" width="364" height="144" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="300" y="330" font-size="11" font-weight="700" fill="#2563EB">② 平台服务域</text>
+  <text x="300" y="318" font-size="9" fill="#94A3B8">核心服务能力边界</text>
+
+  <!-- data 域（datacenter） -->
+  <rect x="668" y="338" width="174" height="144" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="680" y="330" font-size="11" font-weight="700" fill="#7C3AED">③ 数据资产域</text>
+  <text x="680" y="318" font-size="9" fill="#94A3B8">数据沉淀与治理</text>
+
+  <!-- platform 域（mq，跨域缓冲） -->
+  <rect x="858" y="338" width="174" height="144" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="870" y="330" font-size="11" font-weight="700" fill="#2563EB">② 平台服务域</text>
+  <text x="870" y="318" font-size="9" fill="#94A3B8">异步缓冲层</text>
+
+  <!-- data 域（store） -->
+  <rect x="1048" y="338" width="174" height="144" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="1060" y="330" font-size="11" font-weight="700" fill="#7C3AED">③ 数据资产域</text>
+  <text x="1060" y="318" font-size="9" fill="#94A3B8">时序持久化</text>
+
+  <!-- ============ 组件卡 ============ -->
+  <!-- device (edge, green, card) -->
+  <g>
+    <rect x="110" y="360" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <text x="185" y="398" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">现场设备</text>
+    <text x="185" y="420" font-size="10" fill="#64748B" text-anchor="middle">PLC / 电表 / 传感器</text>
+    <text x="185" y="442" font-size="9" fill="#94A3B8" text-anchor="middle">物理层 · 异构协议</text>
+  </g>
+
+  <!-- driver (platform, blue, card) -->
+  <g>
+    <rect x="300" y="360" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="375" y="398" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">驱动 dc3-driver</text>
+    <text x="375" y="420" font-size="10" fill="#64748B" text-anchor="middle">南向协议适配</text>
+    <text x="375" y="442" font-size="9" fill="#94A3B8" text-anchor="middle">归一为 PointValue</text>
+  </g>
+
+  <!-- gateway (platform, blue, card) -->
+  <g>
+    <rect x="490" y="360" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="565" y="398" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Gateway</text>
+    <text x="565" y="420" font-size="10" fill="#64748B" text-anchor="middle">鉴权 · 路由入口</text>
+    <text x="565" y="442" font-size="9" fill="#94A3B8" text-anchor="middle">唯一对外 HTTP</text>
+  </g>
+
+  <!-- datacenter (data, purple, cylinder) -->
+  <g>
+    <rect x="690" y="378" width="130" height="74" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <ellipse cx="755" cy="378" rx="65" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <path d="M 690 452 A 65 8 0 0 0 820 452" fill="none" stroke="#7C3AED" stroke-width="2"/>
+    <text x="755" y="410" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Data 中心</text>
+    <text x="755" y="428" font-size="10" fill="#64748B" text-anchor="middle">接收 · 缓冲 · 分发</text>
+  </g>
+
+  <!-- mq (platform, blue, bus) -->
+  <g>
+    <rect x="870" y="360" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <!-- 三条平行竖线表示队列缓冲 -->
+    <line x1="900" y1="372" x2="900" y2="448" stroke="#2563EB" stroke-width="2.5"/>
+    <line x1="920" y1="372" x2="920" y2="448" stroke="#2563EB" stroke-width="2.5"/>
+    <line x1="940" y1="372" x2="940" y2="448" stroke="#2563EB" stroke-width="2.5"/>
+    <text x="995" y="398" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">RabbitMQ</text>
+    <text x="995" y="420" font-size="10" fill="#64748B" text-anchor="middle">异步缓冲</text>
+    <text x="995" y="442" font-size="9" fill="#94A3B8" text-anchor="middle">削峰 · 解耦</text>
+  </g>
+
+  <!-- store (data, purple, cylinder) -->
+  <g>
+    <rect x="1070" y="378" width="130" height="74" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <ellipse cx="1135" cy="378" rx="65" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <path d="M 1070 452 A 65 8 0 0 0 1200 452" fill="none" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1135" y="408" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">TimescaleDB</text>
+    <text x="1135" y="428" font-size="10" fill="#64748B" text-anchor="middle">时序持久化</text>
+  </g>
+
+  <!-- consumer (data, purple, card，下游服务) -->
+  <g>
+    <rect x="945" y="580" width="190" height="100" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1040" y="618" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">订阅方</text>
+    <text x="1040" y="640" font-size="10" fill="#64748B" text-anchor="middle">监控 / Agentic / 告警</text>
+    <text x="1040" y="662" font-size="9" fill="#94A3B8" text-anchor="middle">下游消费服务</text>
+  </g>
+  <!-- consumer 域归属标注 -->
+  <rect x="933" y="558" width="214" height="144" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="945" y="550" font-size="11" font-weight="700" fill="#7C3AED">③ 数据资产域</text>
+
+  <!-- ============ 主链路箭头（蓝） ============ -->
+  <line x1="260" y1="410" x2="296" y2="410" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="450" y1="410" x2="486" y2="410" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="640" y1="410" x2="686" y2="410" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="820" y1="410" x2="866" y2="410" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1020" y1="410" x2="1066" y2="410" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 主链路方向总标 -->
+  <text x="755" y="500" font-size="11" fill="#2563EB" text-anchor="middle" font-weight="700">主链路 · 写入路径（设备 → 时序库）</text>
+
+  <!-- ============ 分发分支 mq → consumer（蓝实线） ============ -->
+  <polyline points="945,460 945,530 1040,530 1040,576" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="955" y="522" font-size="10" fill="#2563EB">分发订阅</text>
+
+  <!-- ============ 历史查询 consumer → store（灰虚线） ============ -->
+  <polyline points="1135,580 1135,500 1180,500 1180,464" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1188" y="495" font-size="10" fill="#64748B">历史查询</text>
+
+  <!-- ============ callout ============ -->
+  <rect x="80" y="720" width="1640" height="70" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="100" y="745" font-size="11" fill="#334155" font-weight="700">数据流向</text>
+  <text x="100" y="765" font-size="11" fill="#334155">现场设备经 dc3-driver 归一为 PointValue → Gateway 鉴权路由 → Data 中心接收缓冲 → 写入 RabbitMQ 削峰解耦 → 落盘 TimescaleDB；</text>
+  <text x="100" y="782" font-size="11" fill="#334155">消息队列同时将实时数据分发至订阅方（监控 / Agentic / 告警），订阅方亦可回查时序库获取历史数据。</text>
+
+  <!-- ============ 图例 ============ -->
+  <g transform="translate(80,820)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <text x="22" y="10" font-size="11" fill="#475569">边缘设备</text>
+
+    <rect x="110" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="132" y="10" font-size="11" fill="#475569">平台服务 / 主链路</text>
+
+    <rect x="290" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="312" y="10" font-size="11" fill="#475569">数据资产</text>
+
+    <line x1="400" y1="6" x2="430" y2="6" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="436" y="10" font-size="11" fill="#475569">异步 / 查询回传</text>
+
+    <line x1="560" y1="6" x2="590" y2="6" stroke="#2563EB" stroke-width="2"/>
+    <text x="596" y="10" font-size="11" fill="#475569">同步数据流</text>
+  </g>
+
+  <!-- ============ caption ============ -->
+  <text x="900" y="880" font-size="10" fill="#94A3B8" text-anchor="middle">图 2-8 · Data 中心数据流示意图（IoT DC3 · 设备采集 → 时序存储）</text>
+</svg>

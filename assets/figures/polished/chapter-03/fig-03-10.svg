@@ -1,45 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="图3-10 物模型驱动设备互操作的示意图" data-style="architecture-diagram-white-book">
-  <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
-    </marker>
-  </defs>
-  <rect x="0" y="0" width="1200" height="760" fill="#FFFFFF"/>
-  <circle cx="64" cy="40" r="6" fill="#22D3EE"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">图3-10 物模型驱动设备互操作的示意图</text>
-<text x="82.0" y="78.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="start">读者应理解物模型驱动设备互操作的示意图中的主链路、责任边界和工程取舍</text>
-<rect x="1008.0" y="30.0" width="132.0" height="32.0" rx="6.0" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
-<text x="1074" y="51" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">ARCHITECTURE</text>
-<line x1="58" y1="103" x2="1142" y2="103" stroke="#CBD5E1" stroke-width="1"/>
-  <rect x="58.0" y="132.0" width="1084.0" height="512.0" rx="12.0" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="76.0" y="161.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="start">平台 / 服务</text>
-<line x1="76.0" y1="178.0" x2="1124.0" y2="178.0" stroke="#CBD5E1" stroke-width="1"/>
-<line x1="600.0" y1="246.0" x2="600.0" y2="256.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="600.0" y1="310.0" x2="600.0" y2="320.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="600.0" y1="374.0" x2="600.0" y2="384.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="600.0" y1="438.0" x2="600.0" y2="448.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="600.0" y1="502.0" x2="600.0" y2="512.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="600.0" y1="566.0" x2="600.0" y2="576.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="600.0" y1="630.0" x2="600.0" y2="640.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<rect x="75.0" y="194.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="225.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">dev-a</text>
-<rect x="75.0" y="258.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="289.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">properties</text>
-<rect x="75.0" y="322.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="353.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">dev-b</text>
-<rect x="75.0" y="386.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="417.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">dev-c</text>
-<rect x="75.0" y="450.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="481.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">dev-d</text>
-<rect x="75.0" y="514.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="545.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">actions</text>
-<rect x="75.0" y="578.0" width="1050.0" height="50.0" rx="6.0" fill="#FFF7ED" stroke="#FBBF24" stroke-width="1.5"/>
-<text x="600.0" y="609.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">app-layer</text>
-<rect x="75.0" y="642.0" width="1050.0" height="50.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="600.0" y="673.0" fill="#0F172A" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">events</text>
-  <line x1="58" y1="675" x2="1142" y2="675" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="66.0" cy="704.0" r="4" fill="#34D399"/>
-<text x="80.0" y="708.0" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="600" text-anchor="start">平台服务</text>
-<circle cx="234.0" cy="704.0" r="4" fill="#FBBF24"/>
-<text x="248.0" y="708.0" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="600" text-anchor="start">应用用户</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="800" viewBox="0 0 1500 800" role="img" aria-label="图3-10 物模型驱动设备互操作" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0,11 4,0 8" fill="#2563EB"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1500" height="800" fill="#FFFFFF"/>
+<circle cx="64" cy="44" r="6" fill="#2563EB"/>
+<text x="82" y="52" fill="#0F172A" font-size="22" font-weight="700">图3-10 物模型驱动设备互操作</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">物模型作为中间抽象层，屏蔽异构设备协议差异，向上提供统一的数据与服务接口</text>
+<rect x="1350" y="30" width="100" height="26" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1400" y="47" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">ARCHITECTURE</text>
+<line x1="58" y1="100" x2="1442" y2="100" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="80" y="120" width="1340" height="125" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="8 4"/>
+<rect x="80" y="270" width="1340" height="190" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+<rect x="80" y="485" width="1340" height="190" rx="12" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="8 4"/>
+<rect x="88" y="128" width="44" height="16" fill="#FFFFFF"/>
+<text x="96" y="140" fill="#F59E0B" font-size="11" font-weight="600">应用层</text>
+<rect x="88" y="278" width="116" height="16" fill="#FFFFFF"/>
+<text x="96" y="290" fill="#2563EB" font-size="11" font-weight="600">物模型层（抽象层）</text>
+<rect x="88" y="493" width="116" height="16" fill="#FFFFFF"/>
+<text x="96" y="505" fill="#10B981" font-size="11" font-weight="600">设备层（异构协议）</text>
+<line x1="215" y1="543" x2="320" y2="427" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="380" y1="328" x2="700" y2="218" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="435" y1="543" x2="380" y2="427" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<line x1="655" y1="543" x2="440" y2="427" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<line x1="995" y1="543" x2="750" y2="427" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<line x1="750" y1="328" x2="750" y2="218" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<line x1="1120" y1="328" x2="800" y2="218" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<rect x="248" y="465" width="58" height="14" fill="#FFFFFF"/>
+<text x="277" y="476" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">映射·温度</text>
+<rect x="374" y="465" width="58" height="14" fill="#FFFFFF"/>
+<text x="403" y="476" text-anchor="middle" fill="#475569" font-size="10">映射·温度</text>
+<rect x="490" y="465" width="78" height="14" fill="#FFFFFF"/>
+<text x="529" y="476" text-anchor="middle" fill="#475569" font-size="10">映射·振动频率</text>
+<rect x="812" y="465" width="78" height="14" fill="#FFFFFF"/>
+<text x="851" y="476" text-anchor="middle" fill="#475569" font-size="10">映射·读取标签</text>
+<rect x="560" y="248" width="48" height="14" fill="#FFFFFF"/>
+<text x="584" y="259" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">标准属性</text>
+<rect x="726" y="248" width="48" height="14" fill="#FFFFFF"/>
+<text x="750" y="259" text-anchor="middle" fill="#475569" font-size="10">标准服务</text>
+<rect x="893" y="248" width="48" height="14" fill="#FFFFFF"/>
+<text x="917" y="259" text-anchor="middle" fill="#475569" font-size="10">标准事件</text>
+<rect x="640" y="158" width="220" height="58" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="750" y="185" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">应用层</text>
+<text x="750" y="205" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">统一数据与服务接口</text>
+<rect x="280" y="330" width="200" height="95" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="380" y="363" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">属性</text>
+<text x="380" y="385" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">温度·振动频率</text>
+<rect x="650" y="330" width="200" height="95" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="750" y="363" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">服务</text>
+<text x="750" y="385" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">读取标签</text>
+<rect x="1020" y="330" width="200" height="95" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="1120" y="363" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">事件</text>
+<text x="1120" y="385" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">状态推送</text>
+<rect x="120" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="215" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">温湿度计</text>
+<text x="215" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Zigbee</text>
+<rect x="340" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="435" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">智能温控</text>
+<text x="435" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Wi-Fi</text>
+<rect x="560" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="655" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">振动传感器</text>
+<text x="655" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">BLE</text>
+<rect x="900" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="995" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">标签读写器</text>
+<text x="995" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Modbus</text>
+<rect x="1250" y="335" width="165" height="75" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="1260" y="358" fill="#2563EB" font-size="11" font-weight="700">物模型层</text>
+<text x="1260" y="378" fill="#334155" font-size="10">屏蔽异构协议差异</text>
+<text x="1260" y="396" fill="#334155" font-size="10">统一为属性·服务·事件</text>
+<line x1="58" y1="710" x2="1442" y2="710" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="70" y="735" width="14" height="10" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="90" y="744" fill="#64748B" font-size="11" font-weight="600">设备层·异构接入</text>
+<rect x="290" y="735" width="14" height="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="310" y="744" fill="#64748B" font-size="11" font-weight="600">物模型层·标准化</text>
+<rect x="530" y="735" width="14" height="10" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="550" y="744" fill="#64748B" font-size="11" font-weight="600">应用层·统一消费</text>
+<line x1="760" y1="740" x2="785" y2="740" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="802" y="744" fill="#64748B" font-size="11" font-weight="600">主链路·标准化输出</text>
+<line x1="960" y1="740" x2="985" y2="740" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="1002" y="744" fill="#64748B" font-size="11" font-weight="600">能力映射</text>
+<line x1="1110" y1="740" x2="1135" y2="740" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<text x="1152" y="744" fill="#64748B" font-size="11" font-weight="600">事件推送</text>
+<text x="750" y="780" text-anchor="middle" fill="#94A3B8" font-size="10">图3-10 物模型作为中间抽象层，将异构设备能力标准化为属性、服务、事件，向上提供统一接口。</text>
 </svg>

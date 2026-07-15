@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" width="1600" height="1160" viewBox="0 0 1600 1160">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1160" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">Agent 自主运维流程示意图</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">从接收目标到完成报告的完整工作循环 · 信任机制三层保护（操作日志审计 · 人类审批 · 回滚能力）</text>
+  <rect x="1448" y="24" width="108" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1502" y="42" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">FLOWCHART</text>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Trust mechanism region (dashed) ===== -->
+  <rect x="200" y="500" width="1200" height="410" rx="12" fill="none" stroke="#64748B" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.7"/>
+  <rect x="216" y="488" width="320" height="26" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2" stroke-dasharray="8 4"/>
+  <text x="232" y="506" font-size="11" font-weight="700" fill="#475569">信任机制层 · 日志审计 · 人类审批 · 回滚</text>
+
+  <!-- ===== Nodes ===== -->
+  <!-- start (ellipse, green) -->
+  <ellipse cx="800" cy="155" rx="72" ry="26" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="800" y="160" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">start</text>
+  <text x="800" y="176" font-size="9" fill="#64748B" text-anchor="middle">操作员提交目标</text>
+
+  <!-- sense (rect, blue) -->
+  <rect x="710" y="227" width="180" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="251" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">sense</text>
+  <text x="800" y="269" font-size="9" fill="#64748B" text-anchor="middle">感知系统状态 · DeviceTool / PointValueTool</text>
+
+  <!-- plan (rect, blue) -->
+  <rect x="710" y="327" width="180" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="351" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">plan</text>
+  <text x="800" y="369" font-size="9" fill="#64748B" text-anchor="middle">分解任务 · 生成子步骤清单</text>
+
+  <!-- execute (rect, blue) -->
+  <rect x="710" y="432" width="180" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="456" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">execute</text>
+  <text x="800" y="474" font-size="9" fill="#64748B" text-anchor="middle">调用工具执行子步骤 · CommandTool</text>
+
+  <!-- check (diamond, amber) -->
+  <polygon points="800,535 890,580 800,625 710,580" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="800" y="578" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">check</text>
+  <text x="800" y="594" font-size="9" fill="#64748B" text-anchor="middle">检查执行结果</text>
+
+  <!-- fail (rect, red) -->
+  <rect x="330" y="552" width="180" height="56" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="420" y="576" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">fail</text>
+  <text x="420" y="594" font-size="9" fill="#64748B" text-anchor="middle">记录异常并上报</text>
+
+  <!-- approval (diamond, amber) -->
+  <polygon points="800,675 890,720 800,765 710,720" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="800" y="718" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">approval</text>
+  <text x="800" y="734" font-size="9" fill="#64748B" text-anchor="middle">是否需要人工审批</text>
+
+  <!-- wait_confirm (rect, gray) -->
+  <rect x="1090" y="692" width="180" height="56" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1180" y="716" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">wait_confirm</text>
+  <text x="1180" y="734" font-size="9" fill="#64748B" text-anchor="middle">等待操作员确认（带超时）</text>
+
+  <!-- report (rect, blue) -->
+  <rect x="710" y="832" width="180" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="856" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">report</text>
+  <text x="800" y="874" font-size="9" fill="#64748B" text-anchor="middle">汇总执行报告 · 反馈操作员</text>
+
+  <!-- end (ellipse, green) -->
+  <ellipse cx="800" cy="965" rx="72" ry="26" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="800" y="970" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">end</text>
+  <text x="800" y="986" font-size="9" fill="#64748B" text-anchor="middle">完成（可重新进入监控循环）</text>
+
+  <!-- ===== Connections ===== -->
+  <!-- start -> sense -->
+  <line x1="800" y1="181" x2="800" y2="224" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="207" font-size="10" fill="#475569">输入目标</text>
+  <!-- sense -> plan -->
+  <line x1="800" y1="283" x2="800" y2="324" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="307" font-size="10" fill="#475569">感知数据</text>
+  <!-- plan -> execute -->
+  <line x1="800" y1="383" x2="800" y2="429" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="409" font-size="10" fill="#475569">规划完成</text>
+  <!-- execute -> check -->
+  <line x1="800" y1="488" x2="800" y2="532" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="513" font-size="10" fill="#475569">执行完毕</text>
+
+  <!-- check -> fail (失败, dashed gray) -->
+  <line x1="710" y1="580" x2="513" y2="580" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="600" y="572" font-size="10" fill="#64748B">失败</text>
+
+  <!-- check -> approval (成功, blue) -->
+  <line x1="800" y1="625" x2="800" y2="672" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="653" font-size="10" fill="#475569">成功</text>
+
+  <!-- fail -> report (汇聚错误, dashed gray) -->
+  <path d="M420,608 V860 H706" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="430" y="740" font-size="10" fill="#64748B">汇聚错误</text>
+
+  <!-- approval -> wait_confirm (需要审批, RED risk) -->
+  <line x1="890" y1="720" x2="1086" y2="720" stroke="#E11D48" stroke-width="2.4" marker-end="url(#ah-red)"/>
+  <text x="940" y="712" font-size="10" font-weight="700" fill="#E11D48">需要审批</text>
+
+  <!-- approval -> execute (无需审批/继续下一子步骤, GREEN) -->
+  <path d="M710,720 H240 V460 H706" fill="none" stroke="#10B981" stroke-width="2.2" marker-end="url(#ah-green)"/>
+  <text x="252" y="590" font-size="10" font-weight="700" fill="#10B981">无需审批 · 继续下一子步骤</text>
+
+  <!-- approval -> report (无下一子步骤, blue) -->
+  <line x1="800" y1="765" x2="800" y2="829" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="802" font-size="10" fill="#475569">无下一子步骤</text>
+
+  <!-- wait_confirm -> execute (确认通过, GREEN) -->
+  <path d="M1270,720 H1360 V460 H894" fill="none" stroke="#10B981" stroke-width="2.2" marker-end="url(#ah-green)"/>
+  <text x="1286" y="590" font-size="10" font-weight="700" fill="#10B981">确认通过 · 自动执行</text>
+
+  <!-- wait_confirm -> report (超时或拒绝, dashed gray) -->
+  <path d="M1180,748 V860 H894" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1090" y="812" font-size="10" fill="#64748B">超时或拒绝</text>
+
+  <!-- report -> end -->
+  <line x1="800" y1="888" x2="800" y2="936" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="812" y="916" font-size="10" fill="#475569">反馈完成</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="1025" x2="1560" y2="1025" stroke="#E2E8F0"/>
+  <text x="40" y="1050" font-size="11" font-weight="700" fill="#475569" letter-spacing="1">图例</text>
+
+  <!-- node-type swatches -->
+  <ellipse cx="110" cy="1085" rx="14" ry="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="132" y="1089" font-size="10" fill="#475569">起始/结束节点</text>
+
+  <rect x="258" y="1077" width="28" height="16" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="294" y="1089" font-size="10" fill="#475569">过程/动作节点</text>
+
+  <polygon points="430,1077 448,1085 430,1093 412,1085" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="456" y="1089" font-size="10" fill="#475569">判断/分流节点</text>
+
+  <rect x="586" y="1077" width="28" height="16" rx="3" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="622" y="1089" font-size="10" fill="#475569">异常处理节点</text>
+
+  <rect x="746" y="1077" width="28" height="16" rx="3" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="782" y="1089" font-size="10" fill="#475569">等待人机交互节点</text>
+
+  <!-- line-type swatches -->
+  <line x1="940" y1="1085" x2="976" y2="1085" stroke="#E11D48" stroke-width="2.4" marker-end="url(#ah-red)"/>
+  <text x="984" y="1089" font-size="10" fill="#475569">高风险（需审批）</text>
+
+  <line x1="1148" y1="1085" x2="1184" y2="1085" stroke="#10B981" stroke-width="2.2" marker-end="url(#ah-green)"/>
+  <text x="1192" y="1089" font-size="10" fill="#475569">低风险自动执行</text>
+
+  <line x1="1340" y1="1085" x2="1376" y2="1085" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1384" y="1089" font-size="10" fill="#475569">反馈/异常路径</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="1135" font-size="10" fill="#94A3B8" text-anchor="middle">图7-7 Agent 自主运维流程示意图。虚线框为信任机制层，涵盖操作日志审计、人类审批节点与回滚能力；红色箭头表示高风险操作需等待人工确认，绿色箭头表示低风险操作自动执行，灰色虚线为异常与反馈路径。完成报告后 Agent 可经持续监控循环重新感知系统状态。</text>
+</svg>

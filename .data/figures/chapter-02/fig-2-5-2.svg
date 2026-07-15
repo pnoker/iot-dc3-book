@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="72.593" y="24.000" width="1054.815" height="712.000" viewBox="0 0 1600.000 1080.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-gray-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0,0 3.5,10 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1080" fill="#FFFFFF"/>
+
+  <!-- ===== Title ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">图 2-5  IoT DC3 五大中心逻辑关系</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">五大微服务调用依赖与数据流向 · 分层逻辑视图（自上而下）</text>
+
+  <rect x="1416" y="26" width="130" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1481" y="44" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+
+  <line x1="0" y1="103" x2="1600" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Region boundary boxes ===== -->
+  <!-- 接入层 -->
+  <rect x="200" y="115" width="1080" height="100" rx="12" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="216" y="106" width="84" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="258" y="121" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">接入层</text>
+
+  <!-- 基础服务层 -->
+  <rect x="200" y="235" width="1080" height="105" rx="12" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="208" y="226" width="110" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="263" y="241" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">基础服务层</text>
+
+  <!-- 核心数据层 -->
+  <rect x="200" y="360" width="1080" height="105" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="208" y="351" width="110" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="263" y="366" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">核心数据层</text>
+
+  <!-- 智能层 -->
+  <rect x="200" y="485" width="1080" height="105" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="216" y="476" width="84" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="258" y="491" font-size="11" font-weight="700" fill="#F59E0B" text-anchor="middle">智能层</text>
+
+  <!-- 外部基础设施 -->
+  <rect x="200" y="610" width="1080" height="135" rx="12" fill="none" stroke="#64748B" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <rect x="200" y="601" width="120" height="20" rx="4" fill="#FFFFFF"/>
+  <text x="260" y="616" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle">外部基础设施</text>
+
+  <!-- ===== Components ===== -->
+  <!-- Gateway 中心 (card, blue, primary) -->
+  <rect x="690" y="130" width="220" height="70" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.4"/>
+  <text x="800" y="160" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Gateway 中心</text>
+  <text x="800" y="180" font-size="10" fill="#64748B" text-anchor="middle">接入 · 路由 · 鉴权 · 限流</text>
+  <text x="800" y="194" font-size="9" fill="#94A3B8" text-anchor="middle">北向唯一入口</text>
+
+  <!-- Auth 中心 (card, blue) -->
+  <rect x="430" y="253" width="220" height="70" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="540" y="283" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Auth 中心</text>
+  <text x="540" y="303" font-size="10" fill="#64748B" text-anchor="middle">身份认证 · RBAC 权限</text>
+
+  <!-- Manager 中心 (cylinder, purple) cx=1060 top=263 -->
+  <ellipse cx="1060" cy="263" rx="110" ry="11" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M 950 263 L 950 313 A 110 11 0 0 0 1170 313 L 1170 263" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <ellipse cx="1060" cy="263" rx="110" ry="11" fill="none" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1060" y="285" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Manager 中心</text>
+  <text x="1060" y="303" font-size="10" fill="#64748B" text-anchor="middle">设备模板 · 位号元数据</text>
+
+  <!-- Data 中心 (cylinder, purple) cx=800 top=380 -->
+  <ellipse cx="800" cy="380" rx="110" ry="11" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M 690 380 L 690 430 A 110 11 0 0 0 910 430 L 910 380" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <ellipse cx="800" cy="380" rx="110" ry="11" fill="none" stroke="#7C3AED" stroke-width="2"/>
+  <text x="800" y="402" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Data 中心</text>
+  <text x="800" y="420" font-size="10" fill="#64748B" text-anchor="middle">位号值写入 / 查询 · 命令下发</text>
+
+  <!-- Agentic 中心 (card, orange) cx=800 -->
+  <rect x="690" y="500" width="220" height="70" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="800" y="530" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Agentic 中心</text>
+  <text x="800" y="550" font-size="10" fill="#64748B" text-anchor="middle">Spring AI · 大模型推理编排</text>
+
+  <!-- 消息队列 (card, amber) cx=540 -->
+  <rect x="430" y="628" width="220" height="70" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="540" y="658" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">消息队列</text>
+  <text x="540" y="678" font-size="10" fill="#64748B" text-anchor="middle">AMQP · 解耦驱动采集与命令回执</text>
+
+  <!-- 时序数据库 (cylinder, gray) cx=1060 top=638 -->
+  <ellipse cx="1060" cy="638" rx="110" ry="11" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <path d="M 950 638 L 950 688 A 110 11 0 0 0 1170 688 L 1170 638" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <ellipse cx="1060" cy="638" rx="110" ry="11" fill="none" stroke="#64748B" stroke-width="2"/>
+  <text x="1060" y="660" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">时序数据库</text>
+  <text x="1060" y="678" font-size="10" fill="#64748B" text-anchor="middle">时序位号值存储</text>
+
+  <!-- ===== Arrows: main REST links (blue solid) ===== -->
+  <!-- Gateway -> Auth -->
+  <line x1="730" y1="200" x2="580" y2="248" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="600" y="213" width="68" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="634" y="225" font-size="10" fill="#2563EB" text-anchor="middle">令牌校验</text>
+
+  <!-- Gateway -> Manager -->
+  <line x1="870" y1="200" x2="1010" y2="248" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="932" y="213" width="80" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="972" y="225" font-size="10" fill="#2563EB" text-anchor="middle">查询元数据</text>
+
+  <!-- Gateway -> Data (straight down) -->
+  <line x1="800" y1="200" x2="800" y2="366" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="810" y="275" width="104" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="862" y="287" font-size="10" fill="#2563EB">数据查询 / 命令</text>
+
+  <!-- Gateway -> Agentic (routed left gutter, main highlighted link) -->
+  <polyline points="690,165 300,165 300,535 686,535" fill="none" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
+  <rect x="252" y="340" width="96" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="300" y="352" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">AI 请求（REST）</text>
+
+  <!-- ===== Arrows: Agentic internal calls (gray dashed) ===== -->
+  <!-- Agentic -> Data -->
+  <line x1="770" y1="500" x2="770" y2="446" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <rect x="600" y="466" width="120" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="660" y="478" font-size="10" fill="#64748B">位号查询 / 命令</text>
+
+  <!-- Agentic -> Manager -->
+  <line x1="880" y1="500" x2="1020" y2="334" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <rect x="900" y="418" width="96" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="948" y="430" font-size="10" fill="#64748B">查询元数据</text>
+
+  <!-- ===== Arrows: Data <-> infra ===== -->
+  <!-- Data <-> 消息队列 (AMQP bidirectional) -->
+  <line x1="730" y1="442" x2="580" y2="624" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)" marker-start="url(#ah-gray-start)"/>
+  <rect x="548" y="524" width="88" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="592" y="536" font-size="10" fill="#64748B" text-anchor="middle">AMQP 双向</text>
+
+  <!-- Data -> 时序数据库 (client read/write) -->
+  <line x1="880" y1="440" x2="1010" y2="624" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <rect x="930" y="524" width="84" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="972" y="536" font-size="10" fill="#64748B" text-anchor="middle">写入 / 查询</text>
+
+  <!-- ===== Callout panel (right gutter) ===== -->
+  <rect x="1310" y="235" width="258" height="320" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="1326" y="262" font-size="12" font-weight="700" fill="#0F172A">主结论</text>
+  <line x1="1326" y1="272" x2="1552" y2="272" stroke="#E2E8F0"/>
+  <text x="1326" y="296" font-size="11" fill="#334155">• Gateway 是北向唯一入口，</text>
+  <text x="1338" y="313" font-size="11" fill="#334155">Auth / Manager / Data / Agentic</text>
+  <text x="1338" y="330" font-size="11" fill="#334155">均经 REST 被动响应。</text>
+  <text x="1326" y="356" font-size="11" fill="#334155">• Auth 提供鉴权上下文，</text>
+  <text x="1338" y="373" font-size="11" fill="#334155">Manager 提供元数据。</text>
+  <text x="1326" y="399" font-size="11" fill="#334155">• Data 是数据核心枢纽，</text>
+  <text x="1338" y="416" font-size="11" fill="#334155">承接命令下发与时序读写。</text>
+  <text x="1326" y="442" font-size="11" fill="#334155">• Agentic 复用 Data / Manager</text>
+  <text x="1338" y="459" font-size="11" fill="#334155">能力，不直连设备。</text>
+  <text x="1326" y="485" font-size="11" fill="#334155">• 经 MQ 解耦采集，</text>
+  <text x="1338" y="502" font-size="11" fill="#334155">经 TSDB 沉淀时序数据。</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="0" y1="800" x2="1600" y2="800" stroke="#E2E8F0"/>
+  <text x="64" y="828" font-size="12" font-weight="700" fill="#0F172A">图例</text>
+
+  <!-- legend item: card node -->
+  <rect x="64" y="848" width="22" height="14" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="96" y="860" font-size="11" fill="#475569">实线矩形：DC3 微服务节点</text>
+
+  <!-- legend item: cylinder -->
+  <ellipse cx="312" cy="852" rx="11" ry="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+  <path d="M 301 852 L 301 862 A 11 3 0 0 0 323 862 L 323 852" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+  <ellipse cx="312" cy="852" rx="11" ry="3" fill="none" stroke="#7C3AED" stroke-width="1.6"/>
+  <text x="334" y="860" font-size="11" fill="#475569">圆柱：数据 / 存储节点</text>
+
+  <!-- legend item: blue solid arrow -->
+  <line x1="540" y1="855" x2="582" y2="855" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="592" y="860" font-size="11" fill="#475569">蓝色实线：REST 主链路</text>
+
+  <!-- legend item: gray dashed arrow -->
+  <line x1="800" y1="855" x2="842" y2="855" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="852" y="860" font-size="11" fill="#475569">灰色虚线：内部 REST / AMQP</text>
+
+  <!-- legend item: gray solid arrow -->
+  <line x1="1110" y1="855" x2="1152" y2="855" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <text x="1162" y="860" font-size="11" fill="#475569">灰色实线：存储读写</text>
+
+  <!-- legend item: bidirectional -->
+  <line x1="64" y1="888" x2="106" y2="888" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)" marker-start="url(#ah-gray-start)"/>
+  <text x="116" y="893" font-size="11" fill="#475569">双向箭头：AMQP 双向消息</text>
+
+  <!-- legend: arrow label note -->
+  <text x="360" y="893" font-size="11" fill="#94A3B8">箭头标签标注调用协议或目的；虚线矩形节点表示外部基础设施。</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="950" font-size="10" fill="#94A3B8" text-anchor="middle">图 2-5  IoT DC3 五大中心逻辑关系。Gateway 是北向唯一入口，Auth 提供鉴权上下文，Manager 提供元数据，Data 是数据核心枢纽，Agentic 是 AI 能力层；数据经消息队列解耦采集与命令下发，时序位号值沉淀于时序数据库。</text>
+  </svg>
+</svg>

@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="72.593" y="24.000" width="1054.815" height="712.000" viewBox="0 0 1600.000 1080.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1600" height="1080" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">MCP 消息三层结构在“查询空调状态”交互中的流转</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">三层信封结构（消息头 · 上下文段 · 动作段）在请求 / 回复链路中的携带与逐段解析</text>
+  <rect x="1430" y="24" width="130" height="30" rx="15" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1495" y="44" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">SEQUENCE</text>
+  <line x1="60" y1="103" x2="1540" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== 参与者生命线头部 ===== -->
+  <!-- AI Agent : ai 域 橙 -->
+  <rect x="230" y="135" width="180" height="52" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="320" y="160" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AI Agent</text>
+  <text x="320" y="178" font-size="10" fill="#64748B" text-anchor="middle">意图发起方 · ai 域</text>
+
+  <!-- MCP Broker : platform 蓝 -->
+  <rect x="710" y="135" width="180" height="52" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="160" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Broker</text>
+  <text x="800" y="178" font-size="10" fill="#64748B" text-anchor="middle">消息路由 · 上下文缓存</text>
+
+  <!-- 空调设备 : edge 绿 -->
+  <rect x="1190" y="135" width="180" height="52" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1280" y="160" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">空调设备</text>
+  <text x="1280" y="178" font-size="10" fill="#64748B" text-anchor="middle">执行末端 · edge 域</text>
+
+  <!-- 生命线 -->
+  <line x1="320" y1="187" x2="320" y2="860" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="800" y1="187" x2="800" y2="860" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="1280" y1="187" x2="1280" y2="860" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- ===== 步骤 ①  AI Agent → Broker  请求 实线 ===== -->
+  <g>
+    <!-- 信封三段：灰消息头 / 蓝上下文段 / 绿动作段 -->
+    <rect x="393" y="226" width="95"  height="34" fill="#F1F5F9" stroke="#64748B" stroke-width="1.2"/>
+    <rect x="488" y="226" width="115" height="34" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2"/>
+    <rect x="603" y="226" width="115" height="34" fill="#D1FAE5" stroke="#10B981" stroke-width="1.2"/>
+    <text x="440" y="240" font-size="9" font-weight="700" fill="#475569" text-anchor="middle">消息头</text>
+    <text x="440" y="253" font-size="8" fill="#64748B" text-anchor="middle">ID · 时间戳</text>
+    <text x="545" y="240" font-size="9" font-weight="700" fill="#1D4ED8" text-anchor="middle">上下文段</text>
+    <text x="545" y="253" font-size="8" fill="#2563EB" text-anchor="middle">用户上次操作</text>
+    <text x="660" y="240" font-size="9" font-weight="700" fill="#047857" text-anchor="middle">动作段</text>
+    <text x="660" y="253" font-size="8" fill="#059669" text-anchor="middle">queryTemp</text>
+
+    <!-- 箭头 -->
+    <line x1="325" y1="280" x2="790" y2="280" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <!-- 步骤标 -->
+    <circle cx="120" cy="280" r="14" fill="#2563EB"/>
+    <text x="120" y="285" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+    <text x="150" y="276" font-size="11" font-weight="600" fill="#0F172A">QueryAirConditionerStatus</text>
+    <text x="150" y="290" font-size="9" fill="#64748B">请求 · 实线 · 携带完整三层信封</text>
+  </g>
+
+  <!-- ===== 步骤 ②  Broker → 空调设备  请求 实线（省略消息头） ===== -->
+  <g>
+    <rect x="878" y="396" width="115" height="34" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2"/>
+    <rect x="993" y="396" width="115" height="34" fill="#D1FAE5" stroke="#10B981" stroke-width="1.2"/>
+    <text x="935" y="410" font-size="9" font-weight="700" fill="#1D4ED8" text-anchor="middle">上下文段</text>
+    <text x="935" y="423" font-size="8" fill="#2563EB" text-anchor="middle">已缓存命中</text>
+    <text x="1050" y="410" font-size="9" font-weight="700" fill="#047857" text-anchor="middle">动作段</text>
+    <text x="1050" y="423" font-size="8" fill="#059669" text-anchor="middle">queryTemp</text>
+
+    <!-- 消息头缺省占位（虚框示意省略） -->
+    <rect x="838" y="396" width="34" height="34" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="855" y="417" font-size="8" fill="#94A3B8" text-anchor="middle">省</text>
+
+    <line x1="805" y1="450" x2="1270" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <circle cx="120" cy="450" r="14" fill="#2563EB"/>
+    <text x="120" y="455" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+    <text x="150" y="446" font-size="11" font-weight="600" fill="#0F172A">转发至设备</text>
+    <text x="150" y="460" font-size="9" fill="#64748B">请求 · 实线 · 缓存上下文后剥离消息头</text>
+  </g>
+
+  <!-- Broker 激活条（上下文缓存） -->
+  <rect x="795" y="285" width="10" height="510" fill="#DBEAFE" stroke="#2563EB" stroke-width="0.8"/>
+  <text x="815" y="345" font-size="8" fill="#2563EB">缓</text>
+  <text x="815" y="357" font-size="8" fill="#2563EB">存</text>
+
+  <!-- ===== 步骤 ③  空调设备 → Broker  回复 虚线 ===== -->
+  <g>
+    <rect x="878" y="566" width="115" height="34" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2"/>
+    <rect x="993" y="566" width="115" height="34" fill="#D1FAE5" stroke="#10B981" stroke-width="1.2"/>
+    <text x="935" y="580" font-size="9" font-weight="700" fill="#1D4ED8" text-anchor="middle">上下文段</text>
+    <text x="935" y="593" font-size="8" fill="#2563EB" text-anchor="middle">温度状态更新</text>
+    <text x="1050" y="580" font-size="9" font-weight="700" fill="#047857" text-anchor="middle">动作段</text>
+    <text x="1050" y="593" font-size="8" fill="#059669" text-anchor="middle">result: 26℃</text>
+
+    <rect x="838" y="566" width="34" height="34" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="855" y="587" font-size="8" fill="#94A3B8" text-anchor="middle">省</text>
+
+    <line x1="1270" y1="620" x2="808" y2="620" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <circle cx="120" cy="620" r="14" fill="#64748B"/>
+    <text x="120" y="625" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+    <text x="150" y="616" font-size="11" font-weight="600" fill="#0F172A">设备返回读数</text>
+    <text x="150" y="630" font-size="9" fill="#64748B">回复 · 虚线 · 仅回传上下文 + 动作结果</text>
+  </g>
+
+  <!-- ===== 步骤 ④  Broker → AI Agent  回复 虚线（重组三层） ===== -->
+  <g>
+    <rect x="393" y="736" width="95"  height="34" fill="#F1F5F9" stroke="#64748B" stroke-width="1.2"/>
+    <rect x="488" y="736" width="115" height="34" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2"/>
+    <rect x="603" y="736" width="115" height="34" fill="#D1FAE5" stroke="#10B981" stroke-width="1.2"/>
+    <text x="440" y="750" font-size="9" font-weight="700" fill="#475569" text-anchor="middle">消息头</text>
+    <text x="440" y="763" font-size="8" fill="#64748B" text-anchor="middle">ID · 时间戳</text>
+    <text x="545" y="750" font-size="9" font-weight="700" fill="#1D4ED8" text-anchor="middle">上下文段</text>
+    <text x="545" y="763" font-size="8" fill="#2563EB" text-anchor="middle">合并后已更新</text>
+    <text x="660" y="750" font-size="9" font-weight="700" fill="#047857" text-anchor="middle">动作段</text>
+    <text x="660" y="763" font-size="8" fill="#059669" text-anchor="middle">final: 26℃</text>
+
+    <line x1="795" y1="790" x2="325" y2="790" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <circle cx="120" cy="790" r="14" fill="#64748B"/>
+    <text x="120" y="795" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+    <text x="150" y="786" font-size="11" font-weight="600" fill="#0F172A">回复 Agent</text>
+    <text x="150" y="800" font-size="9" fill="#64748B">回复 · 虚线 · 重组完整三层信封回传</text>
+  </g>
+
+  <!-- 生命线终止叉 -->
+  <line x1="308" y1="860" x2="332" y2="860" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="788" y1="860" x2="812" y2="860" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="1268" y1="860" x2="1292" y2="860" stroke="#94A3B8" stroke-width="2"/>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="60" y1="895" x2="1540" y2="895" stroke="#E2E8F0"/>
+  <text x="64" y="922" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="120" y="912" width="22" height="14" fill="#F1F5F9" stroke="#64748B" stroke-width="1.2" rx="2"/>
+  <text x="150" y="923" font-size="11" fill="#475569">消息头（ID / 时间戳）</text>
+
+  <rect x="320" y="912" width="22" height="14" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2" rx="2"/>
+  <text x="350" y="923" font-size="11" fill="#475569">上下文段（蓝，逐跳缓存 / 更新）</text>
+
+  <rect x="640" y="912" width="22" height="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.2" rx="2"/>
+  <text x="670" y="923" font-size="11" fill="#475569">动作段（绿，承载业务参数与结果）</text>
+
+  <line x1="950" y1="919" x2="995" y2="919" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1005" y="923" font-size="11" fill="#475569">请求（实线）</text>
+
+  <line x1="1150" y1="919" x2="1195" y2="919" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <text x="1205" y="923" font-size="11" fill="#475569">回复（虚线）</text>
+
+  <!-- callout -->
+  <rect x="120" y="948" width="1420" height="46" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="138" y="968" font-size="11" fill="#334155">说明：步骤 ②③ 在 Broker↔设备 之间省略消息头，仅传递上下文段与动作段，</text>
+  <text x="138" y="984" font-size="11" fill="#334155">以强调设备侧不感知信封头；Broker 在步骤 ④ 重组完整三层信封回传 AI Agent。主结论：消息头逐跳剥离、上下文段逐跳缓存、动作段端到端保留。</text>
+
+  <!-- caption -->
+  <text x="800" y="1040" font-size="10" fill="#94A3B8" text-anchor="middle">图 9-5-2-1 · MCP 消息三层结构在“查询空调状态”交互中的流转</text>
+  </svg>
+</svg>

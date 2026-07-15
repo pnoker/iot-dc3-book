@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图4-4 协议适配器接口与驱动实现架构</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="47.200" width="1152.000" height="665.600" viewBox="0 0 1800.000 1040.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1800" height="1040" fill="#FFFFFF"/>
+
+  <defs>
+    <polygon-vertex/>
+  </defs>
+
+  <!-- ============ 标题区 ============ -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图4-5 主流 IoT 无线技术选型雷达图（示意框架）</text>
+  <text x="82" y="70" font-size="12" fill="#64748B">六种技术 × 五项工程维度的定性折中对比 · 越靠外表示该维度上越占优</text>
+  <g>
+    <rect x="1664" y="24" width="104" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="1716" y="42" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">RADAR</text>
+  </g>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ============ 雷达主体 ============ -->
+  <!-- 中心 (720,540) R=340；五轴 72°，自正上方顺时针：距离/速率/功耗/成本/部署 -->
+
+  <!-- 同心网格五边形 -->
+  <g fill="none" stroke="#E2E8F0" stroke-width="1">
+    <polygon points="720,472 784.7,519.0 760.0,595.0 680.0,595.0 655.3,519.0"/>
+    <polygon points="720,404 849.3,498.0 800.0,650.0 640.0,650.0 590.7,498.0"/>
+    <polygon points="720,336 914.0,477.0 840.0,705.0 600.1,705.0 526.0,477.0"/>
+    <polygon points="720,268 978.7,456.0 880.0,760.0 560.1,760.0 461.3,456.0"/>
+    <polygon points="720,200 1043.4,434.9 919.9,815.1 520.1,815.1 396.6,434.9"/>
+  </g>
+
+  <!-- 五根轴 -->
+  <g stroke="#CBD5E1" stroke-width="1">
+    <line x1="720" y1="540" x2="720" y2="200"/>
+    <line x1="720" y1="540" x2="1043.4" y2="434.9"/>
+    <line x1="720" y1="540" x2="919.9" y2="815.1"/>
+    <line x1="720" y1="540" x2="520.1" y2="815.1"/>
+    <line x1="720" y1="540" x2="396.6" y2="434.9"/>
+  </g>
+
+  <!-- 轴名称 -->
+  <g font-size="14" font-weight="700" fill="#0F172A">
+    <text x="720" y="186" text-anchor="middle">距离</text>
+    <text x="1076.7" y="424" text-anchor="start">速率</text>
+    <text x="941.9" y="848" text-anchor="start">功耗（越低越省电）</text>
+    <text x="498.1" y="848" text-anchor="end">成本（越低越省钱）</text>
+    <text x="363.3" y="424" text-anchor="end">部署便捷性</text>
+  </g>
+
+  <!-- 刻度等级标注（最外层=5 极强 / 中心=0）仅在顶部轴侧轻标 -->
+  <g font-size="9" fill="#94A3B8">
+    <text x="728" y="475">1</text>
+    <text x="728" y="407">2</text>
+    <text x="728" y="339">3</text>
+    <text x="728" y="271">4</text>
+    <text x="728" y="203">5</text>
+  </g>
+
+  <!-- 中心点 -->
+  <circle cx="720" cy="540" r="2.5" fill="#64748B"/>
+
+  <!-- ===== 六种技术多边形（填充透明度 0.18，描边 2px） ===== -->
+  <!-- BLE #2563EB [1,3,5,4,5] -->
+  <polygon points="720,472 914.0,477.0 919.9,815.1 560.1,760.0 396.6,434.9"
+           fill="#2563EB" fill-opacity="0.18" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Zigbee #06B6D4 [1,2,5,4,3] -->
+  <polygon points="720,472 849.3,498.0 919.9,815.1 560.1,760.0 526.0,477.0"
+           fill="#06B6D4" fill-opacity="0.18" stroke="#06B6D4" stroke-width="2" stroke-linejoin="round"/>
+  <!-- WiFi #F59E0B [3,5,1,3,5] -->
+  <polygon points="720,336 1043.4,434.9 760.0,595.0 600.1,705.0 396.6,434.9"
+           fill="#F59E0B" fill-opacity="0.18" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/>
+  <!-- LoRa #E11D48 [5,1,5,3,2] -->
+  <polygon points="720,200 784.7,519.0 919.9,815.1 600.1,705.0 590.7,498.0"
+           fill="#E11D48" fill-opacity="0.18" stroke="#E11D48" stroke-width="2" stroke-linejoin="round"/>
+  <!-- NB-IoT #7C3AED [4,2,4,4,5] -->
+  <polygon points="720,268 849.3,498.0 879.9,760.0 560.1,760.0 396.6,434.9"
+           fill="#7C3AED" fill-opacity="0.18" stroke="#7C3AED" stroke-width="2" stroke-linejoin="round"/>
+  <!-- 5G #64748B [4,5,1,1,2] -->
+  <polygon points="720,268 1043.4,434.9 760.0,595.0 680.0,595.0 590.7,498.0"
+           fill="#64748B" fill-opacity="0.18" stroke="#64748B" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- 顶点小圆点（增强可读） -->
+  <g>
+    <!-- BLE -->
+    <circle cx="720" cy="472" r="3" fill="#2563EB"/>
+    <circle cx="914.0" cy="477.0" r="3" fill="#2563EB"/>
+    <circle cx="919.9" cy="815.1" r="3" fill="#2563EB"/>
+    <circle cx="560.1" cy="760.0" r="3" fill="#2563EB"/>
+    <circle cx="396.6" cy="434.9" r="3" fill="#2563EB"/>
+    <!-- Zigbee -->
+    <circle cx="720" cy="472" r="3" fill="#06B6D4"/>
+    <circle cx="849.3" cy="498.0" r="3" fill="#06B6D4"/>
+    <circle cx="919.9" cy="815.1" r="3" fill="#06B6D4"/>
+    <circle cx="560.1" cy="760.0" r="3" fill="#06B6D4"/>
+    <circle cx="526.0" cy="477.0" r="3" fill="#06B6D4"/>
+    <!-- WiFi -->
+    <circle cx="720" cy="336" r="3" fill="#F59E0B"/>
+    <circle cx="1043.4" cy="434.9" r="3" fill="#F59E0B"/>
+    <circle cx="760.0" cy="595.0" r="3" fill="#F59E0B"/>
+    <circle cx="600.1" cy="705.0" r="3" fill="#F59E0B"/>
+    <circle cx="396.6" cy="434.9" r="3" fill="#F59E0B"/>
+    <!-- LoRa -->
+    <circle cx="720" cy="200" r="3" fill="#E11D48"/>
+    <circle cx="784.7" cy="519.0" r="3" fill="#E11D48"/>
+    <circle cx="919.9" cy="815.1" r="3" fill="#E11D48"/>
+    <circle cx="600.1" cy="705.0" r="3" fill="#E11D48"/>
+    <circle cx="590.7" cy="498.0" r="3" fill="#E11D48"/>
+    <!-- NB-IoT -->
+    <circle cx="720" cy="268" r="3" fill="#7C3AED"/>
+    <circle cx="849.3" cy="498.0" r="3" fill="#7C3AED"/>
+    <circle cx="879.9" cy="760.0" r="3" fill="#7C3AED"/>
+    <circle cx="560.1" cy="760.0" r="3" fill="#7C3AED"/>
+    <circle cx="396.6" cy="434.9" r="3" fill="#7C3AED"/>
+    <!-- 5G -->
+    <circle cx="720" cy="268" r="3" fill="#64748B"/>
+    <circle cx="1043.4" cy="434.9" r="3" fill="#64748B"/>
+    <circle cx="760.0" cy="595.0" r="3" fill="#64748B"/>
+    <circle cx="680.0" cy="595.0" r="3" fill="#64748B"/>
+    <circle cx="590.7" cy="498.0" r="3" fill="#64748B"/>
+  </g>
+
+  <!-- ============ 图例（右上） ============ -->
+  <g>
+    <text x="1280" y="172" font-size="13" font-weight="700" fill="#0F172A">技术图例</text>
+    <line x1="1280" y1="182" x2="1740" y2="182" stroke="#E2E8F0"/>
+
+    <g font-size="12" fill="#334155">
+      <rect x="1280" y="198" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB"/>
+      <text x="1304" y="208">BLE　近距离 · 低功耗 · 部署易</text>
+
+      <rect x="1280" y="232" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#06B6D4"/>
+      <text x="1304" y="242">Zigbee　Mesh · 低功耗 · 部署中等</text>
+
+      <rect x="1280" y="266" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B"/>
+      <text x="1304" y="276">WiFi　高速率 · 高功耗 · 部署极易</text>
+
+      <rect x="1280" y="300" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48"/>
+      <text x="1304" y="310">LoRa　超远距 · 低功耗 · 需自建网关</text>
+
+      <rect x="1280" y="334" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED"/>
+      <text x="1304" y="344">NB-IoT　远距 · 低成本 · 复用基站</text>
+
+      <rect x="1280" y="368" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B"/>
+      <text x="1304" y="378">5G　远距 · 极高速 · 高成本高功耗</text>
+    </g>
+  </g>
+
+  <!-- ============ Callout 面板（右下） ============ -->
+  <g>
+    <rect x="1260" y="420" width="500" height="430" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="1280" y="448" font-size="13" font-weight="700" fill="#0F172A">选型取舍（工程经验归纳，非实测值）</text>
+    <line x1="1280" y1="458" x2="1740" y2="458" stroke="#E2E8F0"/>
+
+    <g font-size="11.5" fill="#334155">
+      <text x="1280" y="484"><tspan fill="#2563EB" font-weight="700">BLE</tspan>　距离近 / 速率中 / 功耗极低 / 成本低 / 易部署</text>
+      <text x="1280" y="508"><tspan fill="#06B6D4" font-weight="700">Zigbee</tspan>　距离近 / 速率低 / 功耗极低 / 成本低 / 部署中等</text>
+      <text x="1280" y="532"><tspan fill="#F59E0B" font-weight="700">WiFi</tspan>　距离中 / 速率极高 / 功耗高 / 成本中 / 极易部署</text>
+      <text x="1280" y="556"><tspan fill="#E11D48" font-weight="700">LoRa</tspan>　距离极远 / 速率极低 / 功耗极低 / 成本中 / 部署较难</text>
+      <text x="1280" y="580"><tspan fill="#7C3AED" font-weight="700">NB-IoT</tspan>　距离远 / 速率低 / 功耗低 / 成本较低 / 易部署</text>
+      <text x="1280" y="604"><tspan fill="#64748B" font-weight="700">5G</tspan>　距离远 / 速率极高 / 功耗高 / 成本高 / 部署较难</text>
+    </g>
+
+    <line x1="1280" y1="628" x2="1740" y2="628" stroke="#E2E8F0"/>
+    <text x="1280" y="652" font-size="12" font-weight="700" fill="#0F172A">读图提示</text>
+    <g font-size="11" fill="#475569">
+      <text x="1280" y="674">· 功耗/成本轴：越靠外 = 越省电 / 越省钱（统一为“越优”）。</text>
+      <text x="1280" y="694">· 多边形面积大 ≠ 技术更优，仅反映其在更多维度上处于高位。</text>
+      <text x="1280" y="714">· 无刻度数值，仅作定性相对强弱比较，不可用于精确测算。</text>
+      <text x="1280" y="734">· 选型应结合具体场景对距离 / 速率 / 功耗 / 成本 / 部署的权重。</text>
+    </g>
+  </g>
+
+  <!-- ============ Caption ============ -->
+  <text x="900" y="1015" font-size="10" fill="#94A3B8" text-anchor="middle">图4-5 对六种技术基于五项工程约束的定性对比。所有描述基于工程经验归纳，非实测或标准化值；多边形面积越大不代表技术越优，只反映该技术在更多维度上处于高位。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自上而下分为两层：接口层（ProtocolAdapter）和实现层（ModbusRtuAdapter、MqttAdapter、BluetoothGattAdapter、LoRaWanAdapter）。每个实现类下方以虚线框列出其组合的底层组件。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

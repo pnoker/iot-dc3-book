@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="128.000" width="1152.000" height="504.000" viewBox="0 0 1600.000 700.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+<marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1600" height="700" fill="#FFFFFF"/>
+<circle cx="64" cy="40" r="6" fill="#F59E0B"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图12-2 作物病害识别CNN处理流程（架构示意）</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">一张叶片图像经卷积池化与全连接层完成病害分类的CNN推理流程</text>
+<rect x="1440" y="28" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1500" y="45" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">FLOWCHART</text>
+<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="58" y="200" width="1484" height="220" rx="12" fill="none" stroke="#F59E0B" stroke-dasharray="8 4" stroke-width="1.2"/>
+<text x="74" y="192" fill="#F59E0B" font-size="11" font-weight="600">模型推理流水线</text>
+<line x1="242" y1="290" x2="298" y2="290" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<line x1="452" y1="290" x2="508" y2="290" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<line x1="662" y1="290" x2="718" y2="290" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<line x1="872" y1="290" x2="928" y2="290" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<line x1="1082" y1="290" x2="1138" y2="290" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<line x1="1292" y1="290" x2="1348" y2="290" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<text x="270" y="278" text-anchor="middle" fill="#334155" font-size="10" font-weight="500">前向推理</text>
+<text x="900" y="278" text-anchor="middle" fill="#334155" font-size="10" font-weight="500">展平</text>
+<rect x="90" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="165" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">输入图像</text>
+<text x="165" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">224×224×3</text>
+<rect x="300" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="375" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">卷积池化①</text>
+<text x="375" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">16×112×112</text>
+<rect x="510" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="585" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">卷积池化②</text>
+<text x="585" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">32×56×56</text>
+<rect x="720" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="795" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">卷积池化③</text>
+<text x="795" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">64×28×28</text>
+<rect x="930" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="1005" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">展平层</text>
+<text x="1005" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Flatten · 50176</text>
+<rect x="1140" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="1215" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">全连接层</text>
+<text x="1215" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">128维</text>
+<rect x="1350" y="250" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.5"/>
+<text x="1425" y="285" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">输出概率</text>
+<text x="1425" y="307" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Softmax · C类</text>
+<text x="1425" y="350" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">病害类别概率</text>
+<text x="1403" y="358" text-anchor="middle" fill="#F59E0B" font-size="9" font-weight="600">Top-1</text>
+<line x1="1368" y1="410" x2="1482" y2="410" stroke="#CBD5E1" stroke-width="1"/>
+<rect x="1373" y="392" width="16" height="18" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
+<rect x="1395" y="364" width="16" height="46" fill="#F59E0B"/>
+<rect x="1417" y="396" width="16" height="14" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
+<rect x="1439" y="401" width="16" height="9" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
+<rect x="1461" y="404" width="16" height="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
+<rect x="90" y="450" width="700" height="95" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="110" y="474" fill="#F59E0B" font-size="11" font-weight="700">特征演化</text>
+<text x="110" y="496" fill="#334155" font-size="11">卷积核数量递增（16→32→64）对应特征抽象层次加深，</text>
+<text x="110" y="514" fill="#334155" font-size="11">空间分辨率递减（112→56→28）由池化操作实现。</text>
+<rect x="810" y="450" width="700" height="95" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="830" y="474" fill="#F59E0B" font-size="11" font-weight="700">轻量化选型</text>
+<text x="830" y="496" fill="#334155" font-size="11">MobileNet、EfficientNet 等轻量化架构可大幅压缩</text>
+<text x="830" y="514" fill="#334155" font-size="11">此通用结构的参数量与推理延时，具体选型见下文。</text>
+<line x1="58" y1="580" x2="1542" y2="580" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="90" y="598" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="112" y="607" fill="#64748B" font-size="11" font-weight="600">输入数据</text>
+<rect x="200" y="598" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="222" y="607" fill="#64748B" font-size="11" font-weight="600">卷积/全连接层</text>
+<line x1="360" y1="603" x2="392" y2="603" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+<text x="400" y="607" fill="#64748B" font-size="11" font-weight="600">前向推理数据流</text>
+<rect x="540" y="598" width="10" height="10" fill="#F59E0B"/>
+<text x="558" y="607" fill="#64748B" font-size="11" font-weight="600">最高概率类别</text>
+<text x="800" y="645" text-anchor="middle" fill="#94A3B8" font-size="10">图12-2 作物病害识别CNN从输入到输出的主要网络层与数据变换过程；卷积核数量与网络深度依数据集规模与算力调整。</text>
+  </svg>
+</svg>

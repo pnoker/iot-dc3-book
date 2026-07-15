@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>感知层技术工程检查清单</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="76.000" width="1152.000" height="608.000" viewBox="0 0 1800.000 950.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">感知层技术工程检查清单</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">覆盖传感器 · RFID · 定位 · 边缘计算 · 端侧AI · 物模型 六大领域，12 项关键自检</text>
+
+  <!-- 右上类型标签 -->
+  <rect x="1656" y="26" width="104" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1708" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">MATRIX</text>
+
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 表格主体 ===== -->
+  <!-- 表头 -->
+  <rect x="60" y="120" width="1680" height="44" rx="6" fill="#0F172A"/>
+  <text x="95" y="148" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">#</text>
+  <text x="230" y="148" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">领　域</text>
+  <text x="480" y="148" font-size="13" font-weight="700" fill="#FFFFFF">检查项</text>
+  <text x="650" y="148" font-size="13" font-weight="700" fill="#FFFFFF">自检说明</text>
+
+  <!-- 列分隔辅助线（表头之下用淡色竖线贯穿） -->
+  <!-- 行数据：12 行，行高 56，起始 y=164 -->
+  <!-- 偶数行(2,4,6,8,10,12) 淡背景 -->
+
+  <!-- row1: 传感器选型 edge -->
+  <rect x="60" y="164" width="1680" height="56" fill="#FFFFFF"/>
+  <rect x="60" y="164" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="198" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">01</text>
+  <rect x="160" y="180" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="230" y="196" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">设备边缘</text>
+  <text x="140" y="197" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle"/>
+  <text x="140" y="197" font-size="13" font-weight="700" fill="#0F172A"/>
+  <text x="340" y="197" font-size="14" font-weight="700" fill="#0F172A">传感器选型</text>
+  <text x="650" y="197" font-size="12" fill="#475569">对照物理量范围预留余量，避免非线性偏移</text>
+
+  <!-- row2: 传感器接口 edge -->
+  <rect x="60" y="220" width="1680" height="56" fill="#F8FAFC"/>
+  <rect x="60" y="220" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="254" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">02</text>
+  <rect x="160" y="236" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="230" y="252" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">设备边缘</text>
+  <text x="340" y="253" font-size="14" font-weight="700" fill="#0F172A">传感器接口</text>
+  <text x="650" y="253" font-size="12" fill="#475569">模拟信号需考虑 ADC 精度与屏蔽；数字接口注意地址冲突</text>
+
+  <!-- row3: 信号调理 platform -->
+  <rect x="60" y="276" width="1680" height="56" fill="#FFFFFF"/>
+  <rect x="60" y="276" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="310" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">03</text>
+  <rect x="160" y="292" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="230" y="308" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务</text>
+  <text x="340" y="309" font-size="14" font-weight="700" fill="#0F172A">信号调理</text>
+  <text x="650" y="309" font-size="12" fill="#475569">快速变化信号需高采样率；关注噪声等效位宽</text>
+
+  <!-- row4: RFID频段选择 platform -->
+  <rect x="60" y="332" width="1680" height="56" fill="#F8FAFC"/>
+  <rect x="60" y="332" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="366" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">04</text>
+  <rect x="160" y="348" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="230" y="364" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务</text>
+  <text x="340" y="365" font-size="14" font-weight="700" fill="#0F172A">RFID 频段选择</text>
+  <text x="650" y="365" font-size="12" fill="#475569">金属和液体环境不适合 UHF；有源标签需评估电池更换成本</text>
+
+  <!-- row5: 防碰撞协议 platform -->
+  <rect x="60" y="388" width="1680" height="56" fill="#FFFFFF"/>
+  <rect x="60" y="388" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="422" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">05</text>
+  <rect x="160" y="404" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="230" y="420" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务</text>
+  <text x="340" y="421" font-size="14" font-weight="700" fill="#0F172A">防碰撞协议</text>
+  <text x="650" y="421" font-size="12" fill="#475569">大批量读写需评估 Q 算法或改进型帧时隙 ALOHA 协议</text>
+
+  <!-- row6: 定位技术融合 platform -->
+  <rect x="60" y="444" width="1680" height="56" fill="#F8FAFC"/>
+  <rect x="60" y="444" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="478" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">06</text>
+  <rect x="160" y="460" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="230" y="476" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务</text>
+  <text x="340" y="477" font-size="14" font-weight="700" fill="#0F172A">定位技术融合</text>
+  <text x="650" y="477" font-size="12" fill="#475569">单源技术有盲区，需设计降级方案；卡尔曼滤波初始化注意防漂移</text>
+
+  <!-- row7: 边缘节点硬件 edge -->
+  <rect x="60" y="500" width="1680" height="56" fill="#FFFFFF"/>
+  <rect x="60" y="500" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="534" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">07</text>
+  <rect x="160" y="516" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="230" y="532" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">设备边缘</text>
+  <text x="340" y="533" font-size="14" font-weight="700" fill="#0F172A">边缘节点硬件</text>
+  <text x="650" y="533" font-size="12" fill="#475569">不只关注 CPU 主频，需评估 NPU 或 DSP 可用性及总功耗预算</text>
+
+  <!-- row8: 数据预处理 data -->
+  <rect x="60" y="556" width="1680" height="56" fill="#F8FAFC"/>
+  <rect x="60" y="556" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="590" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">08</text>
+  <rect x="160" y="572" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="230" y="588" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">数据资产</text>
+  <text x="340" y="589" font-size="14" font-weight="700" fill="#0F172A">数据预处理</text>
+  <text x="650" y="589" font-size="12" fill="#475569">滑动平均有相位延迟；实时场景优先用卡尔曼滤波</text>
+
+  <!-- row9: 端侧AI部署 ai -->
+  <rect x="60" y="612" width="1680" height="56" fill="#FFFFFF"/>
+  <rect x="60" y="612" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="646" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">09</text>
+  <rect x="160" y="628" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="230" y="644" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="middle">智能决策</text>
+  <text x="340" y="645" font-size="14" font-weight="700" fill="#0F172A">端侧 AI 部署</text>
+  <text x="650" y="645" font-size="12" fill="#475569">从 float32 转 int8 需使用校准集，避免精度退化</text>
+
+  <!-- row10: 自适应采样 data （主链路终点） -->
+  <rect x="60" y="668" width="1680" height="56" fill="#F8FAFC"/>
+  <rect x="60" y="668" width="4" height="56" fill="#2563EB"/>
+  <text x="95" y="702" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">10</text>
+  <rect x="160" y="684" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="230" y="700" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">数据资产</text>
+  <text x="340" y="701" font-size="14" font-weight="700" fill="#0F172A">自适应采样</text>
+  <text x="650" y="701" font-size="12" fill="#475569">阈值太小功耗大，太大漏事件，需统计历史数据确定基准</text>
+
+  <!-- 分隔：以下为补充验证项 -->
+  <line x1="60" y1="724" x2="1740" y2="724" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="1740" y="740" font-size="10" fill="#94A3B8" text-anchor="end">— 以下为闭环与互通补充项 —</text>
+
+  <!-- row11: 物模型设计 data （补充项） -->
+  <rect x="60" y="748" width="1680" height="56" fill="#FFFFFF"/>
+  <rect x="60" y="748" width="4" height="56" fill="#64748B"/>
+  <text x="95" y="782" font-size="13" font-weight="700" fill="#64748B" text-anchor="middle">11</text>
+  <rect x="160" y="764" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="230" y="780" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">数据资产</text>
+  <text x="340" y="781" font-size="14" font-weight="700" fill="#0F172A">物模型设计</text>
+  <text x="650" y="781" font-size="12" fill="#475569">缺少服务或事件会导致无法闭环控制</text>
+
+  <!-- row12: 数据互通验证 platform （补充项） -->
+  <rect x="60" y="804" width="1680" height="56" fill="#F8FAFC"/>
+  <rect x="60" y="804" width="4" height="56" fill="#64748B"/>
+  <text x="95" y="838" font-size="13" font-weight="700" fill="#64748B" text-anchor="middle">12</text>
+  <rect x="160" y="820" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="230" y="836" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务</text>
+  <text x="340" y="837" font-size="14" font-weight="700" fill="#0F172A">数据互通验证</text>
+  <text x="650" y="837" font-size="12" fill="#475569">用 IoT DC3 物模型管理接口测试设备影子同步</text>
+
+  <!-- 外框 -->
+  <rect x="60" y="120" width="1680" height="740" rx="6" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- 表头/列竖线 -->
+  <line x1="130" y1="120" x2="130" y2="860" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="330" y1="120" x2="330" y2="860" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="630" y1="120" x2="630" y2="860" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="60" y1="884" x2="1740" y2="884" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="60" y="906" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <!-- 领域色块 -->
+  <rect x="110" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="132" y="906" font-size="11" fill="#475569">设备边缘（edge）</text>
+
+  <rect x="270" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="292" y="906" font-size="11" fill="#475569">平台服务（platform）</text>
+
+  <rect x="448" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="470" y="906" font-size="11" fill="#475569">数据资产（data）</text>
+
+  <rect x="610" y="896" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="632" y="906" font-size="11" fill="#475569">智能决策（ai）</text>
+
+  <!-- 主链路/补充 图例 -->
+  <rect x="780" y="896" width="4" height="12" fill="#2563EB"/>
+  <text x="792" y="906" font-size="11" fill="#475569">蓝色序号 01–10：感知主链路检查项（选型 → 采样）</text>
+
+  <rect x="1140" y="896" width="4" height="12" fill="#64748B"/>
+  <text x="1152" y="906" font-size="11" fill="#475569">灰色序号 11–12：闭环与互通补充验证项</text>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="938" font-size="10" fill="#94A3B8" text-anchor="middle">表 3-8-1　感知层技术工程检查清单</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">matrix</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">行列表，共12行，每行包含“领域”“检查项”“自检说明”三列。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

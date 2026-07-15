@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="76.000" width="1152.000" height="608.000" viewBox="0 0 1800.000 950.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <linearGradient id="trust-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E2E8F0"/>
+      <stop offset="0.5" stop-color="#93B4F1"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="confirm-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E11D48"/>
+      <stop offset="1" stop-color="#FECACA"/>
+    </linearGradient>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="90" y="47" font-size="22" font-weight="700" fill="#0F172A">IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线</text>
+  <text x="90" y="71" font-size="12" fill="#64748B">自主程度递进，人工确认从「每步确认」收敛到「关键节点确认」，信任度随时间累积</text>
+
+  <rect x="1620" y="24" width="156" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1698" y="45" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== 上方注释：人工确认门槛递减 ===== -->
+  <text x="220" y="148" font-size="13" font-weight="700" fill="#E11D48">人工确认门槛（递减）</text>
+  <line x1="220" y1="168" x2="1580" y2="168" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-red)"/>
+  <text x="1580" y="160" font-size="11" fill="#E11D48" text-anchor="end">由「每步」收敛到「关键节点」</text>
+
+  <!-- 三段确认强度刻度（红，宽度递减） -->
+  <rect x="240" y="180" width="380" height="10" rx="3" fill="url(#confirm-grad)" opacity="0.85"/>
+  <rect x="700" y="180" width="380" height="10" rx="3" fill="url(#confirm-grad)" opacity="0.55"/>
+  <rect x="1160" y="180" width="380" height="10" rx="3" fill="url(#confirm-grad)" opacity="0.30"/>
+
+  <!-- ===== 图标卡（确认方式） ===== -->
+  <!-- Phase 1: 锁定 -->
+  <rect x="410" y="318" width="60" height="60" rx="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <rect x="424" y="344" width="32" height="24" rx="3" fill="none" stroke="#E11D48" stroke-width="2"/>
+  <path d="M430 344 v-7 a8 8 0 0 1 20 0 v7" fill="none" stroke="#E11D48" stroke-width="2"/>
+  <circle cx="440" cy="356" r="3" fill="#E11D48"/>
+  <text x="440" y="398" font-size="11" fill="#475569" text-anchor="middle">锁定 · 只读</text>
+
+  <!-- Phase 2: 钥匙（签名审批） -->
+  <rect x="870" y="318" width="60" height="60" rx="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <circle cx="886" cy="348" r="8" fill="none" stroke="#E11D48" stroke-width="2"/>
+  <line x1="894" y1="348" x2="918" y2="348" stroke="#E11D48" stroke-width="2"/>
+  <line x1="912" y1="348" x2="912" y2="356" stroke="#E11D48" stroke-width="2"/>
+  <line x1="918" y1="348" x2="918" y2="354" stroke="#E11D48" stroke-width="2"/>
+  <text x="900" y="398" font-size="11" fill="#475569" text-anchor="middle">钥匙 · 签名审批</text>
+
+  <!-- Phase 3: 盾牌（白名单） -->
+  <rect x="1330" y="318" width="60" height="60" rx="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <path d="M1360 332 l16 6 v14 c0 12 -8 18 -16 22 c-8 -4 -16 -10 -16 -22 v-14 z" fill="none" stroke="#E11D48" stroke-width="2"/>
+  <path d="M1352 352 l6 6 l10 -12" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1360" y="398" font-size="11" fill="#475569" text-anchor="middle">盾牌 · 高危白名单</text>
+
+  <!-- ===== 三阶段色块（自主程度，高度递增） ===== -->
+  <!-- baseline y=560 -->
+  <!-- Block 1 h80 -->
+  <rect x="220" y="480" width="440" height="80" rx="8" fill="#2563EB" fill-opacity="0.16" stroke="#2563EB" stroke-width="2"/>
+  <text x="240" y="504" font-size="11" fill="#64748B">自主程度：低</text>
+  <text x="440" y="522" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">第一阶段：Copilot 辅助</text>
+  <text x="440" y="544" font-size="11" fill="#475569" text-anchor="middle">只读操作 · 全部人工确认</text>
+
+  <!-- Block 2 h120 -->
+  <rect x="680" y="440" width="440" height="120" rx="8" fill="#2563EB" fill-opacity="0.36" stroke="#2563EB" stroke-width="2"/>
+  <text x="700" y="464" font-size="11" fill="#64748B">自主程度：中</text>
+  <text x="900" y="492" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">第二阶段：有限自主 Agent</text>
+  <text x="900" y="514" font-size="11" fill="#334155" text-anchor="middle">自动诊断 + 人工确认</text>
+  <text x="900" y="534" font-size="10" fill="#475569" text-anchor="middle">特定场景可配置自动放行</text>
+
+  <!-- Block 3 h160 -->
+  <rect x="1140" y="400" width="440" height="160" rx="8" fill="#2563EB" fill-opacity="0.60" stroke="#2563EB" stroke-width="2"/>
+  <text x="1160" y="424" font-size="11" fill="#64748B">自主程度：高</text>
+  <text x="1360" y="456" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">第三阶段：全自治 Agent</text>
+  <text x="1360" y="482" font-size="11" fill="#334155" text-anchor="middle">自主规划执行</text>
+  <text x="1360" y="504" font-size="10" fill="#475569" text-anchor="middle">写入高风险动作仍需人工确认</text>
+  <text x="1360" y="524" font-size="10" fill="#E11D48" text-anchor="middle">高危白名单始终不可绕过</text>
+
+  <!-- 阶段递进主链路箭头（蓝）-->
+  <path d="M660 520 L680 520" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <path d="M1120 520 L1140 520" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== 时间轴 ===== -->
+  <line x1="180" y1="560" x2="1620" y2="560" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="180" y="582" font-size="12" font-weight="700" fill="#475569">时间 →</text>
+  <circle cx="440" cy="560" r="5" fill="#2563EB"/>
+  <circle cx="900" cy="560" r="5" fill="#2563EB"/>
+  <circle cx="1360" cy="560" r="5" fill="#2563EB"/>
+  <text x="440" y="582" font-size="10" fill="#64748B" text-anchor="middle">阶段一</text>
+  <text x="900" y="582" font-size="10" fill="#64748B" text-anchor="middle">阶段二</text>
+  <text x="1360" y="582" font-size="10" fill="#64748B" text-anchor="middle">阶段三</text>
+
+  <!-- ===== 信任度累积渐变条 ===== -->
+  <rect x="220" y="612" width="1360" height="26" rx="6" fill="url(#trust-grad)" stroke="#E2E8F0"/>
+  <text x="220" y="660" font-size="13" font-weight="700" fill="#2563EB">信任度累积（递增）</text>
+  <line x1="220" y1="672" x2="1580" y2="672" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <text x="1580" y="664" font-size="11" fill="#2563EB" text-anchor="end">时间越长 · 信任度越高</text>
+  <text x="900" y="630" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">信任度随阶段推进正向累积</text>
+
+  <!-- ===== 分隔线 ===== -->
+  <line x1="60" y1="704" x2="1740" y2="704" stroke="#E2E8F0"/>
+
+  <!-- ===== Callouts ===== -->
+  <rect x="80" y="720" width="1640" height="86" rx="8" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <circle cx="104" cy="744" r="3" fill="#2563EB"/>
+  <text x="116" y="748" font-size="11" fill="#334155">阶段不可跳跃：第一阶段 → 第二阶段 → 第三阶段，须逐级沉淀经验与信任。</text>
+  <circle cx="104" cy="768" r="3" fill="#E11D48"/>
+  <text x="116" y="772" font-size="11" fill="#334155">人工确认与自主程度成反比：阶段一最高（每步确认），阶段三最低（仅关键节点确认）。</text>
+  <circle cx="900" cy="744" r="3" fill="#2563EB"/>
+  <text x="912" y="748" font-size="11" fill="#334155">信任度与阶段推进成正比：运行越久、边界越清，可授权范围越大。</text>
+  <circle cx="900" cy="768" r="3" fill="#E11D48"/>
+  <text x="912" y="772" font-size="11" fill="#334155">高风险白名单在所有阶段始终存在，任何阶段都不可绕过。</text>
+
+  <!-- ===== 图例 ===== -->
+  <text x="80" y="834" font-size="12" font-weight="700" fill="#475569">图例</text>
+  <rect x="140" y="822" width="18" height="14" rx="2" fill="#2563EB" fill-opacity="0.16" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="166" y="834" font-size="11" fill="#334155">浅蓝 · 只读，全部人工确认</text>
+
+  <rect x="400" y="822" width="18" height="14" rx="2" fill="#2563EB" fill-opacity="0.36" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="426" y="834" font-size="11" fill="#334155">中蓝 · 自动诊断 + 人工确认</text>
+
+  <rect x="680" y="822" width="18" height="14" rx="2" fill="#2563EB" fill-opacity="0.60" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="706" y="834" font-size="11" fill="#334155">深蓝 · 自主规划执行</text>
+
+  <rect x="940" y="822" width="30" height="14" rx="3" fill="url(#trust-grad)" stroke="#E2E8F0"/>
+  <text x="978" y="834" font-size="11" fill="#334155">信任度渐变（浅灰 → 深蓝）</text>
+
+  <rect x="1240" y="822" width="30" height="14" rx="3" fill="url(#confirm-grad)" stroke="#E2E8F0"/>
+  <text x="1278" y="834" font-size="11" fill="#334155">确认强度（红，递减）</text>
+
+  <line x1="140" y1="864" x2="180" y2="864" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="190" y="868" font-size="11" fill="#334155">主链路 / 阶段递进</text>
+
+  <line x1="400" y1="864" x2="440" y2="864" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="450" y="868" font-size="11" fill="#334155">时间轴 / 回传</text>
+
+  <rect x="680" y="858" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+  <text x="704" y="868" font-size="11" fill="#334155">人工确认门槛（锁定/钥匙/盾牌）</text>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="918" font-size="10" fill="#94A3B8" text-anchor="middle">图 7-5-3-1: IoT DC3 Agentic Center 三阶段演进路线示意。自主程度逐步提升，但人工确认点从未消失，只是从「每步确认」转变为「关键节点确认」。</text>
+  </svg>
+</svg>

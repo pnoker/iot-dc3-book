@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图13-2 区块链与物联网融合的信任三角</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="30.400" y="24.000" width="1139.200" height="712.000" viewBox="0 0 1600.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图13-2 区块链与物联网融合的信任三角</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">分布式账本 · 数字签名与共识 · 智能合约 三维度汇聚支撑可信物联网行为</text>
+  <rect x="1462" y="24" width="98" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1511" y="44" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">PYRAMID</text>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Triangle outline (faint trust-triangle hint, behind cards) ===== -->
+  <path d="M 290 560 L 1310 560 L 800 800 Z" fill="none" stroke="#CBD5E1" stroke-width="1.4" stroke-dasharray="6 4" opacity="0.75"/>
+  <text x="800" y="660" font-size="11" fill="#94A3B8" text-anchor="middle" letter-spacing="2">TRUST TRIANGLE</text>
+
+  <!-- ===== Main link (primary, blue, highlighted): 智能合约 -> 目标 ===== -->
+  <line x1="800" y1="740" x2="800" y2="288" stroke="#2563EB" stroke-width="3" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== Support link 1: 分布式账本 -> 目标 ===== -->
+  <line x1="450" y1="525" x2="608" y2="288" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-purple)"/>
+
+  <!-- ===== Support link 2: 数字签名与共识 -> 目标 ===== -->
+  <line x1="1150" y1="525" x2="992" y2="288" stroke="#E11D48" stroke-width="2" marker-end="url(#ah-red)"/>
+
+  <!-- ===== Goal card (apex, blue / 目标状态) ===== -->
+  <rect x="578" y="158" width="444" height="130" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="3"/>
+  <circle cx="604" cy="184" r="5" fill="#2563EB"/>
+  <text x="618" y="189" font-size="10" font-weight="700" fill="#2563EB" letter-spacing="1">TARGET · 目标状态</text>
+  <text x="800" y="226" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">可信任的物联网系统行为</text>
+  <text x="800" y="252" font-size="11" fill="#475569" text-anchor="middle">去中心化架构下，各方无须共同信任单一机构</text>
+  <text x="800" y="270" font-size="10" fill="#64748B" text-anchor="middle">trustless · verifiable · auditable</text>
+
+  <!-- ===== Support card: 分布式账本 (data domain, purple) ===== -->
+  <rect x="130" y="500" width="320" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="130" y="500" width="320" height="6" rx="3" fill="#7C3AED"/>
+  <text x="150" y="534" font-size="10" font-weight="700" fill="#7C3AED" letter-spacing="1">DATA · 数据资产域</text>
+  <text x="290" y="564" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">分布式账本</text>
+  <text x="290" y="588" font-size="11" fill="#475569" text-anchor="middle">全网一致 · 不可篡改</text>
+  <text x="290" y="606" font-size="9" fill="#64748B" text-anchor="middle">提供可信数据基底</text>
+
+  <!-- ===== Support card: 数字签名与共识机制 (security domain, red) ===== -->
+  <rect x="1150" y="500" width="320" height="120" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <rect x="1150" y="500" width="320" height="6" rx="3" fill="#E11D48"/>
+  <text x="1170" y="534" font-size="10" font-weight="700" fill="#E11D48" letter-spacing="1">SECURITY · 安全域</text>
+  <text x="1310" y="564" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">数字签名与共识机制</text>
+  <text x="1310" y="588" font-size="11" fill="#475569" text-anchor="middle">设备身份可信 · 消息来源真实</text>
+  <text x="1310" y="606" font-size="9" fill="#64748B" text-anchor="middle">确保数据来源可信</text>
+
+  <!-- ===== Support card: 智能合约 (ai/智能 domain, orange) ===== -->
+  <rect x="640" y="740" width="320" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <rect x="640" y="740" width="320" height="6" rx="3" fill="#F59E0B"/>
+  <text x="660" y="774" font-size="10" font-weight="700" fill="#D97706" letter-spacing="1">SMART · 智能域</text>
+  <text x="800" y="804" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">智能合约</text>
+  <text x="800" y="828" font-size="11" fill="#475569" text-anchor="middle">代码化信任规则 · 自动执行</text>
+  <text x="800" y="846" font-size="9" fill="#64748B" text-anchor="middle">驱动可信业务逻辑（主链路）</text>
+
+  <!-- ===== Arrow label callouts ===== -->
+  <!-- 智能合约 -> 目标 (main link) -->
+  <rect x="688" y="494" width="224" height="34" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+  <text x="800" y="510" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">主链路 · 驱动可信业务逻辑</text>
+  <text x="800" y="523" font-size="9" fill="#475569" text-anchor="middle">code-as-trust · 自动触发业务规则</text>
+
+  <!-- 分布式账本 -> 目标 -->
+  <rect x="430" y="402" width="200" height="30" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.2"/>
+  <text x="530" y="421" font-size="10" font-weight="600" fill="#7C3AED" text-anchor="middle">提供可信数据基底</text>
+
+  <!-- 数字签名与共识 -> 目标 -->
+  <rect x="970" y="402" width="200" height="30" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.2"/>
+  <text x="1070" y="421" font-size="10" font-weight="600" fill="#E11D48" text-anchor="middle">确保数据来源可信</text>
+
+  <!-- ===== Separator before legend ===== -->
+  <line x1="40" y1="900" x2="1560" y2="900" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Legend ===== -->
+  <g font-size="11" fill="#475569">
+    <text x="64" y="928" font-size="11" font-weight="700" fill="#0F172A" letter-spacing="1">图例</text>
+
+    <rect x="120" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="142" y="928">目标状态</text>
+
+    <rect x="230" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="252" y="928">数据资产（分布式账本）</text>
+
+    <rect x="420" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.6"/>
+    <text x="442" y="928">安全（签名与共识）</text>
+
+    <rect x="600" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.6"/>
+    <text x="622" y="928">智能（智能合约）</text>
+
+    <line x1="760" y1="924" x2="796" y2="924" stroke="#2563EB" stroke-width="3"/>
+    <text x="804" y="928">主链路（高亮）</text>
+
+    <line x1="910" y1="924" x2="946" y2="924" stroke="#64748B" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text x="954" y="928">信任三角边界</text>
+
+    <text x="1090" y="928" fill="#64748B">三个维度缺一不可，共同构成信任三角</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="975" font-size="10" fill="#94A3B8" text-anchor="middle">图13-2 区块链与物联网融合的信任三角：分布式账本提供数据一致性，数字签名与共识机制确保身份真实性，智能合约自动化执行信任规则——三者协同重塑物联网信任体系。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">pyramid</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">三角金字塔：顶部为&#x27;可信任的物联网系统行为&#x27;，三个角分别对应三个维度。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

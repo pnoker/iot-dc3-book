@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-4 MCP 在物联网平台中的架构示意</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="27.200" width="1152.000" height="705.600" viewBox="0 0 1600.000 980.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-gray-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0,0 3.5,10 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="980" fill="#FFFFFF"/>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图7-4 MCP 在物联网平台中的架构示意</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">MCP 单端点接入 · OpenAPI 自动聚合 · 细粒度安全控制</text>
+  <rect x="1430" y="24" width="146" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1503" y="42" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== 主体 ===== -->
+
+  <!-- 外部 AI Agent（橙色虚线框，顶部） -->
+  <rect x="560" y="135" width="480" height="115" rx="12" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="572" y="126" width="86" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="578" y="139" font-size="10" font-weight="600" fill="#F59E0B">外部接入</text>
+  <rect x="580" y="155" width="440" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="800" y="184" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">外部 AI Agent</text>
+  <text x="800" y="204" font-size="10" fill="#475569" text-anchor="middle">AutoGPT · 自建编排系统</text>
+  <text x="800" y="222" font-size="9" fill="#64748B" text-anchor="middle">HTTP · JSON-RPC 2.0</text>
+
+  <!-- AI Agent → MCP 端点 -->
+  <line x1="800" y1="250" x2="800" y2="346" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="815" y="280" width="150" height="34" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="890" y="295" font-size="10" fill="#334155" text-anchor="middle">POST /mcp</text>
+  <text x="890" y="308" font-size="9" fill="#64748B" text-anchor="middle">Bearer token · JSON-RPC</text>
+
+  <!-- MCP 端点（蓝色，带锁，安全层） -->
+  <rect x="440" y="350" width="520" height="140" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <!-- 锁图标 -->
+  <g transform="translate(900,366)">
+    <rect x="0" y="6" width="20" height="14" rx="2" fill="none" stroke="#E11D48" stroke-width="1.6"/>
+    <path d="M4 6 V3 a6 6 0 0 1 12 0 V6" fill="none" stroke="#E11D48" stroke-width="1.6"/>
+    <circle cx="10" cy="13" r="1.6" fill="#E11D48"/>
+  </g>
+  <text x="460" y="382" font-size="15" font-weight="700" fill="#0F172A">MCP 端点</text>
+  <text x="460" y="404" font-size="10" fill="#475569">JSON-RPC 2.0 · POST /mcp</text>
+  <line x1="460" y1="416" x2="940" y2="416" stroke="#E2E8F0"/>
+  <text x="460" y="436" font-size="10" fill="#475569">· 内置工具白名单</text>
+  <text x="460" y="454" font-size="10" fill="#475569">· 风险分级引擎（低危自动 / 高危确认）</text>
+  <text x="460" y="472" font-size="9" fill="#64748B">统一入口 · 动态发现后端能力</text>
+  <rect x="446" y="344" width="96" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="452" y="357" font-size="10" font-weight="600" fill="#2563EB">安全 / 网关层</text>
+
+  <!-- MCP ↔ 鉴权中心（双向，灰实线） -->
+  <line x1="960" y1="420" x2="1136" y2="420" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)" marker-start="url(#ah-gray-start)"/>
+  <rect x="1000" y="396" width="96" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="1048" y="409" font-size="9" fill="#475569" text-anchor="middle">OAuth token 校验</text>
+
+  <!-- 鉴权中心（灰色，右侧） -->
+  <rect x="1140" y="350" width="340" height="140" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <g transform="translate(1430,366)">
+    <rect x="0" y="6" width="20" height="14" rx="2" fill="none" stroke="#64748B" stroke-width="1.6"/>
+    <path d="M4 6 V3 a6 6 0 0 1 12 0 V6" fill="none" stroke="#64748B" stroke-width="1.6"/>
+    <circle cx="10" cy="13" r="1.6" fill="#64748B"/>
+  </g>
+  <text x="1160" y="382" font-size="15" font-weight="700" fill="#0F172A">鉴权中心</text>
+  <text x="1160" y="404" font-size="10" fill="#475569">OAuth 2.0 · token 校验</text>
+  <line x1="1160" y1="416" x2="1460" y2="416" stroke="#E2E8F0"/>
+  <text x="1160" y="436" font-size="10" fill="#475569">· 提取租户上下文</text>
+  <text x="1160" y="454" font-size="10" fill="#475569">· 返回权限范围（scope）</text>
+  <text x="1160" y="472" font-size="9" fill="#64748B">每次调用强制鉴权</text>
+
+  <!-- ===== 后端服务层（底部三列） ===== -->
+
+  <!-- 边缘域边界（设备驱动层） -->
+  <rect x="50" y="605" width="445" height="225" rx="12" fill="none" stroke="#10B981" stroke-width="1.6" stroke-dasharray="8 4"/>
+  <rect x="62" y="596" width="118" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="68" y="609" font-size="10" font-weight="600" fill="#10B981">设备与边缘域</text>
+
+  <!-- 设备驱动层（绿，database 圆柱） -->
+  <rect x="80" y="640" width="385" height="160" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <ellipse cx="272.5" cy="650" rx="22" ry="7" fill="none" stroke="#10B981" stroke-width="1.6"/>
+  <text x="80" y="688" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" dx="20">设备驱动层</text>
+  <text x="100" y="712" font-size="10" fill="#475569">· Modbus · OPC UA · BACnet</text>
+  <text x="100" y="730" font-size="10" fill="#475569">· 封装现场异构设备接口</text>
+  <text x="100" y="754" font-size="9" fill="#64748B">edge 域资源边界</text>
+
+  <!-- 平台服务域边界（数据 + 告警） -->
+  <rect x="555" y="605" width="925" height="225" rx="12" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="8 4"/>
+  <rect x="567" y="596" width="118" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="573" y="609" font-size="10" font-weight="600" fill="#2563EB">平台服务域</text>
+
+  <!-- 数据服务层（蓝） -->
+  <rect x="595" y="640" width="380" height="160" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <ellipse cx="785" cy="650" rx="22" ry="7" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="615" y="688" font-size="15" font-weight="700" fill="#0F172A">数据服务层</text>
+  <text x="615" y="712" font-size="10" fill="#475569">· 时序数据查询</text>
+  <text x="615" y="730" font-size="10" fill="#475569">· 元数据管理 · 聚合统计</text>
+  <text x="615" y="754" font-size="9" fill="#64748B">结构化数据访问能力</text>
+
+  <!-- 告警与日志服务层（紫） -->
+  <rect x="1040" y="640" width="410" height="160" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <ellipse cx="1245" cy="650" rx="22" ry="7" fill="none" stroke="#7C3AED" stroke-width="1.6"/>
+  <text x="1060" y="688" font-size="15" font-weight="700" fill="#0F172A">告警与日志服务层</text>
+  <text x="1060" y="712" font-size="10" fill="#475569">· 当前告警 · 历史事件</text>
+  <text x="1060" y="730" font-size="10" fill="#475569">· 日志检索</text>
+  <text x="1060" y="754" font-size="9" fill="#64748B">事件与审计能力</text>
+
+  <!-- ===== 调用箭头：MCP → 各服务层（蓝色实线，主链路） ===== -->
+  <!-- → 设备驱动层 -->
+  <line x1="560" y1="490" x2="272" y2="636" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <!-- → 数据服务层 -->
+  <line x1="760" y1="490" x2="760" y2="636" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <!-- → 告警与日志层 -->
+  <line x1="840" y1="490" x2="1245" y2="636" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="392" y="544" width="120" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="452" y="557" font-size="9" fill="#2563EB" text-anchor="middle">工具调用（主链路）</text>
+
+  <!-- ===== 注册箭头：各服务层 → MCP（灰色虚线，自动聚合） ===== -->
+  <line x1="332" y1="636" x2="600" y2="490" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="840" y1="636" x2="840" y2="494" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="1185" y1="636" x2="880" y2="490" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <rect x="1050" y="544" width="150" height="18" rx="4" fill="#FFFFFF"/>
+  <text x="1125" y="557" font-size="9" fill="#64748B" text-anchor="middle">OpenAPI 自动聚合注册</text>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="40" y1="855" x2="1560" y2="855" stroke="#E2E8F0"/>
+  <text x="40" y="880" font-size="11" font-weight="700" fill="#0F172A">图例</text>
+
+  <g transform="translate(110,872)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B"/>
+    <text x="24" y="10" font-size="10" fill="#475569">外部 AI Agent</text>
+  </g>
+  <g transform="translate(250,872)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB"/>
+    <text x="24" y="10" font-size="10" fill="#475569">MCP 端点</text>
+  </g>
+  <g transform="translate(370,872)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B"/>
+    <text x="24" y="10" font-size="10" fill="#475569">鉴权中心</text>
+  </g>
+  <g transform="translate(490,872)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981"/>
+    <text x="24" y="10" font-size="10" fill="#475569">设备/边缘域</text>
+  </g>
+  <g transform="translate(630,872)">
+    <rect x="0" y="0" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED"/>
+    <text x="24" y="10" font-size="10" fill="#475569">数据/告警服务</text>
+  </g>
+  <g transform="translate(800,872)">
+    <line x1="0" y1="6" x2="28" y2="6" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="38" y="10" font-size="10" fill="#475569">实线：调用关系</text>
+  </g>
+  <g transform="translate(980,872)">
+    <line x1="0" y1="6" x2="28" y2="6" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <text x="38" y="10" font-size="10" fill="#475569">虚线：自动聚合注册</text>
+  </g>
+  <g transform="translate(1180,872)">
+    <g transform="translate(0,-2)">
+      <rect x="0" y="6" width="14" height="10" rx="2" fill="none" stroke="#E11D48" stroke-width="1.4"/>
+      <path d="M3 6 V3 a4 4 0 0 1 8 0 V6" fill="none" stroke="#E11D48" stroke-width="1.4"/>
+    </g>
+    <text x="24" y="10" font-size="10" fill="#475569">锁：安全鉴权层</text>
+  </g>
+
+  <!-- ===== caption ===== -->
+  <text x="800" y="930" font-size="10" fill="#94A3B8" text-anchor="middle">图7-4 MCP 在物联网平台中的架构示意。外部 AI Agent 只需连接一个 MCP 端点，后端资源由各服务层的 OpenAPI 自动聚合为工具目录；</text>
+  <text x="800" y="948" font-size="10" fill="#94A3B8" text-anchor="middle">每个调用经基于 OAuth 的鉴权，并通过白名单与风险分级进行细粒度控制。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从上到下的分层布局：顶部外部 AI Agent，中间 MCP 网关与安全层，底部后端服务层，右侧为鉴权中心。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

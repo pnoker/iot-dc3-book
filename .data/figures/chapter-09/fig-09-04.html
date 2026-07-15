@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图9-4 MQTT会话连接与心跳交互示意</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="117.288" y="24.000" width="965.424" height="712.000" viewBox="0 0 1600.000 1180.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1180" fill="#FFFFFF"/>
+
+  <!-- ===== Title region ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图9-4 MQTT 会话连接与心跳交互示意</text>
+  <text x="82" y="68" font-size="12" fill="#64748B">Client(sensor01) ⇄ Broker · 会话建立 → 心跳保活 → 断线遗嘱 → 指数退避重连 → 会话恢复</text>
+  <g>
+    <rect x="1442" y="26" width="118" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="1501" y="44" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">SEQUENCE</text>
+  </g>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Phase bands ===== -->
+  <rect x="170" y="212" width="1210" height="113" fill="#F8FAFC"/>
+  <rect x="170" y="330" width="1210" height="215" fill="#FFFFFF"/>
+  <rect x="170" y="550" width="1210" height="100" fill="#F8FAFC"/>
+  <rect x="170" y="655" width="1210" height="165" fill="#FFFFFF"/>
+  <rect x="170" y="825" width="1210" height="220" fill="#2563EB" opacity="0.05"/>
+
+  <!-- ===== Phase labels (left margin tags) ===== -->
+  <g font-size="11.5">
+    <rect x="40" y="252" width="118" height="32" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="99" y="267" font-weight="700" fill="#10B981" text-anchor="middle">① 会话建立</text>
+    <text x="99" y="280" font-size="9.5" fill="#64748B" text-anchor="middle">CONNECT/CONNACK</text>
+
+    <rect x="40" y="420" width="118" height="32" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="99" y="435" font-weight="700" fill="#10B981" text-anchor="middle">② 订阅与发布</text>
+    <text x="99" y="448" font-size="9.5" fill="#64748B" text-anchor="middle">SUB / PUBLISH</text>
+
+    <rect x="40" y="584" width="118" height="32" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="99" y="599" font-weight="700" fill="#10B981" text-anchor="middle">③ 心跳保活</text>
+    <text x="99" y="612" font-size="9.5" fill="#64748B" text-anchor="middle">PINGREQ/RESP</text>
+
+    <rect x="40" y="721" width="118" height="32" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+    <text x="99" y="736" font-weight="700" fill="#E11D48" text-anchor="middle">④ 断线与遗嘱</text>
+    <text x="99" y="749" font-size="9.5" fill="#64748B" text-anchor="middle">超时 · Will</text>
+
+    <rect x="40" y="919" width="118" height="32" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="99" y="934" font-weight="700" fill="#2563EB" text-anchor="middle">⑤ 重连恢复</text>
+    <text x="99" y="947" font-size="9.5" fill="#64748B" text-anchor="middle">主链路</text>
+  </g>
+
+  <!-- ===== Lifelines ===== -->
+  <line x1="290" y1="195" x2="290" y2="1055" stroke="#94A3B8" stroke-dasharray="4 4"/>
+  <line x1="820" y1="195" x2="820" y2="1055" stroke="#94A3B8" stroke-dasharray="4 4"/>
+  <line x1="1350" y1="195" x2="1350" y2="1055" stroke="#94A3B8" stroke-dasharray="4 4"/>
+
+  <!-- ===== Actor headers ===== -->
+  <g>
+    <rect x="210" y="130" width="160" height="58" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <text x="290" y="156" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Client</text>
+    <text x="290" y="174" font-size="10" fill="#475569" text-anchor="middle">sensor01 · MQTT客户端</text>
+
+    <rect x="740" y="130" width="160" height="58" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="820" y="156" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Broker</text>
+    <text x="820" y="174" font-size="10" fill="#475569" text-anchor="middle">MQTT代理服务器</text>
+
+    <rect x="1275" y="130" width="150" height="58" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+    <text x="1350" y="156" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Subscriber</text>
+    <text x="1350" y="174" font-size="10" fill="#475569" text-anchor="middle">遗嘱消息订阅者</text>
+  </g>
+
+  <!-- ===== Messages ===== -->
+  <g font-size="12.5" fill="#0F172A">
+
+    <!-- ① CONNECT -->
+    <text x="555" y="232" text-anchor="middle">① CONNECT（ClientID=sensor01, CleanSession=false, KeepAlive=60s, Will）</text>
+    <line x1="295" y1="240" x2="815" y2="240" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+    <!-- ② CONNACK -->
+    <text x="555" y="288" text-anchor="middle" fill="#1E40AF">② CONNACK（SessionPresent=false，新建会话）</text>
+    <line x1="815" y1="296" x2="295" y2="296" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+    <!-- ③ SUBSCRIBE -->
+    <text x="555" y="344" text-anchor="middle">③ SUBSCRIBE（temp/room1, QoS 1）</text>
+    <line x1="295" y1="352" x2="815" y2="352" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+    <!-- ④ SUBACK -->
+    <text x="555" y="400" text-anchor="middle" fill="#1E40AF">④ SUBACK（ granted QoS 1 ）</text>
+    <line x1="815" y1="408" x2="295" y2="408" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+    <!-- ⑤ PUBLISH -->
+    <text x="555" y="456" text-anchor="middle">⑤ PUBLISH（temp/room1, 25.3°C, QoS 1）</text>
+    <line x1="295" y1="464" x2="815" y2="464" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+    <!-- ⑥ PUBACK -->
+    <text x="555" y="512" text-anchor="middle" fill="#1E40AF">⑥ PUBACK</text>
+    <line x1="815" y1="520" x2="295" y2="520" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+    <!-- ⑦ PINGREQ -->
+    <text x="555" y="568" text-anchor="middle">⑦ PINGREQ（60s 内无数据时发送）</text>
+    <line x1="295" y1="576" x2="815" y2="576" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+    <!-- ⑧ PINGRESP -->
+    <text x="555" y="624" text-anchor="middle" fill="#1E40AF">⑧ PINGRESP</text>
+    <line x1="815" y1="632" x2="295" y2="632" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+    <!-- ⑨ 网络中断 -->
+    <line x1="200" y1="688" x2="1380" y2="688" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="7 4"/>
+    <rect x="540" y="676" width="340" height="22" rx="11" fill="#FFFFFF" stroke="#E11D48"/>
+    <text x="710" y="691" text-anchor="middle" fill="#E11D48" font-weight="700">⑨ 网络中断 · 双方启动超时计时器</text>
+
+    <!-- ⑩ Broker self: 超时判定 -->
+    <path d="M 820 738 L 905 738 L 905 752 L 825 752" fill="none" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <text x="960" y="740" fill="#64748B">⑩ Broker 超时判定 Client 离线</text>
+    <text x="960" y="756" font-size="10.5" fill="#64748B">t ≈ 1.5 × KeepAlive = 90s</text>
+
+    <!-- ⑪ Will Message → Subscriber -->
+    <text x="1085" y="792" text-anchor="middle" fill="#475569">⑪ PUBLISH（Will Message → will/topic）</text>
+    <line x1="825" y1="800" x2="1345" y2="800" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+    <!-- ⑫ Client self: 指数退避重连 -->
+    <path d="M 290 850 L 205 850 L 205 864 L 285 864" fill="none" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <text x="195" y="842" text-anchor="end" fill="#64748B">⑫ 指数退避重连</text>
+    <text x="195" y="858" text-anchor="end" font-size="10.5" fill="#64748B">1s · 2s · 4s …</text>
+
+    <!-- ⑬ CONNECT (Reconnect) — 主链路高亮 -->
+    <text x="555" y="904" text-anchor="middle" fill="#1E40AF" font-weight="700">⑬ CONNECT（重连, ClientID=sensor01, CleanSession=false）</text>
+    <line x1="295" y1="912" x2="815" y2="912" stroke="#2563EB" stroke-width="2.6" marker-end="url(#ah-blue)"/>
+
+    <!-- ⑭ CONNACK SessionPresent=true — 主链路 -->
+    <text x="555" y="960" text-anchor="middle" fill="#1E40AF" font-weight="700">⑭ CONNACK（SessionPresent=true，恢复持久会话）</text>
+    <line x1="815" y1="968" x2="295" y2="968" stroke="#2563EB" stroke-width="2.6" marker-end="url(#ah-blue)"/>
+
+    <!-- ⑮ 离线缓存消息推送 — 主链路 -->
+    <text x="555" y="1016" text-anchor="middle" fill="#1E40AF" font-weight="700">⑮ PUBLISH（推送断线期间缓存的 QoS 1/2 消息）</text>
+    <line x1="815" y1="1024" x2="295" y2="1024" stroke="#2563EB" stroke-width="2.6" marker-end="url(#ah-blue)"/>
+
+    <!-- main-path label -->
+    <text x="1170" y="940" font-size="10.5" fill="#2563EB" font-style="italic">主链路：重连 → 恢复 → 投递</text>
+  </g>
+
+  <!-- ===== Callout notes (right margin) ===== -->
+  <g font-size="10.5">
+    <rect x="1420" y="244" width="150" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="1430" y="262" fill="#334155" font-weight="700">握手：同步请求-确认</text>
+    <text x="1430" y="278" fill="#64748B">CONNECT → CONNACK</text>
+    <text x="1430" y="290" fill="#64748B">一一对应阻塞式</text>
+
+    <rect x="1420" y="714" width="150" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="1430" y="732" fill="#334155" font-weight="700">心跳超时阈值</text>
+    <text x="1430" y="748" fill="#64748B">Broker 以 1.5×KA 判定</text>
+    <text x="1430" y="760" fill="#64748B">示例 ≈ 90s</text>
+
+    <rect x="1420" y="784" width="150" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="1430" y="802" fill="#334155" font-weight="700">遗嘱广播</text>
+    <text x="1430" y="818" fill="#64748B">Will Message 发布给</text>
+    <text x="1430" y="830" fill="#64748B">will/topic 全部订阅者</text>
+  </g>
+
+  <!-- ===== Separator + Legend ===== -->
+  <line x1="40" y1="1075" x2="1560" y2="1075" stroke="#E2E8F0"/>
+  <g font-size="11" fill="#475569">
+    <!-- swatches -->
+    <rect x="60" y="1097" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="82" y="1107">Client 客户端</text>
+
+    <rect x="190" y="1097" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="212" y="1107">Broker 代理</text>
+
+    <rect x="312" y="1097" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+    <text x="334" y="1107">Subscriber 订阅者</text>
+
+    <line x1="470" y1="1103" x2="510" y2="1103" stroke="#0F172A" stroke-width="2"/>
+    <polygon points="510,1103 503,1099 503,1107" fill="#0F172A"/>
+    <text x="518" y="1107">同步请求 / 响应</text>
+
+    <line x1="650" y1="1103" x2="690" y2="1103" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4"/>
+    <polygon points="690,1103 683,1099 683,1107" fill="#64748B"/>
+    <text x="698" y="1107">异步广播 / 内部自消息</text>
+
+    <line x1="870" y1="1103" x2="910" y2="1103" stroke="#2563EB" stroke-width="2.6"/>
+    <polygon points="910,1103 903,1099 903,1107" fill="#2563EB"/>
+    <text x="918" y="1107" fill="#1E40AF" font-weight="700">主链路（重连恢复）</text>
+
+    <line x1="1080" y1="1103" x2="1120" y2="1103" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="7 4"/>
+    <text x="1128" y="1107" fill="#E11D48">网络中断 / 故障事件</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="1148" font-size="10" fill="#94A3B8" text-anchor="middle">图9-4 MQTT 会话连接与心跳交互示意。Client(sensor01) 与 Broker 从连接建立、心跳维持、网络断线、遗嘱执行到指数退避重连并恢复会话的完整过程。KeepAlive=60s，Broker 以 1.5 倍超时（≈90s）判定离线；重连后推送断线期间缓存的 QoS 1/2 消息。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自上而下时间轴，左侧Client生命线，右侧Broker生命线，右侧偏下灰色Subscriber。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

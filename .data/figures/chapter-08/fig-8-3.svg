@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="27.857" y="24.000" width="1144.286" height="712.000" viewBox="0 0 1800.000 1120.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1120" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">数据脱敏与匿名化决策流程</text>
+  <text x="84" y="68" font-size="12" fill="#64748B">Data Masking &amp; Anonymization Decision Flow · 第八章 · 发布前必经的安全门禁</text>
+
+  <rect x="1640" y="26" width="120" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1700" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">FLOWCHART</text>
+
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Region boundary ===== -->
+  <rect x="60" y="120" width="1680" height="840" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="76" y="110" width="150" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="151" y="126" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务域 · 核心服务能力边界</text>
+
+  <!-- ===== Connections (drawn first so nodes sit on top) ===== -->
+
+  <!-- main vertical spine: start -> classify -> deidentify -> diamond -->
+  <path d="M900,196 V236" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <path d="M900,292 V332" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <path d="M900,388 V428" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+
+  <!-- diamond -> 强匿名化 (高敏感, main critical path) -->
+  <path d="M1020,488 H1240 V588" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <!-- diamond -> 弱脱敏 (低敏感, auto low-risk path) -->
+  <path d="M780,488 H560 V588" fill="none" stroke="#10B981" stroke-width="2.5" marker-end="url(#ah-green)"/>
+
+  <!-- 强匿名化 -> 匿名+差分隐私 -->
+  <path d="M1240,644 V684" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <!-- 匿名+差分隐私 -> risk (merge from right) -->
+  <path d="M1240,740 V752 H900 V780" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <!-- 弱脱敏 -> risk (merge from left, green) -->
+  <path d="M560,644 V752 H900" fill="none" stroke="#10B981" stroke-width="2.5"/>
+
+  <!-- risk -> publish -->
+  <path d="M900,836 V876" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+
+  <!-- feedback loop: risk NOT passed -> back to 强匿名化 (red dashed) -->
+  <path d="M1020,808 H1500 V616 H1352" fill="none" stroke="#E11D48" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-red)"/>
+
+  <!-- branch labels -->
+  <rect x="630" y="478" width="76" height="20" rx="10" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="668" y="492" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">低敏感</text>
+  <rect x="1094" y="478" width="76" height="20" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="1132" y="492" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">高敏感</text>
+
+  <!-- feedback label -->
+  <rect x="1416" y="700" width="168" height="22" rx="11" fill="#FFFFFF" stroke="#E11D48" stroke-width="1"/>
+  <text x="1500" y="715" font-size="11" font-weight="600" fill="#E11D48" text-anchor="middle">未通过 · 回炉加固</text>
+
+  <!-- ===== Nodes ===== -->
+
+  <!-- N1 开始 -->
+  <rect x="790" y="140" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="900" y="166" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">开始 · 数据发布请求</text>
+  <text x="900" y="184" font-size="10" fill="#64748B" text-anchor="middle">start · 触发脱敏管线</text>
+
+  <!-- N2 敏感等级分类 -->
+  <rect x="790" y="236" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="900" y="262" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">敏感等级分类</text>
+  <text x="900" y="280" font-size="10" fill="#64748B" text-anchor="middle">classify · 识别 PII 字段</text>
+
+  <!-- N3 去标识化处理 -->
+  <rect x="790" y="332" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="900" y="358" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">去标识化处理</text>
+  <text x="900" y="376" font-size="10" fill="#64748B" text-anchor="middle">deidentify · 移除直接标识符</text>
+
+  <!-- N4 决策菱形 -->
+  <polygon points="900,428 1020,488 900,548 780,488" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="900" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">敏感等级?</text>
+  <text x="900" y="504" font-size="10" fill="#64748B" text-anchor="middle">branch · 判定分流</text>
+
+  <!-- N5 弱脱敏 (low-risk, green) -->
+  <rect x="450" y="588" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2.5"/>
+  <text x="560" y="614" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">弱脱敏</text>
+  <text x="560" y="632" font-size="10" fill="#64748B" text-anchor="middle">weak · 掩码 / 替换 / 截断</text>
+
+  <!-- N6 强匿名化 (main, blue) -->
+  <rect x="1130" y="588" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="1240" y="614" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">强匿名化</text>
+  <text x="1240" y="632" font-size="10" fill="#64748B" text-anchor="middle">strong · k-匿名 / 泛化</text>
+
+  <!-- N7 匿名 + 差分隐私注入 -->
+  <rect x="1120" y="684" width="240" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1240" y="710" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">匿名 + 差分隐私注入</text>
+  <text x="1240" y="728" font-size="10" fill="#64748B" text-anchor="middle">DP · 噪声扰动 · ε-预算</text>
+
+  <!-- N8 重识别风险评估 (risk gate, red) -->
+  <rect x="780" y="780" width="240" height="56" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2.5"/>
+  <text x="900" y="806" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">重识别风险评估</text>
+  <text x="900" y="824" font-size="10" fill="#64748B" text-anchor="middle">risk · 安全门禁 · 通过?</text>
+
+  <!-- N9 数据发布 -->
+  <rect x="790" y="876" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="900" y="902" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据发布</text>
+  <text x="900" y="920" font-size="10" fill="#64748B" text-anchor="middle">publish · 对外提供</text>
+
+  <!-- ===== Callout (left of risk gate) ===== -->
+  <rect x="250" y="788" width="280" height="64" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="264" y="810" font-size="12" font-weight="700" fill="#0F172A">关键取舍</text>
+  <text x="264" y="828" font-size="11" fill="#334155">掩盖 ≠ 匿名：弱脱敏只是遮</text>
+  <text x="264" y="844" font-size="11" fill="#334155">挡；强匿名化须经评估门禁。</text>
+
+  <!-- separator before legend -->
+  <line x1="60" y1="978" x2="1740" y2="978" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Legend ===== -->
+  <text x="76" y="1006" font-size="12" font-weight="700" fill="#475569">图例</text>
+
+  <rect x="130" y="996" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="158" y="1007" font-size="11" fill="#475569">主链路 · 必经</text>
+
+  <rect x="270" y="996" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="298" y="1007" font-size="11" fill="#475569">低风险 · 自动路径</text>
+
+  <rect x="430" y="996" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="458" y="1007" font-size="11" fill="#475569">风险评估 · 安全门禁</text>
+
+  <rect x="600" y="996" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="628" y="1007" font-size="11" fill="#475569">判定分流</text>
+
+  <line x1="710" y1="1003" x2="740" y2="1003" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="748" y="1007" font-size="11" fill="#475569">回传 / 异步反馈（未通过回炉）</text>
+
+  <text x="1740" y="1007" font-size="10" fill="#94A3B8" text-anchor="end">资料来源：[S2]</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="1066" font-size="10" fill="#94A3B8" text-anchor="middle">图 8-10　大多数项目的问题在于混淆脱敏与匿名化：做一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估。</text>
+  <text x="900" y="1084" font-size="10" fill="#94A3B8" text-anchor="middle">Fig. 8-10　Decision flow for data masking vs. anonymization — strong anonymization must pass a re-identification risk assessment before release.</text>
+  </svg>
+</svg>

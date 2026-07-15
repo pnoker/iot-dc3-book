@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图14-4 AGI时代物联网架构演进</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="66.400" width="1152.000" height="627.200" viewBox="0 0 1800.000 980.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1800" height="980" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- ============ 标题区 ============ -->
+  <circle cx="64" cy="44" r="6" fill="#2563EB"/>
+  <text x="84" y="50" font-size="22" font-weight="700" fill="#0F172A">图14-4 AI 运维流程：训练 → 部署 → 推理</text>
+  <text x="84" y="74" font-size="12" fill="#64748B">从历史数据训练异常检测模型 → 微服务化部署 → 在线推理与规则引擎联动</text>
+
+  <rect x="1666" y="30" width="104" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1718" y="47" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">FLOWCHART</text>
+
+  <line x1="0" y1="103" x2="1800" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ============ 阶段背景与分隔 ============ -->
+  <line x1="780" y1="125" x2="780" y2="715" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="6 6"/>
+  <line x1="1020" y1="125" x2="1020" y2="715" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="6 6"/>
+
+  <!-- 阶段标签 -->
+  <text x="390" y="150" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">训练阶段</text>
+  <text x="390" y="170" font-size="10" fill="#64748B" text-anchor="middle">历史数据准备与模型训练</text>
+
+  <text x="900" y="150" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">部署阶段</text>
+  <text x="900" y="170" font-size="10" fill="#64748B" text-anchor="middle">模型热加载及推理服务暴露</text>
+
+  <text x="1395" y="150" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">推理阶段</text>
+  <text x="1395" y="170" font-size="10" fill="#64748B" text-anchor="middle">实时推理与规则引擎联动</text>
+
+  <!-- 阶段淡背景 -->
+  <rect x="30" y="185" width="740" height="510" fill="#F8FAFC" opacity="0.6" rx="10"/>
+  <rect x="790" y="185" width="220" height="510" fill="#F8FAFC" opacity="0.6" rx="10"/>
+  <rect x="1030" y="185" width="740" height="510" fill="#F8FAFC" opacity="0.6" rx="10"/>
+
+  <!-- ============ 训练阶段组件 ============ -->
+  <!-- data_center_hist (database, purple) -->
+  <ellipse cx="130" cy="458" rx="70" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M60,458 L60,532 A70,8 0 0 0 200,532 L200,458" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="130" y="497" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">历史数据</text>
+  <text x="130" y="515" font-size="9" fill="#64748B" text-anchor="middle">数据中心 · 时序</text>
+
+  <!-- feature_eng (blue) -->
+  <rect x="235" y="450" width="135" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="302" y="486" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">特征工程</text>
+  <text x="302" y="506" font-size="9" fill="#64748B" text-anchor="middle">窗口 · 归一 · 标签</text>
+
+  <!-- model_train (orange) -->
+  <rect x="410" y="450" width="135" height="90" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="477" y="486" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">模型训练</text>
+  <text x="477" y="506" font-size="9" fill="#64748B" text-anchor="middle">LSTM / 分类</text>
+
+  <!-- model_export (purple, data) -->
+  <rect x="585" y="450" width="135" height="90" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="652" y="486" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">模型导出</text>
+  <text x="652" y="506" font-size="9" fill="#64748B" text-anchor="middle">SavedModel</text>
+
+  <!-- 训练阶段箭头 -->
+  <line x1="200" y1="495" x2="231" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="215" y="487" font-size="9" fill="#475569" text-anchor="middle">历史数据</text>
+
+  <line x1="370" y1="495" x2="406" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="388" y="487" font-size="9" fill="#475569" text-anchor="middle">特征矩阵</text>
+
+  <line x1="545" y1="495" x2="581" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="563" y="487" font-size="9" fill="#475569" text-anchor="middle">训练完成</text>
+
+  <!-- ============ 部署阶段组件 ============ -->
+  <rect x="820" y="450" width="160" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="900" y="486" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">TF Serving</text>
+  <text x="900" y="506" font-size="9" fill="#64748B" text-anchor="middle">gRPC / REST 端点</text>
+  <text x="900" y="522" font-size="9" fill="#64748B" text-anchor="middle">热版本管理</text>
+
+  <!-- model_export -> tf_serving -->
+  <line x1="720" y1="495" x2="816" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="768" y="487" font-size="9" fill="#475569" text-anchor="middle">模型文件</text>
+
+  <!-- ============ 推理阶段组件 ============ -->
+  <!-- agent_center (orange) -->
+  <rect x="1080" y="250" width="160" height="90" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1160" y="286" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">智能中心</text>
+  <text x="1160" y="306" font-size="9" fill="#64748B" text-anchor="middle">组合窗口 · 发起推理</text>
+
+  <!-- data_center_realtime (database, purple) -->
+  <ellipse cx="1160" cy="468" rx="80" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M1080,468 L1080,542 A80,8 0 0 0 1240,542 L1240,468" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1160" y="507" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">实时位号</text>
+  <text x="1160" y="525" font-size="9" fill="#64748B" text-anchor="middle">数据中心 · 衍生回写</text>
+
+  <!-- rule_engine (blue) -->
+  <rect x="1300" y="460" width="150" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1375" y="495" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">规则引擎</text>
+  <text x="1375" y="515" font-size="9" fill="#64748B" text-anchor="middle">阈值 · 生成告警</text>
+
+  <!-- alarm_svc (gray) -->
+  <rect x="1510" y="460" width="150" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1585" y="495" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">告警服务</text>
+  <text x="1585" y="515" font-size="9" fill="#64748B" text-anchor="middle">通知 · 持久化</text>
+
+  <!-- 推理阶段箭头 -->
+  <!-- 实时位号 -> 智能中心 (dashed gray, up) -->
+  <line x1="1140" y1="460" x2="1140" y2="344" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1133" y="392" font-size="9" fill="#475569" text-anchor="end">实时位号</text>
+  <text x="1133" y="406" font-size="9" fill="#475569" text-anchor="end">RabbitMQ</text>
+
+  <!-- 智能中心 -> 实时位号 (MAIN: dashed purple, highlighted write-back) -->
+  <line x1="1185" y1="340" x2="1185" y2="464" stroke="#7C3AED" stroke-width="2.6" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+  <text x="1193" y="395" font-size="10" font-weight="700" fill="#7C3AED">衍生位号回写</text>
+  <text x="1193" y="409" font-size="9" fill="#7C3AED">（主链路 · 复用规则层）</text>
+
+  <!-- 智能中心 -> TF Serving (solid blue, inference request, routes left+down) -->
+  <path d="M1080,295 L1000,295 L1000,495 L986,495" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1042" y="287" font-size="9" fill="#2563EB" text-anchor="middle">推理请求 REST</text>
+
+  <!-- 实时位号 -> 规则引擎 (solid blue) -->
+  <line x1="1240" y1="503" x2="1296" y2="503" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1268" y="495" font-size="9" fill="#475569" text-anchor="middle">读衍生位号</text>
+
+  <!-- 规则引擎 -> 告警服务 (dashed red) -->
+  <line x1="1450" y1="503" x2="1506" y2="503" stroke="#E11D48" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-red)"/>
+  <text x="1478" y="495" font-size="9" fill="#E11D48" text-anchor="middle">触发告警</text>
+
+  <!-- ============ Callouts ============ -->
+  <rect x="60" y="755" width="820" height="62" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="78" y="780" font-size="11" fill="#334155" font-weight="600">① 推理结果作为衍生位号回写数据中心，复用平台规则层。</text>
+  <text x="78" y="800" font-size="10" fill="#64748B">智能中心只需把输出写成标准位号，告警与展示链路无需感知“AI 还是物理传感器”。</text>
+
+  <rect x="900" y="755" width="840" height="62" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="918" y="780" font-size="11" fill="#334155" font-weight="600">② 规则引擎只判断数值，不关心来源是物理传感器还是 AI 模型。</text>
+  <text x="918" y="800" font-size="10" fill="#64748B">衍生位号与物理位号走同一消费通路，阈值超限即生成告警事件进入告警服务。</text>
+
+  <!-- ============ 图例 ============ -->
+  <line x1="0" y1="845" x2="1800" y2="845" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="60" y="868" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="84" y="878" font-size="11" fill="#334155">平台核心组件</text>
+
+  <rect x="220" y="868" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="244" y="878" font-size="11" fill="#334155">AI / 智能组件</text>
+
+  <rect x="370" y="868" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="394" y="878" font-size="11" fill="#334155">数据组件</text>
+
+  <rect x="500" y="868" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="524" y="878" font-size="11" fill="#334155">告警 / 应用组件</text>
+
+  <line x1="670" y1="874" x2="706" y2="874" stroke="#2563EB" stroke-width="2"/>
+  <text x="714" y="878" font-size="11" fill="#334155">实线 · 主链路 / 同步</text>
+
+  <line x1="900" y1="874" x2="936" y2="874" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="944" y="878" font-size="11" fill="#334155">虚线 · 回写 / 异步</text>
+
+  <line x1="1130" y1="874" x2="1166" y2="874" stroke="#E11D48" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="1174" y="878" font-size="11" fill="#334155">虚线 · 告警事件</text>
+
+  <line x1="1340" y1="874" x2="1376" y2="874" stroke="#7C3AED" stroke-width="2.6" stroke-dasharray="6 4"/>
+  <text x="1384" y="878" font-size="11" fill="#7C3AED" font-weight="600">主链路高亮 · 衍生位号回写</text>
+
+  <!-- ============ Caption ============ -->
+  <text x="900" y="940" font-size="10" fill="#94A3B8" text-anchor="middle">图14-4 AI 运维流程覆盖从模型训练到在线推理、再到与规则引擎联动的完整闭环。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">左右对比。左侧为传统IoT平台分层（设备层、接入层、平台层、应用层，智能层内嵌规则引擎与固定模型）。右侧为AGI时代平台分层（设备层、接入层、平台层、智能层、安全护栏层、应用层）。智能层细分为Agent编排层与模型调度网关；安全护栏层包含决策校验服务与人工接管接口。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

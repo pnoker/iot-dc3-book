@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic 中心决策执行流程</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="30.400" y="24.000" width="1139.200" height="712.000" viewBox="0 0 1600.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===== Title region ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">Agentic 中心决策执行流程</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">横向时序图：用户/调度器 → Agentic 中心（智能中枢）→ 元数据/数据/规划 → Gateway → 设备驱动 → 现场设备</text>
+  <rect x="1462" y="24" width="110" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1517" y="45" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">SEQUENCE</text>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Lifelines (participant centers) =====
+       p1=120 p2=335 p3=550 p4=765 p5=980 p6=1180 p7=1420 -->
+  <g stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="4 4">
+    <line x1="120"  y1="200" x2="120"  y2="830"/>
+    <line x1="335"  y1="200" x2="335"  y2="830"/>
+    <line x1="550"  y1="200" x2="550"  y2="830"/>
+    <line x1="765"  y1="200" x2="765"  y2="830"/>
+    <line x1="980"  y1="200" x2="980"  y2="830"/>
+    <line x1="1180" y1="200" x2="1180" y2="830"/>
+    <line x1="1420" y1="200" x2="1420" y2="830"/>
+  </g>
+
+  <!-- Activation bar on Agentic 中心 (orchestrator) -->
+  <rect x="329" y="220" width="12" height="540" rx="2" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <!-- Activation bar on Gateway -->
+  <rect x="974" y="540" width="12" height="200" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <!-- Activation bar on 设备驱动 -->
+  <rect x="1174" y="580" width="12" height="120" rx="2" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+
+  <!-- ===== Participant cards ===== -->
+  <!-- p1 用户/调度器 (application -> blue, actor) -->
+  <g>
+    <circle cx="120" cy="138" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <line x1="120" y1="149" x2="120" y2="170" stroke="#2563EB" stroke-width="2"/>
+    <line x1="106" y1="159" x2="134" y2="159" stroke="#2563EB" stroke-width="2"/>
+    <line x1="120" y1="170" x2="110" y2="188" stroke="#2563EB" stroke-width="2"/>
+    <line x1="120" y1="170" x2="130" y2="188" stroke="#2563EB" stroke-width="2"/>
+    <rect x="50" y="150" width="0" height="0"/>
+    <text x="120" y="200" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">用户/调度器</text>
+  </g>
+
+  <!-- p2 Agentic 中心 (ai -> orange, primary) -->
+  <g>
+    <rect x="265" y="128" width="140" height="60" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.5"/>
+    <rect x="265" y="128" width="140" height="6" rx="3" fill="#F59E0B"/>
+    <text x="335" y="158" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Agentic 中心</text>
+    <text x="335" y="176" font-size="10" fill="#64748B" text-anchor="middle">orchestrator · 智能决策域</text>
+  </g>
+
+  <!-- p3 Manager 中心 (platform -> blue) -->
+  <g>
+    <rect x="480" y="128" width="140" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="550" y="158" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Manager 中心</text>
+    <text x="550" y="176" font-size="10" fill="#64748B" text-anchor="middle">metadata · 平台服务域</text>
+  </g>
+
+  <!-- p4 Data 中心 (data -> purple) -->
+  <g>
+    <rect x="695" y="128" width="140" height="60" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="765" y="158" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Data 中心</text>
+    <text x="765" y="176" font-size="10" fill="#64748B" text-anchor="middle">data · 数据资产域</text>
+  </g>
+
+  <!-- p5 Gateway (platform -> blue) -->
+  <g>
+    <rect x="910" y="128" width="140" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="980" y="158" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Gateway</text>
+    <text x="980" y="176" font-size="10" fill="#64748B" text-anchor="middle">gateway · 平台服务域</text>
+  </g>
+
+  <!-- p6 设备驱动 (edge -> green) -->
+  <g>
+    <rect x="1110" y="128" width="140" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <text x="1180" y="158" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">设备驱动</text>
+    <text x="1180" y="176" font-size="10" fill="#64748B" text-anchor="middle">driver · 边缘接入域</text>
+  </g>
+
+  <!-- p7 现场设备 (edge -> green) -->
+  <g>
+    <rect x="1350" y="128" width="140" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <text x="1420" y="158" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">现场设备</text>
+    <text x="1420" y="176" font-size="10" fill="#64748B" text-anchor="middle">device · 边缘接入域</text>
+  </g>
+
+  <!-- ===== Messages ===== -->
+  <!-- M1 p1 -> p2 指令/意图 -->
+  <text x="227" y="244" font-size="11" fill="#0F172A" text-anchor="middle">① 指令 / 意图</text>
+  <line x1="120" y1="252" x2="329" y2="252" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- M2 p2 -> p3 获取设备元数据 -->
+  <text x="439" y="294" font-size="11" fill="#0F172A" text-anchor="middle">② 获取设备元数据</text>
+  <line x1="341" y1="302" x2="550" y2="302" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- M3 p3 -> p2 返回 设备ID/位号ID (dashed) -->
+  <text x="439" y="344" font-size="11" fill="#475569" text-anchor="middle">③ 设备ID / 位号ID</text>
+  <line x1="550" y1="352" x2="341" y2="352" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+  <!-- M4 p2 -> p4 获取实时位号值 -->
+  <text x="553" y="394" font-size="11" fill="#0F172A" text-anchor="middle">④ 获取实时位号值</text>
+  <line x1="341" y1="402" x2="765" y2="402" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- M5 p4 -> p2 返回 实时位号值 (dashed) -->
+  <text x="553" y="444" font-size="11" fill="#475569" text-anchor="middle">⑤ 实时位号值</text>
+  <line x1="765" y1="452" x2="341" y2="452" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+  <!-- M6 p2 self LLM 推理规划 -->
+  <path d="M 341 490 Q 430 490 430 510 Q 430 530 341 530" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="446" y="505" font-size="11" fill="#0F172A">⑥ LLM 推理规划</text>
+  <text x="446" y="520" font-size="9" fill="#64748B">意图解析 · 规则校验 · 是否二次确认</text>
+
+  <!-- M7 p2 -> p5 下发写指令 -->
+  <text x="660" y="568" font-size="11" fill="#0F172A" text-anchor="middle">⑦ 下发写指令（高危校验）</text>
+  <line x1="341" y1="576" x2="974" y2="576" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- M8 p5 -> p6 指令转发 -->
+  <text x="1077" y="610" font-size="11" fill="#0F172A" text-anchor="middle">⑧ 指令转发</text>
+  <line x1="986" y1="618" x2="1174" y2="618" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- M9 p6 -> p7 执行 (green) -->
+  <text x="1300" y="652" font-size="11" fill="#0F172A" text-anchor="middle">⑨ 执行动作</text>
+  <line x1="1186" y1="660" x2="1420" y2="660" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+
+  <!-- M10 p7 -> p6 回执 (dashed) -->
+  <text x="1300" y="694" font-size="11" fill="#475569" text-anchor="middle">⑩ 执行回执</text>
+  <line x1="1420" y1="702" x2="1186" y2="702" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+  <!-- M11 p6 -> p5 回执 (dashed) -->
+  <text x="1077" y="736" font-size="11" fill="#475569" text-anchor="middle">⑪ 驱动回执</text>
+  <line x1="1174" y1="744" x2="986" y2="744" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+  <!-- M12 p5 -> p2 回执 (dashed) -->
+  <text x="660" y="778" font-size="11" fill="#475569" text-anchor="middle">⑫ 下发回执 / 状态</text>
+  <line x1="974" y1="786" x2="341" y2="786" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="855" x2="1560" y2="855" stroke="#E2E8F0"/>
+  <text x="40" y="884" font-size="12" font-weight="700" fill="#0F172A">图例</text>
+
+  <g font-size="11" fill="#475569">
+    <!-- solid request -->
+    <rect x="100" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <line x1="120" y1="880" x2="150" y2="880" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="158" y="884">请求 / 命令（实线）</text>
+
+    <!-- dashed response -->
+    <rect x="320" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+    <line x1="340" y1="880" x2="370" y2="880" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <text x="378" y="884">响应 / 数据返回（虚线）</text>
+
+    <!-- self -->
+    <rect x="560" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <path d="M 580 880 Q 596 880 596 886 Q 596 892 580 892" fill="none" stroke="#F59E0B" stroke-width="1.8"/>
+    <text x="606" y="884">内部处理 / LLM 自环</text>
+
+    <!-- edge action -->
+    <rect x="800" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <line x1="820" y1="880" x2="850" y2="880" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+    <text x="858" y="884">边缘执行（设备写）</text>
+
+    <!-- activation -->
+    <rect x="1020" y="874" width="10" height="12" rx="2" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+    <text x="1040" y="884">激活期（Agentic 中心为中枢）</text>
+  </g>
+
+  <!-- callout -->
+  <g>
+    <rect x="40" y="912" width="1520" height="46" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="56" y="933" font-size="11" fill="#334155">
+      <tspan font-weight="700" fill="#0F172A">主结论：</tspan>
+      Agentic 中心是唯一与外部系统交互的智能中枢——先并行取元数据与实时值，内部 LLM 规划后再统一通过 Gateway 下发；
+      <tspan font-weight="700" fill="#E11D48">高危写指令需二次确认</tspan>
+      ，驱动层只暴露回执、不直接面向业务。
+    </text>
+    <text x="56" y="950" font-size="10" fill="#64748B">责任边界：业务应用域 → 智能决策域 → 平台服务域 / 数据资产域 → 边缘接入域；越层调用仅经 Gateway。</text>
+  </g>
+
+  <!-- caption -->
+  <text x="800" y="985" font-size="10" fill="#94A3B8" text-anchor="middle">图2-9 Agentic 中心决策执行流程（sequence · implementation 视角）</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">horizontal 时序布局，参与者：用户/调度器、Agentic 中心、Manager 中心、Data 中心、Gateway、设备驱动、现场设备。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

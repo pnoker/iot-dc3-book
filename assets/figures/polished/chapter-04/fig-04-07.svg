@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="47" font-size="22" font-weight="700" fill="#0F172A">图4-4 统一接入层四层架构</text>
+  <text x="88" y="72" font-size="12" fill="#64748B">Unified Access Layer · 自上而下四层解耦，协议差异逐层收口</text>
+
+  <!-- type label -->
+  <rect x="1468" y="26" width="92" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1514" y="45" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">LAYERED</text>
+
+  <line x1="64" y1="103" x2="1536" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Left spine: call direction down (blue, solid) ===== -->
+  <text x="170" y="150" font-size="11" fill="#2563EB" font-weight="700" text-anchor="middle">调用方向</text>
+  <text x="170" y="166" font-size="11" fill="#2563EB" font-weight="700" text-anchor="middle">向下</text>
+  <line x1="210" y1="180" x2="210" y2="800" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <!-- small tick marks aligning to each layer -->
+  <line x1="200" y1="210" x2="220" y2="210" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="200" y1="390" x2="220" y2="390" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="200" y1="570" x2="220" y2="570" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="200" y1="750" x2="220" y2="750" stroke="#2563EB" stroke-width="1.5"/>
+
+  <!-- ===== Right spine: data report direction up (gray, dashed) ===== -->
+  <text x="1420" y="760" font-size="11" fill="#64748B" font-weight="700" text-anchor="middle">数据上报</text>
+  <text x="1420" y="776" font-size="11" fill="#64748B" font-weight="700" text-anchor="middle">方向向上</text>
+  <line x1="1380" y1="800" x2="1380" y2="180" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="1370" y1="210" x2="1390" y2="210" stroke="#64748B" stroke-width="1.5"/>
+  <line x1="1370" y1="390" x2="1390" y2="390" stroke="#64748B" stroke-width="1.5"/>
+  <line x1="1370" y1="570" x2="1390" y2="570" stroke="#64748B" stroke-width="1.5"/>
+  <line x1="1370" y1="750" x2="1390" y2="750" stroke="#64748B" stroke-width="1.5"/>
+
+  <!-- ========================================================= -->
+  <!-- Layer 1: 设备抽象层 (green / edge) -->
+  <!-- ========================================================= -->
+  <g>
+    <rect x="280" y="140" width="1040" height="140" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <rect x="280" y="140" width="8" height="140" fill="#10B981"/>
+    <circle cx="330" cy="180" r="18" fill="#10B981"/>
+    <text x="330" y="187" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">L1</text>
+    <text x="366" y="178" font-size="18" font-weight="700" fill="#0F172A">设备抽象层</text>
+    <text x="366" y="200" font-size="11" fill="#475569">维护设备影子（Property / Event / Service），对上暴露统一物模型</text>
+    <text x="366" y="226" font-size="11" fill="#64748B">责任边界：屏蔽设备形态差异，沉淀状态与元数据</text>
+
+    <!-- interface box -->
+    <rect x="940" y="160" width="360" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="956" y="182" font-size="10" font-weight="700" fill="#64748B" letter-spacing="1">INTERFACE</text>
+    <text x="956" y="208" font-size="13" fill="#0F172A">getDeviceShadow()</text>
+    <text x="956" y="232" font-size="13" fill="#0F172A">updateShadow()</text>
+  </g>
+
+  <!-- arrow L1 -> L2 (call down, blue) with interface label -->
+  <line x1="800" y1="280" x2="800" y2="316" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="816" y="304" font-size="11" fill="#2563EB" font-weight="600">toStandardPayload() / fromStandardPayload()</text>
+
+  <!-- ========================================================= -->
+  <!-- Layer 2: 数据解析层 (blue / data) -->
+  <!-- ========================================================= -->
+  <g>
+    <rect x="280" y="320" width="1040" height="140" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="280" y="320" width="8" height="140" fill="#2563EB"/>
+    <circle cx="330" cy="360" r="18" fill="#2563EB"/>
+    <text x="330" y="367" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">L2</text>
+    <text x="366" y="358" font-size="18" font-weight="700" fill="#0F172A">数据解析层</text>
+    <text x="366" y="380" font-size="11" fill="#475569">字节流 ↔ 标准化 JSON / Protobuf 互转，归一化报文语义</text>
+    <text x="366" y="406" font-size="11" fill="#64748B">责任边界：协议编码差异在此收口为统一载荷模型</text>
+
+    <rect x="940" y="340" width="360" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="956" y="362" font-size="10" font-weight="700" fill="#64748B" letter-spacing="1">INTERFACE</text>
+    <text x="956" y="388" font-size="13" fill="#0F172A">toStandardPayload()</text>
+    <text x="956" y="412" font-size="13" fill="#0F172A">fromStandardPayload()</text>
+  </g>
+
+  <!-- arrow L2 -> L3 -->
+  <line x1="800" y1="460" x2="800" y2="496" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="816" y="484" font-size="11" fill="#2563EB" font-weight="600">connect() / keepAlive()</text>
+
+  <!-- ========================================================= -->
+  <!-- Layer 3: 连接管理层 (amber / platform) -->
+  <!-- ========================================================= -->
+  <g>
+    <rect x="280" y="500" width="1040" height="140" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <rect x="280" y="500" width="8" height="140" fill="#F59E0B"/>
+    <circle cx="330" cy="540" r="18" fill="#F59E0B"/>
+    <text x="330" y="547" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">L3</text>
+    <text x="366" y="538" font-size="18" font-weight="700" fill="#0F172A">连接管理层</text>
+    <text x="366" y="560" font-size="11" fill="#475569">维护会话表、心跳、重连，保障链路可用性与状态机</text>
+    <text x="366" y="586" font-size="11" fill="#64748B">责任边界：屏蔽断连/抖动，对上层提供稳定会话语义</text>
+
+    <rect x="940" y="520" width="360" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="956" y="542" font-size="10" font-weight="700" fill="#64748B" letter-spacing="1">INTERFACE</text>
+    <text x="956" y="566" font-size="13" fill="#0F172A">connect() / keepAlive()</text>
+    <text x="956" y="590" font-size="13" fill="#0F172A">onDisconnect()</text>
+  </g>
+
+  <!-- arrow L3 -> L4 -->
+  <line x1="800" y1="640" x2="800" y2="676" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="816" y="664" font-size="11" fill="#2563EB" font-weight="600">read(addr, len) / write(addr, val)</text>
+
+  <!-- ========================================================= -->
+  <!-- Layer 4: 协议泛化层 (cloud-amber / driver) -->
+  <!-- ========================================================= -->
+  <g>
+    <rect x="280" y="680" width="1040" height="140" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+    <rect x="280" y="680" width="8" height="140" fill="#D97706"/>
+    <circle cx="330" cy="720" r="18" fill="#D97706"/>
+    <text x="330" y="727" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">L4</text>
+    <text x="366" y="718" font-size="18" font-weight="700" fill="#0F172A">协议泛化层</text>
+    <text x="366" y="740" font-size="11" fill="#475569">封装具体协议驱动（Modbus / OPC UA / MQTT …），屏蔽总线差异</text>
+    <text x="366" y="766" font-size="11" fill="#64748B">责任边界：协议物理与链路层细节的最终收口点</text>
+
+    <rect x="940" y="700" width="360" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="956" y="722" font-size="10" font-weight="700" fill="#64748B" letter-spacing="1">INTERFACE</text>
+    <text x="956" y="748" font-size="13" fill="#0F172A">read(address, length)</text>
+    <text x="956" y="772" font-size="13" fill="#0F172A">write(address, value)</text>
+  </g>
+
+  <!-- ===== Legend ===== -->
+  <line x1="64" y1="855" x2="1536" y2="855" stroke="#E2E8F0" stroke-width="1"/>
+
+  <text x="64" y="884" font-size="11" font-weight="700" fill="#475569" letter-spacing="1">图例</text>
+
+  <!-- layer color swatches -->
+  <rect x="118" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="140" y="884" font-size="11" fill="#475569">设备抽象层</text>
+
+  <rect x="238" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="260" y="884" font-size="11" fill="#475569">数据解析层</text>
+
+  <rect x="358" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="380" y="884" font-size="11" fill="#475569">连接管理层</text>
+
+  <rect x="478" y="874" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="500" y="884" font-size="11" fill="#475569">协议泛化层</text>
+
+  <!-- line styles -->
+  <line x1="620" y1="880" x2="666" y2="880" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="676" y="884" font-size="11" fill="#475569">同步调用依赖（主链路向下）</text>
+
+  <line x1="900" y1="880" x2="946" y2="880" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="956" y="884" font-size="11" fill="#475569">异步数据回调（上报向上）</text>
+
+  <!-- ===== Callout ===== -->
+  <rect x="64" y="908" width="1472" height="44" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="80" y="929" font-size="11" fill="#334155" font-weight="700">工程取舍：</text>
+  <text x="142" y="929" font-size="11" fill="#334155">上层对下层仅以窄接口（shadow / payload / session / read-write）依赖，协议差异在底层逐层收口；</text>
+  <text x="80" y="945" font-size="11" fill="#334155">每层职责单一、可独立替换，更换协议驱动不影响设备模型与会话语义。</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="978" font-size="10" fill="#94A3B8" text-anchor="middle">图4-4 统一接入层通过四层解耦将协议差异逐层收口：上层对下层是调用依赖，下层对上层通过回调上送数据。</text>
+</svg>

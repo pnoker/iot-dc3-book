@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>表9-1 协议选型快速评估矩阵</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- ===== title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">表9-1 协议选型快速评估矩阵</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">在 MQTT / CoAP / LwM2M / HTTP(S) 之间做快速倾向判断，按决策维度逐行匹配主要推荐</text>
+  <rect x="1600" y="24" width="120" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="1660" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">MATRIX</text>
+  <line x1="80" y1="103" x2="1720" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== matrix ===== -->
+  <!-- table outer frame -->
+  <rect x="80" y="140" width="1640" height="600" rx="12" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <!-- ===== header row ===== -->
+  <rect x="80" y="140" width="1640" height="70" rx="12" fill="#F8FAFC"/>
+  <rect x="80" y="190" width="1640" height="20" fill="#F8FAFC"/>
+  <line x1="80" y1="210" x2="1720" y2="210" stroke="#CBD5E1" stroke-width="1.5"/>
+
+  <!-- column separators -->
+  <line x1="380" y1="140" x2="380" y2="740" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="715" y1="140" x2="715" y2="740" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="1050" y1="140" x2="1050" y2="740" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="1385" y1="140" x2="1385" y2="740" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- header accent bars (per protocol, decorative only — data cells stay neutral) -->
+  <rect x="380" y="140" width="335" height="4" fill="#10B981"/>
+  <rect x="715" y="140" width="335" height="4" fill="#2563EB"/>
+  <rect x="1050" y="140" width="335" height="4" fill="#7C3AED"/>
+  <rect x="1385" y="140" width="335" height="4" fill="#D97706"/>
+
+  <!-- header text -->
+  <text x="230" y="183" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">决策维度</text>
+  <text x="547" y="178" font-size="15" font-weight="700" fill="#10B981" text-anchor="middle">倾向 MQTT</text>
+  <text x="547" y="197" font-size="10" fill="#64748B" text-anchor="middle">发布订阅 · TCP</text>
+  <text x="882" y="178" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">倾向 CoAP</text>
+  <text x="882" y="197" font-size="10" fill="#64748B" text-anchor="middle">请求响应 · UDP</text>
+  <text x="1217" y="178" font-size="15" font-weight="700" fill="#7C3AED" text-anchor="middle">倾向 LwM2M</text>
+  <text x="1217" y="197" font-size="10" fill="#64748B" text-anchor="middle">设备管理 · OMA</text>
+  <text x="1552" y="178" font-size="15" font-weight="700" fill="#D97706" text-anchor="middle">倾向 HTTP/HTTPS</text>
+  <text x="1552" y="197" font-size="10" fill="#64748B" text-anchor="middle">请求响应 · TCP</text>
+
+  <!-- ===== body rows (6 dimensions) ===== -->
+  <!-- row height 88, start y=210 -->
+
+  <!-- row separators -->
+  <line x1="80" y1="298" x2="1720" y2="298" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="80" y1="386" x2="1720" y2="386" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="80" y1="474" x2="1720" y2="474" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="80" y1="562" x2="1720" y2="562" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="80" y1="650" x2="1720" y2="650" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- dimension column: light band -->
+  <rect x="80" y="210" width="300" height="530" fill="#F8FAFC" opacity="0.55"/>
+
+  <!-- Row 1: 网络环境 (y center 254) -->
+  <text x="100" y="250" font-size="14" font-weight="700" fill="#0F172A">网络环境</text>
+  <text x="100" y="270" font-size="10" fill="#64748B">带宽 / 稳定性</text>
+  <text x="547" y="254" font-size="13" fill="#0F172A" text-anchor="middle">弱网 / 不稳定</text>
+  <text x="882" y="254" font-size="13" fill="#0F172A" text-anchor="middle">窄带 / 受限网</text>
+  <text x="1217" y="254" font-size="13" fill="#0F172A" text-anchor="middle">受控弱网</text>
+  <text x="1552" y="254" font-size="13" fill="#0F172A" text-anchor="middle">稳定高带宽</text>
+
+  <!-- Row 2: 功耗约束 (y center 342) -->
+  <text x="100" y="338" font-size="14" font-weight="700" fill="#0F172A">功耗约束</text>
+  <text x="100" y="358" font-size="10" fill="#64748B">电池供电</text>
+  <text x="547" y="342" font-size="13" fill="#0F172A" text-anchor="middle">可低功耗</text>
+  <text x="882" y="342" font-size="13" fill="#0F172A" text-anchor="middle">极低功耗</text>
+  <text x="1217" y="342" font-size="13" fill="#0F172A" text-anchor="middle">低功耗</text>
+  <text x="1552" y="342" font-size="13" fill="#0F172A" text-anchor="middle">无硬约束</text>
+
+  <!-- Row 3: 设备规模 (y center 430) -->
+  <text x="100" y="426" font-size="14" font-weight="700" fill="#0F172A">设备规模</text>
+  <text x="100" y="446" font-size="10" fill="#64748B">连接数</text>
+  <text x="547" y="430" font-size="13" fill="#0F172A" text-anchor="middle">海量连接</text>
+  <text x="882" y="430" font-size="13" fill="#0F172A" text-anchor="middle">中等规模</text>
+  <text x="1217" y="430" font-size="13" fill="#0F172A" text-anchor="middle">海量可管理</text>
+  <text x="1552" y="430" font-size="13" fill="#0F172A" text-anchor="middle">少量终端</text>
+
+  <!-- Row 4: 通信模式 (y center 518) -->
+  <text x="100" y="514" font-size="14" font-weight="700" fill="#0F172A">通信模式</text>
+  <text x="100" y="534" font-size="10" fill="#64748B">消息流向</text>
+  <text x="547" y="518" font-size="13" fill="#0F172A" text-anchor="middle">发布订阅</text>
+  <text x="882" y="518" font-size="13" fill="#0F172A" text-anchor="middle">请求响应</text>
+  <text x="1217" y="518" font-size="13" fill="#0F172A" text-anchor="middle">订阅 + 轮询</text>
+  <text x="1552" y="518" font-size="13" fill="#0F172A" text-anchor="middle">请求响应</text>
+
+  <!-- Row 5: 资源占用 (y center 606) -->
+  <text x="100" y="602" font-size="14" font-weight="700" fill="#0F172A">资源占用</text>
+  <text x="100" y="622" font-size="10" fill="#64748B">RAM / 协议栈</text>
+  <text x="547" y="606" font-size="13" fill="#0F172A" text-anchor="middle">轻量栈</text>
+  <text x="882" y="606" font-size="13" fill="#0F172A" text-anchor="middle">极简栈</text>
+  <text x="1217" y="606" font-size="13" fill="#0F172A" text-anchor="middle">轻量 + OMA</text>
+  <text x="1552" y="606" font-size="13" fill="#0F172A" text-anchor="middle">通用栈</text>
+
+  <!-- Row 6: 管理与集成 (y center 694) -->
+  <text x="100" y="690" font-size="14" font-weight="700" fill="#0F172A">管理与集成</text>
+  <text x="100" y="710" font-size="10" fill="#64748B">运维 / 接入</text>
+  <text x="547" y="694" font-size="13" fill="#0F172A" text-anchor="middle">需自建</text>
+  <text x="882" y="694" font-size="13" fill="#0F172A" text-anchor="middle">需自建</text>
+  <text x="1217" y="694" font-size="13" fill="#0F172A" text-anchor="middle">内置管理</text>
+  <text x="1552" y="694" font-size="13" fill="#0F172A" text-anchor="middle">通用易集成</text>
+
+  <!-- ===== callout (usage guidance) ===== -->
+  <rect x="80" y="762" width="1640" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="100" y="786" font-size="11" font-weight="700" fill="#0F172A">用法</text>
+  <text x="100" y="806" font-size="11" fill="#334155">同一行内，当条件满足某列描述时倾向该协议；可多选但通常只有一个主要推荐 · 若多列同时满足，按约束优先级排序（功耗 &gt; 成本 &gt; 网络可用性）。</text>
+
+  <!-- ===== legend ===== -->
+  <line x1="80" y1="838" x2="1720" y2="838" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="80" y="858" font-size="10" font-weight="700" fill="#475569">图例</text>
+  <rect x="130" y="849" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="152" y="859" font-size="10" fill="#475569">MQTT</text>
+  <rect x="210" y="849" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="232" y="859" font-size="10" fill="#475569">CoAP</text>
+  <rect x="290" y="849" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="312" y="859" font-size="10" fill="#475569">LwM2M</text>
+  <rect x="380" y="849" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="402" y="859" font-size="10" fill="#475569">HTTP/HTTPS</text>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="884" font-size="10" fill="#94A3B8" text-anchor="middle">此矩阵基于第 9 章 9.2–9.4 节讨论的核心权衡整理，适用于典型物联网项目选型场景；列头色带仅作区分，单元格内容保持黑白可读，不构成颜色编码。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">五列表格，第一列“决策维度”，后四列依次为“倾向 MQTT”“倾向 CoAP”“倾向 LwM2M”“倾向 HTTP/HTTPS”</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

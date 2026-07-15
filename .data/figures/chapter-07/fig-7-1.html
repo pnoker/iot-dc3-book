@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-1 Spring AI 集成架构——从配置到响应的请求链路</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="41.569" y="24.000" width="1116.863" height="712.000" viewBox="0 0 1600.000 1020.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1600" height="1020" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  </defs>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">图7-5 Spring AI 集成架构——从配置到响应的请求链路</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">主链路：配置读取 → ChatClient 创建 → 请求封装 → 模型调用 → 响应解包返回</text>
+  <rect x="1430" y="24" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1490" y="44" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">SEQUENCE</text>
+  <line x1="60" y1="103" x2="1540" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Region bands ===== -->
+  <rect x="40" y="118" width="900" height="752" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="960" y="118" width="600" height="752" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="56" y="110" width="148" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="130" y="125" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务域</text>
+  <rect x="976" y="110" width="148" height="22" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1"/>
+  <text x="1050" y="125" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="middle">智能决策域</text>
+
+  <!-- ===== Lifelines ===== -->
+  <line x1="160" y1="208" x2="160" y2="870" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="480" y1="208" x2="480" y2="870" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="800" y1="208" x2="800" y2="870" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="1120" y1="208" x2="1120" y2="870" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="1440" y1="208" x2="1440" y2="870" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- ===== Participant headers ===== -->
+  <!-- Lane 1: Application Code (blue card) -->
+  <rect x="60" y="138" width="200" height="68" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="160" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Application Code</text>
+  <text x="160" y="190" font-size="10" fill="#64748B" text-anchor="middle">业务代码 · @Autowired</text>
+
+  <!-- Lane 2: Application Config (purple card) -->
+  <rect x="380" y="138" width="200" height="68" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="480" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Application Config</text>
+  <text x="480" y="190" font-size="10" fill="#64748B" text-anchor="middle">application.yml</text>
+
+  <!-- Lane 3: Spring AI ChatClient (blue card) -->
+  <rect x="700" y="138" width="200" height="68" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="800" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Spring AI ChatClient</text>
+  <text x="800" y="190" font-size="10" fill="#64748B" text-anchor="middle">自动配置 Bean</text>
+
+  <!-- Lane 4: OpenAI API Adapter (orange card) -->
+  <rect x="1020" y="138" width="200" height="68" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1120" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">OpenAI API Adapter</text>
+  <text x="1120" y="190" font-size="10" fill="#64748B" text-anchor="middle">协议翻译层</text>
+
+  <!-- Lane 5: AI Model Provider (orange hexagon) -->
+  <polygon points="1340,172 1370,138 1510,138 1540,172 1510,206 1370,206" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1440" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AI Model Provider</text>
+  <text x="1440" y="190" font-size="10" fill="#64748B" text-anchor="middle">OpenAI / DeepSeek / Ollama</text>
+
+  <!-- ===== Messages ===== -->
+  <!-- phase label: 启动装配 -->
+  <text x="60" y="246" font-size="10" font-weight="600" fill="#94A3B8">① 启动装配</text>
+
+  <!-- msg1: App Code -> ChatClient : 请求创建 ChatClient (blue solid) -->
+  <rect x="796" y="262" width="8" height="200" fill="#2563EB" opacity="0.08"/>
+  <line x1="160" y1="270" x2="792" y2="270" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="476" y="263" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">请求创建 ChatClient</text>
+
+  <!-- msg2: ChatClient -> Config : 读取 base-url / api-key / model (blue solid) -->
+  <line x1="800" y1="330" x2="488" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="644" y="323" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">读取 base-url / api-key / model</text>
+
+  <!-- msg3: Config -> ChatClient : 返回配置参数 (gray dashed) -->
+  <line x1="480" y1="390" x2="792" y2="390" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="636" y="383" font-size="11" fill="#475569" text-anchor="middle">返回配置参数</text>
+
+  <!-- msg4: ChatClient -> App Code : 注入 ChatClient Bean (gray dashed) -->
+  <line x1="800" y1="450" x2="168" y2="450" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="484" y="443" font-size="11" fill="#475569" text-anchor="middle">注入 ChatClient Bean</text>
+
+  <!-- phase label: 运行时调用 -->
+  <text x="60" y="516" font-size="10" font-weight="600" fill="#94A3B8">② 运行时调用</text>
+
+  <!-- msg5: App Code -> ChatClient : call(prompt)  [MAIN HIGHLIGHT] -->
+  <rect x="160" y="528" width="4" height="290" fill="#2563EB" opacity="0.12"/>
+  <rect x="796" y="528" width="8" height="290" fill="#2563EB" opacity="0.12"/>
+  <line x1="160" y1="540" x2="792" y2="540" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="476" y="533" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">call(prompt)</text>
+
+  <!-- msg6: ChatClient -> Adapter : 转发 prompt (blue solid) -->
+  <line x1="800" y1="600" x2="1112" y2="600" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="956" y="593" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">转发 prompt</text>
+
+  <!-- msg7: Adapter -> Model Provider : POST /v1/chat/completions (JSON) (orange solid) -->
+  <line x1="1120" y1="660" x2="1432" y2="660" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="1276" y="653" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">POST /v1/chat/completions</text>
+
+  <!-- msg8: Model Provider -> Adapter : JSON 响应 (gray dashed) -->
+  <line x1="1440" y1="720" x2="1128" y2="720" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1284" y="713" font-size="11" fill="#475569" text-anchor="middle">流式 / 非流式 JSON 响应</text>
+
+  <!-- msg9: Adapter -> App Code : ChatResponse 对象 (gray dashed, long return) -->
+  <line x1="1120" y1="790" x2="168" y2="790" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="644" y="783" font-size="11" fill="#475569" text-anchor="middle">ChatResponse 对象（解包后返回业务代码）</text>
+
+  <!-- ===== Callout ===== -->
+  <rect x="60" y="888" width="1480" height="40" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <circle cx="82" cy="908" r="4" fill="#F59E0B"/>
+  <text x="98" y="912" font-size="11" fill="#334155">Adapter 是透明代理层——只做协议翻译，不引入额外逻辑；后端切换为云端 GPT 或本地 Ollama 时，上层 ChatClient 调用代码完全不变。</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="60" y1="942" x2="1540" y2="942" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="60" y="952" width="20" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="88" y="964" font-size="11" fill="#475569">Spring Boot Bean</text>
+  <polygon points="224,959 230,952 270,952 276,959 270,966 230,966" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="286" y="964" font-size="11" fill="#475569">外部模型服务</text>
+  <line x1="408" y1="959" x2="442" y2="959" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="452" y="964" font-size="11" fill="#475569">同步调用（主链路）</text>
+  <line x1="620" y1="959" x2="654" y2="959" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="664" y="964" font-size="11" fill="#475569">响应 / 异步返回</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="800" y="1004" font-size="10" fill="#94A3B8" text-anchor="middle">图7-5 Spring AI 集成架构。OpenAI API Adapter 仅做协议翻译，使上层 ChatClient 调用代码对后端模型实现无感知。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自上而下，5 条垂直生命线：Application Config、Spring AI Client Starter、OpenAI API Adapter、AI Model Provider、Application Code</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>
