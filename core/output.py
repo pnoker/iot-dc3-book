@@ -152,8 +152,14 @@ def generate_word_output(
         *,
         reference_docx: str | Path | None = None,
         pandoc_bin: str = "pandoc",
+        toc: bool = True,
+        toc_depth: int = 3,
 ) -> str:
-    """使用 Pandoc 将单文件 Markdown 转为 Word docx。"""
+    """使用 Pandoc 将单文件 Markdown 转为 Word docx。
+
+    toc 启用时，先移除 book.md 中手写的静态 ``# 目录`` 段，再由 pandoc
+    ``--toc`` 生成带页码、可右键更新的 Word 目录域，避免两份目录重复。
+    """
     markdown_path = Path(markdown_file)
     if not markdown_path.exists():
         raise FileNotFoundError(f"Markdown 文件不存在: {markdown_path}")
@@ -163,9 +169,16 @@ def generate_word_output(
 
     word_path = Path(word_file)
     word_path.parent.mkdir(parents=True, exist_ok=True)
+
+    src_path = markdown_path
+    if toc:
+        cleaned = _strip_static_toc(markdown_path.read_text(encoding="utf-8"))
+        src_path = word_path.parent / ".book_for_word.md"
+        src_path.write_text(cleaned, encoding="utf-8")
+
     cmd = [
         resolved_pandoc,
-        str(markdown_path),
+        str(src_path),
         "--from",
         "markdown+pipe_tables+fenced_code_blocks+yaml_metadata_block",
         "--to",
@@ -175,6 +188,8 @@ def generate_word_output(
         "--resource-path",
         os.pathsep.join([str(markdown_path.parent), str(markdown_path.parent.parent)]),
     ]
+    if toc:
+        cmd.extend(["--toc", f"--toc-depth={toc_depth}"])
     if reference_docx:
         reference_path = Path(reference_docx)
         if not reference_path.exists():
@@ -182,11 +197,42 @@ def generate_word_output(
         cmd.extend(["--reference-doc", str(reference_path)])
 
     completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    if toc and src_path != markdown_path and src_path.exists():
+        src_path.unlink()
     if completed.returncode != 0:
         stderr = completed.stderr.strip() or completed.stdout.strip()
         raise RuntimeError(f"Pandoc 生成 Word 失败: {stderr}")
     logger.info("Word 输出完成: %s", word_path)
     return str(word_path)
+
+
+def _strip_static_toc(markdown_text: str) -> str:
+    """移除手写的 ``# 目录`` 静态块，避免与 pandoc ``--toc`` 生成的目录域重复。
+
+    逐行扫描时跟踪 ``\\`\\`\\``` 代码围栏，只在正文识别一级标题，避免误删
+    代码块里以 ``#`` 开头的注释。
+    """
+    lines = markdown_text.split("\n")
+    out: list[str] = []
+    in_code = False
+    skipping = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code = not in_code
+            out.append(line)
+            continue
+        if skipping:
+            # 跳过目录内容，直到下一个正文一级标题
+            if not in_code and stripped.startswith("# ") and stripped != "# 目录":
+                skipping = False
+                out.append(line)
+            continue
+        if not in_code and stripped == "# 目录":
+            skipping = True
+            continue
+        out.append(line)
+    return "\n".join(out)
 
 
 def _render(env: Environment, template_name: str, **context: Any) -> str:
