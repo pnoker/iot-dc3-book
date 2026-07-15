@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图6-1 物联网REST API端点设计示例（示意）</title>
+<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1500px,100vw);height:auto;display:block}</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="920" viewBox="0 0 1500 920" role="img" aria-label="图6-1 物联网REST API端点设计示例" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+  <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+  <marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+
+<rect x="0" y="0" width="1500" height="920" fill="#FFFFFF"/>
+
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图6-1 物联网REST API端点设计示例（示意）</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">后端API端点布局：读写分离、版本控制、资源型路由</text>
+
+<rect x="1342" y="30" width="100" height="24" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1392" y="47" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">DATAFLOW</text>
+
+<line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<rect x="445" y="160" width="210" height="635" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="455" y="152" fill="#2563EB" font-size="11" font-weight="600">平台服务域 · REST API 端点</text>
+
+<line x1="262" y1="210" x2="468" y2="210" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="365" y="200" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">上报数据</text>
+
+<line x1="622" y1="210" x2="1098" y2="210" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="860" y="200" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">传入</text>
+
+<line x1="262" y1="388" x2="468" y2="352" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="350" y="362" text-anchor="middle" fill="#64748B" font-size="10" font-weight="500">查询</text>
+
+<line x1="262" y1="412" x2="468" y2="448" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="350" y="438" text-anchor="middle" fill="#64748B" font-size="10" font-weight="500">查询</text>
+
+<line x1="262" y1="588" x2="468" y2="552" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="345" y="562" text-anchor="middle" fill="#64748B" font-size="10" font-weight="500">创建规则</text>
+
+<line x1="262" y1="612" x2="468" y2="648" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="350" y="638" text-anchor="middle" fill="#64748B" font-size="10" font-weight="500">查询</text>
+
+<line x1="622" y1="750" x2="1098" y2="750" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="860" y="740" text-anchor="middle" fill="#64748B" font-size="10" font-weight="500">下发</text>
+
+<g>
+  <rect x="110" y="180" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="185" y="208" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">设备</text>
+  <text x="185" y="226" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">HTTP / MQTT 接入</text>
+</g>
+
+<g>
+  <rect x="470" y="180" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="208" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">数据上报</text>
+  <text x="545" y="226" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">POST /devices/data</text>
+</g>
+
+<g>
+  <rect x="1100" y="180" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1175" y="208" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">数据处理</text>
+  <text x="1175" y="226" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">流处理 / 持久化</text>
+</g>
+
+<g>
+  <rect x="110" y="370" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="185" y="398" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">前端应用</text>
+  <text x="185" y="416" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">Web / App</text>
+</g>
+
+<g>
+  <rect x="470" y="320" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="348" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">设备查询</text>
+  <text x="545" y="366" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">GET /devices</text>
+</g>
+
+<g>
+  <rect x="470" y="420" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="448" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">历史查询</text>
+  <text x="545" y="466" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">GET /history</text>
+</g>
+
+<g>
+  <rect x="110" y="570" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="185" y="598" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">第三方系统</text>
+  <text x="185" y="616" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">OpenAPI 接入</text>
+</g>
+
+<g>
+  <rect x="470" y="520" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="548" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">规则创建</text>
+  <text x="545" y="566" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">POST /rules</text>
+</g>
+
+<g>
+  <rect x="470" y="620" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="648" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">告警查询</text>
+  <text x="545" y="666" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">GET /alarms</text>
+</g>
+
+<g>
+  <rect x="470" y="720" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="748" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">指令下发</text>
+  <text x="545" y="766" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">POST /command</text>
+</g>
+
+<g>
+  <rect x="1100" y="720" width="150" height="60" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1175" y="748" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">指令服务</text>
+  <text x="1175" y="766" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">设备控制下发</text>
+</g>
+
+<g>
+  <rect x="860" y="335" width="250" height="60" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="875" y="358" fill="#0F172A" font-size="11" font-weight="700">读写分离</text>
+  <text x="875" y="380" fill="#475569" font-size="10" font-weight="500">GET 仅查询 / POST 写入，职责清晰</text>
+</g>
+
+<g>
+  <rect x="860" y="415" width="250" height="60" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="875" y="438" fill="#0F172A" font-size="11" font-weight="700">版本控制</text>
+  <text x="875" y="460" fill="#475569" font-size="10" font-weight="500">统一 /api/v1/ 前缀，平滑演进</text>
+</g>
+
+<g>
+  <rect x="860" y="495" width="250" height="60" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="875" y="518" fill="#0F172A" font-size="11" font-weight="700">资源型路由</text>
+  <text x="875" y="540" fill="#475569" font-size="10" font-weight="500">URL 表达资源：/devices /rules</text>
+</g>
+
+<line x1="58" y1="815" x2="1442" y2="815" stroke="#E2E8F0" stroke-width="1"/>
+
+<g>
+  <rect x="120" y="835" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="142" y="845" fill="#64748B" font-size="11" font-weight="600">设备 / 接入</text>
+
+  <rect x="270" y="835" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="292" y="845" fill="#64748B" font-size="11" font-weight="600">外部调用方</text>
+
+  <rect x="440" y="835" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="462" y="845" fill="#64748B" font-size="11" font-weight="600">API 端点</text>
+
+  <rect x="580" y="835" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="602" y="845" fill="#64748B" font-size="11" font-weight="600">内部服务</text>
+
+  <line x1="720" y1="840" x2="742" y2="840" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="750" y="845" fill="#64748B" font-size="11" font-weight="600">主链路</text>
+
+  <line x1="830" y1="840" x2="852" y2="840" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="860" y="845" fill="#64748B" font-size="11" font-weight="600">数据流方向</text>
+
+  <text x="990" y="845" fill="#64748B" font-size="11" font-weight="600">GET / POST · HTTP 方法</text>
+</g>
+
+<text x="750" y="890" text-anchor="middle" fill="#94A3B8" font-size="10">图6-1 物联网REST API端点设计示例（示意）</text>
+
+</svg>
+</body>
+</html>

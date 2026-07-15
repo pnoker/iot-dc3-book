@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图3-8 TinyML模型训练与部署流程</title>
+<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1600px,100vw);height:auto;display:block}</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="图3-8 TinyML模型训练与部署流程" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+<g id="title">
+<circle cx="64" cy="42" r="6" fill="#2563EB"/>
+<text x="82" y="50" fill="#0F172A" font-size="22" font-weight="700">图3-8 TinyML 模型训练与部署流程</text>
+<text x="82" y="76" fill="#64748B" font-size="12" font-weight="500">PC/云端训练产出量化模型，跨域烧录至 MCU 执行边缘推理</text>
+<rect x="1460" y="32" width="120" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1520" y="51" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">FLOWCHART</text>
+</g>
+<line x1="58" y1="100" x2="1542" y2="100" stroke="#E2E8F0" stroke-width="1"/>
+<g id="regions">
+<rect x="80" y="130" width="620" height="730" rx="12" fill="none" stroke="#2563EB" stroke-dasharray="8 4" stroke-width="1.2"/>
+<text x="100" y="156" fill="#2563EB" font-size="12" font-weight="600">PC / 云端训练</text>
+<rect x="900" y="130" width="620" height="730" rx="12" fill="none" stroke="#10B981" stroke-dasharray="8 4" stroke-width="1.2"/>
+<text x="920" y="156" fill="#10B981" font-size="12" font-weight="600">MCU 嵌入式部署</text>
+</g>
+<g id="arrows">
+<line x1="390" y1="257" x2="390" y2="293" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="390" y1="367" x2="390" y2="403" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="390" y1="477" x2="390" y2="513" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="532" y1="550" x2="1086" y2="550" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+<line x1="1210" y1="602" x2="1210" y2="638" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+<line x1="1210" y1="712" x2="1210" y2="748" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+<path d="M 1210 500 C 1210 355, 700 355, 530 440" fill="none" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+</g>
+<g id="nodes">
+<rect x="250" y="185" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="390" y="219" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">数据准备</text>
+<text x="390" y="240" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">数据集采集 · 清洗标注</text>
+<rect x="250" y="295" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="390" y="329" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">模型训练</text>
+<text x="390" y="350" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">TensorFlow / Keras</text>
+<rect x="250" y="405" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="390" y="439" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">训练后量化</text>
+<text x="390" y="460" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">INT8 后训练量化</text>
+<rect x="250" y="515" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="390" y="549" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">模型转换</text>
+<text x="390" y="570" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">导出 .tflite 文件</text>
+<polygon points="1210,500 1330,550 1210,600 1090,550" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="1210" y="546" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">内存适配?</text>
+<text x="1210" y="565" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">Flash/RAM ≤ MCU 上限</text>
+<rect x="1070" y="640" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="1210" y="674" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">模型烧录</text>
+<text x="1210" y="695" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">写入 STM32 Flash</text>
+<rect x="1070" y="750" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="1210" y="784" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">边缘推理</text>
+<text x="1210" y="805" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">TFLite Micro 运行时</text>
+</g>
+<g id="callouts">
+<rect x="1070" y="185" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="1210" y="216" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">部署目标</text>
+<text x="1210" y="237" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">MCU 端侧低功耗推理</text>
+<rect x="250" y="640" width="280" height="70" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="390" y="671" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">训练工具链</text>
+<text x="390" y="692" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">TensorFlow · TFLite Converter</text>
+<rect x="720" y="533" width="180" height="34" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<text x="810" y="555" text-anchor="middle" fill="#334155" font-size="11" font-weight="600">TFLite 量化模型 (INT8)</text>
+<rect x="1360" y="528" width="150" height="44" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1"/>
+<text x="1435" y="549" text-anchor="middle" fill="#334155" font-size="11" font-weight="600">精度 ↔ 体积</text>
+<text x="1435" y="565" text-anchor="middle" fill="#64748B" font-size="9" font-weight="500">工程取舍</text>
+<rect x="752" y="328" width="136" height="18" rx="3" fill="#FFFFFF"/>
+<text x="820" y="341" text-anchor="middle" fill="#64748B" font-size="11" font-weight="600">不适配 · 重剪枝</text>
+<text x="1248" y="624" fill="#10B981" font-size="11" font-weight="600">适配</text>
+</g>
+<g id="legend">
+<line x1="58" y1="890" x2="1542" y2="890" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="130" y="908" width="20" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="158" y="919" fill="#64748B" font-size="11" font-weight="600">训练与转换环节</text>
+<rect x="330" y="908" width="20" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="358" y="919" fill="#64748B" font-size="11" font-weight="600">嵌入式部署与推理</text>
+<line x1="560" y1="914" x2="585" y2="914" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="593" y="919" fill="#64748B" font-size="11" font-weight="600">反馈重剪枝</text>
+<polygon points="770,906 784,914 770,922 756,914" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="792" y="919" fill="#64748B" font-size="11" font-weight="600">决策判断</text>
+</g>
+<text x="800" y="965" text-anchor="middle" fill="#94A3B8" font-size="10">图3-8 TinyML 部署流程，工具链示例为 TensorFlow Lite Micro 与 STM32Cube.AI</text>
+</svg>
+</body>
+</html>

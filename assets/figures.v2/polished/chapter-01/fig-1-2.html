@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图1-2 PC互联网时代连接架构</title>
+<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1600px,100vw);height:auto;display:block}</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960" role="img" aria-label="图1-2 PC互联网时代连接架构" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+
+<rect x="0" y="0" width="1600" height="960" fill="#FFFFFF"/>
+
+<!-- 标题区 -->
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图1-2 PC互联网时代连接架构</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">PC互联网时代用户—PC—万维网—信息的四层连接链路，物设备尚未纳入联网</text>
+<rect x="1426" y="28" width="116" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1484" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.6">ARCHITECTURE</text>
+<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<!-- 区域边界 -->
+<rect x="300" y="160" width="1160" height="420" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="322" y="186" fill="#2563EB" font-size="11" font-weight="600">平台服务域</text>
+<text x="322" y="202" fill="#94A3B8" font-size="10" font-weight="500">核心服务能力边界</text>
+
+<rect x="1180" y="640" width="280" height="170" rx="12" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="1200" y="665" fill="#10B981" font-size="11" font-weight="600">设备与边缘域（未连接）</text>
+
+<!-- 断开连接指示（平台域底部 → 边缘域顶部，中间断开） -->
+<line x1="1320" y1="580" x2="1320" y2="600" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5 4"/>
+<line x1="1320" y1="620" x2="1320" y2="640" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5 4"/>
+<line x1="1315" y1="606" x2="1325" y2="614" stroke="#94A3B8" stroke-width="1.5"/>
+<line x1="1325" y1="606" x2="1315" y2="614" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="1335" y="614" fill="#64748B" font-size="11" font-weight="600">未连接</text>
+
+<!-- 主链路箭头（高亮，先于节点绘制） -->
+<line x1="260" y1="345" x2="358" y2="345" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+<text x="309" y="335" fill="#334155" font-size="11" font-weight="600" text-anchor="middle">用户操作</text>
+
+<line x1="510" y1="345" x2="598" y2="345" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="554" y="335" fill="#334155" font-size="11" font-weight="600" text-anchor="middle">HTTP 请求</text>
+
+<line x1="750" y1="345" x2="858" y2="345" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="804" y="335" fill="#334155" font-size="11" font-weight="600" text-anchor="middle">检索</text>
+
+<line x1="1030" y1="345" x2="1148" y2="345" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="1089" y="335" fill="#334155" font-size="11" font-weight="600" text-anchor="middle">返回</text>
+
+<!-- TCP/IP 协议族基础带 -->
+<rect x="340" y="470" width="1100" height="60" rx="8" fill="#F5F8FE" stroke="#2563EB" stroke-width="1.5"/>
+<text x="890" y="497" fill="#2563EB" font-size="14" font-weight="700" text-anchor="middle">TCP/IP 协议族</text>
+<text x="890" y="516" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">互联网通信基础</text>
+<text x="890" y="556" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">承载 PC ↔ 万维网 ↔ 信息内容 间全部数据通信</text>
+
+<!-- 节点 -->
+<!-- 用户（外部，灰） -->
+<rect x="120" y="295" width="140" height="100" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<circle cx="190" cy="313" r="4.5" fill="none" stroke="#64748B" stroke-width="1.5"/>
+<path d="M182,328 Q190,321 198,328" fill="none" stroke="#64748B" stroke-width="1.5"/>
+<text x="190" y="352" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">用户</text>
+<text x="190" y="374" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">信息消费者</text>
+
+<!-- 桌面PC（蓝） -->
+<rect x="360" y="295" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<rect x="426" y="311" width="18" height="13" rx="1" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+<line x1="435" y1="324" x2="435" y2="328" stroke="#2563EB" stroke-width="1.5"/>
+<line x1="430" y1="328" x2="440" y2="328" stroke="#2563EB" stroke-width="1.5"/>
+<text x="435" y="352" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">桌面PC</text>
+<text x="435" y="374" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">浏览器·台式机</text>
+
+<!-- 万维网（蓝，云图标） -->
+<rect x="600" y="295" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<path d="M660,321 Q657,315 663,314 Q664,308 670,309 Q674,304 680,308 Q686,308 686,314 Q690,318 685,321 Z" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+<text x="675" y="352" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">万维网</text>
+<text x="675" y="374" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">全球信息网络</text>
+
+<!-- 搜索引擎/门户（蓝，放大镜图标） -->
+<rect x="860" y="295" width="170" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<circle cx="942" cy="315" r="5" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+<line x1="946" y1="319" x2="951" y2="324" stroke="#2563EB" stroke-width="1.5"/>
+<text x="945" y="352" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">搜索引擎/门户</text>
+<text x="945" y="374" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">检索入口</text>
+
+<!-- 信息内容（蓝，页图标） -->
+<rect x="1150" y="295" width="160" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<rect x="1220" y="312" width="12" height="9" rx="1" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+<rect x="1224" y="316" width="12" height="9" rx="1" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="1230" y="352" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">信息内容</text>
+<text x="1230" y="374" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">Web 页面</text>
+
+<!-- 传感器（青绿，芯片图标） -->
+<rect x="1200" y="700" width="110" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<rect x="1248" y="716" width="14" height="12" rx="1" fill="none" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1248" y1="719" x2="1245" y2="719" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1248" y1="725" x2="1245" y2="725" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1262" y1="719" x2="1265" y2="719" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1262" y1="725" x2="1265" y2="725" stroke="#10B981" stroke-width="1.5"/>
+<text x="1255" y="752" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">传感器</text>
+
+<!-- 执行器（青绿，齿轮图标） -->
+<rect x="1330" y="700" width="110" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<circle cx="1385" cy="722" r="5" fill="none" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1390" y1="722" x2="1393" y2="722" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1380" y1="722" x2="1377" y2="722" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1387.5" y1="726.33" x2="1389.5" y2="728.83" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1382.5" y1="726.33" x2="1380.5" y2="728.83" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1382.5" y1="717.67" x2="1380.5" y2="715.17" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1387.5" y1="717.67" x2="1389.5" y2="715.17" stroke="#10B981" stroke-width="1.5"/>
+<text x="1385" y="752" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">执行器</text>
+
+<!-- 图例 -->
+<line x1="58" y1="855" x2="1542" y2="855" stroke="#E2E8F0" stroke-width="1"/>
+<line x1="80" y1="878" x2="100" y2="878" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="112" y="883" fill="#64748B" font-size="11" font-weight="600">已联网主链路（HTTP 请求/响应）</text>
+<rect x="392" y="872" width="18" height="12" rx="2" fill="#F5F8FE" stroke="#2563EB" stroke-width="1.5"/>
+<text x="418" y="883" fill="#64748B" font-size="11" font-weight="600">TCP/IP 通信基础</text>
+<rect x="588" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3 2"/>
+<text x="614" y="883" fill="#64748B" font-size="11" font-weight="600">设备与边缘域（未联网）</text>
+<line x1="860" y1="878" x2="880" y2="878" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="888" y="883" fill="#64748B" font-size="11" font-weight="600">断开（物理世界未接入）</text>
+
+<!-- caption -->
+<text x="800" y="920" fill="#94A3B8" font-size="10" text-anchor="middle">用户—桌面PC（浏览器）—万维网—信息内容四层链路由 TCP/IP 承载；传感器与执行器尚未接入，与物联网形成对比（见第2、3章）。</text>
+</svg>
+</body>
+</html>

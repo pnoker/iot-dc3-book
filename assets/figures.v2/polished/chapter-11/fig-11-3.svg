@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="950" viewBox="0 0 1500 950" role="img" aria-label="图11-3 RSU与OBU通信流程" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1500" height="950" fill="#FFFFFF"/>
+
+  <circle cx="64" cy="40" r="6" fill="#10B981"/>
+  <text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图11-3 RSU与OBU通信流程</text>
+  <text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">信号机、雷达、RSU、OBU、HMI 与 ADIS 间的消息交互时序</text>
+  <rect x="1362" y="28" width="80" height="24" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1402" y="44" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700" letter-spacing="0.5">SEQUENCE</text>
+
+  <line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="80" y="125" width="620" height="670" rx="12" fill="none" stroke="#10B981" stroke-dasharray="8 4" stroke-width="1.2"/>
+  <text x="96" y="118" fill="#10B981" font-size="11" font-weight="600">路侧域</text>
+  <rect x="730" y="125" width="620" height="670" rx="12" fill="none" stroke="#2563EB" stroke-dasharray="8 4" stroke-width="1.2"/>
+  <text x="746" y="118" fill="#2563EB" font-size="11" font-weight="600">车载域</text>
+
+  <line x1="170" y1="201" x2="170" y2="780" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+  <line x1="390" y1="201" x2="390" y2="780" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+  <line x1="610" y1="201" x2="610" y2="780" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+  <line x1="830" y1="201" x2="830" y2="780" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+  <line x1="1050" y1="201" x2="1050" y2="780" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+  <line x1="1270" y1="201" x2="1270" y2="780" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+
+  <rect x="604" y="250" width="12" height="180" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <rect x="824" y="430" width="12" height="205" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+
+  <line x1="172" y1="250" x2="602" y2="250" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="387" y="242" text-anchor="middle" fill="#10B981" font-size="11" font-weight="700">① 灯色数据</text>
+
+  <line x1="392" y1="335" x2="602" y2="335" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <text x="497" y="327" text-anchor="middle" fill="#475569" font-size="11" font-weight="500">② 目标列表</text>
+
+  <line x1="618" y1="430" x2="822" y2="430" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="720" y="422" text-anchor="middle" fill="#10B981" font-size="11" font-weight="700">③ SPAT/RSI 广播 (PC5)</text>
+
+  <line x1="838" y1="545" x2="1048" y2="545" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="943" y="537" text-anchor="middle" fill="#475569" font-size="11" font-weight="500">④ 显示提示</text>
+
+  <line x1="838" y1="635" x2="1268" y2="635" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="1053" y="627" text-anchor="middle" fill="#475569" font-size="11" font-weight="500">⑤ 决策输入</text>
+
+  <rect x="100" y="145" width="140" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="170" y="170" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">信号机</text>
+  <text x="170" y="188" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">灯色输出</text>
+
+  <rect x="320" y="145" width="140" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="390" y="170" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">雷达</text>
+  <text x="390" y="188" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">目标检测</text>
+
+  <rect x="540" y="145" width="140" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="610" y="170" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">RSU</text>
+  <text x="610" y="188" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">协议转换/广播</text>
+
+  <rect x="760" y="145" width="140" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="830" y="170" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">OBU</text>
+  <text x="830" y="188" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">消息接收/融合</text>
+
+  <rect x="980" y="145" width="140" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1050" y="170" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">HMI</text>
+  <text x="1050" y="188" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">驾驶员提示</text>
+
+  <rect x="1200" y="145" width="140" height="56" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1270" y="170" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">ADAS</text>
+  <text x="1270" y="188" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">路径决策</text>
+
+  <rect x="180" y="265" width="200" height="24" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="280" y="281" text-anchor="middle" fill="#334155" font-size="10">RSU 轮询读取信号机灯色状态</text>
+
+  <rect x="620" y="445" width="200" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="720" y="460" text-anchor="middle" fill="#334155" font-size="10">PC5 广播无需 OBU 确认</text>
+  <text x="720" y="475" text-anchor="middle" fill="#64748B" font-size="9">适用于安全消息</text>
+
+  <line x1="58" y1="830" x2="1442" y2="830" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="70" y="855" fill="#64748B" font-size="11" font-weight="600">图例</text>
+  <line x1="120" y1="865" x2="150" y2="865" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="158" y="869" fill="#64748B" font-size="11" font-weight="600">主链路 · 灯色与 PC5 广播</text>
+  <line x1="380" y1="865" x2="410" y2="865" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="418" y="869" fill="#64748B" font-size="11" font-weight="600">一般数据流</text>
+  <line x1="540" y1="865" x2="570" y2="865" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <text x="578" y="869" fill="#64748B" font-size="11" font-weight="600">非周期/可选数据流</text>
+  <line x1="760" y1="855" x2="760" y2="878" stroke="#CBD5E1" stroke-dasharray="6 6" stroke-width="1"/>
+  <text x="772" y="869" fill="#64748B" font-size="11" font-weight="600">参与者生命线</text>
+  <rect x="900" y="858" width="8" height="18" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="916" y="869" fill="#64748B" font-size="11" font-weight="600">激活条 · 设备处理窗口</text>
+
+  <text x="750" y="920" text-anchor="middle" fill="#94A3B8" font-size="10">图11-3 信号机、雷达、RSU、OBU、HMI 与 ADAS 间的消息流向和时序，PC5 广播为车路协同关键链路。</text>
+</svg>

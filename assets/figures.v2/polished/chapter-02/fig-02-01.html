@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>物联网经典四层参考架构</title>
+<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1450px,100vw);height:auto;display:block}</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1450" height="930" viewBox="0 0 1450 930" role="img" aria-label="图2-1 物联网经典四层参考架构" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+
+<rect x="0" y="0" width="1450" height="930" fill="#FFFFFF"/>
+
+<!-- 标题区 -->
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">物联网经典四层参考架构</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">四层垂直叠加，安全层横贯全栈，数据向上、指令向下单向流动</text>
+<rect x="1330" y="26" width="98" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1379" y="43" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">LAYERED</text>
+<line x1="58" y1="103" x2="1392" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<!-- 安全层区域边界（贯穿全栈） -->
+<rect x="90" y="130" width="110" height="600" rx="12" fill="none" stroke="#E11D48" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="145" y="150" fill="#E11D48" font-size="11" font-weight="600" text-anchor="middle">安全层</text>
+
+<!-- 流向箭头：先于节点绘制，位于节点下层 -->
+<!-- 数据单向向上：实线蓝 2px（主链路高亮），右侧 x=1145 -->
+<line x1="1145" y1="288" x2="1145" y2="252" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="1145" y1="448" x2="1145" y2="412" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<line x1="1145" y1="608" x2="1145" y2="572" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<!-- 指令单向向下：虚线灰 2px，左侧 x=300 -->
+<line x1="300" y1="252" x2="300" y2="288" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<line x1="300" y1="412" x2="300" y2="448" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<line x1="300" y1="572" x2="300" y2="608" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<!-- 中段间隙方向标注 -->
+<text x="1153" y="433" fill="#2563EB" font-size="9" font-weight="700">数据</text>
+<text x="312" y="433" fill="#64748B" font-size="9" font-weight="700">指令</text>
+
+<!-- 安全层能力节点（与四层纵向对齐） -->
+<rect x="100" y="163" width="90" height="54" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+<text x="145" y="188" fill="#0F172A" font-size="11" font-weight="700" text-anchor="middle">身份认证</text>
+<text x="145" y="204" fill="#475569" font-size="9" font-weight="500" text-anchor="middle">设备身份</text>
+<rect x="100" y="323" width="90" height="54" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+<text x="145" y="348" fill="#0F172A" font-size="11" font-weight="700" text-anchor="middle">接入鉴权</text>
+<text x="145" y="364" fill="#475569" font-size="9" font-weight="500" text-anchor="middle">链路准入</text>
+<rect x="100" y="483" width="90" height="54" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+<text x="145" y="508" fill="#0F172A" font-size="11" font-weight="700" text-anchor="middle">数据保护</text>
+<text x="145" y="524" fill="#475569" font-size="9" font-weight="500" text-anchor="middle">加密脱敏</text>
+<rect x="100" y="643" width="90" height="54" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+<text x="145" y="668" fill="#0F172A" font-size="11" font-weight="700" text-anchor="middle">业务审计</text>
+<text x="145" y="684" fill="#475569" font-size="9" font-weight="500" text-anchor="middle">合规留痕</text>
+<text x="145" y="718" fill="#94A3B8" font-size="9" font-weight="500" text-anchor="middle">贯穿全栈</text>
+
+<!-- 感知层（青绿 = 设备/接入） -->
+<rect x="220" y="130" width="960" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="245" y="178" fill="#0F172A" font-size="16" font-weight="700">感知层</text>
+<text x="245" y="202" fill="#64748B" font-size="10" font-weight="500">采集物理世界数据</text>
+<line x1="465" y1="148" x2="465" y2="232" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="480" y="158" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="495" y="182" fill="#0F172A" font-size="12" font-weight="700">传感器/执行器</text>
+<text x="495" y="202" fill="#475569" font-size="9" font-weight="500">温湿度/光照/动作</text>
+<rect x="705" y="158" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="720" y="182" fill="#0F172A" font-size="12" font-weight="700">RFID 标签</text>
+<text x="720" y="202" fill="#475569" font-size="9" font-weight="500">身份与物品识别</text>
+<rect x="930" y="158" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="945" y="182" fill="#0F172A" font-size="12" font-weight="700">数据采集</text>
+<text x="945" y="202" fill="#475569" font-size="9" font-weight="500">模数转换与采样</text>
+
+<!-- 网络层（灰 = 传输/连接） -->
+<rect x="220" y="290" width="960" height="120" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<text x="245" y="338" fill="#0F172A" font-size="16" font-weight="700">网络层</text>
+<text x="245" y="362" fill="#64748B" font-size="10" font-weight="500">传输与接入汇聚</text>
+<line x1="465" y1="308" x2="465" y2="392" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="480" y="318" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+<text x="495" y="342" fill="#0F172A" font-size="12" font-weight="700">接入网关</text>
+<text x="495" y="362" fill="#475569" font-size="9" font-weight="500">协议转换与汇聚</text>
+<rect x="705" y="318" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+<text x="720" y="342" fill="#0F172A" font-size="12" font-weight="700">MQTT/CoAP</text>
+<text x="720" y="362" fill="#475569" font-size="9" font-weight="500">轻量消息协议</text>
+<rect x="930" y="318" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+<text x="945" y="342" fill="#0F172A" font-size="12" font-weight="700">蜂窝/WiFi</text>
+<text x="945" y="362" fill="#475569" font-size="9" font-weight="500">无线承载网络</text>
+
+<!-- 平台层（蓝 = 核心平台） -->
+<rect x="220" y="450" width="960" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="245" y="498" fill="#0F172A" font-size="16" font-weight="700">平台层</text>
+<text x="245" y="522" fill="#64748B" font-size="10" font-weight="500">公共服务能力中枢</text>
+<line x1="465" y1="468" x2="465" y2="552" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="480" y="478" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="495" y="502" fill="#0F172A" font-size="12" font-weight="700">设备管理</text>
+<text x="495" y="522" fill="#475569" font-size="9" font-weight="500">影子与生命周期</text>
+<rect x="705" y="478" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="720" y="502" fill="#0F172A" font-size="12" font-weight="700">数据存储</text>
+<text x="720" y="522" fill="#475569" font-size="9" font-weight="500">时序与资产库</text>
+<rect x="930" y="478" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="945" y="502" fill="#0F172A" font-size="12" font-weight="700">规则引擎</text>
+<text x="945" y="522" fill="#475569" font-size="9" font-weight="500">触发与联动</text>
+
+<!-- 应用层（橙 = 业务/智能） -->
+<rect x="220" y="610" width="960" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="245" y="658" fill="#0F172A" font-size="16" font-weight="700">应用层</text>
+<text x="245" y="682" fill="#64748B" font-size="10" font-weight="500">业务价值交付</text>
+<line x1="465" y1="628" x2="465" y2="712" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="480" y="638" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="495" y="662" fill="#0F172A" font-size="12" font-weight="700">业务逻辑</text>
+<text x="495" y="682" fill="#475569" font-size="9" font-weight="500">场景化编排</text>
+<rect x="705" y="638" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="720" y="662" fill="#0F172A" font-size="12" font-weight="700">数据可视化</text>
+<text x="720" y="682" fill="#475569" font-size="9" font-weight="500">大屏与报表</text>
+<rect x="930" y="638" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="945" y="662" fill="#0F172A" font-size="12" font-weight="700">开放 API</text>
+<text x="945" y="682" fill="#475569" font-size="9" font-weight="500">第三方集成</text>
+
+<!-- 标注 callouts（右侧空白区，位于所有边界框之外） -->
+<rect x="1205" y="300" width="230" height="72" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+<text x="1218" y="322" fill="#2563EB" font-size="12" font-weight="700">数据单向向上</text>
+<text x="1218" y="342" fill="#334155" font-size="10" font-weight="500">感知层 → 网络层 → 平台层 → 应用层</text>
+<text x="1218" y="360" fill="#64748B" font-size="9" font-weight="500">实线箭头 · 主链路</text>
+
+<rect x="1205" y="388" width="230" height="72" rx="8" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
+<text x="1218" y="410" fill="#475569" font-size="12" font-weight="700">指令单向向下</text>
+<text x="1218" y="430" fill="#334155" font-size="10" font-weight="500">应用层 → 平台层 → 网络层 → 感知层</text>
+<text x="1218" y="448" fill="#64748B" font-size="9" font-weight="500">虚线箭头 · 控制回流</text>
+
+<rect x="1205" y="486" width="230" height="66" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="1218" y="508" fill="#0F172A" font-size="11" font-weight="700">平台层 · 相比三层模型新增</text>
+<text x="1218" y="526" fill="#475569" font-size="9" font-weight="500">剥离设备管理 / 数据存储 / 规则引擎</text>
+<text x="1218" y="540" fill="#64748B" font-size="9" font-weight="500">公共能力从应用层下沉</text>
+
+<!-- 图例区（置于所有边界框之外） -->
+<line x1="58" y1="755" x2="1392" y2="755" stroke="#E2E8F0" stroke-width="1"/>
+<text x="80" y="778" fill="#64748B" font-size="11" font-weight="700">图例</text>
+
+<rect x="80" y="795" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="102" y="804" fill="#64748B" font-size="11" font-weight="600">感知层 · 设备接入</text>
+<rect x="290" y="795" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<text x="312" y="804" fill="#64748B" font-size="11" font-weight="600">网络层 · 传输连接</text>
+<rect x="500" y="795" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="522" y="804" fill="#64748B" font-size="11" font-weight="600">平台层 · 核心服务</text>
+<rect x="710" y="795" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+<text x="732" y="804" fill="#64748B" font-size="11" font-weight="600">应用层 · 业务能力</text>
+<rect x="920" y="795" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+<text x="942" y="804" fill="#64748B" font-size="11" font-weight="600">安全层 · 贯穿防护</text>
+
+<line x1="95" y1="838" x2="95" y2="820" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="112" y="834" fill="#64748B" font-size="11" font-weight="600">实线箭头 ↑ 数据流（向上）</text>
+<line x1="435" y1="820" x2="435" y2="838" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<text x="452" y="834" fill="#64748B" font-size="11" font-weight="600">虚线箭头 ↓ 指令流（向下）</text>
+
+<!-- caption -->
+<text x="725" y="888" fill="#94A3B8" font-size="10" font-weight="500" text-anchor="middle">图2-1 物联网经典四层参考架构。平台层相比早期三层模型是新增层，将设备管理、数据存储、规则引擎等公共能力从应用层剥离；</text>
+<text x="725" y="906" fill="#94A3B8" font-size="10" font-weight="500" text-anchor="middle">数据向上、指令向下的单向流向，决定了经典架构在处理复杂决策时存在结构性短板。</text>
+</svg>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="图8-3 TLS与EDHOC握手流程对比" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+
+<rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图8-3 TLS与EDHOC握手流程对比</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">对比TLS双向认证与EDHOC轻量握手的消息交换流程</text>
+<rect x="1463" y="28" width="90" height="26" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1508" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">SEQUENCE</text>
+
+<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<!-- LEFT region: TLS -->
+<rect x="70" y="120" width="700" height="665" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="92" y="148" fill="#2563EB" font-size="13" font-weight="700">TLS 双向认证握手</text>
+<text x="92" y="166" fill="#64748B" font-size="10" font-weight="500">传统握手 · 证书交换</text>
+<rect x="640" y="132" width="110" height="26" rx="13" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="695" y="149" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">6 条消息</text>
+
+<!-- RIGHT region: EDHOC -->
+<rect x="830" y="120" width="700" height="665" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="852" y="148" fill="#F59E0B" font-size="13" font-weight="700">EDHOC 轻量握手</text>
+<text x="852" y="166" fill="#64748B" font-size="10" font-weight="500">基于 COSE · 三消息</text>
+<rect x="1400" y="132" width="110" height="26" rx="13" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="1455" y="149" fill="#F59E0B" font-size="12" font-weight="700" text-anchor="middle">3 条消息</text>
+
+<!-- TLS lifelines -->
+<line x1="250" y1="234" x2="250" y2="665" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="6 6"/>
+<line x1="610" y1="234" x2="610" y2="665" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="6 6"/>
+
+<!-- EDHOC lifelines -->
+<line x1="1010" y1="234" x2="1010" y2="665" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="6 6"/>
+<line x1="1370" y1="234" x2="1370" y2="665" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="6 6"/>
+
+<!-- TLS messages (blue solid 2px, main chain) -->
+<text x="430" y="270" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">① ClientHello</text>
+<line x1="250" y1="278" x2="608" y2="278" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+<text x="430" y="330" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">② ServerHello + 证书</text>
+<line x1="610" y1="338" x2="252" y2="338" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+<text x="430" y="390" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">③ 证书请求</text>
+<line x1="610" y1="398" x2="252" y2="398" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+<text x="430" y="450" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">④ 客户端证书</text>
+<line x1="250" y1="458" x2="608" y2="458" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+<text x="430" y="510" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">⑤ Finished</text>
+<line x1="250" y1="518" x2="608" y2="518" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+<text x="430" y="570" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">⑥ Finished</text>
+<line x1="610" y1="578" x2="252" y2="578" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+<!-- TLS session key marker (green double line) -->
+<text x="430" y="624" fill="#10B981" font-size="10" font-weight="600" text-anchor="middle">会话密钥建立</text>
+<line x1="252" y1="633" x2="608" y2="633" stroke="#10B981" stroke-width="1.5"/>
+<line x1="252" y1="639" x2="608" y2="639" stroke="#10B981" stroke-width="1.5"/>
+
+<!-- EDHOC messages (orange dashed 1.5px) -->
+<text x="1190" y="270" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">① M1 临时公钥 + 标识</text>
+<line x1="1010" y1="278" x2="1368" y2="278" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+
+<text x="1190" y="390" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">② M2 临时公钥 + 认证</text>
+<line x1="1370" y1="398" x2="1012" y2="398" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+
+<text x="1190" y="455" fill="#94A3B8" font-size="10" font-weight="500" text-anchor="middle" font-style="italic">无需完整证书往返</text>
+
+<text x="1190" y="510" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">③ M3 认证 + MAC</text>
+<line x1="1010" y1="518" x2="1368" y2="518" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+
+<!-- EDHOC session key marker -->
+<text x="1190" y="624" fill="#10B981" font-size="10" font-weight="600" text-anchor="middle">会话密钥建立</text>
+<line x1="1012" y1="633" x2="1368" y2="633" stroke="#10B981" stroke-width="1.5"/>
+<line x1="1012" y1="639" x2="1368" y2="639" stroke="#10B981" stroke-width="1.5"/>
+
+<!-- TLS participant nodes -->
+<rect x="185" y="180" width="130" height="54" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="250" y="205" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">设备</text>
+<text x="250" y="223" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">发起方</text>
+
+<rect x="545" y="180" width="130" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="610" y="205" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">平台</text>
+<text x="610" y="223" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">响应方</text>
+
+<!-- EDHOC participant nodes -->
+<rect x="945" y="180" width="130" height="54" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="1010" y="205" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">设备</text>
+<text x="1010" y="223" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">发起方</text>
+
+<rect x="1305" y="180" width="130" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="1370" y="205" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">平台</text>
+<text x="1370" y="223" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">响应方</text>
+
+<!-- TLS callout -->
+<rect x="120" y="685" width="600" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="420" y="715" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">传输完整 X.509 证书，6 条消息，握手开销大</text>
+
+<!-- EDHOC callout -->
+<rect x="880" y="685" width="600" height="50" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="1180" y="715" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">基于 COSE 编码，仅 3 条消息，适合受限设备</text>
+
+<!-- Legend -->
+<line x1="58" y1="815" x2="1542" y2="815" stroke="#E2E8F0" stroke-width="1"/>
+
+<rect x="140" y="838" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="162" y="847" fill="#64748B" font-size="11" font-weight="600">设备·边缘域</text>
+
+<rect x="300" y="838" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="322" y="847" fill="#64748B" font-size="11" font-weight="600">平台·服务域</text>
+
+<line x1="460" y1="843" x2="500" y2="843" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="510" y="847" fill="#64748B" font-size="11" font-weight="600">TLS 消息</text>
+
+<line x1="620" y1="843" x2="660" y2="843" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+<text x="670" y="847" fill="#64748B" font-size="11" font-weight="600">EDHOC 消息</text>
+
+<line x1="800" y1="840" x2="840" y2="840" stroke="#10B981" stroke-width="1.5"/>
+<line x1="800" y1="846" x2="840" y2="846" stroke="#10B981" stroke-width="1.5"/>
+<text x="850" y="847" fill="#64748B" font-size="11" font-weight="600">会话密钥建立</text>
+
+<!-- Caption -->
+<text x="800" y="905" fill="#94A3B8" font-size="10" text-anchor="middle">图8-3 传统TLS双向认证需多次往返传输证书，EDHOC仅3条消息即可建立会话密钥，体积更小。</text>
+</svg>

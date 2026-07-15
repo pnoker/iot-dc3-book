@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="640" viewBox="0 0 1400 640" role="img" aria-label="图1-7 RFID 系统基本组成" data-style="architecture-diagram-wireframe-white" text-rendering="geometricPrecision" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+<marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1400" height="640" fill="#FFFFFF"/>
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图1-7 RFID 系统基本组成</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">标签、读写器与后台系统间的射频信号与数据流</text>
+<rect x="1222" y="28" width="120" height="26" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1282" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.5">ARCHITECTURE</text>
+<line x1="58" y1="103" x2="1342" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="70" y="130" width="400" height="350" rx="12" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="86" y="156" fill="#10B981" font-size="11" font-weight="600">物理环境</text>
+<rect x="500" y="130" width="400" height="350" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="516" y="156" fill="#2563EB" font-size="11" font-weight="600">接入层</text>
+<rect x="930" y="130" width="400" height="350" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="946" y="156" fill="#7C3AED" font-size="11" font-weight="600">后台处理域</text>
+<line x1="392" y1="268" x2="578" y2="268" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+<text x="485" y="255" fill="#334155" font-size="11" font-weight="600" text-anchor="middle">射频信号</text>
+<line x1="822" y1="268" x2="1008" y2="268" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-violet)"/>
+<text x="915" y="255" fill="#334155" font-size="11" font-weight="600" text-anchor="middle">解码后数据</text>
+<rect x="150" y="205" width="240" height="130" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="270" y="262" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">RFID 标签</text>
+<text x="270" y="285" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">有源 / 无源 · EPC</text>
+<rect x="580" y="205" width="240" height="130" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="700" y="262" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">读写器</text>
+<text x="700" y="285" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">射频收发 + 解码</text>
+<rect x="1010" y="205" width="240" height="130" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+<text x="1130" y="262" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">后台系统</text>
+<text x="1130" y="285" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">数据库 / ERP</text>
+<rect x="120" y="362" width="300" height="52" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="270" y="393" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">无源标签自身不供电，依赖读写器射频场区激活。</text>
+<rect x="550" y="362" width="300" height="52" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="700" y="393" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">读写器充当物理信号与数字数据的翻译桥梁。</text>
+<rect x="980" y="362" width="300" height="52" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="1130" y="393" fill="#334155" font-size="11" font-weight="500" text-anchor="middle">承接业务逻辑与数据持久化。</text>
+<line x1="58" y1="515" x2="1342" y2="515" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="100" y="536" width="16" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+<text x="124" y="545" fill="#64748B" font-size="11" font-weight="600">边缘标签</text>
+<rect x="230" y="536" width="16" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="254" y="545" fill="#64748B" font-size="11" font-weight="600">接入读写器</text>
+<rect x="390" y="536" width="16" height="10" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+<text x="414" y="545" fill="#64748B" font-size="11" font-weight="600">后台系统</text>
+<line x1="540" y1="541" x2="566" y2="541" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="574" y="545" fill="#64748B" font-size="11" font-weight="600">实线：射频 / 数据链路</text>
+<text x="700" y="595" fill="#94A3B8" font-size="10" text-anchor="middle">RFID 以标签—读写器—后台三节点组态，为物品赋予数字身份。</text>
+</svg>

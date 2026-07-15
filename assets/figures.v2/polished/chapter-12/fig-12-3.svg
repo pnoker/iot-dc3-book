@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="图12-3 智能灌溉决策流程图" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+<marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图12-3 智能灌溉决策流程图</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">从湿度阈值判断、降水前馈到轮灌执行的灌溉决策路径</text>
+<rect x="1440" y="30" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1500" y="47" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">FLOWCHART</text>
+<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="675" y="185" width="700" height="660" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
+<text x="685" y="178" fill="#2563EB" font-size="11" font-weight="600">平台服务域</text>
+<line x1="397" y1="250" x2="698" y2="250" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="548" y="242" text-anchor="middle" fill="#64748B" font-size="10">湿度采集</text>
+<line x1="397" y1="420" x2="698" y2="420" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="548" y="412" text-anchor="middle" fill="#64748B" font-size="10">预报前馈</text>
+<line x1="800" y1="302" x2="800" y2="368" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="815" y="340" fill="#10B981" font-size="12" font-weight="700">是</text>
+<line x1="800" y1="472" x2="800" y2="530" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="815" y="504" fill="#E11D48" font-size="12" font-weight="700">否</text>
+<line x1="800" y1="590" x2="800" y2="650" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="815" y="624" fill="#475569" font-size="10">灌溉量</text>
+<line x1="800" y1="710" x2="800" y2="770" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="815" y="744" fill="#475569" font-size="10">全部完成</text>
+<line x1="902" y1="250" x2="1203" y2="250" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="1052" y="242" text-anchor="middle" fill="#E11D48" font-size="12" font-weight="700">否</text>
+<line x1="902" y1="420" x2="1203" y2="420" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="1052" y="412" text-anchor="middle" fill="#10B981" font-size="12" font-weight="700">是</text>
+<rect x="245" y="222" width="150" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="320" y="248" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">土壤湿度</text>
+<text x="320" y="266" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">实时反馈</text>
+<rect x="245" y="392" width="150" height="56" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<text x="320" y="418" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">天气预报</text>
+<text x="320" y="436" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">前馈输入</text>
+<polygon points="800,200 900,250 800,300 700,250" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="800" y="247" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">湿度低于阈值？</text>
+<text x="800" y="263" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">阈值需标定</text>
+<polygon points="800,370 900,420 800,470 700,420" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="800" y="417" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">降水概率高？</text>
+<text x="800" y="433" text-anchor="middle" fill="#475569" font-size="9" font-weight="500">超阈值则推迟</text>
+<rect x="705" y="532" width="190" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="800" y="558" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">灌溉量计算</text>
+<text x="800" y="576" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">水分平衡公式</text>
+<rect x="705" y="652" width="190" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="800" y="678" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">轮灌调度</text>
+<text x="800" y="696" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">分时段间歇渗水</text>
+<rect x="705" y="772" width="190" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="800" y="798" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">灌溉完成</text>
+<text x="800" y="816" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">进入低功耗监控</text>
+<rect x="1205" y="222" width="150" height="56" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<text x="1280" y="248" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">返回监控</text>
+<text x="1280" y="266" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">跳过水量计算</text>
+<rect x="1205" y="392" width="150" height="56" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<text x="1280" y="418" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">推迟并记录</text>
+<text x="1280" y="436" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">绕过水量计算</text>
+<rect x="410" y="545" width="255" height="58" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="425" y="568" fill="#334155" font-size="11" font-weight="700">控制汇合点</text>
+<text x="425" y="588" fill="#475569" font-size="10">湿度反馈与降水前馈在此汇合，输出灌溉量</text>
+<rect x="1185" y="475" width="190" height="82" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="1200" y="498" fill="#334155" font-size="11" font-weight="700">旁路出口</text>
+<text x="1200" y="518" fill="#475569" font-size="10">否 → 返回监控</text>
+<text x="1200" y="536" fill="#475569" font-size="10">是 → 推迟并记录</text>
+<text x="1200" y="554" fill="#94A3B8" font-size="9">均绕过水量计算</text>
+<line x1="58" y1="910" x2="1542" y2="910" stroke="#E2E8F0" stroke-width="1"/>
+<polygon points="90,938 100,945 90,952 80,945" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="110" y="949" fill="#64748B" font-size="11" font-weight="600">决策节点</text>
+<rect x="225" y="938" width="20" height="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="253" y="949" fill="#64748B" font-size="11" font-weight="600">计算/执行节点</text>
+<rect x="400" y="938" width="20" height="14" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="428" y="949" fill="#64748B" font-size="11" font-weight="600">状态节点</text>
+<line x1="545" y1="945" x2="580" y2="945" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="588" y="949" fill="#64748B" font-size="11" font-weight="600">主链路</text>
+<line x1="695" y1="945" x2="730" y2="945" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+<text x="738" y="949" fill="#64748B" font-size="11" font-weight="600">旁路/数据流</text>
+<text x="880" y="949" fill="#10B981" font-size="12" font-weight="700">是</text>
+<text x="912" y="949" fill="#E11D48" font-size="12" font-weight="700">否</text>
+<text x="940" y="949" fill="#64748B" font-size="11" font-weight="600">分支判定</text>
+<text x="800" y="985" text-anchor="middle" fill="#94A3B8" font-size="10">图12-3 智能灌溉决策流程：按土壤湿度、天气预报、需水量计算、轮灌调度四个独立模块解耦控制逻辑。</text>
+</svg>
