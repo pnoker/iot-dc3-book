@@ -1,177 +1,162 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图14-1 物联网项目全生命周期</title>
+  <desc id="desc">五阶段纵向流程：需求分析、架构设计、开发实现、部署上线、运维迭代。实线为推进路径（标注关键决策），虚线为评审未通过时的回退路径。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="39.630" y="24.000" width="1120.741" height="712.000" viewBox="0 0 1700.000 1080.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-<marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
+  <svg x="234.464" y="24.000" width="731.071" height="712.000" viewBox="0 0 1150.000 1120.000" preserveAspectRatio="xMidYMid meet">
+<title>图14-1 物联网项目全生命周期</title>
+  <desc>五阶段纵向流程：需求分析、架构设计、开发实现、部署上线、运维迭代。实线为推进路径（标注关键决策），虚线为评审未通过时的回退路径。</desc>
 
-<rect x="0" y="0" width="1700" height="1080" fill="#FFFFFF"/>
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
 
-<g id="title">
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图14-1 物联网平台分层架构</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">四层分层架构以消息队列实现异步解耦，明确各层职责边界</text>
-<rect x="1560" y="28" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1620" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">ARCHITECTURE</text>
-</g>
+  <!-- background -->
+  <rect x="0" y="0" width="1150" height="1120" fill="#FFFFFF"/>
 
-<line x1="58" y1="103" x2="1642" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- ============ TITLE ============ -->
+  <g id="title">
+    <circle cx="48" cy="44" r="6" fill="#2563EB"/>
+    <text x="68" y="46" font-size="22" font-weight="700" fill="#0F172A">图14-1 物联网项目全生命周期</text>
+    <text x="68" y="70" font-size="12" fill="#64748B">五阶段全生命周期 · 关键决策与可回退路径</text>
+    <rect x="1022" y="30" width="110" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="1077" y="49" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.2">FLOWCHART</text>
+    <line x1="40" y1="103" x2="1110" y2="103" stroke="#E2E8F0"/>
+  </g>
 
-<g id="regions">
-<rect x="200" y="175" width="1100" height="140" rx="12" fill="none" stroke="#64748B" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="210" y="170" fill="#64748B" font-size="11" font-weight="600">业务应用域</text>
+  <!-- ============ ROLLBACK CURVES (drawn first, behind) ============ -->
+  <g id="rollbacks" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" fill="none">
+    <path d="M 395 370 C 340 370, 340 194, 395 194" marker-end="url(#ah-gray)"/>
+    <path d="M 395 546 C 340 546, 340 370, 395 370" marker-end="url(#ah-gray)"/>
+    <path d="M 395 722 C 340 722, 340 546, 395 546" marker-end="url(#ah-gray)"/>
+    <path d="M 395 898 C 340 898, 340 722, 395 722" marker-end="url(#ah-gray)"/>
+  </g>
 
-<rect x="200" y="380" width="1100" height="215" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="210" y="375" fill="#2563EB" font-size="11" font-weight="600">平台服务域</text>
+  <!-- ============ ROLLBACK REASON PILLS (left lane) ============ -->
+  <g id="rollback-labels">
+    <!-- 2 -> 1 -->
+    <rect x="170" y="262" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="245" y="278" font-size="9" fill="#94A3B8" text-anchor="middle" letter-spacing="0.6">回退条件</text>
+    <text x="245" y="294" font-size="11" fill="#475569" text-anchor="middle">需求歧义 · 边界缺失</text>
+    <!-- 3 -> 2 -->
+    <rect x="170" y="438" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="245" y="454" font-size="9" fill="#94A3B8" text-anchor="middle" letter-spacing="0.6">回退条件</text>
+    <text x="245" y="470" font-size="11" fill="#475569" text-anchor="middle">技术验证失败</text>
+    <!-- 4 -> 3 -->
+    <rect x="170" y="614" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="245" y="630" font-size="9" fill="#94A3B8" text-anchor="middle" letter-spacing="0.6">回退条件</text>
+    <text x="245" y="646" font-size="11" fill="#475569" text-anchor="middle">构建失败 · 测试红灯</text>
+    <!-- 5 -> 4 -->
+    <rect x="170" y="790" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="245" y="806" font-size="9" fill="#94A3B8" text-anchor="middle" letter-spacing="0.6">回退条件</text>
+    <text x="245" y="822" font-size="11" fill="#475569" text-anchor="middle">线上指标异常</text>
+  </g>
 
-<rect x="200" y="625" width="1100" height="275" rx="12" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="210" y="620" fill="#10B981" font-size="11" font-weight="600">设备与边缘域</text>
+  <!-- ============ FORWARD ARROWS (main path) ============ -->
+  <g id="forward" stroke="#2563EB" stroke-width="2" fill="none">
+    <line x1="575" y1="240" x2="575" y2="324" marker-end="url(#ah-blue)"/>
+    <line x1="575" y1="416" x2="575" y2="500" marker-end="url(#ah-blue)"/>
+    <line x1="575" y1="592" x2="575" y2="676" marker-end="url(#ah-blue)"/>
+    <line x1="575" y1="768" x2="575" y2="852" marker-end="url(#ah-blue)"/>
+  </g>
 
-<line x1="210" y1="760" x2="1290" y2="760" stroke="#10B981" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.4"/>
-<text x="214" y="645" fill="#10B981" font-size="10" font-weight="500" opacity="0.75">边缘接入层</text>
-<text x="214" y="785" fill="#10B981" font-size="10" font-weight="500" opacity="0.75">设备层</text>
-</g>
+  <!-- ============ DECISION GATES (diamonds on forward path) ============ -->
+  <g id="gates" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5">
+    <polygon points="575,274 583,282 575,290 567,282"/>
+    <polygon points="575,450 583,458 575,466 567,458"/>
+    <polygon points="575,626 583,634 575,642 567,634"/>
+    <polygon points="575,802 583,810 575,818 567,810"/>
+  </g>
 
-<g id="arrows-main">
-<path d="M 750 793 L 750 731" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-<text x="760" y="764" fill="#10B981" font-size="10" font-weight="600">协议接入</text>
-<text x="760" y="778" fill="#10B981" font-size="9">MQTT/CoAP</text>
+  <!-- ============ DECISION PILLS (right lane) ============ -->
+  <g id="decisions">
+    <!-- gate -> pill connectors -->
+    <g stroke="#93C5FD" stroke-width="1.5">
+      <line x1="583" y1="282" x2="795" y2="282"/>
+      <line x1="583" y1="458" x2="795" y2="458"/>
+      <line x1="583" y1="634" x2="795" y2="634"/>
+      <line x1="583" y1="810" x2="795" y2="810"/>
+    </g>
+    <!-- 1 -> 2 -->
+    <rect x="795" y="258" width="220" height="48" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="807" y="276" font-size="9" fill="#2563EB" letter-spacing="0.6">关键决策</text>
+    <text x="807" y="296" font-size="11" font-weight="700" fill="#0F172A">MoSCoW 排序 · 优先级冻结</text>
+    <!-- 2 -> 3 -->
+    <rect x="795" y="434" width="220" height="48" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="807" y="452" font-size="9" fill="#2563EB" letter-spacing="0.6">关键决策</text>
+    <text x="807" y="472" font-size="11" font-weight="700" fill="#0F172A">协议驱动选型 · 架构评审</text>
+    <!-- 3 -> 4 -->
+    <rect x="795" y="610" width="220" height="48" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="807" y="628" font-size="9" fill="#2563EB" letter-spacing="0.6">关键决策</text>
+    <text x="807" y="648" font-size="11" font-weight="700" fill="#0F172A">CI 集成验证 · 测试全绿</text>
+    <!-- 4 -> 5 -->
+    <rect x="795" y="786" width="220" height="48" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="807" y="804" font-size="9" fill="#2563EB" letter-spacing="0.6">关键决策</text>
+    <text x="807" y="824" font-size="11" font-weight="700" fill="#0F172A">可观测栈就位 · 安全基线</text>
+  </g>
 
-<path d="M 750 663 L 750 571" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="8 5" marker-end="url(#ah-blue)"/>
-<rect x="755" y="592" width="80" height="20" rx="4" fill="#EFF6FF" stroke="#2563EB" stroke-width="1"/>
-<text x="795" y="606" fill="#2563EB" font-size="10" font-weight="700" text-anchor="middle">异步边界</text>
-<text x="760" y="640" fill="#2563EB" font-size="10" font-weight="600">异步推送</text>
+  <!-- ============ STAGE NODES ============ -->
+  <g id="nodes">
+    <!-- Stage 1 · 需求分析 -->
+    <g>
+      <rect x="395" y="150" width="360" height="88" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+      <circle cx="435" cy="194" r="22" fill="#2563EB"/>
+      <text x="435" y="194" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
+      <text x="473" y="180" font-size="10" fill="#94A3B8" letter-spacing="0.8">阶段 01 · STAGE 1</text>
+      <text x="473" y="204" font-size="18" font-weight="700" fill="#0F172A">需求分析</text>
+      <text x="473" y="226" font-size="11" fill="#475569">可执行基线 · 不做什么清单</text>
+    </g>
+    <!-- Stage 2 · 架构设计 -->
+    <g>
+      <rect x="395" y="326" width="360" height="88" rx="12" fill="#EFF6FF" stroke="#7C3AED" stroke-width="2"/>
+      <circle cx="435" cy="370" r="22" fill="#7C3AED"/>
+      <text x="435" y="370" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
+      <text x="473" y="356" font-size="10" fill="#94A3B8" letter-spacing="0.8">阶段 02 · STAGE 2</text>
+      <text x="473" y="380" font-size="18" font-weight="700" fill="#0F172A">架构设计</text>
+      <text x="473" y="402" font-size="11" fill="#475569">分层 · 解耦 · 异步 · 标准化</text>
+    </g>
+    <!-- Stage 3 · 开发实现 -->
+    <g>
+      <rect x="395" y="502" width="360" height="88" rx="12" fill="#EFF6FF" stroke="#10B981" stroke-width="2"/>
+      <circle cx="435" cy="546" r="22" fill="#10B981"/>
+      <text x="435" y="546" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
+      <text x="473" y="532" font-size="10" fill="#94A3B8" letter-spacing="0.8">阶段 03 · STAGE 3</text>
+      <text x="473" y="556" font-size="18" font-weight="700" fill="#0F172A">开发实现</text>
+      <text x="473" y="578" font-size="11" fill="#475569">按硬件节拍对齐迭代</text>
+    </g>
+    <!-- Stage 4 · 部署上线 -->
+    <g>
+      <rect x="395" y="678" width="360" height="88" rx="12" fill="#EFF6FF" stroke="#F59E0B" stroke-width="2"/>
+      <circle cx="435" cy="722" r="22" fill="#F59E0B"/>
+      <text x="435" y="722" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
+      <text x="473" y="708" font-size="10" fill="#94A3B8" letter-spacing="0.8">阶段 04 · STAGE 4</text>
+      <text x="473" y="732" font-size="18" font-weight="700" fill="#0F172A">部署上线</text>
+      <text x="473" y="754" font-size="11" fill="#475569">先搭观测 · 再跑业务</text>
+    </g>
+    <!-- Stage 5 · 运维迭代 -->
+    <g>
+      <rect x="395" y="854" width="360" height="88" rx="12" fill="#EFF6FF" stroke="#E11D48" stroke-width="2"/>
+      <circle cx="435" cy="898" r="22" fill="#E11D48"/>
+      <text x="435" y="898" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">5</text>
+      <text x="473" y="884" font-size="10" fill="#94A3B8" letter-spacing="0.8">阶段 05 · STAGE 5</text>
+      <text x="473" y="908" font-size="18" font-weight="700" fill="#0F172A">运维迭代</text>
+      <text x="473" y="930" font-size="11" fill="#475569">可观测性 · 一键回滚</text>
+    </g>
+  </g>
 
-<path d="M 827 537 L 893 537" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-violet)"/>
-<text x="838" y="530" fill="#7C3AED" font-size="10" font-weight="600">写入</text>
+  <!-- ============ LEGEND ============ -->
+  <line x1="40" y1="975" x2="1110" y2="975" stroke="#E2E8F0"/>
+  <g id="legend">
+    <line x1="200" y1="1000" x2="246" y2="1000" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <polygon points="223,994 229,1000 223,1006 217,1000" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="262" y="1004" font-size="12" fill="#475569">阶段推进 · 关键决策达标（评审通过）</text>
 
-<path d="M 705 505 L 397 478" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
-<text x="478" y="478" fill="#F59E0B" font-size="10" font-weight="600">事件分发</text>
-</g>
+    <line x1="700" y1="1000" x2="746" y2="1000" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <text x="762" y="1004" font-size="12" fill="#475569">评审未通过 · 回退上一阶段迭代</text>
+  </g>
 
-<g id="arrows-aux">
-<path d="M 607 252 L 673 252" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="614" y="245" fill="#64748B" font-size="10">查询</text>
-
-<path d="M 893 252 L 827 252" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="848" y="245" fill="#64748B" font-size="10">调用</text>
-
-<path d="M 750 286 L 750 408" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="758" y="352" fill="#64748B" font-size="10">鉴权</text>
-
-<path d="M 820 284 L 1098 408" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="918" y="338" fill="#64748B" font-size="10">管理接口</text>
-
-<path d="M 607 537 L 673 537" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="614" y="530" fill="#64748B" font-size="10">桥接</text>
-</g>
-
-<g id="nodes-app">
-<rect x="455" y="220" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-<text x="530" y="248" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">监控大屏</text>
-<text x="530" y="266" fill="#475569" font-size="9" text-anchor="middle">运营可视化</text>
-
-<rect x="675" y="220" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-<text x="750" y="248" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">API 网关</text>
-<text x="750" y="266" fill="#475569" font-size="9" text-anchor="middle">路由/限流</text>
-
-<rect x="895" y="220" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-<text x="970" y="248" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">移动端</text>
-<text x="970" y="266" fill="#475569" font-size="9" text-anchor="middle">App/小程序</text>
-</g>
-
-<g id="nodes-platform-row1">
-<rect x="255" y="410" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-<text x="330" y="438" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">智能中心</text>
-<text x="330" y="456" fill="#475569" font-size="9" text-anchor="middle">Agent &amp; 模型</text>
-
-<rect x="675" y="410" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="750" y="438" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">鉴权中心</text>
-<text x="750" y="456" fill="#475569" font-size="9" text-anchor="middle">身份与权限</text>
-
-<rect x="1095" y="410" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1170" y="438" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">设备管理</text>
-<text x="1170" y="456" fill="#475569" font-size="9" text-anchor="middle">注册/配置/OTA</text>
-</g>
-
-<g id="nodes-platform-row2">
-<rect x="455" y="505" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="530" y="533" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">MQTT Broker</text>
-<text x="530" y="551" fill="#475569" font-size="9" text-anchor="middle">EMQX 等</text>
-
-<rect x="675" y="505" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
-<text x="750" y="533" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">消息总线</text>
-<text x="750" y="551" fill="#475569" font-size="9" text-anchor="middle">Kafka/RabbitMQ</text>
-
-<rect x="895" y="505" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-<text x="970" y="533" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">数据中心</text>
-<text x="970" y="551" fill="#475569" font-size="9" text-anchor="middle">时序库+关系库</text>
-</g>
-
-<g id="nodes-edge">
-<rect x="675" y="665" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="750" y="693" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">协议驱动</text>
-<text x="750" y="711" fill="#475569" font-size="9" text-anchor="middle">MQTT/CoAP/Modbus</text>
-
-<rect x="975" y="665" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="1050" y="693" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">边缘缓存</text>
-<text x="1050" y="711" fill="#475569" font-size="9" text-anchor="middle">本地队列与缓冲</text>
-</g>
-
-<g id="nodes-device">
-<rect x="590" y="795" width="320" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="750" y="823" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">设备层</text>
-<text x="750" y="841" fill="#475569" font-size="9" text-anchor="middle">传感器 · PLC · 网关</text>
-</g>
-
-<g id="callouts">
-<rect x="80" y="912" width="500" height="58" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="100" cy="932" r="4" fill="#10B981"/>
-<text x="114" y="935" fill="#0F172A" font-size="10" font-weight="700">边缘域本地自治</text>
-<text x="114" y="953" fill="#475569" font-size="10">协议驱动+边缘缓存，广域网断开仍可采集与缓存数据</text>
-
-<rect x="600" y="912" width="500" height="58" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="620" cy="932" r="4" fill="#2563EB"/>
-<text x="634" y="935" fill="#0F172A" font-size="10" font-weight="700">消息总线即解耦边界</text>
-<text x="634" y="953" fill="#475569" font-size="10">接住边缘异步消息，按主题分发至数据中心、智能中心</text>
-
-<rect x="1120" y="912" width="500" height="58" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="1140" cy="932" r="4" fill="#F59E0B"/>
-<text x="1154" y="935" fill="#0F172A" font-size="10" font-weight="700">智能中心不直连设备</text>
-<text x="1154" y="953" fill="#475569" font-size="10">基于平台上下文与规则模型决策，输出至应用层</text>
-</g>
-
-<g id="legend">
-<line x1="58" y1="988" x2="1642" y2="988" stroke="#E2E8F0" stroke-width="1"/>
-
-<rect x="80" y="1003" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="100" y="1012" fill="#64748B" font-size="11" font-weight="600">核心平台/消息</text>
-
-<rect x="200" y="1003" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="220" y="1012" fill="#64748B" font-size="11" font-weight="600">设备/边缘</text>
-
-<rect x="300" y="1003" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-<text x="320" y="1012" fill="#64748B" font-size="11" font-weight="600">AI 智能</text>
-
-<rect x="392" y="1003" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-<text x="412" y="1012" fill="#64748B" font-size="11" font-weight="600">数据存储</text>
-
-<rect x="492" y="1003" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-<text x="512" y="1012" fill="#64748B" font-size="11" font-weight="600">业务应用</text>
-
-<line x1="600" y1="1008" x2="632" y2="1008" stroke="#64748B" stroke-width="2"/>
-<text x="638" y="1012" fill="#64748B" font-size="11" font-weight="600">实线=同步调用</text>
-
-<line x1="760" y1="1008" x2="792" y2="1008" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="798" y="1012" fill="#64748B" font-size="11" font-weight="600">虚线=异步消息</text>
-</g>
-
-<text x="850" y="1052" fill="#94A3B8" font-size="10" text-anchor="middle">图14-1 物联网平台的四层分层架构，设备层经边缘接入层协议驱动与服务层解耦，层间以消息队列实现异步隔离。</text>
+  <!-- ============ CAPTION ============ -->
+  <text x="575" y="1058" font-size="10" fill="#94A3B8" text-anchor="middle">图14-1 物联网项目全生命周期：需求产出可执行基线与“不做什么”清单，架构在分层/解耦/异步/标准化下做权衡，</text>
+  <text x="575" y="1080" font-size="10" fill="#94A3B8" text-anchor="middle">开发按硬件节拍对齐迭代，部署先搭观测再跑业务，运维以可观测性与一键回滚为底线——每阶段均可回退上一阶段迭代。</text>
   </svg>
 </svg>

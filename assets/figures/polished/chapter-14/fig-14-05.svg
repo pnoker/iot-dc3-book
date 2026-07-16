@@ -1,223 +1,294 @@
-<svg xmlns="http://www.w3.org/2000/svg" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" width="1800" height="1020" viewBox="0 0 1800 1020">
-  <rect x="0" y="0" width="1800" height="1020" fill="#FFFFFF"/>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1050" width="1800" height="1050" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" data-style="architecture-diagram-wireframe-white">
+  <title>图14-5 IoT DC3 容器化部署架构</title>
+  <desc>三列分组：左列基础设施中间件（PostgreSQL/Nacos/TDengine/RabbitMQ），中列平台服务（鉴权/管理/数据中心，蓝）与智能中心（橙，挂载模型卷），右列南向驱动（MQTT/Modbus/OPC UA，绿，可下沉边缘）。顶部网关暴露 8080；驱动经 RabbitMQ 与数据中心异步通信、不直连数据库；底部标注数据卷持久化与 .env 配置注入。</desc>
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
     <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
     <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
     <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-    <marker id="ah-orange-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0,0 3.5,10 7" fill="#F59E0B"/></marker>
   </defs>
 
-  <!-- ============ 标题区 ============ -->
+  <!-- Canvas -->
+  <rect x="0" y="0" width="1800" height="1050" fill="#FFFFFF"/>
+
+  <!-- ===== Title area ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图14-5 AGI 时代物联网架构演进</text>
-  <text x="84" y="72" font-size="12" fill="#64748B">传统 IoT 平台 → AGI 时代自治平台：智能层升级为 Agent 编排 + 动态模型调度，安全护栏层独立并旁路所有自动决策</text>
-  <rect x="1640" y="28" width="130" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1705" y="45" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
-  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0"/>
+  <text x="84" y="38" font-size="22" font-weight="700" fill="#0F172A" dominant-baseline="middle">图14-5  IoT DC3 容器化部署架构</text>
+  <text x="84" y="64" font-size="12" fill="#64748B" dominant-baseline="middle">开发到生产的容器化拓扑：基础设施中间件 · 四中心服务 · 智能中心 · 南向驱动的分层编排（边云分离）</text>
+  <rect x="1620" y="26" width="140" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1690" y="40" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" dominant-baseline="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ============ 列标题 ============ -->
-  <text x="450" y="135" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">传统 IoT 平台架构</text>
-  <text x="450" y="152" font-size="10" fill="#94A3B8" text-anchor="middle">规则引擎 + 固定预训练模型</text>
-  <text x="1350" y="135" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AGI 时代平台架构</text>
-  <text x="1350" y="152" font-size="10" fill="#94A3B8" text-anchor="middle">Agent 编排 + 动态模型调度 + 安全护栏</text>
+  <!-- External access hint -->
+  <text x="470" y="120" font-size="10" fill="#94A3B8" dominant-baseline="middle">外部访问</text>
+  <line x1="470" y1="158" x2="538" y2="158" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
 
-  <!-- ============ 中间演进箭头 ============ -->
-  <line x1="830" y1="430" x2="965" y2="430" stroke="#2563EB" stroke-width="3" marker-end="url(#ah-blue)"/>
-  <text x="897" y="418" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">架构演进</text>
-  <text x="897" y="452" font-size="10" fill="#64748B" text-anchor="middle">自治化</text>
+  <!-- ===== Gateway bar ===== -->
+  <rect x="540" y="125" width="570" height="66" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="560" y="152" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">网关 Gateway</text>
+  <text x="560" y="174" font-size="10" fill="#475569" dominant-baseline="middle">反向代理 · 统一入口 · TLS 终止</text>
+  <rect x="990" y="140" width="76" height="36" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1028" y="154" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">PORT</text>
+  <text x="1028" y="170" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle" dominant-baseline="middle">8080</text>
+  <rect x="1078" y="140" width="20" height="36" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ================================================================
-       左列：传统 IoT  (x 90-810)
-       应用 160-220 / 智能 250-340 / 平台 370-460 / 接入 490-550 / 设备 580-650
-       ================================================================ -->
+  <!-- Gateway -> Platform layer -->
+  <line x1="825" y1="191" x2="825" y2="212" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="838" y="205" font-size="10" fill="#2563EB" dominant-baseline="middle">路由</text>
 
-  <!-- 应用层 (gray) -->
-  <rect x="90" y="160" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="100" y="150" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
-  <text x="138" y="164" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle">应用层</text>
-  <rect x="270" y="178" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
-  <text x="450" y="198" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">业务应用 · 大屏 · 开放 API</text>
+  <!-- ===== Column boundary boxes ===== -->
+  <rect x="70" y="215" width="420" height="555" rx="12" fill="none" stroke="#64748B" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="530" y="215" width="580" height="555" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="1150" y="215" width="580" height="555" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
 
-  <!-- 智能层 (orange) -->
-  <rect x="90" y="250" width="720" height="90" rx="10" fill="#F8FAFC" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="100" y="240" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
-  <text x="138" y="254" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">智能层</text>
-  <rect x="200" y="275" width="250" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="325" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">规则引擎</text>
-  <text x="325" y="313" font-size="9" fill="#64748B" text-anchor="middle">阈值 / 联动 / 静态策略</text>
-  <rect x="480" y="275" width="250" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="605" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">预训练模型</text>
-  <text x="605" y="313" font-size="9" fill="#64748B" text-anchor="middle">固定版本 · 离线推理</text>
+  <!-- Column labels -->
+  <rect x="86" y="228" width="160" height="22" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1"/>
+  <text x="166" y="240" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.5">基础设施 / INFRASTRUCTURE</text>
+  <rect x="546" y="228" width="140" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="616" y="240" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.5">平台服务 / PLATFORM</text>
+  <rect x="1166" y="228" width="160" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="1246" y="240" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.5">南向驱动 / EDGE DRIVERS</text>
 
-  <!-- 平台层 (blue) -->
-  <rect x="90" y="370" width="720" height="90" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="100" y="360" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="138" y="374" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">平台层</text>
-  <rect x="120" y="395" width="200" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="220" y="417" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">认证授权</text>
-  <text x="220" y="433" font-size="9" fill="#64748B" text-anchor="middle">身份 · 权限</text>
-  <rect x="340" y="395" width="200" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="440" y="417" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">设备管理</text>
-  <text x="440" y="433" font-size="9" fill="#64748B" text-anchor="middle">影子 · 生命周期</text>
-  <rect x="560" y="395" width="200" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="660" y="417" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">数据中心</text>
-  <text x="660" y="433" font-size="9" fill="#64748B" text-anchor="middle">时序 · 历史存储</text>
+  <!-- ===== LEFT COLUMN: middleware (gray) ===== -->
+  <!-- PostgreSQL (cylinder, row1) -->
+  <rect x="90" y="290" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <g transform="translate(108,305)">
+    <ellipse cx="18" cy="7" rx="18" ry="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+    <path d="M0,7 L0,48" stroke="#64748B" stroke-width="1.5" fill="none"/>
+    <path d="M36,7 L36,48" stroke="#64748B" stroke-width="1.5" fill="none"/>
+    <path d="M0,48 A18,6 0 0 0 36,48" stroke="#64748B" stroke-width="1.5" fill="#F8FAFC"/>
+    <ellipse cx="18" cy="7" rx="18" ry="6" fill="none" stroke="#64748B" stroke-width="1.5"/>
+  </g>
+  <text x="172" y="318" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">PostgreSQL</text>
+  <text x="172" y="340" font-size="10" fill="#475569" dominant-baseline="middle">关系数据库 · 用户 / 鉴权 / 元数据</text>
+  <text x="172" y="358" font-size="9" fill="#64748B" dominant-baseline="middle">卷 pg-data · :5432</text>
 
-  <!-- 接入层 (blue) -->
-  <rect x="90" y="490" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="100" y="480" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="138" y="494" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">接入层</text>
-  <rect x="270" y="508" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="450" y="528" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT · CoAP · Modbus</text>
+  <!-- Nacos (card, row2) -->
+  <rect x="90" y="400" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <rect x="106" y="416" width="40" height="40" rx="4" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <text x="126" y="438" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" dominant-baseline="middle">N</text>
+  <text x="160" y="426" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">Nacos</text>
+  <text x="160" y="448" font-size="10" fill="#475569" dominant-baseline="middle">服务注册发现 · 动态配置中心</text>
+  <text x="160" y="466" font-size="9" fill="#64748B" dominant-baseline="middle">:8848 · 全部中心注册</text>
 
-  <!-- 设备层 (green) -->
-  <rect x="90" y="580" width="720" height="70" rx="10" fill="#F8FAFC" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="100" y="570" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-  <text x="138" y="584" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">设备层</text>
-  <rect x="200" y="600" width="500" height="38" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="450" y="624" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">异构设备 · 传感器 · 执行器 · 边缘网关</text>
+  <!-- TDengine (cylinder, row3) -->
+  <rect x="90" y="510" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <g transform="translate(108,525)">
+    <ellipse cx="18" cy="7" rx="18" ry="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+    <path d="M0,7 L0,48" stroke="#64748B" stroke-width="1.5" fill="none"/>
+    <path d="M36,7 L36,48" stroke="#64748B" stroke-width="1.5" fill="none"/>
+    <path d="M0,48 A18,6 0 0 0 36,48" stroke="#64748B" stroke-width="1.5" fill="#F8FAFC"/>
+    <ellipse cx="18" cy="7" rx="18" ry="6" fill="none" stroke="#64748B" stroke-width="1.5"/>
+  </g>
+  <text x="172" y="538" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">TDengine</text>
+  <text x="172" y="560" font-size="10" fill="#475569" dominant-baseline="middle">时序数据库 · 设备点位 / 采集数据</text>
+  <text x="172" y="578" font-size="9" fill="#64748B" dominant-baseline="middle">卷 td-data · :6030</text>
 
-  <!-- 左列内部箭头 -->
-  <!-- 设备 -> 接入 -> 平台 (灰，数据上行) -->
-  <line x1="450" y1="580" x2="450" y2="554" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
-  <line x1="450" y1="490" x2="450" y2="464" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
-  <!-- 平台 <-> 智能 -->
-  <line x1="325" y1="370" x2="325" y2="344" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
-  <text x="300" y="362" font-size="10" fill="#2563EB" text-anchor="end" font-weight="600">数据源</text>
-  <line x1="605" y1="340" x2="605" y2="366" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="630" y="358" font-size="10" fill="#64748B" font-weight="600">告警 / 控制</text>
+  <!-- RabbitMQ (card, row4) -->
+  <rect x="90" y="620" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <rect x="106" y="636" width="40" height="40" rx="4" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <line x1="114" y1="648" x2="138" y2="648" stroke="#64748B" stroke-width="1.2"/>
+  <line x1="114" y1="656" x2="138" y2="656" stroke="#64748B" stroke-width="1.2"/>
+  <line x1="114" y1="664" x2="138" y2="664" stroke="#64748B" stroke-width="1.2"/>
+  <text x="160" y="646" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">RabbitMQ</text>
+  <text x="160" y="668" font-size="10" fill="#475569" dominant-baseline="middle">消息总线 · 驱动异步上报 / 事件解耦</text>
+  <text x="160" y="686" font-size="9" fill="#64748B" dominant-baseline="middle">卷 rmq-data · :5672</text>
 
-  <!-- 左列 callout -->
-  <rect x="100" y="678" width="700" height="44" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
-  <text x="116" y="697" font-size="11" font-weight="700" fill="#334155">传统模式</text>
-  <text x="116" y="714" font-size="11" fill="#334155">平台向智能层提供数据源 → 规则/固定模型产生告警与控制指令回注平台执行；智能与安全耦合在策略中。</text>
+  <!-- ===== MIDDLE COLUMN: platform + intelligent ===== -->
+  <!-- Auth Center (blue, row1) -->
+  <rect x="550" y="290" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="566" y="306" width="6" height="53" rx="2" fill="#2563EB"/>
+  <text x="586" y="318" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">鉴权中心  dc3-auth</text>
+  <text x="586" y="340" font-size="10" fill="#475569" dominant-baseline="middle">用户登录 · Token 签发 · 权限校验</text>
+  <text x="586" y="358" font-size="9" fill="#64748B" dominant-baseline="middle">依赖 PostgreSQL · Nacos</text>
 
-  <!-- ================================================================
-       右列：AGI 时代  (x 990-1710)
-       应用 160-220 / 安全护栏 250-340 / 智能 370-480 / 平台 510-580 / 接入 610-670 / 设备 700-770
-       ================================================================ -->
+  <!-- Management Center (blue, row2) -->
+  <rect x="550" y="400" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="566" y="416" width="6" height="53" rx="2" fill="#2563EB"/>
+  <text x="586" y="428" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">管理中心  dc3-manager</text>
+  <text x="586" y="450" font-size="10" fill="#475569" dominant-baseline="middle">设备 / 点位 / 模型元数据管理</text>
+  <text x="586" y="468" font-size="9" fill="#64748B" dominant-baseline="middle">依赖 PostgreSQL · Nacos</text>
 
-  <!-- 应用层 (gray) -->
-  <rect x="990" y="160" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1000" y="150" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
-  <text x="1038" y="164" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle">应用层</text>
-  <rect x="1170" y="178" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
-  <text x="1350" y="198" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">自治应用 · 人机协同 UI</text>
+  <!-- Data Center (blue, row3) -->
+  <rect x="550" y="510" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="566" y="526" width="6" height="53" rx="2" fill="#2563EB"/>
+  <text x="586" y="538" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">数据中心  dc3-data</text>
+  <text x="586" y="560" font-size="10" fill="#475569" dominant-baseline="middle">采集数据入库 · 消费驱动消息 · 计算下发</text>
+  <text x="586" y="578" font-size="9" fill="#64748B" dominant-baseline="middle">依赖 TDengine · PostgreSQL · RabbitMQ</text>
 
-  <!-- 安全护栏层 (red) -->
-  <rect x="990" y="250" width="720" height="90" rx="10" fill="#FFF1F2" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="8 4"/>
-  <rect x="1000" y="240" width="100" height="20" rx="4" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.2"/>
-  <text x="1050" y="254" font-size="10" font-weight="700" fill="#E11D48" text-anchor="middle">安全护栏层</text>
-  <rect x="1010" y="275" width="220" height="50" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-  <text x="1120" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">决策校验服务</text>
-  <text x="1120" y="313" font-size="9" fill="#64748B" text-anchor="middle">意图合规 · 越权拦截</text>
-  <rect x="1250" y="275" width="220" height="50" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-  <text x="1360" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">操作区间约束</text>
-  <text x="1360" y="313" font-size="9" fill="#64748B" text-anchor="middle">边界 · 回滚 · 限流</text>
-  <rect x="1490" y="275" width="210" height="50" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-  <text x="1595" y="297" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">人工接管接口</text>
-  <text x="1595" y="313" font-size="9" fill="#64748B" text-anchor="middle">高危审批 · 介入</text>
+  <!-- Intelligent Center (orange, row4) -->
+  <rect x="550" y="620" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <rect x="566" y="636" width="6" height="53" rx="2" fill="#F59E0B"/>
+  <text x="586" y="648" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">智能中心  dc3-gateway (AI)</text>
+  <text x="586" y="670" font-size="10" fill="#475569" dominant-baseline="middle">规则引擎 · AI 推理 · 联动控制</text>
+  <text x="586" y="688" font-size="9" fill="#64748B" dominant-baseline="middle">挂载模型卷 model-store · 边云可分离</text>
 
-  <!-- 智能层 (orange) -->
-  <rect x="990" y="370" width="720" height="110" rx="10" fill="#F8FAFC" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1000" y="360" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
-  <text x="1038" y="374" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">智能层</text>
+  <!-- ===== RIGHT COLUMN: southbound drivers (green) ===== -->
+  <!-- driver-mqtt -->
+  <rect x="1170" y="300" width="540" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="1186" y="316" width="6" height="48" rx="2" fill="#10B981"/>
+  <text x="1206" y="328" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">driver-mqtt</text>
+  <text x="1206" y="350" font-size="10" fill="#475569" dominant-baseline="middle">MQTT 协议接入 · 发布 / 订阅设备数据</text>
+  <text x="1206" y="368" font-size="9" fill="#64748B" dominant-baseline="middle">→ RabbitMQ 异步上报 · 可下沉边缘</text>
 
-  <!-- Agent 编排层 -->
-  <rect x="1010" y="390" width="330" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="1175" y="412" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Agent 编排层</text>
-  <line x1="1040" y1="420" x2="1310" y2="420" stroke="#FEF3C7"/>
-  <text x="1175" y="436" font-size="10" fill="#475569" text-anchor="middle">多 Agent 调度 · 上下文管理</text>
-  <text x="1175" y="452" font-size="10" fill="#475569" text-anchor="middle">推理链追踪 · 任务分解</text>
-  <text x="1175" y="466" font-size="9" fill="#94A3B8" text-anchor="middle">输出 = 待校验决策</text>
+  <!-- driver-modbus -->
+  <rect x="1170" y="420" width="540" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="1186" y="436" width="6" height="48" rx="2" fill="#10B981"/>
+  <text x="1206" y="448" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">driver-modbus</text>
+  <text x="1206" y="470" font-size="10" fill="#475569" dominant-baseline="middle">Modbus TCP/RTU 轮询 · 寄存器读写</text>
+  <text x="1206" y="488" font-size="9" fill="#64748B" dominant-baseline="middle">→ RabbitMQ 异步上报 · 可下沉边缘</text>
 
-  <!-- 模型调度网关 -->
-  <rect x="1360" y="390" width="330" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="1525" y="412" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">模型调度网关</text>
-  <line x1="1390" y1="420" x2="1660" y2="420" stroke="#FEF3C7"/>
-  <text x="1525" y="436" font-size="10" fill="#475569" text-anchor="middle">端 / 云模型路由</text>
-  <text x="1525" y="452" font-size="10" fill="#475569" text-anchor="middle">模型版本管理 · 灰度</text>
-  <text x="1525" y="466" font-size="9" fill="#94A3B8" text-anchor="middle">按代价 / 时延动态选择</text>
+  <!-- driver-opcua -->
+  <rect x="1170" y="540" width="540" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="1186" y="556" width="6" height="48" rx="2" fill="#10B981"/>
+  <text x="1206" y="568" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">driver-opcua</text>
+  <text x="1206" y="590" font-size="10" fill="#475569" dominant-baseline="middle">OPC UA 订阅 · 工控设备节点采集</text>
+  <text x="1206" y="608" font-size="9" fill="#64748B" dominant-baseline="middle">→ RabbitMQ 异步上报 · 可下沉边缘</text>
 
-  <!-- Agent <-> 模型调度网关 (动态路由, 橙色虚线) -->
-  <line x1="1340" y1="430" x2="1360" y2="430" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)" marker-start="url(#ah-orange-start)"/>
-  <text x="1350" y="421" font-size="9" font-weight="700" fill="#F59E0B" text-anchor="middle">动态路由</text>
+  <!-- Edge note -->
+  <rect x="1170" y="660" width="540" height="70" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="1440" y="684" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle" dominant-baseline="middle">边云分离 · Edge–Cloud Separation</text>
+  <text x="1440" y="704" font-size="10" fill="#475569" text-anchor="middle" dominant-baseline="middle">驱动容器可在边缘节点运行，经网络回连云端 RabbitMQ / Nacos</text>
+  <text x="1440" y="720" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">独立网络平面 · 不直连云端数据库</text>
 
-  <!-- 平台层 (blue) -->
-  <rect x="990" y="510" width="720" height="70" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1000" y="500" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="1038" y="514" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">平台层</text>
-  <rect x="1090" y="528" width="600" height="38" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="1390" y="552" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">认证授权 · 设备管理 · 数据中心（数据源沉淀）</text>
+  <!-- ===== Sync dependency arrows (gray solid) ===== -->
+  <!-- Auth -> PostgreSQL (row1) -->
+  <line x1="548" y1="332" x2="474" y2="332" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
+  <text x="511" y="324" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">鉴权库</text>
 
-  <!-- 接入层 (blue) -->
-  <rect x="990" y="610" width="720" height="60" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1000" y="600" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="1038" y="614" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">接入层</text>
-  <rect x="1170" y="628" width="360" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="1350" y="648" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT · CoAP · Modbus</text>
+  <!-- Management -> Nacos (row2) -->
+  <line x1="548" y1="442" x2="474" y2="442" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
+  <text x="511" y="434" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">配置 / 注册</text>
 
-  <!-- 设备层 (green) -->
-  <rect x="990" y="700" width="720" height="70" rx="10" fill="#F8FAFC" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1000" y="690" width="76" height="20" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-  <text x="1038" y="704" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">设备层</text>
-  <rect x="1100" y="720" width="500" height="38" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="1350" y="744" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">异构设备 · 传感器 · 执行器 · 边缘网关</text>
+  <!-- Management -> PostgreSQL (L up-left) -->
+  <path d="M 548,414 L 510,414 L 510,360 L 474,360" fill="none" stroke="#64748B" stroke-width="1.4" marker-end="url(#ah-gray)"/>
+  <text x="498" y="388" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">元数据</text>
 
-  <!-- 右列主链路 (蓝色实线，上行) -->
-  <!-- 设备 -> 接入 -->
-  <line x1="1030" y1="700" x2="1030" y2="674" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
-  <!-- 接入 -> 平台 -->
-  <line x1="1030" y1="610" x2="1030" y2="584" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
-  <!-- 平台 -> Agent编排 (数据源) -->
-  <line x1="1030" y1="510" x2="1030" y2="474" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
-  <text x="1020" y="495" font-size="10" fill="#2563EB" font-weight="700" text-anchor="end">数据源</text>
-  <!-- Agent编排 -> 安全护栏 (输出校验) -->
-  <line x1="1100" y1="370" x2="1100" y2="328" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
-  <text x="1112" y="352" font-size="10" fill="#2563EB" font-weight="700">输出校验</text>
+  <!-- Data -> TDengine (row3) -->
+  <line x1="548" y1="552" x2="474" y2="552" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
+  <text x="511" y="544" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">时序写入</text>
 
-  <!-- 安全护栏 -> 平台 (指令回注执行，蓝色虚线，右侧 L 型) -->
-  <path d="M 1700 295 L 1740 295 L 1740 545 L 1714 545" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
-  <text x="1748" y="420" font-size="10" fill="#2563EB" font-weight="700">通过后</text>
-  <text x="1748" y="434" font-size="10" fill="#2563EB" font-weight="700">回注执行</text>
+  <!-- Data -> PostgreSQL (L up-left) -->
+  <path d="M 548,524 L 520,524 L 520,372 L 474,372" fill="none" stroke="#64748B" stroke-width="1.4" marker-end="url(#ah-gray)"/>
+  <text x="508" y="450" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">关系</text>
 
-  <!-- 安全护栏 -> 应用 (人工确认独立通道，红色虚线) -->
-  <line x1="1350" y1="250" x2="1350" y2="224" stroke="#E11D48" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-red)"/>
-  <text x="1362" y="240" font-size="10" fill="#E11D48" font-weight="700">人工确认通道</text>
+  <!-- ===== Async path: drivers -> RabbitMQ -> Data Center (green dashed) ===== -->
+  <!-- driver stubs to vertical bus at x=1158 -->
+  <line x1="1168" y1="340" x2="1158" y2="340" stroke="#10B981" stroke-width="1.8"/>
+  <line x1="1168" y1="460" x2="1158" y2="460" stroke="#10B981" stroke-width="1.8"/>
+  <line x1="1168" y1="580" x2="1158" y2="580" stroke="#10B981" stroke-width="1.8"/>
+  <!-- vertical bus -->
+  <line x1="1158" y1="340" x2="1158" y2="780" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <!-- horizontal bus under columns to RabbitMQ -->
+  <path d="M 1158,780 L 280,780 L 280,708" fill="none" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
+  <text x="700" y="773" font-size="10" font-weight="600" fill="#10B981" text-anchor="middle" dominant-baseline="middle">异步消息上报 · async publish（驱动不直连数据库）</text>
 
-  <!-- 右列 callout -->
-  <rect x="1000" y="790" width="700" height="44" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
-  <text x="1016" y="809" font-size="11" font-weight="700" fill="#E11D48">AGI 模式</text>
-  <text x="1016" y="826" font-size="11" fill="#334155">Agent 编排调用模型调度网关动态路由端/云模型；其输出必须经安全护栏层校验通过后才回注平台执行，高危决策走人工确认。</text>
+  <!-- RabbitMQ -> Data Center (green dashed, consume) -->
+  <path d="M 474,650 L 524,650 L 524,592 L 548,592" fill="none" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
+  <text x="500" y="624" font-size="9" fill="#10B981" text-anchor="middle" dominant-baseline="middle">消费</text>
 
-  <!-- ============ 图例 ============ -->
-  <line x1="60" y1="855" x2="1740" y2="855" stroke="#E2E8F0"/>
-  <text x="64" y="880" font-size="11" font-weight="700" fill="#475569">图例</text>
+  <!-- Intelligent -> model volume (orange, links down to bottom band) -->
+  <line x1="820" y1="706" x2="820" y2="800" stroke="#F59E0B" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#ah-orange)"/>
+  <text x="834" y="752" font-size="9" fill="#F59E0B" dominant-baseline="middle">加载模型</text>
 
-  <rect x="110" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="134" y="882" font-size="11" fill="#334155">设备与边缘</text>
+  <!-- ===== Bottom band: volumes + env injection ===== -->
+  <line x1="60" y1="788" x2="1740" y2="788" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <rect x="240" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="264" y="882" font-size="11" fill="#334155">接入与平台基础</text>
+  <!-- Volumes group (left/center) -->
+  <text x="90" y="812" font-size="12" font-weight="700" fill="#0F172A" dominant-baseline="middle">数据卷持久化  Volumes</text>
+  <!-- pg-data -->
+  <g transform="translate(96,828)">
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M32,6 L32,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+  </g>
+  <text x="144" y="846" font-size="10" fill="#475569" dominant-baseline="middle">pg-data</text>
+  <text x="144" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">关系库</text>
+  <!-- td-data -->
+  <g transform="translate(232,828)">
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M32,6 L32,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+  </g>
+  <text x="280" y="846" font-size="10" fill="#475569" dominant-baseline="middle">td-data</text>
+  <text x="280" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">时序库</text>
+  <!-- rmq-data -->
+  <g transform="translate(368,828)">
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M32,6 L32,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+  </g>
+  <text x="416" y="846" font-size="10" fill="#475569" dominant-baseline="middle">rmq-data</text>
+  <text x="416" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">消息</text>
+  <!-- model-store -->
+  <g transform="translate(520,828)">
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
+    <path d="M0,6 L0,40" stroke="#F59E0B" stroke-width="1.5" fill="none"/>
+    <path d="M32,6 L32,40" stroke="#F59E0B" stroke-width="1.5" fill="none"/>
+    <path d="M0,40 A16,5 0 0 0 32,40" stroke="#F59E0B" stroke-width="1.5" fill="#FFF7ED"/>
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+  </g>
+  <text x="568" y="846" font-size="10" fill="#475569" dominant-baseline="middle">model-store</text>
+  <text x="568" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">AI 模型 · 智能中心挂载</text>
+  <text x="90" y="884" font-size="9" fill="#94A3B8" dominant-baseline="middle">显式 volume 挂载，容器重建不丢数据</text>
 
-  <rect x="400" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.6"/>
-  <text x="424" y="882" font-size="11" fill="#334155">AI / Agent 能力</text>
+  <!-- .env config injection (right) -->
+  <rect x="1180" y="820" width="480" height="70" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="1200" y="842" font-size="12" font-weight="700" fill="#0F172A" dominant-baseline="middle">配置注入  .env · 密钥管理</text>
+  <text x="1200" y="862" font-size="10" fill="#475569" dominant-baseline="middle">数据库口令 / Token 密钥 / 第三方凭证</text>
+  <text x="1200" y="878" font-size="9" fill="#64748B" dominant-baseline="middle">敏感配置不入镜像，运行时环境变量注入全部容器</text>
+  <!-- key glyph -->
+  <g transform="translate(1600,838)">
+    <circle cx="10" cy="14" r="7" fill="none" stroke="#E11D48" stroke-width="1.6"/>
+    <path d="M17,14 L40,14 M34,14 L34,22 M40,14 L40,22" stroke="#E11D48" stroke-width="1.6" fill="none"/>
+  </g>
+  <!-- injection arrows up into stack -->
+  <line x1="1300" y1="820" x2="1300" y2="772" stroke="#E11D48" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
+  <line x1="1420" y1="820" x2="1420" y2="772" stroke="#E11D48" stroke-width="1.4" stroke-dasharray="4 3"/>
 
-  <rect x="550" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.6"/>
-  <text x="574" y="882" font-size="11" fill="#334155">安全与管控</text>
+  <!-- ===== Legend ===== -->
+  <line x1="60" y1="905" x2="1740" y2="905" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="60" y="925" font-size="10" font-weight="700" fill="#64748B" dominant-baseline="middle" letter-spacing="0.5">LEGEND</text>
 
-  <rect x="680" y="872" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
-  <text x="704" y="882" font-size="11" fill="#334155">外部应用 / UI</text>
+  <rect x="130" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="152" y="925" font-size="10" fill="#475569" dominant-baseline="middle">平台主链路（蓝）</text>
 
-  <line x1="840" y1="878" x2="880" y2="878" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
-  <text x="888" y="882" font-size="11" fill="#334155">实线 = 同步调用 / 强依赖（主链路）</text>
+  <rect x="290" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.8"/>
+  <text x="312" y="925" font-size="10" fill="#475569" dominant-baseline="middle">中间件（灰）</text>
 
-  <line x1="1180" y1="878" x2="1220" y2="878" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="1228" y="882" font-size="11" fill="#334155">虚线 = 异步事件 / 可选路由</text>
+  <rect x="420" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
+  <text x="442" y="925" font-size="10" fill="#475569" dominant-baseline="middle">南向驱动（绿）</text>
 
-  <!-- ============ caption ============ -->
-  <text x="900" y="1000" font-size="10" fill="#94A3B8" text-anchor="middle">图14-5 AGI 时代物联网架构演进｜右侧独立的 Agent 编排层、动态模型调度网关与旁路所有自动决策的安全护栏层，是从「规则 + 固定模型」走向自治系统的关键结构变化。</text>
+  <rect x="560" y="918" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.8"/>
+  <text x="582" y="925" font-size="10" fill="#475569" dominant-baseline="middle">智能中心（橙）</text>
+
+  <line x1="710" y1="925" x2="746" y2="925" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
+  <text x="752" y="925" font-size="10" fill="#475569" dominant-baseline="middle">同步依赖</text>
+
+  <line x1="840" y1="925" x2="876" y2="925" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
+  <text x="882" y="925" font-size="10" fill="#475569" dominant-baseline="middle">异步消息（驱动 → MQ → 数据中心）</text>
+
+  <line x1="1180" y1="925" x2="1216" y2="925" stroke="#E11D48" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
+  <text x="1222" y="925" font-size="10" fill="#475569" dominant-baseline="middle">敏感配置注入</text>
+
+  <g transform="translate(1360,916)">
+    <ellipse cx="8" cy="3" rx="8" ry="2.5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.3"/>
+    <path d="M0,3 L0,14" stroke="#7C3AED" stroke-width="1.3" fill="none"/>
+    <path d="M16,3 L16,14" stroke="#7C3AED" stroke-width="1.3" fill="none"/>
+    <path d="M0,14 A8,2.5 0 0 0 16,14" stroke="#7C3AED" stroke-width="1.3" fill="#F8FAFC"/>
+    <ellipse cx="8" cy="3" rx="8" ry="2.5" fill="none" stroke="#7C3AED" stroke-width="1.3"/>
+  </g>
+  <text x="1384" y="925" font-size="10" fill="#475569" dominant-baseline="middle">数据卷（圆柱体）</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="975" font-size="10" fill="#94A3B8" text-anchor="middle" dominant-baseline="middle">图14-5 部署架构：基础设施中间件、四个中心服务、智能中心与南向驱动按职责分层编排；</text>
+  <text x="900" y="993" font-size="10" fill="#94A3B8" text-anchor="middle" dominant-baseline="middle">驱动经 RabbitMQ 与数据中心异步通信、不直连数据库；敏感配置经 .env / 密钥管理注入，数据卷显式挂载保证持久化。</text>
 </svg>

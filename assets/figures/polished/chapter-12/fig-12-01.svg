@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <title>图12-01 农业环境传感网络部署拓扑示意</title>
+  <desc>星型拓扑：终端节点单跳直达 LoRaWAN 网关，网关经 4G/有线回传至云平台。</desc>
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图12-01 农业环境传感网络部署拓扑示意</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">星型拓扑 · 终端节点单跳直达网关 · 数据自下而上汇聚至云平台</text>
+  <rect x="1652" y="26" width="108" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1706" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">TOPOLOGY</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== data_domain boundary (purple) ===== -->
+  <rect x="60" y="128" width="1680" height="176" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="80" y="158" font-size="13" font-weight="700" fill="#7C3AED">数据资产域</text>
+  <text x="80" y="176" font-size="10" fill="#64748B">数据沉淀与治理边界</text>
+
+  <!-- c1: 云平台 / 数据中台 (database cylinder, purple) -->
+  <path d="M 770,176 L 770,256 A 130,13 0 0 0 1030,256 L 1030,176" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M 770,194 A 130,13 0 0 0 1030,194" fill="none" stroke="#7C3AED" stroke-width="1" opacity="0.35"/>
+  <ellipse cx="900" cy="176" rx="130" ry="13" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="900" y="226" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云平台 / 数据中台</text>
+  <text x="900" y="246" font-size="10" fill="#475569" text-anchor="middle">数据库 · AI模型 · 大屏 · 告警</text>
+
+  <!-- ===== edge_domain boundary (green) ===== -->
+  <rect x="60" y="340" width="1680" height="520" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="80" y="370" font-size="13" font-weight="700" fill="#10B981">设备与边缘域</text>
+  <text x="80" y="388" font-size="10" fill="#64748B">现场异构资源边界</text>
+
+  <!-- c2: LoRaWAN 网关 card (green) -->
+  <rect x="750" y="400" width="300" height="88" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <line x1="800" y1="466" x2="800" y2="420" stroke="#10B981" stroke-width="2"/>
+  <circle cx="800" cy="417" r="3" fill="#10B981"/>
+  <path d="M 808,426 A 9,9 0 0 0 808,410" fill="none" stroke="#10B981" stroke-width="1.5"/>
+  <path d="M 814,430 A 15,15 0 0 0 814,406" fill="none" stroke="#10B981" stroke-width="1.5"/>
+  <text x="968" y="436" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LoRaWAN 网关</text>
+  <text x="968" y="458" font-size="10" fill="#475569" text-anchor="middle">农田中央立杆 · 4G/有线回传</text>
+
+  <!-- callout: key takeaway -->
+  <rect x="1180" y="400" width="398" height="80" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1198" y="428" font-size="13" font-weight="700" fill="#334155">星型单跳 = 低功耗根源</text>
+  <text x="1198" y="450" font-size="10" fill="#64748B">终端不维护中继路由，仅与网关一对一通信；</text>
+  <text x="1198" y="468" font-size="10" fill="#64748B">长休眠占空比，故可电池长期运行。</text>
+
+  <!-- backhaul: c2 -> c1 (solid gray, up) -->
+  <line x1="900" y1="400" x2="900" y2="270" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="960" y="330" font-size="11" font-weight="700" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">4G / 有线回传</text>
+
+  <!-- ===== Farmland plane (2D) ===== -->
+  <rect x="110" y="540" width="1580" height="300" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="130" y1="610" x2="1670" y2="610" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
+  <line x1="130" y1="700" x2="1670" y2="700" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
+  <line x1="130" y1="790" x2="1670" y2="790" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
+
+  <!-- c3 cluster label -->
+  <text x="130" y="566" font-size="13" font-weight="700" fill="#10B981">终端节点（多类传感器）</text>
+  <text x="130" y="584" font-size="10" fill="#64748B">土壤水分 · 叶面湿度 · 光照 · 温湿度</text>
+
+  <!-- ===== LoRa star uplinks (dashed green, all converge on gateway) ===== -->
+  <g stroke="#10B981" stroke-width="1.5" stroke-dasharray="5 4" fill="none">
+    <line x1="320" y1="664" x2="900" y2="488"/>
+    <line x1="470" y1="754" x2="900" y2="488"/>
+    <line x1="620" y1="634" x2="900" y2="488"/>
+    <line x1="770" y1="779" x2="900" y2="488"/>
+    <line x1="1030" y1="779" x2="900" y2="488"/>
+    <line x1="1180" y1="634" x2="900" y2="488"/>
+    <line x1="1330" y1="754" x2="900" y2="488"/>
+    <line x1="1480" y1="664" x2="900" y2="488"/>
+  </g>
+
+  <!-- ===== Terminal sensor nodes (green) ===== -->
+  <g>
+    <!-- t1 -->
+    <circle cx="320" cy="680" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="320" cy="680" r="5" fill="#10B981"/>
+    <text x="320" y="708" font-size="9" fill="#475569" text-anchor="middle">土壤水分</text>
+    <!-- t2 -->
+    <circle cx="470" cy="770" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="470" cy="770" r="5" fill="#10B981"/>
+    <text x="470" y="798" font-size="9" fill="#475569" text-anchor="middle">温湿度</text>
+    <!-- t3 -->
+    <circle cx="620" cy="650" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="620" cy="650" r="5" fill="#10B981"/>
+    <text x="620" y="678" font-size="9" fill="#475569" text-anchor="middle">叶面湿度</text>
+    <!-- t4 -->
+    <circle cx="770" cy="795" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="770" cy="795" r="5" fill="#10B981"/>
+    <text x="770" y="823" font-size="9" fill="#475569" text-anchor="middle">光照</text>
+    <!-- t5 -->
+    <circle cx="1030" cy="795" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1030" cy="795" r="5" fill="#10B981"/>
+    <text x="1030" y="823" font-size="9" fill="#475569" text-anchor="middle">土壤水分</text>
+    <!-- t6 -->
+    <circle cx="1180" cy="650" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1180" cy="650" r="5" fill="#10B981"/>
+    <text x="1180" y="678" font-size="9" fill="#475569" text-anchor="middle">温湿度</text>
+    <!-- t7 -->
+    <circle cx="1330" cy="770" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1330" cy="770" r="5" fill="#10B981"/>
+    <text x="1330" y="798" font-size="9" fill="#475569" text-anchor="middle">叶面湿度</text>
+    <!-- t8 -->
+    <circle cx="1480" cy="680" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1480" cy="680" r="5" fill="#10B981"/>
+    <text x="1480" y="708" font-size="9" fill="#475569" text-anchor="middle">光照</text>
+  </g>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="880" x2="1760" y2="880" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <line x1="60" y1="905" x2="100" y2="905" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="108" y="906" dominant-baseline="middle">虚线 · LoRa 星型上行（终端单跳直达网关）</text>
+
+    <line x1="450" y1="905" x2="490" y2="905" stroke="#64748B" stroke-width="2"/>
+    <text x="498" y="906" dominant-baseline="middle">实线 · 4G / 有线回传（网关→云平台）</text>
+
+    <rect x="820" y="898" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="844" y="906" dominant-baseline="middle">紫 · 数据资产域</text>
+
+    <rect x="980" y="898" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="1004" y="906" dominant-baseline="middle">绿 · 设备与边缘域</text>
+
+    <circle cx="1170" cy="905" r="8" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="1170" cy="905" r="2.5" fill="#10B981"/>
+    <text x="1186" y="906" dominant-baseline="middle">绿圆 · 终端节点（传感器）</text>
+
+    <path d="M 1386,906 L 1386,894 A 9,2 0 0 0 1404,894 L 1404,906 A 9,2 0 0 1 1386,906" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1412" y="906" dominant-baseline="middle">圆柱 · 云平台数据存储</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="970" font-size="10" fill="#94A3B8" text-anchor="middle">图12-01 农业环境传感网络的星型拓扑，终端节点单跳直达网关。</text>
+</svg>

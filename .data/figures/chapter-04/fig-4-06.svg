@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图4-6 物联网无线技术选型雷达图</title>
+  <desc id="desc">五维雷达图（距离/速率/功耗/成本/部署）叠加对比 NB-IoT、LoRa、5G RedCap、Wi-Fi、BLE、Zigbee 六种主流物联网无线技术的选型定位。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<title>图4-6 物联网无线技术选型雷达图</title>
+  <desc>五维雷达图（距离/速率/功耗/成本/部署）叠加对比 NB-IoT、LoRa、5G RedCap、Wi-Fi、BLE、Zigbee 六种主流物联网无线技术的选型定位。</desc>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- ============ 画布白底 ============ -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ============ 标题区 ============ -->
+  <g id="title">
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图4-6 物联网无线技术选型雷达图</text>
+    <text x="84" y="72" font-size="12" fill="#64748B">五维雷达对比：距离 · 速率 · 功耗 · 成本 · 部署 — 六类主流技术叠加定位（分值越高越优）</text>
+    <rect x="1666" y="24" width="86" height="30" rx="15" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1709" y="44" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">RADAR</text>
+    <line x1="0" y1="103" x2="1800" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  </g>
+
+  <!-- ============ 主体：五维雷达 (center 720,520  R=320) ============ -->
+  <g id="radar-grid">
+    <!-- 同心五边形 ring1..4 #E2E8F0，ring5 #CBD5E1 -->
+    <polygon points="720,456 781,500 758,572 682,572 659,500" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    <polygon points="720,392 842,480 795,624 645,624 598,480" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    <polygon points="720,328 903,461 833,675 607,675 537,461" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    <polygon points="720,264 964,441 870,727 570,727 477,441" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    <polygon points="720,200 1024,421 908,779 532,779 416,421" fill="none" stroke="#CBD5E1" stroke-width="1.2"/>
+
+    <!-- 五条轴线 -->
+    <line x1="720" y1="520" x2="720" y2="200" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="720" y1="520" x2="1024" y2="421" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="720" y1="520" x2="908" y2="779" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="720" y1="520" x2="532" y2="779" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="720" y1="520" x2="416" y2="421" stroke="#CBD5E1" stroke-width="1"/>
+
+    <circle cx="720" cy="520" r="2.5" fill="#94A3B8"/>
+
+    <!-- 刻度（沿距离轴） -->
+    <g font-size="10" fill="#94A3B8" text-anchor="start">
+      <text x="728" y="460">1</text>
+      <text x="728" y="396">2</text>
+      <text x="728" y="332">3</text>
+      <text x="728" y="268">4</text>
+      <text x="728" y="204">5</text>
+    </g>
+  </g>
+
+  <!-- ============ 六技术多边形（顺序：距离/速率/功耗/成本/部署） ============ -->
+  <g id="radar-data">
+    <!-- NB-IoT  5/1/5/3/3 -->
+    <polygon points="720,200 781,500 908,779 607,675 537,461"
+             fill="#2563EB" fill-opacity="0.16" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
+    <!-- LoRa  5/1/5/4/4 -->
+    <polygon points="720,200 781,500 908,779 570,727 477,441"
+             fill="#10B981" fill-opacity="0.16" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+    <!-- 5G RedCap  4/5/2/2/2 -->
+    <polygon points="720,264 1024,421 795,624 645,624 598,480"
+             fill="#F59E0B" fill-opacity="0.16" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Wi-Fi  1/5/1/4/5 -->
+    <polygon points="720,456 1024,421 758,572 570,727 416,421"
+             fill="#E11D48" fill-opacity="0.16" stroke="#E11D48" stroke-width="2" stroke-linejoin="round"/>
+    <!-- BLE  1/3/5/5/5 -->
+    <polygon points="720,456 903,461 908,779 532,779 416,421"
+             fill="#7C3AED" fill-opacity="0.16" stroke="#7C3AED" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Zigbee  1/2/5/5/4 -->
+    <polygon points="720,456 842,480 908,779 532,779 477,441"
+             fill="#64748B" fill-opacity="0.16" stroke="#64748B" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ============ 轴标签 ============ -->
+  <g id="axis-labels">
+    <g font-size="16" font-weight="700" fill="#0F172A">
+      <text x="720" y="178" text-anchor="middle">距离</text>
+      <text x="1046" y="414" text-anchor="start">速率</text>
+      <text x="922" y="806" text-anchor="start">功耗</text>
+      <text x="510" y="806" text-anchor="end">成本</text>
+      <text x="394" y="414" text-anchor="end">部署</text>
+    </g>
+    <g font-size="9" fill="#94A3B8">
+      <text x="720" y="164" text-anchor="middle">越远 ↑</text>
+      <text x="1046" y="428" text-anchor="start">越高 ↑</text>
+      <text x="922" y="820" text-anchor="start">越低 ↑</text>
+      <text x="510" y="820" text-anchor="end">越低 ↑</text>
+      <text x="394" y="428" text-anchor="end">越易 ↑</text>
+    </g>
+  </g>
+
+  <!-- ============ 图例 ============ -->
+  <g id="legend">
+    <rect x="1250" y="280" width="500" height="310" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1272" y="312" font-size="13" font-weight="700" fill="#0F172A">技术图例</text>
+    <text x="1352" y="312" font-size="10" fill="#94A3B8" letter-spacing="1">LEGEND</text>
+    <line x1="1272" y1="324" x2="1728" y2="324" stroke="#F1F5F9" stroke-width="1"/>
+
+    <!-- NB-IoT -->
+    <rect x="1272" y="338" width="24" height="14" rx="3" fill="#2563EB" fill-opacity="0.18" stroke="#2563EB" stroke-width="2"/>
+    <text x="1308" y="350" font-size="14" font-weight="700" fill="#0F172A">NB-IoT</text>
+    <text x="1726" y="350" font-size="10" font-weight="600" fill="#2563EB" text-anchor="end">5·1·5·3·3</text>
+    <text x="1308" y="366" font-size="10" fill="#64748B">蜂窝授权频谱 · 运营商广域覆盖</text>
+
+    <!-- LoRa -->
+    <rect x="1272" y="376" width="24" height="14" rx="3" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-width="2"/>
+    <text x="1308" y="388" font-size="14" font-weight="700" fill="#0F172A">LoRa</text>
+    <text x="1726" y="388" font-size="10" font-weight="600" fill="#10B981" text-anchor="end">5·1·5·4·4</text>
+    <text x="1308" y="404" font-size="10" fill="#64748B">Sub-G 非授权 · 可自建网关</text>
+
+    <!-- 5G RedCap -->
+    <rect x="1272" y="414" width="24" height="14" rx="3" fill="#F59E0B" fill-opacity="0.18" stroke="#F59E0B" stroke-width="2"/>
+    <text x="1308" y="426" font-size="14" font-weight="700" fill="#0F172A">5G RedCap</text>
+    <text x="1726" y="426" font-size="10" font-weight="600" fill="#F59E0B" text-anchor="end">4·5·2·2·2</text>
+    <text x="1308" y="442" font-size="10" fill="#64748B">5G NR 轻量终端 · 中高速率</text>
+
+    <!-- Wi-Fi -->
+    <rect x="1272" y="452" width="24" height="14" rx="3" fill="#E11D48" fill-opacity="0.18" stroke="#E11D48" stroke-width="2"/>
+    <text x="1308" y="464" font-size="14" font-weight="700" fill="#0F172A">Wi-Fi</text>
+    <text x="1726" y="464" font-size="10" font-weight="600" fill="#E11D48" text-anchor="end">1·5·1·4·5</text>
+    <text x="1308" y="480" font-size="10" fill="#64748B">局域高带宽 · IP 直连</text>
+
+    <!-- BLE -->
+    <rect x="1272" y="490" width="24" height="14" rx="3" fill="#7C3AED" fill-opacity="0.18" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1308" y="502" font-size="14" font-weight="700" fill="#0F172A">BLE</text>
+    <text x="1726" y="502" font-size="10" font-weight="600" fill="#7C3AED" text-anchor="end">1·3·5·5·5</text>
+    <text x="1308" y="518" font-size="10" fill="#64748B">短距近场 · 手机原生支持</text>
+
+    <!-- Zigbee -->
+    <rect x="1272" y="528" width="24" height="14" rx="3" fill="#64748B" fill-opacity="0.18" stroke="#64748B" stroke-width="2"/>
+    <text x="1308" y="540" font-size="14" font-weight="700" fill="#0F172A">Zigbee</text>
+    <text x="1726" y="540" font-size="10" font-weight="600" fill="#64748B" text-anchor="end">1·2·5·5·4</text>
+    <text x="1308" y="556" font-size="10" fill="#64748B">短距 Mesh · 智能家居主流</text>
+
+    <line x1="1272" y1="570" x2="1728" y2="570" stroke="#F1F5F9" stroke-width="1"/>
+    <text x="1272" y="585" font-size="10" fill="#94A3B8">读数顺序 距离·速率·功耗·成本·部署；0–5 分，越高越优（功耗/成本已反向）。</text>
+  </g>
+
+  <!-- ============ 选型结论 callout ============ -->
+  <g id="conclusion">
+    <rect x="1250" y="630" width="500" height="180" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1272" y="660" font-size="13" font-weight="700" fill="#2563EB">选型结论</text>
+    <line x1="1272" y1="672" x2="1728" y2="672" stroke="#F1F5F9" stroke-width="1"/>
+
+    <text x="1272" y="699" font-size="11" fill="#334155">
+      <tspan fill="#10B981" font-weight="700">●</tspan>
+      <tspan dx="8">远距 + 低功耗 → </tspan>
+      <tspan font-weight="700" fill="#0F172A">NB-IoT / LoRa</tspan>
+      <tspan>（距离·功耗占优）</tspan>
+    </text>
+    <text x="1272" y="723" font-size="11" fill="#334155">
+      <tspan fill="#F59E0B" font-weight="700">●</tspan>
+      <tspan dx="8">高速率 → </tspan>
+      <tspan font-weight="700" fill="#0F172A">5G RedCap / Wi-Fi</tspan>
+      <tspan>（速率占优，功耗/成本劣化）</tspan>
+    </text>
+    <text x="1272" y="747" font-size="11" fill="#334155">
+      <tspan fill="#7C3AED" font-weight="700">●</tspan>
+      <tspan dx="8">低成本 + 易部署 → </tspan>
+      <tspan font-weight="700" fill="#0F172A">BLE / Zigbee</tspan>
+      <tspan>（成本·部署占优）</tspan>
+    </text>
+    <text x="1272" y="775" font-size="11" fill="#334155">
+      <tspan fill="#64748B" font-weight="700">→</tspan>
+      <tspan dx="8">无全能技术：按场景权重叠加多边形，择优组合而非单选。</tspan>
+    </text>
+    <text x="1272" y="797" font-size="9" fill="#94A3B8">提示：面积越大综合越广；远距低功耗与高速率高带宽互为折中。</text>
+  </g>
+
+  <!-- ============ 底部 caption ============ -->
+  <g id="caption">
+    <line x1="0" y1="910" x2="1800" y2="910" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="900" y="942" font-size="10" fill="#94A3B8" text-anchor="middle">图4-6 选型雷达图：NB-IoT/LoRa 在距离与功耗占优，5G RedCap/Wi-Fi 在速率占优，BLE/Zigbee 在成本与部署占优；按场景权重选技术组合。</text>
+    <text x="900" y="962" font-size="9" fill="#CBD5E1" text-anchor="middle" letter-spacing="1">FIGURE 4-6 · IoT WIRELESS SELECTION RADAR · 5-AXIS COMPARISON</text>
+  </g>
+  </svg>
+</svg>

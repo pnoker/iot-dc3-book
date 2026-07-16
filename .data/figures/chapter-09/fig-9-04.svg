@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图9-4 MCP 协议架构：Host/Client/Server 与能力原语</title>
+  <desc id="desc">顶层 MCP Host 内含 LLM 与三个 MCP Client；中层 JSON-RPC 2.0 消息通道；底层三个 MCP Server（设备驱动/数据服务/告警）各自声明 tools/resources/prompts 三类能力原语；最底设备协议带 MQTT/CoAP/HTTP；右上 sampling/createMessage 弧线表示 Server 反向借用 Host 的 LLM。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="44.565" width="1152.000" height="670.871" viewBox="0 0 1700.000 990.000" preserveAspectRatio="xMidYMid meet">
+<title>图9-4 MCP 协议架构：Host/Client/Server 与能力原语</title>
+  <desc>顶层 MCP Host 内含 LLM 与三个 MCP Client；中层 JSON-RPC 2.0 消息通道；底层三个 MCP Server（设备驱动/数据服务/告警）各自声明 tools/resources/prompts 三类能力原语；最底设备协议带 MQTT/CoAP/HTTP；右上 sampling/createMessage 弧线表示 Server 反向借用 Host 的 LLM。</desc>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse">
+      <polygon points="0 0,10 3.5,0 7" fill="#2563EB"/>
+    </marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#64748B"/>
+    </marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#10B981"/>
+    </marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/>
+    </marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/>
+    </marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#E11D48"/>
+    </marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1700" height="990" fill="#FFFFFF"/>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">图9-4 MCP 协议架构：Host/Client/Server 与能力原语</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">客户端-服务器架构 · JSON-RPC 2.0 消息层 · tools/resources/prompts 三大能力原语 · sampling 反向调用</text>
+  <rect x="1546" y="26" width="104" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1598" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+  <line x1="48" y1="100" x2="1652" y2="100" stroke="#E2E8F0"/>
+
+  <!-- ===== 顶层：MCP Host 边界框 ===== -->
+  <rect x="80" y="140" width="1540" height="200" rx="12" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="96" y="131" width="226" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB"/>
+  <text x="108" y="147" font-size="11" font-weight="600" fill="#2563EB">MCP Host · 宿主应用（含 LLM）</text>
+
+  <!-- LLM 块（蓝） -->
+  <rect x="130" y="178" width="240" height="132" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="250" y="214" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">LLM</text>
+  <text x="250" y="236" font-size="11" fill="#475569" text-anchor="middle">大语言模型</text>
+  <text x="250" y="256" font-size="9" fill="#94A3B8" text-anchor="middle">Claude · GLM · GPT</text>
+  <rect x="200" y="272" width="100" height="20" rx="4" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="250" y="286" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">sampling 入口</text>
+
+  <!-- MCP Client ×3（蓝） -->
+  <!-- Client 1 -->
+  <rect x="410" y="183" width="360" height="122" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="590" y="215" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Client</text>
+  <text x="590" y="237" font-size="11" fill="#475569" text-anchor="middle">设备能力会话</text>
+  <text x="590" y="257" font-size="9" fill="#64748B" text-anchor="middle">↕ 1:1 绑定 设备驱动 Server</text>
+  <rect x="550" y="270" width="80" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+  <text x="590" y="284" font-size="9" fill="#2563EB" text-anchor="middle">capabilities 协商</text>
+
+  <!-- Client 2 -->
+  <rect x="810" y="183" width="360" height="122" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="990" y="215" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Client</text>
+  <text x="990" y="237" font-size="11" fill="#475569" text-anchor="middle">数据能力会话</text>
+  <text x="990" y="257" font-size="9" fill="#64748B" text-anchor="middle">↕ 1:1 绑定 数据服务 Server</text>
+  <rect x="950" y="270" width="80" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+  <text x="990" y="284" font-size="9" fill="#2563EB" text-anchor="middle">capabilities 协商</text>
+
+  <!-- Client 3 -->
+  <rect x="1210" y="183" width="360" height="122" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="1390" y="215" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Client</text>
+  <text x="1390" y="237" font-size="11" fill="#475569" text-anchor="middle">告警能力会话</text>
+  <text x="1390" y="257" font-size="9" fill="#64748B" text-anchor="middle">↕ 1:1 绑定 告警 Server</text>
+  <rect x="1350" y="270" width="80" height="20" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+  <text x="1390" y="284" font-size="9" fill="#2563EB" text-anchor="middle">capabilities 协商</text>
+
+  <!-- ===== 中层：JSON-RPC 2.0 消息通道带 ===== -->
+  <rect x="80" y="352" width="1540" height="70" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="104" y="376" font-size="14" font-weight="700" fill="#0F172A">JSON-RPC 2.0 消息层</text>
+  <text x="104" y="396" font-size="10" fill="#64748B">transport 无关 · 双向 · 每条消息为下列三者之一</text>
+  <!-- 三类消息标签（落在竖向连线之间的空档） -->
+  <rect x="264" y="386" width="72" height="18" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+  <text x="300" y="399" font-size="10" font-weight="600" fill="#2563EB" text-anchor="middle">Request</text>
+  <rect x="750" y="386" width="80" height="18" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+  <text x="790" y="399" font-size="10" font-weight="600" fill="#2563EB" text-anchor="middle">Response</text>
+  <rect x="1140" y="386" width="100" height="18" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+  <text x="1190" y="399" font-size="10" font-weight="600" fill="#2563EB" text-anchor="middle">Notification</text>
+
+  <!-- ===== 底层：MCP Server ×3 ===== -->
+  <!-- Server 1 设备驱动（绿 edge） -->
+  <rect x="410" y="452" width="360" height="300" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="426" y="442" width="124" height="22" rx="4" fill="#FFFFFF" stroke="#10B981"/>
+  <text x="488" y="458" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">edge · 设备域</text>
+  <text x="590" y="494" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备驱动 Server</text>
+  <text x="590" y="514" font-size="10" fill="#64748B" text-anchor="middle">传感器 / 执行器 / 网关</text>
+  <line x1="430" y1="530" x2="750" y2="530" stroke="#E2E8F0"/>
+  <!-- tools 行（蓝） -->
+  <rect x="432" y="551" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="474" y="564" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">tools</text>
+  <text x="526" y="564" font-size="10" fill="#475569">read_sensor · set_actuator</text>
+  <!-- resources 行（绿） -->
+  <rect x="432" y="591" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="474" y="604" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">resources</text>
+  <text x="526" y="604" font-size="10" fill="#475569">device://sensor/*</text>
+  <!-- prompts 行（橙） -->
+  <rect x="432" y="631" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="474" y="644" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">prompts</text>
+  <text x="526" y="644" font-size="10" fill="#475569">设备诊断模板</text>
+  <text x="590" y="680" font-size="9" fill="#94A3B8" text-anchor="middle">声明于 initialize 握手</text>
+  <text x="590" y="708" font-size="9" fill="#94A3B8" text-anchor="middle">底层接入：MQTT · CoAP</text>
+
+  <!-- Server 2 数据服务（紫 data） -->
+  <rect x="810" y="452" width="360" height="300" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="826" y="442" width="124" height="22" rx="4" fill="#FFFFFF" stroke="#7C3AED"/>
+  <text x="888" y="458" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">data · 数据域</text>
+  <text x="990" y="494" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据服务 Server</text>
+  <text x="990" y="514" font-size="10" fill="#64748B" text-anchor="middle">时序 / 历史 / 指标库</text>
+  <line x1="830" y1="530" x2="1150" y2="530" stroke="#E2E8F0"/>
+  <rect x="832" y="551" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="874" y="564" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">tools</text>
+  <text x="926" y="564" font-size="10" fill="#475569">query_metric · aggregate</text>
+  <rect x="832" y="591" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="874" y="604" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">resources</text>
+  <text x="926" y="604" font-size="10" fill="#475569">db://timeseries</text>
+  <rect x="832" y="631" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="874" y="644" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">prompts</text>
+  <text x="926" y="644" font-size="10" fill="#475569">指标解读模板</text>
+  <text x="990" y="680" font-size="9" fill="#94A3B8" text-anchor="middle">声明于 initialize 握手</text>
+  <text x="990" y="708" font-size="9" fill="#94A3B8" text-anchor="middle">底层接入：HTTP · 时序库</text>
+
+  <!-- Server 3 告警（红 security） -->
+  <rect x="1210" y="452" width="360" height="300" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <rect x="1226" y="442" width="140" height="22" rx="4" fill="#FFFFFF" stroke="#E11D48"/>
+  <text x="1296" y="458" font-size="11" font-weight="600" fill="#E11D48" text-anchor="middle">security · 告警域</text>
+  <text x="1390" y="494" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">告警 Server</text>
+  <text x="1390" y="514" font-size="10" fill="#64748B" text-anchor="middle">阈值 / 规则 / 通知</text>
+  <line x1="1230" y1="530" x2="1550" y2="530" stroke="#E2E8F0"/>
+  <rect x="1232" y="551" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1274" y="564" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">tools</text>
+  <text x="1326" y="564" font-size="10" fill="#475569">create_rule · ack_alert</text>
+  <rect x="1232" y="591" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1274" y="604" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">resources</text>
+  <text x="1326" y="604" font-size="10" fill="#475569">alert://active</text>
+  <rect x="1232" y="631" width="84" height="18" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1274" y="644" font-size="10" font-weight="700" fill="#F59E0B" text-anchor="middle">prompts</text>
+  <text x="1326" y="644" font-size="10" fill="#475569">根因分析模板</text>
+  <text x="1390" y="680" font-size="9" fill="#94A3B8" text-anchor="middle">声明于 initialize 握手</text>
+  <text x="1390" y="708" font-size="9" fill="#94A3B8" text-anchor="middle">底层接入：HTTP · 规则引擎</text>
+
+  <!-- ===== Client ↔ Server 竖向主链路（穿过通道带，双向） ===== -->
+  <line x1="590" y1="305" x2="590" y2="452" stroke="#2563EB" stroke-width="2" marker-start="url(#ah-blue)" marker-end="url(#ah-blue)"/>
+  <line x1="990" y1="305" x2="990" y2="452" stroke="#2563EB" stroke-width="2" marker-start="url(#ah-blue)" marker-end="url(#ah-blue)"/>
+  <line x1="1390" y1="305" x2="1390" y2="452" stroke="#2563EB" stroke-width="2" marker-start="url(#ah-blue)" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== 最底：设备协议带 ===== -->
+  <rect x="80" y="782" width="1540" height="58" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="104" y="806" font-size="13" font-weight="700" fill="#0F172A">设备协议层</text>
+  <text x="104" y="826" font-size="10" fill="#64748B">MCP 不取代它们，在其上提供 AI 语义接口</text>
+  <rect x="560" y="800" width="84" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="602" y="815" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">MQTT</text>
+  <rect x="900" y="800" width="84" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="942" y="815" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">CoAP</text>
+  <rect x="1240" y="800" width="84" height="22" rx="4" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1282" y="815" font-size="11" font-weight="600" fill="#D97706" text-anchor="middle">HTTP</text>
+
+  <!-- Server → 设备协议 灰色虚线（底层回传） -->
+  <line x1="590" y1="752" x2="590" y2="782" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="990" y1="752" x2="990" y2="782" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="1390" y1="752" x2="1390" y2="782" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- ===== 右上：sampling / createMessage 反向调用弧线 ===== -->
+  <path d="M 1570 520 C 1660 520 1660 118 1500 118 L 440 118 C 380 118 372 170 370 244"
+        fill="none" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+  <rect x="700" y="107" width="380" height="22" rx="4" fill="#FFFFFF" stroke="#7C3AED"/>
+  <text x="890" y="123" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">sampling / createMessage · Server 反向借用 Host 的 LLM</text>
+
+  <!-- ===== 图例 ===== -->
+  <line x1="48" y1="860" x2="1652" y2="860" stroke="#E2E8F0"/>
+  <text x="64" y="886" font-size="11" font-weight="600" fill="#64748B">图例</text>
+
+  <rect x="110" y="876" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="134" y="886" font-size="11" fill="#475569">tools · 模型自主调用</text>
+
+  <rect x="320" y="876" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="344" y="886" font-size="11" fill="#475569">resources · 应用控制暴露</text>
+
+  <rect x="560" y="876" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="584" y="886" font-size="11" fill="#475569">prompts · 用户选择</text>
+
+  <line x1="770" y1="882" x2="808" y2="882" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <text x="816" y="886" font-size="11" fill="#475569">sampling · 反向借用 LLM</text>
+
+  <line x1="1020" y1="882" x2="1058" y2="882" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1066" y="886" font-size="11" fill="#475569">JSON-RPC 2.0 主链路</text>
+
+  <line x1="1280" y1="882" x2="1318" y2="882" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="1326" y="886" font-size="11" fill="#475569">底层设备协议接入</text>
+
+  <!-- ===== caption ===== -->
+  <text x="850" y="932" font-size="10" fill="#94A3B8" text-anchor="middle">图9-4 MCP 架构以 Host 为中心：Host 为每个能力源创建 Client，经 JSON-RPC 2.0 与对端 Server 通信；</text>
+  <text x="850" y="952" font-size="10" fill="#94A3B8" text-anchor="middle">Server 在 capabilities 中声明 tools/resources/prompts——tools 由模型调用、resources 由应用控制、prompts 由用户选择，sampling 则让 Server 反向借用 Host 的 LLM；设备协议（MQTT/CoAP）居最底层，MCP 提供其上 AI 语义接口。</text>
+  </svg>
+</svg>

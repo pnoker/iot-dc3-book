@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-2 设备接入安全三问：身份、传输、权限</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ========== title ========== -->
+  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+  <text x="88" y="49" font-size="22" font-weight="700" fill="#0F172A">图5-2 设备接入安全三问：身份、传输、权限</text>
+  <text x="88" y="74" font-size="12" fill="#64748B">Device Onboarding Security · 身份认证 → 传输加密 → 访问控制</text>
+  <rect x="1632" y="30" width="128" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1696" y="49" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">FLOWCHART</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ========== swim-lane backgrounds ========== -->
+  <rect x="115" y="125" width="490" height="710" fill="#10B981" fill-opacity="0.05"/>
+  <rect x="635" y="125" width="490" height="710" fill="#64748B" fill-opacity="0.05"/>
+  <rect x="1155" y="125" width="530" height="710" fill="#2563EB" fill-opacity="0.05"/>
+  <rect x="115" y="125" width="490" height="710" rx="12" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="8 4" stroke-opacity="0.45"/>
+  <rect x="635" y="125" width="490" height="710" rx="12" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="8 4" stroke-opacity="0.4"/>
+  <rect x="1155" y="125" width="530" height="710" rx="12" fill="none" stroke="#2563EB" stroke-width="1" stroke-dasharray="8 4" stroke-opacity="0.45"/>
+
+  <!-- ========== lane label cards ========== -->
+  <rect x="260" y="130" width="200" height="38" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="360" y="155" font-size="14" font-weight="700" fill="#10B981" text-anchor="middle">设备侧 · Device</text>
+  <rect x="800" y="130" width="160" height="38" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="880" y="155" font-size="14" font-weight="700" fill="#64748B" text-anchor="middle">网络 · Network</text>
+  <rect x="1310" y="130" width="220" height="38" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1420" y="155" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">平台侧 · Platform</text>
+
+  <!-- ========== phase dividers ========== -->
+  <line x1="115" y1="380" x2="1685" y2="380" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="8 4"/>
+  <line x1="115" y1="615" x2="1685" y2="615" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="8 4"/>
+
+  <!-- ========== phase tags (left gutter) ========== -->
+  <!-- Q1 身份认证 -->
+  <rect x="18" y="225" width="84" height="80" rx="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="60" y="253" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">身份认证</text>
+  <text x="60" y="273" font-size="10" fill="#E11D48" text-anchor="middle">Q1</text>
+  <text x="60" y="293" font-size="10" fill="#64748B" text-anchor="middle">你是谁?</text>
+  <!-- Q2 传输加密 -->
+  <rect x="18" y="450" width="84" height="80" rx="8" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="60" y="478" font-size="13" font-weight="700" fill="#64748B" text-anchor="middle">传输加密</text>
+  <text x="60" y="498" font-size="10" fill="#64748B" text-anchor="middle">Q2</text>
+  <text x="60" y="518" font-size="10" fill="#64748B" text-anchor="middle">路上安全</text>
+  <!-- Q3 访问控制 -->
+  <rect x="18" y="670" width="84" height="80" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="60" y="698" font-size="13" font-weight="700" fill="#7C3AED" text-anchor="middle">访问控制</text>
+  <text x="60" y="718" font-size="10" fill="#7C3AED" text-anchor="middle">Q3</text>
+  <text x="60" y="738" font-size="10" fill="#64748B" text-anchor="middle">你能做什么</text>
+
+  <!-- ===================================================
+       PHASE 1 · 身份认证  (y ≈ 175–360)
+       =================================================== -->
+  <!-- Node A : 设备发起连接 -->
+  <rect x="190" y="215" width="300" height="90" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="340" y="245" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备发起连接</text>
+  <text x="340" y="266" font-size="10" fill="#64748B" text-anchor="middle">IoT · 嵌入式 · 受限设备</text>
+  <text x="340" y="287" font-size="9" fill="#64748B" text-anchor="middle">携带 client_id + 预置凭证 / 证书</text>
+
+  <!-- Node B : 身份认证服务 -->
+  <rect x="1205" y="195" width="430" height="140" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1420" y="223" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">身份认证服务</text>
+  <text x="1420" y="243" font-size="10" fill="#E11D48" text-anchor="middle">确认「你是谁」 · Authentication</text>
+  <rect x="1222" y="258" width="120" height="26" rx="4" fill="#FEF2F2" stroke="#E11D48" stroke-width="1"/>
+  <text x="1282" y="276" font-size="10" fill="#E11D48" text-anchor="middle">证书 mTLS</text>
+  <rect x="1350" y="258" width="110" height="26" rx="4" fill="#FEF2F2" stroke="#E11D48" stroke-width="1"/>
+  <text x="1405" y="276" font-size="10" fill="#E11D48" text-anchor="middle">Token / JWT</text>
+  <rect x="1470" y="258" width="150" height="26" rx="4" fill="#FEF2F2" stroke="#E11D48" stroke-width="1"/>
+  <text x="1545" y="276" font-size="10" fill="#E11D48" text-anchor="middle">OAuth2.1 设备流</text>
+  <text x="1420" y="318" font-size="9" fill="#64748B" text-anchor="middle">RFC 8628 · 服务无键盘 / 无浏览器受限设备</text>
+
+  <!-- arrow ① A→B 认证请求 -->
+  <line x1="490" y1="248" x2="1199" y2="248" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <!-- arrow ② B→A 认证结果 (response, dashed) -->
+  <line x1="1205" y1="300" x2="496" y2="300" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <!-- badges -->
+  <circle cx="700" cy="248" r="12" fill="#2563EB"/>
+  <text x="700" y="248" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
+  <text x="720" y="235" font-size="11" font-weight="600" fill="#2563EB">认证请求</text>
+  <circle cx="700" cy="300" r="12" fill="#64748B"/>
+  <text x="700" y="300" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
+  <text x="720" y="321" font-size="11" font-weight="600" fill="#64748B">认证结果 / Token 下发</text>
+
+  <!-- transition A→C (认证完成, device proceeds to TLS) -->
+  <line x1="340" y1="305" x2="340" y2="439" stroke="#2563EB" stroke-width="2" stroke-opacity="0.65" marker-end="url(#ah-blue)"/>
+  <text x="352" y="377" font-size="10" fill="#2563EB">认证完成 ↓</text>
+
+  <!-- ===================================================
+       PHASE 2 · 传输加密  (y ≈ 395–600)
+       =================================================== -->
+  <!-- Node C : TLS Client -->
+  <rect x="200" y="445" width="280" height="90" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="340" y="473" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">TLS Client</text>
+  <text x="340" y="494" font-size="10" fill="#64748B" text-anchor="middle">握手发起方 · 设备端</text>
+  <text x="340" y="515" font-size="9" fill="#64748B" text-anchor="middle">支持 TLS 1.3 / DTLS 1.3</text>
+
+  <!-- Node D : 加密通道 -->
+  <rect x="675" y="430" width="410" height="120" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="880" y="458" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">加密通道</text>
+  <text x="880" y="478" font-size="10" fill="#64748B" text-anchor="middle">传输加密 · 数据在路上安全</text>
+  <rect x="690" y="494" width="120" height="24" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="1"/>
+  <text x="750" y="511" font-size="10" fill="#475569" text-anchor="middle">TLS 1.3 · 1-RTT</text>
+  <rect x="820" y="494" width="110" height="24" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="1"/>
+  <text x="875" y="511" font-size="10" fill="#475569" text-anchor="middle">DTLS 1.3</text>
+  <rect x="940" y="494" width="130" height="24" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="1"/>
+  <text x="1005" y="511" font-size="10" fill="#475569" text-anchor="middle">PQC 混合(前瞻)</text>
+  <text x="880" y="540" font-size="9" fill="#64748B" text-anchor="middle">1-RTT 显著降低握手时延 · 双向加密</text>
+
+  <!-- Node E : TLS Server / 接入网关 -->
+  <rect x="1230" y="445" width="360" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1410" y="473" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">TLS Server · 接入网关</text>
+  <text x="1410" y="494" font-size="10" fill="#64748B" text-anchor="middle">终止 TLS · 校验证书</text>
+  <text x="1410" y="515" font-size="9" fill="#64748B" text-anchor="middle">向下转发已解密请求</text>
+
+  <!-- arrow ③ C→D ClientHello -->
+  <line x1="480" y1="490" x2="669" y2="490" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <circle cx="540" cy="490" r="12" fill="#2563EB"/>
+  <text x="540" y="490" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
+  <text x="540" y="473" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">ClientHello</text>
+  <!-- arrow ④ D→E 握手完成 -->
+  <line x1="1085" y1="490" x2="1224" y2="490" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <circle cx="1154" cy="490" r="12" fill="#2563EB"/>
+  <text x="1154" y="490" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
+  <text x="1154" y="473" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">握手完成</text>
+
+  <!-- ===================================================
+       PHASE 3 · 访问控制  (y ≈ 625–820)
+       =================================================== -->
+  <!-- arrow ⑤ E→F 已认证请求 (vertical) -->
+  <line x1="1320" y1="535" x2="1320" y2="649" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <circle cx="1320" cy="592" r="12" fill="#2563EB"/>
+  <text x="1320" y="592" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">5</text>
+  <text x="1338" y="596" font-size="11" font-weight="600" fill="#2563EB">已认证请求</text>
+
+  <!-- Node F : RBAC + ABAC 引擎 -->
+  <rect x="1200" y="655" width="240" height="110" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1320" y="683" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">RBAC + ABAC 引擎</text>
+  <text x="1320" y="703" font-size="10" fill="#7C3AED" text-anchor="middle">权限决策 · 你能做什么</text>
+  <text x="1320" y="723" font-size="9" fill="#64748B" text-anchor="middle">角色 + 属性 → 允许 / 拒绝</text>
+  <text x="1320" y="741" font-size="9" fill="#64748B" text-anchor="middle">ABAC: 设备类型 / 位置 / 时间</text>
+
+  <!-- arrow ⑥ F→G 授权访问 -->
+  <line x1="1440" y1="710" x2="1494" y2="710" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <circle cx="1467" cy="710" r="12" fill="#2563EB"/>
+  <text x="1467" y="710" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">6</text>
+  <text x="1467" y="693" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">授权访问</text>
+
+  <!-- Node G : 业务服务 -->
+  <rect x="1500" y="655" width="170" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1585" y="683" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">业务服务</text>
+  <text x="1585" y="703" font-size="10" fill="#64748B" text-anchor="middle">后端 API</text>
+  <text x="1585" y="723" font-size="9" fill="#64748B" text-anchor="middle">遥测 / 控制 / 配置</text>
+  <text x="1585" y="741" font-size="9" fill="#64748B" text-anchor="middle">数据落库</text>
+
+  <!-- denial path stub -->
+  <line x1="1320" y1="765" x2="1320" y2="800" stroke="#E11D48" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
+  <text x="1335" y="797" font-size="10" fill="#E11D48">拒绝 · 审计</text>
+
+  <!-- summary callout (spans device + network lanes) -->
+  <rect x="140" y="655" width="960" height="110" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="160" y="681" font-size="12" font-weight="700" fill="#0F172A">安全三问 · 纵深防御要点</text>
+  <text x="160" y="703" font-size="11" fill="#334155">• 身份认证：生产设备优先 mTLS 证书；无键盘 / 无浏览器受限设备走 OAuth2.1 设备流（RFC 8628）。</text>
+  <text x="160" y="723" font-size="11" fill="#334155">• 传输加密：TLS 1.3 单 RTT 降低握手时延，DTLS 1.3 覆盖 UDP 场景，PQC 混合套件为长生命周期设备预留迁移空间。</text>
+  <text x="160" y="743" font-size="11" fill="#334155">• 访问控制：RBAC 定角色基线 + ABAC 结合设备类型 / 位置 / 时间做细粒度授权，拒绝路径写入审计日志。</text>
+
+  <!-- ========== legend ========== -->
+  <line x1="40" y1="853" x2="1760" y2="853" stroke="#E2E8F0"/>
+  <text x="50" y="881" font-size="11" font-weight="700" fill="#475569">图例</text>
+  <line x1="100" y1="877" x2="138" y2="877" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="146" y="881" font-size="11" fill="#475569">主链路 / 请求</text>
+  <line x1="288" y1="877" x2="326" y2="877" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="334" y="881" font-size="11" fill="#475569">响应 / 回传</text>
+  <rect x="450" y="870" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="474" y="881" font-size="11" fill="#475569">设备域</text>
+  <rect x="548" y="870" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="572" y="881" font-size="11" fill="#475569">身份认证</text>
+  <rect x="660" y="870" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="684" y="881" font-size="11" fill="#475569">传输 / 网络</text>
+  <rect x="788" y="870" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="812" y="881" font-size="11" fill="#475569">平台 / 业务</text>
+  <rect x="916" y="870" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="940" y="881" font-size="11" fill="#475569">访问控制</text>
+  <circle cx="1050" cy="877" r="9" fill="#2563EB"/>
+  <text x="1050" y="877" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">n</text>
+  <text x="1066" y="881" font-size="11" fill="#475569">握手消息序号</text>
+  <line x1="1196" y1="877" x2="1234" y2="877" stroke="#E11D48" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
+  <text x="1242" y="881" font-size="11" fill="#475569">拒绝 / 审计</text>
+
+  <!-- ========== caption ========== -->
+  <text x="900" y="942" font-size="10" fill="#94A3B8" text-anchor="middle">图5-2 安全三问对应接入的三道关卡：身份认证确认“你是谁”，传输加密保证“数据在路上安全”，访问控制界定“你能做什么”。</text>
+  <text x="900" y="960" font-size="10" fill="#94A3B8" text-anchor="middle">OAuth2.1 与 RFC8628 设备流补全受限设备认证；TLS 1.3 降低握手时延；PQC 混合套件为长生命周期设备预留迁移空间。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">左中右三泳道（设备侧/网络/平台侧），主链路：设备发起连接 → 身份认证（证书或Token或设备流）→ TLS/DTLS握手建加密通道 → RBAC+ABAC授权 → 后端业务</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

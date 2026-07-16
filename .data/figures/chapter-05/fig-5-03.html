@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-3 消息队列的三层价值：缓冲、解耦、上下行隔离</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="40.800" width="1152.000" height="678.400" viewBox="0 0 1800.000 1060.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1060" fill="#FFFFFF"/>
+
+  <!-- ========== title ========== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="86" y="48" font-size="22" font-weight="700" fill="#0F172A">图5-3 消息队列的三层价值：缓冲、解耦、上下行隔离</text>
+  <text x="86" y="72" font-size="12" fill="#64748B">Message Queue · 削峰填谷 · 多消费者解耦 · 上下行通道隔离 · Kafka 4.0 KRaft（去 ZooKeeper）</text>
+  <rect x="1612" y="28" width="148" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1686" y="47" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">DATAFLOW</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ============================================================ -->
+  <!-- UPLINK BAND : 设备群 → 缓冲层 → 解耦层 → 后端                 -->
+  <!-- ============================================================ -->
+
+  <!-- ===== 设备群 Devices (green) ===== -->
+  <rect x="88" y="138" width="180" height="26" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="178" y="156" font-size="13" font-weight="700" fill="#10B981" text-anchor="middle">设备群 · Devices</text>
+
+  <rect x="88" y="178" width="180" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="178" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">温湿度传感器</text>
+  <text x="178" y="224" font-size="10" fill="#475569" text-anchor="middle">sensor · 1 Hz 上报</text>
+
+  <rect x="88" y="278" width="180" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="178" y="304" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">智能电表</text>
+  <text x="178" y="324" font-size="10" fill="#475569" text-anchor="middle">meter · 分钟级</text>
+
+  <rect x="88" y="378" width="180" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="178" y="404" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">边缘网关</text>
+  <text x="178" y="424" font-size="10" fill="#475569" text-anchor="middle">gateway · 聚合上报</text>
+
+  <rect x="88" y="478" width="180" height="60" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="178" y="504" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">PLC 控制器</text>
+  <text x="178" y="524" font-size="10" fill="#475569" text-anchor="middle">plc · 事件驱动</text>
+
+  <text x="178" y="560" font-size="10" fill="#64748B" text-anchor="middle">上行遥测 · 洪峰可达 10× 均值</text>
+
+  <!-- 峰值上行箭头 devices → buffer (加粗) -->
+  <line x1="270" y1="300" x2="316" y2="223" stroke="#2563EB" stroke-width="3" marker-end="url(#ah-blue)"/>
+  <text x="300" y="252" font-size="10" font-weight="700" fill="#E11D48" text-anchor="middle">洪峰 10×</text>
+
+  <!-- ===== ① 缓冲层 Buffer (blue) ===== -->
+  <rect x="300" y="170" width="440" height="480" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="316" y="158" width="260" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="446" y="176" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">① 缓冲层 · Buffer（削峰填谷）</text>
+
+  <!-- Topic pill -->
+  <rect x="316" y="206" width="408" height="30" rx="15" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="520" y="226" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">Topic: device-telemetry · 4 Partitions</text>
+
+  <!-- 4 分区圆柱 P0..P3 -->
+  <g>
+    <!-- P0 cx=380 -->
+    <rect x="350" y="258" width="60" height="40" fill="#FFFFFF" stroke="none"/>
+    <line x1="350" y1="258" x2="350" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <line x1="410" y1="258" x2="410" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <ellipse cx="380" cy="258" rx="30" ry="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M350 298 A30 7 0 0 0 410 298" fill="none" stroke="#2563EB" stroke-width="2"/>
+    <text x="380" y="316" font-size="10" fill="#475569" text-anchor="middle">P0</text>
+    <!-- P1 cx=470 -->
+    <rect x="440" y="258" width="60" height="40" fill="#FFFFFF" stroke="none"/>
+    <line x1="440" y1="258" x2="440" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <line x1="500" y1="258" x2="500" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <ellipse cx="470" cy="258" rx="30" ry="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M440 298 A30 7 0 0 0 500 298" fill="none" stroke="#2563EB" stroke-width="2"/>
+    <text x="470" y="316" font-size="10" fill="#475569" text-anchor="middle">P1</text>
+    <!-- P2 cx=560 -->
+    <rect x="530" y="258" width="60" height="40" fill="#FFFFFF" stroke="none"/>
+    <line x1="530" y1="258" x2="530" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <line x1="590" y1="258" x2="590" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <ellipse cx="560" cy="258" rx="30" ry="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M530 298 A30 7 0 0 0 590 298" fill="none" stroke="#2563EB" stroke-width="2"/>
+    <text x="560" y="316" font-size="10" fill="#475569" text-anchor="middle">P2</text>
+    <!-- P3 cx=650 -->
+    <rect x="620" y="258" width="60" height="40" fill="#FFFFFF" stroke="none"/>
+    <line x1="620" y1="258" x2="620" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <line x1="680" y1="258" x2="680" y2="298" stroke="#2563EB" stroke-width="2"/>
+    <ellipse cx="650" cy="258" rx="30" ry="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M620 298 A30 7 0 0 0 680 298" fill="none" stroke="#2563EB" stroke-width="2"/>
+    <text x="650" y="316" font-size="10" fill="#475569" text-anchor="middle">P3</text>
+  </g>
+
+  <!-- 队列水位柱状图（时间轴，洪峰高亮） -->
+  <text x="333" y="346" font-size="11" font-weight="700" fill="#475569">分区队列水位（时间轴 · 洪峰暂存）</text>
+  <!-- 正常水位线 -->
+  <line x1="325" y1="440" x2="695" y2="440" stroke="#94A3B8" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="688" y="434" font-size="9" fill="#94A3B8" text-anchor="end">正常水位</text>
+  <!-- 8 根柱子，4/5 为洪峰（红） -->
+  <rect x="333" y="452" width="34" height="34" fill="#2563EB" fill-opacity="0.4" stroke="#2563EB" stroke-width="1"/>
+  <rect x="379" y="430" width="34" height="56" fill="#2563EB" fill-opacity="0.4" stroke="#2563EB" stroke-width="1"/>
+  <rect x="425" y="404" width="34" height="82" fill="#2563EB" fill-opacity="0.4" stroke="#2563EB" stroke-width="1"/>
+  <rect x="471" y="376" width="34" height="110" fill="#E11D48" fill-opacity="0.8" stroke="#E11D48" stroke-width="1.5"/>
+  <rect x="517" y="376" width="34" height="110" fill="#E11D48" fill-opacity="0.8" stroke="#E11D48" stroke-width="1.5"/>
+  <rect x="563" y="398" width="34" height="88" fill="#2563EB" fill-opacity="0.4" stroke="#2563EB" stroke-width="1"/>
+  <rect x="609" y="426" width="34" height="60" fill="#2563EB" fill-opacity="0.4" stroke="#2563EB" stroke-width="1"/>
+  <rect x="655" y="448" width="34" height="38" fill="#2563EB" fill-opacity="0.4" stroke="#2563EB" stroke-width="1"/>
+  <!-- 时间轴 -->
+  <line x1="325" y1="486" x2="695" y2="486" stroke="#94A3B8" stroke-width="1"/>
+  <text x="692" y="502" font-size="9" fill="#94A3B8" text-anchor="end">时间 →</text>
+  <!-- 洪峰标注 -->
+  <text x="494" y="366" font-size="10" font-weight="700" fill="#E11D48" text-anchor="middle">洪峰 Peak</text>
+  <line x1="494" y1="370" x2="494" y2="374" stroke="#E11D48" stroke-width="1"/>
+
+  <text x="333" y="534" font-size="10" fill="#475569">• 洪峰段消息暂存于分区，消费者按自身能力拉取</text>
+  <text x="333" y="556" font-size="10" fill="#475569">• 后端不直接承受瞬时冲击（削峰填谷）</text>
+  <text x="333" y="578" font-size="9" fill="#64748B">• Kafka 4.0 KRaft：元数据自管理，去 ZooKeeper 依赖</text>
+
+  <!-- 缓冲层 → 解耦层 三路分发（消费者按速率拉取，故峰值被拉平） -->
+  <line x1="740" y1="260" x2="800" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="740" y1="380" x2="800" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="740" y1="500" x2="800" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== ② 解耦层 Decouple (多消费者组) ===== -->
+  <rect x="780" y="170" width="560" height="480" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="796" y="158" width="280" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="936" y="176" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">② 解耦层 · Decouple（多消费者组）</text>
+
+  <!-- 消费者 1 告警 (orange) -->
+  <rect x="800" y="220" width="520" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <rect x="800" y="220" width="8" height="80" rx="3" fill="#F59E0B"/>
+  <text x="822" y="250" font-size="15" font-weight="700" fill="#0F172A">告警消费者 · AlarmConsumer</text>
+  <text x="822" y="272" font-size="10" fill="#475569">订阅 device-telemetry · 实时触发规则引擎</text>
+  <text x="822" y="288" font-size="9" fill="#64748B">独立 offset · 失败自动重试 · 不阻塞写入</text>
+
+  <!-- 消费者 2 写入 (purple) -->
+  <rect x="800" y="340" width="520" height="80" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="800" y="340" width="8" height="80" rx="3" fill="#7C3AED"/>
+  <text x="822" y="370" font-size="15" font-weight="700" fill="#0F172A">写入消费者 · WriteConsumer</text>
+  <text x="822" y="392" font-size="10" fill="#475569">批量写入时序数据库 · 持久化原始遥测</text>
+  <text x="822" y="408" font-size="9" fill="#64748B">按吞吐拉取 · 背压降速保护数据库</text>
+
+  <!-- 消费者 3 降采样 (green) -->
+  <rect x="800" y="460" width="520" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="800" y="460" width="8" height="80" rx="3" fill="#10B981"/>
+  <text x="822" y="490" font-size="15" font-weight="700" fill="#0F172A">降采样消费者 · DownsampleConsumer</text>
+  <text x="822" y="512" font-size="10" fill="#475569">聚合 1s → 1min · 写入监控大盘</text>
+  <text x="822" y="528" font-size="9" fill="#64748B">允许延迟 · 独立消费进度</text>
+
+  <text x="800" y="574" font-size="10" fill="#475569">同一 Topic，三个消费者组互不感知（解耦）</text>
+  <text x="800" y="596" font-size="9" fill="#64748B">新增消费者无需改动生产者与既有消费者</text>
+
+  <!-- 解耦层 → 后端 三路汇入 -->
+  <line x1="1320" y1="260" x2="1400" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1320" y1="380" x2="1400" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1320" y1="500" x2="1400" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== 后端服务 Backend (blue) ===== -->
+  <rect x="1400" y="138" width="200" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1500" y="156" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">后端服务 · Backend</text>
+
+  <rect x="1400" y="210" width="330" height="350" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1565" y="238" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">消费者拉取处理后落库</text>
+
+  <!-- 告警引擎 (orange) -->
+  <rect x="1420" y="250" width="290" height="56" rx="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1434" y="274" font-size="12" font-weight="700" fill="#0F172A">告警引擎</text>
+  <text x="1434" y="294" font-size="9" fill="#64748B">AlarmEngine · 规则匹配 / 通知推送</text>
+
+  <!-- 时序数据库 TSDB (purple cylinder) -->
+  <rect x="1420" y="326" width="290" height="56" fill="#FFFFFF" stroke="none"/>
+  <line x1="1420" y1="333" x2="1420" y2="375" stroke="#7C3AED" stroke-width="2"/>
+  <line x1="1710" y1="333" x2="1710" y2="375" stroke="#7C3AED" stroke-width="2"/>
+  <ellipse cx="1565" cy="333" rx="145" ry="7" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M1420 375 A145 7 0 0 0 1710 375" fill="none" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1565" y="356" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">时序数据库 TSDB</text>
+  <text x="1565" y="370" font-size="9" fill="#64748B" text-anchor="middle">原始遥测持久化</text>
+
+  <!-- 监控大盘 (blue) -->
+  <rect x="1420" y="402" width="290" height="56" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1434" y="426" font-size="12" font-weight="700" fill="#0F172A">监控大盘</text>
+  <text x="1434" y="446" font-size="9" fill="#64748B">Dashboard · 聚合指标可视化</text>
+
+  <text x="1565" y="486" font-size="9" fill="#64748B" text-anchor="middle">瞬时冲击被队列吸收</text>
+  <text x="1565" y="506" font-size="9" fill="#64748B" text-anchor="middle">消费者按自身能力平稳拉取</text>
+  <text x="1565" y="534" font-size="9" fill="#64748B" text-anchor="middle">后端 workload 与洪峰解耦</text>
+
+  <!-- ============================================================ -->
+  <!-- DOWNLINK BAND : ③ 上下行隔离（下行指令独立 Topic）            -->
+  <!-- ============================================================ -->
+  <rect x="40" y="690" width="1720" height="220" rx="12" fill="#FFF7ED" fill-opacity="0.5" stroke="#F59E0B" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="56" y="678" width="360" height="26" rx="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="236" y="696" font-size="13" font-weight="700" fill="#F59E0B" text-anchor="middle">③ 上下行隔离 · 下行指令独立 Topic（不被洪峰阻塞）</text>
+
+  <!-- 后端 → 下行指令 Topic（橙色高亮，L 型） -->
+  <path d="M1500 560 L1500 800 L1100 800" fill="none" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="1300" y="790" font-size="10" font-weight="700" fill="#B45309" text-anchor="middle">下发指令（异步）</text>
+
+  <!-- 下行指令 Topic 节点 (orange) -->
+  <rect x="700" y="754" width="400" height="96" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <rect x="700" y="754" width="8" height="96" rx="3" fill="#F59E0B"/>
+  <text x="900" y="784" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">下行指令 Topic: device-command</text>
+  <text x="900" y="806" font-size="10" fill="#475569" text-anchor="middle">独立分区 · 独立消费者组</text>
+  <text x="900" y="826" font-size="9" fill="#64748B" text-anchor="middle">橙色高亮 · 与上行 telemetry 隔离</text>
+
+  <!-- Topic → 设备 指令下发 -->
+  <line x1="700" y1="800" x2="312" y2="800" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="506" y="790" font-size="10" font-weight="700" fill="#B45309" text-anchor="middle">指令下发</text>
+  <!-- 设备 → Topic ACK（虚线灰） -->
+  <line x1="312" y1="830" x2="700" y2="830" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="506" y="824" font-size="9" fill="#64748B" text-anchor="middle">ACK 回执</text>
+
+  <!-- 设备 / 执行器 节点 (green) -->
+  <rect x="90" y="758" width="220" height="90" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <rect x="90" y="758" width="8" height="90" rx="3" fill="#10B981"/>
+  <text x="200" y="788" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">设备 / 执行器</text>
+  <text x="200" y="808" font-size="10" fill="#475569" text-anchor="middle">command sink</text>
+  <text x="200" y="826" font-size="9" fill="#64748B" text-anchor="middle">同一设备群 · 独立下行通道</text>
+
+  <text x="900" y="876" font-size="10" fill="#475569" text-anchor="middle">收益：下行指令不被上行洪峰阻塞 · 延迟可控 · 故障域分离（独立 Topic + 独立消费者组）</text>
+  <text x="900" y="896" font-size="9" fill="#64748B" text-anchor="middle">上行 device-telemetry 与下行 device-command 物理隔离，互不争用分区与消费者</text>
+
+  <!-- ========== legend ========== -->
+  <line x1="40" y1="925" x2="1760" y2="925" stroke="#E2E8F0"/>
+  <text x="40" y="952" font-size="11" font-weight="700" fill="#475569" letter-spacing="1">图例 LEGEND</text>
+
+  <rect x="150" y="941" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="172" y="952" font-size="11" fill="#334155">设备 / 边缘</text>
+
+  <rect x="288" y="941" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="310" y="952" font-size="11" fill="#334155">上行主链路 / 平台</text>
+
+  <rect x="466" y="941" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="488" y="952" font-size="11" fill="#334155">下行指令（高亮）</text>
+
+  <rect x="628" y="941" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="650" y="952" font-size="11" fill="#334155">数据 / 写入</text>
+
+  <rect x="752" y="941" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="774" y="952" font-size="11" fill="#334155">洪峰 / 高水位</text>
+
+  <rect x="892" y="941" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="914" y="952" font-size="11" fill="#334155">异步 / 回传</text>
+
+  <line x1="1010" y1="947" x2="1056" y2="947" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="1066" y="952" font-size="11" fill="#334155">实线 · 主链路</text>
+
+  <line x1="1210" y1="947" x2="1256" y2="947" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1266" y="952" font-size="11" fill="#334155">虚线 · 异步 / ACK</text>
+
+  <line x1="1420" y1="947" x2="1466" y2="947" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="1476" y="952" font-size="11" fill="#334155">橙色 · 下行高亮</text>
+
+  <!-- ========== caption ========== -->
+  <text x="900" y="1000" font-size="10" fill="#94A3B8" text-anchor="middle">图5-3 消息队列三层价值：缓冲层在洪峰时暂存消息、消费者按能力拉取，后端不直接承受瞬时冲击；</text>
+  <text x="900" y="1018" font-size="10" fill="#94A3B8" text-anchor="middle">解耦层让多消费者各自订阅同一主题、互不感知；上下行隔离用独立主题与消费者组，保证下行指令不被上行洪峰阻塞。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">dataflow</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从左到右数据流：设备群 → Topic 分区（缓冲层，时间轴显示洪峰水位抬升）→ 多消费者组（告警/写入/降采样各自订阅，解耦层）→ 后端；下方独立的下行指令 Topic 隔离开</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

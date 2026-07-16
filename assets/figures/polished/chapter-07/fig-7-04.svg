@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图7-4 MCP 在物联网平台中的架构示意</text>
+  <text x="82" y="70" font-size="12" fill="#64748B">外部 Agent → 单一 MCP 端点 → 多服务层 · JSON-RPC 三阶段握手 · OAuth 鉴权 · 白名单与风险分级</text>
+  <rect x="1638" y="28" width="118" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1697" y="44" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+
+  <!-- ===== Layer 1: 外部 AI Agent（橙） ===== -->
+  <rect x="430" y="140" width="480" height="90" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <circle cx="466" cy="185" r="17" fill="#FFF7E6" stroke="#F59E0B" stroke-width="2"/>
+  <text x="466" y="190" font-size="12" font-weight="700" fill="#F59E0B" text-anchor="middle">AI</text>
+  <text x="496" y="180" font-size="18" font-weight="700" fill="#0F172A">外部 AI Agent</text>
+  <text x="496" y="203" font-size="11" fill="#64748B">LLM · 自然语言指令 · 单一端点接入</text>
+
+  <!-- Agent → MCP 主链路 -->
+  <line x1="670" y1="232" x2="670" y2="283" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="680" y="263" font-size="10" fill="#64748B">JSON-RPC</text>
+
+  <!-- ===== Layer 2: MCP 端点（蓝） ===== -->
+  <rect x="120" y="285" width="1100" height="190" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <!-- 锁图标 -->
+  <path d="M154,320 v-5 a9,9 0 0 1 18,0 v5" fill="none" stroke="#2563EB" stroke-width="2"/>
+  <rect x="150" y="319" width="26" height="20" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="163" cy="328" r="2.2" fill="#2563EB"/>
+  <text x="188" y="335" font-size="17" font-weight="700" fill="#0F172A">MCP 端点 · POST /mcp</text>
+  <!-- JSON-RPC 徽标 -->
+  <rect x="1050" y="305" width="150" height="26" rx="6" fill="#F8FAFC" stroke="#2563EB"/>
+  <text x="1125" y="322" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">JSON-RPC 2.0</text>
+
+  <!-- 三阶段握手 chips -->
+  <rect x="150" y="352" width="320" height="46" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="310" y="373" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">① initialize</text>
+  <text x="310" y="389" font-size="10" fill="#64748B" text-anchor="middle">能力握手 · 协议协商</text>
+
+  <rect x="500" y="352" width="320" height="46" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="660" y="373" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">② tools/list</text>
+  <text x="660" y="389" font-size="10" fill="#64748B" text-anchor="middle">能力发现 · 动态注册</text>
+
+  <rect x="850" y="352" width="320" height="46" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1010" y="373" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">③ tools/call</text>
+  <text x="1010" y="389" font-size="10" fill="#64748B" text-anchor="middle">工具调用 · 参数校验</text>
+
+  <!-- 风险分级徽标（红） -->
+  <rect x="380" y="412" width="580" height="38" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+  <circle cx="404" cy="431" r="4" fill="#E11D48"/>
+  <text x="418" y="436" font-size="12" font-weight="600" fill="#E11D48">内置白名单 + 风险分级引擎 · 高危写操作需二次确认</text>
+
+  <!-- ===== 右侧：鉴权中心（灰） ===== -->
+  <rect x="1340" y="285" width="340" height="190" rx="10" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <circle cx="1366" cy="318" r="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <path d="M1362,318 a4,4 0 0 1 8,0" fill="none" stroke="#64748B" stroke-width="1.5"/>
+  <rect x="1362" y="318" width="8" height="7" rx="1.5" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="1384" y="321" font-size="16" font-weight="700" fill="#0F172A">鉴权中心</text>
+  <text x="1384" y="340" font-size="10.5" fill="#64748B">OAuth 2.0 · 多租户</text>
+  <line x1="1356" y1="352" x2="1664" y2="352" stroke="#E2E8F0"/>
+  <circle cx="1370" cy="373" r="2.5" fill="#64748B"/>
+  <text x="1380" y="377" font-size="12" fill="#334155">校验 access_token</text>
+  <circle cx="1370" cy="397" r="2.5" fill="#64748B"/>
+  <text x="1380" y="401" font-size="12" fill="#334155">提取租户上下文</text>
+  <circle cx="1370" cy="421" r="2.5" fill="#64748B"/>
+  <text x="1380" y="425" font-size="12" fill="#334155">注入 scope / 权限</text>
+  <circle cx="1370" cy="445" r="2.5" fill="#64748B"/>
+  <text x="1380" y="449" font-size="12" fill="#334155">高危操作二次确认</text>
+
+  <!-- MCP ↔ 鉴权中心 -->
+  <line x1="1222" y1="340" x2="1338" y2="340" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <text x="1280" y="332" font-size="10" fill="#64748B" text-anchor="middle">① 校验 token</text>
+  <line x1="1338" y1="415" x2="1222" y2="415" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <text x="1280" y="432" font-size="10" fill="#64748B" text-anchor="middle">② 上下文 + scope</text>
+
+  <!-- ===== Layer 3: 后端服务层（边界 + 三服务） ===== -->
+  <rect x="100" y="534" width="1140" height="215" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="112" y="525" width="130" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8"/>
+  <text x="177" y="538" font-size="11" fill="#64748B" text-anchor="middle">后端服务层</text>
+
+  <!-- 调用（实线蓝） / OpenAPI 聚合（虚线灰） -->
+  <line x1="290" y1="477" x2="290" y2="546" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="322" y1="546" x2="322" y2="477" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="670" y1="477" x2="670" y2="546" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="702" y1="546" x2="702" y2="477" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="1050" y1="477" x2="1050" y2="546" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1082" y1="546" x2="1082" y2="477" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+
+  <!-- 服务 1: 设备驱动层（绿） -->
+  <rect x="120" y="548" width="340" height="185" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="140" y="580" font-size="15" font-weight="700" fill="#0F172A">设备驱动层</text>
+  <text x="140" y="599" font-size="10" fill="#10B981">OpenAPI · 设备域</text>
+  <line x1="136" y1="610" x2="444" y2="610" stroke="#E2E8F0"/>
+  <circle cx="142" cy="634" r="2.5" fill="#10B981"/>
+  <text x="152" y="638" font-size="12" fill="#334155">设备列表 · 拓扑查询</text>
+  <circle cx="142" cy="660" r="2.5" fill="#10B981"/>
+  <text x="152" y="664" font-size="12" fill="#334155">属性读取 · 设备影子</text>
+  <circle cx="142" cy="686" r="2.5" fill="#10B981"/>
+  <text x="152" y="690" font-size="12" fill="#334155">指令下发 · 远程控制</text>
+  <circle cx="142" cy="712" r="2.5" fill="#10B981"/>
+  <text x="152" y="716" font-size="12" fill="#334155">在线状态 · 固件信息</text>
+
+  <!-- 服务 2: 数据服务层（蓝） -->
+  <rect x="500" y="548" width="340" height="185" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="520" y="580" font-size="15" font-weight="700" fill="#0F172A">数据服务层</text>
+  <text x="520" y="599" font-size="10" fill="#2563EB">OpenAPI · 数据域</text>
+  <line x1="516" y1="610" x2="824" y2="610" stroke="#E2E8F0"/>
+  <circle cx="522" cy="634" r="2.5" fill="#2563EB"/>
+  <text x="532" y="638" font-size="12" fill="#334155">时序数据查询</text>
+  <circle cx="522" cy="660" r="2.5" fill="#2563EB"/>
+  <text x="532" y="664" font-size="12" fill="#334155">聚合统计 · 降采样</text>
+  <circle cx="522" cy="686" r="2.5" fill="#2563EB"/>
+  <text x="532" y="690" font-size="12" fill="#334155">历史数据导出</text>
+  <circle cx="522" cy="712" r="2.5" fill="#2563EB"/>
+  <text x="532" y="716" font-size="12" fill="#334155">指标 · 标签检索</text>
+
+  <!-- 服务 3: 告警与日志层（绿） -->
+  <rect x="880" y="548" width="340" height="185" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="900" y="580" font-size="15" font-weight="700" fill="#0F172A">告警与日志层</text>
+  <text x="900" y="599" font-size="10" fill="#10B981">OpenAPI · 运维域</text>
+  <line x1="896" y1="610" x2="1204" y2="610" stroke="#E2E8F0"/>
+  <circle cx="902" cy="634" r="2.5" fill="#10B981"/>
+  <text x="912" y="638" font-size="12" fill="#334155">实时告警 · 规则引擎</text>
+  <circle cx="902" cy="660" r="2.5" fill="#10B981"/>
+  <text x="912" y="664" font-size="12" fill="#334155">审计日志检索</text>
+  <circle cx="902" cy="686" r="2.5" fill="#10B981"/>
+  <text x="912" y="690" font-size="12" fill="#334155">操作追溯 · 留痕</text>
+  <circle cx="902" cy="712" r="2.5" fill="#10B981"/>
+  <text x="912" y="716" font-size="12" fill="#334155">告警分级 · 通知</text>
+
+  <!-- ===== 图例（主体之外） ===== -->
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <line x1="92" y1="805" x2="120" y2="805" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="128" y="809" font-size="10.5" fill="#64748B">工具调用（实线）</text>
+  <line x1="300" y1="805" x2="328" y2="805" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="336" y="809" font-size="10.5" fill="#64748B">OpenAPI 自动聚合（虚线）</text>
+  <line x1="560" y1="805" x2="588" y2="805" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
+  <text x="596" y="809" font-size="10.5" fill="#64748B">OAuth 鉴权回传（实线）</text>
+  <rect x="800" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="822" y="809" font-size="10.5" fill="#64748B">外部 AI Agent</text>
+  <rect x="950" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="972" y="809" font-size="10.5" fill="#64748B">MCP 端点</text>
+  <rect x="1070" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1092" y="809" font-size="10.5" fill="#64748B">设备 / 接入域</text>
+  <rect x="1210" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1232" y="809" font-size="10.5" fill="#64748B">白名单 · 风险分级</text>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="855" font-size="10" fill="#94A3B8" text-anchor="middle">图7-4 外部 Agent 只需连接一个 MCP 端点，经 initialize 握手获取 tools/resources/prompts 能力描述，</text>
+  <text x="900" y="871" font-size="10" fill="#94A3B8" text-anchor="middle">后端资源由各服务层 OpenAPI 自动聚合；每次调用经 OAuth 鉴权与白名单、风险分级细粒度控制。</text>
+</svg>

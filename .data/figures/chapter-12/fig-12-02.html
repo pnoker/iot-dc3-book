@@ -3,58 +3,151 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-2 作物病害识别CNN处理流程（架构示意）</title>
+  <title>图12-02 智能灌溉决策流程（阈值+天气预报前馈）</title>
   <style>
-    html, body { margin: 0; padding: 0; background: #FFFFFF; }
-    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    svg { width: min(1200px, 100vw); height: auto; display: block; }
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="图12-2 作物病害识别CNN处理流程（架构示意）" data-style="architecture-diagram-white-book">
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="79.200" width="1152.000" height="601.600" viewBox="0 0 1800.000 940.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1800" height="940" fill="#FFFFFF"/>
+
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
-    </marker>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
   </defs>
-  <rect x="0" y="0" width="1200" height="760" fill="#FFFFFF"/>
-  <circle cx="64" cy="40" r="6" fill="#22D3EE"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">图12-2 作物病害识别CNN处理流程（架构示意）</text>
-<text x="82.0" y="78.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="start">读者应理解CNN推理的主链路——从输入图像经多次卷积池化、展平到全连接分类，以及各层的数据尺寸变化</text>
-<rect x="1008.0" y="30.0" width="132.0" height="32.0" rx="6.0" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
-<text x="1074" y="51" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">FLOWCHART</text>
-<line x1="58" y1="103" x2="1142" y2="103" stroke="#CBD5E1" stroke-width="1"/>
-  <line x1="304.5" y1="201.0" x2="346.5" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="579.0" y1="201.0" x2="621.0" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="853.5" y1="201.0" x2="895.5" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="1011.8" y1="242.0" x2="1011.8" y2="314.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="895.5" y1="355.0" x2="853.5" y2="355.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<line x1="621.0" y1="355.0" x2="579.0" y2="355.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<rect x="72.0" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="82.0" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">01</text>
-<text x="188.2" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">输入图像 (224×224×3)</text>
-<rect x="346.5" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="356.5" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">02</text>
-<text x="462.8" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">Conv+Pool (16×112×112)</text>
-<rect x="621.0" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="631.0" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">03</text>
-<text x="737.2" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">Conv+Pool (32×56×56)</text>
-<rect x="895.5" y="160.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="905.5" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">04</text>
-<text x="1011.8" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">Conv+Pool (64×28×28)</text>
-<rect x="895.5" y="314.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="905.5" y="330.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">05</text>
-<text x="1011.8" y="362.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">展平层 (Flatten)</text>
-<rect x="621.0" y="314.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="631.0" y="330.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">06</text>
-<text x="737.2" y="362.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">全连接层 (128)</text>
-<rect x="346.5" y="314.0" width="232.5" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="356.5" y="330.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">07</text>
-<text x="462.8" y="354.5" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">输出层 (C类别)</text>
-<text x="462.8" y="373.5" fill="#64748B" font-size="10" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="middle">Softmax</text>
-  <line x1="58" y1="675" x2="1142" y2="675" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="66.0" cy="704.0" r="4" fill="#34D399"/>
-<text x="80.0" y="708.0" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="600" text-anchor="start">平台服务</text>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图12-02 智能灌溉决策流程（阈值 + 天气预报前馈）</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">从土壤湿度与降水预报到阀门动作的决策链路</text>
+  <rect x="1644" y="26" width="108" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1698" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">FLOWCHART</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Region boundary boxes ===== -->
+  <rect x="60" y="150" width="1080" height="640" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="80" y="180" font-size="13" font-weight="700" fill="#2563EB">决策核心</text>
+  <text x="80" y="198" font-size="10" fill="#64748B">阈值判定 + 天气前馈</text>
+
+  <rect x="1180" y="150" width="560" height="640" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="1200" y="180" font-size="13" font-weight="700" fill="#10B981">执行动作</text>
+  <text x="1200" y="198" font-size="10" fill="#64748B">阀门与告警</text>
+
+  <!-- ===== Components ===== -->
+  <!-- in1: input data (purple / data domain) -->
+  <rect x="100" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="200" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">土壤湿度 / 降水概率</text>
+  <text x="200" y="474" font-size="10" fill="#64748B" text-anchor="middle">传感器 + 天气 API</text>
+  <text x="200" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">数据输入</text>
+
+  <!-- d1: decision (blue, primary) -->
+  <polygon points="440,400 540,470 440,540 340,470" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="440" y="466" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">湿度 &lt; 下限？</text>
+  <text x="440" y="484" font-size="9" fill="#64748B" text-anchor="middle">阈值判定</text>
+
+  <!-- d2: decision (blue, primary) -->
+  <polygon points="740,400 840,470 740,540 640,470" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="740" y="466" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">降水概率 ≥ 阈值？</text>
+  <text x="740" y="484" font-size="9" fill="#64748B" text-anchor="middle">天气前馈</text>
+
+  <!-- calc: process (blue) -->
+  <rect x="920" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1020" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">计算灌溉量</text>
+  <text x="1020" y="474" font-size="10" fill="#64748B" text-anchor="middle">FAO-56 水分平衡</text>
+  <text x="1020" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">需水量估算</text>
+
+  <!-- a_delay: action (amber / defer) -->
+  <rect x="1360" y="222" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="1460" y="252" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">推迟灌溉</text>
+  <text x="1460" y="274" font-size="10" fill="#64748B" text-anchor="middle">记录依据</text>
+  <text x="1460" y="294" font-size="9" fill="#94A3B8" text-anchor="middle">等待降水</text>
+
+  <!-- a_open: action (green / device) -->
+  <rect x="1360" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1460" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">开阀轮灌</text>
+  <text x="1460" y="474" font-size="10" fill="#64748B" text-anchor="middle">电磁阀 · 分区</text>
+  <text x="1460" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">执行动作</text>
+
+  <!-- a_close: action (red / alarm) -->
+  <rect x="1360" y="622" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1460" y="652" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">关阀 / 排涝告警</text>
+  <text x="1460" y="674" font-size="10" fill="#64748B" text-anchor="middle">防涝保护</text>
+  <text x="1460" y="694" font-size="9" fill="#94A3B8" text-anchor="middle">高危动作</text>
+
+  <!-- ===== Arrows ===== -->
+  <!-- in1 -> d1 : main chain blue -->
+  <line x1="300" y1="470" x2="332" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="316" y="460" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">读数</text>
+
+  <!-- d1 -> d2 : main chain blue -->
+  <line x1="540" y1="470" x2="632" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="586" y="460" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">是</text>
+
+  <!-- d2 -> calc : main chain blue -->
+  <line x1="840" y1="470" x2="912" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="876" y="458" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">否（无雨）</text>
+
+  <!-- calc -> a_open : green (toward device) -->
+  <line x1="1120" y1="470" x2="1352" y2="470" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="1236" y="460" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">开阀</text>
+
+  <!-- d2 -> a_delay : amber branch (up then right) -->
+  <polyline points="740,400 740,270 1352,270" fill="none" stroke="#D97706" stroke-width="2" marker-end="url(#ah-amber)"/>
+  <text x="1046" y="260" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">是（有雨）· 推迟</text>
+
+  <!-- d1 -> a_close : red branch (down then right) -->
+  <polyline points="440,540 440,670 1352,670" fill="none" stroke="#E11D48" stroke-width="2" marker-end="url(#ah-red)"/>
+  <text x="896" y="660" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">过高 + 强降水</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="815" x2="1760" y2="815" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <rect x="60" y="838" width="22" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="90" y="846" dominant-baseline="middle">方框 · 处理步骤</text>
+
+    <polygon points="282,836 298,845 282,854 266,845" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="308" y="846" dominant-baseline="middle">菱形 · 判定分支</text>
+
+    <line x1="470" y1="845" x2="500" y2="845" stroke="#2563EB" stroke-width="2"/>
+    <text x="508" y="846" dominant-baseline="middle">蓝 · 决策主链路</text>
+
+    <rect x="690" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="714" y="846" dominant-baseline="middle">绿 · 开阀动作</text>
+
+    <rect x="880" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+    <text x="904" y="846" dominant-baseline="middle">琥珀 · 推迟灌溉</text>
+
+    <rect x="1080" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+    <text x="1104" y="846" dominant-baseline="middle">红 · 关阀告警</text>
+
+    <rect x="1260" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1284" y="846" dominant-baseline="middle">紫 · 数据输入</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="903" font-size="10" fill="#94A3B8" text-anchor="middle">图12-02 智能灌溉在阈值控制之上叠加天气预报前馈，形成预判式混合控制。</text>
+  </svg>
 </svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从左至右：输入 → 两级判定菱形 → 开阀/推迟/关阀三种动作。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
 </body>
 </html>

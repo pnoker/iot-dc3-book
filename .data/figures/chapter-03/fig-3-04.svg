@@ -1,0 +1,299 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-gray" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===== Title ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图3-4 边缘节点三层部署与预处理</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">硬件三梯队（MCU / 应用处理器 / AI加速） · 预处理三任务（滤波 / 聚合 / 判定） — 只把必要数据上云</text>
+  <rect x="1640" y="26" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1700" y="46" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Region boundaries ===== -->
+  <rect x="60" y="130" width="380" height="710" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.55"/>
+  <rect x="76" y="118" width="156" height="24" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="154" y="134" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">设备侧 · 传感器</text>
+
+  <rect x="480" y="130" width="900" height="710" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.6"/>
+  <rect x="496" y="118" width="166" height="24" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="579" y="134" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">边缘节点 Edge Node</text>
+
+  <rect x="1420" y="130" width="320" height="710" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.6"/>
+  <rect x="1436" y="118" width="120" height="24" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1"/>
+  <text x="1496" y="134" font-size="11" font-weight="600" fill="#D97706" text-anchor="middle">云端 Cloud</text>
+
+  <!-- ===== Sensor cards (设备侧) ===== -->
+  <!-- S1: 温湿度 -->
+  <rect x="80" y="175" width="340" height="150" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="100" y="205" font-size="14" font-weight="700" fill="#0F172A">温湿度传感器</text>
+  <text x="100" y="224" font-size="10" fill="#64748B">Temperature / Humidity</text>
+  <rect x="362" y="187" width="46" height="20" rx="3" fill="#F8FAFC" stroke="#10B981" stroke-width="1.5"/>
+  <text x="385" y="201" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">EDGE</text>
+  <line x1="100" y1="244" x2="400" y2="244" stroke="#E2E8F0"/>
+  <text x="100" y="266" font-size="10" fill="#475569">· 低采样率 · 缓变信号</text>
+  <text x="100" y="284" font-size="10" fill="#475569">· 需平滑 / 基线校准</text>
+  <rect x="300" y="294" width="100" height="20" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="350" y="308" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">0.1 – 1 Hz</text>
+
+  <!-- S2: 振动 -->
+  <rect x="80" y="340" width="340" height="150" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="100" y="370" font-size="14" font-weight="700" fill="#0F172A">振动 / 加速度</text>
+  <text x="100" y="389" font-size="10" fill="#64748B">Vibration / Accelerometer</text>
+  <rect x="362" y="352" width="46" height="20" rx="3" fill="#F8FAFC" stroke="#10B981" stroke-width="1.5"/>
+  <text x="385" y="366" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">EDGE</text>
+  <line x1="100" y1="409" x2="400" y2="409" stroke="#E2E8F0"/>
+  <text x="100" y="431" font-size="10" fill="#475569">· 高采样率 · 频域特征</text>
+  <text x="100" y="449" font-size="10" fill="#475569">· 需窗口聚合 / FFT</text>
+  <rect x="300" y="459" width="100" height="20" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="350" y="473" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">kS/s 级</text>
+
+  <!-- S3: 视觉/图像 -->
+  <rect x="80" y="505" width="340" height="150" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="100" y="535" font-size="14" font-weight="700" fill="#0F172A">视觉 / 图像</text>
+  <text x="100" y="554" font-size="10" fill="#64748B">Camera / Vision</text>
+  <rect x="362" y="517" width="46" height="20" rx="3" fill="#F8FAFC" stroke="#10B981" stroke-width="1.5"/>
+  <text x="385" y="531" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">EDGE</text>
+  <line x1="100" y1="574" x2="400" y2="574" stroke="#E2E8F0"/>
+  <text x="100" y="596" font-size="10" fill="#475569">· 视频流 · 数据量大</text>
+  <text x="100" y="614" font-size="10" fill="#475569">· 需识别 / 异常检测</text>
+  <rect x="300" y="624" width="100" height="20" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="350" y="638" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">Mbps 级</text>
+
+  <!-- S4: 流量/电流 -->
+  <rect x="80" y="670" width="340" height="150" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="100" y="700" font-size="14" font-weight="700" fill="#0F172A">流量 / 电流</text>
+  <text x="100" y="719" font-size="10" fill="#64748B">Flow / Current</text>
+  <rect x="362" y="682" width="46" height="20" rx="3" fill="#F8FAFC" stroke="#10B981" stroke-width="1.5"/>
+  <text x="385" y="696" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">EDGE</text>
+  <line x1="100" y1="739" x2="400" y2="739" stroke="#E2E8F0"/>
+  <text x="100" y="761" font-size="10" fill="#475569">· 周期采样 · 阈值监测</text>
+  <text x="100" y="779" font-size="10" fill="#475569">· 需规则 / 趋势判定</text>
+  <rect x="300" y="789" width="100" height="20" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
+  <text x="350" y="803" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">Hz 级</text>
+
+  <!-- ===== Edge node: 硬件三梯队 band ===== -->
+  <text x="500" y="166" font-size="11" font-weight="700" fill="#475569">硬件三梯队 · 按算力分层</text>
+
+  <!-- Tier1: MCU (blue) -->
+  <rect x="500" y="185" width="260" height="260" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="520" y="215" font-size="15" font-weight="700" fill="#0F172A">MCU 微控制器</text>
+  <text x="520" y="234" font-size="10" fill="#64748B">低端梯队 · Tier 1</text>
+  <rect x="700" y="197" width="44" height="20" rx="3" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="722" y="211" font-size="9" font-weight="700" fill="#2563EB" text-anchor="middle">T1</text>
+  <!-- chip icon -->
+  <rect x="610" y="272" width="40" height="40" rx="3" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="620" y="282" width="20" height="20" rx="1" fill="none" stroke="#2563EB" stroke-width="1"/>
+  <line x1="600" y1="280" x2="610" y2="280" stroke="#2563EB" stroke-width="1.5"/><line x1="600" y1="290" x2="610" y2="290" stroke="#2563EB" stroke-width="1.5"/><line x1="600" y1="300" x2="610" y2="300" stroke="#2563EB" stroke-width="1.5"/><line x1="600" y1="310" x2="610" y2="310" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="650" y1="280" x2="660" y2="280" stroke="#2563EB" stroke-width="1.5"/><line x1="650" y1="290" x2="660" y2="290" stroke="#2563EB" stroke-width="1.5"/><line x1="650" y1="300" x2="660" y2="300" stroke="#2563EB" stroke-width="1.5"/><line x1="650" y1="310" x2="660" y2="310" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="620" y1="262" x2="620" y2="272" stroke="#2563EB" stroke-width="1.5"/><line x1="630" y1="262" x2="630" y2="272" stroke="#2563EB" stroke-width="1.5"/><line x1="640" y1="262" x2="640" y2="272" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="620" y1="312" x2="620" y2="322" stroke="#2563EB" stroke-width="1.5"/><line x1="630" y1="312" x2="630" y2="322" stroke="#2563EB" stroke-width="1.5"/><line x1="640" y1="312" x2="640" y2="322" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="520" y1="345" x2="740" y2="345" stroke="#E2E8F0"/>
+  <text x="520" y="366" font-size="10" fill="#475569">· STM32 / ESP32 / nRF52</text>
+  <text x="520" y="384" font-size="9" fill="#64748B">  RAM KB 级 · 算力低</text>
+  <text x="520" y="400" font-size="9" fill="#64748B">  简单滤波 · 协议接入</text>
+  <rect x="520" y="412" width="140" height="22" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
+  <text x="590" y="427" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">mW 级 · 电池供电</text>
+
+  <!-- Tier2: 应用处理器 (purple / data) -->
+  <rect x="800" y="185" width="260" height="260" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="820" y="215" font-size="15" font-weight="700" fill="#0F172A">应用处理器</text>
+  <text x="820" y="234" font-size="10" fill="#64748B">中端梯队 · Tier 2</text>
+  <rect x="1004" y="197" width="44" height="20" rx="3" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1026" y="211" font-size="9" font-weight="700" fill="#7C3AED" text-anchor="middle">T2</text>
+  <!-- SoC grid icon -->
+  <rect x="888" y="270" width="84" height="44" rx="3" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
+  <line x1="916" y1="270" x2="916" y2="314" stroke="#7C3AED" stroke-width="1"/><line x1="944" y1="270" x2="944" y2="314" stroke="#7C3AED" stroke-width="1"/>
+  <line x1="888" y1="292" x2="972" y2="292" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="896" y="276" width="16" height="12" rx="1" fill="none" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="924" y="276" width="16" height="12" rx="1" fill="none" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="952" y="276" width="16" height="12" rx="1" fill="none" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="896" y="298" width="16" height="12" rx="1" fill="none" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="924" y="298" width="16" height="12" rx="1" fill="none" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="952" y="298" width="16" height="12" rx="1" fill="none" stroke="#7C3AED" stroke-width="1"/>
+  <text x="930" y="332" font-size="8" fill="#64748B" text-anchor="middle">SoC</text>
+  <line x1="820" y1="345" x2="1040" y2="345" stroke="#E2E8F0"/>
+  <text x="820" y="366" font-size="10" fill="#475569">· Cortex-A / i.MX / 树莓派</text>
+  <text x="820" y="384" font-size="9" fill="#64748B">  RAM MB 级 · 算力中</text>
+  <text x="820" y="400" font-size="9" fill="#64748B">  聚合 · 协议转换 · 本地存储</text>
+  <rect x="820" y="412" width="150" height="22" rx="4" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1"/>
+  <text x="895" y="427" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">瓦级 · 市电 / PoE</text>
+
+  <!-- Tier3: AI加速器 (orange / ai) -->
+  <rect x="1100" y="185" width="260" height="260" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1120" y="215" font-size="15" font-weight="700" fill="#0F172A">AI 加速器</text>
+  <text x="1120" y="234" font-size="10" fill="#64748B">高端梯队 · Tier 3</text>
+  <rect x="1304" y="197" width="44" height="20" rx="3" fill="#F8FAFC" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1326" y="211" font-size="9" font-weight="700" fill="#D97706" text-anchor="middle">T3</text>
+  <!-- neural net icon -->
+  <circle cx="1160" cy="282" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/><circle cx="1160" cy="302" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <circle cx="1200" cy="272" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/><circle cx="1200" cy="292" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/><circle cx="1200" cy="312" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <circle cx="1240" cy="282" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/><circle cx="1240" cy="302" r="5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <circle cx="1276" cy="292" r="5" fill="#F59E0B" stroke="#F59E0B" stroke-width="1.5"/>
+  <line x1="1164" y1="282" x2="1196" y2="272" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1164" y1="282" x2="1196" y2="292" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1164" y1="282" x2="1196" y2="312" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/>
+  <line x1="1164" y1="302" x2="1196" y2="292" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1164" y1="302" x2="1196" y2="312" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/>
+  <line x1="1204" y1="272" x2="1236" y2="282" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1204" y1="292" x2="1236" y2="282" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1204" y1="292" x2="1236" y2="302" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1204" y1="312" x2="1236" y2="302" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/>
+  <line x1="1244" y1="285" x2="1272" y2="290" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/><line x1="1244" y1="300" x2="1272" y2="294" stroke="#F59E0B" stroke-width="0.8" opacity="0.6"/>
+  <line x1="1120" y1="345" x2="1340" y2="345" stroke="#E2E8F0"/>
+  <text x="1120" y="366" font-size="10" fill="#475569">· NPU / GPU / Edge TPU</text>
+  <text x="1120" y="384" font-size="9" fill="#64748B">  RAM GB 级 · 算力高</text>
+  <text x="1120" y="400" font-size="9" fill="#64748B">  模型推理 · 异常判定</text>
+  <rect x="1120" y="412" width="160" height="22" rx="4" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1"/>
+  <text x="1200" y="427" font-size="9" font-weight="600" fill="#D97706" text-anchor="middle">十瓦级 · 需散热</text>
+
+  <!-- compute ladder arrow -->
+  <line x1="525" y1="473" x2="1335" y2="473" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="930" y="493" font-size="10" font-weight="600" fill="#64748B" text-anchor="middle">算力 · 任务复杂度递增</text>
+
+  <!-- ===== Edge node: 预处理三任务 pipeline ===== -->
+  <text x="500" y="518" font-size="11" font-weight="700" fill="#475569">预处理三任务 · 流水线</text>
+
+  <!-- Task1: 滤波 (blue) -->
+  <rect x="500" y="530" width="260" height="250" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="520" y="560" font-size="15" font-weight="700" fill="#0F172A">滤波 Filtering</text>
+  <text x="520" y="579" font-size="10" fill="#64748B">预处理任务 ①</text>
+  <circle cx="724" cy="566" r="13" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="724" y="571" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">①</text>
+  <!-- icon: noisy wave -> smooth wave -->
+  <polyline points="524,640 536,632 548,648 560,630 572,650 584,634 596,648" stroke="#94A3B8" stroke-width="1.5" fill="none"/>
+  <line x1="606" y1="640" x2="624" y2="640" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <path d="M636 640 q10 -16 20 0 t20 0 t20 0" stroke="#2563EB" stroke-width="2" fill="none"/>
+  <line x1="520" y1="675" x2="740" y2="675" stroke="#E2E8F0"/>
+  <text x="520" y="696" font-size="10" fill="#475569">· 去噪 · 滑动平均</text>
+  <text x="520" y="714" font-size="10" fill="#475569">· 基线校准 · 抗扰动</text>
+  <rect x="520" y="732" width="130" height="24" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="585" y="748" font-size="9" font-weight="700" fill="#2563EB" text-anchor="middle">由 MCU 承担</text>
+
+  <!-- Task2: 聚合 (purple) -->
+  <rect x="800" y="530" width="260" height="250" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="820" y="560" font-size="15" font-weight="700" fill="#0F172A">聚合 Aggregation</text>
+  <text x="820" y="579" font-size="10" fill="#64748B">预处理任务 ②</text>
+  <circle cx="1024" cy="566" r="13" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1024" y="571" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">②</text>
+  <!-- icon: many dots fan-in -> bar -->
+  <circle cx="836" cy="624" r="3" fill="#94A3B8"/><circle cx="836" cy="640" r="3" fill="#94A3B8"/><circle cx="836" cy="656" r="3" fill="#94A3B8"/>
+  <circle cx="860" cy="630" r="3" fill="#94A3B8"/><circle cx="860" cy="650" r="3" fill="#94A3B8"/>
+  <line x1="840" y1="624" x2="912" y2="640" stroke="#94A3B8" stroke-width="0.8"/>
+  <line x1="840" y1="640" x2="912" y2="640" stroke="#94A3B8" stroke-width="0.8"/>
+  <line x1="840" y1="656" x2="912" y2="640" stroke="#94A3B8" stroke-width="0.8"/>
+  <line x1="864" y1="630" x2="912" y2="640" stroke="#94A3B8" stroke-width="0.8"/>
+  <line x1="864" y1="650" x2="912" y2="640" stroke="#94A3B8" stroke-width="0.8"/>
+  <line x1="918" y1="640" x2="952" y2="640" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <rect x="966" y="624" width="22" height="32" rx="2" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="977" y="688" font-size="8" fill="#64748B" text-anchor="middle">↓ 1/N</text>
+  <line x1="820" y1="675" x2="1040" y2="675" stroke="#E2E8F0"/>
+  <text x="820" y="696" font-size="10" fill="#475569">· 时间窗口 · 降采样</text>
+  <text x="820" y="714" font-size="10" fill="#475569">· 去重 · 统计压缩</text>
+  <rect x="820" y="732" width="160" height="24" rx="4" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.2"/>
+  <text x="900" y="748" font-size="9" font-weight="700" fill="#7C3AED" text-anchor="middle">需应用处理器</text>
+
+  <!-- Task3: 异常判定 (orange) -->
+  <rect x="1100" y="530" width="260" height="250" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1120" y="560" font-size="15" font-weight="700" fill="#0F172A">异常判定 Anomaly</text>
+  <text x="1120" y="579" font-size="10" fill="#64748B">预处理任务 ③</text>
+  <circle cx="1324" cy="566" r="13" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1324" y="571" font-size="12" font-weight="700" fill="#D97706" text-anchor="middle">③</text>
+  <!-- icon: wave with flagged spike -->
+  <polyline points="1124,650 1144,646 1164,652 1184,644 1204,650 1224,612 1244,652 1264,646 1284,652 1304,648 1324,652" stroke="#F59E0B" stroke-width="2" fill="none"/>
+  <line x1="1224" y1="624" x2="1224" y2="600" stroke="#E11D48" stroke-width="1.5"/>
+  <circle cx="1224" cy="596" r="5" fill="none" stroke="#E11D48" stroke-width="1.5"/>
+  <text x="1224" y="582" font-size="8" font-weight="700" fill="#E11D48" text-anchor="middle">!</text>
+  <line x1="1120" y1="675" x2="1340" y2="675" stroke="#E2E8F0"/>
+  <text x="1120" y="696" font-size="10" fill="#475569">· 阈值规则 / 模型推理</text>
+  <text x="1120" y="714" font-size="10" fill="#475569">· 仅输出告警与异常</text>
+  <rect x="1120" y="732" width="140" height="24" rx="4" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.2"/>
+  <text x="1190" y="748" font-size="9" font-weight="700" fill="#D97706" text-anchor="middle">需 AI 加速</text>
+
+  <!-- pipeline arrows between tasks -->
+  <line x1="762" y1="640" x2="796" y2="640" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1062" y1="640" x2="1096" y2="640" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== Cloud region content ===== -->
+  <!-- cloud icon -->
+  <path d="M1530 205 A22 22 0 0 1 1542 165 A26 26 0 0 1 1588 160 A22 22 0 0 1 1624 178 A18 18 0 0 1 1624 206 Z" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1577" y="240" font-size="11" font-weight="700" fill="#D97706" text-anchor="middle">云端 Cloud</text>
+
+  <!-- 时序数据库 cylinder -->
+  <rect x="1518" y="265" width="124" height="100" fill="#FFFFFF" stroke="none"/>
+  <line x1="1518" y1="278" x2="1518" y2="352" stroke="#7C3AED" stroke-width="1.5"/>
+  <line x1="1642" y1="278" x2="1642" y2="352" stroke="#7C3AED" stroke-width="1.5"/>
+  <ellipse cx="1580" cy="278" rx="62" ry="13" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <path d="M1518 352 A62 13 0 0 0 1642 352" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+  <text x="1580" y="320" font-size="12" font-weight="700" fill="#475569" text-anchor="middle">时序数据库</text>
+  <text x="1580" y="338" font-size="9" fill="#64748B" text-anchor="middle">指标 · 归档</text>
+  <text x="1580" y="380" font-size="9" fill="#64748B" text-anchor="middle">TSDB · 冷热分层</text>
+
+  <!-- 模型训练 / 下发 -->
+  <rect x="1440" y="405" width="280" height="110" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1460" y="435" font-size="13" font-weight="700" fill="#0F172A">模型训练 / 下发</text>
+  <text x="1460" y="453" font-size="10" fill="#64748B">Model Training · OTA</text>
+  <line x1="1460" y1="468" x2="1700" y2="468" stroke="#E2E8F0"/>
+  <text x="1460" y="488" font-size="9" fill="#475569">· 离线训练 · 模型版本管理</text>
+  <text x="1460" y="504" font-size="9" fill="#475569">· 增量下发至边缘 AI 节点</text>
+
+  <!-- 业务监控 / 告警 -->
+  <rect x="1440" y="565" width="280" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1460" y="595" font-size="13" font-weight="700" fill="#0F172A">业务监控 / 告警</text>
+  <text x="1460" y="613" font-size="10" fill="#64748B">Monitoring · Alerting</text>
+  <line x1="1460" y1="628" x2="1700" y2="628" stroke="#E2E8F0"/>
+  <text x="1460" y="648" font-size="9" fill="#475569">· 接收边缘告警 / 指标</text>
+  <text x="1460" y="664" font-size="9" fill="#475569">· 可视化看板 · 规则联动</text>
+  <text x="1460" y="676" font-size="9" fill="#475569">· 工单 / 通知分发</text>
+
+  <!-- internal cloud: 监控 -> DB (归档) -->
+  <line x1="1580" y1="563" x2="1580" y2="376" stroke="#64748B" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1590" y="473" font-size="9" fill="#64748B">归档</text>
+
+  <!-- ===== Main flows ===== -->
+  <!-- ① raw: sensor -> edge (滤波) -->
+  <line x1="430" y1="640" x2="496" y2="640" stroke="#10B981" stroke-width="2.4" marker-end="url(#ah-green)"/>
+  <text x="463" y="628" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">① 原始</text>
+
+  <!-- ② processed: edge (异常判定) -> cloud (监控) -->
+  <line x1="1364" y1="640" x2="1436" y2="640" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <text x="1400" y="628" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">② 处理后</text>
+
+  <!-- ③ model: cloud (训练) -> edge (AI加速) -->
+  <line x1="1436" y1="455" x2="1364" y2="380" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1400" y="408" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle">③ 模型下发</text>
+
+  <!-- ===== Callout: data reduction (inside edge, bottom) ===== -->
+  <rect x="500" y="795" width="860" height="34" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="930" y="816" font-size="10" fill="#334155" text-anchor="middle">主结论：原始数据流经「滤波 → 聚合 → 判定」三任务，仅必要告警与指标上云 — 上行数据量可降 90% 以上。</text>
+
+  <!-- ===== Legend ===== -->
+  <text x="40" y="868" font-size="11" font-weight="600" fill="#475569">图例 Legend</text>
+  <rect x="40" y="884" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="62" y="894" font-size="11" fill="#475569">传感器（边缘域）</text>
+  <rect x="200" y="884" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="222" y="894" font-size="11" fill="#475569">边缘节点（平台）</text>
+  <rect x="360" y="884" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="382" y="894" font-size="11" fill="#475569">聚合（数据域）</text>
+  <rect x="510" y="884" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="532" y="894" font-size="11" fill="#475569">异常判定（AI 域）</text>
+  <rect x="680" y="884" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="702" y="894" font-size="11" fill="#475569">云端（云域）</text>
+  <line x1="820" y1="890" x2="852" y2="890" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="860" y="894" font-size="11" fill="#475569">处理流水线 / 上云</text>
+  <line x1="1020" y1="890" x2="1052" y2="890" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="1060" y="894" font-size="11" fill="#475569">原始数据接入</text>
+  <line x1="1200" y1="890" x2="1232" y2="890" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1240" y="894" font-size="11" fill="#475569">模型下发（回传）</text>
+
+  <line x1="40" y1="920" x2="1760" y2="920" stroke="#E2E8F0"/>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="955" font-size="10" fill="#94A3B8" text-anchor="middle">图3-4 边缘节点三梯队硬件（MCU / 应用处理器 / AI加速），承担滤波、聚合、异常判定三任务，只把必要数据上云。</text>
+  </svg>
+</svg>

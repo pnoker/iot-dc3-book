@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-3 RAG + Tool-Calling 联合工作流</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ============ TITLE AREA ============ -->
+  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+  <text x="88" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-3  RAG + Tool-Calling 联合工作流</text>
+  <text x="88" y="73" font-size="12" fill="#64748B">运维任务全链路：发起 → RAG 检索 SOP → 工具执行 → 设备响应 → 组织回复，四层职责解耦</text>
+
+  <rect x="1652" y="28" width="108" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1706" y="46" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">DATAFLOW</text>
+
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ============ SWIM LANES (background tints) ============ -->
+  <rect x="40" y="120" width="1720" height="157" rx="10" fill="#2563EB" opacity="0.05"/>
+  <rect x="40" y="283" width="1720" height="214" rx="10" fill="#F59E0B" opacity="0.05"/>
+  <rect x="40" y="503" width="1720" height="154" rx="10" fill="#7C3AED" opacity="0.05"/>
+  <rect x="40" y="663" width="1720" height="154" rx="10" fill="#10B981" opacity="0.05"/>
+
+  <!-- ============ LANE LABEL CARDS ============ -->
+  <!-- Lane 1 : 用户层 -->
+  <rect x="55" y="155" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="130" cy="178" r="4" fill="#2563EB"/>
+  <text x="130" y="207" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">用户层</text>
+  <text x="130" y="226" font-size="9" fill="#64748B" text-anchor="middle">User Layer</text>
+
+  <!-- Lane 2 : AI 推理层 -->
+  <rect x="55" y="346" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <circle cx="130" cy="369" r="4" fill="#F59E0B"/>
+  <text x="130" y="398" font-size="15" font-weight="700" fill="#F59E0B" text-anchor="middle">AI 推理层</text>
+  <text x="130" y="417" font-size="9" fill="#64748B" text-anchor="middle">Inference</text>
+
+  <!-- Lane 3 : 知识检索层 -->
+  <rect x="55" y="536" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <circle cx="130" cy="559" r="4" fill="#7C3AED"/>
+  <text x="130" y="588" font-size="15" font-weight="700" fill="#7C3AED" text-anchor="middle">知识检索层</text>
+  <text x="130" y="607" font-size="9" fill="#64748B" text-anchor="middle">Knowledge</text>
+
+  <!-- Lane 4 : 设备执行层 -->
+  <rect x="55" y="696" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <circle cx="130" cy="719" r="4" fill="#10B981"/>
+  <text x="130" y="748" font-size="15" font-weight="700" fill="#10B981" text-anchor="middle">设备执行层</text>
+  <text x="130" y="767" font-size="9" fill="#64748B" text-anchor="middle">Device</text>
+
+  <!-- ============ ARROWS (drawn under nodes) ============ -->
+  <!-- ① 发起任务 : 操作员 -> LLM (blue solid) -->
+  <line x1="460" y1="198" x2="650" y2="330" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- ② RAG 检索 SOP : LLM -> 向量知识库 (blue solid) -->
+  <line x1="730" y1="440" x2="730" y2="537" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- ③ 返回操作步骤 : 向量知识库 -> LLM (blue solid) -->
+  <line x1="830" y1="537" x2="830" y2="440" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- ④ 调用工具 : LLM -> Tool-Calling (blue solid) -->
+  <line x1="910" y1="360" x2="1170" y2="415" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- ⑤ 工具下发 : Tool-Calling -> 设备层 (green dashed) -->
+  <line x1="1250" y1="490" x2="1250" y2="690" stroke="#10B981" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-green)"/>
+  <!-- ⑥ 回传结果 : 设备层 -> Tool-Calling (green dashed) -->
+  <line x1="1350" y1="690" x2="1350" y2="490" stroke="#10B981" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-green)"/>
+  <!-- ⑦ 结果回传 : Tool-Calling -> LLM (blue solid) -->
+  <line x1="1170" y1="465" x2="910" y2="410" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <!-- ⑧ 组织回复 : LLM -> 操作员 (blue solid) -->
+  <line x1="650" y1="410" x2="460" y2="230" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+
+  <!-- ============ STEP BADGES + LABELS ============ -->
+  <!-- ① -->
+  <circle cx="555" cy="264" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="555" y="268" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">1</text>
+  <text x="555" y="246" font-size="10" fill="#1E40AF" text-anchor="middle">发起任务</text>
+
+  <!-- ② -->
+  <circle cx="730" cy="488" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="730" y="492" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">2</text>
+  <text x="715" y="492" font-size="10" fill="#1E40AF" text-anchor="end">RAG 检索 SOP</text>
+
+  <!-- ③ -->
+  <circle cx="830" cy="488" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="830" y="492" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">3</text>
+  <text x="848" y="492" font-size="10" fill="#1E40AF" text-anchor="start">返回操作步骤</text>
+
+  <!-- ④ -->
+  <circle cx="1040" cy="388" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="1040" y="392" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">4</text>
+  <text x="1040" y="370" font-size="10" fill="#1E40AF" text-anchor="middle">调用工具</text>
+
+  <!-- ⑤ -->
+  <circle cx="1250" cy="590" r="11" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1250" y="594" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle">5</text>
+  <text x="1235" y="594" font-size="10" fill="#047857" text-anchor="end">工具下发</text>
+
+  <!-- ⑥ -->
+  <circle cx="1350" cy="590" r="11" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+  <text x="1350" y="594" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle">6</text>
+  <text x="1368" y="594" font-size="10" fill="#047857" text-anchor="start">回传结果</text>
+
+  <!-- ⑦ -->
+  <circle cx="1040" cy="438" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="1040" y="442" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">7</text>
+  <text x="1040" y="460" font-size="10" fill="#1E40AF" text-anchor="middle">结果回传</text>
+
+  <!-- ⑧ -->
+  <circle cx="555" cy="320" r="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="555" y="324" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">8</text>
+  <text x="555" y="342" font-size="10" fill="#1E40AF" text-anchor="middle">组织回复</text>
+
+  <!-- ============ NODES ============ -->
+  <!-- 操作员 (Lane 1, blue) -->
+  <rect x="260" y="158" width="200" height="80" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.2"/>
+  <text x="360" y="192" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">操作员</text>
+  <text x="360" y="212" font-size="10" fill="#475569" text-anchor="middle">运维人员 · Operator</text>
+  <text x="360" y="228" font-size="9" fill="#64748B" text-anchor="middle">发起运维任务</text>
+
+  <!-- LLM 推理引擎 (Lane 2, orange, central hub) -->
+  <rect x="650" y="320" width="260" height="120" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.4"/>
+  <text x="780" y="356" font-size="16" font-weight="700" fill="#F59E0B" text-anchor="middle">LLM 推理引擎</text>
+  <line x1="720" y1="368" x2="840" y2="368" stroke="#F59E0B" stroke-width="1" stroke-dasharray="2 3" opacity="0.6"/>
+  <text x="780" y="390" font-size="11" fill="#475569" text-anchor="middle">意图理解 · 任务编排</text>
+  <text x="780" y="408" font-size="9" fill="#64748B" text-anchor="middle">Reasoning Orchestrator</text>
+  <text x="780" y="424" font-size="9" fill="#94A3B8" text-anchor="middle">中心调度 · 决定检索 / 调用</text>
+
+  <!-- 向量知识库 (Lane 3, purple, cylinder) -->
+  <path d="M665 550 L665 620 A115 14 0 0 0 895 620 L895 550" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2.2"/>
+  <ellipse cx="780" cy="550" rx="115" ry="14" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2.2"/>
+  <text x="780" y="583" font-size="15" font-weight="700" fill="#7C3AED" text-anchor="middle">向量知识库</text>
+  <text x="780" y="603" font-size="10" fill="#475569" text-anchor="middle">设备 SOP · RAG 索引</text>
+  <text x="780" y="619" font-size="9" fill="#64748B" text-anchor="middle">Vector Store</text>
+
+  <!-- Tool-Calling 执行器 (Lane 2, orange) -->
+  <rect x="1170" y="390" width="260" height="100" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2.2"/>
+  <text x="1300" y="422" font-size="15" font-weight="700" fill="#F59E0B" text-anchor="middle">Tool-Calling 执行器</text>
+  <line x1="1240" y1="434" x2="1360" y2="434" stroke="#F59E0B" stroke-width="1" stroke-dasharray="2 3" opacity="0.6"/>
+  <text x="1300" y="454" font-size="10" fill="#475569" text-anchor="middle">按步骤调用工具 · 执行</text>
+  <text x="1300" y="472" font-size="9" fill="#64748B" text-anchor="middle">Tool Executor</text>
+
+  <!-- 设备层 (Lane 4, green) -->
+  <rect x="1170" y="690" width="260" height="100" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2.2"/>
+  <text x="1300" y="722" font-size="15" font-weight="700" fill="#10B981" text-anchor="middle">设备层</text>
+  <line x1="1240" y1="734" x2="1360" y2="734" stroke="#10B981" stroke-width="1" stroke-dasharray="2 3" opacity="0.6"/>
+  <text x="1300" y="754" font-size="10" fill="#475569" text-anchor="middle">网关 · 终端 · 采集装置</text>
+  <text x="1300" y="772" font-size="9" fill="#64748B" text-anchor="middle">Device Layer</text>
+
+  <!-- ============ CALLOUT (responsibility boundary, top-right) ============ -->
+  <rect x="1475" y="140" width="280" height="120" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="1615" y="164" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">职责边界 · 三层解耦</text>
+  <circle cx="1496" cy="190" r="3.5" fill="#F59E0B"/>
+  <text x="1508" y="194" font-size="10" fill="#475569">AI 层 — 推理与任务编排</text>
+  <circle cx="1496" cy="212" r="3.5" fill="#7C3AED"/>
+  <text x="1508" y="216" font-size="10" fill="#475569">知识层 — 只读检索 SOP</text>
+  <circle cx="1496" cy="234" r="3.5" fill="#10B981"/>
+  <text x="1508" y="238" font-size="10" fill="#475569">设备层 — 仅受工具指令驱动</text>
+
+  <!-- ============ LEGEND ============ -->
+  <line x1="40" y1="850" x2="1760" y2="850" stroke="#E2E8F0"/>
+  <text x="50" y="877" font-size="11" font-weight="700" fill="#475569">图例</text>
+
+  <line x1="100" y1="873" x2="138" y2="873" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <text x="150" y="877" font-size="11" fill="#475569">RAG 检索 / 推理主链路</text>
+
+  <line x1="335" y1="873" x2="373" y2="873" stroke="#10B981" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-green)"/>
+  <text x="385" y="877" font-size="11" fill="#475569">Tool-Calling 工具下发与设备回传</text>
+
+  <circle cx="660" cy="873" r="9" fill="#FFFFFF" stroke="#64748B" stroke-width="1.4"/>
+  <text x="660" y="877" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle">n</text>
+  <text x="675" y="877" font-size="11" fill="#475569">流程步骤序号</text>
+
+  <ellipse cx="808" cy="869" rx="12" ry="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+  <path d="M796 869 L796 878 A12 3 0 0 0 820 878 L820 869" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+  <text x="832" y="877" font-size="11" fill="#475569">知识库 / 数据存储</text>
+
+  <!-- ============ CAPTION ============ -->
+  <text x="900" y="935" font-size="11" fill="#94A3B8" text-anchor="middle">图7-3  操作员发起任务后，LLM 先经 RAG 检索设备 SOP 获取操作步骤，再按步骤依次调用 Tool-Calling 执行设备操作，直至任务完成。</text>
+  <text x="900" y="958" font-size="11" fill="#94A3B8" text-anchor="middle">蓝色实线为 RAG 检索路径，绿色虚线为工具调用路径。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">dataflow</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">水平四泳道（用户层/AI 推理层/知识检索层/设备执行层）。主链路：操作员→LLM 推理引擎→向量知识库（RAG 检索 SOP）→返回步骤→Tool-Calling 执行器→设备层→回传结果→LLM 组织回复。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

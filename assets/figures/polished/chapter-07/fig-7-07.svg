@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="970" viewBox="0 0 1800 970" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="1800" height="970" fill="#FFFFFF"/>
+  <defs>
+    <linearGradient id="trust-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DBEAFE"/>
+      <stop offset="45%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+  <text x="82" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-7 从 Copilot 到 Agent 的三阶段演进</text>
+  <text x="82" y="71" font-size="12" fill="#64748B">自主程度 · 人工介入点 · 风险控制 · 信任度 的递进关系</text>
+  <rect x="1678" y="28" width="96" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1726" y="44" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">TIMELINE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+
+  <!-- ===== 三阶段图标（锁定 / 钥匙 / 盾牌） ===== -->
+  <!-- Icon 1: 锁定 (Copilot 辅助) -->
+  <circle cx="333" cy="364" r="26" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <path d="M 323,370 L 323,358 A 10,10 0 0,1 343,358 L 343,370" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+  <rect x="319" y="367" width="28" height="20" rx="4" fill="#2563EB"/>
+  <circle cx="333" cy="375" r="2.4" fill="#FFFFFF"/>
+  <rect x="331.6" y="375" width="2.8" height="6" rx="1" fill="#FFFFFF"/>
+
+  <!-- Icon 2: 钥匙 (有限自主 Agent) -->
+  <circle cx="899" cy="274" r="26" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <circle cx="889" cy="274" r="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <rect x="897" y="271.5" width="21" height="5" rx="2" fill="#2563EB"/>
+  <rect x="904" y="276.5" width="3" height="6" fill="#2563EB"/>
+  <rect x="911" y="276.5" width="3" height="6" fill="#2563EB"/>
+
+  <!-- Icon 3: 盾牌 (全自治 Agent) -->
+  <circle cx="1465" cy="184" r="26" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <path d="M 1465,170 L 1478,175 L 1478,186 Q 1478,196 1465,201 Q 1452,196 1452,186 L 1452,175 Z" fill="#2563EB"/>
+  <path d="M 1460,185 L 1464,189 L 1471,181" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ===== 三阶段色块（高度递增 = 自主程度递增，底对齐 y=600） ===== -->
+  <!-- Block 1: Copilot 辅助（浅蓝） -->
+  <rect x="80" y="400" width="506" height="200" rx="8" fill="#2563EB" fill-opacity="0.07" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="421" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 01  ·  辅助期</text>
+  <text x="104" y="448" font-size="21" font-weight="700" fill="#0F172A">Copilot 辅助</text>
+  <text x="104" y="467" font-size="12" fill="#64748B">先证明能「看对」· 模型只负责生成建议</text>
+  <line x1="104" y1="477" x2="562" y2="477" stroke="#E2E8F0"/>
+  <text x="104" y="496" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">低 · 仅生成建议</tspan></text>
+  <text x="104" y="513" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">每一步都确认</tspan></text>
+  <text x="104" y="530" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">人工逐行把关</tspan></text>
+  <text x="104" y="547" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">补全 / 解释 / 检索</tspan></text>
+  <rect x="104" y="560" width="458" height="30" rx="6" fill="#2563EB" fill-opacity="0.10"/>
+  <text x="120" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 决策者（每步把关）</text>
+
+  <!-- Block 2: 有限自主 Agent（中蓝） -->
+  <rect x="646" y="310" width="506" height="290" rx="8" fill="#2563EB" fill-opacity="0.14" stroke="#2563EB" stroke-width="2"/>
+  <text x="670" y="333" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 02  ·  协作期</text>
+  <text x="670" y="360" font-size="21" font-weight="700" fill="#0F172A">有限自主 Agent</text>
+  <text x="670" y="379" font-size="12" fill="#64748B">再证明能「想对」· 限定场景自动放行</text>
+  <line x1="670" y1="389" x2="1128" y2="389" stroke="#E2E8F0"/>
+  <text x="670" y="413" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">中 · 白名单内自动</tspan></text>
+  <text x="670" y="435" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">签名式批量审批</tspan></text>
+  <text x="670" y="457" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">审批门 + 操作签名</tspan></text>
+  <text x="670" y="479" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">测试 / 重构 / 提 PR</tspan></text>
+  <rect x="670" y="498" width="458" height="28" rx="5" fill="#2563EB" fill-opacity="0.08"/>
+  <text x="686" y="516" font-size="11.5" font-weight="600" fill="#1D4ED8">放行边界由白名单显式划定，越界即停</text>
+  <rect x="670" y="560" width="458" height="30" rx="6" fill="#2563EB" fill-opacity="0.14"/>
+  <text x="686" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 审批者（批量放行）</text>
+
+  <!-- Block 3: 全自治 Agent（深蓝） -->
+  <rect x="1212" y="220" width="506" height="380" rx="8" fill="#2563EB" fill-opacity="0.24" stroke="#2563EB" stroke-width="2"/>
+  <text x="1236" y="243" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 03  ·  自治期</text>
+  <text x="1236" y="270" font-size="21" font-weight="700" fill="#0F172A">全自治 Agent</text>
+  <text x="1236" y="289" font-size="12" fill="#64748B">最后才交给它「做对」· 自主规划并执行</text>
+  <line x1="1236" y1="299" x2="1694" y2="299" stroke="#E2E8F0"/>
+  <text x="1236" y="325" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">高 · 自主规划执行</tspan></text>
+  <text x="1236" y="350" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">仅高危点确认</tspan></text>
+  <text x="1236" y="375" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">关键节点卡口</tspan></text>
+  <text x="1236" y="400" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">端到端任务交付</tspan></text>
+  <rect x="1236" y="430" width="458" height="28" rx="5" fill="#2563EB" fill-opacity="0.10"/>
+  <text x="1252" y="448" font-size="11.5" font-weight="600" fill="#1D4ED8">自主范围随可靠性证明逐步扩大</text>
+  <rect x="1236" y="468" width="458" height="28" rx="5" fill="#2563EB" fill-opacity="0.10"/>
+  <text x="1252" y="486" font-size="11.5" font-weight="600" fill="#1D4ED8">每次成功兑现，才换取下一次授权升级</text>
+  <rect x="1236" y="560" width="458" height="30" rx="6" fill="#2563EB" fill-opacity="0.20"/>
+  <text x="1252" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 监督者（例外介入）</text>
+
+  <!-- ===== 演进箭头（色块之间） ===== -->
+  <line x1="592" y1="500" x2="638" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1158" y1="500" x2="1204" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== 水平时间轴（底对齐基线 y=600） ===== -->
+  <line x1="60" y1="600" x2="1750" y2="600" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="1746" y="591" font-size="11" font-weight="600" fill="#2563EB" text-anchor="end">自主程度递增</text>
+  <line x1="333" y1="600" x2="333" y2="608" stroke="#2563EB" stroke-width="2"/>
+  <line x1="899" y1="600" x2="899" y2="608" stroke="#2563EB" stroke-width="2"/>
+  <line x1="1465" y1="600" x2="1465" y2="608" stroke="#2563EB" stroke-width="2"/>
+  <text x="333" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">辅助期</text>
+  <text x="899" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">协作期</text>
+  <text x="1465" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">自治期</text>
+
+  <!-- ===== 信任度渐变条 ===== -->
+  <text x="899" y="646" font-size="11.5" font-weight="600" fill="#475569" text-anchor="middle">信任度累积（随阶段递增，不可回退）</text>
+  <rect x="80" y="654" width="1638" height="30" rx="4" fill="url(#trust-grad)"/>
+  <text x="94" y="674" font-size="11" font-weight="700" fill="#1E40AF">信任度 低</text>
+  <text x="1704" y="674" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">信任度 高</text>
+
+  <!-- ===== 高风险白名单（红色虚线贯穿底部） ===== -->
+  <text x="899" y="722" font-size="11.5" font-weight="700" fill="#E11D48" text-anchor="middle">高风险白名单 · 贯穿三阶段，永不关闭</text>
+  <line x1="80" y1="732" x2="1718" y2="732" stroke="#E11D48" stroke-width="2.5" stroke-dasharray="9 5"/>
+  <circle cx="80" cy="732" r="3.5" fill="#E11D48"/>
+  <circle cx="1718" cy="732" r="3.5" fill="#E11D48"/>
+
+  <!-- ===== 图例（主体之外） ===== -->
+  <rect x="130" y="783" width="14" height="14" rx="2" fill="#2563EB" fill-opacity="0.10" stroke="#2563EB" stroke-width="1.2"/>
+  <rect x="148" y="783" width="14" height="14" rx="2" fill="#2563EB" fill-opacity="0.22" stroke="#2563EB" stroke-width="1.2"/>
+  <rect x="166" y="783" width="14" height="14" rx="2" fill="#2563EB" fill-opacity="0.40" stroke="#2563EB" stroke-width="1.2"/>
+  <text x="188" y="794" font-size="10.5" fill="#64748B">阶段色块深浅 = 自主程度</text>
+
+  <rect x="520" y="783" width="44" height="14" rx="3" fill="url(#trust-grad)"/>
+  <text x="572" y="794" font-size="10.5" fill="#64748B">信任度渐变条</text>
+
+  <line x1="840" y1="790" x2="876" y2="790" stroke="#E11D48" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="884" y="794" font-size="10.5" fill="#64748B">高风险白名单（永不关闭）</text>
+
+  <line x1="1180" y1="790" x2="1218" y2="790" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1226" y="794" font-size="10.5" fill="#64748B">演进方向（自主程度递增）</text>
+
+  <!-- ===== caption ===== -->
+  <text x="900" y="918" font-size="10" fill="#94A3B8" text-anchor="middle">图7-7 三阶段演进：自主程度逐步提升，但人工确认点从未消失——只是从「每步确认」变为「关键节点确认」。</text>
+  <text x="900" y="938" font-size="10" fill="#94A3B8" text-anchor="middle">先让模型证明能看对，再证明能想对，最后才交给它去做对。</text>
+</svg>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图14-3 设备接入与数据流（MQTT 接入）</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="117.600" width="1152.000" height="524.800" viewBox="0 0 1800.000 820.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="820" fill="#FFFFFF"/>
+
+  <!-- ===== Title block ===== -->
+  <circle cx="44" cy="42" r="6" fill="#2563EB"/>
+  <text x="62" y="40" font-size="22" font-weight="700" fill="#0F172A">图14-3 设备接入与数据流（MQTT 接入）</text>
+  <text x="62" y="64" font-size="12" fill="#64748B">设备上报数据在 IoT DC3 中的完整链路 · 从发布 JSON 到落库与可视化</text>
+
+  <!-- type label top-right -->
+  <rect x="1690" y="26" width="86" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1733" y="42" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">DATAFLOW</text>
+
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Main: pipeline boundary ===== -->
+  <rect x="18" y="130" width="1764" height="530" rx="12" fill="#F8FAFC" fill-opacity="0.6" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8 4"/>
+  <rect x="40" y="142" width="250" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1"/>
+  <text x="58" y="157" font-size="11" font-weight="600" fill="#475569">设备数据上行链路（MQTT 南向接入）</text>
+
+  <!-- ===== Component cards ===== -->
+
+  <!-- Node 1: 设备端 (green / edge) -->
+  <g transform="translate(30,240)">
+    <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#10B981" fill-opacity="0.1"/>
+    <line x1="0" y1="48" x2="200" y2="48" stroke="#10B981" stroke-opacity="0.35" stroke-width="1"/>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备端</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">MQTT 客户端</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 发布属性报文</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· Payload = JSON</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· QoS 1 · 清洁会话</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">topic 示例:</text>
+    <text x="18" y="176" font-size="9" fill="#7C3AED">/dc3/dev/&#123;id&#125;/property</text>
+  </g>
+
+  <!-- Node 2: MQTT Broker / EMQX (green / edge) -->
+  <g transform="translate(290,240)">
+    <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#10B981" fill-opacity="0.1"/>
+    <line x1="0" y1="48" x2="200" y2="48" stroke="#10B981" stroke-opacity="0.35" stroke-width="1"/>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT Broker</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">EMQX</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 主题订阅 / 路由</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· 客户端鉴权 · ACL</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 会话保持 · 遗嘱</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">接入层网关</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">支撑百万级连接</text>
+  </g>
+
+  <!-- Node 3: 数据接入服务 (blue / platform) -->
+  <g transform="translate(550,240)">
+    <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#2563EB" fill-opacity="0.1"/>
+    <line x1="0" y1="48" x2="200" y2="48" stroke="#2563EB" stroke-opacity="0.35" stroke-width="1"/>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据接入服务</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">订阅 / 反序列化</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 订阅 Broker 主题</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· JSON → 物模型字段</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 设备身份映射</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">校验时间戳 / 签名</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">同步拉取后转异步</text>
+  </g>
+
+  <!-- Node 4: 消息队列 (purple / data, HIGHLIGHT 稳压器) -->
+  <g transform="translate(810,240)">
+    <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="3"/>
+    <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#7C3AED" fill-opacity="0.14"/>
+    <line x1="0" y1="48" x2="200" y2="48" stroke="#7C3AED" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">消息队列</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">RabbitMQ / Kafka</text>
+    <text x="18" y="82" font-size="11" font-weight="600" fill="#7C3AED">· 缓冲削峰</text>
+    <text x="18" y="104" font-size="11" font-weight="600" fill="#7C3AED">· 异步解耦</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 按 deviceId 分区</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">重试 · 死信队列</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">保证设备内顺序</text>
+    <!-- floating 稳压器 badge -->
+    <rect x="70" y="-16" width="120" height="24" rx="12" fill="#7C3AED"/>
+    <text x="130" y="1" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">★ 稳压器</text>
+  </g>
+
+  <!-- Node 5: 数据处理服务 (blue / platform, 规则引擎 orange accent) -->
+  <g transform="translate(1070,240)">
+    <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#2563EB" fill-opacity="0.1"/>
+    <line x1="0" y1="48" x2="200" y2="48" stroke="#2563EB" stroke-opacity="0.35" stroke-width="1"/>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据处理服务</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">物模型校验 + 规则引擎</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 字段范围校验</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· 先入库 · 再判告警</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 规则触发动作</text>
+    <circle cx="24" cy="158" r="4" fill="#F59E0B"/>
+    <text x="34" y="162" font-size="10" font-weight="600" fill="#F59E0B">规则引擎（ai 域）</text>
+    <text x="18" y="184" font-size="9" fill="#64748B">避免时序错位</text>
+  </g>
+
+  <!-- Node 6: 数据库 (purple cylinder / data) -->
+  <g transform="translate(1330,240)">
+    <path d="M 20 50 L 20 258 A 80 12 0 0 0 180 258 L 180 50" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse cx="100" cy="50" rx="80" ry="12" fill="#7C3AED" fill-opacity="0.14" stroke="#7C3AED" stroke-width="2"/>
+    <text x="100" y="98" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据库</text>
+    <text x="100" y="116" font-size="10" fill="#64748B" text-anchor="middle">时序库 + 文档库</text>
+    <text x="100" y="150" font-size="11" fill="#475569" text-anchor="middle">· TDengine（时序）</text>
+    <text x="100" y="172" font-size="11" fill="#475569" text-anchor="middle">· MongoDB（文档/元）</text>
+    <text x="100" y="206" font-size="9" fill="#64748B" text-anchor="middle">持久化存储</text>
+    <text x="100" y="222" font-size="9" fill="#64748B" text-anchor="middle">冷热分层</text>
+  </g>
+
+  <!-- Node 7: 查询接口 / 可视化 (blue / platform) -->
+  <g transform="translate(1590,240)">
+    <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#2563EB" fill-opacity="0.1"/>
+    <line x1="0" y1="48" x2="200" y2="48" stroke="#2563EB" stroke-opacity="0.35" stroke-width="1"/>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">查询接口 / 可视化</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">REST · Grafana</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 时序聚合查询</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· 实时面板</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 告警展示</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">北向开放</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">运维 / 业务双视图</text>
+  </g>
+
+  <!-- ===== Arrows (y=380) ===== -->
+  <!-- 1→2 发布 (solid green) -->
+  <line x1="232" y1="380" x2="284" y2="380" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="258" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">发布</text>
+
+  <!-- 2→3 路由 (solid blue) -->
+  <line x1="492" y1="380" x2="544" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="518" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">路由</text>
+
+  <!-- 3→4 入队/异步推送 (dashed gray) -->
+  <line x1="752" y1="380" x2="804" y2="380" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="778" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">入队</text>
+
+  <!-- 4→5 消费 (dashed purple) -->
+  <line x1="1012" y1="380" x2="1064" y2="380" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <text x="1038" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">消费</text>
+
+  <!-- 5→6 写入 (solid blue) -->
+  <line x1="1272" y1="380" x2="1348" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1310" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">写入</text>
+
+  <!-- 6→7 查询 (solid blue) -->
+  <line x1="1512" y1="380" x2="1584" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1548" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">查询</text>
+
+  <!-- ===== Callout: 稳压器 ===== -->
+  <line x1="910" y1="524" x2="910" y2="566" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <polygon points="910,524 906,532 914,532" fill="#7C3AED"/>
+  <rect x="740" y="566" width="340" height="62" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="756" y="588" font-size="11" font-weight="700" fill="#7C3AED">★ 稳压器：削峰填谷 + 异步解耦</text>
+  <text x="756" y="608" font-size="10" fill="#334155">上报洪峰由队列吸收，下游恒速消费，</text>
+  <text x="756" y="622" font-size="10" fill="#334155">接入与处理互不阻塞。</text>
+
+  <!-- ===== Legend (outside boundary) ===== -->
+  <line x1="40" y1="685" x2="1760" y2="685" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="40" y="710" font-size="10" font-weight="700" fill="#64748B" letter-spacing="1">图例</text>
+
+  <!-- sync link -->
+  <line x1="110" y1="706" x2="150" y2="706" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="158" y="710" font-size="10" fill="#475569">同步链路（发布 / 路由 / 写入 / 查询）</text>
+
+  <!-- async link -->
+  <line x1="430" y1="706" x2="470" y2="706" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="478" y="710" font-size="10" fill="#475569">异步链路（入队 / 消费）</text>
+
+  <!-- edge domain -->
+  <rect x="690" y="700" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="712" y="710" font-size="10" fill="#475569">边缘接入域（设备 / Broker）</text>
+
+  <!-- platform domain -->
+  <rect x="930" y="700" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="952" y="710" font-size="10" fill="#475569">平台服务域</text>
+
+  <!-- data domain -->
+  <rect x="1110" y="700" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1132" y="710" font-size="10" fill="#475569">数据 / 存储域</text>
+
+  <!-- cylinder = storage -->
+  <ellipse cx="1275" cy="704" rx="9" ry="2.6" fill="none" stroke="#7C3AED" stroke-width="1.2"/>
+  <path d="M 1266 704 L 1266 712 A 9 2.6 0 0 0 1284 712 L 1284 704" fill="none" stroke="#7C3AED" stroke-width="1.2"/>
+  <text x="1292" y="710" font-size="10" fill="#475569">圆柱 = 持久化存储</text>
+
+  <!-- highlight node -->
+  <rect x="1440" y="700" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2.5"/>
+  <text x="1462" y="710" font-size="10" fill="#475569">加粗节点 = 关键稳压器</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="780" font-size="10" fill="#94A3B8" text-anchor="middle">图14-3 设备上报数据在 IoT DC3 中的完整链路：消息队列是削峰与异步解耦的关键稳压器，先入库再判告警以避免时序错位，消费者按 deviceId 分区保证设备内顺序。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">dataflow</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从左到右串联：设备端（MQTT 客户端）→ Broker（EMQX）→ 数据接入服务（订阅/反序列化）→ 消息队列（RabbitMQ/Kafka，缓冲削峰）→ 数据处理服务（物模型校验+规则引擎）→ 数据库（时序库+文档库）→ 查询接口/可视化（REST/Grafana）。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

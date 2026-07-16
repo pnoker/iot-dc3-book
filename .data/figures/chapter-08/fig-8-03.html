@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图8-3 TLS 1.3 握手与 mTLS 双向认证</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-3 TLS 1.3 握手与 mTLS 双向认证</title>
+  <desc id="desc">TLS 1.3 精简握手（1-RTT）与基于客户端证书的双向认证时序图。设备（蓝）与平台（绿）之间的握手报文：明文阶段用空心箭头，加密阶段用实心箭头。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="30.400" y="24.000" width="1139.200" height="712.000" viewBox="0 0 1600.000 1000.000" preserveAspectRatio="xMidYMid meet">
+<title>图8-3 TLS 1.3 握手与 mTLS 双向认证</title>
+  <desc>TLS 1.3 精简握手（1-RTT）与基于客户端证书的双向认证时序图。设备（蓝）与平台（绿）之间的握手报文：明文阶段用空心箭头，加密阶段用实心箭头。</desc>
+
+  <defs>
+    <!-- Plaintext: hollow arrowheads (white fill, colored stroke) -->
+    <marker id="ah-open-blue" markerWidth="13" markerHeight="11" refX="11" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    </marker>
+    <marker id="ah-open-green" markerWidth="13" markerHeight="11" refX="11" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
+    </marker>
+    <!-- Encrypted: solid filled arrowheads -->
+    <marker id="ah-blue-solid" markerWidth="11" markerHeight="9" refX="10" refY="4.5" orient="auto">
+      <path d="M0,0 L11,4.5 L0,9 Z" fill="#2563EB"/>
+    </marker>
+    <marker id="ah-green-solid" markerWidth="11" markerHeight="9" refX="10" refY="4.5" orient="auto">
+      <path d="M0,0 L11,4.5 L0,9 Z" fill="#10B981"/>
+    </marker>
+    <!-- Reusable padlock (encrypted indicator). Use currentColor. -->
+    <symbol id="lock" viewBox="-7 -7 14 14">
+      <path d="M-4,-1 L-4,-3.6 a4,4 0 0 1 8,0 L4,-1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <rect x="-5" y="-1" width="10" height="7.5" rx="1.2" fill="currentColor"/>
+    </symbol>
+  </defs>
+
+  <!-- Canvas -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+
+  <!-- ============ 1. Title area ============ -->
+  <circle cx="64" cy="42" r="7" fill="#2563EB"/>
+  <text x="88" y="50" font-size="24" font-weight="700" fill="#0F172A">图8-3　TLS 1.3 握手与 mTLS 双向认证</text>
+  <text x="88" y="76" font-size="13" fill="#64748B">TLS 1.3 精简握手（1-RTT）· 客户端证书双向认证 mTLS · 明文空心箭头 / 加密实心箭头</text>
+
+  <rect x="1466" y="28" width="94" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1513" y="47" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">SEQUENCE</text>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ============ 2. Participants ============ -->
+  <!-- Device (left, blue) -->
+  <rect x="330" y="128" width="200" height="64" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="430" y="157" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">设备 Device</text>
+  <text x="430" y="178" font-size="10" fill="#64748B" text-anchor="middle">IoT Terminal · TLS Client</text>
+  <!-- Platform (right, green) -->
+  <rect x="1070" y="128" width="200" height="64" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1170" y="157" font-size="15" font-weight="700" fill="#10B981" text-anchor="middle">平台 Platform</text>
+  <text x="1170" y="178" font-size="10" fill="#64748B" text-anchor="middle">IoT Cloud Gateway · TLS Server</text>
+
+  <!-- Lifelines -->
+  <line x1="430" y1="192" x2="430" y2="868" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.45"/>
+  <line x1="1170" y1="192" x2="1170" y2="868" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.45"/>
+
+  <!-- ============ Phase bands ============ -->
+  <!-- Band 1: Plaintext -->
+  <rect x="120" y="198" width="1300" height="180" rx="10" fill="#F8FAFC"/>
+  <text x="140" y="222" font-size="13" font-weight="600" fill="#64748B">① 明文阶段 · Plaintext Handshake</text>
+
+  <!-- Band 2: Encrypted Handshake -->
+  <rect x="120" y="388" width="1300" height="268" rx="10" fill="#EFF6FF" opacity="0.55"/>
+  <text x="140" y="412" font-size="13" font-weight="600" fill="#2563EB">② 加密握手 · Encrypted Handshake（Handshake Keys · 1-RTT）</text>
+
+  <!-- Band 3: Encrypted Application Data -->
+  <rect x="120" y="664" width="1300" height="200" rx="10" fill="#ECFDF5" opacity="0.55"/>
+  <text x="140" y="688" font-size="13" font-weight="600" fill="#10B981">③ 应用数据 · Encrypted Application Data</text>
+
+  <!-- Band separators -->
+  <line x1="120" y1="383" x2="1420" y2="383" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="120" y1="659" x2="1420" y2="659" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- ============ Band 1 messages (plaintext, hollow arrows) ============ -->
+  <!-- Activation device (send ClientHello) -->
+  <rect x="423" y="246" width="14" height="28" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <!-- Msg 1: ClientHello  device -> platform -->
+  <line x1="437" y1="260" x2="1163" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-open-green)"/>
+  <text x="486" y="253" font-size="10" font-weight="600" fill="#64748B">明文</text>
+  <text x="800" y="252" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">ClientHello</text>
+  <text x="800" y="282" font-size="11" fill="#475569" text-anchor="middle">key_share(ECDHE) · supported_versions = TLS 1.3 · cipher_suites · SNI</text>
+
+  <!-- Activation platform (send ServerHello) -->
+  <rect x="1163" y="330" width="14" height="28" rx="2" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+  <!-- Msg 2: ServerHello  platform -> device -->
+  <line x1="1163" y1="344" x2="437" y2="344" stroke="#10B981" stroke-width="2" marker-end="url(#ah-open-blue)"/>
+  <text x="1114" y="337" font-size="10" font-weight="600" fill="#64748B" text-anchor="end">明文</text>
+  <text x="800" y="336" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">ServerHello</text>
+  <text x="800" y="366" font-size="11" fill="#475569" text-anchor="middle">key_share(ECDHE) · selected_cipher_suite · 确认协商 TLS 1.3</text>
+
+  <!-- ============ Band 2 messages (encrypted, solid arrows) ============ -->
+  <!-- Activation platform (build server flight) -->
+  <rect x="1163" y="432" width="14" height="96" rx="2" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+  <!-- Msg 3: Server Flight  platform -> device -->
+  <line x1="1163" y1="450" x2="437" y2="450" stroke="#10B981" stroke-width="2.5" marker-end="url(#ah-blue-solid)"/>
+  <g color="#10B981"><use href="#lock" x="1036" y="436" width="14" height="14"/></g>
+  <text x="1114" y="444" font-size="10" font-weight="700" fill="#10B981" text-anchor="end">加密</text>
+  <text x="800" y="442" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Server Flight　服务端加密报文组</text>
+  <!-- contents box -->
+  <rect x="455" y="464" width="690" height="74" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="800" y="487" font-size="12" fill="#0F172A" text-anchor="middle">EncryptedExtensions　·　CertificateRequest　·　Certificate</text>
+  <text x="800" y="508" font-size="12" fill="#0F172A" text-anchor="middle">CertificateVerify　·　Finished</text>
+  <text x="800" y="528" font-size="10.5" fill="#475569" text-anchor="middle">平台出示服务端证书并签名；CertificateRequest 要求设备出示客户端证书</text>
+
+  <!-- Activation device (build client flight) -->
+  <rect x="423" y="572" width="14" height="70" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <!-- Msg 4: Client Flight  device -> platform  (mTLS) -->
+  <line x1="437" y1="588" x2="1163" y2="588" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-green-solid)"/>
+  <g color="#2563EB"><use href="#lock" x="486" y="574" width="14" height="14"/></g>
+  <text x="486" y="582" font-size="10" font-weight="700" fill="#2563EB">加密</text>
+  <text x="800" y="580" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Client Flight　设备加密报文组 · mTLS</text>
+  <!-- contents box -->
+  <rect x="455" y="602" width="690" height="74" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="800" y="625" font-size="12" text-anchor="middle"><tspan fill="#E11D48" font-weight="700">Certificate（设备客户端证书）</tspan><tspan fill="#0F172A">　·　CertificateVerify</tspan></text>
+  <text x="800" y="646" font-size="12" fill="#0F172A" text-anchor="middle">Finished　→　握手完成，派生主密钥 Master Secret</text>
+  <text x="800" y="666" font-size="10.5" fill="#E11D48" text-anchor="middle">mTLS 关键：设备出示客户端证书，平台完成双向身份验证</text>
+
+  <!-- ============ Band 3 messages (encrypted app data) ============ -->
+  <!-- Activation both (full duplex) -->
+  <rect x="423" y="710" width="14" height="50" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <rect x="1163" y="710" width="14" height="50" rx="2" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+  <text x="800" y="710" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Application Data　应用数据全加密 · 双向 Full-Duplex</text>
+  <!-- device -> platform -->
+  <line x1="437" y1="734" x2="1163" y2="734" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-green-solid)"/>
+  <g color="#2563EB"><use href="#lock" x="486" y="722" width="14" height="14"/></g>
+  <text x="506" y="730" font-size="10" fill="#475569">遥测上行</text>
+  <!-- platform -> device -->
+  <line x1="1163" y1="756" x2="437" y2="756" stroke="#10B981" stroke-width="2.5" marker-end="url(#ah-blue-solid)"/>
+  <g color="#10B981"><use href="#lock" x="1094" y="744" width="14" height="14"/></g>
+  <text x="1094" y="752" font-size="10" fill="#475569" text-anchor="end">指令 / OTA 下行</text>
+  <text x="800" y="790" font-size="11" fill="#475569" text-anchor="middle">基于握手派生的会话密钥，遥测 / 指令 / OTA 固件全部以密文传输</text>
+  <!-- secure channel pill -->
+  <rect x="640" y="812" width="320" height="34" rx="17" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <circle cx="672" cy="829" r="7" fill="#10B981"/>
+  <path d="M668,829 L671,832 L676,826" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="810" y="834" font-size="13" font-weight="700" fill="#10B981" text-anchor="middle">安全通道建立 Secure Channel Established</text>
+
+  <!-- ============ Legend ============ -->
+  <line x1="40" y1="876" x2="1560" y2="876" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="60" y="905" font-size="12" font-weight="700" fill="#64748B">图例</text>
+
+  <!-- Device -->
+  <rect x="118" y="893" width="22" height="16" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="148" y="906" font-size="12" fill="#475569">设备 Device</text>
+
+  <!-- Platform -->
+  <rect x="268" y="893" width="22" height="16" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="298" y="906" font-size="12" fill="#475569">平台 Platform</text>
+
+  <!-- Plaintext hollow arrow -->
+  <line x1="430" y1="901" x2="470" y2="901" stroke="#64748B" stroke-width="2" marker-end="url(#ah-open-blue)"/>
+  <text x="486" y="906" font-size="12" fill="#475569">明文 Plaintext（空心箭头）</text>
+
+  <!-- Encrypted solid arrow -->
+  <line x1="720" y1="901" x2="760" y2="901" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-green-solid)"/>
+  <text x="776" y="906" font-size="12" fill="#475569">加密 Encrypted（实心箭头）</text>
+
+  <!-- mTLS highlight -->
+  <rect x="1010" y="893" width="22" height="16" rx="3" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1040" y="906" font-size="12" fill="#475569">mTLS 设备客户端证书（双向认证）</text>
+
+  <!-- ============ Caption ============ -->
+  <text x="800" y="975" font-size="10.5" fill="#94A3B8" text-anchor="middle">图8-3　ClientHello / ServerHello 为明文，Finished 及应用数据均加密；mTLS 时设备额外发送客户端证书。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">纵向时序，左设备右平台。ClientHello→ServerHello+证书→客户端证书(mTLS)+密钥协商→Finished(双向)→应用数据(全加密)</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

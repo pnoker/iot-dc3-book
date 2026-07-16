@@ -1,84 +1,284 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040" role="img" aria-label="图14-2 IoT DC3 系统分层架构" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
-<defs>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-<marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
-<rect x="0" y="0" width="1600" height="1040" fill="#FFFFFF"/>
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图14-2 IoT DC3 系统分层架构</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">从设备接入到应用展现的完整分层，突出边云异步解耦设计</text>
-<rect x="1470" y="30" width="110" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1525" y="48" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">ARCHITECTURE</text>
-<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="300" y="220" width="940" height="480" rx="12" fill="none" stroke="#2563EB" stroke-dasharray="8 4" stroke-width="1.2"/>
-<text x="316" y="244" fill="#2563EB" font-size="11" font-weight="600">平台服务域 · 核心服务能力边界</text>
-<rect x="620" y="455" width="280" height="125" rx="12" fill="none" stroke="#7C3AED" stroke-dasharray="8 4" stroke-width="1.2"/>
-<text x="636" y="479" fill="#7C3AED" font-size="11" font-weight="600">数据资产域</text>
-<rect x="300" y="710" width="280" height="120" rx="12" fill="none" stroke="#10B981" stroke-dasharray="8 4" stroke-width="1.2"/>
-<text x="316" y="724" fill="#10B981" font-size="11" font-weight="600">设备与边缘域</text>
-<line x1="440" y1="730" x2="440" y2="676" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="434" y="708" fill="#2563EB" font-size="10" font-weight="600" text-anchor="end">协议接入</text>
-<line x1="440" y1="610" x2="440" y2="556" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-blue)"/>
-<text x="434" y="588" fill="#2563EB" font-size="10" font-weight="600" text-anchor="end">异步上报</text>
-<line x1="540" y1="522" x2="658" y2="522" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="560" y="514" fill="#2563EB" font-size="10" font-weight="600">消费写入</text>
-<line x1="740" y1="488" x2="740" y2="436" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="734" y="465" fill="#64748B" font-size="10" text-anchor="end">实时流</text>
-<line x1="780" y1="436" x2="780" y2="488" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="786" y="465" fill="#64748B" font-size="10" text-anchor="start">结果写回</text>
-<line x1="1000" y1="522" x2="862" y2="522" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="900" y="514" fill="#64748B" font-size="10" text-anchor="middle">配置下发</text>
-<line x1="1000" y1="642" x2="542" y2="642" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="720" y="634" fill="#64748B" font-size="10" text-anchor="middle">服务注册</text>
-<polyline points="340,282 310,282 310,625 338,625" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="314" y="274" fill="#64748B" font-size="10" text-anchor="start">API调用</text>
-<rect x="340" y="250" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-<text x="440" y="280" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">应用展现层</text>
-<text x="440" y="300" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">Web/App/API</text>
-<rect x="660" y="370" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-<text x="760" y="400" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">智能中心</text>
-<text x="760" y="420" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">Agent/模型推理</text>
-<rect x="1000" y="370" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1100" y="400" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">鉴权中心</text>
-<text x="1100" y="420" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">令牌/权限</text>
-<rect x="340" y="490" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="440" y="520" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">消息队列</text>
-<text x="440" y="540" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">RabbitMQ/Kafka</text>
-<rect x="660" y="490" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-<text x="760" y="520" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">数据中心</text>
-<text x="760" y="540" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">时序库+关系库</text>
-<rect x="1000" y="490" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1100" y="520" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">管理中心</text>
-<text x="1100" y="540" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">设备/驱动管理</text>
-<rect x="340" y="610" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="440" y="640" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">协议驱动服务</text>
-<text x="440" y="660" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">MQTT/Modbus/OPCUA</text>
-<rect x="1000" y="610" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1100" y="640" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Nacos</text>
-<text x="1100" y="660" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">注册/配置</text>
-<rect x="340" y="730" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="440" y="760" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">现场设备</text>
-<text x="440" y="780" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">传感器/PLC/网关</text>
-<rect x="470" y="575" width="200" height="24" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="570" y="591" fill="#334155" font-size="10" font-weight="600" text-anchor="middle">异步上行 · 边云解耦</text>
-<line x1="58" y1="940" x2="1542" y2="940" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="70" y="958" width="14" height="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="90" y="967" fill="#64748B" font-size="11" font-weight="600">平台服务</text>
-<rect x="190" y="958" width="14" height="10" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="210" y="967" fill="#64748B" font-size="11" font-weight="600">设备/边缘</text>
-<rect x="310" y="958" width="14" height="10" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-<text x="330" y="967" fill="#64748B" font-size="11" font-weight="600">AI/智能</text>
-<rect x="420" y="958" width="14" height="10" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-<text x="440" y="967" fill="#64748B" font-size="11" font-weight="600">数据存储</text>
-<rect x="530" y="958" width="14" height="10" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-<text x="550" y="967" fill="#64748B" font-size="11" font-weight="600">外部/展示</text>
-<line x1="70" y1="990" x2="100" y2="990" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="108" y="994" fill="#64748B" font-size="11" font-weight="600">实线 同步调用</text>
-<line x1="260" y1="990" x2="290" y2="990" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="298" y="994" fill="#64748B" font-size="11" font-weight="600">虚线 异步事件</text>
-<text x="470" y="994" fill="#64748B" font-size="11" font-weight="600">虚线框=可下沉边缘部署</text>
-<text x="800" y="1024" fill="#94A3B8" font-size="10" text-anchor="middle">图14-2 IoT DC3 系统分层架构：南向驱动经消息队列异步解耦边云，自下而上贯穿设备接入、平台服务、智能分析到应用展现</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="1800" height="1120" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  </defs>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图14-2 IoT DC3 系统分层架构</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">四层分层架构 · 协议驱动异步解耦 · 四中心职责正交 · 边云协同</text>
+  <rect x="1620" y="26" width="140" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1690" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ============================================================ -->
+  <!-- Layer 4 (top): 应用展现层                                      -->
+  <!-- ============================================================ -->
+  <rect x="60" y="125" width="1500" height="130" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="76" y="114" width="104" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="128" y="129" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">应用展现层</text>
+
+  <!-- Web 控制台 -->
+  <rect x="60" y="158" width="360" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="240" y="190" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Web 控制台</text>
+  <text x="240" y="210" font-size="10" fill="#64748B" text-anchor="middle">浏览器端可视化管控</text>
+  <text x="240" y="226" font-size="9" fill="#94A3B8" text-anchor="middle">设备 · 点位 · 告警总览</text>
+
+  <!-- 移动 App -->
+  <rect x="630" y="158" width="360" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="810" y="190" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">移动 App</text>
+  <text x="810" y="210" font-size="10" fill="#64748B" text-anchor="middle">iOS · Android 现场巡检</text>
+  <text x="810" y="226" font-size="9" fill="#94A3B8" text-anchor="middle">扫码核验 · 工单接收</text>
+
+  <!-- 开放 API -->
+  <rect x="1140" y="158" width="360" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1320" y="190" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">开放 API</text>
+  <text x="1320" y="210" font-size="10" fill="#64748B" text-anchor="middle">RESTful · 第三方集成</text>
+  <text x="1320" y="226" font-size="9" fill="#94A3B8" text-anchor="middle">Token 鉴权 · 限流</text>
+
+  <!-- App -> Platform arrows (blue solid) -->
+  <line x1="240" y1="238" x2="240" y2="298" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="810" y1="238" x2="810" y2="298" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1320" y1="238" x2="1320" y2="298" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="810" y="276" font-size="10" font-weight="600" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">REST · WebSocket 调用（经鉴权中心发放令牌）</text>
+
+  <!-- ============================================================ -->
+  <!-- Layer 3: 平台服务层 · 四中心                                   -->
+  <!-- ============================================================ -->
+  <rect x="60" y="300" width="1500" height="245" rx="12" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="76" y="289" width="232" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="192" y="304" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务层 · 四中心职责正交</text>
+
+  <!-- 鉴权中心 (blue) -->
+  <rect x="60" y="325" width="300" height="180" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="210" y="360" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">鉴权中心</text>
+  <text x="210" y="380" font-size="10" fill="#64748B" text-anchor="middle">Auth Center</text>
+  <line x1="82" y1="396" x2="338" y2="396" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="82" y="420" font-size="10.5" fill="#475569">· 用户 / 设备 / 应用认证</text>
+  <text x="82" y="442" font-size="10.5" fill="#475569">· JWT 令牌签发与校验</text>
+  <text x="82" y="464" font-size="10.5" fill="#475569">· OAuth2 · 权限策略</text>
+  <text x="210" y="488" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">低频 · 强一致</text>
+
+  <!-- 管理中心 (blue) -->
+  <rect x="460" y="325" width="300" height="180" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="610" y="360" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">管理中心</text>
+  <text x="610" y="380" font-size="10" fill="#64748B" text-anchor="middle">Management Center</text>
+  <line x1="482" y1="396" x2="738" y2="396" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="482" y="420" font-size="10.5" fill="#475569">· 设备模型 · 点位定义</text>
+  <text x="482" y="442" font-size="10.5" fill="#475569">· 租户与配额元数据</text>
+  <text x="482" y="464" font-size="10.5" fill="#475569">· 配置版本管理与下发</text>
+  <text x="610" y="488" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">低频 · 元数据变更</text>
+
+  <!-- 数据中心 (blue + cylinder glyph) -->
+  <rect x="860" y="325" width="300" height="180" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1010" y="360" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">数据中心</text>
+  <text x="1010" y="380" font-size="10" fill="#64748B" text-anchor="middle">Data Center</text>
+  <!-- mini storage cylinder (data domain) -->
+  <g stroke="#7C3AED" stroke-width="1.5" fill="#FFFFFF">
+    <ellipse cx="1130" cy="342" rx="13" ry="4"/>
+    <path d="M1117,342 V366 A13,4 0 0 0 1143,366 V342"/>
+    <path d="M1117,352 A13,4 0 0 0 1143,352" fill="none" opacity="0.5"/>
+  </g>
+  <line x1="882" y1="396" x2="1138" y2="396" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="882" y="420" font-size="10.5" fill="#475569">· 消息消费 · 时序入库</text>
+  <text x="882" y="442" font-size="10.5" fill="#475569">· 实时数据缓存</text>
+  <text x="882" y="464" font-size="10.5" fill="#475569">· 告警事件持久化</text>
+  <text x="1010" y="488" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">高频 · 高吞吐</text>
+
+  <!-- 智能中心 (orange highlight) -->
+  <rect x="1260" y="325" width="300" height="180" rx="6" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1410" y="360" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">智能中心</text>
+  <text x="1410" y="380" font-size="10" fill="#64748B" text-anchor="middle">Smart Center</text>
+  <line x1="1282" y1="396" x2="1538" y2="396" stroke="#FDE68A" stroke-width="1"/>
+  <text x="1282" y="420" font-size="10.5" fill="#475569">· 规则引擎 · 联动触发</text>
+  <text x="1282" y="442" font-size="10.5" fill="#475569">· 实时告警计算</text>
+  <text x="1282" y="464" font-size="10.5" fill="#475569">· AI 模型推理分析</text>
+  <text x="1410" y="488" font-size="9" font-weight="600" fill="#F59E0B" text-anchor="middle">计算密集 · 流处理</text>
+
+  <!-- intra-platform arrows -->
+  <!-- 管理中心 -> 数据中心 : 配置下发 (solid blue) -->
+  <line x1="760" y1="440" x2="858" y2="440" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="809" y="432" font-size="9.5" font-weight="600" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">配置下发</text>
+
+  <!-- 数据中心 -> 智能中心 : 实时数据流 (dashed gray) -->
+  <line x1="1160" y1="440" x2="1258" y2="440" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1209" y="432" font-size="9.5" font-weight="600" fill="#64748B" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">实时数据流</text>
+
+  <!-- ============================================================ -->
+  <!-- 消息总线 (purple horizontal backbone)                         -->
+  <!-- ============================================================ -->
+  <rect x="60" y="585" width="1500" height="75" rx="8" fill="#FAF5FF" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="76" y="574" width="172" height="22" rx="4" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="162" y="589" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">消息总线 · 异步解耦</text>
+
+  <text x="90" y="614" font-size="13" font-weight="700" fill="#7C3AED">Message Bus</text>
+  <text x="90" y="638" font-size="10" fill="#64748B">驱动 → 数据中心 异步缓冲</text>
+
+  <!-- queue pills -->
+  <rect x="690" y="600" width="150" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="765" y="621" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">RabbitMQ</text>
+  <rect x="858" y="600" width="120" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="918" y="621" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">Kafka</text>
+  <rect x="996" y="600" width="140" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1066" y="621" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">MQTT Broker</text>
+
+  <text x="1540" y="618" font-size="10.5" font-weight="600" fill="#7C3AED" text-anchor="end">削峰填谷 · 抖动隔离</text>
+  <text x="1540" y="636" font-size="9" fill="#94A3B8" text-anchor="end">云端变慢不反压掉线</text>
+
+  <!-- 数据中心 <- 消息总线 : 时序数据消费 (dashed purple, upward) -->
+  <line x1="1010" y1="585" x2="1010" y2="507" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <text x="1024" y="550" font-size="9.5" font-weight="600" fill="#7C3AED">时序数据消费</text>
+
+  <!-- 驱动 -> 消息总线 : 异步上行 (dashed gray, upward, 4 feeds) -->
+  <line x1="210" y1="703" x2="210" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="610" y1="703" x2="610" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="1010" y1="703" x2="1010" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <line x1="1410" y1="703" x2="1410" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="810" y="688" font-size="9.5" font-weight="600" fill="#64748B" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">驱动异步上行（发布）</text>
+
+  <!-- ============================================================ -->
+  <!-- Layer 2: 设备接入层 · 协议驱动 (green dashed, edge-deployable) -->
+  <!-- ============================================================ -->
+  <rect x="60" y="705" width="1500" height="175" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="76" y="694" width="232" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="192" y="709" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">设备接入层 · 协议驱动独立部署</text>
+  <!-- edge deployable pill on access boundary -->
+  <rect x="1372" y="694" width="176" height="22" rx="11" fill="#ECFDF5" stroke="#10B981" stroke-width="1.2"/>
+  <text x="1460" y="709" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">↘ 可下沉至边缘节点</text>
+
+  <!-- Modbus 驱动 -->
+  <rect x="60" y="730" width="300" height="110" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="210" y="763" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus 驱动</text>
+  <text x="210" y="785" font-size="10" fill="#64748B" text-anchor="middle">Modbus TCP · RTU</text>
+  <text x="210" y="811" font-size="9" fill="#94A3B8" text-anchor="middle">工业仪表与传感器</text>
+  <text x="210" y="828" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">独立进程 · 多实例水平扩展</text>
+
+  <!-- OPC-UA 驱动 -->
+  <rect x="460" y="730" width="300" height="110" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="610" y="763" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">OPC-UA 驱动</text>
+  <text x="610" y="785" font-size="10" fill="#64748B" text-anchor="middle">工业控制协议</text>
+  <text x="610" y="811" font-size="9" fill="#94A3B8" text-anchor="middle">PLC 与 DCS 接入</text>
+  <text x="610" y="828" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">独立进程 · 多实例水平扩展</text>
+
+  <!-- MQTT 驱动 -->
+  <rect x="860" y="730" width="300" height="110" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1010" y="763" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT 驱动</text>
+  <text x="1010" y="785" font-size="10" fill="#64748B" text-anchor="middle">物联网消息协议</text>
+  <text x="1010" y="811" font-size="9" fill="#94A3B8" text-anchor="middle">海量轻量设备接入</text>
+  <text x="1010" y="828" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">独立进程 · 多实例水平扩展</text>
+
+  <!-- 自定义驱动 -->
+  <rect x="1260" y="730" width="300" height="110" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1410" y="763" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">自定义驱动</text>
+  <text x="1410" y="785" font-size="10" fill="#64748B" text-anchor="middle">可插拔扩展</text>
+  <text x="1410" y="811" font-size="9" fill="#94A3B8" text-anchor="middle">按需协议适配</text>
+  <text x="1410" y="828" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">独立进程 · 多实例水平扩展</text>
+
+  <!-- 驱动 -> 设备 : 协议采集 (solid green, 4 feeds) -->
+  <line x1="210" y1="840" x2="210" y2="938" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <line x1="610" y1="840" x2="610" y2="938" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <line x1="1010" y1="840" x2="1010" y2="938" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <line x1="1410" y1="840" x2="1410" y2="938" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="810" y="893" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">协议轮询 · 现场采集</text>
+
+  <!-- ============================================================ -->
+  <!-- Layer 1 (bottom): 南向设备层                                   -->
+  <!-- ============================================================ -->
+  <rect x="60" y="920" width="1500" height="100" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="76" y="909" width="104" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="128" y="924" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">南向设备层</text>
+
+  <rect x="60" y="940" width="300" height="55" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
+  <text x="210" y="965" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">现场传感器</text>
+  <text x="210" y="982" font-size="9.5" fill="#64748B" text-anchor="middle">温湿度 · 压力 · 流量</text>
+
+  <rect x="460" y="940" width="300" height="55" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
+  <text x="610" y="965" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">PLC 控制器</text>
+  <text x="610" y="982" font-size="9.5" fill="#64748B" text-anchor="middle">西门子 · 三菱 · 欧姆龙</text>
+
+  <rect x="860" y="940" width="300" height="55" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
+  <text x="1010" y="965" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">工业网关</text>
+  <text x="1010" y="982" font-size="9.5" fill="#64748B" text-anchor="middle">多协议汇聚接入</text>
+
+  <rect x="1260" y="940" width="300" height="55" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
+  <text x="1410" y="965" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">嵌入式终端</text>
+  <text x="1410" y="982" font-size="9.5" fill="#64748B" text-anchor="middle">边缘智能设备</text>
+
+  <!-- ============================================================ -->
+  <!-- Right sidebar: Nacos (service registry & config)              -->
+  <!-- ============================================================ -->
+  <rect x="1600" y="300" width="140" height="360" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1670" y="346" font-size="19" font-weight="700" fill="#7C3AED" text-anchor="middle">Nacos</text>
+  <text x="1670" y="365" font-size="9" fill="#94A3B8" text-anchor="middle">基础设施 · 横向支撑</text>
+  <line x1="1620" y1="380" x2="1720" y2="380" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1670" y="406" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">服务注册中心</text>
+  <text x="1670" y="428" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">动态配置中心</text>
+  <line x1="1620" y1="448" x2="1720" y2="448" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1625" y="474" font-size="9.5" fill="#475569">· 四中心注册</text>
+  <text x="1625" y="494" font-size="9.5" fill="#475569">· 协议驱动注册</text>
+  <text x="1625" y="514" font-size="9.5" fill="#475569">· 配置热更新</text>
+  <text x="1625" y="534" font-size="9.5" fill="#475569">· 健康检查发现</text>
+  <text x="1670" y="580" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">微服务发现与</text>
+  <text x="1670" y="595" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">配置统一入口</text>
+  <text x="1670" y="640" font-size="8.5" fill="#94A3B8" text-anchor="middle">与消息总线平行</text>
+  <!-- registration connector: platform -> Nacos -->
+  <line x1="1560" y1="424" x2="1598" y2="424" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+  <text x="1579" y="416" font-size="8.5" font-weight="600" fill="#7C3AED" text-anchor="middle">注册</text>
+
+  <!-- ============================================================ -->
+  <!-- Right sidebar: 边缘协同 callout (next to access + device)     -->
+  <!-- ============================================================ -->
+  <rect x="1600" y="705" width="140" height="315" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="1670" y="740" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">边缘协同</text>
+  <text x="1670" y="758" font-size="9" fill="#64748B" text-anchor="middle">Edge Collaboration</text>
+  <line x1="1620" y1="772" x2="1720" y2="772" stroke="#A7F3D0" stroke-width="1"/>
+  <text x="1670" y="796" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 驱动下沉边缘网关</text>
+  <text x="1670" y="818" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 就近采集预处理</text>
+  <text x="1670" y="840" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 断网缓传不丢数据</text>
+  <text x="1670" y="862" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 抖动由消息缓冲</text>
+  <text x="1670" y="884" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 云端变慢不反压</text>
+  <line x1="1620" y1="902" x2="1720" y2="902" stroke="#A7F3D0" stroke-width="1"/>
+  <text x="1670" y="926" font-size="9" fill="#475569" text-anchor="middle">边缘与云端共享</text>
+  <text x="1670" y="942" font-size="9" fill="#475569" text-anchor="middle">同一套驱动镜像</text>
+  <text x="1670" y="966" font-size="9" fill="#475569" text-anchor="middle">部署位置可弹性</text>
+  <text x="1670" y="982" font-size="9" fill="#475569" text-anchor="middle">下沉或回撤云端</text>
+
+  <!-- ============================================================ -->
+  <!-- Legend                                                        -->
+  <!-- ============================================================ -->
+  <line x1="40" y1="1040" x2="1760" y2="1040" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <line x1="60" y1="1063" x2="96" y2="1063" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="104" y="1063" dominant-baseline="middle">蓝实线 · 同步调用 / 配置下发</text>
+
+    <line x1="330" y1="1063" x2="366" y2="1063" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <text x="374" y="1063" dominant-baseline="middle">灰虚线 · 异步上报 / 数据流</text>
+
+    <line x1="600" y1="1063" x2="636" y2="1063" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
+    <text x="644" y="1063" dominant-baseline="middle">紫虚线 · 消息消费 / 服务注册</text>
+
+    <line x1="880" y1="1063" x2="916" y2="1063" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+    <text x="924" y="1063" dominant-baseline="middle">绿实线 · 协议采集</text>
+
+    <rect x="1110" y="1056" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1134" y="1063" dominant-baseline="middle">平台 / 应用</text>
+
+    <rect x="1230" y="1056" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="1254" y="1063" dominant-baseline="middle">边缘 / 设备</text>
+
+    <rect x="1350" y="1056" width="18" height="14" rx="2" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="1374" y="1063" dominant-baseline="middle">智能 / AI</text>
+
+    <rect x="1460" y="1056" width="18" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1484" y="1063" dominant-baseline="middle">数据 / 消息总线</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="1100" font-size="10" fill="#94A3B8" text-anchor="middle">图14-2 IoT DC3 四层架构：协议驱动独立部署、经消息队列异步上报数据中心；四个中心服务职责正交、按变更频率与吞吐特征拆分；驱动可下沉边缘，广域网抖动被消息缓冲隔离，云端变慢不反压掉线。</text>
 </svg>

@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="910" viewBox="0 0 1700 910" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" text-rendering="geometricPrecision">
+  <rect x="0" y="0" width="1700" height="910" fill="#FFFFFF"/>
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- ========== 标题区 ========== -->
+  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+  <text x="86" y="49" font-size="22" font-weight="700" fill="#0F172A">图6-4  IoT DC3 服务间通信：控制面同步、数据面异步</text>
+  <text x="86" y="72" font-size="12" fill="#64748B">双通道隔离 — 控制面 RabbitMQ（同步 REST/gRPC）· 数据面 Kafka（异步高吞吐位号流）</text>
+  <rect x="1490" y="30" width="160" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1570" y="50" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+  <line x1="60" y1="100" x2="1640" y2="100" stroke="#E2E8F0"/>
+
+  <!-- ========== 控制面区域（同步） ========== -->
+  <rect x="70" y="128" width="1560" height="255" rx="12" fill="none" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="92" y="150" font-size="11" font-weight="700" fill="#E11D48">控制面 · 同步  CONTROL PLANE</text>
+
+  <!-- Card1: 管理服务（指令发起） -->
+  <rect x="100" y="175" width="280" height="164" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="240" y="209" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">管理服务 / 控制器</text>
+  <text x="240" y="231" font-size="11" fill="#475569" text-anchor="middle">Management Service</text>
+  <line x1="125" y1="247" x2="355" y2="247" stroke="#F1F5F9"/>
+  <text x="240" y="271" font-size="10" fill="#64748B" text-anchor="middle">下发指令 · 查询设备状态</text>
+  <text x="240" y="293" font-size="9" fill="#94A3B8" text-anchor="middle">指令发起方 · 同步调用</text>
+  <text x="240" y="323" font-size="9" font-weight="600" fill="#E11D48" text-anchor="middle">■ 控制发起 Platform</text>
+
+  <!-- Card2: RabbitMQ（控制面总线） -->
+  <rect x="560" y="175" width="280" height="164" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="700" y="209" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">RabbitMQ</text>
+  <text x="700" y="231" font-size="11" fill="#475569" text-anchor="middle">控制面消息总线</text>
+  <line x1="585" y1="247" x2="815" y2="247" stroke="#F1F5F9"/>
+  <text x="700" y="271" font-size="10" fill="#64748B" text-anchor="middle">请求 / 响应 · 路由分发</text>
+  <text x="700" y="293" font-size="9" fill="#94A3B8" text-anchor="middle">AMQP · 低延迟可靠投递</text>
+  <text x="700" y="323" font-size="9" font-weight="600" fill="#E11D48" text-anchor="middle">■ 控制面总线 Control</text>
+
+  <!-- Card3: 边缘驱动（执行） -->
+  <rect x="1020" y="175" width="280" height="164" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1160" y="209" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">边缘驱动 / 网关</text>
+  <text x="1160" y="231" font-size="11" fill="#475569" text-anchor="middle">Edge Driver</text>
+  <line x1="1045" y1="247" x2="1275" y2="247" stroke="#F1F5F9"/>
+  <text x="1160" y="271" font-size="10" fill="#64748B" text-anchor="middle">执行指令 · 回传结果</text>
+  <text x="1160" y="293" font-size="9" fill="#94A3B8" text-anchor="middle">设备侧同步执行</text>
+  <text x="1160" y="323" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">■ 边缘执行 Edge</text>
+
+  <!-- 控制面 outcome -->
+  <rect x="1340" y="205" width="270" height="104" rx="6" fill="#FFF5F5" stroke="#E11D48" stroke-width="1.5"/>
+  <text x="1362" y="232" font-size="9" font-weight="700" fill="#E11D48" letter-spacing="1.5">OUTCOME</text>
+  <text x="1362" y="262" font-size="15" font-weight="700" fill="#0F172A">指令立即知结果</text>
+  <text x="1362" y="288" font-size="11" fill="#475569">端到端 &lt; 50 ms · 同步响应</text>
+
+  <!-- 控制面箭头：card1 -> card2 -> card3 -->
+  <line x1="384" y1="252" x2="554" y2="252" stroke="#E11D48" stroke-width="2.5" marker-end="url(#ah-red)"/>
+  <text x="469" y="243" font-size="11" font-weight="700" fill="#E11D48" text-anchor="middle">REST / gRPC</text>
+  <line x1="554" y1="278" x2="384" y2="278" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="469" y="295" font-size="9" fill="#64748B" text-anchor="middle">响应</text>
+
+  <line x1="844" y1="252" x2="1014" y2="252" stroke="#E11D48" stroke-width="2.5" marker-end="url(#ah-red)"/>
+  <text x="929" y="243" font-size="11" font-weight="700" fill="#E11D48" text-anchor="middle">同步路由下发</text>
+  <line x1="1014" y1="278" x2="844" y2="278" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="929" y="295" font-size="9" fill="#64748B" text-anchor="middle">回执</text>
+
+  <!-- ========== 数据面区域（异步） ========== -->
+  <rect x="70" y="425" width="1560" height="255" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="92" y="447" font-size="11" font-weight="700" fill="#2563EB">数据面 · 异步  DATA PLANE</text>
+
+  <!-- Card1: 边缘采集器（位号上报） -->
+  <rect x="100" y="472" width="280" height="164" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="240" y="506" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">边缘驱动 / 采集器</text>
+  <text x="240" y="528" font-size="11" fill="#475569" text-anchor="middle">Edge Collector</text>
+  <line x1="125" y1="544" x2="355" y2="544" stroke="#F1F5F9"/>
+  <text x="240" y="568" font-size="10" fill="#64748B" text-anchor="middle">采集位号 · 周期上报</text>
+  <text x="240" y="590" font-size="9" fill="#94A3B8" text-anchor="middle">设备侧异步生产</text>
+  <text x="240" y="620" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">■ 边缘采集 Edge</text>
+
+  <!-- Card2: Kafka（数据面总线） -->
+  <rect x="560" y="472" width="280" height="164" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="700" y="506" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Kafka</text>
+  <text x="700" y="528" font-size="11" fill="#475569" text-anchor="middle">数据面消息总线</text>
+  <line x1="585" y1="544" x2="815" y2="544" stroke="#F1F5F9"/>
+  <text x="700" y="568" font-size="10" fill="#64748B" text-anchor="middle">位号流 · 高吞吐日志</text>
+  <text x="700" y="590" font-size="9" fill="#94A3B8" text-anchor="middle">分区 · 多订阅 · 削峰</text>
+  <text x="700" y="620" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">■ 数据面总线 Stream</text>
+
+  <!-- Card3: 数据服务（消费入库） -->
+  <rect x="1020" y="472" width="280" height="164" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1160" y="506" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据服务 / 时序库</text>
+  <text x="1160" y="528" font-size="11" fill="#475569" text-anchor="middle">Data Service</text>
+  <line x1="1045" y1="544" x2="1275" y2="544" stroke="#F1F5F9"/>
+  <text x="1160" y="568" font-size="10" fill="#64748B" text-anchor="middle">消费 · 入库 · 分析</text>
+  <text x="1160" y="590" font-size="9" fill="#94A3B8" text-anchor="middle">多消费者并行订阅</text>
+  <text x="1160" y="620" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">■ 数据域 Data</text>
+
+  <!-- 数据面 outcome -->
+  <rect x="1340" y="502" width="270" height="104" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1362" y="529" font-size="9" font-weight="700" fill="#2563EB" letter-spacing="1.5">OUTCOME</text>
+  <text x="1362" y="559" font-size="15" font-weight="700" fill="#0F172A">位号流高吞吐 · 多消费</text>
+  <text x="1362" y="585" font-size="11" fill="#475569">解耦削峰 · 水平扩展</text>
+
+  <!-- 数据面箭头：card1 -> card2 -> card3（单向异步） -->
+  <line x1="384" y1="554" x2="554" y2="554" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="469" y="545" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">异步生产</text>
+  <text x="469" y="573" font-size="9" fill="#64748B" text-anchor="middle">位号上报</text>
+
+  <line x1="844" y1="554" x2="1014" y2="554" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="929" y="545" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">订阅分发</text>
+  <text x="929" y="573" font-size="9" fill="#64748B" text-anchor="middle">多消费 · 解耦</text>
+
+  <!-- ========== 隔离价值 callout ========== -->
+  <rect x="120" y="722" width="1460" height="64" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <circle cx="150" cy="754" r="6" fill="#2563EB"/>
+  <text x="174" y="749" font-size="13" font-weight="700" fill="#0F172A">双通道隔离价值</text>
+  <text x="174" y="772" font-size="11" fill="#334155">位号数据洪峰不阻塞指令通道 — RabbitMQ 适合请求 / 响应式控制（低延迟、可路由投递），Kafka 适合高吞吐流式采集（削峰、解耦、多消费并行），故障域天然分离。</text>
+
+  <!-- ========== 图例 ========== -->
+  <line x1="60" y1="806" x2="1640" y2="806" stroke="#E2E8F0"/>
+  <rect x="80" y="830" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="104" y="840" font-size="11" fill="#475569">控制面 · 同步指令</text>
+  <rect x="270" y="830" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="294" y="840" font-size="11" fill="#475569">数据面 · 异步位号流</text>
+  <rect x="478" y="830" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="502" y="840" font-size="11" fill="#475569">边缘 / 驱动 Edge</text>
+  <rect x="650" y="830" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="674" y="840" font-size="11" fill="#475569">数据 / 时序库 Data</text>
+  <line x1="850" y1="836" x2="876" y2="836" stroke="#E11D48" stroke-width="2.5" marker-end="url(#ah-red)"/>
+  <text x="884" y="840" font-size="11" fill="#475569">同步主链路（指令下行）</text>
+  <line x1="1080" y1="836" x2="1106" y2="836" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+  <text x="1114" y="840" font-size="11" fill="#475569">响应 / 回传</text>
+  <rect x="1230" y="830" width="18" height="12" rx="2" fill="none" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="1254" y="840" font-size="11" fill="#475569">通道边界（故障域隔离）</text>
+
+  <!-- ========== Caption ========== -->
+  <text x="850" y="882" font-size="10" fill="#94A3B8" text-anchor="middle">图6-4  控制面同步（指令立即知结果）、数据面异步（位号流高吞吐多消费），RabbitMQ 管控制面、Kafka 管数据面，避免洪峰阻塞指令。</text>
+</svg>

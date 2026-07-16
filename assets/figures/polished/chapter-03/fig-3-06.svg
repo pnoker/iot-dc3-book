@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- ===================== TITLE ===================== -->
+  <g id="title">
+    <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+    <text x="84" y="48" font-size="22" font-weight="700" fill="#0F172A">图3-6 物模型接口映射为 Agent 工具调用</text>
+    <text x="84" y="70" font-size="12" fill="#64748B">Thing Model → Agent @Tool · 设备能力如何成为 AI 可调用的契约（第 7 章前置）</text>
+    <rect x="1640" y="28" width="120" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1700" y="47" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  </g>
+
+  <!-- ===================== LEFT REGION · 物模型 (green / edge) ===================== -->
+  <g id="region-thingmodel">
+    <rect x="120" y="150" width="500" height="680" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <rect x="140" y="139" width="220" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="156" cy="150" r="4" fill="#10B981"/>
+    <text x="168" y="155" font-size="11" font-weight="700" fill="#10B981">物模型 Thing Model · 设备契约</text>
+
+    <!-- Card · 属性 -->
+    <rect x="148" y="185" width="444" height="180" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="168" cy="218" r="4" fill="#10B981"/>
+    <text x="182" y="223" font-size="15" font-weight="700" fill="#0F172A">属性</text>
+    <text x="224" y="223" font-size="11" fill="#64748B">Property</text>
+    <text x="572" y="223" font-size="9" fill="#94A3B8" text-anchor="end">读 / 写</text>
+    <line x1="168" y1="240" x2="572" y2="240" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="168" y="265" font-size="11" fill="#475569">设备运行状态值，可读可写</text>
+    <text x="168" y="290" font-size="9" fill="#94A3B8">示例</text>
+    <rect x="168" y="302" width="54" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="195" y="318" font-size="10" fill="#475569" text-anchor="middle">温度</text>
+    <rect x="230" y="302" width="54" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="257" y="318" font-size="10" fill="#475569" text-anchor="middle">湿度</text>
+    <rect x="292" y="302" width="72" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="328" y="318" font-size="10" fill="#475569" text-anchor="middle">开关状态</text>
+
+    <!-- Card · 服务 -->
+    <rect x="148" y="405" width="444" height="180" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="168" cy="438" r="4" fill="#10B981"/>
+    <text x="182" y="443" font-size="15" font-weight="700" fill="#0F172A">服务</text>
+    <text x="224" y="443" font-size="11" fill="#64748B">Service</text>
+    <text x="572" y="443" font-size="9" fill="#94A3B8" text-anchor="end">动作指令</text>
+    <line x1="168" y1="460" x2="572" y2="460" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="168" y="485" font-size="11" fill="#475569">设备可执行的主动作：入参 → 出参</text>
+    <text x="168" y="510" font-size="9" fill="#94A3B8">示例</text>
+    <rect x="168" y="522" width="54" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="195" y="538" font-size="10" fill="#475569" text-anchor="middle">设温</text>
+    <rect x="230" y="522" width="54" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="257" y="538" font-size="10" fill="#475569" text-anchor="middle">重启</text>
+    <rect x="292" y="522" width="54" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="319" y="538" font-size="10" fill="#475569" text-anchor="middle">自检</text>
+
+    <!-- Card · 事件 -->
+    <rect x="148" y="625" width="444" height="180" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="168" cy="658" r="4" fill="#10B981"/>
+    <text x="182" y="663" font-size="15" font-weight="700" fill="#0F172A">事件</text>
+    <text x="224" y="663" font-size="11" fill="#64748B">Event</text>
+    <text x="572" y="663" font-size="9" fill="#94A3B8" text-anchor="end">异步上报</text>
+    <line x1="168" y1="680" x2="572" y2="680" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="168" y="705" font-size="11" fill="#475569">设备主动上推的信号，带时间戳</text>
+    <text x="168" y="730" font-size="9" fill="#94A3B8">示例</text>
+    <rect x="168" y="742" width="72" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="204" y="758" font-size="10" fill="#475569" text-anchor="middle">故障告警</text>
+    <rect x="248" y="742" width="72" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="284" y="758" font-size="10" fill="#475569" text-anchor="middle">阈值越界</text>
+  </g>
+
+  <!-- ===================== RIGHT REGION · Agent @Tool (orange / ai) ===================== -->
+  <g id="region-agenttool">
+    <rect x="1180" y="150" width="500" height="680" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <rect x="1200" y="139" width="190" height="22" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+    <circle cx="1216" cy="150" r="4" fill="#F59E0B"/>
+    <text x="1228" y="155" font-size="11" font-weight="700" fill="#F59E0B">Agent @Tool · AI 契约</text>
+
+    <!-- Card · readPoint -->
+    <rect x="1208" y="185" width="444" height="180" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="1228" cy="218" r="4" fill="#F59E0B"/>
+    <text x="1242" y="223" font-size="15" font-weight="700" fill="#0F172A">readPoint()</text>
+    <text x="1352" y="223" font-size="11" fill="#64748B">@Tool</text>
+    <text x="1632" y="223" font-size="9" fill="#94A3B8" text-anchor="end">只读</text>
+    <line x1="1228" y1="240" x2="1632" y2="240" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1228" y="265" font-size="11" fill="#475569">读取一个属性的当前值并返回</text>
+    <text x="1228" y="290" font-size="9" fill="#94A3B8">签名</text>
+    <rect x="1228" y="302" width="300" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1242" y="318" font-size="10" fill="#7C3AED">readPoint(deviceId, pointId)</text>
+
+    <!-- Card · sendCommand -->
+    <rect x="1208" y="405" width="444" height="180" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="1228" cy="438" r="4" fill="#F59E0B"/>
+    <text x="1242" y="443" font-size="15" font-weight="700" fill="#0F172A">sendCommand()</text>
+    <text x="1372" y="443" font-size="11" fill="#64748B">@Tool</text>
+    <text x="1632" y="443" font-size="9" fill="#E11D48" text-anchor="end">写 · 高风险</text>
+    <line x1="1228" y1="460" x2="1632" y2="460" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1228" y="485" font-size="11" fill="#475569">下发服务调用，带入参并等返回</text>
+    <text x="1228" y="510" font-size="9" fill="#94A3B8">签名</text>
+    <rect x="1228" y="522" width="340" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1242" y="538" font-size="10" fill="#7C3AED">sendCommand(deviceId, svc, params)</text>
+
+    <!-- Card · subscribeEvent -->
+    <rect x="1208" y="625" width="444" height="180" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="1228" cy="658" r="4" fill="#F59E0B"/>
+    <text x="1242" y="663" font-size="15" font-weight="700" fill="#0F172A">subscribeEvent()</text>
+    <text x="1402" y="663" font-size="11" fill="#64748B">@Tool</text>
+    <text x="1632" y="663" font-size="9" fill="#94A3B8" text-anchor="end">异步回调</text>
+    <line x1="1228" y1="680" x2="1632" y2="680" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1228" y="705" font-size="11" fill="#475569">订阅事件类型，到达时触发回调</text>
+    <text x="1228" y="730" font-size="9" fill="#94A3B8">签名</text>
+    <rect x="1228" y="742" width="380" height="24" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1242" y="758" font-size="10" fill="#7C3AED">subscribeEvent(deviceId, eventType, cb)</text>
+  </g>
+
+  <!-- ===================== MAPPING ARROWS ===================== -->
+  <g id="mapping">
+    <!-- 属性 → readPoint (同步读取 · blue) -->
+    <line x1="596" y1="275" x2="1204" y2="275" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <rect x="838" y="262" width="124" height="26" rx="13" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+    <text x="900" y="279" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">read · 读取</text>
+
+    <!-- 服务 → sendCommand (同步调用 · blue) -->
+    <line x1="596" y1="495" x2="1204" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <rect x="832" y="482" width="136" height="26" rx="13" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.3"/>
+    <text x="900" y="499" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">invoke · 调用</text>
+
+    <!-- 事件 → subscribeEvent (异步订阅 · gray dashed) -->
+    <line x1="596" y1="715" x2="1204" y2="715" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
+    <rect x="822" y="702" width="156" height="26" rx="13" fill="#FFFFFF" stroke="#64748B" stroke-width="1.3"/>
+    <text x="900" y="719" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle">subscribe · 订阅</text>
+  </g>
+
+  <!-- ===================== LEGEND ===================== -->
+  <line x1="40" y1="855" x2="1760" y2="855" stroke="#E2E8F0" stroke-width="1"/>
+  <g id="legend" font-size="11" fill="#475569">
+    <rect x="564" y="866" width="18" height="14" rx="3" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/><text x="590" y="878">物模型 · 设备契约</text>
+    <rect x="736" y="866" width="18" height="14" rx="3" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/><text x="762" y="878">Agent @Tool</text>
+    <line x1="878" y1="873" x2="904" y2="873" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/><text x="914" y="878">同步映射（读取 / 调用）</text>
+    <line x1="1100" y1="873" x2="1126" y2="873" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/><text x="1136" y="878">异步映射（订阅）</text>
+  </g>
+
+  <!-- ===================== INSIGHT CALLOUT ===================== -->
+  <g id="callout">
+    <rect x="560" y="898" width="680" height="50" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="580" cy="923" r="4" fill="#2563EB"/>
+    <text x="592" y="919" font-size="12" font-weight="700" fill="#0F172A">主结论：物模型三要素 → @Tool 三接口，一一对应</text>
+    <text x="592" y="938" font-size="10" fill="#64748B">零额外建模——这是第 7 章 AI Agent 用自然语言操控真实设备的契约基础</text>
+  </g>
+
+  <!-- ===================== CAPTION ===================== -->
+  <text x="900" y="978" font-size="10" fill="#94A3B8" text-anchor="middle">图3-6　物模型的属性读取 / 服务调用 / 事件订阅，映射为 Agent 的工具调用接口，是第 7 章 AI Agent 操控设备的契约。</text>
+</svg>

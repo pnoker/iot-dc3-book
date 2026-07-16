@@ -1,143 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif" width="1800" height="1000" viewBox="0 0 1800 1000">
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 960" width="1800" height="960" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="1800" height="960" fill="#FFFFFF"/>
 
   <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
   </defs>
 
-  <!-- ===== 标题区 ===== -->
+  <!-- ===== Title area ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图12-4 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</text>
-  <text x="82" y="68" font-size="12" fill="#64748B">六轴相对强弱对比 · 同心刻度 1–5（1=最弱，5=最强）· 辅助 LPWAN 选型</text>
-  <rect x="1646" y="26" width="110" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1701" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">MATRIX · RADAR</text>
+  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图12-03　农业场景 LPWAN 选型决策</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">按蜂窝覆盖与单次数据量分流的连接技术路径，图像类大数据须独立承载</text>
+  <rect x="1652" y="28" width="112" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1708" y="46" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">FLOWCHART</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 主体：六轴雷达图 ===== -->
-  <!-- 雷达中心 (900,540), R=320, 单位=64 -->
-  <g id="radar-grid">
-    <!-- 同心刻度六边形 1..5 -->
-    <polygon points="900,476 955.43,508 955.43,572 900,604 844.57,572 844.57,508" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    <polygon points="900,412 1010.85,476 1010.85,604 900,668 789.15,604 789.15,476" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    <polygon points="900,348 1066.27,444 1066.27,636 900,732 733.73,636 733.73,444" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    <polygon points="900,284 1121.86,412 1121.86,668 900,796 678.14,668 678.14,412" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    <polygon points="900,220 1177.13,380 1177.13,700 900,860 622.87,700 622.87,380" fill="none" stroke="#CBD5E1" stroke-width="1.2"/>
+  <!-- ===== Region: decision ===== -->
+  <rect x="120" y="200" width="960" height="560" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="138" y="188" width="108" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="192" y="206" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">选型判定</text>
+  <text x="256" y="206" font-size="10" fill="#94A3B8">按覆盖与数据量分流</text>
 
-    <!-- 六条轴线 -->
-    <g stroke="#CBD5E1" stroke-width="1">
-      <line x1="900" y1="540" x2="900" y2="220"/>
-      <line x1="900" y1="540" x2="1177.13" y2="380"/>
-      <line x1="900" y1="540" x2="1177.13" y2="700"/>
-      <line x1="900" y1="540" x2="900" y2="860"/>
-      <line x1="900" y1="540" x2="622.87" y2="700"/>
-      <line x1="900" y1="540" x2="622.87" y2="380"/>
-    </g>
+  <!-- ===== Region: options ===== -->
+  <rect x="1120" y="200" width="580" height="560" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <rect x="1138" y="188" width="108" height="26" rx="5" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1"/>
+  <text x="1192" y="206" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle">技术选项</text>
+  <text x="1256" y="206" font-size="10" fill="#94A3B8">主流连接技术</text>
 
-    <!-- 刻度数字（沿顶部轴） -->
-    <g font-size="9" fill="#94A3B8" text-anchor="start">
-      <text x="908" y="472">1</text>
-      <text x="908" y="408">2</text>
-      <text x="908" y="344">3</text>
-      <text x="908" y="280">4</text>
-      <text x="908" y="216">5</text>
-    </g>
-  </g>
+  <!-- ===== Start card ===== -->
+  <rect x="160" y="430" width="200" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="260" y="468" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">农业连接选型</text>
+  <text x="260" y="492" font-size="11" fill="#64748B" text-anchor="middle">覆盖 + 数据量评估</text>
+  <text x="260" y="508" font-size="9" fill="#94A3B8" text-anchor="middle">起点 · 输入需求</text>
 
-  <!-- 轴标签 -->
-  <g font-size="14" font-weight="600" fill="#0F172A">
-    <text x="900" y="195" text-anchor="middle">覆盖</text>
-    <text x="1216" y="358" text-anchor="start">速率</text>
-    <text x="1216" y="728" text-anchor="start">功耗</text>
-    <text x="900" y="890" text-anchor="middle">成本</text>
-    <text x="584" y="728" text-anchor="end">生态</text>
-    <text x="584" y="358" text-anchor="end">穿透</text>
-  </g>
-  <g font-size="10" fill="#64748B">
-    <text x="900" y="178" text-anchor="middle">Coverage</text>
-    <text x="1216" y="374" text-anchor="start">Rate</text>
-    <text x="1216" y="744" text-anchor="start">Power</text>
-    <text x="900" y="906" text-anchor="middle">Cost</text>
-    <text x="584" y="744" text-anchor="end">Ecosystem</text>
-    <text x="584" y="374" text-anchor="end">Penetration</text>
-  </g>
+  <!-- ===== q1 decision diamond ===== -->
+  <polygon points="560,400 660,475 560,550 460,475" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="560" y="470" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">蜂窝覆盖良好？</text>
+  <text x="560" y="494" font-size="10" fill="#64748B" text-anchor="middle">NB-IoT 可用性</text>
 
-  <!-- ===== 数据多边形 ===== -->
-  <!-- NB-IoT (蓝 #2563EB)：覆盖4 速率4 功耗2 成本3 生态2 穿透3 -->
-  <polygon points="900,284 1121.86,412 1010.85,604 900,732 789.15,604 733.73,444"
-           fill="#2563EB" fill-opacity="0.12" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
-  <g fill="#2563EB">
-    <circle cx="900" cy="284" r="3.5"/>
-    <circle cx="1121.86" cy="412" r="3.5"/>
-    <circle cx="1010.85" cy="604" r="3.5"/>
-    <circle cx="900" cy="732" r="3.5"/>
-    <circle cx="789.15" cy="604" r="3.5"/>
-    <circle cx="733.73" cy="444" r="3.5"/>
-  </g>
+  <!-- ===== q2 decision diamond ===== -->
+  <polygon points="900,400 1000,475 900,550 800,475" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="900" y="470" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据量 &gt; 100KB？</text>
+  <text x="900" y="494" font-size="10" fill="#64748B" text-anchor="middle">是否含图像 / 视频</text>
 
-  <!-- LoRa (橙 #F59E0B)：覆盖4 速率3 功耗3 成本4 生态5 穿透4 -->
-  <polygon points="900,284 1066.27,444 1066.27,636 900,796 622.87,700 678.14,412"
-           fill="#F59E0B" fill-opacity="0.12" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/>
-  <g fill="#F59E0B">
-    <circle cx="900" cy="284" r="3.5"/>
-    <circle cx="1066.27" cy="444" r="3.5"/>
-    <circle cx="1066.27" cy="636" r="3.5"/>
-    <circle cx="900" cy="796" r="3.5"/>
-    <circle cx="622.87" cy="700" r="3.5"/>
-    <circle cx="678.14" cy="412" r="3.5"/>
-  </g>
+  <!-- ===== Option: 4G / 5G (amber / cloud-broadband) ===== -->
+  <rect x="1300" y="240" width="220" height="100" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="1410" y="282" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">4G / 5G</text>
+  <text x="1410" y="306" font-size="11" fill="#64748B" text-anchor="middle">宽带蜂窝 · 承载图像</text>
+  <text x="1410" y="324" font-size="9" fill="#94A3B8" text-anchor="middle">高带宽 · 运营商网络</text>
 
-  <!-- Sigfox (绿 #10B981)：覆盖4 速率1 功耗4 成本4 生态1 穿透4 -->
-  <polygon points="900,284 955.43,508 1121.86,668 900,796 844.57,572 678.14,412"
-           fill="#10B981" fill-opacity="0.12" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
-  <g fill="#10B981">
-    <circle cx="900" cy="284" r="3.5"/>
-    <circle cx="955.43" cy="508" r="3.5"/>
-    <circle cx="1121.86" cy="668" r="3.5"/>
-    <circle cx="900" cy="796" r="3.5"/>
-    <circle cx="844.57" cy="572" r="3.5"/>
-    <circle cx="678.14" cy="412" r="3.5"/>
-  </g>
+  <!-- ===== Option: NB-IoT (blue / primary) ===== -->
+  <rect x="1300" y="425" width="220" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1410" y="467" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">NB-IoT</text>
+  <text x="1410" y="491" font-size="11" fill="#64748B" text-anchor="middle">授权频段 · 运营商托管</text>
+  <text x="1410" y="509" font-size="9" fill="#94A3B8" text-anchor="middle">低频小包 · 广覆盖</text>
 
-  <!-- ===== 图例（右上角） ===== -->
-  <g id="legend">
-    <rect x="1380" y="180" width="300" height="196" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="1398" y="206" font-size="12" font-weight="700" fill="#0F172A" letter-spacing="1">图例 / LEGEND</text>
-    <line x1="1398" y1="216" x2="1662" y2="216" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- ===== Option: LoRa (green / edge) ===== -->
+  <rect x="1300" y="610" width="220" height="100" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1410" y="652" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">LoRa</text>
+  <text x="1410" y="676" font-size="11" fill="#64748B" text-anchor="middle">免授权频段 · 自建网关</text>
+  <text x="1410" y="694" font-size="9" fill="#94A3B8" text-anchor="middle">无蜂窝覆盖 · 私有部署</text>
 
-    <!-- LoRa -->
-    <rect x="1398" y="232" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-    <text x="1424" y="243" font-size="13" font-weight="600" fill="#0F172A">LoRa / LoRaWAN</text>
-    <text x="1424" y="259" font-size="10" fill="#64748B">生态5 · 成本4 · 穿透4（开放生态最优）</text>
+  <!-- ===== Connections (all main flow = blue) ===== -->
+  <!-- start -> q1 -->
+  <line x1="360" y1="475" x2="456" y2="475" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="392" y="455" width="36" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="410" y="467" font-size="10" fill="#475569" text-anchor="middle">评估</text>
 
-    <!-- NB-IoT -->
-    <rect x="1398" y="276" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="1424" y="287" font-size="13" font-weight="600" fill="#0F172A">NB-IoT</text>
-    <text x="1424" y="303" font-size="10" fill="#64748B">速率4 · 覆盖4（运营商蜂窝，功耗偏高）</text>
+  <!-- q1 -> q2  (是) -->
+  <line x1="660" y1="475" x2="796" y2="475" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="713" y="455" width="34" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="730" y="467" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle">是</text>
 
-    <!-- Sigfox -->
-    <rect x="1398" y="320" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="1424" y="331" font-size="13" font-weight="600" fill="#0F172A">Sigfox</text>
-    <text x="1424" y="347" font-size="10" fill="#64748B">功耗4 · 成本4 · 速率1（超窄带，闭生态）</text>
+  <!-- q1 -> lora  (否 / 无覆盖): down then right -->
+  <polyline points="560,550 560,660 1296,660" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="636" y="650" width="128" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="700" y="662" font-size="10" fill="#475569" text-anchor="middle"><tspan font-weight="700" fill="#E11D48">否</tspan>（无蜂窝覆盖）</text>
 
-    <line x1="1398" y1="357" x2="1662" y2="357" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="1398" y="372" font-size="9" fill="#94A3B8">评分 1–5 为定性相对值，非绝对性能指标</text>
-  </g>
+  <!-- q2 -> cellular  (是 / 图像): up then right -->
+  <polyline points="900,400 900,290 1296,290" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="1018" y="280" width="144" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="1090" y="292" font-size="10" fill="#475569" text-anchor="middle"><tspan font-weight="700" fill="#10B981">是</tspan>（图像 / 视频流）</text>
 
-  <!-- ===== callout ===== -->
-  <g id="callout">
-    <rect x="1380" y="396" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-    <text x="1398" y="416" font-size="11" font-weight="700" fill="#334155">读图要点</text>
-    <text x="1398" y="433" font-size="10" fill="#334155">三系列覆盖/穿透相近，差异集中在速率、</text>
-    <text x="1398" y="447" font-size="10" fill="#334155">功耗与生态开放性 —— 按业务权重选型。</text>
-  </g>
+  <!-- q2 -> nbiot  (否 / 低频小包): right -->
+  <line x1="1000" y1="475" x2="1296" y2="475" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="1078" y="465" width="140" height="16" rx="3" fill="#FFFFFF"/>
+  <text x="1148" y="477" font-size="10" fill="#475569" text-anchor="middle"><tspan font-weight="700" fill="#E11D48">否</tspan>（低频小包数据）</text>
 
-  <!-- 主结论标注：生态轴差异最大 -->
-  <g id="annotation">
-    <line x1="622.87" y1="700" x2="560" y2="640" stroke="#64748B" stroke-width="1" stroke-dasharray="3 3"/>
-    <text x="555" y="632" font-size="10" fill="#475569" text-anchor="end">生态开放性差距最大</text>
-    <text x="555" y="646" font-size="9" fill="#94A3B8" text-anchor="end">LoRa 5 · NB-IoT 2 · Sigfox 1</text>
-  </g>
+  <!-- ===== Legend (bottom-left, outside main body) ===== -->
+  <rect x="120" y="790" width="780" height="56" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="138" y="822" font-size="11" font-weight="700" fill="#64748B">图例</text>
+  <rect x="186" y="812" width="24" height="16" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="218" y="824" font-size="11" fill="#475569">方框 · 终点选项</text>
+  <polygon points="340,820 354,812 368,820 354,828" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="378" y="824" font-size="11" fill="#475569">菱形 · 判定分支</text>
+  <line x1="488" y1="820" x2="524" y2="820" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="534" y="824" font-size="11" fill="#475569">实线 · 决策主链路</text>
+  <line x1="676" y1="820" x2="712" y2="820" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="722" y="824" font-size="11" fill="#475569">灰虚线 · 退场弱化</text>
 
-  <!-- ===== caption ===== -->
-  <text x="900" y="975" font-size="10" fill="#94A3B8" text-anchor="middle">图12-4 六维度雷达图对比，各轴评分为定性相对值，非绝对性能指标。</text>
+  <!-- ===== Sigfox callout (bottom-right, gray dashed, weakened) ===== -->
+  <rect x="940" y="782" width="760" height="64" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="960" y="810" font-size="14" font-weight="700" fill="#64748B">Sigfox</text>
+  <line x1="1008" y1="800" x2="1052" y2="800" stroke="#94A3B8" stroke-width="1"/>
+  <rect x="1010" y="796" width="58" height="20" rx="10" fill="#FFFFFF" stroke="#E11D48" stroke-width="1"/>
+  <text x="1039" y="810" font-size="10" font-weight="600" fill="#E11D48" text-anchor="middle">已退场</text>
+  <text x="1082" y="810" font-size="11" fill="#64748B">2022 司法重组，UnaBiz 收购后退场</text>
+  <text x="960" y="834" font-size="11" fill="#64748B">新项目勿选；存量节点可迁移至 LoRa（私有）或 NB-IoT（运营商托管）。</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="908" font-size="10" fill="#94A3B8" text-anchor="middle">图12-03　按蜂窝覆盖与数据量分流的 LPWAN 选型决策，Sigfox 已退场。</text>
 </svg>
