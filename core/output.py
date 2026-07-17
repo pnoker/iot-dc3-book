@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import subprocess
 from functools import lru_cache
@@ -140,7 +141,11 @@ def generate_markdown_output(
         _write_file(out / "10-终审报告.md", state.final_report, generated_files)
 
     book_markdown = out / book_markdown_name
-    _write_file(book_markdown, _join_markdown_parts(manuscript_parts), generated_files)
+    book_content = _join_markdown_parts(manuscript_parts)
+    _write_file(book_markdown, book_content, generated_files)
+    # 同时导出去除 pandoc 图片属性(如 {width=15cm})的 clean 版，便于普通 markdown 预览
+    clean_content = re.sub(r"(!\[[^\]]*\]\([^\)]*\))\s*\{[^}]*\}", r"\1", book_content)
+    _write_file(out / "book_clean.md", clean_content, generated_files)
 
     logger.info("输出完成: %s", out)
     return {"output_dir": str(out), "book_markdown": str(book_markdown), "files": generated_files}
