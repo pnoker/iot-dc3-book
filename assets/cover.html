@@ -21,15 +21,16 @@
   .glow.c { width:300px; height:300px; top:44%; right:-80px; background:radial-gradient(circle,rgba(251,191,36,.22),transparent 70%); }
   /* 装饰网格（淡） */
   .grid { position:absolute; inset:0; background-image:linear-gradient(rgba(37,99,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.06) 1px,transparent 1px); background-size:34px 34px; opacity:.7; z-index:0; }
-  /* IoT 节点连线装饰 */
-  .node { position:absolute; width:9px; height:9px; border-radius:50%; background:#2563EB; box-shadow:0 0 12px rgba(37,99,235,.6); z-index:1; }
-  .node.green { background:#10B981; box-shadow:0 0 12px rgba(16,185,129,.6); }
-  .node.amber { background:#F59E0B; box-shadow:0 0 12px rgba(245,158,11,.55); }
-  .line { position:absolute; height:1.5px; background:linear-gradient(90deg,#3B82F6,#10B981); opacity:.4; z-index:1; }
+  /* 星座式连接网络 */
+  .constellation { position:absolute; z-index:1; pointer-events:none; }
+  .constellation.primary { top:92px; right:14px; width:270px; height:330px; }
+  .constellation.secondary { top:555px; right:0; width:360px; height:300px; opacity:.76; }
+  .constellation svg { width:100%; height:100%; overflow:visible; }
+  .constellation .link { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .constellation .orbit { fill:none; stroke:#2563EB; stroke-width:1; stroke-dasharray:3 9; opacity:.13; }
+  .constellation .halo { opacity:.18; }
+  .constellation .star { stroke:#fff; stroke-width:1.5; }
   .top, .bottom { position:relative; z-index:2; }
-  /* logo 水印（右上，淡雅品牌感） */
-  .logo-wm { position:absolute; top:60px; right:40px; width:150px; opacity:.16; z-index:1; }
-  .logo-wm svg, .logo-wm img { width:100%; height:auto; }
   .tag { display:inline-block; padding:6px 18px; border:1.5px solid rgba(37,99,235,.4); border-radius:22px; font-size:12px; letter-spacing:3px; color:#2563EB; font-weight:600; background:rgba(255,255,255,.5); }
   .title { font-size:68px; font-weight:800; line-height:1.08; margin:34px 0 12px; background:linear-gradient(120deg,#1D4ED8,#0891B2 55%,#059669); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:3px; }
   .subtitle { font-size:24px; font-weight:400; color:#334155; margin-top:8px; letter-spacing:2px; }
@@ -55,28 +56,68 @@
   <div class="glow c"></div>
   <div class="grid"></div>
 
-  <!-- logo 水印 -->
-  <div class="logo-wm"><img src="../assets/logo.svg" alt="IoT DC3"></div>
+  <div class="constellation primary" aria-hidden="true">
+    <svg viewBox="0 0 270 330" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="primary-flow" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#2563EB"/>
+          <stop offset=".58" stop-color="#06B6D4"/>
+          <stop offset="1" stop-color="#10B981"/>
+        </linearGradient>
+        <filter id="primary-glow" x="-300%" y="-300%" width="700%" height="700%">
+          <feGaussianBlur stdDeviation="5"/>
+        </filter>
+      </defs>
+      <circle class="orbit" cx="139" cy="157" r="102"/>
+      <path class="link" d="M28 74 L93 40 L154 76 L221 54 M154 76 L198 128 L132 158 L70 135 L28 74 M198 128 L178 232 L91 256 L36 205 L70 135 M132 158 L178 232" stroke="url(#primary-flow)" stroke-width="1.6" opacity=".34"/>
+      <path class="link" d="M93 40 L132 158 M221 54 L198 128 M91 256 L70 135" stroke="#2563EB" stroke-width="1" stroke-dasharray="3 7" opacity=".18"/>
 
-  <!-- IoT 节点连线装饰 -->
-  <div class="node" style="top:16%;left:70%"></div>
-  <div class="node green" style="top:23%;left:86%"></div>
-  <div class="node amber" style="top:36%;left:78%"></div>
-  <div class="node green" style="top:60%;left:90%"></div>
-  <div class="node" style="top:50%;left:7%"></div>
-  <div class="node amber" style="top:74%;left:13%"></div>
-  <div class="line" style="top:17%;left:71%;width:120px;transform:rotate(30deg)"></div>
-  <div class="line" style="top:37%;left:79%;width:96px;transform:rotate(62deg)"></div>
-  <div class="line" style="top:51%;left:8%;width:84px;transform:rotate(42deg)"></div>
+      <g fill="#2563EB"><circle class="halo" cx="28" cy="74" r="13" filter="url(#primary-glow)"/><circle class="star" cx="28" cy="74" r="4.8"/></g>
+      <g fill="#3B82F6"><circle class="halo" cx="93" cy="40" r="11" filter="url(#primary-glow)"/><circle class="star" cx="93" cy="40" r="3.8"/></g>
+      <g fill="#0891B2"><circle class="halo" cx="154" cy="76" r="15" filter="url(#primary-glow)"/><circle class="star" cx="154" cy="76" r="5.5"/></g>
+      <g fill="#10B981"><circle class="halo" cx="221" cy="54" r="11" filter="url(#primary-glow)"/><circle class="star" cx="221" cy="54" r="3.8"/></g>
+      <g fill="#06B6D4"><circle class="halo" cx="198" cy="128" r="16" filter="url(#primary-glow)"/><circle class="star" cx="198" cy="128" r="5.5"/></g>
+      <g fill="#2563EB"><circle class="halo" cx="132" cy="158" r="17" filter="url(#primary-glow)"/><circle class="star" cx="132" cy="158" r="6"/></g>
+      <g fill="#10B981"><circle class="halo" cx="178" cy="232" r="13" filter="url(#primary-glow)"/><circle class="star" cx="178" cy="232" r="4.8"/></g>
+      <g fill="#F59E0B"><circle class="halo" cx="91" cy="256" r="12" filter="url(#primary-glow)"/><circle class="star" cx="91" cy="256" r="4.3"/></g>
+      <g fill="#2563EB"><circle class="halo" cx="36" cy="205" r="10" filter="url(#primary-glow)"/><circle class="star" cx="36" cy="205" r="3.6"/></g>
+      <g fill="#0891B2"><circle class="halo" cx="70" cy="135" r="12" filter="url(#primary-glow)"/><circle class="star" cx="70" cy="135" r="4.4"/></g>
+    </svg>
+  </div>
+
+  <div class="constellation secondary" aria-hidden="true">
+    <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="secondary-flow" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#10B981"/>
+          <stop offset=".5" stop-color="#06B6D4"/>
+          <stop offset="1" stop-color="#2563EB"/>
+        </linearGradient>
+        <filter id="secondary-glow" x="-300%" y="-300%" width="700%" height="700%">
+          <feGaussianBlur stdDeviation="4"/>
+        </filter>
+      </defs>
+      <path class="link" d="M322 24 L267 86 L316 150 L211 194 L112 161 L32 232" stroke="url(#secondary-flow)" stroke-width="1.5" opacity=".28"/>
+      <path class="link" d="M267 86 L211 194 M316 150 L211 194 L152 251" stroke="#2563EB" stroke-width="1" stroke-dasharray="3 8" opacity=".14"/>
+
+      <g fill="#10B981"><circle class="halo" cx="322" cy="24" r="12" filter="url(#secondary-glow)"/><circle class="star" cx="322" cy="24" r="4.5"/></g>
+      <g fill="#06B6D4"><circle class="halo" cx="267" cy="86" r="10" filter="url(#secondary-glow)"/><circle class="star" cx="267" cy="86" r="3.8"/></g>
+      <g fill="#F59E0B"><circle class="halo" cx="316" cy="150" r="11" filter="url(#secondary-glow)"/><circle class="star" cx="316" cy="150" r="4.2"/></g>
+      <g fill="#0891B2"><circle class="halo" cx="211" cy="194" r="14" filter="url(#secondary-glow)"/><circle class="star" cx="211" cy="194" r="5.2"/></g>
+      <g fill="#2563EB"><circle class="halo" cx="112" cy="161" r="11" filter="url(#secondary-glow)"/><circle class="star" cx="112" cy="161" r="4.2"/></g>
+      <g fill="#10B981"><circle class="halo" cx="152" cy="251" r="9" filter="url(#secondary-glow)"/><circle class="star" cx="152" cy="251" r="3.4"/></g>
+      <g fill="#2563EB"><circle class="halo" cx="32" cy="232" r="12" filter="url(#secondary-glow)"/><circle class="star" cx="32" cy="232" r="4.5"/></g>
+    </svg>
+  </div>
 
   <div class="top">
-    <div class="tag">AIoT · 2026</div>
+    <div class="tag">万物智联</div>
     <div class="title">AIoT<br>技术与实践</div>
     <div class="subtitle">—— 从物联网平台到智能体应用</div>
     <div class="divider"></div>
     <div class="highlights">
       <div><span class="dot">●</span>五层架构 · 智能层 · 物联网平台底座</div>
-      <div><span class="dot g">●</span>大模型 · Agent · MCP · Tools · Skills · CLI · 自然语言运维</div>
+      <div><span class="dot g">●</span>大模型 · Agent · MCP · Tools · Skills · CLI · 智能运维</div>
       <div><span class="dot a">●</span>IoT DC3 开源项目贯穿全书</div>
       <div><span class="dot">●</span>14 章 · 73 张架构图 · 工程方法论</div>
     </div>
@@ -87,7 +128,7 @@
       <div class="logo-mark"><img src="../assets/logo.svg" alt="IoT DC3"></div>
       <div class="author">
         张红元
-        <small>IoT DC3 开源作者 · 高级工程师 · 架构师</small>
+        <small>IoT DC3 开源作者 · 架构师 · 物联网专家</small>
       </div>
     </div>
     <div class="brand">
