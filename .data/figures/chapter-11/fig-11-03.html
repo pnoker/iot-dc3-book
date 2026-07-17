@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图11-3 百万级设备接入架构</title>
+  <title>图11-3 信号灯强化学习优化闭环</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -246,8 +246,8 @@
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自左向右：设备层（灯杆/RSU/网联车/传感器）→ 负载均衡器 → MQTT Broker集群 → 消息队列(Kafka/RocketMQ) → 流处理(Flink) → 时序DB/Redis/业务微服务</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">环形：车流状态感知→RL智能体决策配时→信号灯执行→通行效率奖励→回到感知</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

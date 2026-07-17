@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图11-2 城市物联网分层架构</title>
+  <title>图11-2 城市级百万设备接入架构</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -205,8 +205,8 @@
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">layered</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自下而上四层色带（感知/网络/平台/应用），右侧纵向&quot;车-路-云协同&quot;双向箭头贯穿，左侧纵向&quot;标准与安全&quot;竖条覆盖四层</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">设备→接入网关集群(负载均衡)→Kafka缓冲→Flink流处理→存储+应用；边缘节点旁路分层</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

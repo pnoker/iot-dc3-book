@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图10-5 IoT DC3平台微服务架构</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="117.600" width="1152.000" height="524.800" viewBox="0 0 1800.000 820.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1800" height="820" fill="#FFFFFF"/>
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图10-5 IoT DC3 平台微服务架构</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">数据中心是数据流枢纽，驱动经 SPI 解耦水平扩展，规则"快判"、智能"深析"分工</text>
+<rect x="1600" y="28" width="140" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1670" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
+<line x1="58" y1="103" x2="1742" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<!-- 智能决策层（顶） -->
+<rect x="120" y="135" width="1560" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1" opacity="0.5"/>
+<text x="140" y="160" fill="#F97316" font-size="12" font-weight="700">智能决策层</text>
+<rect x="750" y="172" width="300" height="52" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+<text x="900" y="195" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">智能中心 Agentic</text>
+<text x="900" y="214" fill="#64748B" font-size="10" text-anchor="middle">AI 深析·非毫秒响应</text>
+
+<!-- 平台服务层 -->
+<rect x="120" y="270" width="1560" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1" opacity="0.5"/>
+<text x="140" y="295" fill="#2563EB" font-size="12" font-weight="700">平台服务层</text>
+<rect x="300" y="308" width="260" height="58" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="430" y="333" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">设备中心 Manager</text>
+<text x="430" y="352" fill="#64748B" font-size="10" text-anchor="middle">元数据·规则配置</text>
+<rect x="640" y="308" width="260" height="58" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+<text x="770" y="333" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">数据中心 Data</text>
+<text x="770" y="352" fill="#64748B" font-size="10" text-anchor="middle">枢纽·时序存储</text>
+<rect x="980" y="308" width="260" height="58" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="1110" y="333" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">规则引擎</text>
+<text x="1110" y="352" fill="#64748B" font-size="10" text-anchor="middle">快判·毫秒阈值</text>
+
+<!-- 驱动接入层 -->
+<rect x="120" y="415" width="1560" height="100" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1" opacity="0.5"/>
+<text x="140" y="440" fill="#10B981" font-size="12" font-weight="700">驱动接入层（SPI 解耦，水平扩展）</text>
+<rect x="450" y="452" width="220" height="52" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="560" y="483" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">Modbus 驱动</text>
+<rect x="790" y="452" width="220" height="52" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="900" y="483" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">OPC UA 驱动</text>
+<rect x="1130" y="452" width="220" height="52" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1240" y="483" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">… 独立扩展</text>
+
+<!-- 物理设备层（底） -->
+<rect x="120" y="550" width="1560" height="90" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1" opacity="0.35"/>
+<text x="140" y="575" fill="#10B981" font-size="12" font-weight="700">物理设备层</text>
+<rect x="600" y="585" width="600" height="46" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+<text x="900" y="613" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">PLC · 传感器 · RTU</text>
+
+<!-- 连接 -->
+<line x1="900" y1="585" x2="900" y2="508" stroke="#10B981" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="960" y="545" fill="#64748B" font-size="10">协议接入</text>
+<line x1="770" y1="452" x2="770" y2="370" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="850" y="405" fill="#2563EB" font-size="10">PointValue 推送</text>
+<line x1="770" y1="308" x2="900" y2="228" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="880" y="270" fill="#2563EB" font-size="10">实时数据流</text>
+<line x1="1000" y1="228" x2="1080" y2="308" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<text x="1110" y="265" fill="#64748B" font-size="10">HTTP 回调</text>
+
+<!-- 图例 -->
+<line x1="58" y1="670" x2="1742" y2="670" stroke="#E2E8F0" stroke-width="1"/>
+<line x1="80" y1="698" x2="116" y2="698" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<text x="124" y="702" fill="#64748B" font-size="11" font-weight="600">同步强依赖 / 实时数据流</text>
+<line x1="340" y1="698" x2="376" y2="698" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<text x="384" y="702" fill="#64748B" font-size="11" font-weight="600">异步消息 / 可选依赖</text>
+
+<text x="900" y="750" fill="#94A3B8" font-size="10" text-anchor="middle">图10-5 IoT DC3 五层微服务：物理设备→驱动(SPI解耦水平扩展)→平台服务(数据中心枢纽/规则引擎快判)→智能决策(Agentic深析)；规则不过AI、AI不做毫秒响应。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自下而上五层：物理设备层（PLC/传感器/RTU，青绿）→ 驱动接入层（Modbus/OPC UA独立驱动，青绿）→ 平台服务层（设备中心/数据中心/规则引擎，蓝）→ 智能决策层（智能中心Agent编排/LLM，橙）→ 业务应用层（告警台/MES/ERP，灰）。规则引擎与智能中心间用虚线表示“快判转深析”可选路径。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

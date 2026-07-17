@@ -1,25 +1,4 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图10-6 规则引擎告警触发与预测性维护工单闭环</title>
-  <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="162.400" width="1152.000" height="435.200" viewBox="0 0 1800.000 680.000" preserveAspectRatio="xMidYMid meet">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="680" viewBox="0 0 1800 680" role="img" aria-label="图10-6 规则引擎告警与工单闭环" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
 <defs>
 <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
 <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
@@ -87,13 +66,4 @@
 <text x="484" y="626" fill="#64748B" font-size="11" font-weight="600">工单状态回环</text>
 
 <text x="900" y="662" fill="#94A3B8" font-size="10" text-anchor="middle">图10-6 规则引擎告警与工单闭环：温度超阈触发三个并行动作（AI推理/建工单/通知）互不阻塞，AI超时也不丢工单；工单超时则升级，闭合形成闭环。</text>
-  </svg>
 </svg>
-    <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左至右流程图。起点温度数据流入→菱形条件判定（&gt;80℃且窗口≥10s）→分出三个并行动作节点（调用AI推理/创建高优先级工单/钉钉通知）；创建工单→菱形“工单超时未关闭？”，超时且持续超限则虚线升级通知上级，正常则工单关闭。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
-  </main>
-</body>
-</html>

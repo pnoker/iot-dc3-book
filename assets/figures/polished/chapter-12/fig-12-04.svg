@@ -1,25 +1,4 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-4 智慧果园混合组网系统架构（假设场景）</title>
-  <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-label="图12-4 智慧果园混合组网系统架构" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
 <defs>
 <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
 <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
@@ -96,13 +75,4 @@
 <text x="604" y="792" fill="#64748B" font-size="11" font-weight="600">下行控制指令</text>
 
 <text x="900" y="850" fill="#94A3B8" font-size="10" text-anchor="middle">图12-4 智慧果园混合组网：土壤气象经 LoRaWAN 定时上报、图像经边缘 AI 推理后经 4G 回传异常、灌溉指令经 LoRaWAN 下行；两类数据按量级理性分工。</text>
-  </svg>
 </svg>
-    <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自下而上四层：田间感知（土壤/气象/图像节点）→混合通信（LoRaWAN网关+4G基站）→边缘AI→云平台</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
-  </main>
-</body>
-</html>
