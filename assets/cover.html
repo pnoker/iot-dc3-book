@@ -6,40 +6,68 @@
 <style>
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; }
-  body { margin:0; width:210mm; height:297mm; font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif; background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#312E81 100%); color:#fff; display:flex; flex-direction:column; justify-content:space-between; padding:28mm 22mm; position:relative; overflow:hidden; }
-  /* 装饰网格 */
-  .grid { position:absolute; inset:0; background-image:linear-gradient(rgba(99,102,241,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.08) 1px,transparent 1px); background-size:32px 32px; opacity:.55; }
-  /* 连线节点（IoT 感） */
-  .node { position:absolute; width:8px; height:8px; border-radius:50%; background:#60A5FA; box-shadow:0 0 14px #60A5FA; z-index:1; }
-  .node.purple { background:#A78BFA; box-shadow:0 0 14px #A78BFA; }
-  .line { position:absolute; height:1px; background:linear-gradient(90deg,#60A5FA,#A78BFA); opacity:.45; z-index:1; }
+  body {
+    margin:0; width:210mm; height:297mm;
+    font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif;
+    /* 明亮·前途光明：晨曦浅蓝→青白→暖光渐变 */
+    background:linear-gradient(150deg,#EEF4FF 0%,#E0F2FE 32%,#F0FBFF 60%,#FEF6EC 100%);
+    color:#0F172A; display:flex; flex-direction:column; justify-content:space-between;
+    padding:26mm 22mm; position:relative; overflow:hidden;
+  }
+  /* 顶部光晕（朝阳感） */
+  .glow { position:absolute; border-radius:50%; filter:blur(60px); z-index:0; }
+  .glow.a { width:420px; height:420px; top:-140px; right:-120px; background:radial-gradient(circle,rgba(59,130,246,.35),transparent 70%); }
+  .glow.b { width:360px; height:360px; bottom:-120px; left:-100px; background:radial-gradient(circle,rgba(16,185,129,.28),transparent 70%); }
+  .glow.c { width:300px; height:300px; top:44%; right:-80px; background:radial-gradient(circle,rgba(251,191,36,.22),transparent 70%); }
+  /* 装饰网格（淡） */
+  .grid { position:absolute; inset:0; background-image:linear-gradient(rgba(37,99,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.06) 1px,transparent 1px); background-size:34px 34px; opacity:.7; z-index:0; }
+  /* IoT 节点连线装饰 */
+  .node { position:absolute; width:9px; height:9px; border-radius:50%; background:#2563EB; box-shadow:0 0 12px rgba(37,99,235,.6); z-index:1; }
+  .node.green { background:#10B981; box-shadow:0 0 12px rgba(16,185,129,.6); }
+  .node.amber { background:#F59E0B; box-shadow:0 0 12px rgba(245,158,11,.55); }
+  .line { position:absolute; height:1.5px; background:linear-gradient(90deg,#3B82F6,#10B981); opacity:.4; z-index:1; }
   .top, .bottom { position:relative; z-index:2; }
-  .tag { display:inline-block; padding:5px 16px; border:1px solid rgba(147,197,253,.5); border-radius:20px; font-size:12px; letter-spacing:3px; color:#BFDBFE; }
-  .title { font-size:66px; font-weight:800; line-height:1.1; margin:36px 0 12px; background:linear-gradient(135deg,#FFFFFF,#BFDBFE 60%,#A78BFA); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:3px; }
-  .subtitle { font-size:23px; font-weight:300; color:#CBD5E1; margin-top:6px; letter-spacing:2px; }
-  .divider { width:72px; height:4px; background:linear-gradient(90deg,#3B82F6,#A78BFA); border-radius:2px; margin:44px 0 36px; }
-  .highlights { font-size:15px; color:#94A3B8; line-height:2.1; letter-spacing:.5px; }
-  .highlights .dot { color:#60A5FA; margin-right:10px; font-size:10px; vertical-align:middle; }
-  .highlights .dot.p { color:#A78BFA; }
+  /* logo 水印（右上，淡雅品牌感） */
+  .logo-wm { position:absolute; top:60px; right:40px; width:150px; opacity:.16; z-index:1; }
+  .logo-wm svg, .logo-wm img { width:100%; height:auto; }
+  .tag { display:inline-block; padding:6px 18px; border:1.5px solid rgba(37,99,235,.4); border-radius:22px; font-size:12px; letter-spacing:3px; color:#2563EB; font-weight:600; background:rgba(255,255,255,.5); }
+  .title { font-size:68px; font-weight:800; line-height:1.08; margin:34px 0 12px; background:linear-gradient(120deg,#1D4ED8,#0891B2 55%,#059669); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:3px; }
+  .subtitle { font-size:24px; font-weight:400; color:#334155; margin-top:8px; letter-spacing:2px; }
+  .divider { width:80px; height:5px; background:linear-gradient(90deg,#2563EB,#10B981,#F59E0B); border-radius:3px; margin:42px 0 34px; }
+  .highlights { font-size:16px; color:#475569; line-height:2.15; letter-spacing:.5px; font-weight:500; }
+  .highlights .dot { margin-right:11px; font-size:11px; vertical-align:middle; color:#2563EB; }
+  .highlights .dot.g { color:#10B981; }
+  .highlights .dot.a { color:#F59E0B; }
   .bottom { display:flex; justify-content:space-between; align-items:flex-end; }
-  .author { font-size:21px; font-weight:600; letter-spacing:1px; }
-  .author small { display:block; font-size:13px; color:#94A3B8; font-weight:400; margin-top:6px; letter-spacing:.5px; }
-  .brand { font-size:13px; color:#64748B; text-align:right; letter-spacing:2px; }
-  .brand b { display:block; font-size:15px; color:#94A3B8; margin-bottom:6px; font-weight:500; }
+  /* 底部品牌区含 logo */
+  .author-wrap { display:flex; align-items:center; gap:16px; }
+  .logo-mark { width:52px; height:52px; flex-shrink:0; }
+  .logo-mark svg, .logo-mark img { width:100%; height:100%; }
+  .author { font-size:22px; font-weight:700; letter-spacing:1px; color:#0F172A; }
+  .author small { display:block; font-size:13px; color:#64748B; font-weight:400; margin-top:6px; letter-spacing:.5px; }
+  .brand { font-size:13px; color:#94A3B8; text-align:right; letter-spacing:2px; }
+  .brand b { display:block; font-size:16px; color:#0891B2; margin-bottom:6px; font-weight:700; }
 </style>
 </head>
 <body>
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+  <div class="glow c"></div>
   <div class="grid"></div>
+
+  <!-- logo 水印 -->
+  <div class="logo-wm"><img src="../assets/logo.svg" alt="IoT DC3"></div>
+
   <!-- IoT 节点连线装饰 -->
-  <div class="node" style="top:14%;left:68%"></div>
-  <div class="node purple" style="top:20%;left:84%"></div>
-  <div class="node" style="top:33%;left:76%"></div>
-  <div class="node purple" style="top:58%;left:88%"></div>
-  <div class="node" style="top:48%;left:8%"></div>
-  <div class="node purple" style="top:72%;left:14%"></div>
-  <div class="line" style="top:15%;left:69%;width:110px;transform:rotate(28deg)"></div>
-  <div class="line" style="top:34%;left:77%;width:90px;transform:rotate(65deg)"></div>
-  <div class="line" style="top:49%;left:9%;width:80px;transform:rotate(40deg)"></div>
+  <div class="node" style="top:16%;left:70%"></div>
+  <div class="node green" style="top:23%;left:86%"></div>
+  <div class="node amber" style="top:36%;left:78%"></div>
+  <div class="node green" style="top:60%;left:90%"></div>
+  <div class="node" style="top:50%;left:7%"></div>
+  <div class="node amber" style="top:74%;left:13%"></div>
+  <div class="line" style="top:17%;left:71%;width:120px;transform:rotate(30deg)"></div>
+  <div class="line" style="top:37%;left:79%;width:96px;transform:rotate(62deg)"></div>
+  <div class="line" style="top:51%;left:8%;width:84px;transform:rotate(42deg)"></div>
 
   <div class="top">
     <div class="tag">AIoT · 2026</div>
@@ -48,16 +76,19 @@
     <div class="divider"></div>
     <div class="highlights">
       <div><span class="dot">●</span>五层架构 · 智能层 · 物联网平台底座</div>
-      <div><span class="dot p">●</span>Spring AI 2.0 · MCP · Tool-Calling · Agentic Center</div>
-      <div><span class="dot">●</span>IoT DC3 开源项目贯穿全书</div>
-      <div><span class="dot p">●</span>14 章 · 73 张架构图 · 工程方法论</div>
+      <div><span class="dot g">●</span>大模型 · Agent · MCP · Tool-Calling · 自然语言运维</div>
+      <div><span class="dot a">●</span>IoT DC3 开源项目贯穿全书</div>
+      <div><span class="dot">●</span>14 章 · 73 张架构图 · 工程方法论</div>
     </div>
   </div>
 
   <div class="bottom">
-    <div class="author">
-      张红元
-      <small>IoT DC3 开源作者 · 高级工程师 · 架构师</small>
+    <div class="author-wrap">
+      <div class="logo-mark"><img src="../assets/logo.svg" alt="IoT DC3"></div>
+      <div class="author">
+        张红元
+        <small>IoT DC3 开源作者 · 高级工程师 · 架构师</small>
+      </div>
     </div>
     <div class="brand">
       <b>从连接到智能</b>
