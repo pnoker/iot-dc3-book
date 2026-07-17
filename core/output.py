@@ -148,7 +148,7 @@ def generate_markdown_output(
     _write_file(out / "book_clean.md", clean_content, generated_files)
 
     logger.info("输出完成: %s", out)
-    return {"output_dir": str(out), "book_markdown": str(book_markdown), "files": generated_files}
+    return {"output_dir": str(out), "book_markdown": str(book_markdown), "book_clean": str(out / "book_clean.md"), "files": generated_files}
 
 
 def generate_word_output(
@@ -253,3 +253,70 @@ def _write_file(path: Path, content: str, generated_files: list[str]) -> None:
         f.write(content)
     generated_files.append(str(path))
     logger.debug("已生成: %s", path)
+
+
+def _find_chrome() -> str | None:
+    """查找本机 Chromium 内核浏览器可执行文件（Chrome/Edge/Brave/Chromium）。"""
+    candidates = [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+        "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    ]
+    for c in candidates:
+        if Path(c).exists():
+            return c
+    return shutil.which("chromium") or shutil.which("google-chrome")
+
+
+def generate_pdf_output(
+        markdown_file: str | Path,
+        pdf_file: str | Path,
+        *,
+        css_file: str | Path | None = None,
+        chrome_bin: str | None = None,
+        pandoc_bin: str = "pandoc",
+) -> str | None:
+    """从 Markdown 生成 PDF：pandoc 转 HTML → Chrome headless 转 PDF。
+
+    无 Chrome/Edge 时跳过并警告（不报错），便于无浏览器环境跳过 PDF。
+    """
+    markdown_path = Path(markdown_file)
+    if not markdown_path.exists():
+        raise FileNotFoundError(f"Markdown 文件不存在: {markdown_path}")
+    resolved_pandoc = shutil.which(pandoc_bin)
+    if resolved_pandoc is None:
+        raise RuntimeError("未找到 pandoc，无法生成 PDF。")
+    chrome = chrome_bin or _find_chrome()
+    if chrome is None:
+        logger.warning("未找到 Chrome/Edge，跳过 PDF 生成。安装后可自动生成。")
+        return None
+
+    pdf_path = Path(pdf_file)
+    pdf_path.parent.mkdir(parents=True, exist_ok=True)
+    html_path = pdf_path.with_suffix(".html")
+
+    # pandoc: markdown → html（standalone，附 CSS）
+    cmd = [
+        resolved_pandoc, str(markdown_path), "-o", str(html_path),
+        "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
+        "--metadata", "title=AIoT 技术与实践",
+    ]
+    css_cwd = None
+    if css_file and Path(css_file).exists():
+        cmd += ["--css", Path(css_file).name]
+        css_cwd = str(Path(css_file).parent)
+    completed = subprocess.run(cmd, check=False, capture_output=True, text=True, cwd=css_cwd)
+    if completed.returncode != 0:
+        raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
+
+    # Chrome headless: html → pdf
+    chrome_cmd = [
+        chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+        f"--print-to-pdf={pdf_path}", f"file://{html_path}",
+    ]
+    completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
+    if completed.returncode != 0:
+        raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
+    logger.info("PDF 输出完成: %s", pdf_path)
+    return str(pdf_path)

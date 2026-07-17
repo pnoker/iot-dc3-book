@@ -48,7 +48,7 @@ from core.figures import (
 from core.llm_client import LLMClient
 from core.log import get_logger
 from core.markdown_assets import extract_book_figures, find_invalid_book_figures
-from core.output import generate_markdown_output, generate_word_output
+from core.output import generate_markdown_output, generate_pdf_output, generate_word_output
 from core.publication_audit import audit_has_blocking_issues, summarize_publication_audit
 from core.quality_rules import check_originality, ensure_book_releasable, evaluate_chapter_quality
 from core.rag import RAGEngine
@@ -521,8 +521,8 @@ class BookProject:
     def write_export(self, thread_id: str, target: str = "all", *, draft: bool = False) -> dict[str, object]:
         """导出出版稿或当前草稿 Markdown、Word。"""
         export_target = target.strip().lower()
-        if export_target not in {"markdown", "word", "all"}:
-            raise ValueError("导出目标无效，请使用 markdown、word 或 all")
+        if export_target not in {"markdown", "word", "pdf", "all"}:
+            raise ValueError("导出目标无效，请使用 markdown、word、pdf 或 all")
         if draft:
             state = self.load_write_checkpoint_with_workers(thread_id)
             return self._generate_export(state, export_target, output_dir=self.paths.output_dir / "draft", draft=True)
@@ -646,6 +646,16 @@ class BookProject:
                 reference_docx=self._word_reference_docx_path(),
                 pandoc_bin=self.cfg.output.pandoc_bin,
             )
+        if export_target in {"pdf", "all"}:
+            css = output_dir / "pdf_style.css"
+            pdf_path = generate_pdf_output(
+                str(markdown_result.get("book_clean") or markdown_result["book_markdown"]),
+                output_dir / "book.pdf",
+                css_file=css if css.exists() else None,
+                pandoc_bin=self.cfg.output.pandoc_bin,
+            )
+            if pdf_path:
+                result["pdf_file"] = pdf_path
         return result
 
     def _ensure_export_ready(self, state: BookState) -> None:
