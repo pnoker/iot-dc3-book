@@ -32,7 +32,11 @@
   .constellation .star { stroke:#fff; stroke-width:1.5; }
   .top, .bottom { position:relative; z-index:2; }
   .tag { display:inline-block; padding:6px 18px; border:1.5px solid rgba(37,99,235,.4); border-radius:22px; font-size:12px; letter-spacing:3px; color:#2563EB; font-weight:600; background:rgba(255,255,255,.5); }
-  .title { font-size:68px; font-weight:800; line-height:1.08; margin:34px 0 12px; background:linear-gradient(120deg,#1D4ED8,#0891B2 55%,#059669); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:3px; }
+  .title { font-size:68px; font-weight:800; line-height:1.08; margin:34px 0 12px; color:#1D4ED8; background:linear-gradient(120deg,#1D4ED8,#0891B2 55%,#059669); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; -webkit-print-color-adjust:exact; print-color-adjust:exact; letter-spacing:3px; }
+  /* print 模式下渐变裁剪可能失效，退化为纯蓝纯色文字（不出现色块） */
+  @media print {
+    .title { background:none; -webkit-text-fill-color:#1D4ED8; color:#1D4ED8; }
+  }
   .subtitle { font-size:24px; font-weight:400; color:#334155; margin-top:8px; letter-spacing:2px; }
   .divider { width:80px; height:5px; background:linear-gradient(90deg,#2563EB,#10B981,#F59E0B); border-radius:3px; margin:42px 0 34px; }
   .highlights { font-size:15px; color:#475569; line-height:2.2; letter-spacing:.3px; font-weight:500; }
