@@ -1,190 +1,242 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1000" width="1800" height="1000" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
-  <title>图7-5 Spring AI 集成链路：从配置到响应</title>
-  <desc>纵向时序图：Application Config → Spring AI Starter → OpenAI API Adapter → AI Model Provider → Application Code 五条生命线，展示配置装配、运行时请求下行与响应逐层回传，适配器层为透明代理，后端模型可替换。</desc>
-
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="970" viewBox="0 0 1800 970" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="1800" height="970" fill="#FFFFFF"/>
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
     <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
     <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
   </defs>
 
-  <!-- canvas -->
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+  <!-- ===== 标题区 ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图7-5 2026 主流 Agent 框架生态对比</text>
+  <text x="82" y="70" font-size="12" fill="#64748B">编排模型 · 核心强项 · 适用场景 · 语言生态 — 六框架四维横向对比，按项目栈快速选型</text>
+  <rect x="1620" y="28" width="120" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1680" y="44" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">COMPARISON</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
 
-  <!-- ============ TITLE AREA ============ -->
-  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
-  <text x="88" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-5  Spring AI 集成链路：从配置到响应</text>
-  <text x="88" y="73" font-size="12" fill="#64748B">application.yml → ChatClient → OpenAI Adapter → 模型 · 适配器层透明代理，后端可替换</text>
+  <!-- ===== 主体：六行对比矩阵 ===== -->
+  <!-- 行底色（按语言生态分档） -->
+  <rect x="130" y="162" width="1270" height="416" fill="#EFF6FF"/>
+  <rect x="130" y="578" width="1270" height="104" fill="#FFFBEB"/>
+  <rect x="130" y="682" width="1270" height="104" fill="#ECFDF5"/>
 
-  <rect x="1652" y="28" width="108" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1706" y="46" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">SEQUENCE</text>
+  <!-- 矩阵外框 + 表头底 -->
+  <rect x="130" y="120" width="1270" height="666" rx="8" fill="none" stroke="#E2E8F0"/>
+  <rect x="130" y="120" width="1270" height="38" fill="#F1F5F9"/>
 
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+  <!-- 表头标签 -->
+  <text x="225" y="144" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">框架</text>
+  <text x="450" y="144" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">编排模型</text>
+  <text x="725" y="144" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">核心强项</text>
+  <text x="1025" y="144" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">适用场景</text>
+  <text x="1290" y="144" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">语言生态</text>
 
-  <!-- ============ PHASE BANDS (background) ============ -->
-  <rect x="30" y="205" width="1730" height="135" rx="8" fill="#FAF5FF" opacity="0.55"/>
-  <rect x="30" y="205" width="4" height="135" fill="#7C3AED"/>
-  <text x="46" y="225" font-size="12" font-weight="700" fill="#7C3AED">启动·配置</text>
+  <!-- 列分隔线 -->
+  <line x1="320" y1="120" x2="320" y2="786" stroke="#E2E8F0"/>
+  <line x1="580" y1="120" x2="580" y2="786" stroke="#E2E8F0"/>
+  <line x1="870" y1="120" x2="870" y2="786" stroke="#E2E8F0"/>
+  <line x1="1180" y1="120" x2="1180" y2="786" stroke="#E2E8F0"/>
+  <!-- 行分隔线 -->
+  <line x1="130" y1="158" x2="1400" y2="158" stroke="#CBD5E1"/>
+  <line x1="130" y1="266" x2="1400" y2="266" stroke="#E2E8F0"/>
+  <line x1="130" y1="370" x2="1400" y2="370" stroke="#E2E8F0"/>
+  <line x1="130" y1="474" x2="1400" y2="474" stroke="#E2E8F0"/>
+  <line x1="130" y1="578" x2="1400" y2="578" stroke="#CBD5E1"/>
+  <line x1="130" y1="682" x2="1400" y2="682" stroke="#CBD5E1"/>
 
-  <rect x="30" y="350" width="1730" height="250" rx="8" fill="#EFF6FF" opacity="0.55"/>
-  <rect x="30" y="350" width="4" height="250" fill="#2563EB"/>
-  <text x="46" y="370" font-size="12" font-weight="700" fill="#2563EB">运行时·请求</text>
+  <!-- 行左侧色条（语言生态） -->
+  <rect x="130" y="162" width="4" height="104" fill="#2563EB"/>
+  <rect x="130" y="266" width="4" height="104" fill="#2563EB"/>
+  <rect x="130" y="370" width="4" height="104" fill="#2563EB"/>
+  <rect x="130" y="474" width="4" height="104" fill="#2563EB"/>
+  <rect x="130" y="578" width="4" height="104" fill="#F59E0B"/>
+  <rect x="130" y="682" width="4" height="104" fill="#10B981"/>
 
-  <rect x="30" y="605" width="1730" height="180" rx="8" fill="#F8FAFC" opacity="0.7"/>
-  <rect x="30" y="605" width="4" height="180" fill="#64748B"/>
-  <text x="46" y="625" font-size="12" font-weight="700" fill="#64748B">响应·回传</text>
+  <!-- ===== Row 1: LangGraph ===== -->
+  <text x="148" y="210" font-size="15" font-weight="700" fill="#0F172A">LangGraph</text>
+  <text x="148" y="228" font-size="10" fill="#94A3B8">LangChain Inc.</text>
+  <text x="450" y="198" font-size="11" fill="#334155" text-anchor="middle">有向状态图驱动</text>
+  <text x="450" y="214" font-size="11" fill="#334155" text-anchor="middle">节点=步骤 边=条件跳转</text>
+  <text x="450" y="230" font-size="11" fill="#334155" text-anchor="middle">状态字典持久流转</text>
+  <text x="725" y="198" font-size="11" fill="#334155" text-anchor="middle">条件边分支显式可读</text>
+  <text x="725" y="214" font-size="11" fill="#334155" text-anchor="middle">原生支持 ReAct 循环</text>
+  <text x="725" y="230" font-size="11" fill="#334155" text-anchor="middle">时间旅行调试可回放</text>
+  <text x="1025" y="198" font-size="11" fill="#334155" text-anchor="middle">精细控制执行路径</text>
+  <text x="1025" y="214" font-size="11" fill="#334155" text-anchor="middle">审计每一跳决策</text>
+  <text x="1025" y="230" font-size="11" fill="#334155" text-anchor="middle">人机协作检查点</text>
+  <text x="1290" y="208" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">Python</text>
+  <text x="1290" y="226" font-size="10" fill="#64748B" text-anchor="middle">研究原型</text>
 
-  <!-- ============ LIFELINES ============ -->
-  <line x1="170"  y1="192" x2="170"  y2="800" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="5 5"/>
-  <line x1="540"  y1="192" x2="540"  y2="800" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="5 5"/>
-  <line x1="910"  y1="192" x2="910"  y2="800" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="5 5"/>
-  <line x1="1280" y1="192" x2="1280" y2="800" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="5 5"/>
-  <line x1="1650" y1="192" x2="1650" y2="800" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <!-- ===== Row 2: AutoGen ===== -->
+  <text x="148" y="314" font-size="15" font-weight="700" fill="#0F172A">AutoGen</text>
+  <text x="148" y="332" font-size="10" fill="#94A3B8">Microsoft · AG2 v0.4</text>
+  <text x="450" y="302" font-size="11" fill="#334155" text-anchor="middle">Actor 模型多 Agent 对话</text>
+  <text x="450" y="318" font-size="11" fill="#334155" text-anchor="middle">事件驱动消息通信</text>
+  <text x="450" y="334" font-size="11" fill="#334155" text-anchor="middle">UserProxy × Assistant</text>
+  <text x="725" y="302" font-size="11" fill="#334155" text-anchor="middle">多角色协作分工</text>
+  <text x="725" y="318" font-size="11" fill="#334155" text-anchor="middle">每 Agent 绑定不同模型</text>
+  <text x="725" y="334" font-size="11" fill="#334155" text-anchor="middle">多视角交叉验证</text>
+  <text x="1025" y="302" font-size="11" fill="#334155" text-anchor="middle">代码生成带评审</text>
+  <text x="1025" y="318" font-size="11" fill="#334155" text-anchor="middle">复杂分析带魔鬼代言人</text>
+  <text x="1025" y="334" font-size="11" fill="#334155" text-anchor="middle">需角色分工的任务</text>
+  <text x="1290" y="312" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">Python</text>
+  <text x="1290" y="330" font-size="10" fill="#64748B" text-anchor="middle">多智能体研究</text>
 
-  <!-- ============ PARTICIPANT HEADERS ============ -->
-  <!-- P1 Application Config (purple) -->
-  <rect x="60" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="170" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Application Config</text>
-  <text x="170" y="166" font-size="10" fill="#475569" text-anchor="middle">application.yml</text>
-  <rect x="148" y="172" width="44" height="14" rx="3" fill="#F5F3FF" stroke="#7C3AED" stroke-width="0.8"/>
-  <text x="170" y="183" font-size="9" fill="#7C3AED" text-anchor="middle">配置</text>
+  <!-- ===== Row 3: LangChain ===== -->
+  <text x="148" y="418" font-size="15" font-weight="700" fill="#0F172A">LangChain</text>
+  <text x="148" y="436" font-size="10" fill="#94A3B8">LangChain Inc.</text>
+  <text x="450" y="406" font-size="11" fill="#334155" text-anchor="middle">链式编排 LCEL</text>
+  <text x="450" y="422" font-size="11" fill="#334155" text-anchor="middle">LLM 应用工具箱</text>
+  <text x="450" y="438" font-size="11" fill="#334155" text-anchor="middle">LangGraph 底层依赖</text>
+  <text x="725" y="406" font-size="11" fill="#334155" text-anchor="middle">600+ 工具集成</text>
+  <text x="725" y="422" font-size="11" fill="#334155" text-anchor="middle">500+ 文档加载器</text>
+  <text x="725" y="438" font-size="11" fill="#334155" text-anchor="middle">海量向量存储后端</text>
+  <text x="1025" y="406" font-size="11" fill="#334155" text-anchor="middle">快速搭 RAG 应用</text>
+  <text x="1025" y="422" font-size="11" fill="#334155" text-anchor="middle">PDF/Excel/Wiki 解析</text>
+  <text x="1025" y="438" font-size="11" fill="#334155" text-anchor="middle">接多源数据 + 调工具</text>
+  <text x="1290" y="416" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">Python</text>
+  <text x="1290" y="434" font-size="10" fill="#64748B" text-anchor="middle">生态最丰富</text>
 
-  <!-- P2 Spring AI Starter (blue) -->
-  <rect x="430" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="540" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Spring AI Starter</text>
-  <text x="540" y="166" font-size="10" fill="#475569" text-anchor="middle">auto-config · 生成 ChatClient</text>
-  <rect x="518" y="172" width="44" height="14" rx="3" fill="#EFF6FF" stroke="#2563EB" stroke-width="0.8"/>
-  <text x="540" y="183" font-size="9" fill="#2563EB" text-anchor="middle">平台</text>
+  <!-- ===== Row 4: CrewAI ===== -->
+  <text x="148" y="522" font-size="15" font-weight="700" fill="#0F172A">CrewAI</text>
+  <text x="148" y="540" font-size="10" fill="#94A3B8">CrewAI Inc.</text>
+  <text x="450" y="510" font-size="11" fill="#334155" text-anchor="middle">角色化多智能体</text>
+  <text x="450" y="526" font-size="11" fill="#334155" text-anchor="middle">role + goal + backstory</text>
+  <text x="450" y="542" font-size="11" fill="#334155" text-anchor="middle">Task 分配给 Crew 协作</text>
+  <text x="725" y="510" font-size="11" fill="#334155" text-anchor="middle">声明式角色与任务</text>
+  <text x="725" y="526" font-size="11" fill="#334155" text-anchor="middle">配置简单自动编排</text>
+  <text x="725" y="542" font-size="11" fill="#334155" text-anchor="middle">比 AutoGen 更有主见</text>
+  <text x="1025" y="510" font-size="11" fill="#334155" text-anchor="middle">内容生产流水线</text>
+  <text x="1025" y="526" font-size="11" fill="#334155" text-anchor="middle">研究员→撰稿→审校</text>
+  <text x="1025" y="542" font-size="11" fill="#334155" text-anchor="middle">业务流程自动化</text>
+  <text x="1290" y="520" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">Python</text>
+  <text x="1290" y="538" font-size="10" fill="#64748B" text-anchor="middle">角色边界清晰</text>
 
-  <!-- P3 OpenAI API Adapter (orange) -->
-  <rect x="800" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="910" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">OpenAI API Adapter</text>
-  <text x="910" y="166" font-size="10" fill="#475569" text-anchor="middle">协议翻译 · 透明代理</text>
-  <rect x="888" y="172" width="44" height="14" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="0.8"/>
-  <text x="910" y="183" font-size="9" fill="#F59E0B" text-anchor="middle">适配器</text>
+  <!-- ===== Row 5: Dify / Coze ===== -->
+  <text x="148" y="626" font-size="15" font-weight="700" fill="#0F172A">Dify / Coze</text>
+  <text x="148" y="644" font-size="10" fill="#94A3B8">Langgenius · 字节</text>
+  <text x="450" y="614" font-size="11" fill="#334155" text-anchor="middle">低代码可视化画布</text>
+  <text x="450" y="630" font-size="11" fill="#334155" text-anchor="middle">拖拽节点编排工作流</text>
+  <text x="450" y="646" font-size="11" fill="#334155" text-anchor="middle">配置工具与知识库</text>
+  <text x="725" y="614" font-size="11" fill="#334155" text-anchor="middle">内置部署/监控/日志</text>
+  <text x="725" y="630" font-size="11" fill="#334155" text-anchor="middle">版本管理与审计</text>
+  <text x="725" y="646" font-size="11" fill="#334155" text-anchor="middle">一键发布 API/聊天</text>
+  <text x="1025" y="614" font-size="11" fill="#334155" text-anchor="middle">几天内验证想法</text>
+  <text x="1025" y="630" font-size="11" fill="#334155" text-anchor="middle">领域专家自助迭代</text>
+  <text x="1025" y="646" font-size="11" fill="#334155" text-anchor="middle">原型跑通再下沉代码</text>
+  <text x="1290" y="624" font-size="12" font-weight="700" fill="#F59E0B" text-anchor="middle">低代码</text>
+  <text x="1290" y="642" font-size="10" fill="#64748B" text-anchor="middle">开源 / SaaS</text>
 
-  <!-- P4 AI Model Provider (amber, default cloud; replaceable) -->
-  <rect x="1170" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
-  <text x="1280" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">AI Model Provider</text>
-  <text x="1280" y="166" font-size="10" fill="#475569" text-anchor="middle">OpenAI 兼容端点 · 可替换</text>
-  <rect x="1258" y="172" width="44" height="14" rx="3" fill="#FFF7ED" stroke="#D97706" stroke-width="0.8"/>
-  <text x="1280" y="183" font-size="9" fill="#D97706" text-anchor="middle">模型</text>
+  <!-- ===== Row 6: Spring AI ===== -->
+  <text x="148" y="730" font-size="15" font-weight="700" fill="#0F172A">Spring AI</text>
+  <text x="148" y="748" font-size="10" fill="#94A3B8">VMware · 2.0 GA 2026.6</text>
+  <text x="450" y="718" font-size="11" fill="#334155" text-anchor="middle">ChatClient + @Tool 注解</text>
+  <text x="450" y="734" font-size="11" fill="#334155" text-anchor="middle">自建轻量编排</text>
+  <text x="450" y="750" font-size="11" fill="#334155" text-anchor="middle">Advisor 链组织循环</text>
+  <text x="725" y="718" font-size="11" fill="#334155" text-anchor="middle">Spring Boot 原生集成</text>
+  <text x="725" y="734" font-size="11" fill="#334155" text-anchor="middle">JVM 内 Java 方法调用</text>
+  <text x="725" y="750" font-size="11" fill="#334155" text-anchor="middle">Security + Actuator 衔接</text>
+  <text x="1025" y="718" font-size="11" fill="#334155" text-anchor="middle">Java 企业级生产</text>
+  <text x="1025" y="734" font-size="11" fill="#334155" text-anchor="middle">物联网运维（本书示例）</text>
+  <text x="1025" y="750" font-size="11" fill="#334155" text-anchor="middle">不引第二种运行时</text>
+  <text x="1290" y="728" font-size="12" font-weight="700" fill="#10B981" text-anchor="middle">Java</text>
+  <text x="1290" y="746" font-size="10" fill="#64748B" text-anchor="middle">Spring Boot 4</text>
 
-  <!-- P5 Application Code (gray) -->
-  <rect x="1540" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-  <text x="1650" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Application Code</text>
-  <text x="1650" y="166" font-size="10" fill="#475569" text-anchor="middle">业务调用 ChatClient</text>
-  <rect x="1628" y="172" width="44" height="14" rx="3" fill="#F1F5F9" stroke="#64748B" stroke-width="0.8"/>
-  <text x="1650" y="183" font-size="9" fill="#64748B" text-anchor="middle">应用</text>
+  <!-- ===== 左侧：跨栈模式可互迁（虚线双箭头） ===== -->
+  <line x1="95" y1="214" x2="95" y2="734" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <polygon points="95,206 90,217 100,217" fill="#64748B"/>
+  <polygon points="95,742 90,731 100,731" fill="#64748B"/>
+  <line x1="95" y1="214" x2="128" y2="214" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="95" y1="734" x2="128" y2="734" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <rect x="62" y="441" width="66" height="66" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="95" y="463" font-size="11" font-weight="700" fill="#334155" text-anchor="middle">模式可互迁</text>
+  <line x1="72" y1="471" x2="118" y2="471" stroke="#E2E8F0"/>
+  <text x="95" y="487" font-size="9" fill="#64748B" text-anchor="middle">@Tool ↔ @tool</text>
+  <text x="95" y="500" font-size="9" fill="#64748B" text-anchor="middle">RAG · 记忆</text>
 
-  <!-- ============ ACTIVATION BARS ============ -->
-  <rect x="535" y="395" width="10" height="355" fill="#DBEAFE" stroke="#2563EB" stroke-width="0.8"/>
-  <rect x="905" y="445" width="10" height="255" fill="#FFF7E6" stroke="#F59E0B" stroke-width="0.8"/>
-  <rect x="1275" y="500" width="10" height="150" fill="#FEF3C7" stroke="#D97706" stroke-width="0.8"/>
+  <!-- ===== 右侧 callout：IoT 选型原则 ===== -->
+  <rect x="1430" y="120" width="306" height="666" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <rect x="1430" y="120" width="4" height="666" fill="#2563EB"/>
+  <circle cx="1458" cy="156" r="6" fill="#2563EB"/>
+  <text x="1474" y="162" font-size="16" font-weight="700" fill="#0F172A">IoT 选型原则</text>
+  <text x="1450" y="192" font-size="13" font-weight="700" fill="#2563EB">跟随主项目栈</text>
+  <text x="1450" y="212" font-size="12" fill="#475569">不为框架迁语言</text>
+  <line x1="1450" y1="230" x2="1716" y2="230" stroke="#E2E8F0"/>
+  <text x="1450" y="252" font-size="11" font-weight="600" fill="#475569">按项目栈分档</text>
 
-  <!-- ============ STEP 1 : Config -> Starter (purple, startup) ============ -->
-  <line x1="182" y1="265" x2="528" y2="265" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-purple)"/>
-  <text x="355" y="257" font-size="12" font-weight="600" fill="#7C3AED" text-anchor="middle">读取 spring.ai.openai.* 配置</text>
-  <circle cx="194" cy="265" r="11" fill="#7C3AED"/>
-  <text x="194" y="269" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <!-- Panel A: Python -->
+  <rect x="1450" y="266" width="266" height="118" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="1450" y="266" width="3" height="118" fill="#2563EB"/>
+  <text x="1466" y="290" font-size="12" font-weight="700" fill="#2563EB">Python · 研究原型</text>
+  <line x1="1466" y1="298" x2="1700" y2="298" stroke="#EFF6FF"/>
+  <text x="1466" y="318" font-size="11" font-weight="600" fill="#0F172A">→ LangGraph · AutoGen</text>
+  <text x="1474" y="336" font-size="10" fill="#475569">LangChain · CrewAI</text>
+  <text x="1466" y="358" font-size="10" fill="#64748B">算法探索 / 多 Agent 协作</text>
+  <text x="1466" y="374" font-size="10" fill="#64748B">编排深度领先社区</text>
 
-  <!-- STEP 2 annotation : ChatClient Bean generation (note on P2) -->
-  <rect x="416" y="288" width="248" height="38" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="4 3"/>
-  <text x="540" y="304" font-size="10" font-weight="700" fill="#0F172A" text-anchor="middle">自动装配 · 生成 ChatClient Bean</text>
-  <text x="540" y="318" font-size="9" fill="#475569" text-anchor="middle">注入 base-url / api-key / model</text>
+  <!-- Panel B: Java -->
+  <rect x="1450" y="394" width="266" height="118" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <rect x="1450" y="394" width="3" height="118" fill="#10B981"/>
+  <text x="1466" y="418" font-size="12" font-weight="700" fill="#10B981">Java · 企业生产</text>
+  <line x1="1466" y1="426" x2="1700" y2="426" stroke="#ECFDF5"/>
+  <text x="1466" y="446" font-size="11" font-weight="600" fill="#0F172A">→ Spring AI（本书示例）</text>
+  <text x="1474" y="464" font-size="10" fill="#475569">Spring Boot 4 · 2.0 GA</text>
+  <text x="1466" y="486" font-size="10" fill="#64748B">物联网运维 / 不引第二运行时</text>
+  <text x="1466" y="502" font-size="10" fill="#64748B">编排偏薄但工程可预测</text>
 
-  <!-- ============ STEP 2 : App -> ChatClient (blue, runtime call) ============ -->
-  <line x1="1638" y1="395" x2="552" y2="395" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="948" y="383" width="294" height="16" fill="#FFFFFF" opacity="0.9"/>
-  <text x="1095" y="388" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">chatClient.prompt(userMsg).call()</text>
-  <circle cx="1626" cy="395" r="11" fill="#2563EB"/>
-  <text x="1626" y="399" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <!-- Panel C: 低代码 -->
+  <rect x="1450" y="522" width="266" height="118" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <rect x="1450" y="522" width="3" height="118" fill="#F59E0B"/>
+  <text x="1466" y="546" font-size="12" font-weight="700" fill="#F59E0B">低代码 · 快速验证</text>
+  <line x1="1466" y1="554" x2="1700" y2="554" stroke="#FFFBEB"/>
+  <text x="1466" y="574" font-size="11" font-weight="600" fill="#0F172A">→ Dify · Coze</text>
+  <text x="1474" y="592" font-size="10" fill="#475569">开源自部署 / SaaS</text>
+  <text x="1466" y="614" font-size="10" fill="#64748B">几天验证 / 领域专家自助</text>
+  <text x="1466" y="630" font-size="10" fill="#64748B">验证后下沉到代码</text>
 
-  <!-- ============ STEP 3 : Starter -> Adapter (blue) ============ -->
-  <line x1="552" y1="445" x2="898" y2="445" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="725" y="437" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">构造 OpenAI ChatCompletion 请求</text>
-  <circle cx="564" cy="445" r="11" fill="#2563EB"/>
-  <text x="564" y="449" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <!-- callout 底部：演进路径 -->
+  <line x1="1450" y1="652" x2="1716" y2="652" stroke="#E2E8F0"/>
+  <text x="1450" y="674" font-size="11" font-weight="600" fill="#475569">演进路径（三档不冲突）</text>
+  <circle cx="1456" cy="693" r="2.5" fill="#F59E0B"/>
+  <text x="1466" y="697" font-size="10" fill="#475569">① 原型 — 低代码画布验证</text>
+  <circle cx="1456" cy="713" r="2.5" fill="#2563EB"/>
+  <text x="1466" y="717" font-size="10" fill="#475569">② 研究 — Python 框架迭代</text>
+  <circle cx="1456" cy="733" r="2.5" fill="#10B981"/>
+  <text x="1466" y="737" font-size="10" fill="#475569">③ 生产 — 回落主项目栈</text>
+  <text x="1450" y="762" font-size="9" font-style="italic" fill="#64748B">工具与风险规则跨档可复用</text>
 
-  <!-- ============ STEP 4 : Adapter -> Provider (orange, protocol hop) ============ -->
-  <line x1="922" y1="500" x2="1268" y2="500" stroke="#F59E0B" stroke-width="2.2" marker-end="url(#ah-orange)"/>
-  <text x="1095" y="492" font-size="12" font-weight="600" fill="#F59E0B" text-anchor="middle">POST /v1/chat/completions · 标准 OpenAI 协议</text>
-  <circle cx="934" cy="500" r="11" fill="#F59E0B"/>
-  <text x="934" y="504" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <!-- ===== 选型分档色带 ===== -->
+  <text x="130" y="800" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1">选型分档 / TIER</text>
+  <rect x="130" y="806" width="740" height="30" rx="6" fill="#EFF6FF"/>
+  <circle cx="150" cy="821" r="4" fill="#2563EB"/>
+  <text x="162" y="825" font-size="11" font-weight="700" fill="#2563EB">Python 研究原型 · 编排深度领先</text>
+  <rect x="880" y="806" width="250" height="30" rx="6" fill="#ECFDF5"/>
+  <circle cx="900" cy="821" r="4" fill="#10B981"/>
+  <text x="912" y="825" font-size="11" font-weight="700" fill="#10B981">Java 企业生产</text>
+  <rect x="1140" y="806" width="260" height="30" rx="6" fill="#FFFBEB"/>
+  <circle cx="1160" cy="821" r="4" fill="#F59E0B"/>
+  <text x="1172" y="825" font-size="11" font-weight="700" fill="#F59E0B">低代码平台 · 快速验证</text>
 
-  <!-- ============ MODEL PROVIDER BRANCH (either / or) ============ -->
-  <line x1="1285" y1="550" x2="1316" y2="550" stroke="#94A3B8" stroke-width="1.4"/>
-  <path d="M 1326 514 Q 1316 514 1316 526 L 1316 544 Q 1316 550 1310 550 Q 1316 550 1316 556 L 1316 574 Q 1316 586 1326 586" fill="none" stroke="#94A3B8" stroke-width="1.2"/>
+  <!-- ===== 图例 ===== -->
+  <line x1="64" y1="852" x2="1736" y2="852" stroke="#E2E8F0"/>
+  <rect x="92" y="866" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="114" y="876" font-size="10.5" fill="#64748B">Python 生态</text>
+  <rect x="232" y="866" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="254" y="876" font-size="10.5" fill="#64748B">Java 企业生态</text>
+  <rect x="382" y="866" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="404" y="876" font-size="10.5" fill="#64748B">低代码平台</text>
+  <line x1="520" y1="872" x2="566" y2="872" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <polygon points="516,872 524,868 524,876" fill="#64748B"/>
+  <polygon points="570,872 562,868 562,876" fill="#64748B"/>
+  <text x="580" y="876" font-size="10.5" fill="#64748B">跨栈模式可互迁（虚线双箭头）</text>
+  <rect x="780" y="866" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#E2E8F0"/>
+  <text x="802" y="876" font-size="10.5" fill="#64748B">行底色 = 语言生态分档</text>
 
-  <!-- cloud chip (amber) -->
-  <line x1="1326" y1="530" x2="1340" y2="530" stroke="#D97706" stroke-width="1.4"/>
-  <rect x="1340" y="513" width="200" height="34" rx="5" fill="#FFFFFF" stroke="#D97706" stroke-width="1.8"/>
-  <text x="1440" y="530" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">云端 GPT · OpenAI</text>
-  <text x="1440" y="543" font-size="9" fill="#64748B" text-anchor="middle">api.openai.com</text>
-
-  <!-- local chip (green) -->
-  <line x1="1326" y1="570" x2="1340" y2="570" stroke="#10B981" stroke-width="1.4"/>
-  <rect x="1340" y="553" width="200" height="34" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
-  <text x="1440" y="570" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">本地 Ollama</text>
-  <text x="1440" y="583" font-size="9" fill="#64748B" text-anchor="middle">localhost:11434</text>
-
-  <text x="1440" y="603" font-size="9" fill="#64748B" text-anchor="middle">二选一 · 仅改配置即可切换</text>
-
-  <!-- ============ STEP 5 : Provider -> Adapter (gray dashed, response) ============ -->
-  <line x1="1268" y1="650" x2="922" y2="650" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  <text x="1095" y="642" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle">HTTP 200 · completion 响应</text>
-  <circle cx="1256" cy="650" r="11" fill="#64748B"/>
-  <text x="1256" y="654" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
-
-  <!-- ============ STEP 6 : Adapter -> Starter (gray dashed) ============ -->
-  <line x1="898" y1="700" x2="552" y2="700" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  <text x="725" y="692" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle">解析为 ChatResponse 对象</text>
-  <circle cx="886" cy="700" r="11" fill="#64748B"/>
-  <text x="886" y="704" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
-
-  <!-- ============ STEP 7 : Starter -> App (gray dashed) ============ -->
-  <line x1="552" y1="750" x2="1638" y2="750" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  <rect x="958" y="738" width="274" height="16" fill="#FFFFFF" opacity="0.9"/>
-  <text x="1095" y="742" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle">返回 ChatResponse / 内容</text>
-  <circle cx="564" cy="750" r="11" fill="#64748B"/>
-  <text x="564" y="754" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
-
-  <!-- ============ CALLOUT (key insight) ============ -->
-  <rect x="380" y="815" width="1040" height="54" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="900" y="838" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">OpenAI API Adapter 仅做协议翻译 · 不引入额外业务逻辑</text>
-  <text x="900" y="858" font-size="10" fill="#475569" text-anchor="middle">切换云端 GPT ↔ 本地 Ollama = 仅改 application.yml，上层 ChatClient 调用代码零改动</text>
-
-  <!-- ============ LEGEND ============ -->
-  <line x1="40" y1="885" x2="1760" y2="885" stroke="#E2E8F0"/>
-  <text x="50" y="911" font-size="11" font-weight="700" fill="#475569">图例</text>
-
-  <line x1="100" y1="907" x2="128" y2="907" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="136" y="911" font-size="11" fill="#475569">同步调用 · 主链路</text>
-
-  <line x1="320" y1="907" x2="348" y2="907" stroke="#64748B" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ah-gray)"/>
-  <text x="356" y="911" font-size="11" fill="#475569">响应返回</text>
-
-  <rect x="470" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
-  <text x="496" y="911" font-size="11" fill="#475569">配置 / 数据</text>
-
-  <rect x="610" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.6"/>
-  <text x="636" y="911" font-size="11" fill="#475569">AI 适配器</text>
-
-  <rect x="750" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.6"/>
-  <text x="776" y="911" font-size="11" fill="#475569">云端模型</text>
-
-  <rect x="880" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="906" y="911" font-size="11" fill="#475569">本地 / 边缘</text>
-
-  <rect x="1020" y="901" width="18" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
-  <text x="1046" y="911" font-size="11" fill="#475569">激活期</text>
-
-  <rect x="1130" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="3 2"/>
-  <text x="1156" y="911" font-size="11" fill="#475569">装配说明</text>
-
-  <!-- ============ CAPTION ============ -->
-  <text x="900" y="975" font-size="11" fill="#94A3B8" text-anchor="middle">图7-5  OpenAI API Adapter 只做协议翻译不引入额外逻辑；无论后端是云端 GPT 还是本地 Ollama，上层 ChatClient 调用代码完全不变，切换成本仅为改配置文件。</text>
+  <!-- ===== caption ===== -->
+  <line x1="64" y1="908" x2="1736" y2="908" stroke="#F1F5F9"/>
+  <text x="900" y="930" font-size="10" fill="#94A3B8" text-anchor="middle">图7-5 Python 生态以 LangGraph / AutoGen 领先编排深度；Spring AI 是 Java 企业级唯一成熟选项；Dify / Coze 用低代码覆盖快速验证。</text>
+  <text x="900" y="946" font-size="10" fill="#94A3B8" text-anchor="middle">虚线双箭头标注跨栈迁移路径——Spring AI 的 Tool Calling / RAG / 记忆模式与 LangGraph 在概念上可直接互相迁移。</text>
 </svg>
