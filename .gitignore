@@ -48,6 +48,7 @@ Thumbs.db
 
 # 导出产物（每次 export 重新生成；docx 频繁变化不入版本控制，book.md 文本版仍跟踪）
 output/book.docx
+output/cover.png
 # PDF/样稿产物（Chrome/pandoc 每次重新生成，大且易变，不入版本控制；pdf_style.css 保留）
 output/book.pdf
 output/book.html

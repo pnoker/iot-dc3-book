@@ -61,6 +61,10 @@ def generate_markdown_output(
     """
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
+    # 生成封面图（assets/cover.html → output/cover.png，供封面页引用）
+    cover_html = out.parent / "assets" / "cover.html"
+    if cover_html.exists():
+        _generate_cover_image(cover_html, out / "cover.png")
     env = get_template_environment()
     cfg = cfg or {}
     output_cfg = cfg.get("output", {})
@@ -320,3 +324,25 @@ def generate_pdf_output(
         raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
     logger.info("PDF 输出完成: %s", pdf_path)
     return str(pdf_path)
+
+
+def _generate_cover_image(cover_html: str | Path, output_png: str | Path, *, chrome_bin: str | None = None) -> None:
+    """用 Chrome headless 把封面 HTML 截图为 PNG（A4 比例，150dpi）。无 Chrome 时跳过。"""
+    chrome = chrome_bin or _find_chrome()
+    if chrome is None:
+        logger.warning("未找到 Chrome，跳过封面图生成。")
+        return
+    cover_path = Path(cover_html)
+    if not cover_path.exists():
+        return
+    png_path = Path(output_png)
+    png_path.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        chrome, "--headless", "--disable-gpu", f"--screenshot={png_path}",
+        "--window-size=1240,1754", f"file://{cover_path}",
+    ]
+    completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    if completed.returncode == 0 and png_path.exists():
+        logger.info("封面图生成: %s", png_path)
+    else:
+        logger.warning("封面图生成失败: %s", completed.stderr.strip())

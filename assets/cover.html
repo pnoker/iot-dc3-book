@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>AIoT 技术与实践</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin:0; width:210mm; height:297mm; font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif; background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#312E81 100%); color:#fff; display:flex; flex-direction:column; justify-content:space-between; padding:28mm 22mm; position:relative; overflow:hidden; }
+  /* 装饰网格 */
+  .grid { position:absolute; inset:0; background-image:linear-gradient(rgba(99,102,241,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.08) 1px,transparent 1px); background-size:32px 32px; opacity:.55; }
+  /* 连线节点（IoT 感） */
+  .node { position:absolute; width:8px; height:8px; border-radius:50%; background:#60A5FA; box-shadow:0 0 14px #60A5FA; z-index:1; }
+  .node.purple { background:#A78BFA; box-shadow:0 0 14px #A78BFA; }
+  .line { position:absolute; height:1px; background:linear-gradient(90deg,#60A5FA,#A78BFA); opacity:.45; z-index:1; }
+  .top, .bottom { position:relative; z-index:2; }
+  .tag { display:inline-block; padding:5px 16px; border:1px solid rgba(147,197,253,.5); border-radius:20px; font-size:12px; letter-spacing:3px; color:#BFDBFE; }
+  .title { font-size:66px; font-weight:800; line-height:1.1; margin:36px 0 12px; background:linear-gradient(135deg,#FFFFFF,#BFDBFE 60%,#A78BFA); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:3px; }
+  .subtitle { font-size:23px; font-weight:300; color:#CBD5E1; margin-top:6px; letter-spacing:2px; }
+  .divider { width:72px; height:4px; background:linear-gradient(90deg,#3B82F6,#A78BFA); border-radius:2px; margin:44px 0 36px; }
+  .highlights { font-size:15px; color:#94A3B8; line-height:2.1; letter-spacing:.5px; }
+  .highlights .dot { color:#60A5FA; margin-right:10px; font-size:10px; vertical-align:middle; }
+  .highlights .dot.p { color:#A78BFA; }
+  .bottom { display:flex; justify-content:space-between; align-items:flex-end; }
+  .author { font-size:21px; font-weight:600; letter-spacing:1px; }
+  .author small { display:block; font-size:13px; color:#94A3B8; font-weight:400; margin-top:6px; letter-spacing:.5px; }
+  .brand { font-size:13px; color:#64748B; text-align:right; letter-spacing:2px; }
+  .brand b { display:block; font-size:15px; color:#94A3B8; margin-bottom:6px; font-weight:500; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <!-- IoT 节点连线装饰 -->
+  <div class="node" style="top:14%;left:68%"></div>
+  <div class="node purple" style="top:20%;left:84%"></div>
+  <div class="node" style="top:33%;left:76%"></div>
+  <div class="node purple" style="top:58%;left:88%"></div>
+  <div class="node" style="top:48%;left:8%"></div>
+  <div class="node purple" style="top:72%;left:14%"></div>
+  <div class="line" style="top:15%;left:69%;width:110px;transform:rotate(28deg)"></div>
+  <div class="line" style="top:34%;left:77%;width:90px;transform:rotate(65deg)"></div>
+  <div class="line" style="top:49%;left:9%;width:80px;transform:rotate(40deg)"></div>
+
+  <div class="top">
+    <div class="tag">AIoT · 2026</div>
+    <div class="title">AIoT<br>技术与实践</div>
+    <div class="subtitle">—— 从物联网平台到智能体应用</div>
+    <div class="divider"></div>
+    <div class="highlights">
+      <div><span class="dot">●</span>五层架构 · 物联网平台底座</div>
+      <div><span class="dot p">●</span>Spring AI 2.0 · MCP · Tool-Calling 实战</div>
+      <div><span class="dot">●</span>IoT DC3 开源项目贯穿全书</div>
+      <div><span class="dot p">●</span>14 章 · 66 张架构图 · 工程方法论</div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="author">
+      张红元
+      <small>IoT DC3 开源作者 · 高级工程师 · 架构师</small>
+    </div>
+    <div class="brand">
+      <b>从连接到智能</b>
+      Connecting to Intelligence
+    </div>
+  </div>
+</body>
+</html>
