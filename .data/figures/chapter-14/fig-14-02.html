@@ -306,7 +306,7 @@
 </svg>
     <section class="meta">
       <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自下而上分层：南向设备层（传感器/PLC/网关）→ 设备接入层（协议驱动，虚线框标&quot;可下沉至边缘&quot;）→ 平台服务层（鉴权中心、管理中心、数据中心、智能中心四个蓝色中心）→ 应用展现层（Web/App/API）。东西向 Nacos 与消息队列（RabbitMQ/Kafka）平行支撑。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自下而上分层：南向设备层（传感器/PLC/网关）→ 设备接入层（协议驱动，虚线框标&quot;可下沉至边缘&quot;）→ 平台服务层（鉴权中心、管理中心、数据中心、智能中心四个蓝色中心）→ 应用展现层（Web/App/API）。东西向由消息队列（RabbitMQ）与 gRPC 调用平行支撑，服务寻址默认走容器网络 DNS + 环境变量覆盖，规模化后可引入 Nacos 做注册与配置中心。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

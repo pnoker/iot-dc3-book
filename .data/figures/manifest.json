@@ -500,7 +500,7 @@
       "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-06/fig-6-03.html",
       "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-06/fig-6-03.png",
       "markdown_path": "figures/chapter-06/fig-6-03.png",
-      "body_hash": "6063d5e7d2af8c5f",
+      "body_hash": "b168cc5285fc233b",
       "source": "polished",
       "quality_tier": "publication"
     },
@@ -511,12 +511,12 @@
       "figure_id": "fig-6-04",
       "figure_type": "architecture",
       "title": "图6-4 IoT DC3服务间通信架构图",
-      "caption": "图6-4 IoT DC3服务间通信架构图。控制面走同步保证指令即时可确认，数据面走异步扛住高吞吐；RabbitMQ承载控制面事件，Kafka承载数据面时序流。",
+      "caption": "图6-4 IoT DC3 服务间通信架构。控制面走同步（gRPC）保证指令即时可确认，数据面走异步（消息队列）扛住高吞吐；当前 RabbitMQ 统一承载，规模化后数据面可演进到 Kafka。",
       "svg_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-06/fig-6-04.svg",
       "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-06/fig-6-04.html",
       "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-06/fig-6-04.png",
       "markdown_path": "figures/chapter-06/fig-6-04.png",
-      "body_hash": "db907f0c2bf74ea9",
+      "body_hash": "37782b960fd7b23f",
       "source": "polished",
       "quality_tier": "publication"
     },
@@ -1108,7 +1108,7 @@
       "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-02.html",
       "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-02.png",
       "markdown_path": "figures/chapter-14/fig-14-02.png",
-      "body_hash": "7930dd63ffdd1d4d",
+      "body_hash": "1ad06e2bc8d52b5d",
       "source": "polished",
       "quality_tier": "publication"
     },
@@ -1156,7 +1156,7 @@
       "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-05.html",
       "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-05.png",
       "markdown_path": "figures/chapter-14/fig-14-05.png",
-      "body_hash": "60a72f2161b04c67",
+      "body_hash": "d27fb33d5def89bd",
       "source": "polished",
       "quality_tier": "publication"
     },
