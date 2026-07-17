@@ -280,9 +280,12 @@ def generate_pdf_output(
         css_file: str | Path | None = None,
         chrome_bin: str | None = None,
         pandoc_bin: str = "pandoc",
+        cover_html: str | Path | None = None,
 ) -> str | None:
     """从 Markdown 生成 PDF：pandoc 转 HTML → Chrome headless 转 PDF。
 
+    若提供 cover_html，则先将设计封面单独渲染为一页全幅 A4 PDF，再与正文
+    PDF 合并为首页，避免 pandoc 自动标题页盖掉设计封面。
     无 Chrome/Edge 时跳过并警告（不报错），便于无浏览器环境跳过 PDF。
     """
     markdown_path = Path(markdown_file)
@@ -300,11 +303,24 @@ def generate_pdf_output(
     pdf_path.parent.mkdir(parents=True, exist_ok=True)
     html_path = pdf_path.with_suffix(".html")
 
-    # pandoc: markdown → html（standalone，附 CSS）
+    cover_path = Path(cover_html) if cover_html else None
+    has_cover = bool(cover_path and cover_path.exists())
+
+    # 有设计封面时，剥离正文 markdown 开头的 ![](cover.png) 引用，
+    # 避免封面图在正文首页重复出现（封面已单独成页）。
+    pandoc_input = markdown_path
+    if has_cover:
+        text = markdown_path.read_text(encoding="utf-8")
+        stripped = re.sub(r"^\s*!\[[^\]]*\]\(cover\.png\)\s*\n", "", text, count=1)
+        if stripped != text:
+            pandoc_input = pdf_path.with_name(".book_body.md")
+            pandoc_input.write_text(stripped, encoding="utf-8")
+
+    # pandoc: markdown → html（standalone，附 CSS）。
+    # 不注入 title 元数据——避免 pandoc 生成的标题页盖掉设计封面。
     cmd = [
-        resolved_pandoc, str(markdown_path), "-o", str(html_path),
+        resolved_pandoc, str(pandoc_input), "-o", str(html_path),
         "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
-        "--metadata", "title=AIoT 技术与实践",
     ]
     css_cwd = None
     if css_file and Path(css_file).exists():
@@ -314,20 +330,65 @@ def generate_pdf_output(
     if completed.returncode != 0:
         raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
-    # Chrome headless: html → pdf
+    # 若有设计封面，正文 PDF 先写到临时文件，最后与封面合并
+    body_pdf = pdf_path.with_name(".book_body.pdf") if has_cover else pdf_path
+
+    # Chrome headless: 正文 html → pdf
     chrome_cmd = [
         chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-        f"--print-to-pdf={pdf_path}", f"file://{html_path}",
+        f"--print-to-pdf={body_pdf}", f"file://{html_path}",
     ]
     completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
     if completed.returncode != 0:
         raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
+
+    # 设计封面：单独渲染为一页全幅 A4 PDF，再与正文合并为首页
+    if has_cover:
+        cover_pdf = pdf_path.with_name(".book_cover.pdf")
+        cover_cmd = [
+            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+            f"--print-to-pdf={cover_pdf}", f"file://{cover_path}",
+        ]
+        cover_done = subprocess.run(cover_cmd, check=False, capture_output=True, text=True)
+        if cover_done.returncode == 0 and cover_pdf.exists():
+            try:
+                from pypdf import PdfReader, PdfWriter
+                writer = PdfWriter()
+                for page in PdfReader(str(cover_pdf)).pages:
+                    writer.add_page(page)
+                for page in PdfReader(str(body_pdf)).pages:
+                    writer.add_page(page)
+                with open(pdf_path, "wb") as f:
+                    writer.write(f)
+            except Exception as exc:  # 合并失败则退回仅正文 PDF
+                logger.warning("封面 PDF 合并失败，输出仅正文 PDF: %s", exc)
+                if body_pdf != pdf_path:
+                    body_pdf.replace(pdf_path)
+            finally:
+                cover_pdf.unlink(missing_ok=True)
+                if body_pdf != pdf_path:
+                    body_pdf.unlink(missing_ok=True)
+        else:
+            logger.warning("封面 PDF 渲染失败，输出仅正文 PDF: %s", cover_done.stderr.strip())
+            if body_pdf != pdf_path:
+                body_pdf.replace(pdf_path)
+
+    # 清理剥离封面引用后的临时正文 md
+    if pandoc_input != markdown_path:
+        pandoc_input.unlink(missing_ok=True)
+
     logger.info("PDF 输出完成: %s", pdf_path)
     return str(pdf_path)
 
 
 def _generate_cover_image(cover_html: str | Path, output_png: str | Path, *, chrome_bin: str | None = None) -> None:
-    """用 Chrome headless 把封面 HTML 截图为 PNG（A4 比例，150dpi）。无 Chrome 时跳过。"""
+    """用 Chrome headless 把封面 HTML 转为 PNG。
+
+    先 print-to-pdf（`@page A4` 精确分页、无留白），再转 PNG——比 --screenshot
+    的视口截图更可靠，不受视口高度与 body 高度不吻合导致的底部留白影响。
+    转 PNG 优先用 pypdf 渲染，退化到 sips（macOS）；均不可用时回退到 --screenshot。
+    无 Chrome 时跳过。
+    """
     chrome = chrome_bin or _find_chrome()
     if chrome is None:
         logger.warning("未找到 Chrome，跳过封面图生成。")
@@ -337,12 +398,38 @@ def _generate_cover_image(cover_html: str | Path, output_png: str | Path, *, chr
         return
     png_path = Path(output_png)
     png_path.parent.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        chrome, "--headless", "--disable-gpu", f"--screenshot={png_path}",
-        "--window-size=1240,1754", f"file://{cover_path}",
+
+    # 1) HTML → 一页 A4 PDF（精确分页，无留白）
+    cover_pdf = png_path.with_name(".cover_tmp.pdf")
+    pdf_cmd = [
+        chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+        f"--print-to-pdf={cover_pdf}", f"file://{cover_path}",
     ]
-    completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    pdf_done = subprocess.run(pdf_cmd, check=False, capture_output=True, text=True)
+
+    # 2) PDF → PNG（sips 在 macOS 上可直接转）
+    if pdf_done.returncode == 0 and cover_pdf.exists():
+        sips = shutil.which("sips")
+        if sips:
+            conv = subprocess.run(
+                [sips, "-s", "format", "png", str(cover_pdf), "--out", str(png_path)],
+                check=False, capture_output=True, text=True,
+            )
+            cover_pdf.unlink(missing_ok=True)
+            if conv.returncode == 0 and png_path.exists():
+                logger.info("封面图生成: %s", png_path)
+                return
+        cover_pdf.unlink(missing_ok=True)
+
+    # 3) 回退：直接截图（可能有留白，但保证有产物）
+    fallback = [
+        chrome, "--headless", "--disable-gpu", "--hide-scrollbars",
+        "--default-background-color=00000000", f"--screenshot={png_path}",
+        "--window-size=1240,1754", "--force-device-scale-factor=1",
+        f"file://{cover_path}",
+    ]
+    completed = subprocess.run(fallback, check=False, capture_output=True, text=True)
     if completed.returncode == 0 and png_path.exists():
-        logger.info("封面图生成: %s", png_path)
+        logger.info("封面图生成（截图回退）: %s", png_path)
     else:
         logger.warning("封面图生成失败: %s", completed.stderr.strip())

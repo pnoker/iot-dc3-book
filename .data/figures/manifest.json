@@ -3,9 +3,9 @@
   "figures_dir": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures",
   "manifest": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/manifest.json",
   "renderer_version": "ai-html-svg-v2",
-  "generated_count": 74,
+  "generated_count": 72,
   "reused_count": 0,
-  "polished_count": 74,
+  "polished_count": 72,
   "failed_count": 0,
   "generated": [
     {
@@ -1157,38 +1157,6 @@
       "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-05.png",
       "markdown_path": "figures/chapter-14/fig-14-05.png",
       "body_hash": "d27fb33d5def89bd",
-      "source": "polished",
-      "quality_tier": "publication"
-    },
-    {
-      "chapter_id": 14,
-      "section_id": "14.5.5",
-      "occurrence": 6,
-      "figure_id": "fig-14-06",
-      "figure_type": "dataflow",
-      "title": "图2-05 Data 中心数据流：从设备采集到时序存储",
-      "caption": "图14-6 Data 中心数据流示意图。数据到达 Data 中心后分流——一路进入消息队列等待异步写入时序库，另一路即时推送给实时订阅方。这种\"一次接收、两处分发\"的模式，同时满足持久化与实时性需求。",
-      "svg_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-06.svg",
-      "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-06.html",
-      "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-06.png",
-      "markdown_path": "figures/chapter-14/fig-14-06.png",
-      "body_hash": "46e85b2769ffb17c",
-      "source": "polished",
-      "quality_tier": "publication"
-    },
-    {
-      "chapter_id": 14,
-      "section_id": "14.5.7",
-      "occurrence": 7,
-      "figure_id": "fig-14-07",
-      "figure_type": "sequence",
-      "title": "图2-06 五大中心协同流程时序（智能灌溉场景）",
-      "caption": "图14-7 五大中心协同流程时序图（智能灌溉场景）。左侧标注\"注册→配置→上报→推理→控制\"阶段标签，闭环中每一步都携带标准 PointValue。",
-      "svg_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-07.svg",
-      "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-07.html",
-      "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-14/fig-14-07.png",
-      "markdown_path": "figures/chapter-14/fig-14-07.png",
-      "body_hash": "83008fe96cf0aaf6",
       "source": "polished",
       "quality_tier": "publication"
     }

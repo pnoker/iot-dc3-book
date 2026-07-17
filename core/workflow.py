@@ -648,11 +648,13 @@ class BookProject:
             )
         if export_target in {"pdf", "all"}:
             css = output_dir / "pdf_style.css"
+            cover_html = self.paths.project_dir / "assets" / "cover.html"
             pdf_path = generate_pdf_output(
                 str(markdown_result.get("book_clean") or markdown_result["book_markdown"]),
                 output_dir / "book.pdf",
                 css_file=css if css.exists() else None,
                 pandoc_bin=self.cfg.output.pandoc_bin,
+                cover_html=cover_html if cover_html.exists() else None,
             )
             if pdf_path:
                 result["pdf_file"] = pdf_path
