@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="136.800" width="1152.000" height="486.400" viewBox="0 0 1800.000 760.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+</defs>
+<rect x="0" y="0" width="1800" height="760" fill="#FFFFFF"/>
+<circle cx="64" cy="40" r="6" fill="#2563EB"/>
+<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图7-9 Agentic Center 能力金字塔：Tools / Skills / CLI</text>
+<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">原子能力 → 编排复合能力 → 自动化入口，三层共享同一套鉴权与风险分级</text>
+<rect x="1620" y="28" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1680" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">PYRAMID</text>
+<line x1="58" y1="103" x2="1742" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+<!-- 金字塔三层（顶 CLI 蓝、中 Skills 橙、底 Tools 绿） -->
+<!-- 顶层 CLI -->
+<polygon points="900,150 1020,270 780,270" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="900" y="225" fill="#0F172A" font-size="18" font-weight="800" text-anchor="middle">CLI</text>
+<text x="900" y="248" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">自动化入口</text>
+<!-- 中层 Skills -->
+<polygon points="775,278 1025,278 1150,398 650,398" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+<text x="900" y="335" fill="#0F172A" font-size="18" font-weight="800" text-anchor="middle">Skills</text>
+<text x="900" y="360" fill="#B45309" font-size="11" font-weight="600" text-anchor="middle">编排复合能力（晨检 / 根因分析 / 批量下发）</text>
+<!-- 底层 Tools -->
+<polygon points="645,406 1155,406 1290,540 510,540" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+<text x="900" y="466" fill="#0F172A" font-size="18" font-weight="800" text-anchor="middle">Tools</text>
+<text x="900" y="491" fill="#059669" font-size="11" font-weight="600" text-anchor="middle">原子能力 · @Tool（查设备 / 读写点位 / 下命令）</text>
+
+<!-- 递进箭头（右侧） -->
+<line x1="1330" y1="500" x2="1330" y2="230" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+<text x="1360" y="480" fill="#64748B" font-size="11" font-weight="600">抽象层级递进</text>
+<text x="1360" y="380" fill="#64748B" font-size="10">原子→编排</text>
+<text x="1360" y="300" fill="#64748B" font-size="10">对话→自动化</text>
+
+<!-- 左侧说明 -->
+<text x="470" y="230" fill="#64748B" font-size="10" text-anchor="end">终端 / 脚本 / CI</text>
+<text x="470" y="350" fill="#64748B" font-size="10" text-anchor="end">运维最佳实践沉淀</text>
+<text x="470" y="470" fill="#64748B" font-size="10" text-anchor="end">10 个 @Tool 工具类</text>
+
+<!-- 底部基座：统一鉴权·风险分级·人工确认 -->
+<rect x="400" y="565" width="1000" height="56" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="900" y="590" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">统一底座</text>
+<text x="900" y="610" fill="#64748B" font-size="11" font-weight="500" text-anchor="middle">统一鉴权 · 风险分级 · 高风险写操作人工确认（三层共享）</text>
+
+<!-- 图例 -->
+<line x1="58" y1="665" x2="1742" y2="665" stroke="#E2E8F0" stroke-width="1"/>
+<rect x="80" y="688" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+<text x="104" y="698" fill="#64748B" font-size="11" font-weight="600">Tools 原子能力</text>
+<rect x="260" y="688" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="284" y="698" fill="#64748B" font-size="11" font-weight="600">Skills 复合能力</text>
+<rect x="440" y="688" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+<text x="464" y="698" fill="#64748B" font-size="11" font-weight="600">CLI 自动化入口</text>
+<rect x="620" y="688" width="16" height="12" rx="2" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="644" y="698" fill="#64748B" font-size="11" font-weight="600">共享鉴权底座</text>
+
+<text x="900" y="738" fill="#94A3B8" font-size="10" text-anchor="middle">图7-9 Tools（原子能力）→ Skills（编排复合能力）→ CLI（自动化入口）三层递进，Web 对话与 CLI 共享同一能力体系，统一鉴权、风险分级与人工确认贯穿三层。</text>
+  </svg>
+</svg>

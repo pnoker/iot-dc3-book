@@ -3,9 +3,9 @@
   "figures_dir": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures",
   "manifest": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/manifest.json",
   "renderer_version": "ai-html-svg-v2",
-  "generated_count": 73,
+  "generated_count": 74,
   "reused_count": 0,
-  "polished_count": 73,
+  "polished_count": 74,
   "failed_count": 0,
   "generated": [
     {
@@ -634,8 +634,24 @@
     },
     {
       "chapter_id": 7,
-      "section_id": "7.7.1",
+      "section_id": "7.5.3",
       "occurrence": 8,
+      "figure_id": "fig-7-09",
+      "figure_type": "pyramid",
+      "title": "图7-9 Agentic Center 能力金字塔：Tools / Skills / CLI",
+      "caption": "图7-9 Agentic Center 能力金字塔：Tools 是原子能力（@Tool 查设备/读写点位/下命令），Skills 是编排后的复合能力（晨检/根因分析/批量下发），CLI 是面向脚本与自动化的调用入口；三层共享同一套鉴权、风险分级与人工确认机制。",
+      "svg_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-07/fig-7-09.svg",
+      "html_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-07/fig-7-09.html",
+      "png_path": "/Users/pnoker/Code/micode/tool/mi-book/book-writer/.data/figures/chapter-07/fig-7-09.png",
+      "markdown_path": "figures/chapter-07/fig-7-09.png",
+      "body_hash": "ed503742a5f62486",
+      "source": "polished",
+      "quality_tier": "publication"
+    },
+    {
+      "chapter_id": 7,
+      "section_id": "7.7.1",
+      "occurrence": 9,
       "figure_id": "fig-7-08",
       "figure_type": "timeline",
       "title": "图7-8 从 Copilot 到 Agent 的三阶段演进",
