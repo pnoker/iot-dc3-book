@@ -90,29 +90,29 @@
     <path d="M1117,352 A13,4 0 0 0 1143,352" fill="none" opacity="0.5"/>
   </g>
   <line x1="882" y1="396" x2="1138" y2="396" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="882" y="420" font-size="10.5" fill="#475569">· 消息消费 · 时序入库</text>
-  <text x="882" y="442" font-size="10.5" fill="#475569">· 实时数据缓存</text>
-  <text x="882" y="464" font-size="10.5" fill="#475569">· 告警事件持久化</text>
+  <text x="882" y="420" font-size="10.5" fill="#475569">· RabbitMQ 消息收发</text>
+  <text x="882" y="442" font-size="10.5" fill="#475569">· Caffeine 最新值缓存</text>
+  <text x="882" y="464" font-size="10.5" fill="#475569">· PostgreSQL 历史值</text>
   <text x="1010" y="488" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">高频 · 高吞吐</text>
 
-  <!-- 智能中心 (orange highlight) -->
+  <!-- Agentic 中心 (orange highlight) -->
   <rect x="1260" y="325" width="300" height="180" rx="6" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
-  <text x="1410" y="360" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">智能中心</text>
-  <text x="1410" y="380" font-size="10" fill="#64748B" text-anchor="middle">Smart Center</text>
+  <text x="1410" y="360" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Agentic 中心</text>
+  <text x="1410" y="380" font-size="10" fill="#64748B" text-anchor="middle">Agentic Center</text>
   <line x1="1282" y1="396" x2="1538" y2="396" stroke="#FDE68A" stroke-width="1"/>
-  <text x="1282" y="420" font-size="10.5" fill="#475569">· 规则引擎 · 联动触发</text>
-  <text x="1282" y="442" font-size="10.5" fill="#475569">· 实时告警计算</text>
-  <text x="1282" y="464" font-size="10.5" fill="#475569">· AI 模型推理分析</text>
-  <text x="1410" y="488" font-size="9" font-weight="600" fill="#F59E0B" text-anchor="middle">计算密集 · 流处理</text>
+  <text x="1282" y="420" font-size="10.5" fill="#475569">· ChatClient · 模型 Provider</text>
+  <text x="1282" y="442" font-size="10.5" fill="#475569">· @Tool · 会话 / Action</text>
+  <text x="1282" y="464" font-size="10.5" fill="#475569">· Facade / gRPC 复用平台能力</text>
+  <text x="1410" y="488" font-size="9" font-weight="600" fill="#F59E0B" text-anchor="middle">对话 · 工具调用</text>
 
   <!-- intra-platform arrows -->
   <!-- 管理中心 -> 数据中心 : 配置下发 (solid blue) -->
   <line x1="760" y1="440" x2="858" y2="440" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
   <text x="809" y="432" font-size="9.5" font-weight="600" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">配置下发</text>
 
-  <!-- 数据中心 -> 智能中心 : 实时数据流 (dashed gray) -->
+  <!-- Agentic -> Data : Facade/gRPC -->
   <line x1="1160" y1="440" x2="1258" y2="440" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="1209" y="432" font-size="9.5" font-weight="600" fill="#64748B" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">实时数据流</text>
+  <text x="1209" y="432" font-size="9.5" font-weight="600" fill="#64748B" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">Facade / gRPC</text>
 
   <!-- ============================================================ -->
   <!-- 消息总线 (purple horizontal backbone)                         -->
@@ -122,29 +122,29 @@
   <text x="162" y="589" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">消息总线 · 异步解耦</text>
 
   <text x="90" y="614" font-size="13" font-weight="700" fill="#7C3AED">Message Bus</text>
-  <text x="90" y="638" font-size="10" fill="#64748B">驱动 → 数据中心 异步缓冲</text>
+  <text x="90" y="638" font-size="10" fill="#64748B">Data ↔ Driver 双向异步通信</text>
 
   <!-- queue pills -->
   <rect x="690" y="600" width="150" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
   <text x="765" y="621" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">RabbitMQ</text>
-  <rect x="858" y="600" width="120" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="918" y="621" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">Kafka</text>
-  <rect x="996" y="600" width="140" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="1066" y="621" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">MQTT Broker</text>
+  <rect x="858" y="600" width="150" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="933" y="621" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">Point Value / Status</text>
+  <rect x="1026" y="600" width="170" height="32" rx="16" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1111" y="621" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">Command / Receipt</text>
 
   <text x="1540" y="618" font-size="10.5" font-weight="600" fill="#7C3AED" text-anchor="end">削峰填谷 · 抖动隔离</text>
   <text x="1540" y="636" font-size="9" fill="#94A3B8" text-anchor="end">云端变慢不反压掉线</text>
 
-  <!-- 数据中心 <- 消息总线 : 时序数据消费 (dashed purple, upward) -->
+  <!-- 数据中心 <-> 消息总线 -->
   <line x1="1010" y1="585" x2="1010" y2="507" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
-  <text x="1024" y="550" font-size="9.5" font-weight="600" fill="#7C3AED">时序数据消费</text>
+  <text x="1024" y="550" font-size="9.5" font-weight="600" fill="#7C3AED">数据消费 / 命令发布</text>
 
   <!-- 驱动 -> 消息总线 : 异步上行 (dashed gray, upward, 4 feeds) -->
   <line x1="210" y1="703" x2="210" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
   <line x1="610" y1="703" x2="610" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
   <line x1="1010" y1="703" x2="1010" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
   <line x1="1410" y1="703" x2="1410" y2="662" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="810" y="688" font-size="9.5" font-weight="600" fill="#64748B" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">驱动异步上行（发布）</text>
+  <text x="810" y="688" font-size="9.5" font-weight="600" fill="#64748B" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">驱动发布数据 / 消费命令</text>
 
   <!-- ============================================================ -->
   <!-- Layer 2: 设备接入层 · 协议驱动 (green dashed, edge-deployable) -->
@@ -215,25 +215,25 @@
   <text x="1410" y="982" font-size="9.5" fill="#64748B" text-anchor="middle">边缘智能设备</text>
 
   <!-- ============================================================ -->
-  <!-- Right sidebar: Nacos (service registry & config)              -->
+  <!-- Right sidebar: service addressing                            -->
   <!-- ============================================================ -->
   <rect x="1600" y="300" width="140" height="360" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="1670" y="346" font-size="19" font-weight="700" fill="#7C3AED" text-anchor="middle">Nacos</text>
-  <text x="1670" y="365" font-size="9" fill="#94A3B8" text-anchor="middle">基础设施 · 横向支撑</text>
+  <text x="1670" y="346" font-size="16" font-weight="700" fill="#7C3AED" text-anchor="middle">服务寻址</text>
+  <text x="1670" y="365" font-size="9" fill="#94A3B8" text-anchor="middle">Compose DNS · ENV</text>
   <line x1="1620" y1="380" x2="1720" y2="380" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1670" y="406" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">服务注册中心</text>
-  <text x="1670" y="428" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">动态配置中心</text>
+  <text x="1670" y="406" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">固定服务名</text>
+  <text x="1670" y="428" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">环境变量覆盖</text>
   <line x1="1620" y1="448" x2="1720" y2="448" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1625" y="474" font-size="9.5" fill="#475569">· 四中心注册</text>
-  <text x="1625" y="494" font-size="9.5" fill="#475569">· 协议驱动注册</text>
-  <text x="1625" y="514" font-size="9.5" fill="#475569">· 配置热更新</text>
-  <text x="1625" y="534" font-size="9.5" fill="#475569">· 健康检查发现</text>
-  <text x="1670" y="580" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">微服务发现与</text>
-  <text x="1670" y="595" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">配置统一入口</text>
-  <text x="1670" y="640" font-size="8.5" fill="#94A3B8" text-anchor="middle">与消息总线平行</text>
-  <!-- registration connector: platform -> Nacos -->
+  <text x="1625" y="474" font-size="9.5" fill="#475569">· CENTER_*_HOST</text>
+  <text x="1625" y="494" font-size="9.5" fill="#475569">· GATEWAY_ROUTE_*_URI</text>
+  <text x="1625" y="514" font-size="9.5" fill="#475569">· dc3-center-*</text>
+  <text x="1625" y="534" font-size="9.5" fill="#475569">· healthcheck / depends_on</text>
+  <text x="1670" y="580" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">无独立注册中心</text>
+  <text x="1670" y="595" font-size="9" font-weight="600" fill="#7C3AED" text-anchor="middle">无动态配置中心</text>
+  <text x="1670" y="640" font-size="8.5" fill="#94A3B8" text-anchor="middle">Docker / Podman 网络</text>
+  <!-- addressing connector -->
   <line x1="1560" y1="424" x2="1598" y2="424" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
-  <text x="1579" y="416" font-size="8.5" font-weight="600" fill="#7C3AED" text-anchor="middle">注册</text>
+  <text x="1579" y="416" font-size="8.5" font-weight="600" fill="#7C3AED" text-anchor="middle">寻址</text>
 
   <!-- ============================================================ -->
   <!-- Right sidebar: 边缘协同 callout (next to access + device)     -->
@@ -244,7 +244,7 @@
   <line x1="1620" y1="772" x2="1720" y2="772" stroke="#A7F3D0" stroke-width="1"/>
   <text x="1670" y="796" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 驱动下沉边缘网关</text>
   <text x="1670" y="818" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 就近采集预处理</text>
-  <text x="1670" y="840" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 断网缓传不丢数据</text>
+  <text x="1670" y="840" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 断网策略需单独设计</text>
   <text x="1670" y="862" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 抖动由消息缓冲</text>
   <text x="1670" y="884" font-size="9.5" font-weight="600" fill="#10B981" text-anchor="middle">· 云端变慢不反压</text>
   <line x1="1620" y1="902" x2="1720" y2="902" stroke="#A7F3D0" stroke-width="1"/>
@@ -265,7 +265,7 @@
     <text x="374" y="1063" dominant-baseline="middle">灰虚线 · 异步上报 / 数据流</text>
 
     <line x1="600" y1="1063" x2="636" y2="1063" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-purple)"/>
-    <text x="644" y="1063" dominant-baseline="middle">紫虚线 · 消息消费 / 服务注册</text>
+    <text x="644" y="1063" dominant-baseline="middle">紫虚线 · 消息收发 / 服务寻址</text>
 
     <line x1="880" y1="1063" x2="916" y2="1063" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
     <text x="924" y="1063" dominant-baseline="middle">绿实线 · 协议采集</text>
@@ -284,6 +284,6 @@
   </g>
 
   <!-- ===== Caption ===== -->
-  <text x="900" y="1100" font-size="10" fill="#94A3B8" text-anchor="middle">图14-2 IoT DC3 四层架构：协议驱动独立部署、经消息队列异步上报数据中心；四个中心服务职责正交、按变更频率与吞吐特征拆分；驱动可下沉边缘，广域网抖动被消息缓冲隔离，云端变慢不反压掉线。</text>
+  <text x="900" y="1100" font-size="10" fill="#94A3B8" text-anchor="middle">图14-2 IoT DC3 四层架构：Auth、Manager、Data、Agentic 四中心职责分离；Driver 经 RabbitMQ 与 Data 双向异步通信；服务通过 Compose DNS、固定服务名与环境变量寻址。</text>
   </svg>
 </svg>

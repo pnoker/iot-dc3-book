@@ -648,6 +648,8 @@ class BookProject:
             )
         if export_target in {"pdf", "all"}:
             css = output_dir / "pdf_style.css"
+            if not css.exists():
+                css = self.paths.output_dir / "pdf_style.css"
             cover_html = self.paths.project_dir / "assets" / "cover.html"
             pdf_path = generate_pdf_output(
                 str(markdown_result.get("book_clean") or markdown_result["book_markdown"]),

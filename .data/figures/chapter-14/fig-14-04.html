@@ -195,7 +195,7 @@
 </svg>
     <section class="meta">
       <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左到右三阶段。训练阶段：数据中心历史时序 → 特征工程（窗口化/归一化/标签）→ 模型训练（LSTM）→ 模型导出。部署阶段：TF Serving 容器加载模型、暴露端点、热版本管理。推理阶段：实时位号经 RabbitMQ 推至智能中心 → 组合窗口调用推理 → 推理结果作为衍生位号回写数据中心 → 规则引擎消费衍生位号 → 触发告警。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从左到右三阶段。训练阶段：Data 历史数据 → 特征工程 → 项目自选模型训练 → 模型导出。部署阶段：外部推理服务加载模型并暴露受控端点。推理阶段：授权任务读取 Data 数据 → 调用推理 → 将结果作为衍生位号写回 Data → 复用规则与通知链路。整条链路标注“可选扩展，非当前 Compose 默认能力”。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

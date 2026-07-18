@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图7-9 Agentic Center 能力金字塔：Tools / Skills / CLI</title>
+  <title>图7-9 Agentic Center 当前能力与知识对齐边界</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -21,63 +21,75 @@
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="136.800" width="1152.000" height="486.400" viewBox="0 0 1800.000 760.000" preserveAspectRatio="xMidYMid meet">
 <defs>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
-<rect x="0" y="0" width="1800" height="760" fill="#FFFFFF"/>
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图7-9 Agentic Center 能力金字塔：Tools / Skills / CLI</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">原子能力 → 编排复合能力 → 自动化入口，三层共享同一套鉴权与风险分级</text>
-<rect x="1620" y="28" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1680" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">PYRAMID</text>
-<line x1="58" y1="103" x2="1742" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1800" height="760" fill="#FFFFFF"/>
 
-<!-- 金字塔三层（顶 CLI 蓝、中 Skills 橙、底 Tools 绿） -->
-<!-- 顶层 CLI -->
-<polygon points="900,150 1020,270 780,270" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-<text x="900" y="225" fill="#0F172A" font-size="18" font-weight="800" text-anchor="middle">CLI</text>
-<text x="900" y="248" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">自动化入口</text>
-<!-- 中层 Skills -->
-<polygon points="775,278 1025,278 1150,398 650,398" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
-<text x="900" y="335" fill="#0F172A" font-size="18" font-weight="800" text-anchor="middle">Skills</text>
-<text x="900" y="360" fill="#B45309" font-size="11" font-weight="600" text-anchor="middle">编排复合能力（晨检 / 根因分析 / 批量下发）</text>
-<!-- 底层 Tools -->
-<polygon points="645,406 1155,406 1290,540 510,540" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
-<text x="900" y="466" fill="#0F172A" font-size="18" font-weight="800" text-anchor="middle">Tools</text>
-<text x="900" y="491" fill="#059669" font-size="11" font-weight="600" text-anchor="middle">原子能力 · @Tool（查设备 / 读写点位 / 下命令）</text>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图7-9 Agentic Center 当前能力与知识对齐边界</text>
+  <text x="82" y="78" fill="#64748B" font-size="12">Tools 是当前实现；Skills 与 CLI 用于对齐通用 Agent 工程概念，不代表 IoT DC3 已上线对应产品能力</text>
+  <rect x="1570" y="28" width="170" height="26" rx="13" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1655" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">SCOPE · BOUNDARY</text>
+  <line x1="58" y1="103" x2="1742" y2="103" stroke="#E2E8F0"/>
 
-<!-- 递进箭头（右侧） -->
-<line x1="1330" y1="500" x2="1330" y2="230" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="1360" y="480" fill="#64748B" font-size="11" font-weight="600">抽象层级递进</text>
-<text x="1360" y="380" fill="#64748B" font-size="10">原子→编排</text>
-<text x="1360" y="300" fill="#64748B" font-size="10">对话→自动化</text>
+  <!-- 当前已实现 -->
+  <rect x="80" y="140" width="770" height="430" rx="14" fill="#F0FDF4" fill-opacity="0.45" stroke="#10B981" stroke-width="2"/>
+  <rect x="106" y="126" width="170" height="30" rx="15" fill="#10B981"/>
+  <text x="191" y="146" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">当前已实现</text>
 
-<!-- 左侧说明 -->
-<text x="470" y="230" fill="#64748B" font-size="10" text-anchor="end">终端 / 脚本 / CI</text>
-<text x="470" y="350" fill="#64748B" font-size="10" text-anchor="end">运维最佳实践沉淀</text>
-<text x="470" y="470" fill="#64748B" font-size="10" text-anchor="end">10 个 @Tool 工具类</text>
+  <rect x="125" y="195" width="300" height="130" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="150" y="228" fill="#0F172A" font-size="17" font-weight="700">Agentic @Tool</text>
+  <text x="150" y="253" fill="#475569" font-size="11">8 类 Tool 显式注册</text>
+  <text x="150" y="276" fill="#64748B" font-size="10">MethodToolCallbackProvider</text>
+  <text x="150" y="299" fill="#64748B" font-size="10">Device / Driver / PointValue 等</text>
 
-<!-- 底部基座：统一鉴权·风险分级·人工确认 -->
-<rect x="400" y="565" width="1000" height="56" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-<text x="900" y="590" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">统一底座</text>
-<text x="900" y="610" fill="#64748B" font-size="11" font-weight="500" text-anchor="middle">统一鉴权 · 风险分级 · 高风险写操作人工确认（三层共享）</text>
+  <rect x="505" y="195" width="300" height="130" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="530" y="228" fill="#0F172A" font-size="17" font-weight="700">Web / HTTP 对话</text>
+  <text x="530" y="253" fill="#475569" font-size="11">OpenAI-compatible 接口</text>
+  <text x="530" y="276" fill="#64748B" font-size="10">会话 · 消息 · 模型 Provider</text>
+  <text x="530" y="299" fill="#64748B" font-size="10">点位写 Action 确认</text>
 
-<!-- 图例 -->
-<line x1="58" y1="665" x2="1742" y2="665" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="80" y="688" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
-<text x="104" y="698" fill="#64748B" font-size="11" font-weight="600">Tools 原子能力</text>
-<rect x="260" y="688" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
-<text x="284" y="698" fill="#64748B" font-size="11" font-weight="600">Skills 复合能力</text>
-<rect x="440" y="688" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="464" y="698" fill="#64748B" font-size="11" font-weight="600">CLI 自动化入口</text>
-<rect x="620" y="688" width="16" height="12" rx="2" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-<text x="644" y="698" fill="#64748B" font-size="11" font-weight="600">共享鉴权底座</text>
+  <rect x="125" y="375" width="680" height="140" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="150" y="408" fill="#0F172A" font-size="17" font-weight="700">Gateway MCP Tools</text>
+  <text x="150" y="433" fill="#475569" font-size="11">initialize · ping · tools/list · tools/call</text>
+  <text x="150" y="458" fill="#64748B" font-size="10">工具目录来自静态 OpenAPI 规格汇聚，不扫描 Agentic @Tool</text>
+  <text x="150" y="483" fill="#64748B" font-size="10">capabilities: tools only · Resources / Prompts 当前未启用</text>
 
-<text x="900" y="738" fill="#94A3B8" font-size="10" text-anchor="middle">图7-9 Tools（原子能力）→ Skills（编排复合能力）→ CLI（自动化入口）三层递进，Web 对话与 CLI 共享同一能力体系，统一鉴权、风险分级与人工确认贯穿三层。</text>
+  <!-- 知识对齐（非现有功能） -->
+  <rect x="950" y="140" width="770" height="430" rx="14" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2" stroke-dasharray="9 5"/>
+  <rect x="976" y="126" width="230" height="30" rx="15" fill="#64748B"/>
+  <text x="1091" y="146" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">知识对齐（非现有功能）</text>
+
+  <rect x="1000" y="195" width="300" height="155" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2" stroke-dasharray="7 4"/>
+  <text x="1025" y="230" fill="#0F172A" font-size="18" font-weight="700">Skills</text>
+  <text x="1025" y="257" fill="#B45309" font-size="11" font-weight="600">复合编排概念</text>
+  <text x="1025" y="282" fill="#64748B" font-size="10">固定 Tool 顺序 + 提示模板</text>
+  <text x="1025" y="305" fill="#64748B" font-size="10">输入输出契约 + 风险边界</text>
+  <text x="1025" y="328" fill="#94A3B8" font-size="10">当前无 Skill 类型 / 注册器 / 执行器</text>
+
+  <rect x="1370" y="195" width="300" height="155" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 4"/>
+  <text x="1395" y="230" fill="#0F172A" font-size="18" font-weight="700">CLI</text>
+  <text x="1395" y="257" fill="#2563EB" font-size="11" font-weight="600">客户端形态概念</text>
+  <text x="1395" y="282" fill="#64748B" font-size="10">参数解析 · 认证 · 流式输出</text>
+  <text x="1395" y="305" fill="#64748B" font-size="10">复用 HTTP 或 MCP Tools</text>
+  <text x="1395" y="328" fill="#94A3B8" font-size="10">当前没有 dc3 agent 命令</text>
+
+  <line x1="1070" y1="415" x2="1600" y2="415" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ah-gray)"/>
+  <text x="1335" y="401" fill="#64748B" font-size="11" font-weight="600" text-anchor="middle">概念关系：CLI 调用服务端，Skills 编排原子 Tools</text>
+  <text x="1335" y="455" fill="#475569" font-size="11" text-anchor="middle">不复制业务逻辑 · 不绕过租户与 Action 确认</text>
+
+  <!-- 边界说明 -->
+  <rect x="230" y="610" width="1340" height="68" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="900" y="637" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">准确关系</text>
+  <text x="900" y="660" fill="#475569" font-size="11" text-anchor="middle">Tools = 当前原子能力 · Skills = 知识对齐的复合编排概念 · CLI = 知识对齐的客户端形态</text>
+
+  <line x1="58" y1="710" x2="1742" y2="710" stroke="#E2E8F0"/>
+  <text x="900" y="738" fill="#94A3B8" font-size="10" text-anchor="middle">图7-9 左侧为当前源码可验证能力；右侧仅用于知识对齐。虚线不表示已上线，也不表示项目路线承诺。</text>
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">pyramid</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">三层金字塔，自下而上 Tools→Skills→CLI；底部横贯统一鉴权·风险分级·人工确认基座</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">左侧“当前已实现”区域包含 @Tool、Web/HTTP 对话、MCP tools/list 与 tools/call；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧通过虚线关系箭头连接，底部为统一认证与租户权限边界</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

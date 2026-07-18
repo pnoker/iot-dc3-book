@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图7-5 Spring AI 集成链路：从配置到响应</title>
-  <desc id="desc">纵向时序图：Application Config → Spring AI Starter → OpenAI API Adapter → AI Model Provider → Application Code 五条生命线，展示配置装配、运行时请求下行与响应逐层回传，适配器层为透明代理，后端模型可替换。</desc>
+  <title id="title">图7-6 Agentic Center 多模型接入链路</title>
+  <desc id="desc">纵向时序图：Provider/Model Config → ChatClientFactory → ChatModel Adapter → Provider API → Application Code，展示按请求模型解析配置、按 Provider 类型选择 OpenAI-compatible 或 Anthropic ChatModel，并逐层返回响应。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
-<title>图7-5 Spring AI 集成链路：从配置到响应</title>
-  <desc>纵向时序图：Application Config → Spring AI Starter → OpenAI API Adapter → AI Model Provider → Application Code 五条生命线，展示配置装配、运行时请求下行与响应逐层回传，适配器层为透明代理，后端模型可替换。</desc>
+<title>图7-6 Agentic Center 多模型接入链路</title>
+  <desc>纵向时序图：Provider/Model Config → ChatClientFactory → ChatModel Adapter → Provider API → Application Code，展示按请求模型解析配置、按 Provider 类型选择 OpenAI-compatible 或 Anthropic ChatModel，并逐层返回响应。</desc>
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
@@ -20,8 +20,8 @@
 
   <!-- ============ TITLE AREA ============ -->
   <circle cx="64" cy="42" r="6" fill="#2563EB"/>
-  <text x="88" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-5  Spring AI 集成链路：从配置到响应</text>
-  <text x="88" y="73" font-size="12" fill="#64748B">application.yml → ChatClient → OpenAI Adapter → 模型 · 适配器层透明代理，后端可替换</text>
+  <text x="88" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-6  Agentic Center 多模型接入链路</text>
+  <text x="88" y="73" font-size="12" fill="#64748B">Provider / Model 配置 → ChatClientFactory → ChatModel → Provider API · 统一接口不等于统一协议</text>
 
   <rect x="1652" y="28" width="108" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1706" y="46" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">SEQUENCE</text>
@@ -49,31 +49,31 @@
   <line x1="1650" y1="192" x2="1650" y2="800" stroke="#CBD5E1" stroke-width="1.2" stroke-dasharray="5 5"/>
 
   <!-- ============ PARTICIPANT HEADERS ============ -->
-  <!-- P1 Application Config (purple) -->
+  <!-- P1 Provider / Model Config (purple) -->
   <rect x="60" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="170" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Application Config</text>
-  <text x="170" y="166" font-size="10" fill="#475569" text-anchor="middle">application.yml</text>
+  <text x="170" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Provider / Model Config</text>
+  <text x="170" y="166" font-size="10" fill="#475569" text-anchor="middle">PostgreSQL · 默认与启用状态</text>
   <rect x="148" y="172" width="44" height="14" rx="3" fill="#F5F3FF" stroke="#7C3AED" stroke-width="0.8"/>
   <text x="170" y="183" font-size="9" fill="#7C3AED" text-anchor="middle">配置</text>
 
-  <!-- P2 Spring AI Starter (blue) -->
+  <!-- P2 ChatClientFactory (blue) -->
   <rect x="430" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="540" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Spring AI Starter</text>
-  <text x="540" y="166" font-size="10" fill="#475569" text-anchor="middle">auto-config · 生成 ChatClient</text>
+  <text x="540" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">ChatClientFactory</text>
+  <text x="540" y="166" font-size="10" fill="#475569" text-anchor="middle">解析模型 · 构建并缓存客户端</text>
   <rect x="518" y="172" width="44" height="14" rx="3" fill="#EFF6FF" stroke="#2563EB" stroke-width="0.8"/>
   <text x="540" y="183" font-size="9" fill="#2563EB" text-anchor="middle">平台</text>
 
-  <!-- P3 OpenAI API Adapter (orange) -->
+  <!-- P3 ChatModel Adapter (orange) -->
   <rect x="800" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="910" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">OpenAI API Adapter</text>
-  <text x="910" y="166" font-size="10" fill="#475569" text-anchor="middle">协议翻译 · 透明代理</text>
+  <text x="910" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">ChatModel Adapter</text>
+  <text x="910" y="166" font-size="10" fill="#475569" text-anchor="middle">OpenAiChatModel / AnthropicChatModel</text>
   <rect x="888" y="172" width="44" height="14" rx="3" fill="#FFFBEB" stroke="#F59E0B" stroke-width="0.8"/>
   <text x="910" y="183" font-size="9" fill="#F59E0B" text-anchor="middle">适配器</text>
 
-  <!-- P4 AI Model Provider (amber, default cloud; replaceable) -->
+  <!-- P4 Provider API (amber) -->
   <rect x="1170" y="118" width="220" height="74" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
-  <text x="1280" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">AI Model Provider</text>
-  <text x="1280" y="166" font-size="10" fill="#475569" text-anchor="middle">OpenAI 兼容端点 · 可替换</text>
+  <text x="1280" y="146" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Provider API</text>
+  <text x="1280" y="166" font-size="10" fill="#475569" text-anchor="middle">OpenAI-compatible / Anthropic</text>
   <rect x="1258" y="172" width="44" height="14" rx="3" fill="#FFF7ED" stroke="#D97706" stroke-width="0.8"/>
   <text x="1280" y="183" font-size="9" fill="#D97706" text-anchor="middle">模型</text>
 
@@ -91,31 +91,31 @@
 
   <!-- ============ STEP 1 : Config -> Starter (purple, startup) ============ -->
   <line x1="182" y1="265" x2="528" y2="265" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-purple)"/>
-  <text x="355" y="257" font-size="12" font-weight="600" fill="#7C3AED" text-anchor="middle">读取 spring.ai.openai.* 配置</text>
+  <text x="355" y="257" font-size="12" font-weight="600" fill="#7C3AED" text-anchor="middle">读取启用的 Provider / Model 配置</text>
   <circle cx="194" cy="265" r="11" fill="#7C3AED"/>
   <text x="194" y="269" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
 
-  <!-- STEP 2 annotation : ChatClient Bean generation (note on P2) -->
+  <!-- STEP 2 annotation : ChatClient creation (note on P2) -->
   <rect x="416" y="288" width="248" height="38" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="4 3"/>
-  <text x="540" y="304" font-size="10" font-weight="700" fill="#0F172A" text-anchor="middle">自动装配 · 生成 ChatClient Bean</text>
-  <text x="540" y="318" font-size="9" fill="#475569" text-anchor="middle">注入 base-url / api-key / model</text>
+  <text x="540" y="304" font-size="10" font-weight="700" fill="#0F172A" text-anchor="middle">按 provider_type 构建 ChatClient</text>
+  <text x="540" y="318" font-size="9" fill="#475569" text-anchor="middle">解析请求模型；未指定则使用默认模型</text>
 
   <!-- ============ STEP 2 : App -> ChatClient (blue, runtime call) ============ -->
   <line x1="1638" y1="395" x2="552" y2="395" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
   <rect x="948" y="383" width="294" height="16" fill="#FFFFFF" opacity="0.9"/>
-  <text x="1095" y="388" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">chatClient.prompt(userMsg).call()</text>
+  <text x="1095" y="388" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">请求携带 model / messages / options</text>
   <circle cx="1626" cy="395" r="11" fill="#2563EB"/>
   <text x="1626" y="399" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
 
-  <!-- ============ STEP 3 : Starter -> Adapter (blue) ============ -->
+  <!-- ============ STEP 3 : Factory -> Adapter (blue) ============ -->
   <line x1="552" y1="445" x2="898" y2="445" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="725" y="437" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">构造 OpenAI ChatCompletion 请求</text>
+  <text x="725" y="437" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">选择对应 ChatModel 并发起调用</text>
   <circle cx="564" cy="445" r="11" fill="#2563EB"/>
   <text x="564" y="449" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
 
   <!-- ============ STEP 4 : Adapter -> Provider (orange, protocol hop) ============ -->
   <line x1="922" y1="500" x2="1268" y2="500" stroke="#F59E0B" stroke-width="2.2" marker-end="url(#ah-orange)"/>
-  <text x="1095" y="492" font-size="12" font-weight="600" fill="#F59E0B" text-anchor="middle">POST /v1/chat/completions · 标准 OpenAI 协议</text>
+  <text x="1095" y="492" font-size="12" font-weight="600" fill="#F59E0B" text-anchor="middle">按 Provider 类型发送对应协议请求</text>
   <circle cx="934" cy="500" r="11" fill="#F59E0B"/>
   <text x="934" y="504" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
 
@@ -126,16 +126,16 @@
   <!-- cloud chip (amber) -->
   <line x1="1326" y1="530" x2="1340" y2="530" stroke="#D97706" stroke-width="1.4"/>
   <rect x="1340" y="513" width="200" height="34" rx="5" fill="#FFFFFF" stroke="#D97706" stroke-width="1.8"/>
-  <text x="1440" y="530" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">云端 GPT · OpenAI</text>
-  <text x="1440" y="543" font-size="9" fill="#64748B" text-anchor="middle">api.openai.com</text>
+  <text x="1440" y="530" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">OpenAI-compatible</text>
+  <text x="1440" y="543" font-size="9" fill="#64748B" text-anchor="middle">GPT / DeepSeek / Qwen / 本地端点</text>
 
   <!-- local chip (green) -->
   <line x1="1326" y1="570" x2="1340" y2="570" stroke="#10B981" stroke-width="1.4"/>
   <rect x="1340" y="553" width="200" height="34" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
-  <text x="1440" y="570" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">本地 Ollama</text>
-  <text x="1440" y="583" font-size="9" fill="#64748B" text-anchor="middle">localhost:11434</text>
+  <text x="1440" y="570" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">Anthropic</text>
+  <text x="1440" y="583" font-size="9" fill="#64748B" text-anchor="middle">Claude · AnthropicChatModel</text>
 
-  <text x="1440" y="603" font-size="9" fill="#64748B" text-anchor="middle">二选一 · 仅改配置即可切换</text>
+  <text x="1440" y="603" font-size="9" fill="#64748B" text-anchor="middle">请求可选模型 · 当前无自动路由策略</text>
 
   <!-- ============ STEP 5 : Provider -> Adapter (gray dashed, response) ============ -->
   <line x1="1268" y1="650" x2="922" y2="650" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
@@ -158,8 +158,8 @@
 
   <!-- ============ CALLOUT (key insight) ============ -->
   <rect x="380" y="815" width="1040" height="54" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="900" y="838" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">OpenAI API Adapter 仅做协议翻译 · 不引入额外业务逻辑</text>
-  <text x="900" y="858" font-size="10" fill="#475569" text-anchor="middle">切换云端 GPT ↔ 本地 Ollama = 仅改 application.yml，上层 ChatClient 调用代码零改动</text>
+  <text x="900" y="838" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">ChatClient 统一业务调用 · ChatModel 保留 Provider 协议差异</text>
+  <text x="900" y="858" font-size="10" fill="#475569" text-anchor="middle">切换模型通常不改 Tool 业务代码，但认证、选项与 Tool Calling 能力仍需逐一验证</text>
 
   <!-- ============ LEGEND ============ -->
   <line x1="40" y1="885" x2="1760" y2="885" stroke="#E2E8F0"/>
@@ -178,10 +178,10 @@
   <text x="636" y="911" font-size="11" fill="#475569">AI 适配器</text>
 
   <rect x="750" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.6"/>
-  <text x="776" y="911" font-size="11" fill="#475569">云端模型</text>
+  <text x="776" y="911" font-size="11" fill="#475569">OpenAI-compatible</text>
 
   <rect x="880" y="901" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="906" y="911" font-size="11" fill="#475569">本地 / 边缘</text>
+  <text x="906" y="911" font-size="11" fill="#475569">Anthropic</text>
 
   <rect x="1020" y="901" width="18" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
   <text x="1046" y="911" font-size="11" fill="#475569">激活期</text>
@@ -190,6 +190,6 @@
   <text x="1156" y="911" font-size="11" fill="#475569">装配说明</text>
 
   <!-- ============ CAPTION ============ -->
-  <text x="900" y="975" font-size="11" fill="#94A3B8" text-anchor="middle">图7-5  OpenAI API Adapter 只做协议翻译不引入额外逻辑；无论后端是云端 GPT 还是本地 Ollama，上层 ChatClient 调用代码完全不变，切换成本仅为改配置文件。</text>
+  <text x="900" y="975" font-size="11" fill="#94A3B8" text-anchor="middle">图7-6  ChatClient 提供统一调用，ChatClientFactory 按 Provider 类型选择 OpenAiChatModel 或 AnthropicChatModel；模型可替换，但能力差异仍需验证。</text>
   </svg>
 </svg>

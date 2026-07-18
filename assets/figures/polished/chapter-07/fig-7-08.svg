@@ -13,8 +13,8 @@
 
   <!-- ===== 标题区 ===== -->
   <circle cx="64" cy="42" r="6" fill="#2563EB"/>
-  <text x="82" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-7 从 Copilot 到 Agent 的三阶段演进</text>
-  <text x="82" y="71" font-size="12" fill="#64748B">自主程度 · 人工介入点 · 风险控制 · 信任度 的递进关系</text>
+  <text x="82" y="49" font-size="22" font-weight="700" fill="#0F172A">图7-8 从当前基线到受约束 Agent 的演进参考</text>
+  <text x="82" y="71" font-size="12" fill="#64748B">仅第一阶段已实现 · 后两阶段需要新增编排、审计与安全能力</text>
   <rect x="1678" y="28" width="96" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1726" y="44" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">TIMELINE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
@@ -34,7 +34,7 @@
   <rect x="904" y="276.5" width="3" height="6" fill="#2563EB"/>
   <rect x="911" y="276.5" width="3" height="6" fill="#2563EB"/>
 
-  <!-- Icon 3: 盾牌 (全自治 Agent) -->
+  <!-- Icon 3: 盾牌 (受约束长期任务) -->
   <circle cx="1465" cy="184" r="26" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
   <path d="M 1465,170 L 1478,175 L 1478,186 Q 1478,196 1465,201 Q 1452,196 1452,186 L 1452,175 Z" fill="#2563EB"/>
   <path d="M 1460,185 L 1464,189 L 1471,181" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,48 +42,48 @@
   <!-- ===== 三阶段色块（高度递增 = 自主程度递增，底对齐 y=600） ===== -->
   <!-- Block 1: Copilot 辅助（浅蓝） -->
   <rect x="80" y="400" width="506" height="200" rx="8" fill="#2563EB" fill-opacity="0.07" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="421" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 01  ·  辅助期</text>
-  <text x="104" y="448" font-size="21" font-weight="700" fill="#0F172A">Copilot 辅助</text>
-  <text x="104" y="467" font-size="12" fill="#64748B">先证明能「看对」· 模型只负责生成建议</text>
+  <text x="104" y="421" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 01  ·  当前基线</text>
+  <text x="104" y="448" font-size="21" font-weight="700" fill="#0F172A">查询与 Action 确认</text>
+  <text x="104" y="467" font-size="12" fill="#64748B">已实现 · 主动查询，点位写入等待用户确认</text>
   <line x1="104" y1="477" x2="562" y2="477" stroke="#E2E8F0"/>
-  <text x="104" y="496" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">低 · 仅生成建议</tspan></text>
-  <text x="104" y="513" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">每一步都确认</tspan></text>
-  <text x="104" y="530" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">人工逐行把关</tspan></text>
-  <text x="104" y="547" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">补全 / 解释 / 检索</tspan></text>
+  <text x="104" y="496" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">低 · 用户主动发起</tspan></text>
+  <text x="104" y="513" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">点位写 Action 确认</tspan></text>
+  <text x="104" y="530" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">Tool 白名单 + 权限</tspan></text>
+  <text x="104" y="547" font-size="12.5" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">设备 / 位号 / 历史值查询</tspan></text>
   <rect x="104" y="560" width="458" height="30" rx="6" fill="#2563EB" fill-opacity="0.10"/>
-  <text x="120" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 决策者（每步把关）</text>
+  <text x="120" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 发起者与确认者</text>
 
   <!-- Block 2: 有限自主 Agent（中蓝） -->
   <rect x="646" y="310" width="506" height="290" rx="8" fill="#2563EB" fill-opacity="0.14" stroke="#2563EB" stroke-width="2"/>
-  <text x="670" y="333" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 02  ·  协作期</text>
+  <text x="670" y="333" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 02  ·  未来参考</text>
   <text x="670" y="360" font-size="21" font-weight="700" fill="#0F172A">有限自主 Agent</text>
-  <text x="670" y="379" font-size="12" fill="#64748B">再证明能「想对」· 限定场景自动放行</text>
+  <text x="670" y="379" font-size="12" fill="#64748B">需新增事件触发、显式工作流和运行状态机</text>
   <line x1="670" y1="389" x2="1128" y2="389" stroke="#E2E8F0"/>
-  <text x="670" y="413" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">中 · 白名单内自动</tspan></text>
-  <text x="670" y="435" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">签名式批量审批</tspan></text>
-  <text x="670" y="457" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">审批门 + 操作签名</tspan></text>
-  <text x="670" y="479" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">测试 / 重构 / 提 PR</tspan></text>
+  <text x="670" y="413" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">中 · 固定场景编排</tspan></text>
+  <text x="670" y="435" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">风险动作仍确认</tspan></text>
+  <text x="670" y="457" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">场景白名单 + 审计</tspan></text>
+  <text x="670" y="479" font-size="13" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">离线诊断 / 定时报告</tspan></text>
   <rect x="670" y="498" width="458" height="28" rx="5" fill="#2563EB" fill-opacity="0.08"/>
-  <text x="686" y="516" font-size="11.5" font-weight="600" fill="#1D4ED8">放行边界由白名单显式划定，越界即停</text>
+  <text x="686" y="516" font-size="11.5" font-weight="600" fill="#1D4ED8">当前尚无事件触发器与通用编排器</text>
   <rect x="670" y="560" width="458" height="30" rx="6" fill="#2563EB" fill-opacity="0.14"/>
-  <text x="686" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 审批者（批量放行）</text>
+  <text x="686" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 审批者与异常处理者</text>
 
-  <!-- Block 3: 全自治 Agent（深蓝） -->
+  <!-- Block 3: 受约束长期任务（深蓝） -->
   <rect x="1212" y="220" width="506" height="380" rx="8" fill="#2563EB" fill-opacity="0.24" stroke="#2563EB" stroke-width="2"/>
-  <text x="1236" y="243" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 03  ·  自治期</text>
-  <text x="1236" y="270" font-size="21" font-weight="700" fill="#0F172A">全自治 Agent</text>
-  <text x="1236" y="289" font-size="12" fill="#64748B">最后才交给它「做对」· 自主规划并执行</text>
+  <text x="1236" y="243" font-size="11" font-weight="700" fill="#2563EB" letter-spacing="0.5">STAGE 03  ·  未来参考</text>
+  <text x="1236" y="270" font-size="21" font-weight="700" fill="#0F172A">受约束长期任务</text>
+  <text x="1236" y="289" font-size="12" fill="#64748B">持续监测、分析与建议 · 不替代现场安全控制</text>
   <line x1="1236" y1="299" x2="1694" y2="299" stroke="#E2E8F0"/>
-  <text x="1236" y="325" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">高 · 自主规划执行</tspan></text>
-  <text x="1236" y="350" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">仅高危点确认</tspan></text>
-  <text x="1236" y="375" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">关键节点卡口</tspan></text>
-  <text x="1236" y="400" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">端到端任务交付</tspan></text>
+  <text x="1236" y="325" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">自主程度</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">高 · 受约束持续编排</tspan></text>
+  <text x="1236" y="350" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">人工介入</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">高风险与不可逆动作</tspan></text>
+  <text x="1236" y="375" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">风险控制</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">外部审批 + 现场联锁</tspan></text>
+  <text x="1236" y="400" font-size="13.5" fill="#334155"><tspan font-weight="600" fill="#64748B">典型场景</tspan><tspan fill="#94A3B8">　　</tspan><tspan font-weight="600" fill="#0F172A">监测 / 分析 / 建议 / 复核</tspan></text>
   <rect x="1236" y="430" width="458" height="28" rx="5" fill="#2563EB" fill-opacity="0.10"/>
-  <text x="1252" y="448" font-size="11.5" font-weight="600" fill="#1D4ED8">自主范围随可靠性证明逐步扩大</text>
+  <text x="1252" y="448" font-size="11.5" font-weight="600" fill="#1D4ED8">实时安全控制仍由 PLC / 边缘规则负责</text>
   <rect x="1236" y="468" width="458" height="28" rx="5" fill="#2563EB" fill-opacity="0.10"/>
-  <text x="1252" y="486" font-size="11.5" font-weight="600" fill="#1D4ED8">每次成功兑现，才换取下一次授权升级</text>
+  <text x="1252" y="486" font-size="11.5" font-weight="600" fill="#1D4ED8">授权可因失败、漂移或风险变化而收紧</text>
   <rect x="1236" y="560" width="458" height="30" rx="6" fill="#2563EB" fill-opacity="0.20"/>
-  <text x="1252" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 监督者（例外介入）</text>
+  <text x="1252" y="579" font-size="12" font-weight="700" fill="#1D4ED8">人类角色 · 监督者与最终责任人</text>
 
   <!-- ===== 演进箭头（色块之间） ===== -->
   <line x1="592" y1="500" x2="638" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
@@ -97,16 +97,16 @@
   <line x1="1465" y1="600" x2="1465" y2="608" stroke="#2563EB" stroke-width="2"/>
   <text x="333" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">辅助期</text>
   <text x="899" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">协作期</text>
-  <text x="1465" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">自治期</text>
+  <text x="1465" y="624" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">受约束长期任务</text>
 
-  <!-- ===== 信任度渐变条 ===== -->
-  <text x="899" y="646" font-size="11.5" font-weight="600" fill="#475569" text-anchor="middle">信任度累积（随阶段递增，不可回退）</text>
+  <!-- ===== 验证与授权成熟度渐变条 ===== -->
+  <text x="899" y="646" font-size="11.5" font-weight="600" fill="#475569" text-anchor="middle">验证与授权成熟度（可随失败、漂移或风险变化收紧）</text>
   <rect x="80" y="654" width="1638" height="30" rx="4" fill="url(#trust-grad)"/>
-  <text x="94" y="674" font-size="11" font-weight="700" fill="#1E40AF">信任度 低</text>
-  <text x="1704" y="674" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">信任度 高</text>
+  <text x="94" y="674" font-size="11" font-weight="700" fill="#1E40AF">成熟度 低</text>
+  <text x="1704" y="674" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">成熟度 高</text>
 
   <!-- ===== 高风险白名单（红色虚线贯穿底部） ===== -->
-  <text x="899" y="722" font-size="11.5" font-weight="700" fill="#E11D48" text-anchor="middle">高风险白名单 · 贯穿三阶段，永不关闭</text>
+  <text x="899" y="722" font-size="11.5" font-weight="700" fill="#E11D48" text-anchor="middle">高风险确认 / 外部审批 · 贯穿三阶段，不可绕过</text>
   <line x1="80" y1="732" x2="1718" y2="732" stroke="#E11D48" stroke-width="2.5" stroke-dasharray="9 5"/>
   <circle cx="80" cy="732" r="3.5" fill="#E11D48"/>
   <circle cx="1718" cy="732" r="3.5" fill="#E11D48"/>
@@ -118,15 +118,15 @@
   <text x="188" y="794" font-size="10.5" fill="#64748B">阶段色块深浅 = 自主程度</text>
 
   <rect x="520" y="783" width="44" height="14" rx="3" fill="url(#trust-grad)"/>
-  <text x="572" y="794" font-size="10.5" fill="#64748B">信任度渐变条</text>
+  <text x="572" y="794" font-size="10.5" fill="#64748B">验证与授权成熟度</text>
 
   <line x1="840" y1="790" x2="876" y2="790" stroke="#E11D48" stroke-width="2" stroke-dasharray="6 4"/>
-  <text x="884" y="794" font-size="10.5" fill="#64748B">高风险白名单（永不关闭）</text>
+  <text x="884" y="794" font-size="10.5" fill="#64748B">高风险确认（不可绕过）</text>
 
   <line x1="1180" y1="790" x2="1218" y2="790" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
   <text x="1226" y="794" font-size="10.5" fill="#64748B">演进方向（自主程度递增）</text>
 
   <!-- ===== caption ===== -->
-  <text x="900" y="918" font-size="10" fill="#94A3B8" text-anchor="middle">图7-7 三阶段演进：自主程度逐步提升，但人工确认点从未消失——只是从「每步确认」变为「关键节点确认」。</text>
-  <text x="900" y="938" font-size="10" fill="#94A3B8" text-anchor="middle">先让模型证明能看对，再证明能想对，最后才交给它去做对。</text>
+  <text x="900" y="918" font-size="10" fill="#94A3B8" text-anchor="middle">图7-8 演进参考：只有第一阶段是当前基线；后两阶段需要新增事件触发、工作流、审计与安全能力。</text>
+  <text x="900" y="938" font-size="10" fill="#94A3B8" text-anchor="middle">自主范围必须可收紧；高风险确认、外部审批与现场确定性控制不能被模型绕过。</text>
 </svg>

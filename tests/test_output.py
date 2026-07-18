@@ -2,16 +2,20 @@ from __future__ import annotations
 
 import os
 import subprocess
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import pytest
+from pypdf import PdfReader, PdfWriter
 
 from core.figures import FigureAsset
-from core.output import generate_markdown_output, generate_word_output, get_template_environment
+from core.output import (
+    _generate_cover_image,
+    generate_markdown_output,
+    generate_pdf_output,
+    generate_word_output,
+    get_template_environment,
+)
 from core.state import BookState, ChapterContent, ChapterPlan, ForeshadowItem, PartPlan
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 
 def test_output_templates_are_loaded_by_jinja() -> None:
@@ -57,13 +61,13 @@ def test_generate_markdown_output_renders_structured_files_and_book_markdown(tmp
 
     assert result["output_dir"] == str(tmp_path)
     assert result["book_markdown"] == str(tmp_path / "book.md")
-    assert (tmp_path / "00-封面.md").read_text(encoding="utf-8").startswith("# 测试书")
+    assert (tmp_path / "00-封面.md").read_text(encoding="utf-8") == "![](cover.png)"
     assert "- IoT" in (tmp_path / "01-作者简介.md").read_text(encoding="utf-8")
     assert "- **基础篇**（第1章《总览》）" in (tmp_path / "03-导读.md").read_text(encoding="utf-8")
     assert (tmp_path / "05-基础篇" / "01-总览.md").read_text(encoding="utf-8") == "# 正文"
     assert "已回收: 1 / 1" in (tmp_path / "09-伏笔报告.md").read_text(encoding="utf-8")
     book_markdown = (tmp_path / "book.md").read_text(encoding="utf-8")
-    assert "# 测试书" in book_markdown
+    assert book_markdown.startswith("![](cover.png)")
     assert "# 一、基础篇" in book_markdown
     assert "# 正文" in book_markdown
     assert "伏笔报告" not in book_markdown
@@ -116,7 +120,7 @@ render_notes: "HTML/SVG。"
 
 def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> None:
     markdown = tmp_path / "book.md"
-    markdown.write_text("# 标题\n\n正文", encoding="utf-8")
+    markdown.write_text("# 标题\n\n# 目录\n\n- [第一章](#第一章)\n\n# 第一章\n\n正文", encoding="utf-8")
     reference = tmp_path / "reference.docx"
     reference.write_bytes(b"docx")
     calls: list[list[str]] = []
@@ -126,6 +130,11 @@ def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> Non
         assert check is False
         assert capture_output is True
         assert text is True
+        source = Path(cmd[1])
+        assert source == tmp_path / ".book_for_word.md"
+        cleaned = source.read_text(encoding="utf-8")
+        assert "# 目录" not in cleaned
+        assert "# 第一章" in cleaned
         return subprocess.CompletedProcess(cmd, 0, "", "")
 
     monkeypatch.setattr("core.output.shutil.which", lambda name: "/usr/local/bin/pandoc")
@@ -137,7 +146,7 @@ def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> Non
     assert calls == [
         [
             "/usr/local/bin/pandoc",
-            str(markdown),
+            str(tmp_path / ".book_for_word.md"),
             "--from",
             "markdown+pipe_tables+fenced_code_blocks+yaml_metadata_block",
             "--to",
@@ -146,10 +155,13 @@ def test_generate_word_output_invokes_pandoc(tmp_path: Path, monkeypatch) -> Non
             str(tmp_path / "book.docx"),
             "--resource-path",
             os.pathsep.join([str(tmp_path), str(tmp_path.parent)]),
+            "--toc",
+            "--toc-depth=3",
             "--reference-doc",
             str(reference),
         ]
     ]
+    assert not (tmp_path / ".book_for_word.md").exists()
 
 
 def test_generate_word_output_requires_pandoc(tmp_path: Path, monkeypatch) -> None:
@@ -159,3 +171,105 @@ def test_generate_word_output_requires_pandoc(tmp_path: Path, monkeypatch) -> No
 
     with pytest.raises(RuntimeError, match="未找到 pandoc"):
         generate_word_output(markdown, tmp_path / "book.docx")
+
+
+def test_generate_pdf_output_merges_cover_and_cleans_temporary_files(tmp_path: Path, monkeypatch) -> None:
+    draft_dir = tmp_path / "draft"
+    draft_dir.mkdir()
+    markdown = draft_dir / "book.md"
+    markdown.write_text("![](cover.png)\n\n# 第一章\n\n正文", encoding="utf-8")
+    cover_html = tmp_path / "cover.html"
+    cover_html.write_text("<html><body>封面</body></html>", encoding="utf-8")
+    css_file = tmp_path / "pdf_style.css"
+    css_file.write_text("@page { size: A4; }", encoding="utf-8")
+    pdf_file = draft_dir / "book.pdf"
+    pandoc_inputs: list[str] = []
+    pandoc_css: list[str] = []
+    pandoc_cwds: list[object] = []
+
+    def write_single_page_pdf(path: Path) -> None:
+        writer = PdfWriter()
+        writer.add_blank_page(width=595, height=842)
+        with path.open("wb") as output:
+            writer.write(output)
+
+    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        assert kwargs["check"] is False
+        assert kwargs["capture_output"] is True
+        assert kwargs["text"] is True
+        if cmd[0] == "/usr/local/bin/pandoc":
+            source = Path(cmd[1])
+            pandoc_inputs.append(source.read_text(encoding="utf-8"))
+            pandoc_css.append(cmd[cmd.index("--css") + 1])
+            pandoc_cwds.append(kwargs.get("cwd"))
+            Path(cmd[cmd.index("-o") + 1]).write_text("<html><body>正文</body></html>", encoding="utf-8")
+        else:
+            output_arg = next(arg for arg in cmd if arg.startswith("--print-to-pdf="))
+            write_single_page_pdf(Path(output_arg.split("=", 1)[1]))
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
+    monkeypatch.setattr("core.output.shutil.which", lambda name: "/usr/local/bin/pandoc")
+    monkeypatch.setattr("core.output.subprocess.run", fake_run)
+
+    result = generate_pdf_output(
+        markdown,
+        pdf_file,
+        chrome_bin="/Applications/Google Chrome",
+        pandoc_bin="pandoc",
+        cover_html=cover_html,
+        css_file=css_file,
+    )
+
+    assert result == str(pdf_file)
+    assert len(PdfReader(pdf_file).pages) == 2
+    assert pandoc_inputs == ["# 第一章\n\n正文"]
+    assert pandoc_css == ["../pdf_style.css"]
+    assert pandoc_cwds == [None]
+    assert not (draft_dir / ".book_body.md").exists()
+    assert not (draft_dir / ".book_body.pdf").exists()
+    assert not (draft_dir / ".book_cover.pdf").exists()
+
+
+def test_generate_cover_image_converts_pdf_to_png_and_cleans_temporary_file(
+        tmp_path: Path,
+        monkeypatch,
+) -> None:
+    cover_html = tmp_path / "cover.html"
+    cover_html.write_text("<html><body>封面</body></html>", encoding="utf-8")
+    output_png = tmp_path / "cover.png"
+    calls: list[list[str]] = []
+
+    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        calls.append(cmd)
+        assert kwargs["check"] is False
+        assert kwargs["capture_output"] is True
+        assert kwargs["text"] is True
+        if cmd[0] == "/Applications/Google Chrome":
+            output_arg = next(arg for arg in cmd if arg.startswith("--print-to-pdf="))
+            writer = PdfWriter()
+            writer.add_blank_page(width=595, height=842)
+            with Path(output_arg.split("=", 1)[1]).open("wb") as output:
+                writer.write(output)
+        elif cmd[0] == "/usr/bin/pdftoppm":
+            Path(cmd[-1]).with_suffix(".png").write_bytes(b"png")
+        else:
+            Path(cmd[-1]).write_bytes(b"png")
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
+    monkeypatch.setattr("core.output.shutil.which", lambda name: f"/usr/bin/{name}" if name in {"pdftoppm", "sips"} else None)
+    monkeypatch.setattr("core.output.subprocess.run", fake_run)
+
+    _generate_cover_image(cover_html, output_png, chrome_bin="/Applications/Google Chrome")
+
+    assert output_png.read_bytes() == b"png"
+    assert len(calls) == 2
+    assert calls[1] == [
+        "/usr/bin/pdftoppm",
+        "-png",
+        "-r",
+        "300",
+        "-singlefile",
+        str(tmp_path / ".cover_tmp.pdf"),
+        str(tmp_path / "cover"),
+    ]
+    assert not (tmp_path / ".cover_tmp.pdf").exists()

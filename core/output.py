@@ -322,11 +322,10 @@ def generate_pdf_output(
         resolved_pandoc, str(pandoc_input), "-o", str(html_path),
         "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
     ]
-    css_cwd = None
     if css_file and Path(css_file).exists():
-        cmd += ["--css", Path(css_file).name]
-        css_cwd = str(Path(css_file).parent)
-    completed = subprocess.run(cmd, check=False, capture_output=True, text=True, cwd=css_cwd)
+        css_href = os.path.relpath(Path(css_file).resolve(), html_path.parent.resolve())
+        cmd += ["--css", css_href]
+    completed = subprocess.run(cmd, check=False, capture_output=True, text=True, cwd=None)
     if completed.returncode != 0:
         raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
@@ -386,7 +385,7 @@ def _generate_cover_image(cover_html: str | Path, output_png: str | Path, *, chr
 
     先 print-to-pdf（`@page A4` 精确分页、无留白），再转 PNG——比 --screenshot
     的视口截图更可靠，不受视口高度与 body 高度不吻合导致的底部留白影响。
-    转 PNG 优先用 pypdf 渲染，退化到 sips（macOS）；均不可用时回退到 --screenshot。
+    转 PNG 优先用 pdftoppm 按 300 DPI 渲染，退化到 sips（macOS）；均不可用时回退到 --screenshot。
     无 Chrome 时跳过。
     """
     chrome = chrome_bin or _find_chrome()
@@ -398,6 +397,7 @@ def _generate_cover_image(cover_html: str | Path, output_png: str | Path, *, chr
         return
     png_path = Path(output_png)
     png_path.parent.mkdir(parents=True, exist_ok=True)
+    png_path.unlink(missing_ok=True)
 
     # 1) HTML → 一页 A4 PDF（精确分页，无留白）
     cover_pdf = png_path.with_name(".cover_tmp.pdf")
@@ -407,12 +407,23 @@ def _generate_cover_image(cover_html: str | Path, output_png: str | Path, *, chr
     ]
     pdf_done = subprocess.run(pdf_cmd, check=False, capture_output=True, text=True)
 
-    # 2) PDF → PNG（sips 在 macOS 上可直接转）
+    # 2) PDF → 300 DPI PNG（A4 约 2480×3508，满足印刷与 Word 缩放）
     if pdf_done.returncode == 0 and cover_pdf.exists():
+        pdftoppm = shutil.which("pdftoppm")
+        if pdftoppm:
+            output_prefix = png_path.with_suffix("")
+            conv = subprocess.run(
+                [pdftoppm, "-png", "-r", "300", "-singlefile", str(cover_pdf), str(output_prefix)],
+                check=False, capture_output=True, text=True,
+            )
+            if conv.returncode == 0 and png_path.exists():
+                cover_pdf.unlink(missing_ok=True)
+                logger.info("封面图生成: %s", png_path)
+                return
         sips = shutil.which("sips")
         if sips:
             conv = subprocess.run(
-                [sips, "-s", "format", "png", str(cover_pdf), "--out", str(png_path)],
+                [sips, "-s", "format", "png", "-z", "3508", "2480", str(cover_pdf), "--out", str(png_path)],
                 check=False, capture_output=True, text=True,
             )
             cover_pdf.unlink(missing_ok=True)

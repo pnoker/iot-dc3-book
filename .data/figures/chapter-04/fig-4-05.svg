@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图4-5 Driver SDK 适配器接口与驱动实现</title>
-  <desc id="desc">AbstractDriver 定义 connect/disconnect/send/receive 四方法契约，各协议驱动作为独立微服务实现该契约，经消息队列与 IoT 平台解耦。</desc>
+  <desc id="desc">Driver SDK 由业务注册、元数据、读写与协议能力接口组成，各协议 Driver 作为独立微服务实现所需 SPI，经 gRPC 与 RabbitMQ 对接 Manager 和 Data。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="66.400" width="1152.000" height="627.200" viewBox="0 0 1800.000 980.000" preserveAspectRatio="xMidYMid meet">
 <title>图4-5 Driver SDK 适配器接口与驱动实现</title>
-  <desc>AbstractDriver 定义 connect/disconnect/send/receive 四方法契约，各协议驱动作为独立微服务实现该契约，经消息队列与 IoT 平台解耦。</desc>
+  <desc>Driver SDK 由业务注册、元数据、读写与协议能力接口组成，各协议 Driver 作为独立微服务实现所需 SPI，经 gRPC 与 RabbitMQ 对接 Manager 和 Data。</desc>
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
@@ -21,7 +21,7 @@
   <g id="title">
     <circle cx="64" cy="42" r="6" fill="#2563EB"/>
     <text x="84" y="49" font-size="22" font-weight="700" fill="#0F172A">图4-5 Driver SDK 适配器接口与驱动实现</text>
-    <text x="84" y="72" font-size="12" fill="#64748B">AbstractDriver 四方法契约 · 多协议驱动独立微服务 · 经消息队列与平台解耦</text>
+    <text x="84" y="72" font-size="12" fill="#64748B">细粒度能力接口 · 多协议 Driver 独立部署 · gRPC 管理 + RabbitMQ 命令数据流</text>
 
     <rect x="1620" y="28" width="160" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
     <text x="1700" y="47" text-anchor="middle" font-size="11" font-weight="600" fill="#64748B" letter-spacing="1.5">ARCHITECTURE</text>
@@ -42,38 +42,38 @@
     <text x="1292" y="305" font-size="12" font-weight="700" fill="#475569">IoT 平台后端</text>
   </g>
 
-  <!-- ============ ABSTRACT DRIVER (contract) ============ -->
+  <!-- ============ DRIVER SDK CONTRACTS ============ -->
   <g id="abstract-driver">
     <rect x="100" y="158" width="1060" height="180" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="120" y="188" font-size="17" font-weight="700" fill="#0F172A">AbstractDriver&lt;T&gt;</text>
-    <text x="120" y="210" font-size="11" fill="#64748B">抽象驱动基类 · 封装重连 / 心跳 / 编解码等通用机制，子类只关心协议本身</text>
+    <text x="120" y="188" font-size="17" font-weight="700" fill="#0F172A">Driver SDK 能力接口</text>
+    <text x="120" y="210" font-size="11" fill="#64748B">当前没有 AbstractDriver 基类；协议实现按需组合生命周期、元数据、健康、读写与命令能力</text>
     <line x1="120" y1="222" x2="1140" y2="222" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="120" y="243" font-size="10" font-weight="700" fill="#2563EB">四方法契约 ▸</text>
+    <text x="120" y="243" font-size="10" font-weight="700" fill="#2563EB">核心契约 ▸</text>
 
     <!-- method box 1 · connect -->
     <rect x="120" y="252" width="225" height="70" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="232.5" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">connect()</text>
-    <text x="232.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">建立设备连接</text>
+    <text x="232.5" y="281" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">DriverRegisterService</text>
+    <text x="232.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">向 Manager 做业务注册</text>
 
     <!-- method box 2 · disconnect -->
     <rect x="385" y="252" width="225" height="70" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="497.5" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">disconnect()</text>
-    <text x="497.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">断开与资源释放</text>
+    <text x="497.5" y="281" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">DriverReadService</text>
+    <text x="497.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">校验元数据后读取</text>
 
     <!-- method box 3 · send -->
     <rect x="650" y="252" width="225" height="70" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="762.5" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">send(cmd)</text>
-    <text x="762.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">下发控制指令</text>
+    <text x="762.5" y="281" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">DriverWriteService</text>
+    <text x="762.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">校验元数据后写入</text>
 
     <!-- method box 4 · receive -->
     <rect x="915" y="252" width="225" height="70" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="1027.5" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">receive()</text>
-    <text x="1027.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">采集上行数据</text>
+    <text x="1027.5" y="281" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">DriverProtocol</text>
+    <text x="1027.5" y="303" text-anchor="middle" font-size="10" fill="#64748B">协议相关 read / write</text>
   </g>
 
   <!-- ============ INHERITANCE TREE (implements) ============ -->
   <g id="implements-tree" fill="none" stroke="#2563EB">
-    <!-- trunk up into AbstractDriver -->
+    <!-- trunk up into Driver SDK contracts -->
     <line x1="630" y1="402" x2="630" y2="340" stroke-width="2" marker-end="url(#ah-blue)"/>
     <!-- horizontal branch -->
     <line x1="217.5" y1="402" x2="1042.5" y2="402" stroke-width="1.6"/>
@@ -83,7 +83,7 @@
     <line x1="767.5" y1="402" x2="767.5" y2="410" stroke-width="1.6"/>
     <line x1="1042.5" y1="402" x2="1042.5" y2="410" stroke-width="1.6"/>
   </g>
-  <text x="646" y="394" font-size="10" fill="#475569">implements · 各协议驱动实现四方法</text>
+  <text x="646" y="394" font-size="10" fill="#475569">implements · 各协议 Driver 实现所需能力接口</text>
 
   <!-- ============ DRIVER MICROSERVICES (4 protocols) ============ -->
   <g id="drivers">
@@ -96,11 +96,11 @@
       <text x="138" y="465" font-size="15" font-weight="700" fill="#0F172A">Modbus TCP</text>
       <text x="124" y="487" font-size="10" fill="#64748B">协议驱动适配器</text>
       <line x1="118" y1="499" x2="317" y2="499" stroke="#E2E8F0" stroke-width="1"/>
-      <text x="124" y="517" font-size="9" fill="#94A3B8">实现四方法</text>
-      <text x="128" y="537" font-size="10" fill="#10B981">✓ connect()</text>
-      <text x="128" y="555" font-size="10" fill="#10B981">✓ disconnect()</text>
-      <text x="128" y="573" font-size="10" fill="#10B981">✓ send(cmd)</text>
-      <text x="128" y="591" font-size="10" fill="#10B981">✓ receive()</text>
+      <text x="124" y="517" font-size="9" fill="#94A3B8">实现所需 SPI</text>
+      <text x="128" y="537" font-size="10" fill="#10B981">✓ read()</text>
+      <text x="128" y="555" font-size="10" fill="#10B981">✓ write()</text>
+      <text x="128" y="573" font-size="10" fill="#10B981">✓ lifecycle</text>
+      <text x="128" y="591" font-size="10" fill="#10B981">✓ health</text>
     </g>
 
     <!-- OPC UA -->
@@ -112,11 +112,11 @@
       <text x="413" y="465" font-size="15" font-weight="700" fill="#0F172A">OPC UA</text>
       <text x="399" y="487" font-size="10" fill="#64748B">协议驱动适配器</text>
       <line x1="393" y1="499" x2="592" y2="499" stroke="#E2E8F0" stroke-width="1"/>
-      <text x="399" y="517" font-size="9" fill="#94A3B8">实现四方法</text>
-      <text x="403" y="537" font-size="10" fill="#10B981">✓ connect()</text>
-      <text x="403" y="555" font-size="10" fill="#10B981">✓ disconnect()</text>
-      <text x="403" y="573" font-size="10" fill="#10B981">✓ send(cmd)</text>
-      <text x="403" y="591" font-size="10" fill="#10B981">✓ receive()</text>
+      <text x="399" y="517" font-size="9" fill="#94A3B8">实现所需 SPI</text>
+      <text x="403" y="537" font-size="10" fill="#10B981">✓ read()</text>
+      <text x="403" y="555" font-size="10" fill="#10B981">✓ write()</text>
+      <text x="403" y="573" font-size="10" fill="#10B981">✓ lifecycle</text>
+      <text x="403" y="591" font-size="10" fill="#10B981">✓ health</text>
     </g>
 
     <!-- MQTT -->
@@ -128,11 +128,11 @@
       <text x="688" y="465" font-size="15" font-weight="700" fill="#0F172A">MQTT</text>
       <text x="674" y="487" font-size="10" fill="#64748B">协议驱动适配器</text>
       <line x1="668" y1="499" x2="867" y2="499" stroke="#E2E8F0" stroke-width="1"/>
-      <text x="674" y="517" font-size="9" fill="#94A3B8">实现四方法</text>
-      <text x="678" y="537" font-size="10" fill="#10B981">✓ connect()</text>
-      <text x="678" y="555" font-size="10" fill="#10B981">✓ disconnect()</text>
-      <text x="678" y="573" font-size="10" fill="#10B981">✓ send(cmd)</text>
-      <text x="678" y="591" font-size="10" fill="#10B981">✓ receive()</text>
+      <text x="674" y="517" font-size="9" fill="#94A3B8">实现所需 SPI</text>
+      <text x="678" y="537" font-size="10" fill="#10B981">✓ read()</text>
+      <text x="678" y="555" font-size="10" fill="#10B981">✓ write()</text>
+      <text x="678" y="573" font-size="10" fill="#10B981">✓ lifecycle</text>
+      <text x="678" y="591" font-size="10" fill="#10B981">✓ health</text>
     </g>
 
     <!-- BACnet -->
@@ -144,11 +144,11 @@
       <text x="963" y="465" font-size="15" font-weight="700" fill="#0F172A">BACnet</text>
       <text x="949" y="487" font-size="10" fill="#64748B">协议驱动适配器</text>
       <line x1="943" y1="499" x2="1142" y2="499" stroke="#E2E8F0" stroke-width="1"/>
-      <text x="949" y="517" font-size="9" fill="#94A3B8">实现四方法</text>
-      <text x="953" y="537" font-size="10" fill="#10B981">✓ connect()</text>
-      <text x="953" y="555" font-size="10" fill="#10B981">✓ disconnect()</text>
-      <text x="953" y="573" font-size="10" fill="#10B981">✓ send(cmd)</text>
-      <text x="953" y="591" font-size="10" fill="#10B981">✓ receive()</text>
+      <text x="949" y="517" font-size="9" fill="#94A3B8">实现所需 SPI</text>
+      <text x="953" y="537" font-size="10" fill="#10B981">✓ read()</text>
+      <text x="953" y="555" font-size="10" fill="#10B981">✓ write()</text>
+      <text x="953" y="573" font-size="10" fill="#10B981">✓ lifecycle</text>
+      <text x="953" y="591" font-size="10" fill="#10B981">✓ health</text>
     </g>
   </g>
 
@@ -158,7 +158,7 @@
     <rect x="100" y="650" width="520" height="74" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
     <rect x="100" y="650" width="6" height="74" fill="#F59E0B"/>
     <text x="124" y="678" font-size="12" font-weight="700" fill="#F59E0B">▸ 第 14 章实战入口</text>
-    <text x="124" y="700" font-size="10" fill="#334155">从 Modbus 驱动起步，完整实现一个驱动微服务的 connect/disconnect/send/receive 四方法。</text>
+    <text x="124" y="700" font-size="10" fill="#334155">从 DriverProtocol 的 read/write 入手，再接入业务注册、元数据缓存与 RabbitMQ 消息链路。</text>
   </g>
 
   <!-- ============ MESSAGE QUEUE (cylinder) ============ -->
@@ -174,13 +174,13 @@
     <ellipse cx="1500" cy="420" rx="200" ry="24" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
 
     <text x="1500" y="492" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">消息队列</text>
-    <text x="1500" y="512" text-anchor="middle" font-size="10" fill="#64748B">Kafka / MQTT Broker</text>
+    <text x="1500" y="512" text-anchor="middle" font-size="10" fill="#64748B">RabbitMQ · 当前唯一消息总线</text>
 
     <!-- topic chips -->
     <rect x="1340" y="533" width="130" height="24" rx="4" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
-    <text x="1405" y="549" text-anchor="middle" font-size="9" fill="#7C3AED">device.uplink</text>
+    <text x="1405" y="549" text-anchor="middle" font-size="9" fill="#7C3AED">point.value / state</text>
     <rect x="1490" y="533" width="150" height="24" rx="4" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
-    <text x="1565" y="549" text-anchor="middle" font-size="9" fill="#7C3AED">device.command</text>
+    <text x="1565" y="549" text-anchor="middle" font-size="9" fill="#7C3AED">point.command / result</text>
   </g>
 
   <!-- ============ DATA FLOW ARROWS ============ -->
@@ -201,16 +201,16 @@
   <!-- ============ IoT PLATFORM ============ -->
   <g id="platform">
     <rect x="1300" y="668" width="400" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="1500" y="698" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">IoT 平台</text>
-    <text x="1500" y="718" text-anchor="middle" font-size="10" fill="#64748B">设备影子 · 规则引擎 · 下行控制</text>
+    <text x="1500" y="698" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Manager / Data</text>
+    <text x="1500" y="718" text-anchor="middle" font-size="10" fill="#64748B">gRPC 元数据 · RabbitMQ 命令 / 位号值</text>
     <line x1="1320" y1="730" x2="1680" y2="730" stroke="#E2E8F0" stroke-width="1"/>
 
     <rect x="1330" y="743" width="104" height="26" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="1382" y="760" text-anchor="middle" font-size="9" fill="#2563EB">设备影子</text>
+    <text x="1382" y="760" text-anchor="middle" font-size="9" fill="#2563EB">Manager</text>
     <rect x="1448" y="743" width="104" height="26" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="1500" y="760" text-anchor="middle" font-size="9" fill="#2563EB">规则引擎</text>
+    <text x="1500" y="760" text-anchor="middle" font-size="9" fill="#2563EB">Data</text>
     <rect x="1566" y="743" width="104" height="26" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
-    <text x="1618" y="760" text-anchor="middle" font-size="9" fill="#2563EB">数据存储</text>
+    <text x="1618" y="760" text-anchor="middle" font-size="9" fill="#2563EB">PostgreSQL</text>
   </g>
 
   <!-- ============ 3. LEGEND ============ -->
@@ -234,6 +234,6 @@
   </g>
 
   <!-- ============ 4. CAPTION ============ -->
-  <text x="900" y="935" text-anchor="middle" font-size="11" fill="#94A3B8">图4-5 Driver SDK：AbstractDriver 封装通用机制，各协议驱动实现 connect/disconnect/send/receive 四方法，作为独立微服务经消息队列与平台解耦。</text>
+  <text x="900" y="935" text-anchor="middle" font-size="11" fill="#94A3B8">图4-5 Driver SDK：协议 Driver 按需实现细粒度能力接口，经 gRPC 对接 Manager，并通过 RabbitMQ 与 Data 交换命令、回执和位号值。</text>
   </svg>
 </svg>

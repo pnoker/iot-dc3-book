@@ -1015,3 +1015,38 @@ def test_write_export_all_generates_word_from_markdown(tmp_path, monkeypatch) ->
     assert result["target"] == "all"
     assert result["word_file"] == str(tmp_path / "output" / "book.docx")
     assert calls == [(str(tmp_path / "output" / "book.md"), str(tmp_path / "output" / "book.docx"), None, "pandoc")]
+
+
+def test_write_export_draft_uses_root_pdf_css(tmp_path, monkeypatch) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.cfg = _workflow_app_config()
+    project.cfg.quality.enabled = False
+    project._write_checkpoint_path_override = None
+    project._write_checkpoint_kind_override = None
+    state = _state_with_sections()
+    state.current_phase = "completed"
+    _mark_book_ready_for_final_review(state)
+    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
+    project._save_write_checkpoint("book-1", state)
+    css_file = tmp_path / "output" / "pdf_style.css"
+    css_file.parent.mkdir(parents=True, exist_ok=True)
+    css_file.write_text("@page { size: A4; }", encoding="utf-8")
+    calls = []
+
+    def fake_pdf(markdown_file, pdf_file, *, css_file=None, chrome_bin=None, pandoc_bin="pandoc", cover_html=None) -> str:
+        calls.append((str(markdown_file), str(pdf_file), str(css_file)))
+        return str(pdf_file)
+
+    monkeypatch.setattr("core.workflow.generate_pdf_output", fake_pdf)
+
+    result = project.write_export("book-1", target="pdf", draft=True)
+
+    assert result["pdf_file"] == str(tmp_path / "output" / "draft" / "book.pdf")
+    assert calls == [
+        (
+            str(tmp_path / "output" / "draft" / "book_clean.md"),
+            str(tmp_path / "output" / "draft" / "book.pdf"),
+            str(css_file),
+        )
+    ]

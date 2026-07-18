@@ -393,7 +393,7 @@ AIoT 必须打破"端-云"两级框架：百万级设备原始数据同时上行
 
 #### 智能层的三项核心职责
 
-智能层（Agentic Layer）不是独立于应用层之外的第五层，而是应用层内部的一个 AI 推理与执行编排子层。它运行在平台层提供的结构化数据之上，核心职责拆成三块：
+Agentic 子层（Agentic Layer）不是独立于应用层之外的第五层，而是应用层内部的一个 AI 推理与执行编排子层。它运行在平台层提供的结构化数据之上，核心职责拆成三块：
 
 1. **推理（Reasoning）**：基于平台层汇聚的结构化位号值流，结合设备元数据、历史模式与领域知识，理解当前系统的真实状态。推理不止是阈值判断（"温度 > 50℃"），还应覆盖异常检测（"当前值超出统计基线两个标准差"）、根因分析（"振动上升 3 分钟前电流出现阶跃"）、趋势预测（"按当前速率，30 分钟后储罐将触及安全上限"）。
 
@@ -425,7 +425,7 @@ AIoT 必须打破"端-云"两级框架：百万级设备原始数据同时上行
 
 自上而下看各层职责与边界。**应用层（Application Layer）**是物联网与人类用户的交互界面。经典架构中应用层内嵌规则引擎、数据分析、工单系统，数据经平台层到达后直接终止。五层架构下，应用层不再需要自己封装复杂推断逻辑，而是直接调用智能层的推理结果或执行状态来驱动运营看板、工单派发、生产报表等业务流，开发重心从"写判断逻辑"转向"设计人与 AI 协同的工作流"。
 
-**智能层（Intelligent Layer）**是本模型的核心新增层，统一处理三件事：**理解（Understand）**——将位号值序列还原为设备状态与场景语义；**规划（Plan）**——基于规则或模型输出一组动作序列；**执行（Execute）**——通过平台层的命令下发接口把动作送出去并收回反馈。它把经典四层中应用层必须承担的决策负担剥离出来，形成一个可复用、与业务场景解耦的决策中枢。它不限定 AI 技术——可以是大语言模型驱动，也可以是传统规则引擎加实时分析模型，关键在于把"推理"与"执行"的接口标准化。
+**智能层（Intelligent Layer）**是本模型的核心新增层，统一处理三件事：**理解（Understand）**——将位号值序列还原为设备状态与场景语义；**规划（Planning）**——基于规则或模型输出一组动作序列；**执行（Execution）**——通过平台层的命令下发接口把动作送出去并收回反馈。它把经典四层中应用层必须承担的决策负担剥离出来，形成一个可复用、与业务场景解耦的决策中枢。它不限定 AI 技术——可以是大语言模型驱动，也可以是传统规则引擎加实时分析模型，关键在于把"推理"与"执行"的接口标准化。
 
 **平台层（Platform Layer）**定位于基础设施收敛，负责设备注册与生命周期管理、位号模板维护、时序数据存储与查询、消息路由、命令分发、租户隔离等任务。它不关心数据"表达了什么含义"，只关心数据"从哪里来、该存到哪里、该发给谁"，向上暴露的数据查询接口与命令下发接口恰好是智能层的入口和出口。**网络层（Network Layer）**把数据从现场搬到云端，决定传输时延、带宽消耗以及设备能否安全互联；**感知层（Perception Layer）**是物理世界的入口，传感器、PLC 寄存器、摄像头等末梢设备采集原始信号，物联网网关把信号转换成带语义标签的位号值（PointValue），所有上层决策的起点都依赖于这一层的数据质量与完整性。
 
@@ -673,7 +673,7 @@ IoT DC3 用微服务把五层架构落了地：Gateway 收口入口与协议转�
 
 从架构理解到工程落地，建议按三个台阶递进。第一台阶吃透经典四层底子：从 Modbus 寄存器读写切入，用 OPC UA 的地址空间模型做语义建模对比，读 MQTT 的发布/订阅与 QoS 等级，网络层比较 LoRaWAN、NB-IoT 和 5G URLLC/RedCap 的覆盖/功耗/数据量取舍，平台层聚焦时序库的列式压缩、降采样窗口和保留策略。第二台阶理解智能层工作机制：从 Function Calling 文档读起，理解 LLM 如何从自然语言解析函数名与参数，再看 Spring AI 的 `@Tool` 抽象与 MCP 协议（事实标准，非 RFC）的鉴权握手与工具白名单。第三台阶工程落地：用 docker-compose 单机跑通 DC3，手动走一遍设备注册→驱动配置→位号映射→规则引擎→Agentic 工具调用的全链路，完整经历一次新的数据闭环。
 
-本章完成了体系架构的概念落位。智能层（Agentic 中心）的深度工程实现——模型选型、工具注册、上下文组装、多 Agent 协作、异步安全边界——在第 7 章系统展开；IoT DC3 的完整部署、驱动开发与全链路调优在第 14 章给出端到端实战。理解了本章的五层架构与数据闭环，后续每一章的讨论都有了共同的架构上下文。
+本章完成了体系架构的概念落位。智能中心（Agentic Center）的深度工程实现——模型选型、工具注册、上下文组装、多 Agent 协作、异步安全边界——在第 7 章系统展开；IoT DC3 的完整部署、驱动开发与全链路调优在第 14 章给出端到端实战。理解了本章的五层架构与数据闭环，后续每一章的讨论都有了共同的架构上下文。
 
 # 第3章 感知层技术基础
 
@@ -837,31 +837,33 @@ RFID 工作频率决定场景。低频 LF（125kHz，动物耳标、门禁）、
 
 ## 4.4 IoT DC3 与 Driver SDK
 
-IoT DC3 是统一接入层的产品级落地样本。它内置约 28 种协议驱动（Modbus、OPC UA、MQTT、CoAP、BACnet、BLE 等，截至写作时点），每个驱动是一个**独立微服务**，通过消息队列与平台解耦——加协议就是加一个驱动微服务，不影响其他驱动与平台。
+IoT DC3 是统一接入层的产品级落地样本。它内置约 28 种协议驱动（Modbus、OPC UA、MQTT、CoAP、BACnet、BLE 等，截至写作时点），每个驱动是一个**独立微服务**。驱动通过 gRPC 与 Manager 同步元数据，通过 RabbitMQ 收发点位命令、位号值和状态事件——增加协议就是增加一个驱动模块，不需要把协议细节写进中心服务。
 
-驱动开发的载体是 **Driver SDK**：它定义了一个 `AbstractDriver` 抽象基类，封装了注册、心跳、重连等通用机制，开发者只需实现四个核心方法——`connect`（建连）、`disconnect`（断连）、`send`（下发指令）、`receive`（接收数据）。示意：
+驱动开发的载体是 **Driver SDK**，但当前源码并不存在 `AbstractDriver` 基类。SDK 把能力拆成小粒度服务契约：`DriverRegisterService.initial()` 在启动阶段组装驱动、租户和属性元数据，并由 `DriverClient.driverRegister()` 通过 gRPC 向 Manager 完成**业务注册**；`DriverReadService`、`DriverWriteService` 负责校验元数据并把实际读写委托给协议实现；协议驱动实现聚合接口 `DriverCustomService`，或按需实现它组合的 `DriverLifecycle`、`DriverProtocol`、`DriverHealth` 等能力接口。核心入口可概括为：
 
 ```java
-public abstract class AbstractDriver {
-    abstract void connect(Device device);
-    abstract void disconnect();
-    abstract void send(Command cmd);
-    abstract PointValue receive();
-    // 框架已实现：向 Manager 注册驱动元数据、心跳保活、断线重连
+public interface DriverRegisterService {
+    void initial();
+}
+
+public interface DriverReadService {
+    void read(Long deviceId, Long pointId);
+}
+
+public interface DriverWriteService {
+    boolean write(Long deviceId, Long pointId, String value);
 }
 ```
 
-驱动的注册走**业务注册**：驱动启动后通过 gRPC 调用 Manager 的 `driverRegister` 接口，把自己支持的协议、位号模板等元数据登记到平台（而非向独立服务注册中心登记临时节点）；配合心跳保活，平台即可感知驱动上下线，实现新增驱动热插拔、零停机扩协议。服务寻址默认走容器网络 DNS + 环境变量，规模化后可引入注册中心统一管理。这套机制让 DC3 能灵活扩展协议覆盖，而无需改动平台核心。
+这里的“注册”是驱动向 Manager 提交业务元数据，不是向 Nacos、Eureka 一类服务注册中心登记实例。服务寻址使用固定服务名并允许环境变量覆盖；驱动的独立部署能力来自模块边界、统一 SPI、gRPC 与 RabbitMQ 契约，而不是所谓“注册中心热插拔”。这套 Driver SDK 机制是**第 14 章 IoT DC3 实战开发的入口**。
 
-这套 Driver SDK 机制是**第 14 章 IoT DC3 实战开发的入口**——那里会演示如何基于 SDK 接入一个新协议驱动，把本章的架构原则落成可运行代码。
+![图4-05 Driver SDK 服务契约与驱动实现](figures/chapter-04/fig-4-05.png){width=15cm}
 
-![图4-05 Driver SDK 适配器接口与驱动实现](figures/chapter-04/fig-4-05.png){width=15cm}
-
-*图4-5 Driver SDK：AbstractDriver 封装通用机制，各协议驱动实现 connect/disconnect/send/receive 四方法，作为独立微服务经消息队列与平台解耦。*
+*图4-5 Driver SDK：启动阶段经 DriverRegisterService 向 Manager 同步业务元数据，运行阶段由 DriverReadService/DriverWriteService 调用协议实现，并由 DriverSenderService 经 RabbitMQ 上报位号值与状态事件。*
 
 ## 4.5 工程收束
 
-网络层的核心判断带走几条：选型按五维（距离/速率/功耗/成本/部署）匹配场景，NB-IoT/LoRa 解决广域低功耗（授权 vs 自建），5G RedCap 补中段、NTN 补盲、6G 在路上，Wi-Fi/BLE/Zigbee 解决室内短距、Matter/Thread 收敛智能家居碎片化；协议碎片化是物联网工程的核心痛点，统一接入层（四层架构 + 物模型锚点 + 适配器模式）是公认的解法；IoT DC3 的 Driver SDK 把这套架构落成 28 个独立驱动微服务，是第 14 章实战开发的入口。
+网络层的核心判断带走几条：选型按五维（距离/速率/功耗/成本/部署）匹配场景，NB-IoT/LoRa 解决广域低功耗（授权 vs 自建），5G RedCap 补中段、NTN 补盲、6G 在路上，Wi-Fi/BLE/Zigbee 解决室内短距、Matter/Thread 收敛智能家居碎片化；协议碎片化是物联网工程的核心痛点，统一接入层（四层架构 + 物模型锚点 + 适配器模式）是公认的解法；IoT DC3 的 Driver SDK 以细粒度 SPI、gRPC 业务注册与 RabbitMQ 消息契约支撑独立驱动微服务，是第 14 章实战开发的入口。
 
 # 第5章 平台层与数据处理
 
@@ -1195,7 +1197,7 @@ mqttc.publish("greenhouse/sensor/temperature", payload, qos=1)
 
 微服务拆分后，三个基础问题立刻摆上桌面：服务 A 如何找到服务 B 的动态地址？配置改了几十个实例怎么同步生效？外部客户端访问哪个统一入口？这三个问题分别由服务发现、配置管理、API 网关解决——它们不承载业务逻辑，但缺了任何一个微服务架构都无法稳定运转，合称基础设施三支柱。
 
-**服务发现与配置管理**。Kubernetes 重启一个 Pod，实例地址就变了。服务发现维护一张"活地图"：服务启动时向注册中心登记地址和健康状态，下线时自动注销，调用方按服务名查询，无需硬编码。注册中心选型受生态影响很大：Nacos 可同时扛起服务发现和配置管理（AP/CP 可切换，原生支持动态刷新），运维负担低；Eureka 虽成熟但已进入维护模式，新项目不推荐；Consul 适合需强一致性的基础设施服务但适配 Spring 需额外工作；ZooKeeper 更基础但运维复杂度高。Spring Cloud 2025.1 生态下，Nacos 一个组件覆盖注册与配置双重角色是常见选择。配置层面，物联网系统的采集周期、告警阈值、Broker 地址等配置项多且易变，每次改配置重启实例生产环境无法接受——Nacos 支持配置变更后服务端推送事件，字段上加 `@RefreshScope` 注解即可零重启注入新值，这对动态分组、规则更新非常实用。
+**服务发现与配置管理**。这是通用微服务架构问题，不等于每个平台都必须引入独立注册中心。Kubernetes 可由 Service 与集群 DNS 提供服务发现，由 ConfigMap/Secret 管配置；Compose 或小规模容器部署也可直接使用稳定服务名和环境变量。若确有跨环境动态注册、配置推送和集中治理需求，Nacos、Consul 等才是可评估的外置组件。Nacos 能同时承担服务发现与配置管理，但代价是增加部署、健康检查和故障排查面；是否采用应由实例变化频率、动态配置需求与团队运维能力决定。**IoT DC3 当前没有引入 Nacos、Eureka、Consul 或 ZooKeeper**，而是使用固定服务名、容器网络 DNS 和环境变量覆盖地址，项目内 YAML 管理其余配置。
 
 **API 网关与边云分工**。如果客户端直接调用微服务，会面临跨域、认证、限流、日志、协议转换等横切关注点。API 网关作为系统唯一北向入口，统一处理这些再路由到后端服务。Spring Cloud Gateway 是常见选择，`lb://` 前缀配合注册中心实现动态路由，服务实例扩缩容时无需改网关配置。但物联网场景中，如果全部流量都经过云端网关会浪费带宽、增加延迟，因此需分层：**边缘网关**部署在设备侧，负责协议转换（Modbus RTU 转 MQTT）、数据预处理（过滤无效值、统计计算）、本地缓存和离线续传；**云端网关**负责认证、路由、限流、API 版本管理。边缘网关把处理后的干净数据按固定间隔汇总推送一条包含多点位值的 MQTT 消息到云端，而非每个传感器单独发消息，显著降低网络负载。
 
@@ -1215,106 +1217,69 @@ mqttc.publish("greenhouse/sensor/temperature", payload, qos=1)
 
 **北向**只暴露一个 `dc3-gateway` 模块，基于 Spring Cloud Gateway 实现。所有外部请求——前端页面、移动 App、第三方系统——都先经过这个网关，内部集成 Spring Security 过滤器链解析 JWT 令牌并调用鉴权服务校验，限流和日志审计也在此完成：某租户流量异常时，网关可直接丢弃请求而不依赖下游服务。
 
-**中心服务层**拆分为四个核心模块：设备管理服务（设备注册、物模型/位号定义、设备影子状态同步，Caffeine 本地缓存 + PostgreSQL 持久化双写）、数据服务（时序数据写入查询压缩，从消息队列消费原始流清洗后写入 TimescaleDB，对外提供 REST 与 gRPC 双协议）、命令服务（接收北向控制指令路由到对应驱动，含指令排队、超时重试、响应回调）、鉴权服务（多租户身份、API 密钥、JWT 发放，跨租户隔离在数据库层用租户 ID 字段实现）。四个服务通过 gRPC（低延迟同步路径）或消息队列（异步、容忍写入尖峰）协作。
+**中心服务层**由四个实际模块组成：`dc3-center-auth` 负责认证、授权、租户与 OAuth/MCP 管理；`dc3-center-manager` 负责 Driver、设备、模板、位号及属性等元数据；`dc3-center-data` 负责位号值、最新值与历史查询、点位/自定义命令、回执和告警数据能力；`dc3-center-agentic` 负责模型配置、会话管理和 Spring AI `@Tool` 调用。当前没有独立的“命令服务”：命令入口属于 Data，Data 通过 RabbitMQ 投递到目标 Driver。
 
-**南向**是一组协议驱动模块，每个驱动封装一种设备接入协议（MQTT、Modbus、OPC UA、DL/T645 等）。驱动内部通过抽象适配器模式与中心服务解耦，对外提供统一 gRPC 接口——新增协议只需新增驱动模块并注册到配置中心，已有代码无需改动。这正是"注册中心热插拔"的体现：驱动可独立打包部署，甚至运行在靠近设备的边缘节点上。
+**南向**是一组协议驱动模块，每个驱动封装一种设备接入协议（MQTT、Modbus、OPC UA、DL/T645 等）。驱动通过 Driver SDK 的能力接口隔离协议差异：启动时由 `DriverRegisterService` 经 gRPC 向 Manager 提交业务元数据，运行时通过 RabbitMQ 接收点位读写与自定义命令并上报位号值、状态和执行回执。新增协议只需增加驱动模块并实现相应 SPI，已有中心服务无需改动。驱动可独立打包部署，甚至运行在靠近设备的边缘节点上；这来自模块与消息契约解耦，不是“注册中心热插拔”。
 
 ![图6-3 IoT DC3模块关系与数据流分层图](figures/chapter-06/fig-6-03.png){width=15cm}
 
-*图6-3 IoT DC3模块关系与数据流分层图——北向统一接入、中心分层、南向协议适配。*
+*图6-3 IoT DC3 模块关系与数据流：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 和 Driver 之间异步流转。*
 
-**技术栈选型**。IoT DC3 的依赖清单反映了一致的工程权衡：设备端要求轻量异步（MQTT），服务间要求高频低延迟（gRPC），北向集成要求标准易调试（REST/HTTP）。语言框架采用 Java 21/25 LTS、Spring Boot 4.x、Spring Cloud 2025.1（Oakwood）；数据层用 PostgreSQL 存元数据、TimescaleDB 扩展处理时序、Caffeine 做本地缓存、MyBatis-Plus 简化数据访问；消息层 RabbitMQ 承担高可靠任务队列（指令下发、告警推送），Kafka 承担高吞吐时序数据流，服务间 RPC 用 gRPC + Protobuf，南向设备通信用 Paho 客户端 + EMQX 代理；安全层 Spring Security 提供 JWT 无状态令牌骨架，网关与中心服务间采用 mTLS 双向认证。
+**技术栈选型**。当前主干版本使用 Java 21、Spring Boot 4.0.6、Spring Cloud 2025.1.1 和 Spring AI 2.0.0。北向使用 REST/HTTP，中心与 Driver 的管理契约使用 gRPC + Protobuf，设备侧通信由各协议 Driver 选择相应客户端。数据层以 PostgreSQL、MyBatis-Plus 和 Caffeine 为主，消息层只使用 RabbitMQ；项目当前没有 Kafka Broker、Kafka 客户端或独立服务注册中心。
 
-### 6.3.2 采集适配器模式与设备影子
+### 6.3.2 采集适配器模式与位号值链路
 
 采集层是物联网平台对外部世界的"耳朵"，职责明确：接收设备上报的原始报文，完成协议解析、完整性校验、单位换算，最终将统一格式的数据交付消息队列。它不关心业务规则，不处理告警阈值，只负责把异构的现场数据变成平台可消费的标准化值。设计不当，采集层会成为全系统最早崩溃的瓶颈。
 
 **核心矛盾与适配器模式**。平台层只认识统一格式的位号值（位标识符、时间戳、数值、质量戳），而现场设备交上来的是各类协议封装——MQTT 是 JSON Payload，Modbus 是十六进制寄存器列表，OPC UA 是带命名空间的数据变量节点。IoT DC3 的采集层用适配器模式解耦这种差异：每个协议对应一个独立的 Driver 服务，对外暴露统一接口，对内封装协议特定的编解码逻辑。
 
 ```java
-// 抽象驱动接口，所有协议适配器均实现此接口
-public interface DeviceDriver {
-    void init(DriverConfig config);
-    PointValue read(String deviceId, String pointId);
-    List<PointValue> batchRead(String deviceId, List<String> pointIds);
-    WriteResult write(String deviceId, String pointId, Object value);
-    boolean ping();
-    void destroy();
+// 当前 Driver SDK 的聚合 SPI；协议驱动也可只实现所需的细粒度接口
+public interface DriverCustomService extends DriverLifecycle,
+        DriverMetadataListener, DriverHealth, DeviceHealth,
+        DriverProtocol, DriverCommand, DriverValidator {
 }
 
-// MQTT协议驱动示意实现
-@Component
-public class MqttDriver implements DeviceDriver {
-    private MqttClient client;
+public interface DriverProtocol {
+    ReadPointValue read(Map<String, AttributeBO> driverConfig,
+            Map<String, AttributeBO> pointConfig, DeviceBO device, PointBO point);
 
-    @Override
-    public PointValue read(String deviceId, String pointId) {
-        // 从设备影子缓存直接读取，不触发网络请求
-        return cacheManager.get(deviceId, pointId);
-    }
-
-    @Override
-    public WriteResult write(String deviceId, String pointId, Object value) {
-        // 构造MQTT控制消息发布到设备写Topic，等待ACK或超时
-    }
+    Boolean write(Map<String, AttributeBO> driverConfig,
+            Map<String, AttributeBO> pointConfig, DeviceBO device, PointBO point,
+            WritePointValue writePointValue);
 }
 ```
 
-分层后职责清晰：接口层定义 `DeviceDriver` 声明读写生命周期，南北向均依赖该接口编程；适配层每个协议 Driver 只干一件事——将该协议的数据翻译为 `PointValue`（MQTT 解析 JSON，Modbus 解析寄存器字节序，OPC UA 读节点 Attribute）；会话层全局唯一的 `ConnectionManager` 管理连接池、重连、心跳保活，断线重连策略须精确配置（每分钟重试 1 次，连续 3 次失败进入指数退避直到人工复位）。
+分层后职责清晰：SDK 侧的 `DriverReadService`、`DriverWriteService` 先解析设备、位号和属性元数据，再委托 `DriverProtocol` 完成真实设备读写；协议驱动只处理协议相关的连接、编解码和读写；成功读取的值由 `DriverSenderService.pointValueSender()` 发布到 RabbitMQ。启动阶段则由 `DriverInitRunner` 依次完成 Manager 业务注册、协议自定义初始化与定时任务初始化。代码没有统一的 `DeviceDriver` 或全局 `ConnectionManager` 类型，各驱动按协议特点实现连接与退避策略。
 
-**设备影子与两级缓存**。协议解析后的数据不直接发消息队列，而是先写入两级缓存：一级 Caffeine 本地缓存保存每设备最新位号值即"设备影子"（Device Shadow），写延迟亚秒级；二级 Redis 分布式缓存供其他中心服务跨进程查询，Caffeine 周期性增量同步（只推变化的数据点不刷全量）。取舍在于：Caffeine 减少了对 Redis 的即时访问压力，但引入数秒级数据不一致窗口——对采集频率高但查询实时性要求不苛刻的环境监控可接受，对秒级告警场景则必须走 Redis 直读或降低同步周期。对于非 TCP/IP 的串口设备（RS-232/485），不存在"设备主动上报"，Driver 用遍历器模式主动轮询：`CollectionIterator` 依次遍历设备列表读取寄存器、拼包、解码为 `PointValue`，再写入缓存。
+**缓存与设备状态边界**。当前 SDK 使用 Caffeine 缓存驱动、设备、位号及属性元数据，减少频繁跨服务查询；位号值通过 RabbitMQ 进入 Data，而不是先写入一个由 SDK 统一维护的“设备影子 + Redis”两级缓存。设备影子是物联网平台可选的通用建模能力，可以在需要离线期望状态时另行设计，但不能把它写成 IoT DC3 当前 Driver SDK 的既有机制。对于串口、Modbus 等不能主动上报的设备，具体驱动可由调度任务周期读取，再把标准化 `PointValue` 交给统一发送服务。
 
 ### 6.3.3 通信架构：控制面同步与数据面异步
 
 数据进入消息队列后，更棘手的问题出现了：平台内部服务之间如何交换数据？一条设备注册请求、一段控制指令、一组温湿度时序数据，它们在服务间流动的方式直接决定系统的吞吐、时延和健壮性。IoT DC3 的架构没有依赖单一通信模式，而是混合使用同步调用和异步消息——核心判断标准是"调用方是否需要在收到响应后才能继续下一步"。
 
-**控制面走同步**。设备控制指令（如"打开阀门 3"或"设定温度 26℃"）对时延和可靠性要求高。一条指令从北向 API 网关进入，经设备管理服务转发到对应协议驱动，驱动再下发给现场设备。客户端通常需立刻知道指令是否成功以便在界面反映状态或触发重试。若用异步消息，队列缓冲引入不可预测延迟，客户端还需轮询结果，架构别扭。因此命令下发路径选择同步 REST 调用：客户端发 HTTP POST，网关路由到设备管理服务，驱动执行返回状态码，整个过程同步返回。设备离线导致失败，调用方立刻得到 4xx/5xx 响应可马上决定重试还是报错——这种设计把"发起—执行—确认"压缩在一个请求上下文，避免了异步模型中指令状态不确定的问题。
+**管理调用走同步。** 北向请求由 Gateway 按固定服务名路由到 Auth、Manager、Data、Agentic 等中心，地址可由 `CENTER_*_HOST` 或路由环境变量覆盖。驱动启动时，`DriverRegisterService` 通过 gRPC 调用 Manager 的 `driverRegister` 完成业务元数据注册；设备、位号和驱动属性等需要即时返回的数据也通过 gRPC 客户端查询。这里的同步路径服务于管理与元数据契约，不代表设备命令直接用 REST/gRPC 打到驱动。
 
-**数据面走异步**。设备数据上报走同步 REST 完全不可行。一台智能楼宇网关每小时上传大量点位数据，若每条 REST 透传给后端，网关侧 CPU 被写调用占满，服务端线程池迅速耗尽。更关键的是数据上报对"实时确认"的要求远低于控制指令——传感器读数晚几秒入库对多数场景无影响。IoT DC3 让 Driver 完成协议解析后将归一位号值直接写入消息队列，数据服务作为消费者拉取做持久化、告警判断、缓存更新。链路参与者完全解耦：Driver 不等持久化完成，数据服务不管设备连接状态，各自按节奏处理。这种模式让系统吞吐不再受限于最慢环节，只要队列不打满，各服务可弹性伸缩。异步消息还带来削峰填谷——大量设备同时上线或异常风暴（一条产线停机，十余传感器同时上报临界值）时，队列吸收短时尖峰，消费者以稳定速率处理。
+**点位命令与数据流走 RabbitMQ。** Data 将点位读写或自定义命令发布到按驱动服务名绑定的队列，Driver 的 `PointCommandReceiver`、`CommandReceiver` 消费后调用协议实现，再把执行回执发回 Data；驱动采集到的 `PointValue`、设备状态与驱动状态同样通过 RabbitMQ 上报。命令链路因此是“提交—异步执行—回执确认”，而非一个贯穿网关到物理设备的同步 HTTP 请求。队列既隔离设备网络抖动，也让 Data 与各协议驱动按各自节奏扩缩容。
 
-**消息中间件的选型与演进**。IoT DC3 当前用 RabbitMQ 作为统一消息中间件——它承担命令性和事务性消息（设备注册确认、控制指令下发、告警通知），消息体小、路由规则多变（按租户/设备类型分发，Topic/Direct 交换机灵活扇出）、需要精确投递语义（失败被死信队列捕获重试），也承载设备上行数值流的异步解耦。RabbitMQ 成熟的确认机制与灵活路由能同时覆盖控制面与数据面，对中小规模部署足够。当数据面吞吐进一步增大（需要长时间日志保留、多消费者独立回放、每秒数十万级写入）时，可引入 Kafka 作为数据面的专用管道——其分区加消费者组模型与日志保留特性，让按 offset 回放历史这类需求变得简单，与 RabbitMQ 形成控制面/数据面的分工。是否引入 Kafka，取决于数据面吞吐是否真正触及 RabbitMQ 的天花板，而非默认叠加。
+**当前消息中间件只有 RabbitMQ。** 项目依赖、环境变量与 Compose 模板均围绕 RabbitMQ 配置，未包含 Kafka 客户端、Broker 或双消息总线。RabbitMQ 的 Topic 交换机、驱动专属队列、TTL、死信交换机和显式 ack/nack 共同支撑命令路由、失败重试与上行数据解耦。Kafka 可以作为其他高吞吐日志平台的通用选项讨论，但不能写成 IoT DC3 的当前实现或既定演进路线。
 
 ![图6-4 IoT DC3服务间通信架构图](figures/chapter-06/fig-6-04.png){width=15cm}
 
-*图6-4 IoT DC3 服务间通信架构。控制面走同步（gRPC）保证指令即时可确认，数据面走异步（消息队列）扛住高吞吐；当前 RabbitMQ 统一承载，规模化后数据面可演进到 Kafka。*
+*图6-4 IoT DC3 服务间通信架构：Gateway 与 gRPC 承担同步管理、注册和元数据调用；点位命令、自定义命令、执行回执、位号值与状态事件统一经 RabbitMQ 异步流转。*
 
-**最终一致性与幂等消费**。引入异步消息后必须回答：当一条控制指令需同时更新多个服务数据时如何保证一致性？以"激活设备"为例，需同时修改设备状态、下发初始配置、记录操作日志。强一致的 XA 两阶段提交在设备离线场景下几乎不可接受——设备可能几秒后才响应，锁会长时间阻塞。务实做法是基于消息的最终一致性：设备注册成功后注册服务不直接调用配置服务，而是向 RabbitMQ 发"设备已注册、初始配置待下发"消息，配置服务消费后下发，失败则留在队列重试（死信队列 + 重试计数）。关键在于幂等——每条消息嵌入全局唯一 `messageId`，消费者入库前检查是否已处理（Redis Set 或数据库 unique 约束），配合 at-least-once 投递语义，就能在可靠性和性能间取得平衡。
-
-配置消息消费者时，2026 年的 Spring Cloud Stream 4.x 已废弃 `@StreamListener` 注解，改为函数式编程模型——定义 `Consumer` Bean 即可（同一套函数式绑定既适用于 RabbitMQ，也适用于 Kafka）：
+**幂等消费与结果回执。** 异步命令必须处理重复投递、过期与并发交错。当前 `PointCommandReceiver` 在执行前检查 `expireAt`，以 `commandId` 做去重，并用设备级锁串行化同一设备的协议操作；成功或失败都会通过 `DriverSenderService` 发送结果回执，再对 RabbitMQ 消息执行 ack、reject 或 nack/requeue。驱动队列还配置 TTL 与死信交换机，避免永久不可执行的命令无限占用正常队列。源码入口可直接识别为：
 
 ```java
-// 函数式消费者（替代已废弃的@StreamListener）
-@Configuration
-public class DeviceDataStreamConfig {
-
-    @Bean
-    public Consumer<PointValueMessage> deviceData() {
-        return message -> {
-            pointValueRepository.save(PointValueMapper.toEntity(message));
-            cacheManager.updateCache(message.getDeviceId(),
-                    message.getPointId(), message.getValue());
-            alertEngine.evaluate(message);
-        };
-    }
+@RabbitHandler
+@RabbitListener(queues = "#{pointCommandQueue.name}")
+public void pointCommandReceive(
+        Channel channel, Message message, PointCommandDTO command) {
+    // 校验过期时间与 commandId，按设备加锁，调用 read/write，发送结果回执后 ack
 }
 ```
 
-```yaml
-spring:
-  cloud:
-    function:
-      definition: deviceData          # 声明函数Bean名
-    stream:
-      bindings:
-        deviceData-in-0:              # 函数式绑定命名: <name>-<in/out>-<index>
-          destination: dc3.device.data
-          group: device-data-service
-          consumer:
-            concurrency: 4
-            max-attempts: 3
-```
-
-总结 IoT DC3 的通信取舍：控制面走同步（gRPC）保证指令即时可确认，数据面走异步（消息队列）扛住高吞吐。当前用 RabbitMQ 统一承载，规模化后数据面可演进到 Kafka。这套取舍让平台从几分钟一次的设备注册到每秒上千条数据上报都能稳定运行。
+总结 IoT DC3 的通信取舍：同步链路用于网关路由、业务注册和元数据查询；点位命令、自定义命令、执行回执、位号值与状态事件统一走 RabbitMQ。该边界与当前依赖、代码和 Compose 配置一致，不包含 Kafka，也不依赖独立服务注册中心。
 
 ## 6.4 章节收束与延伸
 
@@ -1346,7 +1311,7 @@ AIoT 的成熟大致经历了三个阶段，每个阶段的技术特征与智能
 
 **第二阶段：智能分析与人机协作（约 2020—2025）。** 边缘计算与轻量机器学习开始落地，异常检测、预测性维护等算法被引入，模型跑在独立推理服务上，输出喂给告警系统或大屏。真正的转折发生在大语言模型具备了可靠的多步推理与工具调用能力之后——物联网系统第一次能像人类一样"读懂"设备手册，再根据指令去操作一台设备。这种自然语言操控物联网的能力从实验走向可用：用户用自然语言提问，模型按需调用平台内置工具去读元数据、查实时值，甚至在受控授权下触发设备读写。与第一阶段的核心区别在于：模型不再是旁观者，而是操作链路上的参与者。
 
-**第三阶段：自主决策与闭环控制（当前正在成形）。** 模型不再等待人类发问，而是持续监测数据流，主动发现异常、诊断根因、提出策略，并在人类确认或预设规则允许的情况下自动执行。典型特征包括：定时健康报告自动生成（每日清晨输出前一晚的设备离线汇总与趋势异常建议）、多模型按任务复杂度路由（简单查询走轻量模型、复杂诊断走更强模型、本地敏感查询走私有部署）、外部 AI Agent 通过 MCP 协议自由接入平台工具集。人类角色发生最深刻的转变：从操作员变为监督员，只在关键决策节点介入确认。
+**第三阶段：受约束的长期任务（演进参考）。** 模型不再只等待人类逐次提问，而是在显式编排与安全边界内持续执行“监测—分析—建议—复核”。定时健康报告、按任务自动路由模型、告警触发编排和长期任务状态机都需要额外实现；IoT DC3 当前不能被描述成已经具备这些能力。即使进入该阶段，人类仍需处理高风险与不可逆动作，实时安全控制继续由 PLC、边缘控制器和确定性规则承担。
 
 从第二阶段向第三阶段演进，背后是两条并行的驱动力。第一条是**算力下沉**：云端推理延迟高、带宽贵、隐私风险大，合理的工程分工是"云侧训练、边缘推理、端侧响应"，嵌入式 AI 芯片已能在有限功耗下运行轻量模型，使边缘部署大语言模型成为工程可行，直接收益是时延显著降低且敏感数据不必离开本地网络。第二条是**模型能力跃迁**：大模型完成了从"文本对话"到"工具调用"的跨越，能根据"把二号线的进料阀调到较低开度"这样的自然语言指令，推理出该调哪个 API、传什么参数、甚至做边界校验，这与物联网"指令密集"的特性天然匹配。两条驱动力共同指向一个结论：AIoT 已从概念走向工程落地。
 
@@ -1356,7 +1321,7 @@ AIoT 的成熟大致经历了三个阶段，每个阶段的技术特征与智能
 
 大模型介入后这个上限被打破。模型不只是识别"温度 86℃"这个数字，还能关联上下文——季节、负载、历史趋势、维修记录——然后做出"这不是正常波动，可能是冷却泵效率下降"的判断。从**数值判断到语义推理**的跃迁，是大模型赋予物联网的核心价值：让机器从只懂"检测"进化到能够"理解"。这种改变并非彻底替换规则引擎，而是在其之上叠加一层认知能力——规则引擎继续处理秒级响应和离散事件，大模型处理那些需要理解上下文、模糊匹配和因果推断的任务。
 
-**自然语言指令穿透设备层，是第一个显著变化。** 传统设备控制路径是：打开设备列表→找到目标设备→展开属性→输入值→点击写入，多步操作、深层嵌套。大模型把它压缩成一句话："关掉一楼走廊灯"或"2 号反应釜温度调到 85 度保持 30 分钟"。平台收到指令后，大模型完成意图识别（"关灯"对应某个可控开关测点）、参数抽取（"85 度"对应温度设定值）、动作映射（找到正确的设备命令接口），最终触发真实设备写操作。这里有一个工程边界必须明确：自然语言指令适用于操作意图清晰、安全风险可控的场景；对初次发出的设备控制指令，系统要求用户二次确认后才下发——这个设计不是为了保护模型，而是为了让操作员始终保持在决策环内。
+**自然语言指令穿透设备层，是第一个显著变化。** 传统设备控制路径是：打开设备列表→找到目标设备→展开属性→输入值→点击写入，多步操作、深层嵌套。大模型可把它压缩成一句话："关掉一楼走廊灯"或"把 2 号反应釜目标温度设为 85 度"。平台收到指令后，模型完成意图识别、参数抽取与动作映射，但模型不能直接控制设备。IoT DC3 当前的点位写 Tool 只创建 10 分钟有效的待确认 Action；用户通过 Action 接口确认后，平台才提交写命令。这个设计不是为了保护模型，而是为了让操作员始终保持在决策环内。
 
 **多模态融合让输入不再限于文本和数字。** 工业场景里摄像头拍到设备面板异常指示灯闪烁，运维人员拍张照片发到群里问"这是什么意思"——传统平台无法处理。多模态大模型（如 GPT-4o、Claude 4 等主流模型）可以同时接受图像和文本：照片里的闪烁灯模式、仪表指针位置、电线烧焦的颜色，都能纳入推理。但职责边界要划清：大模型擅长语义推理，不负责毫秒级实时控制。电机紧急刹车、继电器跳闸这类响应仍由硬件控制器和边缘实时系统承担；大模型的注意力放在认知层——帮运维人员理解"为什么出了这个异常""下一步该做什么"。这与消防系统的分工类似：喷淋头由温度传感器即时触发，但"全楼是否疏散、通知哪几个部门"托付给懂上下文的决策者。
 
@@ -1370,13 +1335,13 @@ Agent 是一个能**自主感知环境、做出决策、执行动作**的软件�
 
 需要把 Agent 放进 2024—2026 的生态里看，而不是停留在早期实验项目。AutoGPT、BabyAGI 等 2023 年的开源项目最早展示了 Agent 自主任务分解的可行性，依赖 LLM 的推理能力循环调用工具完成原本需要人工多步操作的任务。但进入 2025—2026，Agent 框架生态已经大幅成熟，按编排模型分化出几条清晰路线：以**LangGraph** 为代表的有状态工作流派（节点即步骤、边即条件跳转，适合需要精细控制执行路径的场景），以 **AutoGen** 为代表的多 Agent 对话派（多个角色协作完成同一任务），以 **CrewAI** 为代表的角色化编排派（每个 Agent 有明确职责与故事背景），以及 **Dify、Coze** 这类低代码 Agent 平台（让非工程师也能拖拽配置工作流）。这些框架的共性正是上述四要素的组合，差异在于编排粒度、可观测性与目标用户群——7.3 节会展开横向对比。IoT DC3 的 Agentic Center 没有直接套用某个通用 Python 框架，而是基于 Java 生态的 Spring AI 用 `@Tool` 注解自建轻量编排——选型理由在 7.3 节的物联网选型建议与 7.4 节的工程定位中展开，核心是为了让工具调用直接落在 JVM 内的 Java 方法上、与平台 Security 链路原生衔接。
 
-Agent 完成多步任务的核心机制是 **ReAct**（Reasoning + Acting，推理 + 行动），最早由 Yao et al.（2023）提出。它让模型交替输出思考过程和具体动作，形成一个持续闭环：用户输入→Agent 解析目标；**思考（Thought）**判断当前需要哪些信息、用什么工具获取；**行动（Action）**调用具体工具（如查询设备状态）；**观察（Observation）**接收工具返回的数据或错误；返回思考阶段，根据观察结果决定下一步；如此循环直到满足完成条件，最后输出最终回答。这个循环赋予 Agent 容错和自适应能力——若第一步查询返回空值，Agent 不会卡住，而会在思考阶段判断"可能需要调整查询参数"再重试。一个简化的物联网案例：Agent 处理"1 号泵房离线告警"，先思考需要确认设备真实状态，调用 `DeviceTool.getStatus()` 得到"离线"，排除误报；再思考离线原因，调用 `EventTool.getRecentByDevice()` 查最近事件；发现无明确原因后决定尝试远程重启，但写操作属高风险，系统要求人工确认；用户确认后调用 `CommandTool.sendCommand()` 下发重启指令，最终返回"已执行重启，状态恢复"。若重启失败，Agent 还能继续思考"联系维护人员"或"切换备用泵"，而不必等人工重新规划。
+Agent 完成多步任务的核心机制是 **ReAct**（Reasoning + Acting，推理 + 行动），最早由 Yao et al.（2023）提出。它让模型交替选择动作和读取观察结果，形成持续闭环：用户输入→Agent 解析目标；**思考（Thought）**判断需要哪些信息；**行动（Action）**调用具体工具；**观察（Observation）**接收工具返回的数据或错误；再根据观察决定下一步，直到满足完成条件。一个符合 IoT DC3 当前 Provider 边界的示例是处理“1 号泵房设备离线”：先用 `DeviceTool` 定位设备并查询状态，再用 `DriverTool.lookupDriverByDeviceId()` 找到所属 Driver，随后查询 Driver 状态和其下设备在线汇总，最后区分单设备故障与 Driver 级故障并给出人工排查建议。当前默认 Provider 没有远程重启 Tool，因此不能在示例中声称 `CommandTool` 已经执行重启。
 
 ![图7-2 Agent 架构与 ReAct 循环](figures/chapter-07/fig-7-02.png){width=15cm}
 
 *图7-2 Agent = LLM + 记忆 + 规划 + 工具；右侧 ReAct 循环中思考→行动→观察反复迭代，直到完成条件满足才输出最终答案，虚线为循环回退路径。*
 
-说清 Agent 的能力，也得说清它的约束。物理世界的误操作代价很高——误关一台生产设备可能造成整条产线停工，完全的"无人值守"在大多数工业场景中并不现实。IoT DC3 在这个问题上做了分层授权：工具调用走 OAuth 2.1 + 租户隔离 + 工具白名单，Agent 拿到的权限等同于当前登录用户；系统根据风险分级决定哪些操作需要人工确认——对写设备寄存器、重启驱动这类高风险动作，Agent 主动请求确认，确认后才能执行；思考和操作轨迹全程可追溯，每一步的决策逻辑和工具调用记录都保留在会话历史中。从更广的视角看，Agent 在物联网中不是取代人，而是承接那些重复、繁琐、需要多步推理的工作——让人的精力集中在异常判断和边界决策上。ReAct 提供的不是万能方案，而是一个可观察、可干预、可兜底的工作框架。
+说清 Agent 的能力，也得说清它的约束。物理世界的误操作代价很高——误关一台生产设备可能造成整条产线停工，完全的“无人值守”在大多数工业场景中并不现实。IoT DC3 的 Agentic Tool 从 `ToolContext` 取得租户、用户和会话上下文，再通过 Facade 访问平台能力；点位写入由持久化 Action 承担确认状态，Tool 本身不直接下发。Gateway 的 MCP Tools 入口另有 OAuth、连接授权、工具白名单与高风险确认流程，两条链路不能混写成一个统一拦截器。会话消息和工具轨迹可用于回放与审计，但模型内部思维过程不应被描述成可完整追溯的业务数据。Agent 的作用不是取代人，而是承接重复查询与多步信息关联，让人专注于异常判断和边界决策。
 
 ## 7.2 让模型够到物理世界：RAG、Tool-Calling 与 MCP
 
@@ -1386,13 +1351,13 @@ Agent 完成多步任务的核心机制是 **ReAct**（Reasoning + Acting，推�
 
 RAG 的核心思路很直白：模型在生成回复之前，先从外部知识库检索最相关的信息片段作为上下文，然后再生成。这样一来，大模型不必靠训练参数里封存的记忆作答——那些记忆可能已经过期，甚至根本没存过系统里的专有设备。在物联网运维场景中，RAG 的检索对象通常包括设备安装手册、Modbus 寄存器映射表、历史故障记录、标准化作业流程（SOP）、驱动升级日志等。一个典型流程是：操作员问"这台温控器报 E4 故障该做什么"，系统先把查询转成向量表示，在文档向量库中检索最相关的几篇故障排除记录，连同原始问题一起发给大模型，模型据此生成具体排查步骤并列出需要检查的位号。
 
-RAG 的真正价值在智能告警分析里体现得最充分。当设备触发离线告警时，Agent 自动检索知识库中同类设备的维修记录、驱动重启方案以及该设备最近的变更操作日志，然后把根因分析和建议动作一并输出。相比传统规则引擎只推送"设备离线"四个字，这种回复的信息密度和实用性都高得多。但 RAG 的工程难点在检索质量：知识库里混入过时的维护记录，模型就可能基于错误信息给建议；向量化分块时把 SOP 的步骤 A 和步骤 D 切到同一块，模型拿到的上下文就是混乱的。实践中通常引入两个手段：一是文档版本管理（新部署的设备文档标注版本号，过期文档从向量库移除或降权），二是检索结果重排序（候选条目再用轻量级排序模型如 BGE Reranker 重排一次，确保最相关文档优先进入上下文窗口）。没有 RAG，模型不认识故障码、无从知道 SOP 里写了什么——这是它从"能说"到"说得对"的前提。
+RAG 的价值在智能告警分析里体现得最充分：告警发生后，系统可检索同类设备维修记录、驱动处理方案和最近变更日志，再让模型输出根因分析与建议动作。相比只推送“设备离线”，这种回复的信息密度更高。但这在 IoT DC3 中仍是可选扩展设计：当前默认 Agentic Center 没有内置 VectorStore、案例入库任务和自动告警触发流水线。若后续实现，必须处理文档版本、租户隔离、分块质量和检索重排序，不能把路线图当成现状。
 
 ### 7.2.2 Tool-Calling：让模型从"说"变成"做"
 
 Tool-Calling 让大模型在生成回复时输出结构化的函数调用请求——指定函数名和参数，而不是自然语言。应用层拦截这个请求，执行对应的业务逻辑，再把执行结果返回给模型，最终由模型组织成自然语言回复。整个流程没有魔法：LLM 不执行代码，它只负责"选函数、填参数"。例如用户说"给 1 号线温度点位加一个超过 90 度就发短信的告警规则"，模型解析意图后输出类似 `{ "function": "createAlarmRule", "arguments": { "ruleName": "1号线温度超限", "condition": "line01_temp>90", "notifyMethod": "sms" } }` 的结构化请求，客户端匹配到对应 `@Tool` 方法执行，返回规则 ID，模型再把结果组织成"已创建规则"。整个过程省去了操作员在多个界面间跳转配置的环节。
 
-Tool-Calling 的安全风险值得特别关注。如果模型误读意图——比如把"暂停 3 号泵"理解成"关闭 3 号泵"——一次错误调用就可能造成设备损坏。IoT DC3 对此引入了高风险确认机制：所有写操作类工具在执行前，Agent 先返回确认询问，操作员点击确认后指令才真正发出。这个机制在工具函数执行前的拦截层实现，不影响只读工具的调用效率。在复杂运维场景中，RAG 与 Tool-Calling 常常串联使用：先通过 RAG 检索正确的操作步骤或参数模板，再由 Tool-Calling 执行具体操作。联合工作流的典型对话是：操作员说"二号车间除湿机频繁跳闸，按标准流程排查"，Agent 先用 RAG 命中"重复跳闸 SOP V2"，按步骤调用 `PointValueTool` 读状态与故障码、结合 SOP 分析故障码含义、调用 `CommandTool` 下发重启，最后输出"已执行重启，初步判断为压缩机瞬时过流，建议现场巡检"。没有 RAG，模型不认识故障码；没有 Tool-Calling，模型只能给"建议重启"的文本建议——两者结合之后，大模型才真正从"能说的顾问"变成"能动手的值班员"。
+Tool-Calling 的安全风险值得特别关注。如果模型误读意图，一次错误调用就可能造成设备损坏。IoT DC3 当前的可执行写路径是 `PointValueTool.writePointValue`：它只创建待确认 Action，用户确认后 `ActionService` 才调用 `PointCommandFacade` 提交命令；这由业务代码和持久化状态实现，不是 `@WriteOperation` 注解或 Spring AI 自动拦截。RAG 与 Tool-Calling 的串联流程可作为扩展设计：先检索 SOP，再读取状态和故障码，最后仅生成拟执行动作；只有用户确认且平台回执成功后，才能表述为“已执行”。
 
 ![图7-3 RAG + Tool-Calling 联合工作流](figures/chapter-07/fig-7-03.png){width=15cm}
 
@@ -1402,17 +1367,17 @@ Tool-Calling 的安全风险值得特别关注。如果模型误读意图——�
 
 RAG 补上了知识滞后，Tool-Calling 让模型能动手。但当一个物联网平台想把几十种设备驱动、数据库、告警服务、报表生成器全部暴露给外部 AI Agent 时，每个工具单独写一套 API 定义、鉴权方式和版本管理，工程成本会迅速失控。MCP（Model Context Protocol，模型上下文协议）正是在这个背景下出现的——它为模型与外部系统之间的通信定义了一套标准化接口，让部署和维护从"逐个适配"变成"统一接入"。
 
-**MCP 的来历与定位必须讲清楚，否则容易误用。** MCP 由 Anthropic 于 2024 年 11 月推出并开源，2025—2026 年被 OpenAI（ChatGPT）、Google、Microsoft 等主流厂商相继采纳，随后捐献给 Agentic AI Foundation 成为行业共建的事实标准。需要注意：MCP 并非 IETF RFC，没有强制的标准编号，而是一份由社区维护、持续演进的规范。它的核心思路是把每个外部能力封装成一个 Resource，每个 Resource 有自己的标识、描述和输入输出定义；模型通过一个标准端点发送 JSON-RPC 2.0 请求来调用这些 Resource。对模型而言，无论后端连的是 Modbus 驱动、PostgreSQL 查询还是 Slack 告警推送，都只是不同的 Resource，调用方式完全一致。
+**MCP 的来历与定位必须讲清楚，否则容易误用。** MCP 由 Anthropic 于 2024 年 11 月推出并开源，2025—2026 年被多家主流厂商采纳，随后捐献给 Agentic AI Foundation，成为行业共建的事实标准。需要注意：MCP 并非 IETF RFC，而是一份由社区维护、持续演进的规范。协议把服务端能力明确区分为三类：**Tools** 是模型可调用的动作或函数，带输入参数模式；**Resources** 是客户端可读取的上下文数据；**Prompts** 是可枚举、可参数化的提示模板。不能把所有外部能力统称为 Resource，更不能用“调用 Resource”代替 `tools/call`。
 
-**MCP 的技术细节值得展开，这是它区别于普通 REST 的关键。** 通信基于 JSON-RPC 2.0，请求与响应都是 JSON 消息（如 `{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{...}}`）。一次完整的 MCP 会话经历三个阶段：**初始化握手（initialize）**——客户端发送 `initialize` 请求，附带自身支持的协议版本与能力（capabilities），服务端回应其协议版本与能力描述，双方完成版本协商；**能力描述**——服务端在握手响应中声明自己提供的三类能力：**tools**（可被模型调用的函数）、**resources**（可被读取的数据资源，如文件、数据库记录）、**prompts**（预定义的提示模板），客户端据此知道服务端"能做什么"；**正常操作**——客户端通过 `tools/list` 发现所有可用工具、通过 `tools/call` 调用某个工具、通过 `resources/read` 读取资源，会话结束时发送 `shutdown`。这种"先握手声明能力、再按需调用"的设计，让工具目录可以动态发现，新增或变更工具对 Agent 几乎透明。
+**MCP 的技术细节值得展开，这是它区别于普通 REST 的关键。** 通信基于 JSON-RPC 2.0，请求与响应都是 JSON 消息（如 `{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{...}}`）。客户端先通过 `initialize` 协商协议版本和能力，再按服务端实际声明的 capability 调用相应方法；只有声明了 resources 的服务端才应提供 `resources/list`、`resources/read`，只有声明了 prompts 才应提供 `prompts/list`、`prompts/get`。IoT DC3 当前 `/mcp` 端点只声明 **tools capability**，实现 `initialize`、`ping`、`tools/list`、`tools/call`，并接受 `notifications/initialized`；Resources 与 Prompts 属于协议知识边界，尚不是当前端点能力。
 
-**对比传统 REST/MQTT，MCP 的工程权衡很明确。** REST API 的问题在于静态绑定：API 文档由人工维护，新增工具时 Agent 要等文档更新、重新加载或硬编码调用路径；MCP 通过服务启动时自动扫描 `@Tool` 注解方法生成 Resource 列表、运行时 `tools/list` 获取最新目录，实现了动态发现。MQTT 的问题在于安全粒度粗糙：一个客户端可订阅任意主题，权限控制是主题级的，难以按操作、按参数、按租户隔离；MCP 请求走 HTTP，每个调用都经过基于 OAuth 的认证，网关内置工具白名单与风险分级——"写寄存器"这种高风险操作需要更高授权甚至触发人工确认。此外，MCP 天生支持工具链组合：Agent 可在一次会话中依次调用多个 Resource，对于"查设备温度→判断异常→读历史趋势→调低制冷设定值"这种多步任务能显著减少编排复杂度。在 IoT DC3 中，MCP 的定位是"把平台工具安全暴露给外部 AI Agent"——它不同于 Agentic Center（面向人类操作员的对话框），而是专为外部编排系统设计的机器接口；网关在 `POST /mcp` 上提供 MCP Resource Server，工具目录由四个中心服务的 OpenAPI 定义自动聚合而成，调用走基于 OAuth 的鉴权外加工具白名单和风险分级。
+**对比传统 REST/MQTT，MCP 的工程权衡很明确。** REST 仍是实际业务 API，MCP 则在其上提供面向模型的工具目录与统一调用协议。IoT DC3 不是扫描 Spring AI 的 `@Tool` 方法去生成“Resource 列表”：Auth 中的 `McpOpenApiAggregator` 从静态 OpenAPI 规格汇聚工具目录和输入模式，Gateway 的 `tools/list` 再按 OAuth 连接及工具白名单返回当前调用者可见的 Tools；每次 `tools/call` 前都会重新校验 token 与工具可见性。MCP 与 MQTT 也不是替代关系：MQTT/RabbitMQ 服务设备和平台消息流，MCP 服务外部 AI 客户端。外部 Agent 可在一次会话中顺序调用多个 Tool 完成多步任务，但每一步仍受既有租户、权限和工具白名单约束。
 
 ![图7-4 MCP 在物联网平台中的架构示意](figures/chapter-07/fig-7-04.png){width=15cm}
 
-*图7-4 外部 Agent 只需连接一个 MCP 端点，经 initialize 握手获取 tools/resources/prompts 能力描述，后端资源由各服务层 OpenAPI 自动聚合；每次调用经 OAuth 鉴权与白名单、风险分级细粒度控制。*
+*图7-4 IoT DC3 当前 MCP 边界：外部 Agent 经 initialize 协商后使用 tools/list 与 tools/call；Gateway 每次调用前经 Auth 校验 OAuth token 与工具白名单，工具目录由 OpenAPI 规格汇聚。Resources 与 Prompts 是协议可选能力，当前端点未声明。*
 
-MCP 的出现，使物联网平台可以同时提供两种 AI 接入路径：Agentic Center（面向人）和 MCP（面向机器），两条路径共享同一套后端工具集。MCP 标准化了工具发现、鉴权和调用流程，让外部 Agent 的入驻从一次定制开发简化为配置连接。
+MCP 的出现，使物联网平台可以同时提供两种 AI 接入路径：Agentic Center 面向对话，MCP 面向外部 Agent。两者最终都复用平台业务能力，但工具目录来源不同：Agentic Center 显式注册 Spring AI Tool，Gateway MCP 则从静态 OpenAPI 规格聚合 Tools，不能写成自动共享同一份工具集。
 
 ## 7.3 Agent 框架生态与选型
 
@@ -1462,25 +1427,25 @@ MCP 的出现，使物联网平台可以同时提供两种 AI 接入路径：Age
 
 集成大模型到 Java 后端，一个常见的工程问题是：每个模型提供商都有自己的 SDK、协议和认证方式。如果 AIoT 平台要同时接入 GPT、Claude、DeepSeek 和通义千问，就得维护多套独立的 HTTP 客户端、错误处理和重试逻辑。Spring AI 把这层胶水抽了出来——它为 Java/Spring 生态提供统一的 AI 模型调用抽象，切换模型提供商的成本被压缩到仅修改几行配置。**Spring AI 2.0 于 2026 年 6 月正式 GA**，配套 Spring Boot 4，是 Java 生态中第一个稳定可用的 AI 集成框架。它的核心接口 `ChatClient` 屏蔽了底层模型差异——接收 OpenAI Chat Completions 风格的调用，输出标准化的 `ChatResponse`；对业务代码而言，无论后端连的是 OpenAI、Anthropic 还是 Ollama 本地模型，调用方式完全一致。除文本对话外，Spring AI 2.0 还提供图像、嵌入、音频等接口，但对物联网场景而言，`ChatClient` 与 Tool Calling 的组合才是真正的核心能力。
 
-**为什么 IoT DC3 不引入独立的 AI 网关或 Python 运行时，而选用 Spring AI？** 工程上有一个直接原因：DC3 是纯 Java 21/Spring Boot 4 平台，每个服务都跑在 JVM 中，为引入 AI 再部署一套 Python 运行时意味着要额外维护容器、语言桥接和两份运行时之间的网络可靠性。Spring AI 把 AI 能力拉近现有 Java 进程：`ChatClient` 本身就是一个 Spring Bean，工具调用直接走 JVM 内普通 Java 方法，认证上下文通过 Spring Security 过滤器链流转，模型拿到的设备数据和操作权限不会超出操作员账号本身的 RBAC 范围。这种原生集成让工具方法可直接引用业务 Service 层代码，租户隔离在方法注解层面就能完成，不必额外维护权限等价映射。配置上只需两步：在 `pom.xml` 引入 `spring-ai-bom`（2.0.0）与对应 starter；在 `application.yml` 配置模型提供商。由于 Spring AI 默认使用 OpenAI Chat Completions 协议，只要后端暴露 OpenAI 兼容端点，就能接入任何模型——从云端 GPT 切到本地 Ollama 只需改 `base-url`，业务代码一行不动。
+**为什么 IoT DC3 不引入独立的 Python Agent 运行时，而选用 Spring AI？** DC3 是 Java 21/Spring Boot 4 平台，引入第二种运行时会增加容器、语言桥接和网络可靠性成本。Spring AI 让 `ChatClient`、Advisor 与 Tool Callback 留在现有 JVM 进程；Tool 从 `ToolContext` 取得身份上下文，并通过项目 Facade/gRPC 复用中心服务。租户隔离和权限仍由平台代码保证，不能仅靠方法注解。当前 Provider 类型包括 OpenAI-compatible 与 Anthropic，切换模型主要落在 Provider、模型配置与请求参数上，Tool 业务代码通常无需跟着改写。
 
 ![图7-6 Spring AI 集成链路：从配置到响应](figures/chapter-07/fig-7-06.png){width=15cm}
 
-*图7-6 OpenAI API Adapter 只做协议翻译不引入额外逻辑；无论后端是云端 GPT 还是本地 Ollama，上层 ChatClient 调用代码完全不变，切换成本仅为改配置文件。*
+*图7-6 ChatClient 提供统一业务接口，ChatClientFactory 按 Provider 类型选择 OpenAiChatModel 或 AnthropicChatModel；模型可替换，但协议和能力差异仍需验证。*
 
-`ChatClient` 把对话流程拆解成清晰的链式步骤：`prompt()` 构造消息 → `user()` 提供用户输入（可加 `system()` 设定角色）→ `call()` 触发推理 → `.content()` 提取纯文本响应。它支持三种调用模式，对应物联网运维的不同需求。**同步调用**最简单也最易调试，请求发出后线程阻塞直到模型返回完整结果，适合"查询一次状态""解析一条指令"这类不需实时流式展示的场景；但若模型响应慢，长时间阻塞会耗尽线程池，生产环境通常将其放进异步执行器或 WebFlux 上下文。**流式调用**返回 Reactor 的 `Flux<String>`，模型每生成一个 token 回调就触发一次，操作员看到的内容是一行行刷新出来的而非等几分钟才出全文，这对"告警诊断分析"这类长回复尤其重要——读取锅炉温度时，操作员能一边看模型"正在查询锅炉温度和风机转速"一边等完整结果，而不是面对空白界面猜进度。**函数调用**（`.functions()`/`@Tool`）把 Spring Bean 注册为模型可自主调用的工具，让 `ChatClient` 从"问答机器"变成"操作入口"，具体机制下一节展开。设计上，`ChatClient` 不关心接的是 GPT 还是 DeepSeek——只要模型暴露 OpenAI 兼容端点，调用方式完全一致，这给物联网平台在"选模型"上留出了自由度。
+`ChatClient` 把对话流程拆解成清晰的链式步骤：`prompt()` 构造消息 → `user()` 提供用户输入 → `call()` 触发推理 → `.content()` 提取文本响应。同步调用适合简单查询，流式调用适合长回复和渐进展示；工具调用则通过请求级 `tools(toolObject)`、Builder 级 `defaultTools(toolObject)` 或显式 `ToolCallbackProvider` 注册。带 `@Tool` 的 Bean 不会被 `ChatClient.Builder` 全局自动扫描。IoT DC3 当前显式构造 `MethodToolCallbackProvider`，并在启用工具的请求上注册回调。
 
 ### 7.4.2 Tool Calling 与 @Tool 注解
 
 `ChatClient` 能回答"锅炉温度是多少"，但这仍停留在"看"的层面；运维的真正需求是"动"——把风机转速调到 1500 RPM、重启一台离线设备、切换阀门开度。Tool Calling（也称 Function Calling）就是让 LLM 从对话者变成操作者的关键机制。应用先向 LLM 注册一组可调用函数（名称、描述、参数结构），模型推理时判断用户意图是否匹配某个函数：匹配则输出结构化 JSON（含函数名和参数）而非自然语言；应用端拦截这个 JSON 执行对应后端方法，再把执行结果回填给模型，让它据此生成最终自然语言回复。
 
-在 Spring AI 2.0 中定义一个可被 LLM 调用的工具极其简单——只需在 Bean 方法上加 `@Tool` 注解。注解的 `description` 是 LLM 理解该函数的唯一途径，描述越精确模型越不容易误调用；`@ToolParam` 的 `description` 帮助模型正确填充参数（例如 `turnOn` 参数若用数字 1/0 而非布尔值，模型仍能通过描述推断意图）。工具定义好后注册到 `ChatClient` 也非常自然——只要工具类作为 Spring Bean 存在，`ChatClient.Builder` 会自动扫描并注册所有带 `@Tool` 注解的方法。实际执行时，`ChatClient` 内部先向 LLM 发送用户消息加工具描述，模型判断意图后输出函数调用请求，客户端执行该函数并把结果返回给模型，模型最终合成回复——这一切对开发者透明。函数调用直接操控物理设备，容不得半点马虎：每个 `@Tool` 方法应通过 `ToolContext` 获取当前认证用户与租户 ID，执行前做 RBAC 校验；LLM 填充的参数可能超范围（比如把转速设为十万），工具方法内部必须做参数合法性校验；对批量、高危操作应增加一道硬约束，要么要求二次确认，要么在工具描述中加警告语句引导模型在批量操作前反问。
+在 Spring AI 2.0 中，工具方法可用 `@Tool` 描述，参数可用 `@ToolParam` 补充语义；但 Spring Bean 并不会仅因带有 `@Tool` 就被 `ChatClient.Builder` 全局自动扫描。通用写法是在单次请求上调用 `tools(toolObject)`，或在 Builder 上调用 `defaultTools(toolObject)`；IoT DC3 当前则显式构造 `MethodToolCallbackProvider`，并在启用工具调用的请求上通过 `toolCallbacks(provider)` 注册。实际执行时，模型只负责选择工具和填写参数，应用端执行 Java 方法并把结果回填给模型。函数调用可能操控物理设备，因此工具内部仍要做租户/RBAC、参数值域和高风险操作确认，不能把安全责任交给工具描述或模型自行判断。
 
 ### 7.4.3 对话记忆：保持上下文连续
 
 对话式运维中，操作员可能先查历史数据，接着要求对某个异常段执行操作。如果没有记忆机制，模型无法解析第二句话中的指代对象——上一轮提到的"异常段"与第二轮要调整的参数之间没有显式关联。这不是可用性问题，而是无状态 API 与多轮交互之间的结构性矛盾：Chat Completion API 遵循无状态设计，每次请求携带独立完整消息，模型内部不做跨请求关联。这简化了 API 实现，但把上下文管理的责任完全交给了调用方。在物联网运维中，一个会话可能持续多轮、涉及设备查询/参数解读/命令下发/结果确认，如果每轮都从零开始，指代解析必然失败，"多轮对话"就退化成单轮问答。
 
-Spring AI 2.0 通过 `ChatMemory` 接口和 `MessageChatMemoryAdvisor` 顾问提供对话记忆的标准化接入。三种内置策略在物联网场景中的适用性有明显区别：**消息历史**将完整消息列表直接附加到每次请求，适合短轮次对话（通常 10 轮以内），保留上下文且无信息损失；**摘要记忆**将历史压缩为一段摘要避免 token 溢出，适合长轮次或 token 预算紧张时，但压缩规则需特别注意保留操作类历史的结果与状态码，避免模型因上下文丢失重复执行相同下发指令；**知识图谱记忆**维护实体关系、仅检索相关实体，适合追溯多台设备历史操作链的复杂推理。`MessageChatMemoryAdvisor` 通过装饰器模式将历史管理透明化：每次调用前自动从 `ChatMemory` 中取出与当前 `conversationId` 关联的历史消息注入提示词，调用结束后再写入本次消息；`conversationId` 是会话唯一标识，不同会话用不同 ID 即可隔离上下文。运维对话通常围绕有限设备和位号展开、轮数可控，消息历史模式最直接；但当对话拉长或涉及频繁 Tool Calling 反馈时，摘要记忆做自动压缩更稳妥。IoT DC3 的 Agentic Center 把 `ChatMemory` 对接平台内部表结构，对话记录直接写入中心表，支持会话回放、审计与故障复盘——操作员一句"看看上次对三号线做了什么"，模型即可检索对应会话完整历史。这种可追溯能力不仅为多轮交互提供上下文连续性，更将每次运维操作数字化为可审计的记录，是运维合规与事故回溯的基础设施。
+Spring AI 2.0 通过 `ChatMemory` 和 `MessageChatMemoryAdvisor` 提供对话记忆接入。IoT DC3 当前使用 `MessageWindowChatMemory`，并以 `dc3_message` 业务表实现 `ChatMemoryRepository`；Advisor 在请求前按会话读取消息窗口，在响应后保存本轮消息。它解决同一会话中的指代与上下文连续性，但不等同于跨会话知识检索，也不是 RAG。会话、消息、Action 与工具轨迹可用于回放和审计；长对话仍要控制消息窗口，避免旧工具结果被截断后重复执行。
 
 ## 7.5 IoT DC3 Agentic Center 实践
 
@@ -1488,53 +1453,53 @@ Spring AI 2.0 通过 `ChatMemory` 接口和 `MessageChatMemoryAdvisor` 顾问提
 
 操作员发现产线温度异常，需要在一个界面查位号值、切到设备管理找风机执行器、再回到命令界面下发转速调整——数据在、接口在，但操作路径割裂是物联网运维常见的工程瓶颈。Agentic Center 要打破的正是这层界面锁死：让大模型在平台上能读能写，把一个跨界面的操作链压缩成一句自然语言。它不是新建独立的 AI 子系统，而是把大语言模型嵌入 DC3 现有运维流程。
 
-设计上遵循两条硬性原则。**第一，所有 AI 操作最终走平台真实 API。** 模型不直接访问数据库、不绕过鉴权中心，每次工具调用都经过网关注入用户主体上下文、走 RBAC 权限校验——AI 拿到的权限不超过操作员账号自身的权限。这条原则保障了 AI 不会成为权限后门，也是衔接第 3 章物模型（接口契约）的关键：模型看到的位号值是物模型归一化后的语义数据，而非原始寄存器报文。**第二，工具就是平台服务层的映射。** 内置的 `@Tool` 工具类，每个都是对已有服务层方法的薄包装，不重复业务逻辑；平台每增加一个 API，对应的工具可以同步跟上，工具集维护成本几乎为零。架构选择 Spring AI 2.0 的原因前面已述——原生 JVM 集成、OpenAI 协议兼容、可接入任何兼容端点的模型。
+设计上遵循两条硬性原则。**第一，模型不直接访问数据库或设备。** 已认证请求中的租户、用户与会话信息进入 `ToolContext`，Tool 再通过 Facade/gRPC 访问平台能力；点位写入必须经过 Action 确认。**第二，工具只做薄适配。** `@Tool` 方法复用已有 Facade，不复制中心服务业务逻辑。平台新增 API 后仍需显式设计 Tool 描述、参数、权限和 Provider 注册，不能假设会自动同步为模型能力。
 
-从部署和职责视角，Agentic Center 的架构拆成四层。**用户交互层**是操作人员看到的入口，可以是 DC3 Web 界面中嵌入的聊天窗口，也可通过 `POST /api/v3/agentic/v1/chat/completions` 接入任意客户端，消息格式兼容 OpenAI Chat Completions 规范。**AI Agent 层**核心是 `dc3-center-agentic` 服务，包含一个 Spring AI 的 `ChatClient` Bean 和多个 `@Tool` 工具方法，会话管理与模型路由也位于这一层；它只做意图识别与工具调度，业务请求通过 Feign 客户端转发给下一层，不做模型推理（推理在远端或本地模型服务中完成，Agent 层不部署大模型、不管理 GPU）。**平台服务层**包括管理、数据、鉴权等中心服务，Agentic Center 通过 Feign 调用它们，方式与普通前端请求完全一致——不走旁路、不设特殊通道。**数据与设备层**底层包括 PostgreSQL（关系数据）、MongoDB（位号历史值时序存储）以及通过驱动网关连接的物理设备，设备本身对 AI 不可见，AI 看到的是经过归一化的位号值。
+从部署和职责视角，Agentic Center 的架构拆成四层。**用户交互层**是 DC3 Web 对话窗口或调用 `POST /api/v3/agentic/v1/chat/completions` 的客户端。**AI Agent 层**核心是 `dc3-center-agentic`，包含 Spring AI `ChatClient`、显式注册的 Tool Callback、会话管理与模型路由；模型推理由配置的模型端点完成。**平台服务层**包括 Auth、Manager、Data 等中心，Tool 通过项目 Facade 访问这些既有能力；当前 Agentic 模块依赖 `dc3-common-facade-grpc`，不是 Feign 旁路。**数据与设备层**使用 PostgreSQL 保存 Agentic 会话和平台数据，位号命令与数据经 Data、RabbitMQ 和协议 Driver 到达物理设备；当前 Compose 没有 MongoDB。
 
 ![图7-7 Agentic Center 四层架构](figures/chapter-07/fig-7-07.png){width=15cm}
 
-*图7-7 四层架构：AI Agent 层只做意图识别与工具调度不做推理；所有工具调用经 Feign 走平台服务层，鉴权服务不绕过 RBAC，数据设备层物理设备对 AI 不可见。*
+*图7-7 Agentic Center 四层架构：Tool 通过 Facade/gRPC 复用平台能力，会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转；AI 不绕过租户与权限边界。*
 
 ### 7.5.2 内置 @Tool 工具集：DeviceTool、DriverTool、PointValueTool
 
-Agentic Center 出厂自带 10 个 `@Tool` 工具类，覆盖平台最主要的领域对象。这里拆解三个支撑"对话驱动设备操作"核心链路的关键工具，其余工具（`PointTool` 查位号元数据、`ProfileTool` 查模板、`TenantTool` 查租户、`EventTool` 查告警事件、`CommandTool` 下发命令等）设计思路一致。
+源码中共有 10 个 `@Tool` 类，但当前 `agenticToolCallbackProvider` 显式注册的是 8 个：`TenantTool`、`UserTool`、`DeviceTool`、`DriverTool`、`ProfileTool`、`PointTool`、`PointValueTool`、`SystemTool`。`CommandTool` 与 `EventTool` 类虽存在，当前没有加入该 Provider，不能写成会话默认可调用工具。下面重点拆解 Device、Driver、PointValue 三类已注册工具。
 
-**DeviceTool 解决设备检索与控制。** 传统运维界面里，操作员要登录管理控制台、跳转设备列表、输入名称搜索、双击进详情、在多个表单间切换改参数——单个设备尚可，批量处理数十台或处理告警时临时查元数据，界面切换成本迅速累积。DeviceTool 让 LLM 通过自然语言触发设备检索与控制，把多步界面操作压缩成一句指令。它封装了 `dc3-center-manager` 的核心 API，覆盖设备列表检索、设备详情查询、设备属性写入三类操作。检索类方法（如 `listDevices`）从 `ToolContext` 取出租户身份做模糊匹配，返回结构化文本并限制条数（如最多 10 条）避免超出上下文窗口；写入类方法（如 `writePointValue`）属高风险，采用两阶段提交——先返回"准备写入：设备 X 的点位 Y 设为 Z，请确认"，用户确认后才真正执行。这种设计避免了模型因幻觉或误触错误下发指令，所有方法内部不含业务逻辑、仅做代理转发，不影响原有服务层单元测试覆盖率。
+**DeviceTool 负责设备检索与状态查询。** 当前方法包括按 ID 查询、批量查询、按名称/编码/Driver 分页搜索、按 Driver 或 Profile 列设备、查询设备状态和最新位号值快照。它们都是只读能力；当前 `DeviceTool` 没有设备创建、属性修改或控制方法。模型可用它把“找设备—查状态—看关键位号”串成一条解释链，但批量配置仍应留在专业界面或脚本中。
 
-**DriverTool 管理驱动配置与启停。** 驱动是物联网平台连接物理世界的桥梁，负责协议适配与数据归一化：Modbus RTU 报文、OPC UA 变量订阅、MQTT 主题，全在驱动实例中完成到带语义位号值流的转换。传统运维中添加一个新驱动实例意味着登录管理界面、选驱动类型、填通信参数、测连通性、手动启动，配置参数写错（IP 错、端口不通）可能让整个设备组采集中断。DriverTool 让 LLM 通过自然语言完成驱动实例的创建、启停与状态查看：`listDriverTypes` 列出平台支持的驱动类型（只读、无需确认），`configureDriver` 创建或更新驱动实例（写操作、需确认），`toggleDriver` 启停驱动（写操作、需确认）。由于写操作可能中断现有数据采集，所有写操作均标记 `@WriteOperation(requiresConfirmation = true)`，Spring AI 框架自动拦截该注解，在响应中嵌入确认提示，用户输入"确认"后工具调用才真正执行。一次典型交互：操作员说"为新装温度传感器启用 Modbus 驱动"，Agent 先调 `listDriverTypes` 确认支持 Modbus TCP/RTU 两种变体，反问用哪种，得到参数后调 `configureDriver` 触发确认，确认后创建实例并 `toggleDriver` 启动，最后汇总"11 个成功、1 个连接超时，是否检查网络参数"——传统界面只能给"成功数/失败数"静态列表，LLM 却能主动建议下一步排查方向。
+**DriverTool 负责 Driver 检索与健康诊断。** 当前方法包括按 ID 查询、批量查询、按设备反查 Driver、按名称搜索、查询 Driver 状态，以及统计某个 Driver 下设备在线/离线数量。它没有 `listDriverTypes`、`configureDriver`、`toggleDriver`，也没有 `@WriteOperation`。模型可据此区分单设备故障与 Driver 级故障，但创建、修改和启停 Driver 仍走既有管理 API 与界面。
 
-**PointValueTool 读写实时数据。** 点位（Point）是物联网平台中数据的最小语义单元，一台温控设备可有"当前温度""目标温度""风机转速""开关状态"等多个点位，每个独立对应一个数据源和类型。运维人员最频繁的操作就是查点位值和改点位值，传统做法要登录界面、找设备树、展点位列表、再选操作。PointValueTool 把这几步压缩成一次对话：用户说"看一下 3 号锅炉出口温度"，LLM 就能读到最新数值。读操作无副作用，`getLatestPointValue` 通过点位 ID 从时序数据库取最新值，LLM 可在多轮对话中反复调用；写操作则把指令下发到驱动层进而影响物理设备，因此 `writePointValue` 必须附加参数校验（值范围、数据类型）和权限限制（仅允许配置了写权限的用户），并在高风险动作前要求人工确认。写入操作的回执与实际下发之间有一个确认环节：LLM 先返回拟操作摘要，用户确认后平台再执行写入。IoT DC3 还引入风险分级和速率限制——根据点位元数据（如"是否属于安全关键设备"）自动判断风险级别，高级别操作需额外审批；单用户每分钟写入次数受限，防止意外高频操作压垮驱动层。这三重防护（参数校验、人工确认、风险分级）保证物理世界不会因一句错误对话而失控，与第 5 章 AI 数据处理的数据底座共同构成可信的操作闭环。
+**PointValueTool 提供最新值、历史值、主动读命令与受控写入。** Data Center 当前用本地 Caffeine 保存最新值、用 PostgreSQL 保存历史数据。`writePointValue` 不直接下发，也没有虚构的 `@WriteOperation`：它创建 10 分钟有效的 `PENDING` Action 并返回 `actionId`；用户确认后，`ActionService` 才调用 `PointCommandFacade.submitWrite`，命令再经 Data、RabbitMQ 与 Driver 到达设备。当前已实现的是租户/用户范围、Action 状态与原子确认；值域校验、速率限制和多级审批若有需要，应作为后续平台能力明确实现。
 
-### 7.5.3 从工具到技能与命令行：Skills 与 CLI
+### 7.5.3 知识对齐：Skills 与 CLI
 
-`@Tool` 解决的是"单个原子能力"——查设备、读点位、下命令。但真实运维往往是多步组合：一次"晨检"要依次查所有产线设备状态、比对历史基线、汇总异常清单、生成巡检报告。如果每次都靠 LLM 从零编排这一串工具调用，既慢又不稳定。**Skills（技能）** 正是为此而生——它把一组固定顺序的工具调用与提示模板打包成一个可复用的高层能力。相比零散的 Tool，Skill 是"预先编排好的工具流水线"：LLM 识别出用户意图匹配某个技能后，直接触发整条链路，而非逐步试探。
+本节引入 Skills 与 CLI 是为了与主流 Agent 工程词汇做**知识对齐**，不是宣称 IoT DC3 已经实现这两个产品能力。当前 Agentic Center 的已实现边界是：Spring AI `@Tool` 原子工具、Web/HTTP 对话接口、会话与模型管理，以及 Gateway 上只提供 Tools 能力的 MCP 端点；源码中没有 Skill 类型、Skill 注册与执行器，也没有 `dc3 agent` 命令。
 
-Skill 与 Tool 的关系可以类比"函数库与业务函数"：Tool 是底层原子操作（`readPointValue`、`sendCommand`），Skill 是把这些原子操作按运维场景编排成的复合能力（"设备晨检""告警根因分析""批量参数下发"）。这样设计有三个好处：一是**稳定性**——固定编排避免了 LLM 每次自由发挥导致的步骤遗漏或顺序错乱；二是**可维护**——运维团队可以把最佳实践沉淀成 Skill，新人无需理解底层工具也能通过自然语言调用；三是**权限收敛**——Skill 作为一个整体申请权限，比逐个 Tool 授权更易治理。Skill 内部仍复用 7.5.2 的 `@Tool` 工具，只是在其上加了一层编排与语义封装，因此高风险写操作的人工确认、风险分级机制依然生效。
+在通用 Agent 架构中，**Skill** 可把固定顺序的工具调用、提示模板和输入输出契约封装成可复用的复合能力，例如“设备晨检”“告警根因分析”。它相对模型临时自由编排的价值是步骤稳定、知识可维护、权限边界可审计。这里仅借该概念解释复合编排与原子 Tool 的区别，不表示 IoT DC3 存在 Skill 层，也不表示项目计划引入 Skill；任何复合编排都不应绕过底层安全约束。
 
-**CLI（命令行智能体）** 则解决另一类场景：并非所有运维都发生在 Web 对话窗口。运维工程师习惯在终端里工作，自动化脚本、CI/CD 流水线、定时巡检任务也需要一个非图形化的入口。IoT DC3 的 CLI 把 Agentic Center 的能力暴露到命令行——工程师可以在终端直接用自然语言下达指令（`dc3 agent "查一下 3 号车间所有离线设备"`），也可以把 Agent 调用嵌进 Shell 脚本做批量运维与无人值守巡检。CLI 与 Web 对话共享同一套 Tools/Skills 与鉴权体系，区别只在交互载体：一个面向人的实时对话，一个面向脚本与自动化的可编程接口。这让 Agentic Center 既能服务现场操作员的临时查询，也能融入 DevOps 工具链做工程化的自动运维。
+**CLI** 则是面向终端和自动化脚本的客户端形态，可通过 HTTP 或 MCP Tools 接口调用服务端能力。类似 `dc3 agent "查一下 3 号车间所有离线设备"` 的写法只用于解释这种交互形态，不是当前可执行命令，也不表示项目计划提供该命令。作为通用设计原则，CLI 只应负责参数解析、认证和流式输出，业务能力仍由服务端 Tools 提供，避免形成第二套权限与执行逻辑。
 
-Tools、Skills、CLI 三者构成了 Agentic Center 的能力金字塔：**Tools 是原子能力，Skills 是编排后的复合能力，CLI 是面向自动化的调用入口**。三者共享同一套鉴权、风险分级与确认机制，从"一句话查一台设备"到"一条脚本巡检整个厂区"，覆盖了从人机对话到无人值守的完整运维谱系。
+因此三者的准确关系是：**Tools 是当前已实现的原子能力；Skills 是用于知识对齐的复合编排概念；CLI 是用于知识对齐的客户端形态**。前两者属于服务能力层次，CLI 属于交互入口，不能把三者都写成已经上线且共享完整治理机制的“能力金字塔”。
 
-![图7-9 Agentic Center 能力金字塔：Tools / Skills / CLI](figures/chapter-07/fig-7-09.png){width=15cm}
+![图7-9 Agentic Center 当前能力与知识对齐边界](figures/chapter-07/fig-7-09.png){width=15cm}
 
-*图7-9 Agentic Center 能力金字塔：Tools 是原子能力（@Tool 查设备/读写点位/下命令），Skills 是编排后的复合能力（晨检/根因分析/批量下发），CLI 是面向脚本与自动化的调用入口；三层共享同一套鉴权、风险分级与人工确认机制。*
+*图7-9 Agentic Center 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为能力边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。*
 
 ### 7.5.4 自然语言运维、智能告警分析与数据洞察
 
-**自然语言运维用一次对话替代多次界面跳转。** 运维人员每天要在设备列表、点位查询、实时曲线、告警列表、日志检索、驱动状态等多个页面间切换，完成一次复合查询（如"查所有温度超限的设备"）传统做法是先筛车间再逐台查温度再人工比较上限，全程依赖熟练度和注意力。Agentic Center 把这套交互压缩成一个输入框：用户说一句话，模型自己判断该调哪个工具、按什么顺序调。一轮典型对话里，Agent 依次调用 `DeviceTool`（查车间设备列表）、`PointValueTool`（查每台设备温度实时值并比上限）、`CommandTool`（下发写点指令给超限设备的风扇转速）外加一次高风险确认，用户敲三次键盘就完成了传统界面多次跳转才能做完的事。这种"拆任务"能力来自 Tool-Calling 与 Agent 规划机制——不需人工预写每步逻辑。但对话式运维有适用边界：查询类、跨对象关联操作、带解释的操作收益最大；批量配置（成百上千台设备统一写入）、毫秒级高频实时监控、算法调试仍需专业仪表盘和脚本。两个工程问题必须回答：多轮上下文靠 `MessageChatMemoryAdvisor` 加会话表持久化维持，"它们"能正确指代上轮那两台超限设备；用户信任靠分级确认建立——读取不经确认、写入需明确确认、高风险写入甚至需输入操作员密码，随安全验证记录积累逐步放开到"仅异常情况需确认"。
+**自然语言运维用一次对话替代多次界面跳转。** 运维人员可让模型组合已注册的 `DeviceTool`、`PointTool` 与 `PointValueTool` 完成设备检索、位号定位、最新值查询和点位写命令。这里必须遵守当前 Provider 边界：不能在示例中调用未注册的 `CommandTool` 或 `EventTool`。对话式运维适合查询、跨对象关联和带解释的受控操作；成百上千台设备的批量配置、毫秒级监控和算法调试仍应使用专业界面或脚本。多轮上下文由消息窗口与会话持久化维护，写操作的权限、值域、确认和审计必须由平台硬约束，而不是依赖模型口头确认。
 
-**智能告警分析用一条四阶段流水线接管"信息拼接"。** 规则引擎触发告警→运维人员接通知→手动开设备详情、翻日志、拉曲线→凭经验判原因→决策，这条链上平台数据并不缺，但散落在不同模块，需要操作员自己串成诊断线索。Agentic Center 用四阶段流水线汇聚碎片信息：**告警接入与上下文汇聚**（抽取设备 ID、实时值、事件日志拼成查询文本）→ **RAG 检索增强**（到向量知识库检索相似已处理案例）→ **LLM 生成诊断报告**（拼接上下文与检索结果，输出含根因分析、影响范围、建议处理步骤的结构化报告）→ **结果推送与人工确认**（按风险等级决定自动执行或人工确认）。凌晨一次离线告警的主动推送可能是这样的：根因分析（最近 5 分钟无数据、同交换机其他设备正常排除上游网络、日志出现 watchdog timeout、最相似历史案例是固件挂起远程重启恢复）、影响范围（6 个位号停止采集）、建议步骤（远程重启→失败则现场巡检→下次维护窗口更新固件），最后询问"是否执行步骤 1"。这条诊断不是模板填充，而是上下文抽取、案例检索、模型推理三者共同生成。知识库效果高度依赖案例质量——启动初期案例不足召回率偏低、诊断笼统，没有捷径，需持续积累数月才能形成有效覆盖，实践中建议加入"有用/无用"反馈字段用于后续优先级排序，并设案例老化策略（如 180 天未引用自动归档冷存储）。
+**智能告警分析是一项参考扩展设计。** 可按“告警接入与上下文汇聚→RAG 检索→LLM 诊断→结果推送与人工决策”四阶段实现，但当前默认 Agentic Center 尚未内置 VectorStore、案例入库任务、自动触发编排和主动推送。现有 Device、Driver、Point 与 PointValue Tool 可作为部分数据入口；实现 RAG 时还需补齐文档版本、租户隔离、检索评估和来源引用。任何写入仍转成待确认 Action，不能让诊断流水线绕过现有确认边界。
 
-**数据洞察让 Agent 从诊断向前多看一步做趋势预测。** 告警诊断解决"当前发生了什么"，Agent 还能做预测性分析。假设某温控器温度在 2:00–3:00 从 62°C 匀速升到 65°C，尚未触发 65°C 高温阈值，Agent 执行例行巡检时调用 `PointValueTool` 拉最近 4 小时值、发现每 15 分钟上升约 0.7°C，按此速率 3:30 将超 67°C，于是主动推送"温度持续上升，预计 30 分钟内触发高温告警，建议检查冷却系统或提前调整生产节拍"。这种预测不依赖复杂时序模型——时序数据库的聚合查询完成数据计算，LLM 只负责趋势解读与建议生成。这里有一个重要权衡：聚合查询精度受采样频率和窗口大小影响，窗口太大可能平滑掉关键拐点、太小则噪声过多，工程上一般按 15 分钟窗口做滑动聚合覆盖过去 2–4 小时，并按设备类型配置不同趋势阈值。这也是第 14 章实战部分会展开的"异常到动作管道"的基础。
+**数据洞察当前适合用户主动查询。** `PointValueTool.getPointValueHistory` 已返回历史值、数值摘要和图表数据，模型可以解释最近窗口的平均值、极值和变化方向。但“每 15 分钟自动巡检”“预测 30 分钟后越限”“主动推送”还需要调度器、阈值配置、回放验证和通知通道，属于后续扩展；当前历史数据在 PostgreSQL 中，不应写成由独立时序数据库自动完成聚合预测。
 
 ## 7.6 多模型支持与私有化部署
 
 ### 7.6.1 多模型统一接入：GPT、Claude、DeepSeek、通义千问
 
-运维第一天用 GPT-4o 把 Agentic Center 配好，对话流畅、工具调用精准；第二天安全合规通知落地"所有设备位号数据禁止出网"，工程师把配置里云端 API 换成本地 Ollama 的 Qwen2.5，重启服务，聊天记录还在、工具照用，操作人员甚至没察觉背后换了模型。这种切换不是巧合，源自架构设计选择：Spring AI 的 `ChatClient` 统一使用 OpenAI Chat Completions 协议，任何暴露该协议端点的模型提供商——公有云或本地推理引擎（Ollama、vLLM）——都能被同一个接口接入，差异集中在认证方式、端点 URL 和可选参数上，业务代码无需感知。在没有统一接入层之前，每换一个模型等于重新实现 HTTP 调用、处理不同认证机制、管理各自的超时重试；Agentic Center 把这一切交给适配器层，开发人员只面对 `ChatClient` 接口，模型切换只调几行配置，工具层 `@Tool` 方法完全不受影响。
+Spring AI 的 `ChatClient` 建立在 provider-neutral `ChatModel` 抽象之上，不要求所有模型统一暴露 OpenAI Chat Completions。IoT DC3 的 `ChatClientFactory` 会读取 Provider 与 Model 配置：`OPENAI_COMPATIBLE` 使用 `OpenAiChatModel`，`ANTHROPIC` 使用 `AnthropicChatModel`，并按请求模型或默认模型选择、缓存客户端。业务层继续使用统一的 `ChatClient` 与 Tool 接口，但不同 Provider 的认证、请求选项、Tool Calling 能力和返回行为仍需验证，不能把切换简化成“只改几行配置且行为完全相同”。
 
-没有哪个模型在所有维度上都占优，选型要结合成本、响应速度、中文支持、指令跟随能力和部署方式。GPT-4o/GPT-5 指令遵循度高、推理链清晰、生态成熟，适合复杂诊断与多步骤任务规划，但成本较高且数据跨域传输需合规；Claude 系列长上下文处理强、拒绝率低，适合分析长时间跨度日志与生成交接报告，需兼容代理适配 OpenAI 协议；DeepSeek 中文理解好、成本控制弹性大，适合国内运维团队与中文设备文档解析；通义千问（Qwen）中文语义强且支持函数调用，适合中文设备知识库检索与本地部署；Ollama 托管的开源模型完全本地化、数据不出域，适合数据安全要求高的私有化部署，性能依赖 GPU、模型能力参差不齐需选对参数规模。Agentic Center 的表 `dc3_model_provider` 已预留按会话切换模型的能力——同一会话可动态路由到不同模型（简单查询走快速廉价模型、复杂诊断走推理能力更强的模型、本地敏感查询走私有部署）。一个工程原则是：不要把模型选择变成"一刀切"，先接好两个差异较大的模型运行一段时间收集延迟、成本、准确率数据，再按结果调整路由比例；添加新模型只是多一个 `ChatClient` Bean，不会破坏现有链路。
+没有哪个模型在所有维度上都占优，选型要结合成本、响应速度、中文支持、Tool Calling 稳定性和部署方式。GPT、DeepSeek、Qwen 等可通过 OpenAI-compatible Provider 接入；Claude 通过原生 Anthropic Provider 接入；Ollama、vLLM 等本地端点则按其实际兼容协议配置。请求可以显式选择已启用模型，未指定时回退到默认模型；会话会记录本次所用模型。当前没有按任务复杂度、成本或敏感标签自动路由的策略引擎，若需要这类能力，应在请求进入 `ChatClientFactory` 前增加可测试、可审计的路由逻辑。工程上应先用同一批设备查询、历史值分析和 Tool Calling 用例测量延迟、成功率、参数正确率、成本与资源占用，再决定默认模型。
 
 ### 7.6.2 端侧 SLM 与私有化部署
 
@@ -1548,21 +1513,21 @@ Tools、Skills、CLI 三者构成了 Agentic Center 的能力金字塔：**Tools
 
 ### 7.7.1 Copilot 与 Agent 的范式差异
 
-Copilot 模式里，大模型充当一个有问必答的参谋，但不碰操作面板——这与微软 Copilot、GitHub Copilot 背后的设计理念一致：模型补充人的能力边界，但不替代人的最终判断。参谋提供情报和行动建议，但不握方向盘；设备开关、参数调整、驱动启停这些写操作全部留给人工通过传统界面或脚本完成。其核心设计原则是：回答可以很精确，但执行的最后一步门槛留给人类。这在物联网运维中有很现实的理由——运维人员需要确认模型给出的建议在自己理解范围内，一位经验丰富的工程师说得直接："模型可以帮我查，但别替我按确认。数据是死的，判断错了还有机会改；设备控制错了，产线停了就是事故。"在 IoT DC3 里，Copilot 模式把大模型当作**增强版搜索引擎和日志分析器**：操作员问"三号反应釜温度有没有超限"，Agentic Center 调 `PointValueTool` 拿到实时位号值，返回当前值、阈值、是否触发告警，回答到这里就停了——要不要调参数、怎么调，操作员自己拿主意。这种模式最直接的好处是低风险、快上手：运维团队不必马上信任模型能正确执行设备指令，信任需要时间积累，但可先用对话方式把数据查全、把异常定位到。
+Copilot 模式里，大模型充当一个有问必答的参谋：模型补充人的能力边界，但不替代人的最终判断。参谋提供情报和行动建议，但不握方向盘；设备开关、参数调整、驱动启停等写操作仍由平台权限与确认机制控制。其核心设计原则是：回答可以很精确，但执行的最后一步门槛留给人类。在 IoT DC3 当前基线中，已注册的只读 Tool 可完成设备、Driver、位号与历史值查询；唯一明确的 Tool 写路径是 `PointValueTool.writePointValue` 创建待确认 Action，用户确认后才下发。它不是一个已经自动巡检、自动告警编排或自主控制设备的 Copilot 产品模式。
 
-Agent 模式则把执行按钮交给模型——运维人员只给目标，Agent 自主规划步骤、依次调用工具、监控执行结果，直到任务完成或遇到无法处理的障碍。这不是简单功能升级，而是物联网运维范式的根本变化：从"人用模型查数据"变成"模型替人去干活"。Agent 的核心工作循环是"感知—规划—执行—反馈"的闭环：感知当前系统状况（调 `DeviceTool` 查在线状态）、分解子步骤（识别离线设备、判断是否需重启）、逐一执行（调 `CommandTool` 重启）、每步读结果确认、失败则标记异常继续下一台、最后汇总执行报告。两种模式不是谁取代谁的关系，而是同一平台在不同信任阶段的不同服务形态：Copilot 是走向 Agent 的第一级台阶——先习惯让模型帮忙看数据、确认分析可信，再逐步开放权限让它动手。
+更高自主度的 Agent 是一种**演进参考**：运维人员给出目标，编排器持续执行“感知—规划—执行—反馈”，并在越界、失败或高风险动作前停下等待人工处理。要实现它，项目还需补齐事件触发器、显式工作流、场景白名单、运行状态机和完整审计；当前未注册的 `CommandTool`、`EventTool` 不能被当成现成执行与触发能力。两种模式不是谁取代谁，而是不同信任阶段的服务形态；工业现场的实时安全控制始终应留在 PLC、边缘控制器和确定性规则中。
 
 ![图7-8 从 Copilot 到 Agent 的三阶段演进](figures/chapter-07/fig-7-08.png){width=15cm}
 
-*图7-8 三阶段演进：自主程度逐步提升，但人工确认点从未消失，只是从"每步确认"变为"关键节点确认"。先让模型证明能看对，再证明能想对，最后才交给它去做对。*
+*图7-8 演进参考：只有第一阶段是当前基线；后两阶段需要新增编排、审计与安全能力，人工确认和现场确定性控制不能被取消。*
 
 ### 7.7.2 风险分级与渐进式演进
 
-从 Copilot 到 Agent 的迁移不是一刀切的版本升级，而是渐进的信任建立过程。**第一阶段：Copilot 辅助查询与脚本生成。** 模型只读不写，扮演对平台 API 了如指掌的"文档助教"：操作员用自然语言提问，模型调只读工具返回结果，或生成一条完整工作指令（curl 片段、CLI 脚本、规则 JSON 配置）由操作员手动执行。此阶段工具白名单里只有只读工具，`ToolContext` 中的租户上下文使每次调用都经完整鉴权，与常规 API 调用无异。**第二阶段：有限自主的 Agent。** 在特定范围、固定场景内允许模型自主执行，典型如自动告警处理：检测到设备离线超过设定时长后，Agent 自动查详情、检关联点位、把诊断与建议推给操作员，操作员只需点一次确认或设一条自动放行规则。此阶段 Agent 有明确目标边界（如"只处理离线告警，不涉及驱动变更"），风险动作仍需人工审批，工程上需配置"场景白名单"只有预设场景才能激发自主执行链。**第三阶段：全自治 Agent。** 经过前两阶段积累，运维团队对 Agent 行为模式有充分了解后，逐步收窄人工确认范围，直到多步运维任务完全交由 Agent 自主完成，配合编排能力接收长期目标（如"确保二号车间平均温差不超过 2 度，连续偏差自动调风机转速"）自主规划执行监控调整。但即使到此阶段，高风险动作（切换主备电源、写设备固件）仍保留人工确认，通过高风险工具白名单按租户单独配置。
+从 Copilot 到 Agent 的迁移不是一刀切的版本升级，而是目标架构的渐进演进。**第一阶段：当前基线。** 以已注册的只读 Tool、会话记忆和点位写 Action 为主，操作员主动发起查询或确认单次写入。**第二阶段：有限自主。** 增加事件触发器、场景白名单和显式工作流，自动汇聚设备、Driver 与位号值，但风险动作仍走 Action 或外部审批。**第三阶段：受约束的长期任务。** 编排器可持续执行“监测—分析—建议—复核”，实时安全控制仍由 PLC、边缘控制器和规则引擎负责，不把工业现场写成无条件全自治。后两阶段是演进建议，不是 IoT DC3 当前已上线能力。
 
-这三个阶段对应一套贯穿始终的**风险分级机制**，这是 Agent 能在工业场景落地的根本保障。核心思路是按操作后果可逆性把工具分三档：**只读操作直接放行**（查询设备、读位号值、列驱动类型——无副作用、高频次，确认反而拖慢响应）；**写操作要求确认或白名单**（写位号值、下发命令、启停驱动——有副作用但可逆，采用"建议—确认"模式，Agent 先返回拟操作摘要、用户确认后执行）；**高风险操作强制白名单+审批**（批量写、固件升级、主备切换——不可逆或影响生产安全，即便在全自治阶段也需人工审批甚至双人复核）。这套分级不是靠模型自行判断风险等级（那不是它的长项），而是靠工具元数据（如 `@WriteOperation(requiresConfirmation = true)`）和平台配置（按租户、按设备类型）硬编码。配套的工程措施包括：**监控与审计**（每次工具调用记录租户 ID、时间、入参、返回、耗时，存入会话明细表，可随时回溯）；**灰度发布与分租户开关**（不全局切换 Agent 模式，先在测试租户开启全自治运行稳定后再开放，租户表加 `agent_mode` 字段取值 `copilot_only`/`semi_autonomous`/`full_autonomous`，平台据此加载不同工具白名单和审批策略）；**回滚机制**（每个写操作记录修改前值并提供撤销入口）；**人工覆盖开关**（操作员发现行为异常时可在会话中发"停止"或管理界面一键暂停该租户所有自主操作）。
+目标架构仍应按后果可逆性分级：只读查询可直接执行；点位写入等有副作用操作必须确认；批量写、固件升级、主备切换等不可逆动作应接外部审批甚至双人复核。当前 Agentic 已实现的是点位写 Action，MCP 入口则按 OpenAPI 工具风险元数据处理高风险确认；项目没有 `@WriteOperation` 注解，也没有现成的 `agent_mode` 字段或通用回滚引擎。后续若增加租户级 Agent 模式，应设计独立配置、审计与授权模型，而不是把模型 Provider 表当成工具白名单表。
 
-最常见的五个工程陷阱值得警惕。其一，**过度信任模型输出**——模型"一本正经"不等于"绝对正确"，写入参数必须走两次校验（先验参数在平台存在，再验数值在物模型 min/max 区间内），平台逻辑永远优先于模型逻辑。其二，**忽略故障回滚**——设备指令下发没有撤回按钮，批量写入应先走"模拟执行"识别潜在失败设备再分批下发。其三，**工具参数描述不严谨**——`@ToolParam` 标注本身不含强校验，"期望的转速值"不写单位（rpm 还是百分比）模型就会猜错。其四，**忽略上下文窗口对工具可见性的影响**——随对话轮次增加早期工具描述可能被注意力机制遗忘，需在每轮重新注入完整工具列表。其五，**Copilot 与 Agent 的责任边界模糊**——切换 Agent 模式时必须明确执行范围、自动确认阈值和回滚策略，不要寄希望于模型自行判断风险等级。一句话总结整章：**先让模型证明自己能看对，再证明自己能想对，最后才交给它去做对。** Agentic Center 的架构从第一天就为这条路径做好准备——会话持久化、工具级高风险标记、按租户的模型路由配置，都直接对应演进路径中的工程需求。操作员不必在 Copilot 和 Agent 之间二选一，而是可按场景、按阶段、按信任度逐步右移。第 14 章会把这套能力放进完整的项目实战，演示从物模型定义到 Agentic Center 上线的全流程。
+最常见的工程陷阱包括：过度信任模型输出、把提示词当权限控制、假设设备命令可以通用回滚、工具参数缺少单位与值域、以及把未来路线图写成当前功能。平台必须先校验实体和参数，再执行 Action；设备命令通常不可撤回，只能为具体动作设计补偿；`@ToolParam` 只改善模型理解，不替代强校验。实践顺序应是：**先让模型证明自己能看对，再证明自己能想对，最后才在可确认、可审计的边界内让它执行。**
 
 # 第8章 物联网安全技术
 
@@ -1758,7 +1723,7 @@ MQTT 定义了三个**服务质量等级**（Quality of Service），让开发�
 
 ### 9.2.3 会话、Keep Alive、遗嘱与保留消息
 
-发布订阅解决了消息路径，但通信可靠性最终落在连接管理上。设备断网后订阅关系是否保留？Broker 怎么区分"短暂离线"与"永久离开"？MQTT 用**会话（Session）**、**心跳（Keep Alive）**、**遗嘱消息（Will）** 和**保留消息（Retained）** 四套机制管理连接生命周期，它们共同决定系统的资源开销、消息可靠性与重连恢复能力。
+发布订阅解决了消息路径，但通信可靠性最终落在连接管理上。设备断网后订阅关系是否保留？Broker 怎么区分"短暂离线"与"永久离开"？MQTT 用**会话（Session）**、**心跳（Keep Alive）**、**遗嘱消息（Will Message）** 和**保留消息（Retained Message）** 四套机制管理连接生命周期，它们共同决定系统的资源开销、消息可靠性与重连恢复能力。
 
 **会话状态** 决定了断线后的行为。MQTT 客户端与 Broker 维护一个会话，其中记录订阅列表、未确认的 QoS 1/2 消息和遗嘱消息。v3.1.1 用 `Clean Session` 标志控制：设为 true 时每次连接全新、断开即清空，适合纯上报传感器；设为 false 时 Broker 持久化会话，客户端以相同 Client ID 重连后恢复订阅并补投离线消息，这对下行控制至关重要——平台下发指令时设备恰好离线，Broker 缓存消息等设备上线再推。**MQTT 5.0** 用 `Session Expiry Interval`（秒）取代了二值标志，允许设为如 3600 秒——会话断连后保留一小时再自动过期，比"要么永久要么不保留"灵活得多，也更适合平台按内存容量规划。
 
@@ -2031,7 +1996,7 @@ MCP 用三类能力原语（primitives）表达一个 Server "能提供什么"�
 
 **安全性检查（生产环境阻断项）**：通信加密必须开启——MQTT 用 TLS（端口 8883），CoAP/LwM2M 用 DTLS（端口 5684），新场景可评估 OSCORE；认证凭据不应硬编码在 Flash 里（硬件攻击可直接读出），应存入安全元件 SE 或可信执行环境 TEE；MCP 接入应遵循 OAuth 2.1——AI Agent 与平台间只接受短时 JWT、公开客户端启用 PKCE 并轮换刷新令牌；高风险操作（删除设备、批量重置）要在网关层返回风险确认中间状态、Agent 显式确认才放行；设备侧遵循最小权限——传感器只配发布权限，不授予订阅他人主题或操作他人对象实例的权限。
 
-**多协议兼容性测试**：状态一致性——MQTT 路由转发与 CoAP 本地请求应读到同一物模型状态（CoAP 写一属性、MQTT 订阅应收到相同推送）；并发连接边界——LwM2M（DTLS+UDP 心跳）与 MQTT（TLS+TCP 保活）同芯片共存时，按"同时在线数×110%"压测不因套接字耗尽丢包；重试隔离——CoAP CON 重传不得阻塞 MQTT 处理线程，应把两类协议放入独立协程/线程池、用独立定时器驱动重传；网关吞吐边界——满负载（如 1000 个 CoAP 设备同时上报）下测 MQTT↔CoAP 转换是否丢包或推高延迟，至少留 30% 冗余；MCP 工具可见性——测试 `tools/list` 返回是否与 RBAC 权限、白名单、风险策略三层交集一致，用不同权限 Agent 对比，降权后不该出现的工具应消失。这些检查项把本章各节的理论权衡落到代码与配置的最后一关，是协议选型能否真正经住生产考验的试金石。
+**多协议兼容性测试**：状态一致性——MQTT 路由转发与 CoAP 本地请求应读到同一物模型状态（CoAP 写一属性、MQTT 订阅应收到相同推送）；并发连接边界——LwM2M（基于 DTLS + UDP 心跳）与 MQTT（基于 TLS + TCP 保活）同芯片共存时，按"同时在线数×110%"压测不因套接字耗尽丢包；重试隔离——CoAP CON 重传不得阻塞 MQTT 处理线程，应把两类协议放入独立协程/线程池、用独立定时器驱动重传；网关吞吐边界——满负载（如 1000 个 CoAP 设备同时上报）下测 MQTT↔CoAP 转换是否丢包或推高延迟，至少留 30% 冗余；MCP 工具可见性——测试 `tools/list` 返回是否与 RBAC 权限、白名单、风险策略三层交集一致，用不同权限 Agent 对比，降权后不该出现的工具应消失。这些检查项把本章各节的理论权衡落到代码与配置的最后一关，是协议选型能否真正经住生产考验的试金石。
 
 # 三、应用篇 · 场景实践与智能体应用
 
@@ -2203,7 +2168,7 @@ V2X 曾长期存在两条技术路线之争：DSRC 与 C-V2X。理解这段格�
 
 **DSRC**（Dedicated Short-Range Communication，专用短程通信）基于 IEEE 802.11p，是较早成熟的车联网通信体系，欧美早期的车联网示范项目多采用它。它的优点是技术成熟、时延低、不依赖蜂窝网络覆盖。但它本质上是 Wi-Fi 家族的衍生技术，在高速移动、高车流密度的场景下性能会显著下降，且缺乏向 5G 平滑演进的路径——这成为它的致命短板。
 
-**C-V2X**（Cellular V2X，蜂窝车联网）由 3GPP 定义，从 LTE-V2X（Rel-14，2017 年冻结）演进到 5G NR-V2X（Rel-16 及以后），有清晰的技术代际路线。它提供两种互补的通信模式：**PC5 直连**，即车与车（V2V）、车与路侧设备（V2I）之间不经过基站直接通信，时延极低，安全攸关的消息走这条通道；**Uu 蜂窝**，即车辆经基站与云端通信，用于地图更新、信息服务、全局交通调度这类非实时业务。C-V2X 的核心优势是与蜂窝网络同源、有明确的 5G 演进路径、在高密度场景下性能更优，还能复用运营商既有的网络基础设施。
+**C-V2X**（Cellular V2X，蜂窝车联网）由 3GPP 定义，从 LTE-V2X（Rel-14，2017 年冻结）演进到 5G NR-V2X（自 Rel-16 起），有清晰的技术代际路线。它提供两种互补的通信模式：**PC5 直连**，即车与车（V2V）、车与路侧设备（V2I）之间不经过基站直接通信，时延极低，安全攸关的消息走这条通道；**Uu 蜂窝**，即车辆经基站与云端通信，用于地图更新、信息服务、全局交通调度这类非实时业务。C-V2X 的核心优势是与蜂窝网络同源、有明确的 5G 演进路径、在高密度场景下性能更优，还能复用运营商既有的网络基础设施。
 
 真正让格局定调的是监管层面的决定。**美国 FCC 于 2020 年 11 月对 5.9GHz 频段做出裁定：将下段 45MHz（5.850–5.895GHz）转为免授权 Wi-Fi 使用，仅保留上段 30MHz（5.895–5.925GHz）给智能交通系统（ITS），并明确要求 ITS 无线服务从 DSRC 过渡到 C-V2X；2024 年 11 月，FCC 进一步发布了 5.9GHz 频段 C-V2X 运行的最终规则，并为存量 DSRC 设备设定了过渡期。** 这实质上宣告了 DSRC 在美国的日落。中国则从车联网起步阶段就选择了 C-V2X 路线，产业链高度统一。因此，2026 年的车联网工程选型不应再把 DSRC 与 C-V2X 当作开放的二选一，而应以 C-V2X（尤其是向 5G NR-V2X 演进的方案）为基础做架构设计，DSRC 仅在需要兼容历史存量设备时才纳入考虑。
 
@@ -2461,7 +2426,7 @@ RSU/OBU 部署的工程权衡集中在几点：RSU 的部署密度要在覆盖�
 
 需求确定"做什么"，架构解决"怎么组织最稳妥"。物联网架构在分层、解耦、异步、标准化四原则下权衡：分层定义系统边界，解耦控制变更半径，异步隔离物理约束，标准化降低集成摩擦。分层最易被敷衍——画得出漂亮的分层图，落地时设备接入逻辑却直接写库、告警硬编码。核心约束是每层只依赖直接下层；易犯的判断错误是为"未来所有场景"预留接口，结果层间塞满适配层——只对当前明确的边界分层，用接口隔离代替中间层隔离。
 
-设备接入是物联网与普通互联网架构最大的分岔点：一个工业平台可能同时接入 MQTT、CoAP、Modbus TCP、OPC UA、私有 TCP 的数万种设备。协议适配有两种策略——协议网关模式（统一网关解码，但成单点瓶颈）与协议驱动模式（每种协议一个独立微服务，驱动与中心服务经消息队列异步通信）。后者工程上更推荐：驱动贴近现场部署，把广域网抖动挡在消息队列缓冲之外，故障互不影响。数据流是典型的生产者-消费者模型：设备 → 消息队列 → 消费者 → 存储，时序数据必须用专用库（TDengine、InfluxDB），关系库在海量写入下会索引膨胀、写锁竞争。微服务拆分粒度可按变更频率判断：两模块若变更原因与节奏多数不一致，就该拆。容器化（Docker 镜像 + Kubernetes 编排）是使能层，让服务端做到"开发-测试-生产"环境一致——硬件无法灰度，但服务端必须能。这些原则在 14.2 节的 DC3 实战中会落到具体组件。
+设备接入是物联网与普通互联网架构最大的分岔点：一个工业平台可能同时接入 MQTT、CoAP、Modbus TCP、OPC UA、私有 TCP 的数万种设备。协议适配有两种策略——协议网关模式（统一网关解码，但成单点瓶颈）与协议驱动模式（每种协议一个独立微服务，驱动与中心服务经消息队列异步通信）。后者工程上更推荐：驱动贴近现场部署，把广域网抖动挡在消息队列缓冲之外，故障互不影响。数据流通常是生产者—消费者模型：设备 → 消息队列 → 消费者 → 存储。存储选型应由写入量、查询窗口、保留周期和运维能力决定：专用时序库、带时序扩展的 PostgreSQL 或普通关系表各有适用规模，不能把 TDengine、InfluxDB 写成必选答案。微服务拆分粒度可按变更频率判断：两模块若变更原因与节奏多数不一致，就该拆。容器化（OCI 镜像 + Compose/Kubernetes 编排）是使能层，让服务端做到"开发-测试-生产"环境一致。这些原则在 14.2 节的 DC3 实战中会落到具体组件。
 
 ### 14.1.2 开发流程与 DevOps
 
@@ -2493,7 +2458,7 @@ IoT DC3 是一个定位明确的开源物联网平台：连接现场设备，覆
 
 IoT DC3 采用四层架构：南向设备层 → 设备接入层（协议驱动）→ 平台服务层（四个中心）→ 应用展现层，东西向辅以服务治理与消息中间件。分层从"数据从现场到业务需经哪些不可跳过的环节"推导：协议解析、身份认证、数据清洗、规则判断、持久化。设备接入层每种协议封装为独立微服务（驱动即服务）——不同协议吞吐差异巨大（Modbus RTU 每秒轮询几个寄存器、OPC UA 订阅数千节点内存开销高一个数量级），共用进程做不到资源与故障隔离。
 
-平台服务层是四个职责正交的中心：鉴权中心处理认证与 API 鉴权（支持 Token 与 X.509）；管理中心管设备模型元数据（注册、型号、产品分类），操作频率低但对一致性要求高；数据中心承接所有实时数据流，是吞吐最高的服务，从消息中间件消费数据、跑规则引擎、批量写时序库，原则是"丢数据不可接受、延迟几秒可接受"；智能中心承载 AI 运维，是 Agent 编排层而非训练层。服务治理选 Spring Cloud 生态——2026 年基线是 Spring Boot 4 + Spring Cloud 2025.1 Oakwood（基于 Spring Framework 7）；单机与小规模部署用容器网络 DNS + 环境变量做服务寻址、项目内 application*.yml 管配置，规模化后可引入 Nacos 统一承担服务注册与配置中心。消息中间件选 RabbitMQ 处理设备上行，看中它成熟的消息确认与灵活路由（Topic + Direct 交换机），天然适配"上行点对点 + 命令扇出"；Kafka 更适合日志聚合与流处理。驱动与数据中心经消息中间件异步收发，天然支持驱动下沉到边缘——驱动跑在工厂本地工控机，只把标准化数据窄带上行，云端变慢也不反压掉线。
+平台服务层是四个职责正交的中心：鉴权中心处理认证与 API 鉴权；管理中心管理驱动、设备、模板、位号等元数据；数据中心处理位号值、点位命令和数据查询；智能中心承载模型配置、会话记忆与 `@Tool` 调用。服务基线采用 Spring Boot 4 + Spring Cloud 2025.1 Oakwood（基于 Spring Framework 7）。**当前服务寻址没有 Nacos 或其他注册中心**：Gateway 路由和 gRPC Channel 使用固定服务名，允许通过 `CENTER_*_HOST`、`GATEWAY_ROUTE_*_URI` 等环境变量覆盖，在 Compose 网络中由 DNS 解析；配置保存在项目 YAML 并由环境变量注入。**当前消息中间件只有 RabbitMQ**，点位命令、自定义命令、执行回执、位号值和状态事件都围绕 RabbitMQ 的交换机与队列流转，项目没有 Kafka 客户端或 Broker。
 
 ![图14-2 IoT DC3 系统分层架构](figures/chapter-14/fig-14-02.png){width=15cm}
 
@@ -2501,77 +2466,69 @@ IoT DC3 采用四层架构：南向设备层 → 设备接入层（协议驱动�
 
 ### 14.2.2 核心模块实现与设备接入
 
-架构蓝图确定后，实现阶段最常见的陷阱是"第一个 Sprint 想跑通全链路"。DC3 的打法是先打通一条"设备注册 → 数据上报 → 告警触发"的主链路，让数据真正流过所有核心模块，再逐个精细化。
+架构蓝图确定后，最可靠的阅读方法是沿三条真实链路展开。第一条是 Driver 业务注册：Driver 启动后由 `DriverRegisterService` 通过 gRPC 调用 Manager 的 `driverRegister`，并按需查询设备、位号和属性元数据；这不是向注册中心登记 IP。第二条是位号值上报：协议实现把设备数据转换为 `PointValue`，`DriverSenderService` 发布到 RabbitMQ，Data 的 `PointValueReceiver` 消费后按速率直接或批量保存，更新本地最新值缓存、写入 PostgreSQL，再触发告警规则。第三条是点位命令：Data 按 Driver 服务名发布命令，Driver 执行并经 RabbitMQ 回传结果。
 
-设备注册是平台入口，采用 Spring Boot REST + 持久层模式，有三个关键决策：一是注册接口写入记录同时生成随机凭证（32 字节随机串）返回调用方，避免批量注册再多一次"颁发证书"往返；二是注册时置 `INACTIVE`、设备首次上报心跳才改 `ACTIVE`，避免"刚注册完就触发新设备上线告警，但设备还在包装发货"的误报；三是注册表不建外键、只留 `product_key`，由首次上报时协议解析自动关联，降低首版耦合度。
+MQTT、Modbus、OPC UA 等 Driver 的协议入口和连接模型不同，不应把某个 Netty 或 MQTT 示例写成所有 Driver 的统一实现。MQTT Payload 也由具体 Driver 定义，不存在全平台强制的 `deviceId + properties + event` JSON。平台真正统一的是 Manager 元数据、`PointValue` 模型以及 RabbitMQ 命令/回执契约。
 
-大量工业设备走 TCP + 自有协议，驱动层用 Netty 做接入——其事件驱动模型能以极低线程开销管理数万长连接。解码器解决 TCP 粘包/拆包（按固定帧头/帧长或 TLV 拆完整报文），业务处理器不做任何阻塞 IO，直接封装成统一消息体经 RabbitMQ 异步发往数据中心——Netty IO 线程若因等数据库写而阻塞，单线程承接的连接数会从千级跌到几十。心跳超时常被低估：太短（低于 15 秒）会大批误踢，太长（超 5 分钟）离线感知延迟过高，以协议最大容忍间隔为基准设 2 倍余量，配合指数退避重连。
+**关键工程判断：RabbitMQ 是命令与数据链路的解耦层。** Data 把点位读写与自定义命令投递到按驱动服务名绑定的队列；Driver 消费后先检查过期时间和 `commandId`，再以设备级锁串行执行协议操作，并把结果回执发回 Data。上行位号值、设备状态与驱动状态也经 RabbitMQ 发送。这样既避免 Data 直接持有设备连接，也允许驱动网络抖动时由队列吸收短时压力。当前路由基于交换机、驱动队列和 routing key，不能写成 Kafka 分区模型；同一设备命令的顺序保护由驱动侧设备锁与幂等去重共同完成。
 
-MQTT 因对弱网友好、生态成熟，常是南向首选。数据从设备到落库经过完整链路：设备发布 JSON 到 Broker → 接入服务订阅反序列化 → 消息队列缓冲削峰 → 处理服务跑物模型校验与规则引擎 → 写时序库与文档库 → REST API/Grafana 可视化。设备上报的典型 JSON 包含 `deviceId`、`timestamp`（设备端 Unix 毫秒戳）、`properties`（属性-值键值对，对应物模型）、可选 `event`。
+![图14-3 设备接入与数据流](figures/chapter-14/fig-14-03.png){width=15cm}
 
-```json
-{
-  "deviceId": "device-001",
-  "timestamp": 1700000000123,
-  "properties": { "temperature": 25.6, "humidity": 68.2, "pressure": 1013.25 },
-  "event": "periodic"
-}
-```
-
-**关键工程判断：消息队列是 IoT 数据流的稳压器。** 设备上报速率极不均匀（白天高峰每秒上千条、夜间几乎为零），若接入服务直接写库，连接池易被冲垮。MQ 削峰填谷并允许处理服务按自身能力消费。消息发布以 `deviceId` 作为路由键，保证同一设备数据有序处理——对连续温度上升趋势这类时间相关事件，顺序性至关重要（RabbitMQ 用一致性哈希交换机按 deviceId 路由，若演进到 Kafka 则以 deviceId 为分区 key）。消费后**先入库再判告警**，顺序不能颠倒，否则会"告警触发但数据还没查到"。告警规则引擎分三层：静态阈值（加"连续 N 次满足才触发"消毛刺）、时间窗口规则（设备连续 10 分钟无数据，用 Redis 记最新时间戳配合 Lua 原子操作判滑动窗口）、AI 模型异常检测（在智能中心实现）。规则配置变更频率低用 YAML 加热加载，频率高则入库配 REST 接口；性能瓶颈不在匹配而在 IO——评估过程中不做数据库查询，所有规则启动时加载到内存，变更经消息总线通知各节点刷新。
-
-![图14-3 设备接入与数据流（MQTT 接入）](figures/chapter-14/fig-14-03.png){width=15cm}
-
-*图14-3 设备上报数据在 IoT DC3 中的完整链路：消息队列是削峰与异步解耦的关键稳压器，先入库再判告警以避免时序错位，消费者按 deviceId 分区保证设备内顺序。*
+*图14-3 IoT DC3 设备数据链路：Driver 将位号值经 RabbitMQ 交给 Data，Data 更新最新值缓存并写入 PostgreSQL；点位命令沿反向异步链路执行并回传结果，同一设备的命令由 Driver 侧设备锁与 commandId 去重保护。*
 
 ### 14.2.3 AI 运维功能实现
 
 数据落库后的问题是：从海量时序数据中自动发现异常，在设备故障前预警，这正是 AI 运维填补的空隙。很多团队一谈"AI 运维"就想到深度学习，这是认知跳跃，更稳妥的路径分三档：固定阈值（温度超手册上限直接告警，简单但无法适应负载与季节漂移）；统计方法（滑动窗口算均值标准差，用 IQR 或 Z-score 判离群点——某风机正常振动标准差稳定在 ±2Hz，轴承磨损后标准差上升、Z-score 超 4 触发告警）；有监督/无监督模型，用于多传感器联合异常与早期退化。三档不是替代关系：阈值处理明确红线、统计覆盖缓慢漂移、模型捕捉复合特征，生产部署中三者并存、按优先级链串联（先阈值、再统计、最后模型）。
 
-需要第三档时，智能中心引入模型推理。以预测性维护为例：手头有离心泵历史数据（压力、流量、电流、轴承振动、壳体温度及停机维护时间戳），目标是根据最近 N 个时间步读数输出轴承退化概率。模型不需复杂——两层 LSTM 加 Dense 输出层，输入长度 32 的时间窗口，输出二分类概率。训练后用 TensorFlow Serving 部署为微服务，提供 gRPC/REST 端点并支持热加载模型版本。智能中心订阅数据中心经 RabbitMQ 推送的实时位号，组合成窗口数据后向推理服务发请求，返回的概率值再写回数据中心。
+**先区分当前实现与扩展方案。** IoT DC3 当前 Agentic Center 已实现的是模型配置、会话管理、Spring AI `@Tool` 调用，以及 Gateway 上只声明 Tools capability 的 MCP 端点；当前 Compose 没有 TensorFlow Serving、训练任务、模型卷，也没有 Agentic 订阅 Data 实时位号流的既有链路。下面的预测性维护流程是建立在现有平台 API 之上的工程扩展示例，不是当前开箱即用功能。
 
-这里有一个最值得记住的工程判断：**推理结果本身就是一个"衍生位号"**。物模型中温度、压力是原始位号，`bearing_anomaly_score` 是智能计算位号，跟普通传感器值一样被规则引擎处理——分数超 0.85 且持续超 5 个采样周期则生成 P 级告警。AI 输出完全复用平台规则层与通知层，不单独建告警管道，AI 不成为孤岛而是数据链路上的另一个生产者，与设备、网关平级。在 2026 年技术栈下，这一编排由 Spring AI 2.0 承担：智能中心用 `ChatClient` 与工具调用（function calling）编排 Agent，模型服务、规则检索与平台 API 都封装为可被 Agent 调用的工具；对外则通过 MCP（Model Context Protocol）把平台能力标准化暴露，使任何符合 MCP 的 Agent 都能用统一语义消费平台——这正是第 7 章 Agentic 设计与第 9 章 MCP 在实战中的落点。
+若项目确需第三档能力，可以把离心泵历史数据窗口化后训练异常模型，独立部署推理服务，再由经过授权的任务读取 Data 历史/实时接口、调用推理并把结果写回一个明确的衍生位号。模型类型、窗口长度和阈值必须由数据验证，不能把“两层 LSTM、窗口 32、阈值 0.85”写成平台默认配置。
+
+扩展方案中值得保留的工程判断是：**推理结果可以建模为“衍生位号”**。这样规则和通知层只处理标准化数值，不必为每种模型另建告警管道。Spring AI Tools 适合编排“查询—分析—建议/执行”的交互式任务；MCP 则把经 OAuth 和白名单约束的平台 Tools 暴露给外部 Agent。二者都不等于平台已经内置训练与在线推理管道。
 
 ![图14-4 AI 运维闭环：训练→部署→推理](figures/chapter-14/fig-14-04.png){width=15cm}
 
-*图14-4 AI 运维闭环：推理结果作为衍生位号回写数据中心，规则引擎只判数值、不关心来源是物理传感器还是 AI 模型，AI 复用已有告警管道而非另起一套。智能中心以 Spring AI 2.0 编排 Agent、以 MCP 标准化对外暴露平台能力。*
+*图14-4 预测性维护扩展示例：外部训练与推理服务把结果作为衍生位号写回 Data，复用已有规则与通知链路。模型服务、训练任务和实时订阅需按项目另行实现，不属于当前 IoT DC3 Compose 默认能力。*
 
 ### 14.2.4 部署与测试
 
-模型训练完仍只是一组权重文件，要让平台对生产设备产生价值，必须把整个 IoT DC3 从开发机推到容器化环境跑通。开发机上 `java -jar` 正常，不代表打包成镜像后端口、网络、配置路径不出问题——部署不是为了"上线"，而是为了验证架构在真实容器环境中能否拉起来。
+功能在开发机上可用，不代表打包成镜像后端口、网络和配置路径仍然正确。部署阶段要验证的是 IoT DC3 当前实际组件能否在容器网络中完整启动，并跑通 Driver 注册、位号值上报和点位命令回执，而不是验证一个模板中不存在的模型训练环境。
 
-DC3 官方维护了一套完整的 Docker Compose 模板，覆盖中间件、业务服务到 AI 推理节点。其结构直接反映边云分离：南向驱动经 RabbitMQ 与数据中心异步通信、不直连数据库；四个中心各依赖对应中间件。配置通过 `.env` 统一注入环境变量，敏感信息（数据库/MQ/时序库密码）生产环境必须从密钥管理服务注入而非硬编码。
+DC3 官方 Compose 模板分为数据库与消息中间件、核心服务、协议驱动和可选观测组件几部分。基础设施是 PostgreSQL 与 RabbitMQ；核心服务包括 Web、Gateway、Auth、Manager、Data、Agentic；驱动按协议独立启用。服务通过 `dc3net` 网络中的固定主机名互相寻址，公共运行参数由 `.env` 注入。模板不包含 Nacos、Kafka、TDengine，也没有单独的模型推理容器或模型卷。
 
 ```yaml
+x-app-runtime-env: &app-runtime-env
+  POSTGRES_HOST: dc3-postgres
+  RABBITMQ_HOST: dc3-rabbitmq
+  CENTER_AUTH_HOST: dc3-center-auth
+  CENTER_MANAGER_HOST: dc3-center-manager
+  CENTER_DATA_HOST: dc3-center-data
+  CENTER_AGENTIC_HOST: dc3-center-agentic
+
 services:
+  postgres:
+    container_name: dc3-postgres
   rabbitmq:
-    image: rabbitmq:3.13-management-alpine
-    ports: ["15672:15672"]
-  tdengine:
-    image: tdengine/tdengine:3.3.0.0
-    volumes: [tengine-data:/var/lib/taos]
-  dc3-center-data:
-    image: iotdc3/dc3-center-data:${DC3_VERSION:-latest}
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      DC3_TSDB_HOST: tdengine
-    depends_on: [tdengine, rabbitmq]
-  dc3-center-agentic:
-    image: iotdc3/dc3-center-agentic:${DC3_VERSION:-latest}
-    environment:
-      DC3_MODEL_PATH: /models/anomaly-detector.onnx
-    volumes: [./models:/models]
-    depends_on: [dc3-center-data]
-  dc3-driver-mqtt:
-    image: iotdc3/dc3-driver-mqtt:${DC3_VERSION:-latest}
-    depends_on: [dc3-center-auth]
+    container_name: dc3-rabbitmq
+  gateway:
+    environment: { <<: *app-runtime-env }
+  auth:
+    environment: { <<: *app-runtime-env }
+  manager:
+    environment: { <<: *app-runtime-env }
+  data:
+    environment: { <<: *app-runtime-env }
+  agentic:
+    environment: { <<: *app-runtime-env }
+  mqtt:
+    environment: { <<: *app-runtime-env }
 ```
 
-从"开发启动"到"容器化验证"有几类常见翻车点：`depends_on` 只保证容器启动顺序、不保证中间件内部就绪（PostgreSQL 启动后可能要数秒才接受连接，须加 `healthcheck` 或业务侧重试）；业务服务通过服务名（`postgres`）而非 `localhost` 连库；数据卷不绑宿主机路径时 `docker-compose down` 即丢数据，生产须显式挂载命名卷；日志统一输出 stdout/stderr 由收集器（Loki + Promtail）采集，不要在镜像内写本地文件。容器化部署完成后需明确冒烟测试集：服务启动（全部 `Up`）、设备注册、数据上报（MQTT 客户端发布 `{"temperature":68.5}` 落 TimescaleDB）、告警触发、命令下发。性能测试有两个易被忽略的瓶颈：MQTT Broker 连接数（EMQX 受文件描述符与内存约束）与数据中心消费能力（RabbitMQ 队列积压时消费线程池大小决定延迟——设备并发从 500 升到 2000 时，未调优的延迟可从几十毫秒增到数秒，根因常是批量写未调优）。
+从"开发启动"到"容器化验证"有几类常见翻车点：`depends_on` 必须配合 `healthcheck` 才能等待依赖真正就绪；业务服务通过 `dc3-postgres`、`dc3-rabbitmq`、`dc3-center-*` 等网络主机名而非 `localhost` 连接；生产环境要显式持久化 PostgreSQL、RabbitMQ 与日志卷；敏感变量不能提交到仓库。使用 `podman compose` 拉起后，冒烟测试至少覆盖服务 readiness、驱动向 Manager 业务注册、设备上报落 PostgreSQL、点位命令经 RabbitMQ 下发及回执。性能测试重点观察 RabbitMQ 队列积压、消费者耗时、数据库写入与驱动侧设备锁等待。
 
 ![图14-5 IoT DC3 容器化部署架构](figures/chapter-14/fig-14-05.png){width=15cm}
 
-*图14-5 部署架构：基础设施中间件、四个中心服务、智能中心与南向驱动按职责分层编排；驱动经 RabbitMQ 与数据中心异步通信不直连数据库；敏感配置经 .env/密钥管理注入，数据卷显式挂载保证持久化。*
+*图14-5 部署架构：Web/Gateway、Auth/Manager/Data/Agentic 四个业务中心、基础设施中间件与南向驱动按职责分层编排；驱动经 RabbitMQ 与数据中心异步通信不直连数据库；敏感配置经 .env/密钥管理注入，数据卷显式挂载保证持久化。*
 
 ## 14.3 常见陷阱与工程对策
 
@@ -2589,7 +2546,7 @@ services:
 
 ### 14.3.3 扩展性与团队协作
 
-进入规模化阶段，"如何撑住百万设备"与"如何不让账单吃掉利润"成为贯穿矛盾。微服务水平扩展在无状态服务上最有效（清洗、规则匹配、告警计算多开实例即摊开流量），但有状态服务（维护长连接的网关）扩缩容需配套会话管理与分布式缓存。DC3 网关与驱动间经 RabbitMQ 异步解耦、驱动本身不维持长连接状态，为驱动水平扩展扫清障碍。数据库层面，写入是持续大流量时序流、查询是间断窗口分析，压在同一实例很快写拖慢查；读写分离缓解部分冲突，主库写吞吐再成瓶颈则按设备 ID/地域/时间分片——务实做法是按热度分层（热数据少量分片、冷数据定期迁移到低成本存储）。边缘计算减少上行带宽与云端负荷，但效益依赖数据筛选率（只透传不省钱、做了预处理才降本），超百台分布式节点时边缘运维本身就是一项工程。成本底线不是"越便宜越好"，而是"在满足可用性与扩展上限前提下找当前阶段最经济的组合"——常见错误是为假想的千万设备规模提前采购大量资源、增量不及预期导致空置跑一年。
+进入规模化阶段，"如何撑住增长"与"如何不让账单吃掉利润"成为贯穿矛盾。微服务水平扩展在无状态服务上最直接，但协议 Driver 往往持有设备连接、会话或轮询状态，不能笼统视为无状态服务。当前真正的解耦点是 Data 与 Driver 之间的 RabbitMQ：二者无需彼此持有网络连接，可按队列积压和协议容量分别扩容；同一 Driver 多实例时仍要设计设备归属、订阅分片和命令路由。数据库扩展也应先压测 PostgreSQL 写入与查询，再决定索引、分区、冷热分层或读写分离，不能为假想规模提前堆组件。
 
 团队协作往往比技术实现更棘手。典型物联网团队至少四类角色（电子、固件、软件、算法工程师），知识背景、交付节奏、术语体系都不同，跨学科效率最终落在文档与协议上。最易补齐也最易被忽视的是接口文档：北向 REST API 用 OpenAPI 规范描述，南向设备协议（MQTT 主题定义、Modbus 寄存器映射）也应独立成版本化文档作为跨团队契约——固件改了字段名而文档没更新，平台就会静默丢数据。涉及跨层决策（为何选 QoS 1、为何用 X.509、为何选时序库），用轻量级架构决策记录（ADR）——一两页 Markdown 记背景、选项、选择与权衡，合并到 `docs/adr/`，新人不用靠回忆推演。此外建议建立版本兼容矩阵，每次发布明确"平台版本 X 支持的固件范围"。优先补上设备通讯协议文档与 ADR——这两项在多数物联网团队的文档成熟度中最薄弱。
 
@@ -2599,7 +2556,7 @@ services:
 
 AGI 这个标签在大语言模型出现后被频繁提及，但行业共识是当前距离真正通用智能仍有距离。对物联网更有意义的判断不是 AGI 何时到来，而是"可泛化推理能力"正从云端下沉到设备侧、从离线训练走向在线学习、从被动响应走向主动决策——这一迁移将重新定义物联网架构的顶层设计。
 
-**边缘 AI 与云端 AI 的融合边界开始模糊。** 量化、剪枝、蒸馏使数亿参数模型能在边缘网关甚至 MCU 上运行；同时云端大模型通过 MCP 对外暴露工具调用，边缘设备可按需调用云端推理而无需传全量原始数据。AI 能力不再绑定部署位置，而据时延、带宽、隐私、成本四维约束动态路由：一个振动波形可在本地做时域特征提取，再由边缘网关调用云端模型分类，而这一决策过程本身也由 AI 编排。DC3 的智能中心已迈出实验性一步，用 Spring AI 编排 Agent、以 MCP 标准化平台能力——未来这种编排会从"规则+模型"演变为"模型调度模型"的递归架构。
+**边缘 AI 与云端 AI 的融合边界开始模糊。** 量化、剪枝、蒸馏使较小模型可以运行在边缘网关；云端或边缘 Agent 也可通过 MCP 访问平台授权的 Tools，而不必了解每个 REST 端点。AI 能力不再绑定单一部署位置，而应按时延、带宽、隐私和成本约束路由。DC3 当前用 Spring AI 提供 Agentic Tools，并通过 Gateway MCP 端点标准化暴露其中的 Tools 能力；模型训练、边缘推理和自治调度仍属于后续按场景建设的能力。
 
 **从监控到自治：自主决策并非一蹴而就。** 物联网长期核心价值是"看得见"与"控得住"。AGI 引入后系统可基于多源上下文做超越预设规则的决策——产线异常检测不再只靠阈值，而是模型综合温度、振动、电流与工艺参数判断"轴承磨损概率 85%"并自动调整下一工位避免断刀。这条路的关键挑战不是模型准确率，而是决策的可解释性与安全边界：要为每个自主决策设"安全护栏"，输出必须落入预设操作区间，超出则回退人工确认。数字孪生在制造中已有成熟应用，AGI 时代这个映射可反向驱动——基于历史生成"最可能的故障演化路径"引导提前介入；工程判断是优先构建资产地图与时间线数据回溯，而非急于堆 3D 渲染。
 
@@ -2611,13 +2568,13 @@ AGI 这个标签在大语言模型出现后被频繁提及，但行业共识是�
 
 **需求阶段**：是否识别所有利益相关方、是否需物模型抽象（参考第 2、3 章）？非功能需求是否含并发设备数、吞吐、上下行延迟、离线缓存窗口、数据保留周期？是否用 MoSCoW 明确首版范围？是否把业务问题（如"停电后恢复流程"）而非技术方案（"开发 OTA"）作为目标？安全需求是否含设备认证、传输加密、最小权限基线（参考第 8、9 章）？
 
-**架构阶段**：是否分层且每层职责清晰无误层调用？南向协议是否经统一驱动封装、是否预留边缘下沉扩展点？消息队列选型是否符合场景（低频高可靠用 RabbitMQ、高通量日志用 Kafka）？微服务是否按业务边界划分？时序库是否匹配写入模型？边云异步解耦层是否明确？
+**架构阶段**：是否分层且每层职责清晰无误层调用？南向协议是否经统一驱动封装、是否预留边缘下沉扩展点？RabbitMQ 的交换机、队列、routing key、TTL、死信与 ack/nack 是否匹配点位命令和上行数据？微服务是否按业务边界划分？PostgreSQL 写入模型是否匹配数据规模？边云异步解耦层是否明确？
 
 **开发与部署阶段**：是否搭了 CI/CD 并明确三层测试覆盖率？设备模拟器是否覆盖正常上报/离线重连/异常包/批量注册？下行指令是否经安全校验？规则引擎是否支持灰度与热加载？可观测性栈是否就位？是否做过容量估算与压力测试？回滚/降级策略是否测试过（驱动与 MQ 断开时云侧应优雅降级而非雪崩）？安全基线是否执行？
 
 **运维阶段**：是否有版本迭代流程与变更通知？是否复盘过"第一次生产故障"并把根因纳入知识库？模型/规则是否有"观察-验证-更新"闭环？是否定期安全审计与依赖升级？团队新人能否凭现有文档在 1–2 个工作日内启动开发——不能则文档需补。
 
-常见陷阱速查：MQTT 丢消息（QoS 0 + 抖动 → 关键指令用 QoS 1/2）；时序库膨胀（未做降采样 → 定义保留策略）；上行反压设备（云侧处理慢 → 异步解耦 + 设备端 sendTimeout）；服务寻址配置错（服务名/环境变量不一致 → 统一配置源 + 健康检查；引入 Nacos 后注意注册健康探测）；弱口令致设备被控（保留出厂密码 → 强制首次登录改密）。这份表不是死规矩，而是对话起点——每个项目都有独特约束，列出的每一项都值得问一句"在我们的上下文里优先级是 Must 还是 Should"。
+常见陷阱速查：MQTT 丢消息（QoS 0 + 抖动 → 关键数据用 QoS 1/2）；历史数据膨胀（未做归档或保留策略 → 按业务周期治理）；上行反压设备（云侧处理慢 → RabbitMQ 异步解耦）；服务寻址配置错（`CENTER_*_HOST`、Gateway 路由变量与 Compose 服务名不一致 → 统一配置源 + readiness 健康检查）；弱口令致设备被控（保留出厂密码 → 强制首次登录改密）。这份表不是死规矩，而是对话起点——每个项目都有独特约束，列出的每一项都值得问一句"在我们的上下文里优先级是 Must 还是 Should"。
 
 至此，本书从第 1 章的 AIoT 全景出发，经连接（第 4、9 章协议）、平台（第 5 章）、智能（第 6、7 章 Agentic）、安全（第 8 章）的铺垫，在 IoT DC3 实战中收束成一条可落地的工程主线。物联网的下一程，是让"连接"之上长出真正的"智能"——AGI 时代的万物智联，正从这条主线的尽头展开。
 

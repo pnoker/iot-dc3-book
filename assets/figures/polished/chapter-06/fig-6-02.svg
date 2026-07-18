@@ -158,7 +158,7 @@
   <path d="M 1014,293 L 1218,293 A 8,27 0 0 1 1218,347 L 1014,347" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.8"/>
   <ellipse cx="1014" cy="320" rx="8" ry="27" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.8"/>
   <text x="1116" y="316" font-size="12" font-weight="700" fill="#B45309" text-anchor="middle">消息队列</text>
-  <text x="1116" y="332" font-size="9" fill="#92400E" text-anchor="middle">Message Queue · Kafka</text>
+  <text x="1116" y="332" font-size="9" fill="#92400E" text-anchor="middle">Message Queue · Broker Agnostic</text>
 
   <!-- bottom services -->
   <rect x="952" y="380" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>

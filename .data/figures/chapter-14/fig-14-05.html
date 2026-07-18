@@ -17,15 +17,15 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图14-5 IoT DC3 容器化部署架构</title>
-  <desc id="desc">三列分组：左列基础设施中间件（PostgreSQL/Nacos/TDengine/RabbitMQ），中列平台服务（鉴权/管理/数据中心，蓝）与智能中心（橙，挂载模型卷），右列南向驱动（MQTT/Modbus/OPC UA，绿，可下沉边缘）。顶部网关暴露 8080；驱动经 RabbitMQ 与数据中心异步通信、不直连数据库；底部标注数据卷持久化与 .env 配置注入。</desc>
+  <desc id="desc">三列分组：左列为 PostgreSQL、Compose DNS、运行时配置和 RabbitMQ，中列为鉴权、管理、数据和 Agentic 中心，右列为可下沉边缘的南向驱动。Web 对外暴露 8080/8443 并转发到内部 8000 端口的 Gateway；驱动通过 RabbitMQ 与 Data 双向通信，并在 Compose 网络内访问 Manager；底部标注真实数据卷与运行时配置注入。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="44.000" width="1152.000" height="672.000" viewBox="0 0 1800.000 1050.000" preserveAspectRatio="xMidYMid meet">
 <title>图14-5 IoT DC3 容器化部署架构</title>
-  <desc>三列分组：左列基础设施中间件（PostgreSQL/Nacos/TDengine/RabbitMQ），中列平台服务（鉴权/管理/数据中心，蓝）与智能中心（橙，挂载模型卷），右列南向驱动（MQTT/Modbus/OPC UA，绿，可下沉边缘）。顶部网关暴露 8080；驱动经 RabbitMQ 与数据中心异步通信、不直连数据库；底部标注数据卷持久化与 .env 配置注入。</desc>
+  <desc>三列分组：左列为 PostgreSQL、Compose DNS、运行时配置和 RabbitMQ，中列为鉴权、管理、数据和 Agentic 中心，右列为可下沉边缘的南向驱动。Web 对外暴露 8080/8443 并转发到内部 8000 端口的 Gateway；驱动通过 RabbitMQ 与 Data 双向通信，并在 Compose 网络内访问 Manager；底部标注真实数据卷与运行时配置注入。</desc>
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
     <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
     <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
     <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
@@ -37,7 +37,7 @@
   <!-- ===== Title area ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="84" y="38" font-size="22" font-weight="700" fill="#0F172A" dominant-baseline="middle">图14-5  IoT DC3 容器化部署架构</text>
-  <text x="84" y="64" font-size="12" fill="#64748B" dominant-baseline="middle">开发到生产的容器化拓扑：基础设施中间件 · 四中心服务 · 智能中心 · 南向驱动的分层编排（边云分离）</text>
+  <text x="84" y="64" font-size="12" fill="#64748B" dominant-baseline="middle">开发到生产的容器化拓扑：Web 入口 · Gateway · 四个中心服务 · 基础设施 · 南向驱动（边云分离）</text>
   <rect x="1620" y="26" width="140" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
   <text x="1690" y="40" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" dominant-baseline="middle" letter-spacing="1.5">ARCHITECTURE</text>
   <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
@@ -48,12 +48,11 @@
 
   <!-- ===== Gateway bar ===== -->
   <rect x="540" y="125" width="570" height="66" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="560" y="152" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">网关 Gateway</text>
-  <text x="560" y="174" font-size="10" fill="#475569" dominant-baseline="middle">反向代理 · 统一入口 · TLS 终止</text>
-  <rect x="990" y="140" width="76" height="36" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="1028" y="154" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">PORT</text>
-  <text x="1028" y="170" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle" dominant-baseline="middle">8080</text>
-  <rect x="1078" y="140" width="20" height="36" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="560" y="152" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">Web / Nginx → Gateway</text>
+  <text x="560" y="174" font-size="10" fill="#475569" dominant-baseline="middle">Web 统一入口与 TLS 终止 · Gateway 仅在 Compose 网络提供 8000</text>
+  <rect x="970" y="140" width="128" height="36" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1034" y="154" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">WEB EXPOSE</text>
+  <text x="1034" y="170" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle" dominant-baseline="middle">8080 / 8443</text>
 
   <!-- Gateway -> Platform layer -->
   <line x1="825" y1="191" x2="825" y2="212" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
@@ -83,29 +82,24 @@
     <ellipse cx="18" cy="7" rx="18" ry="6" fill="none" stroke="#64748B" stroke-width="1.5"/>
   </g>
   <text x="172" y="318" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">PostgreSQL</text>
-  <text x="172" y="340" font-size="10" fill="#475569" dominant-baseline="middle">关系数据库 · 用户 / 鉴权 / 元数据</text>
-  <text x="172" y="358" font-size="9" fill="#64748B" dominant-baseline="middle">卷 pg-data · :5432</text>
+  <text x="172" y="340" font-size="10" fill="#475569" dominant-baseline="middle">关系数据库 · 用户 / 元数据 / 历史位号值</text>
+  <text x="172" y="358" font-size="9" fill="#64748B" dominant-baseline="middle">卷 postgres · 容器端口 5432</text>
 
-  <!-- Nacos (card, row2) -->
+  <!-- Compose DNS (card, row2) -->
   <rect x="90" y="400" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
   <rect x="106" y="416" width="40" height="40" rx="4" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
-  <text x="126" y="438" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" dominant-baseline="middle">N</text>
-  <text x="160" y="426" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">Nacos</text>
-  <text x="160" y="448" font-size="10" fill="#475569" dominant-baseline="middle">服务注册发现 · 动态配置中心</text>
-  <text x="160" y="466" font-size="9" fill="#64748B" dominant-baseline="middle">:8848 · 全部中心注册</text>
+  <text x="126" y="438" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" dominant-baseline="middle">DNS</text>
+  <text x="160" y="426" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">Compose DNS</text>
+  <text x="160" y="448" font-size="10" fill="#475569" dominant-baseline="middle">固定服务名 · dc3net 网络内寻址</text>
+  <text x="160" y="466" font-size="9" fill="#64748B" dominant-baseline="middle">CENTER_*_HOST · GATEWAY_ROUTE_*_URI</text>
 
-  <!-- TDengine (cylinder, row3) -->
+  <!-- Runtime config (card, row3) -->
   <rect x="90" y="510" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-  <g transform="translate(108,525)">
-    <ellipse cx="18" cy="7" rx="18" ry="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
-    <path d="M0,7 L0,48" stroke="#64748B" stroke-width="1.5" fill="none"/>
-    <path d="M36,7 L36,48" stroke="#64748B" stroke-width="1.5" fill="none"/>
-    <path d="M0,48 A18,6 0 0 0 36,48" stroke="#64748B" stroke-width="1.5" fill="#F8FAFC"/>
-    <ellipse cx="18" cy="7" rx="18" ry="6" fill="none" stroke="#64748B" stroke-width="1.5"/>
-  </g>
-  <text x="172" y="538" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">TDengine</text>
-  <text x="172" y="560" font-size="10" fill="#475569" dominant-baseline="middle">时序数据库 · 设备点位 / 采集数据</text>
-  <text x="172" y="578" font-size="9" fill="#64748B" dominant-baseline="middle">卷 td-data · :6030</text>
+  <rect x="106" y="526" width="40" height="40" rx="4" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <text x="126" y="548" font-size="10" font-weight="700" fill="#64748B" text-anchor="middle" dominant-baseline="middle">ENV</text>
+  <text x="160" y="536" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">Runtime Config / .env</text>
+  <text x="160" y="558" font-size="10" fill="#475569" dominant-baseline="middle">数据库 / 消息队列 / 模型 API 配置</text>
+  <text x="160" y="576" font-size="9" fill="#64748B" dominant-baseline="middle">运行时环境变量注入 · 不进入镜像</text>
 
   <!-- RabbitMQ (card, row4) -->
   <rect x="90" y="620" width="380" height="85" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
@@ -114,37 +108,37 @@
   <line x1="114" y1="656" x2="138" y2="656" stroke="#64748B" stroke-width="1.2"/>
   <line x1="114" y1="664" x2="138" y2="664" stroke="#64748B" stroke-width="1.2"/>
   <text x="160" y="646" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">RabbitMQ</text>
-  <text x="160" y="668" font-size="10" fill="#475569" dominant-baseline="middle">消息总线 · 驱动异步上报 / 事件解耦</text>
-  <text x="160" y="686" font-size="9" fill="#64748B" dominant-baseline="middle">卷 rmq-data · :5672</text>
+  <text x="160" y="668" font-size="10" fill="#475569" dominant-baseline="middle">消息总线 · 位号值 / 命令 / 状态 / 回执</text>
+  <text x="160" y="686" font-size="9" fill="#64748B" dominant-baseline="middle">卷 rabbitmq · AMQP 5672 / MQTT 1883</text>
 
   <!-- ===== MIDDLE COLUMN: platform + intelligent ===== -->
   <!-- Auth Center (blue, row1) -->
   <rect x="550" y="290" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <rect x="566" y="306" width="6" height="53" rx="2" fill="#2563EB"/>
-  <text x="586" y="318" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">鉴权中心  dc3-auth</text>
+  <text x="586" y="318" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">鉴权中心  dc3-center-auth</text>
   <text x="586" y="340" font-size="10" fill="#475569" dominant-baseline="middle">用户登录 · Token 签发 · 权限校验</text>
-  <text x="586" y="358" font-size="9" fill="#64748B" dominant-baseline="middle">依赖 PostgreSQL · Nacos</text>
+  <text x="586" y="358" font-size="9" fill="#64748B" dominant-baseline="middle">PostgreSQL · Compose DNS · Runtime Config</text>
 
   <!-- Management Center (blue, row2) -->
   <rect x="550" y="400" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <rect x="566" y="416" width="6" height="53" rx="2" fill="#2563EB"/>
-  <text x="586" y="428" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">管理中心  dc3-manager</text>
+  <text x="586" y="428" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">管理中心  dc3-center-manager</text>
   <text x="586" y="450" font-size="10" fill="#475569" dominant-baseline="middle">设备 / 点位 / 模型元数据管理</text>
-  <text x="586" y="468" font-size="9" fill="#64748B" dominant-baseline="middle">依赖 PostgreSQL · Nacos</text>
+  <text x="586" y="468" font-size="9" fill="#64748B" dominant-baseline="middle">PostgreSQL · Driver gRPC 业务注册</text>
 
   <!-- Data Center (blue, row3) -->
   <rect x="550" y="510" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <rect x="566" y="526" width="6" height="53" rx="2" fill="#2563EB"/>
-  <text x="586" y="538" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">数据中心  dc3-data</text>
-  <text x="586" y="560" font-size="10" fill="#475569" dominant-baseline="middle">采集数据入库 · 消费驱动消息 · 计算下发</text>
-  <text x="586" y="578" font-size="9" fill="#64748B" dominant-baseline="middle">依赖 TDengine · PostgreSQL · RabbitMQ</text>
+  <text x="586" y="538" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">数据中心  dc3-center-data</text>
+  <text x="586" y="560" font-size="10" fill="#475569" dominant-baseline="middle">最新值 Caffeine · 历史值 PostgreSQL</text>
+  <text x="586" y="578" font-size="9" fill="#64748B" dominant-baseline="middle">RabbitMQ 双向设备消息 · 进程内批量缓冲</text>
 
-  <!-- Intelligent Center (orange, row4) -->
+  <!-- Agentic Center (orange, row4) -->
   <rect x="550" y="620" width="540" height="85" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
   <rect x="566" y="636" width="6" height="53" rx="2" fill="#F59E0B"/>
-  <text x="586" y="648" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">智能中心  dc3-gateway (AI)</text>
-  <text x="586" y="670" font-size="10" fill="#475569" dominant-baseline="middle">规则引擎 · AI 推理 · 联动控制</text>
-  <text x="586" y="688" font-size="9" fill="#64748B" dominant-baseline="middle">挂载模型卷 model-store · 边云可分离</text>
+  <text x="586" y="648" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">智能中心  dc3-center-agentic</text>
+  <text x="586" y="670" font-size="10" fill="#475569" dominant-baseline="middle">ChatClient · Tools · 会话与 Action 确认</text>
+  <text x="586" y="688" font-size="9" fill="#64748B" dominant-baseline="middle">通过 Runtime Config 调用外部模型 API</text>
 
   <!-- ===== RIGHT COLUMN: southbound drivers (green) ===== -->
   <!-- driver-mqtt -->
@@ -152,50 +146,50 @@
   <rect x="1186" y="316" width="6" height="48" rx="2" fill="#10B981"/>
   <text x="1206" y="328" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">driver-mqtt</text>
   <text x="1206" y="350" font-size="10" fill="#475569" dominant-baseline="middle">MQTT 协议接入 · 发布 / 订阅设备数据</text>
-  <text x="1206" y="368" font-size="9" fill="#64748B" dominant-baseline="middle">→ RabbitMQ 异步上报 · 可下沉边缘</text>
+  <text x="1206" y="368" font-size="9" fill="#64748B" dominant-baseline="middle">RabbitMQ 双向消息 · Manager gRPC 注册</text>
 
   <!-- driver-modbus -->
   <rect x="1170" y="420" width="540" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
   <rect x="1186" y="436" width="6" height="48" rx="2" fill="#10B981"/>
   <text x="1206" y="448" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">driver-modbus</text>
   <text x="1206" y="470" font-size="10" fill="#475569" dominant-baseline="middle">Modbus TCP/RTU 轮询 · 寄存器读写</text>
-  <text x="1206" y="488" font-size="9" fill="#64748B" dominant-baseline="middle">→ RabbitMQ 异步上报 · 可下沉边缘</text>
+  <text x="1206" y="488" font-size="9" fill="#64748B" dominant-baseline="middle">RabbitMQ 双向消息 · Manager gRPC 注册</text>
 
   <!-- driver-opcua -->
   <rect x="1170" y="540" width="540" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
   <rect x="1186" y="556" width="6" height="48" rx="2" fill="#10B981"/>
   <text x="1206" y="568" font-size="15" font-weight="700" fill="#0F172A" dominant-baseline="middle">driver-opcua</text>
   <text x="1206" y="590" font-size="10" fill="#475569" dominant-baseline="middle">OPC UA 订阅 · 工控设备节点采集</text>
-  <text x="1206" y="608" font-size="9" fill="#64748B" dominant-baseline="middle">→ RabbitMQ 异步上报 · 可下沉边缘</text>
+  <text x="1206" y="608" font-size="9" fill="#64748B" dominant-baseline="middle">RabbitMQ 双向消息 · Manager gRPC 注册</text>
 
   <!-- Edge note -->
   <rect x="1170" y="660" width="540" height="70" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.2" stroke-dasharray="4 3"/>
   <text x="1440" y="684" font-size="11" font-weight="700" fill="#10B981" text-anchor="middle" dominant-baseline="middle">边云分离 · Edge–Cloud Separation</text>
-  <text x="1440" y="704" font-size="10" fill="#475569" text-anchor="middle" dominant-baseline="middle">驱动容器可在边缘节点运行，经网络回连云端 RabbitMQ / Nacos</text>
-  <text x="1440" y="720" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">独立网络平面 · 不直连云端数据库</text>
+  <text x="1440" y="704" font-size="10" fill="#475569" text-anchor="middle" dominant-baseline="middle">驱动经 RabbitMQ 与 Data 通信，并通过 Compose 网络访问 Manager</text>
+  <text x="1440" y="720" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">可下沉边缘 · 不直连平台数据库</text>
 
   <!-- ===== Sync dependency arrows (gray solid) ===== -->
   <!-- Auth -> PostgreSQL (row1) -->
   <line x1="548" y1="332" x2="474" y2="332" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
   <text x="511" y="324" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">鉴权库</text>
 
-  <!-- Management -> Nacos (row2) -->
+  <!-- Services -> Compose DNS (row2) -->
   <line x1="548" y1="442" x2="474" y2="442" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
-  <text x="511" y="434" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">配置 / 注册</text>
+  <text x="511" y="434" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">服务寻址</text>
 
   <!-- Management -> PostgreSQL (L up-left) -->
   <path d="M 548,414 L 510,414 L 510,360 L 474,360" fill="none" stroke="#64748B" stroke-width="1.4" marker-end="url(#ah-gray)"/>
   <text x="498" y="388" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">元数据</text>
 
-  <!-- Data -> TDengine (row3) -->
+  <!-- Services -> runtime config (row3) -->
   <line x1="548" y1="552" x2="474" y2="552" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
-  <text x="511" y="544" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">时序写入</text>
+  <text x="511" y="544" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">环境变量</text>
 
   <!-- Data -> PostgreSQL (L up-left) -->
   <path d="M 548,524 L 520,524 L 520,372 L 474,372" fill="none" stroke="#64748B" stroke-width="1.4" marker-end="url(#ah-gray)"/>
   <text x="508" y="450" font-size="9" fill="#64748B" text-anchor="middle" dominant-baseline="middle">关系</text>
 
-  <!-- ===== Async path: drivers -> RabbitMQ -> Data Center (green dashed) ===== -->
+  <!-- ===== Bidirectional path: drivers <-> RabbitMQ <-> Data Center (green dashed) ===== -->
   <!-- driver stubs to vertical bus at x=1158 -->
   <line x1="1168" y1="340" x2="1158" y2="340" stroke="#10B981" stroke-width="1.8"/>
   <line x1="1168" y1="460" x2="1158" y2="460" stroke="#10B981" stroke-width="1.8"/>
@@ -203,23 +197,19 @@
   <!-- vertical bus -->
   <line x1="1158" y1="340" x2="1158" y2="780" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4"/>
   <!-- horizontal bus under columns to RabbitMQ -->
-  <path d="M 1158,780 L 280,780 L 280,708" fill="none" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
-  <text x="700" y="773" font-size="10" font-weight="600" fill="#10B981" text-anchor="middle" dominant-baseline="middle">异步消息上报 · async publish（驱动不直连数据库）</text>
+  <path d="M 1158,780 L 280,780 L 280,708" fill="none" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-start="url(#ah-green)" marker-end="url(#ah-green)"/>
+  <text x="700" y="773" font-size="10" font-weight="600" fill="#10B981" text-anchor="middle" dominant-baseline="middle">位号值 / 命令 / 状态 / 回执 · RabbitMQ 双向传输</text>
 
-  <!-- RabbitMQ -> Data Center (green dashed, consume) -->
-  <path d="M 474,650 L 524,650 L 524,592 L 548,592" fill="none" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
-  <text x="500" y="624" font-size="9" fill="#10B981" text-anchor="middle" dominant-baseline="middle">消费</text>
-
-  <!-- Intelligent -> model volume (orange, links down to bottom band) -->
-  <line x1="820" y1="706" x2="820" y2="800" stroke="#F59E0B" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#ah-orange)"/>
-  <text x="834" y="752" font-size="9" fill="#F59E0B" dominant-baseline="middle">加载模型</text>
+  <!-- RabbitMQ <-> Data Center (green dashed) -->
+  <path d="M 474,650 L 524,650 L 524,592 L 548,592" fill="none" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-start="url(#ah-green)" marker-end="url(#ah-green)"/>
+  <text x="500" y="624" font-size="9" fill="#10B981" text-anchor="middle" dominant-baseline="middle">双向</text>
 
   <!-- ===== Bottom band: volumes + env injection ===== -->
   <line x1="60" y1="788" x2="1740" y2="788" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 3"/>
 
   <!-- Volumes group (left/center) -->
   <text x="90" y="812" font-size="12" font-weight="700" fill="#0F172A" dominant-baseline="middle">数据卷持久化  Volumes</text>
-  <!-- pg-data -->
+  <!-- postgres -->
   <g transform="translate(96,828)">
     <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
     <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
@@ -227,9 +217,9 @@
     <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
     <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
   </g>
-  <text x="144" y="846" font-size="10" fill="#475569" dominant-baseline="middle">pg-data</text>
-  <text x="144" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">关系库</text>
-  <!-- td-data -->
+  <text x="144" y="846" font-size="10" fill="#475569" dominant-baseline="middle">postgres</text>
+  <text x="144" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">数据库</text>
+  <!-- rabbitmq -->
   <g transform="translate(232,828)">
     <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
     <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
@@ -237,9 +227,9 @@
     <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
     <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
   </g>
-  <text x="280" y="846" font-size="10" fill="#475569" dominant-baseline="middle">td-data</text>
-  <text x="280" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">时序库</text>
-  <!-- rmq-data -->
+  <text x="280" y="846" font-size="10" fill="#475569" dominant-baseline="middle">rabbitmq</text>
+  <text x="280" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">消息数据</text>
+  <!-- logs -->
   <g transform="translate(368,828)">
     <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
     <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
@@ -247,18 +237,18 @@
     <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
     <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
   </g>
-  <text x="416" y="846" font-size="10" fill="#475569" dominant-baseline="middle">rmq-data</text>
-  <text x="416" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">消息</text>
-  <!-- model-store -->
+  <text x="416" y="846" font-size="10" fill="#475569" dominant-baseline="middle">logs</text>
+  <text x="416" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">服务日志</text>
+  <!-- nginx -->
   <g transform="translate(520,828)">
-    <ellipse cx="16" cy="6" rx="16" ry="5" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
-    <path d="M0,6 L0,40" stroke="#F59E0B" stroke-width="1.5" fill="none"/>
-    <path d="M32,6 L32,40" stroke="#F59E0B" stroke-width="1.5" fill="none"/>
-    <path d="M0,40 A16,5 0 0 0 32,40" stroke="#F59E0B" stroke-width="1.5" fill="#FFF7ED"/>
-    <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="#F8FAFC" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M0,6 L0,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M32,6 L32,40" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+    <path d="M0,40 A16,5 0 0 0 32,40" stroke="#7C3AED" stroke-width="1.5" fill="#F8FAFC"/>
+    <ellipse cx="16" cy="6" rx="16" ry="5" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
   </g>
-  <text x="568" y="846" font-size="10" fill="#475569" dominant-baseline="middle">model-store</text>
-  <text x="568" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">AI 模型 · 智能中心挂载</text>
+  <text x="568" y="846" font-size="10" fill="#475569" dominant-baseline="middle">nginx</text>
+  <text x="568" y="862" font-size="9" fill="#64748B" dominant-baseline="middle">Web 日志</text>
   <text x="90" y="884" font-size="9" fill="#94A3B8" dominant-baseline="middle">显式 volume 挂载，容器重建不丢数据</text>
 
   <!-- .env config injection (right) -->
@@ -295,7 +285,7 @@
   <text x="752" y="925" font-size="10" fill="#475569" dominant-baseline="middle">同步依赖</text>
 
   <line x1="840" y1="925" x2="876" y2="925" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
-  <text x="882" y="925" font-size="10" fill="#475569" dominant-baseline="middle">异步消息（驱动 → MQ → 数据中心）</text>
+  <text x="882" y="925" font-size="10" fill="#475569" dominant-baseline="middle">双向设备消息（Driver ↔ RabbitMQ ↔ Data）</text>
 
   <line x1="1180" y1="925" x2="1216" y2="925" stroke="#E11D48" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
   <text x="1222" y="925" font-size="10" fill="#475569" dominant-baseline="middle">敏感配置注入</text>
@@ -310,13 +300,13 @@
   <text x="1384" y="925" font-size="10" fill="#475569" dominant-baseline="middle">数据卷（圆柱体）</text>
 
   <!-- ===== Caption ===== -->
-  <text x="900" y="975" font-size="10" fill="#94A3B8" text-anchor="middle" dominant-baseline="middle">图14-5 部署架构：基础设施中间件、四个中心服务、智能中心与南向驱动按职责分层编排；</text>
-  <text x="900" y="993" font-size="10" fill="#94A3B8" text-anchor="middle" dominant-baseline="middle">驱动经 RabbitMQ 与数据中心异步通信、不直连数据库；敏感配置经 .env / 密钥管理注入，数据卷显式挂载保证持久化。</text>
+  <text x="900" y="975" font-size="10" fill="#94A3B8" text-anchor="middle" dominant-baseline="middle">图14-5 部署架构：Web 暴露 8080/8443，Gateway 在 Compose 网络内监听 8000，四个中心服务按职责编排；</text>
+  <text x="900" y="993" font-size="10" fill="#94A3B8" text-anchor="middle" dominant-baseline="middle">Driver 经 RabbitMQ 与 Data 双向通信并访问 Manager；配置由环境变量注入，PostgreSQL、RabbitMQ 与日志使用显式卷持久化。</text>
   </svg>
 </svg>
     <section class="meta">
       <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">三列分组。左列基础设施中间件（PostgreSQL/TimescaleDB、RabbitMQ、Redis）；中列平台服务（鉴权中心、管理中心、数据中心，蓝色）与智能中心（橙色，挂载模型卷）；右列南向驱动（driver-mqtt/modbus/opcua，青绿，可下沉边缘）与网关。顶部网关暴露 8080 端口，底部标注数据卷与 .env 配置注入。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">三列分组。左列基础设施（PostgreSQL、RabbitMQ）；中列平台服务（Gateway、Auth、Manager、Data、Agentic）；右列南向驱动（MQTT/Modbus/OPC UA 等，可下沉边缘）与现场设备。所有容器位于 dc3net，固定服务名由环境变量引用；底部标注 PostgreSQL/RabbitMQ/日志卷与 .env 配置注入，不出现 Nacos、Kafka、TDengine 或 Redis。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

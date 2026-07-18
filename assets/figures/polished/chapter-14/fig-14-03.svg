@@ -42,32 +42,32 @@
     <text x="18" y="176" font-size="9" fill="#7C3AED">/dc3/dev/&#123;id&#125;/property</text>
   </g>
 
-  <!-- Node 2: MQTT Broker / EMQX (green / edge) -->
+  <!-- Node 2: RabbitMQ MQTT endpoint (green / edge) -->
   <g transform="translate(290,240)">
     <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
     <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#10B981" fill-opacity="0.1"/>
     <line x1="0" y1="48" x2="200" y2="48" stroke="#10B981" stroke-opacity="0.35" stroke-width="1"/>
     <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT Broker</text>
-    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">EMQX</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">RabbitMQ MQTT · :1883</text>
     <text x="18" y="82" font-size="11" fill="#475569">· 主题订阅 / 路由</text>
     <text x="18" y="104" font-size="11" fill="#475569">· 客户端鉴权 · ACL</text>
     <text x="18" y="126" font-size="11" fill="#475569">· 会话保持 · 遗嘱</text>
-    <text x="18" y="160" font-size="9" fill="#64748B">接入层网关</text>
-    <text x="18" y="176" font-size="9" fill="#64748B">支撑百万级连接</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">dc3-rabbitmq</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">MQTT 协议接入端点</text>
   </g>
 
-  <!-- Node 3: 数据接入服务 (blue / platform) -->
+  <!-- Node 3: MQTT Driver (blue / platform) -->
   <g transform="translate(550,240)">
     <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#2563EB" fill-opacity="0.1"/>
     <line x1="0" y1="48" x2="200" y2="48" stroke="#2563EB" stroke-opacity="0.35" stroke-width="1"/>
-    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据接入服务</text>
-    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">订阅 / 反序列化</text>
-    <text x="18" y="82" font-size="11" fill="#475569">· 订阅 Broker 主题</text>
-    <text x="18" y="104" font-size="11" fill="#475569">· JSON → 物模型字段</text>
-    <text x="18" y="126" font-size="11" fill="#475569">· 设备身份映射</text>
-    <text x="18" y="160" font-size="9" fill="#64748B">校验时间戳 / 签名</text>
-    <text x="18" y="176" font-size="9" fill="#64748B">同步拉取后转异步</text>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT Driver</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">协议适配 · 位号转换</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 订阅设备主题</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· JSON → PointValue</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 消费位号命令</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">向 Manager 业务注册</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">与 Data 经 RabbitMQ 通信</text>
   </g>
 
   <!-- Node 4: 消息队列 (purple / data, HIGHLIGHT 稳压器) -->
@@ -76,42 +76,42 @@
     <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#7C3AED" fill-opacity="0.14"/>
     <line x1="0" y1="48" x2="200" y2="48" stroke="#7C3AED" stroke-opacity="0.4" stroke-width="1"/>
     <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">消息队列</text>
-    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">RabbitMQ / Kafka</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">RabbitMQ</text>
     <text x="18" y="82" font-size="11" font-weight="600" fill="#7C3AED">· 缓冲削峰</text>
     <text x="18" y="104" font-size="11" font-weight="600" fill="#7C3AED">· 异步解耦</text>
-    <text x="18" y="126" font-size="11" fill="#475569">· 按 deviceId 分区</text>
-    <text x="18" y="160" font-size="9" fill="#64748B">重试 · 死信队列</text>
-    <text x="18" y="176" font-size="9" fill="#64748B">保证设备内顺序</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 路由可靠投递</text>
+    <text x="18" y="160" font-size="9" fill="#64748B">位号值 · 状态 · 回执</text>
+    <text x="18" y="176" font-size="9" fill="#64748B">位号读写命令</text>
     <!-- floating 稳压器 badge -->
     <rect x="70" y="-16" width="120" height="24" rx="12" fill="#7C3AED"/>
     <text x="130" y="1" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">★ 稳压器</text>
   </g>
 
-  <!-- Node 5: 数据处理服务 (blue / platform, 规则引擎 orange accent) -->
+  <!-- Node 5: Data Center (blue / platform) -->
   <g transform="translate(1070,240)">
     <rect x="0" y="0" width="200" height="280" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#2563EB" fill-opacity="0.1"/>
     <line x1="0" y1="48" x2="200" y2="48" stroke="#2563EB" stroke-opacity="0.35" stroke-width="1"/>
-    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据处理服务</text>
-    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">物模型校验 + 规则引擎</text>
-    <text x="18" y="82" font-size="11" fill="#475569">· 字段范围校验</text>
-    <text x="18" y="104" font-size="11" fill="#475569">· 先入库 · 再判告警</text>
-    <text x="18" y="126" font-size="11" fill="#475569">· 规则触发动作</text>
+    <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Data Center</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">位号值与命令服务</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 消费位号值 / 状态 / 回执</text>
+    <text x="18" y="104" font-size="11" fill="#475569">· 更新最新值缓存</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 批量写入历史值</text>
     <circle cx="24" cy="158" r="4" fill="#F59E0B"/>
-    <text x="34" y="162" font-size="10" font-weight="600" fill="#F59E0B">规则引擎（ai 域）</text>
-    <text x="18" y="184" font-size="9" fill="#64748B">避免时序错位</text>
+    <text x="34" y="162" font-size="10" font-weight="600" fill="#F59E0B">发布位号读写命令</text>
+    <text x="18" y="184" font-size="9" fill="#64748B">PointValueJob 进程内缓冲</text>
   </g>
 
-  <!-- Node 6: 数据库 (purple cylinder / data) -->
+  <!-- Node 6: cache + database (purple cylinder / data) -->
   <g transform="translate(1330,240)">
     <path d="M 20 50 L 20 258 A 80 12 0 0 0 180 258 L 180 50" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2" stroke-linejoin="round"/>
     <ellipse cx="100" cy="50" rx="80" ry="12" fill="#7C3AED" fill-opacity="0.14" stroke="#7C3AED" stroke-width="2"/>
-    <text x="100" y="98" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据库</text>
-    <text x="100" y="116" font-size="10" fill="#64748B" text-anchor="middle">时序库 + 文档库</text>
-    <text x="100" y="150" font-size="11" fill="#475569" text-anchor="middle">· TDengine（时序）</text>
-    <text x="100" y="172" font-size="11" fill="#475569" text-anchor="middle">· MongoDB（文档/元）</text>
-    <text x="100" y="206" font-size="9" fill="#64748B" text-anchor="middle">持久化存储</text>
-    <text x="100" y="222" font-size="9" fill="#64748B" text-anchor="middle">冷热分层</text>
+    <text x="100" y="98" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">缓存与存储</text>
+    <text x="100" y="116" font-size="10" fill="#64748B" text-anchor="middle">Current + History</text>
+    <text x="100" y="150" font-size="11" fill="#475569" text-anchor="middle">· Caffeine（最新值）</text>
+    <text x="100" y="172" font-size="11" fill="#475569" text-anchor="middle">· PostgreSQL（历史值）</text>
+    <text x="100" y="206" font-size="9" fill="#64748B" text-anchor="middle">本地缓存 + 持久化</text>
+    <text x="100" y="222" font-size="9" fill="#64748B" text-anchor="middle">无 Redis / 独立时序库</text>
   </g>
 
   <!-- Node 7: 查询接口 / 可视化 (blue / platform) -->
@@ -120,10 +120,10 @@
     <path d="M0,8 Q0,0 8,0 L192,0 Q200,0 200,8 L200,48 L0,48 Z" fill="#2563EB" fill-opacity="0.1"/>
     <line x1="0" y1="48" x2="200" y2="48" stroke="#2563EB" stroke-opacity="0.35" stroke-width="1"/>
     <text x="100" y="22" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">查询接口 / 可视化</text>
-    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">REST · Grafana</text>
-    <text x="18" y="82" font-size="11" fill="#475569">· 时序聚合查询</text>
+    <text x="100" y="40" font-size="10" fill="#64748B" text-anchor="middle">REST · Web UI</text>
+    <text x="18" y="82" font-size="11" fill="#475569">· 最新值 / 历史查询</text>
     <text x="18" y="104" font-size="11" fill="#475569">· 实时面板</text>
-    <text x="18" y="126" font-size="11" fill="#475569">· 告警展示</text>
+    <text x="18" y="126" font-size="11" fill="#475569">· 命令状态 / Dashboard</text>
     <text x="18" y="160" font-size="9" fill="#64748B">北向开放</text>
     <text x="18" y="176" font-size="9" fill="#64748B">运维 / 业务双视图</text>
   </g>
@@ -152,6 +152,13 @@
   <!-- 6→7 查询 (solid blue) -->
   <line x1="1512" y1="380" x2="1584" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
   <text x="1548" y="368" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">查询</text>
+
+  <!-- 设备命令反向链路：Data -> RabbitMQ -> Driver -> Broker -> Device -->
+  <line x1="1064" y1="542" x2="1012" y2="542" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <line x1="804" y1="542" x2="752" y2="542" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <line x1="544" y1="542" x2="492" y2="542" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <line x1="284" y1="542" x2="232" y2="542" stroke="#F59E0B" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="648" y="558" font-size="10" font-weight="600" fill="#F59E0B" text-anchor="middle">位号命令反向下行：Data → RabbitMQ → MQTT Driver → Broker → Device</text>
 
   <!-- ===== Callout: 稳压器 ===== -->
   <line x1="910" y1="524" x2="910" y2="566" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="3 3"/>
@@ -195,5 +202,5 @@
   <text x="1462" y="710" font-size="10" fill="#475569">加粗节点 = 关键稳压器</text>
 
   <!-- ===== Caption ===== -->
-  <text x="900" y="780" font-size="10" fill="#94A3B8" text-anchor="middle">图14-3 设备上报数据在 IoT DC3 中的完整链路：消息队列是削峰与异步解耦的关键稳压器，先入库再判告警以避免时序错位，消费者按 deviceId 分区保证设备内顺序。</text>
+  <text x="900" y="780" font-size="10" fill="#94A3B8" text-anchor="middle">图14-3 MQTT 设备数据经 RabbitMQ MQTT 端点、MQTT Driver 与 RabbitMQ 进入 Data；最新值写 Caffeine、历史值写 PostgreSQL；位号命令沿同一消息体系反向到 Driver 与设备。</text>
 </svg>
