@@ -281,6 +281,7 @@ def build_figure_assets(
     manifest_path = figures_dir / "manifest.json"
     reusable_assets = {} if force else _load_reusable_assets(manifest_path, renderer_version=renderer_version)
     scan_result = scan_figure_specs(state, illustrations=illustration_cfg)
+    reserved_polished_stems = _reserved_polished_stems(scan_result.specs)
 
     generated: list[FigureAsset] = []
     failed: list[FigureFailure] = list(scan_result.failed)
@@ -288,7 +289,7 @@ def build_figure_assets(
     polished_count = 0
     used_file_stems: set[str] = set()
     for spec in scan_result.specs:
-        polished_source = _find_polished_source(spec, polished_dir)
+        polished_source = _find_polished_source(spec, polished_dir, reserved_stems=reserved_polished_stems)
         if polished_source is not None:
             try:
                 logger.info("💎 [图表] 使用精品图: 第%d章 %s", spec.chapter_id, spec.figure_id)
@@ -323,7 +324,7 @@ def build_figure_assets(
                     section_id=spec.section_id,
                     occurrence=spec.occurrence,
                     figure_id=spec.figure_id,
-                    reason=_missing_polished_reason(spec, polished_dir),
+                    reason=_missing_polished_reason(spec, polished_dir, reserved_stems=reserved_polished_stems),
                     body_hash=spec.body_hash,
                 )
             )
@@ -487,6 +488,7 @@ def audit_figure_assets(
     min_polished_png_bytes = int(illustration_cfg.get("polished_min_png_bytes") or 0)
     require_polished = bool(illustration_cfg.get("polished_required_for_export") or False)
     scan_result = scan_figure_specs(state, illustrations=illustration_cfg)
+    reserved_polished_stems = _reserved_polished_stems(scan_result.specs)
     manifest_assets = _load_manifest_assets_for_audit(manifest_path)
 
     items: list[dict[str, object]] = []
@@ -496,7 +498,7 @@ def audit_figure_assets(
     missing_output_count = 0
     for spec in scan_result.specs:
         manifest_asset = manifest_assets.get((spec.chapter_id, spec.occurrence, spec.body_hash))
-        polished_source = _find_polished_source(spec, polished_dir)
+        polished_source = _find_polished_source(spec, polished_dir, reserved_stems=reserved_polished_stems)
         issues: list[str] = []
         if polished_source is None:
             issues.append("missing_polished_asset")
@@ -572,24 +574,37 @@ def write_figure_polish_plan(
     illustration_cfg = illustrations or state.style.illustrations or {}
     polished_dir = _resolve_polished_assets_dir(project_dir, illustration_cfg)
     scan_result = scan_figure_specs(state, illustrations=illustration_cfg)
+    reserved_polished_stems = _reserved_polished_stems(scan_result.specs)
+    duplicate_keys: set[tuple[int, str]] = set()
+    seen_keys: set[tuple[int, str]] = set()
+    for spec in scan_result.specs:
+        key = (spec.chapter_id, spec.figure_id)
+        if key in seen_keys:
+            duplicate_keys.add(key)
+        seen_keys.add(key)
     items: list[dict[str, object]] = []
     for spec in scan_result.specs:
         target_dir = polished_dir / f"chapter-{spec.chapter_id:02d}"
-        source = _find_polished_source(spec, polished_dir)
+        source = _find_polished_source(spec, polished_dir, reserved_stems=reserved_polished_stems)
+        key = (spec.chapter_id, spec.figure_id)
+        unique_asset_stem = _polished_asset_stem(spec, unique=True)
+        has_unique_asset = any((target_dir / f"{unique_asset_stem}{suffix}").exists() for suffix in (".html", ".svg", ".png"))
+        asset_stem = _polished_asset_stem(spec, unique=key in duplicate_keys and (source is None or has_unique_asset))
         items.append(
             {
                 "chapter_id": spec.chapter_id,
                 "section_id": spec.section_id,
                 "occurrence": spec.occurrence,
                 "figure_id": spec.figure_id,
+                "asset_stem": asset_stem,
                 "type": spec.figure_type,
                 "title": spec.title,
                 "status": "ready" if source is not None else "pending",
                 "priority": _polish_priority(spec),
                 "target_files": {
-                    "html": str(target_dir / f"{spec.figure_id}.html"),
-                    "svg": str(target_dir / f"{spec.figure_id}.svg"),
-                    "png": str(target_dir / f"{spec.figure_id}.png"),
+                    "html": str(target_dir / f"{asset_stem}.html"),
+                    "svg": str(target_dir / f"{asset_stem}.svg"),
+                    "png": str(target_dir / f"{asset_stem}.png"),
                 },
                 "prompt": _build_polish_prompt(spec),
             }
@@ -693,14 +708,14 @@ def _build_polish_prompt(spec: FigureSpec) -> str:
         "caption": spec.caption,
         "visual_constraints": spec.visual_constraints,
     }
-    return f"""请按 architecture-diagram 技能的出版级暗色技术图风格，重绘下面这张书籍插图。
+    return f"""请按 architecture-diagram 技能的浅色出版印刷风格，重绘下面这张书籍插图。
 
 硬性要求：
 1. 输出 self-contained HTML，主体为 inline SVG；同时导出同名 SVG 与 PNG。
-2. 画布建议 1600×1000 或 1800×1100，暗色背景、细网格、圆角卡片、清晰箭头、图例置于边界外。
+2. 使用 1800×900 白色画布、极淡网格、浅色填充、饱和描边、深色文字、圆角卡片和清晰箭头，图例置于主体边界外。
 3. 节点短标签优先，解释写入 callouts；禁止“节点1/节点2/container/service/user”等占位词。
 4. 每张图只表达一个主结论，主链路高亮，边界、层级、时序或决策关系必须一眼可读。
-5. 中文字体使用系统无衬线或 JetBrains Mono fallback；PNG 需适合 Word 印刷，文字不得重叠或过小。
+5. 中文字体使用系统无衬线字体栈；PNG 需适合 Word 印刷，文字不得重叠或过小。
 6. 保持全书统一视觉语义：蓝=核心平台，青绿=边缘/接入，橙=AI/智能，紫=数据，红=安全/风险，灰=外部依赖。
 
 图表 brief：
@@ -712,7 +727,7 @@ def _write_polish_prompt_files(items: list[dict[str, object]], polished_dir: Pat
     prompt_root = polished_dir / "prompts"
     for item in items:
         chapter_id = _object_to_int(item["chapter_id"])
-        figure_id = str(item["figure_id"])
+        figure_id = str(item.get("asset_stem") or item["figure_id"])
         prompt = str(item["prompt"])
         prompt_dir = prompt_root / f"chapter-{chapter_id:02d}"
         prompt_dir.mkdir(parents=True, exist_ok=True)
@@ -735,10 +750,12 @@ def render_figure_blueprint_svg(spec: FigureSpec, *, palette: dict[str, str], bl
     nodes = _bp_nodes(blueprint.get("nodes") or spec.components, spec)
     edges = _bp_edges(blueprint.get("edges") or spec.connections, nodes, spec)
     groups = _bp_groups(blueprint.get("groups") or spec.regions, nodes)
-    legend = _bp_compact_items(_bp_string_list(blueprint.get("legend")) or spec.legend, limit=3, chars=54)
+    legend = _bp_compact_items(_bp_string_list(blueprint.get("legend")) or spec.legend, limit=3, chars=32)
     brief_callouts = [item for item in [spec.visual_focus, spec.audience_takeaway] if item]
     callout_candidates = _bp_string_list(blueprint.get("callouts")) or spec.callouts or brief_callouts or spec.relationships
     callouts = _bp_compact_items([item for item in callout_candidates if item], limit=3, chars=58)
+    if not legend:
+        legend = _bp_compact_items(callouts, limit=3, chars=32)
 
     if layout == "sequence":
         body = _bp_render_sequence(nodes, edges, palette)
@@ -753,24 +770,78 @@ def render_figure_blueprint_svg(spec: FigureSpec, *, palette: dict[str, str], bl
     else:
         body = _bp_render_network(nodes, edges, groups, palette, flow=layout in {"flowchart", "lifecycle", "dataflow"})
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+    badge = layout.upper()
+    caption = spec.caption or spec.audience_takeaway or spec.purpose
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="{_FONT_FAMILY}">
   <title id="title">{_escape(title)}</title>
   <desc id="desc">{_escape(subtitle)}</desc>
   <defs>
-    <pattern id="bp-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="{palette['line']}" stroke-width="0.45" opacity="0.28"/></pattern>
+    <pattern id="bp-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.5"/></pattern>
     <marker id="bp-arrow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="{palette['line']}"/></marker>
-    <filter id="bp-shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.10"/></filter>
+    <marker id="bp-arrow-primary" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="{palette['primary']}"/></marker>
   </defs>
-  <rect width="1600" height="1000" rx="0" fill="{palette['canvas']}"/>
-  <rect x="32" y="32" width="1536" height="936" rx="28" fill="url(#bp-grid)" stroke="{palette['line']}" stroke-width="1.2"/>
-  <rect x="64" y="58" width="1472" height="96" rx="20" fill="{palette['panel']}" stroke="{palette['line']}" stroke-width="1" filter="url(#bp-shadow)"/>
-  <rect x="64" y="58" width="10" height="96" rx="5" fill="{palette['primary']}"/>
-  <text x="96" y="108" fill="{palette['text']}" font-size="34" font-family="{_FONT_FAMILY}" font-weight="800">{_escape(_short(title, 42))}</text>
-  <text x="98" y="136" fill="{palette['neutral']}" font-size="16" font-family="{_FONT_FAMILY}">{_escape(_short(subtitle, 92))}</text>
-  {body}
-  {_bp_render_callouts(callouts, palette, visible=len(nodes) <= 6 and layout not in {'flowchart', 'lifecycle', 'layered', 'pyramid', 'timeline'})}
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="{palette['primary']}"/>
+  <text x="82" y="47" fill="{palette['text']}" font-size="22" font-weight="700">{_escape(_short(title, 62))}</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">{_escape(_short(subtitle, 104))}</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">{_escape(badge)}</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <rect x="64" y="118" width="1672" height="632" fill="url(#bp-grid)" opacity="0.18"/>
+  <g transform="translate(100 0)">
+    {body}
+  </g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   {_bp_render_legend(legend, palette)}
+  {_bp_render_caption(caption, palette)}
 </svg>'''
+
+
+def render_figure_skill_svg(spec: FigureSpec, *, palette: dict[str, str], body_svg: str) -> str:
+    """把定制 SVG 主体装入与原精品图一致的统一出版画布。"""
+    title = spec.title
+    subtitle = _publication_subtitle(spec)
+    badge = spec.figure_type.upper()
+    caption = spec.caption or spec.audience_takeaway or spec.purpose
+    clean_legend = [
+        item
+        for item in spec.legend
+        if not re.search(r"#[0-9A-Fa-f]{3,8}|\b(?:device|driver|gateway|service|data)\s*=", item, flags=re.I)
+    ]
+    legend = [_bp_publication_legend_item(item) for item in clean_legend[:3]]
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="{_FONT_FAMILY}">
+  <title id="title">{_escape(title)}</title>
+  <desc id="desc">{_escape(subtitle)}</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="{palette['neutral']}"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="{palette['primary']}"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="{palette['primary']}"/>
+  <text x="82" y="47" fill="{palette['text']}" font-size="22" font-weight="700">{_escape(_short(title, 62))}</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">{_escape(_short(subtitle, 104))}</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">{_escape(badge)}</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  {body_svg}
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  {_bp_render_legend(legend, palette)}
+  {_bp_render_caption(caption, palette)}
+</svg>'''
+
+
+def _publication_subtitle(spec: FigureSpec) -> str:
+    candidates = [spec.audience_takeaway, spec.purpose]
+    for candidate in candidates:
+        text = re.sub(r"\s+", " ", candidate or "").strip()
+        if text and not re.search(r"\.{3,}|…", text):
+            return text
+    for candidate in candidates:
+        text = re.sub(r"\.{3,}|…", "", candidate or "")
+        text = re.sub(r"\s+", " ", text).strip(" ，。；;：:、")
+        if text:
+            return text
+    return "展示图中的主链路、责任边界与工程取舍。"
 
 
 def _bp_nodes(value: object, spec: FigureSpec) -> list[dict[str, str]]:
@@ -1037,7 +1108,7 @@ def _bp_render_network(
             x2, y2, w2, h2 = target_box
             label_x = (x1 + w1 / 2 + x2 + w2 / 2) / 2
             label_y = (y1 + h1 / 2 + y2 + h2 / 2) / 2 - 10
-            arrows.extend(_text_lines(edge["label"], label_x, label_y, 170, palette["neutral"], 11, anchor="middle", max_lines=1, char_factor=1.25))
+            arrows.append(_bp_connection_label(edge["label"], label_x, label_y, 190, palette))
     for index, node in enumerate(nodes):
         x, y, width, height = positions[index]
         cards.append(_bp_card(x, y, width, height, node["label"], _bp_node_color(node, index, palette), palette, subtitle=node.get("role", "")))
@@ -1052,7 +1123,15 @@ def _bp_render_flowchart(nodes: list[dict[str, str]], edges: list[dict[str, str]
     for edge in edges:
         if edge["from"] not in by_id or edge["to"] not in by_id:
             continue
-        arrows.append(_bp_connector(by_id[edge["from"]], by_id[edge["to"]], palette, dashed=edge.get("style") in {"dashed", "async", "optional"}))
+        source_box = by_id[edge["from"]]
+        target_box = by_id[edge["to"]]
+        arrows.append(_bp_connector(source_box, target_box, palette, dashed=edge.get("style") in {"dashed", "async", "optional"}))
+        if edge.get("label"):
+            x1, y1, width1, height1 = source_box
+            x2, y2, width2, height2 = target_box
+            label_x = (x1 + width1 / 2 + x2 + width2 / 2) / 2
+            label_y = (y1 + height1 / 2 + y2 + height2 / 2) / 2 - 10
+            arrows.append(_bp_connection_label(edge["label"], label_x, label_y, 190, palette))
     for index, node in enumerate(nodes):
         x, y, width, height = positions[index]
         color = _bp_node_color(node, index, palette)
@@ -1086,7 +1165,7 @@ def _bp_render_sequence(nodes: list[dict[str, str]], edges: list[dict[str, str]]
         y = 330 + index * 46
         parts.append(_bp_arrow(x1 + 16, y, x2 - 16, y, palette, dashed=edge.get("style") in {"dashed", "async"}))
         if edge.get("label"):
-            parts.extend(_text_lines(edge["label"], (x1 + x2) / 2, y - 12, abs(x2 - x1) - 40, palette["neutral"], 12, anchor="middle", max_lines=1, char_factor=1.2))
+            parts.append(_bp_connection_label(edge["label"], (x1 + x2) / 2, y - 10, max(110, abs(x2 - x1) - 40), palette))
     return "\n  ".join(parts)
 
 
@@ -1107,8 +1186,8 @@ def _bp_render_layered(nodes: list[dict[str, str]], palette: dict[str, str], *, 
         if pyramid:
             top_width = max(260, width - 80)
             points = f"{center - top_width / 2},{y} {center + top_width / 2},{y} {x + width},{y + height} {x},{y + height}"
-            parts.append(f'<polygon points="{points}" fill="{color}" stroke="{palette["line"]}" stroke-width="1.4"/>')
-            parts.extend(_text_lines(node["label"], center, y + 39, width - 80, "white", 17, anchor="middle", max_lines=1, char_factor=1.1))
+            parts.append(f'<polygon points="{points}" fill="{_bp_fill_for_color(color, palette)}" stroke="{color}" stroke-width="2"/>')
+            parts.extend(_text_lines(node["label"], center, y + 39, width - 80, palette["text"], 15, anchor="middle", max_lines=1, char_factor=1.1))
         else:
             parts.append(_bp_card(x, y, width, height, node["label"], color, palette, subtitle=node.get("role", "")))
         y += height + gap
@@ -1171,8 +1250,9 @@ def _bp_render_matrix(nodes: list[dict[str, str]], groups: list[dict[str, str]],
         col = index % cols
         x = start_x + col * (width + 28)
         y = start_y + row * (height + 28)
-        fill = "#FFFFFF" if (row + col) % 2 == 0 else "#EFF6FF"
-        parts.append(f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="18" fill="{fill}" stroke="{_bp_node_color(node, index, palette)}" stroke-width="2"/>')
+        color = _bp_node_color(node, index, palette)
+        fill = "#FFFFFF" if (row + col) % 2 == 0 else _bp_fill_for_color(color, palette)
+        parts.append(f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="10" fill="{fill}" stroke="{color}" stroke-width="2"/>')
         parts.extend(_text_lines(node["label"], x + 24, y + 42, width - 48, palette["text"], 17, anchor="start", max_lines=2, char_factor=1.1))
         if node.get("role"):
             parts.extend(_text_lines(node["role"], x + 24, y + 92, width - 48, palette["neutral"], 13, anchor="start", max_lines=1, char_factor=1.2))
@@ -1220,27 +1300,28 @@ def _bp_group_panels(
         y = max(178, min(ys) - 48)
         width = min(1450 - x, max(rights) - x + 24)
         height = min(575 - (y - 178), max(bottoms) - y + 28)
-        parts.append(f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="24" fill="{palette["panel"]}" stroke="{_node_color(index, palette)}" stroke-width="1.4" stroke-dasharray="8 6" opacity="0.72"/>')
+        parts.append(f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="14" fill="#FFFFFF" fill-opacity="0.66" stroke="{_node_color(index, palette)}" stroke-width="1.5" stroke-dasharray="8 4"/>')
         parts.extend(_text_lines(group["label"], x + 20, y + 30, width - 40, _node_color(index, palette), 14, anchor="start", max_lines=1, char_factor=1.2))
     return parts
 
 
 def _bp_card(x: float, y: float, width: float, height: float, label: str, color: str, palette: dict[str, str], *, subtitle: str = "") -> str:
     compact = height <= 76
-    label_size = 15 if compact else 16
-    subtitle_size = 11 if compact else 12
+    label_size = 14 if compact else 15
+    subtitle_size = 10 if compact else 11
     label_lines = 1 if compact and subtitle else 2
     subtitle_lines = 1 if compact else 2
-    label_y = y + 38 if not compact else y + 36
-    subtitle_y = y + height - 14 if compact else y + height - 24
+    label_y = y + 31 if not compact else y + 29
+    subtitle_y = y + height - 16 if compact else y + 66
     parts = [
-        f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="18" fill="white" stroke="{palette["line"]}" stroke-width="1.1" filter="url(#bp-shadow)"/>',
-        f'<rect x="{x}" y="{y}" width="{width}" height="10" rx="5" fill="{color}"/>',
-        f'<circle cx="{x + 26}" cy="{y + 34}" r="7" fill="{color}"/>',
+        f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="8" fill="#FFFFFF" stroke="{color}" stroke-width="2"/>',
+        f'<circle cx="{x + 20}" cy="{y + 25}" r="4" fill="{color}"/>',
     ]
-    parts.extend(_text_lines(label, x + 44, label_y, width - 64, palette["text"], label_size, anchor="start", max_lines=label_lines, char_factor=1.05))
+    parts.extend(_text_lines(label, x + 34, label_y, width - 52, palette["text"], label_size, anchor="start", max_lines=label_lines, char_factor=1.05))
     if subtitle:
-        parts.extend(_text_lines(subtitle, x + 44, subtitle_y, width - 64, palette["neutral"], subtitle_size, anchor="start", max_lines=subtitle_lines, char_factor=1.25))
+        if not compact:
+            parts.append(f'<line x1="{x + 18}" y1="{y + 48}" x2="{x + width - 18}" y2="{y + 48}" stroke="#E2E8F0"/>')
+        parts.extend(_text_lines(subtitle, x + 20, subtitle_y, width - 40, palette["neutral"], subtitle_size, anchor="start", max_lines=subtitle_lines, char_factor=1.18))
     return "\n  ".join(parts)
 
 
@@ -1258,25 +1339,22 @@ def _bp_decision_card(x: float, y: float, width: float, height: float, label: st
         ]
     )
     parts = [
-        f'<polygon points="{points}" fill="#FFFBEB" stroke="{color}" stroke-width="2" filter="url(#bp-shadow)"/>',
-        f'<circle cx="{x + 28}" cy="{y + 30}" r="7" fill="{color}"/>',
+        f'<polygon points="{points}" fill="#FFFBEB" stroke="{color}" stroke-width="2"/>',
     ]
-    parts.extend(_text_lines(label, center_x, y + 52, width - 86, palette["text"], 15, anchor="middle", max_lines=2, char_factor=1.12))
+    parts.extend(_text_lines(label, center_x, center_y - 6, width - 86, palette["text"], 14, anchor="middle", max_lines=2, char_factor=1.12))
     if subtitle:
-        parts.append(f'<rect x="{x + 28}" y="{y + height + 10}" width="{width - 56}" height="34" rx="17" fill="#FFF7ED" stroke="{palette["warning"]}" stroke-width="0.8" opacity="0.95"/>')
-        parts.extend(_text_lines(subtitle, center_x, y + height + 32, width - 72, palette["neutral"], 11, anchor="middle", max_lines=1, char_factor=1.25))
-    return "\n  ".join(parts)
+        parts.extend(_text_lines(subtitle, center_x, center_y + 27, width - 96, palette["neutral"], 10, anchor="middle", max_lines=1, char_factor=1.2))
+    return f'<g aria-label="{_escape(label)}">\n  ' + "\n  ".join(parts) + "\n</g>"
 
 
 def _bp_highlight_card(x: float, y: float, width: float, height: float, label: str, palette: dict[str, str], *, subtitle: str = "") -> str:
     parts = [
-        f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="22" fill="#FFF7ED" stroke="{palette["accent"]}" stroke-width="2.4" filter="url(#bp-shadow)"/>',
-        f'<rect x="{x}" y="{y}" width="{width}" height="12" rx="6" fill="{palette["accent"]}"/>',
-        f'<circle cx="{x + 30}" cy="{y + 36}" r="8" fill="{palette["accent"]}"/>',
+        f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="8" fill="#FFF7ED" stroke="{palette["accent"]}" stroke-width="2.4"/>',
+        f'<circle cx="{x + 22}" cy="{y + 27}" r="5" fill="{palette["accent"]}"/>',
     ]
-    parts.extend(_text_lines(label, x + 52, y + 42, width - 76, palette["text"], 16, anchor="start", max_lines=2, char_factor=1.06))
+    parts.extend(_text_lines(label, x + 38, y + 33, width - 58, palette["text"], 15, anchor="start", max_lines=2, char_factor=1.06))
     if subtitle:
-        parts.extend(_text_lines(subtitle, x + 52, y + height - 26, width - 76, palette["neutral"], 12, anchor="start", max_lines=2, char_factor=1.25))
+        parts.extend(_text_lines(subtitle, x + 22, y + height - 25, width - 44, palette["neutral"], 11, anchor="start", max_lines=2, char_factor=1.2))
     return "\n  ".join(parts)
 
 
@@ -1295,32 +1373,38 @@ def _bp_render_callouts(callouts: list[str], palette: dict[str, str], *, visible
 
 
 def _bp_render_legend(legend: list[str], palette: dict[str, str]) -> str:
-    items = legend[:3]
-    if not items:
-        return ""
-    x = 86
-    y = 814
-    width = 1428
-    height = 62 if len(items) <= 2 else 86
-    parts = [f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="18" fill="{palette["panel"]}" stroke="{palette["line"]}" stroke-width="1"/>']
+    items = legend[:3] or ["蓝=核心平台与主链路", "青绿=设备、边缘与接入", "橙=AI，紫=数据，红=安全"]
+    x = 80
+    y = 806
+    parts: list[str] = []
     colors = [palette["primary"], palette["secondary"], palette["accent"], palette["neutral"]]
     for index, item in enumerate(items):
-        col = index % 2 if len(items) > 1 else 0
-        row = index // 2
-        item_x = x + 26 + col * 690
-        item_y = y + 29 + row * 28
-        parts.append(f'<circle cx="{item_x}" cy="{item_y}" r="7" fill="{colors[index % len(colors)]}"/>')
-        parts.extend(_text_lines(item, item_x + 18, item_y + 5, 630, palette["neutral"], 12, anchor="start", max_lines=1, char_factor=1.22))
+        item_x = x + index * 555
+        parts.append(f'<rect x="{item_x}" y="{y - 9}" width="16" height="12" rx="2" fill="#FFFFFF" stroke="{colors[index % len(colors)]}" stroke-width="2"/>')
+        parts.extend(_text_lines(item, item_x + 24, y + 2, 505, "#64748B", 10, anchor="start", max_lines=1, char_factor=1.18))
     return "\n  ".join(parts)
 
 
+def _bp_publication_legend_item(value: str) -> str:
+    text = re.sub(r"\s+", " ", str(value)).strip(" ，。；;")
+    if len(text) <= 32:
+        return text
+    for separator in ["；", ";", "。"]:
+        first = text.split(separator, 1)[0].strip()
+        if 4 <= len(first) <= 32:
+            return first
+    return text[:32].rstrip(" ，。；;：:")
+
+
 def _bp_render_caption(caption: str, palette: dict[str, str]) -> str:
-    return "\n  ".join(_text_lines(caption, 90, 925, 1420, palette["neutral"], 14, anchor="start", max_lines=2, char_factor=1.25))
+    return "\n  ".join(_text_lines(caption, 900, 855, 1600, "#94A3B8", 10, anchor="middle", max_lines=2, char_factor=1.15))
 
 
 def _bp_arrow(x1: float, y1: float, x2: float, y2: float, palette: dict[str, str], *, dashed: bool) -> str:
     dash = ' stroke-dasharray="9 7"' if dashed else ""
-    return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="white" stroke-width="6" opacity="0.82"/><line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{palette["line"]}" stroke-width="2.4" marker-end="url(#bp-arrow)"{dash}/>'
+    color = palette["line"] if dashed else palette["primary"]
+    marker = "bp-arrow" if dashed else "bp-arrow-primary"
+    return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="white" stroke-width="6"/><line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" stroke-width="2" marker-end="url(#{marker})"{dash}/>'
 
 
 def _bp_connector(source: tuple[float, float, float, float], target: tuple[float, float, float, float], palette: dict[str, str], *, dashed: bool) -> str:
@@ -1347,7 +1431,9 @@ def _bp_connector(source: tuple[float, float, float, float], target: tuple[float
     else:
         path = f"M {start[0]} {start[1]} L {mid_x} {start[1]} L {mid_x} {end[1]} L {end[0]} {end[1]}"
     dash = ' stroke-dasharray="9 7"' if dashed else ""
-    return f'<path d="{path}" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.82"/><path d="{path}" fill="none" stroke="{palette["line"]}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bp-arrow)"{dash}/>'
+    color = palette["line"] if dashed else palette["primary"]
+    marker = "bp-arrow" if dashed else "bp-arrow-primary"
+    return f'<path d="{path}" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="{path}" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#{marker})"{dash}/>'
 
 
 def _bp_grid_positions(count: int) -> list[tuple[float, float, float, float]]:
@@ -1385,28 +1471,52 @@ def _bp_flowchart_positions(count: int) -> list[tuple[float, float, float, float
     cols = min(4, max(1, count))
     gap = 54
     width = min(292, (1288 - (cols - 1) * gap) / cols)
-    height = 122
+    height = 108
     total_width = cols * width + (cols - 1) * gap
     start_x = 800 - total_width / 2
     positions: list[tuple[float, float, float, float]] = []
     for index in range(count):
         row = index // cols
         col = index % cols if row % 2 == 0 else cols - 1 - (index % cols)
-        positions.append((start_x + col * (width + gap), 292 + row * 186, width, height))
+        positions.append((start_x + col * (width + gap), 218 + row * 166, width, height))
     return positions
 
 
 def _bp_node_color(node: dict[str, str], index: int, palette: dict[str, str]) -> str:
     text = " ".join([node.get("label", ""), node.get("role", ""), node.get("emphasis", "")]).lower()
+    if any(key in text for key in ["风险", "安全", "鉴权", "认证", "故障", "威胁"]):
+        return palette["danger"]
     if any(key in text for key in ["ai", "agent", "智能", "推理", "决策", "自动"]):
         return palette["accent"]
+    if any(key in text for key in ["数据", "存储", "数据库", "时序", "消息", "队列", "区块链", "存证"]):
+        return "#7C3AED"
     if any(key in text for key in ["区块链", "链上", "存证", "共识", "可信"]):
         return palette["primary"]
     if any(key in text for key in ["设备", "边缘", "传感", "网关", "采集"]):
         return palette["secondary"]
-    if any(key in text for key in ["风险", "告警", "异常", "安全", "故障"]):
+    if any(key in text for key in ["云", "外部", "第三方", "告警", "异常"]):
         return palette["warning"]
     return _node_color(index, palette)
+
+
+def _bp_fill_for_color(color: str, palette: dict[str, str]) -> str:
+    return {
+        palette["primary"]: "#EFF6FF",
+        palette["secondary"]: "#ECFDF5",
+        palette["accent"]: "#FFF7ED",
+        palette["danger"]: "#FEF2F2",
+        palette["warning"]: "#FFFBEB",
+        "#7C3AED": "#F5F3FF",
+    }.get(color, "#F8FAFC")
+
+
+def _bp_connection_label(text: str, x: float, y: float, width: float, palette: dict[str, str]) -> str:
+    label = _short(text, 20)
+    label_width = min(width, max(76, len(label) * 12 + 18))
+    return (
+        f'<rect x="{x - label_width / 2}" y="{y - 17}" width="{label_width}" height="24" rx="4" fill="#FFFFFF" fill-opacity="0.96"/>'
+        f'<text x="{x}" y="{y}" fill="{palette["neutral"]}" font-size="10" font-family="{_FONT_FAMILY}" font-weight="600" text-anchor="middle">{_escape(label)}</text>'
+    )
 
 
 def _bp_is_highlight_node(node: dict[str, str]) -> bool:
@@ -1720,9 +1830,14 @@ def _resolve_polished_assets_dir(project_dir: str | Path | None, illustrations: 
     return base_dir / path
 
 
-def _find_polished_source(spec: FigureSpec, polished_dir: Path) -> PolishedFigureSource | None:
+def _find_polished_source(
+        spec: FigureSpec,
+        polished_dir: Path,
+        *,
+        reserved_stems: set[tuple[int, str]] | None = None,
+) -> PolishedFigureSource | None:
     chapter_dir = polished_dir / f"chapter-{spec.chapter_id:02d}"
-    stems = _polished_stem_candidates(spec)
+    stems = _polished_stem_candidates(spec, reserved_stems=reserved_stems)
     html_path = _first_existing_asset(chapter_dir, stems, ".html")
     svg_path = _first_existing_asset(chapter_dir, stems, ".svg")
     png_path = _first_existing_asset(chapter_dir, stems, ".png")
@@ -1731,20 +1846,45 @@ def _find_polished_source(spec: FigureSpec, polished_dir: Path) -> PolishedFigur
     return PolishedFigureSource(html_path=html_path, svg_path=svg_path, png_path=png_path)
 
 
-def _missing_polished_reason(spec: FigureSpec, polished_dir: Path) -> str:
+def _missing_polished_reason(
+        spec: FigureSpec,
+        polished_dir: Path,
+        *,
+        reserved_stems: set[tuple[int, str]] | None = None,
+) -> str:
     chapter_dir = polished_dir / f"chapter-{spec.chapter_id:02d}"
-    stems = ", ".join(_polished_stem_candidates(spec))
+    stems = ", ".join(_polished_stem_candidates(spec, reserved_stems=reserved_stems))
     return f"缺少出版级精品图资产: {chapter_dir}/{{{stems}}}.html|.svg|.png"
 
 
-def _polished_stem_candidates(spec: FigureSpec) -> list[str]:
-    candidates = [spec.figure_id, _safe_slug(spec.figure_id), _fallback_figure_id(spec.chapter_id, spec.occurrence)]
+def _reserved_polished_stems(specs: list[FigureSpec]) -> set[tuple[int, str]]:
+    return {(spec.chapter_id, _safe_slug(spec.figure_id)) for spec in specs if _safe_slug(spec.figure_id)}
+
+
+def _polished_stem_candidates(
+        spec: FigureSpec,
+        *,
+        reserved_stems: set[tuple[int, str]] | None = None,
+) -> list[str]:
+    fallback_stem = _fallback_figure_id(spec.chapter_id, spec.occurrence)
+    candidates = [
+        _polished_asset_stem(spec, unique=True),
+        spec.figure_id,
+        _safe_slug(spec.figure_id),
+    ]
+    if reserved_stems is None or fallback_stem == _safe_slug(spec.figure_id) or (spec.chapter_id, fallback_stem) not in reserved_stems:
+        candidates.append(fallback_stem)
     result: list[str] = []
     for candidate in candidates:
         normalized = str(candidate).strip()
         if normalized and normalized not in result:
             result.append(normalized)
     return result
+
+
+def _polished_asset_stem(spec: FigureSpec, *, unique: bool) -> str:
+    stem = _safe_slug(spec.figure_id) or _fallback_figure_id(spec.chapter_id, spec.occurrence)
+    return f"{stem}--occ-{spec.occurrence:02d}" if unique else stem
 
 
 def _first_existing_asset(chapter_dir: Path, stems: list[str], suffix: str) -> Path | None:
@@ -1807,7 +1947,7 @@ def _design_ai_figure(spec: FigureSpec, *, palette: dict[str, str], designer: Fi
             return svg, design.html, design.notes
         except RuntimeError as exc:
             last_error = str(exc)
-            feedback = f"上一次图表未通过本地出版校验: {last_error}。请重新生成完整 HTML，不要解释。"
+            feedback = f"上一次图表未通过本地出版校验: {last_error}。请重新生成完整 SVG 主体，不要解释。"
     raise RuntimeError(f"AI 图表设计未通过校验: {last_error}")
 
 

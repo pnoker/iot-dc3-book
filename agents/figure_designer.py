@@ -9,9 +9,10 @@ import signal
 import threading
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
+from xml.etree import ElementTree
 
 from agents.base import BaseAgent
-from core.figures import FigureDesign, FigureSpec, render_figure_blueprint_svg
+from core.figures import FigureDesign, FigureSpec, render_figure_blueprint_svg, render_figure_skill_svg
 from core.llm_client import LLMClient
 
 if TYPE_CHECKING:
@@ -49,25 +50,25 @@ def _load_design_system(skill_dir: Path | None) -> str:
 
 
 def _build_system_prompt(design_system: str) -> str:
-    return f"""你是出版级技术图表设计师。根据给定的中文图表 brief，直接输出一份完整的 self-contained HTML 文件，主体是浅色主题的 inline SVG 架构图，供书籍印刷使用。
+    return f"""你是出版级技术图表设计师。根据中文图表 brief 设计定制 SVG 主体，供书籍印刷使用。
 
 以下是必须遵循的设计系统规范（来自项目 architecture-diagram 技能）：
 
 {design_system}
 
 硬性输出要求：
-1. 只输出 HTML 源码本身，从 `<!doctype html>` 开始、到 `</html>` 结束；不要 Markdown 代码围栏，不要任何解释或前后缀文字。
-2. 全部内联：内联 CSS + 内联 SVG，禁止联网加载字体、禁止引用外部图片、禁止任何 `<script>` 标签。
-3. 浅色背景（#F8FAFC 页面、白底卡片），使用规定的中文字体栈与语义配色。
-4. 忠实表达 brief 的 components（节点）、connections（连线）、regions（边界）；elements、relationships 只作语义补充；禁止虚构事实、数据、标准或来源。
-5. 节点用短标签（不超过 14 个汉字），解释性文字放入信息卡或图注，禁止 `节点1/节点2/最右侧/container/service/user` 这类占位标签。
-6. 图必须完整可读：所有节点有标签、连线有明确指向、主链路高亮、图例置于主体之外、底部给出出版级中文图注。
-7. connections 必须连接真实节点，绝不能把「数据流/控制流」这类关系名当成节点画成方块。
-8. 入书画布固定为横向 `width="1200" height="760" viewBox="0 0 1200 760"`，禁止输出竖版、方图、超长网页或正文说明卡片。"""
+1. 只输出 JSON object，唯一字段为 `body_svg`；字段值必须是完整的 `<g data-layout="..."></g>`。
+2. `body_svg` 不得包含 `<svg>`、`<defs>`、`<style>`、`<script>`、外部图片、联网字体或任何解释文字。
+3. 图表将嵌入统一的 1800×900 白底出版画布；标题区 `y < 110`、页脚 `y > 775` 已被占用。
+4. 只在 `x=80..1720`、`y=125..750` 内绘图，主体尽量覆盖 `x=120..1680`、`y=145..720`。
+5. 只使用 `rect/circle/ellipse/line/path/polygon/polyline/text/tspan/g`，字体由外层继承。
+6. 忠实综合 brief 的 layout、elements、relationships、components、connections、regions 与 render_notes；自动升级字段可能有关系残片，关系文字绝不能当节点。
+7. 节点使用短标签，说明放进节点副文或简短 callout；禁止占位标签、省略号、重阴影、大色块和长段落。
+8. 图例和图注由外层统一绘制，`body_svg` 不要重复绘制独立图例或图注。"""
 
 
 class FigureDesignerAgent(BaseAgent):
-    """为 `book-figure` 直接生成出版级浅色 HTML 图表。"""
+    """为 `book-figure` 生成定制主体并套用统一出版画布。"""
 
     def __init__(
             self,
@@ -107,35 +108,43 @@ class FigureDesignerAgent(BaseAgent):
         self._circuit_open_logged = False
 
     def design(self, spec: FigureSpec, *, palette: dict[str, str], feedback: str = "") -> FigureDesign:
-        """让 LLM 直接生成完整浅色 HTML；失败时回退到本地语义蓝图渲染。"""
+        """让 LLM 生成定制 SVG 主体；失败时回退到本地语义蓝图。"""
         if self._consecutive_failures >= self.circuit_breaker_failures:
             if not self._circuit_open_logged:
-                self.logger.warning("AI 图表 HTML 连续失败 %d 次，本进程后续图表直接使用本地语义蓝图。", self._consecutive_failures)
+                self.logger.warning("AI 图表主体连续失败 %d 次，本进程后续图表直接使用本地语义蓝图。", self._consecutive_failures)
                 self._circuit_open_logged = True
             return self._fallback_design(spec, palette)
-        try:
-            html = self._request_html(spec, feedback=feedback)
-            svg = _extract_svg(html)
-            self._consecutive_failures = 0
-            return FigureDesign(svg=svg, html=html, notes="AI 直出浅色 HTML")
-        except Exception as exc:
-            self._consecutive_failures += 1
-            self.logger.warning("AI 图表 HTML 生成失败，使用本地语义蓝图兜底: %s", exc)
-            return self._fallback_design(spec, palette)
+        retry_feedback = feedback
+        last_error: Exception | None = None
+        for attempt in range(self.polish_rounds + 1):
+            try:
+                body_svg = self._request_svg_body(spec, feedback=retry_feedback)
+                svg = render_figure_skill_svg(spec, palette=palette, body_svg=body_svg)
+                self._consecutive_failures = 0
+                return FigureDesign(svg=svg, html="", notes="AI 定制主体 + architecture-diagram 统一画布")
+            except Exception as exc:
+                last_error = exc
+                if attempt < self.polish_rounds:
+                    retry_feedback = (
+                        f"{feedback}\n\n上一轮生成未通过本地校验：{exc}。"
+                        "请保留图表语义并重新输出更简洁、完整、合法的 SVG 主体。"
+                    ).strip()
+        self._consecutive_failures += 1
+        self.logger.warning("AI 图表主体生成失败，使用本地语义蓝图兜底: %s", last_error)
+        return self._fallback_design(spec, palette)
 
-    def _request_html(self, spec: FigureSpec, *, feedback: str) -> str:
+    def _request_svg_body(self, spec: FigureSpec, *, feedback: str) -> str:
         with _hard_timeout(self.timeout_seconds + 2.0):
-            content = self.llm.chat(
+            payload = self.llm.chat_json(
                 self._system_prompt,
-                _build_html_prompt(spec, feedback=feedback),
-                temperature=0.25,
+                _build_svg_body_prompt(spec, feedback=feedback),
+                temperature=0.18,
                 max_tokens=self.max_tokens,
                 timeout=self.timeout_seconds,
                 retry_attempts=self.retry_attempts,
+                json_retry_attempts=self.json_retry_attempts,
             )
-        html = _normalize_html(content)
-        _validate_html_document(html)
-        return html
+        return _normalize_svg_body(payload.get("body_svg"))
 
     def _fallback_design(self, spec: FigureSpec, palette: dict[str, str]) -> FigureDesign:
         """LLM 不可用时，用本地语义蓝图渲染 SVG，HTML 交给管线的模板外壳包裹。"""
@@ -144,8 +153,8 @@ class FigureDesignerAgent(BaseAgent):
         return FigureDesign(svg=svg, html="", notes="本地语义蓝图兜底")
 
 
-def _build_html_prompt(spec: FigureSpec, *, feedback: str) -> str:
-    return f"""请把下面的图表规格绘制成一份完整的浅色 HTML 架构图。
+def _build_svg_body_prompt(spec: FigureSpec, *, feedback: str) -> str:
+    return f"""请为下面的图表规格绘制定制 SVG 主体。
 
 ## 图表规格
 {json.dumps(_spec_payload(spec), ensure_ascii=False, indent=2)}
@@ -153,13 +162,26 @@ def _build_html_prompt(spec: FigureSpec, *, feedback: str) -> str:
 ## 上一轮校验反馈
 {feedback or "无"}
 
-画布与比例要求：内联 SVG 必须固定为 `width="1200" height="760" viewBox="0 0 1200 760"`；图形主体控制在 24px 安全边距内；不要在 SVG 下方追加说明卡片或长文本区。
+绘图要求：
+- 先按 layout/render_notes 选择正确视觉语法：时序图用真实参与者泳道，市场格局用坐标轴/象限与气泡，分层图用职责层，流程图用分支，协议报文用字段带，数据对比用表格或图表；不要机械画空卡片链。
+- 主结论一眼可读，布局紧凑但不拥挤；节点包含短标题和必要说明，必要时加入边界、阶段条带或关键说明。
+- 白色卡片、`rx=8~12`、`stroke-width=1.5~2`；所有矩形（包括表头、条带、柱形）只能使用白色或浅填充 `#EFF6FF/#ECFDF5/#F5F3FF/#FFF7ED/#FEF2F2/#FFFBEB/#F8FAFC`，禁止深色表头与饱和色块。
+- 语义描边：蓝 `#2563EB`=核心平台/主链路，青 `#0F766E`=设备/边缘，紫 `#7C3AED`=数据，橙 `#F97316`=AI，红 `#DC2626`=安全/风险，琥珀 `#D97706`=云/外部，灰 `#64748B/#94A3B8/#E2E8F0`=次要边界。
+- 正文 `#0F172A`，次文 `#64748B`；组件标题 15–18px，说明 10–13px，禁止小于 10px。
+- 连线先于卡片绘制；主链路使用 `marker-end="url(#bp-arrow-primary)"`，次要/回路使用 `marker-end="url(#bp-arrow)"`；不得自定义 marker 或重复画箭头三角形。
+- 架构图、分层图和数据流图只用水平/垂直正交折线；箭头起终点落在卡片边缘，不得深入卡片内部，也不得穿过第三方卡片。
+- 双向流拆成两条间距清晰的平行路径；多对一连接使用目标卡片上的不同锚点，禁止多条线汇聚到同一点。
+- 非父子区域边界互不覆盖，卡片完整位于所属区域内；连线标签放在线旁的不透明白底小标签内，不压卡片或区域边界。
+- 时序消息严格按 brief 顺序自上而下，返回消息使用虚线，自调用画回环。
+- 坐标/象限图标清轴名与方向，不伪造数值；比较图保持列对齐；所有信息必须来自 brief。
+- 不要绘制独立图例和图注，外层会统一补齐。
+- `body_svg` 保持精简，不写 XML 注释，不重复元素，总长度控制在 12000 字符以内；不要输出 `<defs>`。
 
-现在直接输出完整 HTML（从 <!doctype html> 到 </html>），不要解释。"""
+现在只输出 `{{"body_svg":"<g data-layout=...>...</g>"}}`。"""
 
 
 def _normalize_html(content: str) -> str:
-    """去掉可能的 Markdown 代码围栏，截取 HTML 文档主体。"""
+    """去掉可能的 Markdown 代码围栏，截取 HTML 或 SVG 文档主体。"""
     cleaned = content.strip()
     fence_match = re.fullmatch(r"```(?:html)?\s*(.*?)\s*```", cleaned, re.DOTALL | re.I)
     if fence_match:
@@ -170,8 +192,66 @@ def _normalize_html(content: str) -> str:
         start = lower.find("<html")
     end = lower.rfind("</html>")
     if start < 0 or end < 0:
-        raise RuntimeError("HTML 缺少 <html>...</html> 结构")
+        svg_match = re.search(r"<svg\b.*?</svg>", cleaned, flags=re.DOTALL | re.IGNORECASE)
+        if svg_match is None:
+            raise RuntimeError("HTML/SVG 缺少完整文档结构")
+        svg = svg_match.group(0).strip()
+        return f"<!doctype html><html><body>{svg}</body></html>"
     return cleaned[start:end + len("</html>")].strip()
+
+
+def _normalize_svg_body(value: object) -> str:
+    body = str(value or "").strip()
+    fence_match = re.fullmatch(r"```(?:svg|xml)?\s*(.*?)\s*```", body, re.DOTALL | re.I)
+    if fence_match:
+        body = fence_match.group(1).strip()
+    match = re.search(r"<g\b.*</g>", body, flags=re.DOTALL | re.IGNORECASE)
+    if match is None:
+        raise RuntimeError("AI 图表响应缺少完整 <g> 主体")
+    body = match.group(0).strip()
+    body = re.sub(
+        r'''\smarker-(?:start|mid|end)=["']url\(#(?!bp-arrow(?:-primary)?\b)[^)]+\)["']''',
+        "",
+        body,
+        flags=re.I,
+    )
+    if len(body) < 600:
+        raise RuntimeError("AI 图表主体过短，疑似占位图")
+    if not re.search(r"<g\b[^>]*\bdata-layout=", body, flags=re.I):
+        raise RuntimeError("AI 图表主体缺少 data-layout")
+    if re.search(r">\s*(?:节点\d+|container|service|user)\s*<|\.\.\.|…", body, flags=re.I):
+        raise RuntimeError("AI 图表主体包含占位词或省略号")
+
+    try:
+        root = ElementTree.fromstring(f'<svg xmlns="http://www.w3.org/2000/svg">{body}</svg>')
+    except ElementTree.ParseError as exc:
+        raise RuntimeError(f"AI 图表主体 XML 无效: {exc}") from exc
+    allowed_tags = {"svg", "g", "rect", "circle", "ellipse", "line", "path", "polygon", "polyline", "text", "tspan"}
+    for element in root.iter():
+        tag = element.tag.rsplit("}", 1)[-1].lower()
+        if tag not in allowed_tags:
+            raise RuntimeError(f"AI 图表主体包含不允许的 SVG 标签: {tag}")
+        for key, raw in element.attrib.items():
+            attr = key.rsplit("}", 1)[-1].lower()
+            text = str(raw)
+            if attr in {"href", "style"} or re.search(r"(?:javascript:|data:|https?://|@import)", text, flags=re.I):
+                raise RuntimeError(f"AI 图表主体包含不安全属性: {attr}")
+            if tag == "rect" and attr == "fill":
+                allowed_rect_fills = {
+                    "#FFFFFF", "#FFF", "WHITE", "NONE", "TRANSPARENT",
+                    "#EFF6FF", "#ECFDF5", "#F5F3FF", "#FFF7ED",
+                    "#FEF2F2", "#FFFBEB", "#F8FAFC",
+                    "#DBEAFE", "#D1FAE5", "#EDE9FE", "#FFEDD5",
+                    "#FEE2E2", "#FEF3C7", "#F1F5F9", "#E2E8F0",
+                    "#F0F4F8", "#ECEFF1",
+                }
+                if text.upper() not in allowed_rect_fills:
+                    raise RuntimeError(f"AI 图表矩形使用非浅色填充: {text}")
+            if attr == "font-size":
+                number = re.search(r"\d+(?:\.\d+)?", text)
+                if number and float(number.group(0)) < 10:
+                    raise RuntimeError("AI 图表主体字号小于 10px")
+    return body
 
 
 def _validate_html_document(html_text: str) -> None:
@@ -216,8 +296,18 @@ def _hard_timeout(seconds: float) -> Iterator[None]:
 
 
 def _fallback_blueprint(spec: FigureSpec) -> dict[str, Any]:
+    if spec.figure_type == "sequence":
+        sequence_blueprint = _sequence_fallback_blueprint(spec)
+        if sequence_blueprint is not None:
+            return sequence_blueprint
+
     nodes = []
     source_components = spec.components or []
+    if spec.elements:
+        source_components = [
+            {"id": f"n{index}", "label": item, "group": "", "priority": "normal"}
+            for index, item in enumerate(spec.elements[:10], start=1)
+        ]
     if not source_components:
         source_components = [
             {"id": f"n{index}", "label": _compact_label(item), "subtitle": _compact_role(item), "group": "", "priority": "normal"}
@@ -263,6 +353,97 @@ def _fallback_blueprint(spec: FigureSpec) -> dict[str, Any]:
         "legend": spec.legend[:4],
         "design_notes": "本地语义蓝图兜底，本地出版级渲染",
     }
+
+
+def _sequence_fallback_blueprint(spec: FigureSpec) -> dict[str, Any] | None:
+    actors: list[str] = []
+    actor_roles: dict[str, str] = {}
+    messages: list[tuple[int, str, str, str]] = []
+    for step, element in enumerate(spec.elements[:12], start=1):
+        subject, detail = _split_sequence_element(element)
+        if "→" not in subject:
+            actor = _sequence_actor_name(subject)
+            if actor:
+                _append_unique(actors, actor)
+                if detail and actor not in actor_roles:
+                    actor_roles[actor] = _compact_role(detail)
+            continue
+        source_text, target_text = subject.split("→", 1)
+        source = _sequence_actor_name(source_text)
+        target = _sequence_actor_name(target_text)
+        if not source or not target:
+            continue
+        _append_unique(actors, source)
+        _append_unique(actors, target)
+        messages.append((step, source, target, _compact_label(detail or "消息传递").rstrip("。；;")))
+    if len(actors) < 2 or not messages:
+        return None
+
+    actor_ids = {actor: f"actor-{index}" for index, actor in enumerate(actors[:6], start=1)}
+    chain_steps = _sequence_chain_steps(spec.relationships)
+    nodes = [
+        {
+            "id": actor_ids[actor],
+            "label": actor,
+            "group": "",
+            "role": actor_roles.get(actor, ""),
+            "emphasis": "primary" if index == 1 else "normal",
+            "shape": "card",
+        }
+        for index, actor in enumerate(actors[:6], start=1)
+    ]
+    edges = [
+        {
+            "from": actor_ids[source],
+            "to": actor_ids[target],
+            "label": label,
+            "style": "dashed" if step in chain_steps else "solid",
+            "direction": "left-to-right",
+        }
+        for step, source, target, label in messages[:10]
+        if source in actor_ids and target in actor_ids
+    ]
+    return {
+        "layout": "sequence",
+        "title": spec.title,
+        "subtitle": spec.audience_takeaway or spec.purpose,
+        "groups": [],
+        "nodes": nodes,
+        "edges": edges,
+        "callouts": [_compact_label(item) for item in spec.callouts[:2] if item],
+        "legend": spec.legend[:3],
+        "design_notes": "本地语义蓝图兜底，按参与者归一化时序消息",
+    }
+
+
+def _split_sequence_element(value: str) -> tuple[str, str]:
+    text = str(value).strip()
+    for separator in ["：", ":"]:
+        if separator in text:
+            subject, detail = text.split(separator, 1)
+            return subject.strip(), detail.strip()
+    return text, ""
+
+
+def _sequence_actor_name(value: str) -> str:
+    text = re.sub(r"[（(].*?[）)]", "", str(value)).strip()
+    text = re.sub(r"(?:内部|外部)$", "", text).strip()
+    return text[:16]
+
+
+def _sequence_chain_steps(relationships: list[str]) -> set[int]:
+    steps: set[int] = set()
+    for relationship in relationships:
+        match = re.search(r"步骤([^为。；;]+)为链上", relationship)
+        if match is None:
+            continue
+        steps.update(int(value) for value in re.findall(r"\d+", match.group(1)))
+    return steps
+
+
+def _append_unique(values: list[str], value: str) -> None:
+    if value and value not in values:
+        values.append(value)
 
 
 def _compact_label(value: str) -> str:

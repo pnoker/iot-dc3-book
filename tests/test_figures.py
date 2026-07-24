@@ -2,13 +2,16 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from agents.figure_designer import FigureDesignerAgent
+import pytest
+
+from agents.figure_designer import FigureDesignerAgent, _fallback_blueprint, _normalize_html, _normalize_svg_body
 from core.figures import (
     FigureDesign,
     FigureSpec,
     audit_figure_assets,
     build_figure_assets,
     render_figure_blueprint_svg,
+    render_figure_skill_svg,
     replace_book_figures_with_images,
     write_figure_polish_plan,
 )
@@ -97,6 +100,20 @@ def _publication_svg(label: str = "出版级精修图") -> str:
 </svg>'''
 
 
+def test_normalize_html_accepts_raw_svg_response() -> None:
+    normalized = _normalize_html(_publication_svg("原始 SVG"))
+
+    assert normalized.startswith("<!doctype html>")
+    assert "原始 SVG" in normalized
+
+
+def test_normalize_svg_body_rejects_embedded_defs() -> None:
+    body = '<g data-layout="architecture"><defs><marker id="custom"/></defs>' + '<rect x="100" y="140" width="200" height="80"/>' * 20 + "</g>"
+
+    with pytest.raises(RuntimeError, match="不允许的 SVG 标签"):
+        _normalize_svg_body(body)
+
+
 def _write_polished_assets(project_dir: Path, *, include_png: bool = True) -> None:
     chapter_dir = project_dir / "assets" / "figures" / "polished" / "chapter-01"
     chapter_dir.mkdir(parents=True)
@@ -176,6 +193,81 @@ def test_write_figure_polish_plan_writes_prompts(tmp_path: Path) -> None:
     prompt_file = tmp_path / "assets" / "figures" / "polished" / "prompts" / "chapter-01" / "fig-01-01.md"
     assert prompt_file.exists()
     assert "architecture-diagram" in prompt_file.read_text(encoding="utf-8")
+
+
+def test_write_figure_polish_plan_avoids_duplicate_asset_paths(tmp_path: Path) -> None:
+    state = _figure_state()
+    state.chapters[0].markdown = f"# 第1章 概述\n\n### 1.1.1 架构\n\n{_FIGURE_BLOCK}\n\n### 1.1.2 架构\n\n{_FIGURE_BLOCK}"
+
+    result = write_figure_polish_plan(
+        state,
+        tmp_path / "assets" / "figures" / "polished" / "polish-plan.json",
+        project_dir=tmp_path,
+    )
+
+    assert result["total"] == 2
+    items = result["items"]
+    assert isinstance(items, list)
+    target_paths = [str(item["target_files"]["svg"]) for item in items]
+    assert target_paths == [
+        str(tmp_path / "assets/figures/polished/chapter-01/fig-01-01--occ-01.svg"),
+        str(tmp_path / "assets/figures/polished/chapter-01/fig-01-01--occ-02.svg"),
+    ]
+    assert all(Path(path).exists() for path in [
+        tmp_path / "assets/figures/polished/prompts/chapter-01/fig-01-01--occ-01.md",
+        tmp_path / "assets/figures/polished/prompts/chapter-01/fig-01-01--occ-02.md",
+    ])
+    for target_path in target_paths:
+        Path(target_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(target_path).write_text(_publication_svg(), encoding="utf-8")
+
+    refreshed = write_figure_polish_plan(
+        state,
+        tmp_path / "assets" / "figures" / "polished" / "polish-plan.json",
+        project_dir=tmp_path,
+    )
+
+    assert refreshed["ready"] == 2
+    assert [str(item["target_files"]["svg"]) for item in refreshed["items"]] == target_paths
+
+
+def test_write_figure_polish_plan_does_not_reuse_another_explicit_figure_id(tmp_path: Path) -> None:
+    state = _figure_state()
+    custom_block = _FIGURE_BLOCK.replace('id: "fig-01-01"', 'id: "custom-figure"').replace("图1-1 平台架构", "自定义图")
+    state.chapters[0].markdown = f"# 第1章 概述\n\n### 1.1.1 自定义图\n\n{custom_block}\n\n### 1.1.2 显式编号图\n\n{_FIGURE_BLOCK}"
+    chapter_dir = tmp_path / "assets" / "figures" / "polished" / "chapter-01"
+    chapter_dir.mkdir(parents=True)
+    chapter_dir.joinpath("fig-01-01.svg").write_text(_publication_svg("显式编号图"), encoding="utf-8")
+
+    result = write_figure_polish_plan(
+        state,
+        tmp_path / "assets" / "figures" / "polished" / "polish-plan.json",
+        project_dir=tmp_path,
+    )
+
+    items = result["items"]
+    assert isinstance(items, list)
+    assert [item["status"] for item in items] == ["pending", "ready"]
+    assert items[0]["asset_stem"] == "custom-figure"
+    assert items[1]["asset_stem"] == "fig-01-01"
+
+
+def test_build_figure_assets_prefers_occurrence_specific_polished_asset(tmp_path: Path, monkeypatch) -> None:
+    state = _figure_state()
+    state.chapters[0].markdown = f"# 第1章 概述\n\n### 1.1.1 架构\n\n{_FIGURE_BLOCK}\n\n### 1.1.2 架构\n\n{_FIGURE_BLOCK}"
+    _write_polished_assets(tmp_path)
+    chapter_dir = tmp_path / "assets" / "figures" / "polished" / "chapter-01"
+    chapter_dir.joinpath("fig-01-01--occ-02.svg").write_text(_publication_svg("occurrence 2"), encoding="utf-8")
+
+    def fake_render(svg_path: Path, png_path: Path, *, width: int = 1200, height: int = 760, scale: int = 2) -> None:
+        Path(png_path).write_bytes(b"\x89PNG\r\n\x1a\n" + b"png-data")
+
+    monkeypatch.setattr("core.figures.render_svg_to_png", fake_render)
+    result = build_figure_assets(state, tmp_path / "output", project_dir=tmp_path, force=True)
+
+    assert result.polished_count == 2
+    second = next(asset for asset in result.generated if asset.occurrence == 2)
+    assert "occurrence 2" in Path(second.svg_path).read_text(encoding="utf-8")
 
 
 def test_replace_book_figures_with_images_uses_png_path(tmp_path: Path, monkeypatch) -> None:
@@ -317,6 +409,123 @@ def test_blueprint_renderer_uses_structured_figure_brief() -> None:
     assert "平台不是单一服务" in svg
 
 
+def test_blueprint_fallback_keeps_all_elements_when_components_are_incomplete() -> None:
+    spec = FigureSpec(
+        chapter_id=1,
+        section_id="1.1.1",
+        occurrence=1,
+        figure_id="fig-01-04",
+        figure_type="topology",
+        title="图1-4 设备连接拓扑",
+        purpose="展示端到云的主链路。",
+        layout="从左到右拓扑。",
+        elements=["感知层", "网络层", "平台层", "应用层"],
+        relationships=["上行数据", "平台处理", "应用告警"],
+        legend=[],
+        caption="端到云链路。",
+        render_notes="统一绘制。",
+        body_hash="hash",
+        components=[{"id": "sensor", "label": "感知层", "type": "edge"}],
+    )
+
+    svg = render_figure_blueprint_svg(spec, palette=spec_palette(), blueprint=_fallback_blueprint(spec))
+
+    assert all(label in svg for label in spec.elements)
+
+
+def test_blueprint_renderer_uses_architecture_skill_publication_style() -> None:
+    spec = FigureSpec(
+        chapter_id=1,
+        section_id="1.1.1",
+        occurrence=1,
+        figure_id="fig-01-04",
+        figure_type="architecture",
+        title="图1-4 智慧工厂设备连接拓扑",
+        purpose="展示设备、边缘、平台和应用的主链路。",
+        layout="从左到右分层。",
+        elements=["设备层", "边缘网关", "云平台", "业务应用"],
+        relationships=["采集", "上报", "告警"],
+        legend=["蓝色=主链路", "青绿=设备与边缘"],
+        caption="图1-4 展示从现场设备到业务应用的端到端链路。",
+        render_notes="architecture-diagram 浅色出版样式。",
+        body_hash="hash",
+    )
+
+    svg = render_figure_blueprint_svg(spec, palette=spec_palette(), blueprint=_fallback_blueprint(spec))
+
+    assert 'width="1800" height="900" viewBox="0 0 1800 900"' in svg
+    assert 'data-style="architecture-diagram-wireframe-white"' in svg
+    assert ">ARCHITECTURE<" in svg
+    assert spec.caption in svg
+    assert "bp-shadow" not in svg
+    assert 'fill="#FFFFFF"' in svg
+
+
+def test_skill_renderer_replaces_incomplete_subtitle_with_complete_purpose() -> None:
+    spec = FigureSpec(
+        chapter_id=7,
+        section_id="7.5.3",
+        occurrence=1,
+        figure_id="fig-7-5-3-1",
+        figure_type="architecture",
+        title="IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线",
+        purpose="展示从 Copilot 到 Agent 的三阶段演进路径。",
+        layout="水平时间轴。",
+        elements=[],
+        relationships=[],
+        legend=[],
+        caption="三阶段演进路线。",
+        render_notes="浅色出版样式。",
+        body_hash="hash",
+        audience_takeaway="读者应理解 Copilo…中的主链路。",
+    )
+
+    svg = render_figure_skill_svg(
+        spec,
+        palette=spec_palette(),
+        body_svg='<g data-layout="architecture"><rect x="200" y="200" width="800" height="300"/></g>',
+    )
+
+    assert spec.purpose in svg
+    assert "…" not in svg
+
+
+def test_blueprint_fallback_sequence_extracts_participants_and_messages() -> None:
+    spec = FigureSpec(
+        chapter_id=13,
+        section_id="13.2.2",
+        occurrence=1,
+        figure_id="fig-13-02",
+        figure_type="sequence",
+        title="图13-2 设备 DID 注册与验证流程",
+        purpose="展示链上注册和链下验证。",
+        layout="设备、合约和验证方三条泳道。",
+        elements=[
+            "设备1内部：生成 ECDSA 密钥对。",
+            "设备1→智能合约：提交 registerDevice 交易。",
+            "智能合约→区块链：写入 DIDRegistered 日志。",
+            "设备1→设备2：发送 DID 与挑战签名。",
+            "设备2→智能合约：查询 DID 文档。",
+            "智能合约→设备2：返回 owner 与公钥哈希。",
+            "设备2→设备1：返回验证结果。",
+        ],
+        relationships=["步骤2、3、5为链上操作，其余为链下操作。"],
+        legend=["虚线=链上调用", "实线=链下消息"],
+        caption="图13-2 展示设备身份的注册与验证闭环。",
+        render_notes="标准时序图。",
+        body_hash="hash",
+    )
+
+    blueprint = _fallback_blueprint(spec)
+
+    assert [node["label"] for node in blueprint["nodes"]] == ["设备1", "智能合约", "区块链", "设备2"]
+    assert len(blueprint["edges"]) == 6
+    assert blueprint["edges"][0]["from"] == "actor-1"
+    assert blueprint["edges"][0]["to"] == "actor-2"
+    assert blueprint["edges"][0]["style"] == "dashed"
+    assert blueprint["edges"][-1]["label"] == "返回验证结果"
+
+
 def test_blueprint_renderer_draws_layered_comparison_columns() -> None:
     spec = FigureSpec(
         chapter_id=2,
@@ -360,7 +569,7 @@ def test_figure_designer_opens_circuit_after_consecutive_failures() -> None:
             super().__init__(object(), circuit_breaker_failures=2)  # type: ignore[arg-type]
             self.calls = 0
 
-        def _request_html(self, spec: FigureSpec, *, feedback: str) -> str:
+        def _request_svg_body(self, spec: FigureSpec, *, feedback: str) -> str:
             self.calls += 1
             raise TimeoutError("timeout")
 
@@ -386,6 +595,44 @@ def test_figure_designer_opens_circuit_after_consecutive_failures() -> None:
         designer.design(spec, palette=spec_palette())
 
     assert designer.calls == 2
+
+
+def test_figure_designer_retries_failed_generation_before_fallback() -> None:
+    class RetryingDesigner(FigureDesignerAgent):
+        def __init__(self) -> None:
+            super().__init__(object(), polish_rounds=1)  # type: ignore[arg-type]
+            self.feedback: list[str] = []
+
+        def _request_svg_body(self, spec: FigureSpec, *, feedback: str) -> str:
+            self.feedback.append(feedback)
+            if len(self.feedback) == 1:
+                raise RuntimeError("矩形重叠")
+            return '<g data-layout="architecture"><rect x="200" y="200" width="800" height="300"/></g>'
+
+    spec = FigureSpec(
+        chapter_id=1,
+        section_id="1.1.1",
+        occurrence=1,
+        figure_id="fig-01-01",
+        figure_type="architecture",
+        title="图1-1 平台架构",
+        purpose="说明平台边界。",
+        layout="分层架构。",
+        elements=["设备层", "平台层"],
+        relationships=["设备层接入平台层"],
+        legend=["蓝色=平台"],
+        caption="图1-1 展示平台架构。",
+        render_notes="HTML/SVG 统一绘制。",
+        body_hash="hash",
+    )
+    designer = RetryingDesigner()
+
+    design = designer.design(spec, palette=spec_palette(), feedback="避免连线穿框")
+
+    assert design.notes == "AI 定制主体 + architecture-diagram 统一画布"
+    assert len(designer.feedback) == 2
+    assert "矩形重叠" in designer.feedback[1]
+    assert "避免连线穿框" in designer.feedback[1]
 
 
 def spec_palette() -> dict[str, str]:
