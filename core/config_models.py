@@ -30,6 +30,11 @@ class ChapterConfig(StrictConfigModel):
     id: int
     title: str
     summary: str = ""
+    capability_ids: list[str] = Field(default_factory=list)
+    scope_in: list[str] = Field(default_factory=list)
+    scope_out: list[str] = Field(default_factory=list)
+    case_role: Literal["none", "supporting", "primary"] = "none"
+    acceptance_criteria: list[str] = Field(default_factory=list)
 
 
 class PartConfig(StrictConfigModel):

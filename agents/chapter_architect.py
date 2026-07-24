@@ -115,16 +115,18 @@ def _normalize_blueprint(data: dict[str, Any], chapter_id: int, title: str, targ
             raise RuntimeError(f"章节蓝图包含重复三级小节编号: {section_id}")
         seen_section_ids.add(section_id)
         title_value = item.get("title")
-        title = _required_str(title_value, f"sections[{index}].title") if title_value is not None else _title_from_heading(
+        section_title = _required_str(
+            title_value, f"sections[{index}].title"
+        ) if title_value is not None else _title_from_heading(
             _required_str(item.get("heading"), f"sections[{index}].heading"), section_id
         )
         heading = _required_str(item.get("heading"), f"sections[{index}].heading")
         if not heading.startswith(section_id):
-            heading = f"{section_id} {title}"
+            heading = f"{section_id} {section_title}"
         sections.append(
             BlueprintSection(
                 section_id=section_id,
-                title=title,
+                title=section_title,
                 parent_title=_required_str(item.get("parent_title"), f"sections[{index}].parent_title"),
                 heading=heading,
                 target_words=_required_positive_int(item.get("target_words"), f"sections[{index}].target_words"),

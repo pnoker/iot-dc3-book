@@ -9,31 +9,56 @@
         物联网的定义、发展历程、产业现状。
         2023 年后 AI 大模型对物联网的范式冲击——从"被动连接"到"主动智能"。
         物联网与 AI 融合的趋势：AIoT 不是简单叠加，而是从架构层面重构。
+      capability_ids: ["IOT.FOUNDATION.OVERVIEW", "AIOT.ARCH.CLOSED_LOOP"]
+      scope_in: ["物联网发展与 AIoT 定义", "全书闭环框架"]
+      scope_out: ["具体协议实现", "具体平台源码"]
+      case_role: "none"
+      acceptance_criteria: ["读者能解释物联网、AI 和 AIoT 的关系", "读者能描述感知到执行的闭环"]
     - id: 2
       title: "物联网体系架构"
       summary: |
         经典四层架构：感知层、网络层、平台层、应用层。
         AI 时代的新架构范式：在平台层与应用层之间引入"智能层"（Agentic Layer）。
         从"数据采集→存储→展示"到"数据采集→理解→决策→执行"的闭环。
-        IoT DC3 的微服务架构实践：Gateway、Auth、Manager、Data、Agentic 五大中心。
+        IoT DC3 的微服务架构作为能力映射案例，而非通用架构唯一答案。
+      capability_ids: ["IOT.ARCH.REFERENCE", "AIOT.ARCH.CLOSED_LOOP", "DC3.CASE.ARCHITECTURE"]
+      scope_in: ["逻辑、数据、运行、安全和生命周期视图", "AIoT 闭环中的责任边界"]
+      scope_out: ["具体服务源码", "完整部署实战", "设备协议细节"]
+      case_role: "supporting"
+      acceptance_criteria: ["读者能为 AIoT 系统画出多视图架构", "读者能说明何时不应引入智能层", "读者能把 DC3 映射到通用能力而不把它当作唯一答案"]
     - id: 3
       title: "感知层技术基础"
       summary: |
         传感器、RFID、定位技术、边缘计算节点。
         感知层的智能化趋势：端侧 AI（TinyML）、智能传感器、自适应采样。
         物模型（Profile）与设备抽象：如何用统一模型描述千差万别的物理设备。
+      capability_ids: ["IOT.SENSING.DEVICE_MODEL", "IOT.SENSING.EDGE_AI"]
+      scope_in: ["传感器、设备模型、感知质量和端侧预处理", "TinyML 与边缘智能基础"]
+      scope_out: ["广域网络协议选型", "平台数据管道实现"]
+      case_role: "none"
+      acceptance_criteria: ["读者能根据采样、精度、功耗和漂移选择感知方案", "读者能解释物模型与数字孪生的边界"]
     - id: 4
       title: "网络层通信技术"
       summary: |
         NB-IoT、LoRa、5G、WiFi、BLE、Zigbee 等通信技术。
         协议碎片化问题与统一接入层的设计。
-        IoT DC3 的 28 协议驱动架构：如何用 Driver SDK 实现多协议统一接入。
+        IoT DC3 Driver SDK 作为多协议统一接入的工程案例。
+      capability_ids: ["IOT.CONNECT.PROTOCOL_SELECTION", "IOT.CONNECT.DEVICE_ACCESS", "DC3.CASE.DRIVER"]
+      scope_in: ["链路、广域和现场连接技术", "弱网、重连、离线缓存和驱动适配"]
+      scope_out: ["应用层协议语义互操作", "完整平台部署"]
+      case_role: "supporting"
+      acceptance_criteria: ["读者能按带宽、功耗、时延和运维约束选择连接方案", "读者能设计协议驱动与统一接入边界"]
     - id: 5
       title: "平台层与数据处理"
       summary: |
         物联网平台架构、云计算、边缘计算、时序数据库、消息队列。
         数据从设备到云端的完整链路：采集→传输→存储→计算→可视化。
         AI 驱动的数据处理：异常检测、预测性分析、自动告警。
+      capability_ids: ["IOT.DATA.STREAM_PIPELINE", "IOT.DATA.QUALITY", "IOT.PLATFORM.EDGE_CLOUD"]
+      scope_in: ["消息接入、数据质量、流处理、时序存储和边云协同"]
+      scope_out: ["模型训练和 Agent 编排细节", "行业场景容量规划"]
+      case_role: "none"
+      acceptance_criteria: ["读者能画出从设备遥测到 AI 消费的数据链", "读者能处理乱序、重复、迟到和 Schema 演进"]
 
 - name: "技术篇 · AIoT 与智能体能力"
   prefix: "二"
@@ -43,30 +68,46 @@
       summary: |
         Python/Java 物联网开发实践、RESTful API、gRPC、MQTT 编程。
         微服务架构下的物联网系统开发方法论。
-        IoT DC3 的工程实践：Spring Boot 4 + Spring Cloud 2025 技术栈。
+        IoT DC3 作为代码组织、通信模式和可靠性实践案例。
+      capability_ids: ["IOT.SOFTWARE.RELIABILITY", "IOT.PLATFORM.EDGE_CLOUD", "DC3.CASE.CODE"]
+      scope_in: ["代码组织、同步异步边界、可靠性、容器化和可观测性"]
+      scope_out: ["通用逻辑架构定义", "Agent 理论和完整项目验收"]
+      case_role: "supporting"
+      acceptance_criteria: ["读者能为设备数据面和控制面选择通信模式", "读者能设计重试、幂等、超时和降级策略"]
     - id: 7
       title: "AIoT 与智能体应用"
       summary: |
-        AIoT 的技术全景：大模型、Agent、RAG、Tool-Calling、MCP。
+        AIoT 的技术全景：传统机器学习、大模型、Agent、RAG、Tool-Calling、MCP。
         Spring AI 在物联网中的应用：ChatClient、Function Calling、对话记忆。
-        IoT DC3 的 Agentic Center 实践：
-          - DeviceTool/DriverTool/PointValueTool：LLM 直接操控设备
-          - 自然语言运维：用对话替代传统运维界面
-          - 智能告警分析与数据洞察
-        多模型支持与私有化部署：GPT、Claude、DeepSeek、通义千问。
-        从 Copilot 到 Agent：物联网运维的范式转移。
+        重点讨论 MLOps、Agent 评测、工具安全和从建议到受约束执行的演进。
+        IoT DC3 Agentic Center 作为平台工具适配与工程边界案例。
+      capability_ids: ["AI.ML.FOUNDATION", "AI.MLOPS", "AI.RAG", "AI.AGENT.TOOL_CALLING", "AI.AGENT.EVALUATION", "AIOT.SAFE_EXECUTION", "DC3.CASE.AGENTIC"]
+      scope_in: ["模型、知识、工具、工作流和 Agent 的职责边界", "AI 进入物理世界前的权限、评测和降级"]
+      scope_out: ["设备通信协议原理", "安全供应链完整治理", "实时安全控制回路"]
+      case_role: "supporting"
+      acceptance_criteria: ["读者能判断何时使用规则、传统 ML、RAG、Workflow 或 Agent", "读者能设计只读工具和受约束写工具的评测与安全边界"]
     - id: 8
       title: "物联网安全技术"
       summary: |
         设备安全、通信安全、数据安全、隐私保护。
-        AI 时代的新安全挑战：模型注入攻击、Prompt 安全、AI 决策的可解释性。
-        多租户隔离、JWT 认证、TLS 加密、RBAC 权限模型。
+        AI 时代的新安全挑战：模型注入攻击、Prompt 安全、工具越权和 AI 决策风险。
+        多租户隔离、JWT 认证、TLS 加密、RBAC 权限模型，并补充设备生命周期和软件供应链安全。
+      capability_ids: ["IOT.SECURITY.DEVICE_LIFECYCLE", "IOT.SECURITY.ZERO_TRUST", "IOT.SECURITY.SUPPLY_CHAIN", "AI.SECURITY.AGENT"]
+      scope_in: ["设备、通信、平台、数据、模型和供应链的全生命周期安全"]
+      scope_out: ["区块链身份方案的完整实现", "行业特定合规细则"]
+      case_role: "none"
+      acceptance_criteria: ["读者能设计设备身份、密钥轮换和安全更新链路", "读者能识别 Agent 工具越权和数据投毒路径"]
     - id: 9
       title: "物联网协议与标准"
       summary: |
-        MQTT、CoAP、LwM2M、HTTP、BLE 等应用层协议。
-        MCP（Model Context Protocol）：AI 与物联网设备交互的新协议标准。
-        从协议适配到语义互操作：物联网标准化的演进方向。
+        MQTT、CoAP、LwM2M、HTTP、BLE 等应用层协议与设备管理标准。
+        MCP 作为 AI 应用连接工具和资源的上下文协议，不能替代 MQTT/CoAP。
+        从协议适配到物模型、WoT、工业语义和 AI 互操作的演进。
+      capability_ids: ["IOT.INTEROP.PROTOCOLS", "AIOT.SEMANTIC_INTEROP", "AI.AGENT.MCP"]
+      scope_in: ["应用协议、设备管理标准、语义互操作和 MCP 分层"]
+      scope_out: ["底层无线通信原理", "Agent 业务实现细节"]
+      case_role: "none"
+      acceptance_criteria: ["读者能区分设备通信协议、设备模型和 MCP", "读者能为异构设备设计协议适配与语义映射方案"]
 
 - name: "应用篇 · 场景实践与智能体应用"
   prefix: "三"
@@ -76,29 +117,52 @@
       summary: |
         工业 4.0、数字孪生、预测性维护、产线数字化。
         AI 赋能工业：从数据采集到智能决策的闭环。
-        IoT DC3 在工业场景的实践：Modbus/OPC UA 驱动、时序数据、规则引擎。
+        IoT DC3 在工业场景作为 Modbus/OPC UA 驱动、时序数据和规则引擎案例。
+      capability_ids: ["IOT.INDUSTRIAL.DETERMINISM", "AIOT.DIGITAL_TWIN", "AIOT.EDGE_INFERENCE", "DC3.CASE.INDUSTRIAL"]
+      scope_in: ["工业实时性、安全生产、数字孪生、边缘推理和预测性维护"]
+      scope_out: ["通用协议原理", "完整 DC3 项目部署验收"]
+      case_role: "supporting"
+      acceptance_criteria: ["读者能说明 AI 与 PLC/DCS 的安全边界", "读者能设计从异常检测到维护工单的工业闭环"]
     - id: 11
       title: "智慧城市与车联网"
       summary: |
         智慧交通、城市治理、V2X、自动驾驶协同。
         城市级物联网的架构挑战：百万设备接入、实时数据处理、跨系统协同。
         AI 在城市治理中的应用：交通预测、能耗优化、应急响应。
+      capability_ids: ["IOT.SCALE.CAPACITY", "IOT.CITY.V2X", "AIOT.GOVERNANCE"]
+      scope_in: ["规模化接入、时空数据、跨部门治理和 V2X 协同"]
+      scope_out: ["协议基础定义", "农业和工业场景的专门约束"]
+      case_role: "none"
+      acceptance_criteria: ["读者能完成百万设备容量估算", "读者能识别城市 AI 系统的跨域权限和隐私约束"]
     - id: 12
       title: "农业物联网与环境监测"
       summary: |
         精准农业、环境传感网络、农业大数据。
         AI 在农业中的应用：作物病害识别、产量预测、智能灌溉。
-        低功耗广域网（LPWAN）在农业场景的技术选型。
+        低功耗广域网在农业场景的技术选型，以及季节漂移和边缘视觉问题。
+      capability_ids: ["IOT.LOW_POWER", "AI.EDGE_VISION", "AI.ML.DRIFT", "AIOT.SCENARIO.DECISION"]
+      scope_in: ["低功耗、弱网、环境漂移、边缘视觉和灌溉决策"]
+      scope_out: ["LPWAN 协议完整原理", "通用模型训练教程"]
+      case_role: "none"
+      acceptance_criteria: ["读者能估算节点续航并选择农业连接方案", "读者能为季节变化设计模型持续验证"]
     - id: 13
-      title: "区块链与物联网融合"
+      title: "可信数据协作、分布式身份与隐私计算"
       summary: |
-        区块链在物联网中的应用：设备身份、数据可信、供应链溯源。
-        去中心化物联网架构：从中心化平台到分布式协作。
-        AI + 区块链 + 物联网：可信智能的三角范式。
+        从 PKI、DID/VC、联盟链、链上指纹到隐私计算，比较不同可信协作方案。
+        讨论供应链溯源、设备身份、联邦学习和“不上链”替代方案的边界。
+      capability_ids: ["IOT.TRUST.IDENTITY", "IOT.TRUST.PRIVACY", "IOT.TRUST.GOVERNANCE"]
+      scope_in: ["可信身份、数据协作、隐私计算和治理成本"]
+      scope_out: ["区块链产品教程", "把所有信任问题都上链的方案宣传"]
+      case_role: "none"
+      acceptance_criteria: ["读者能比较 PKI、DID/VC、联盟链和不上链方案", "读者能说明链上数据、链下数据和密钥恢复边界"]
     - id: 14
       title: "IoT DC3 项目实战：从平台到智能体应用"
       summary: |
         需求分析、架构设计、开发流程、部署运维、项目案例。
-        IoT DC3 完整项目实战：从零搭建一个支持 AI 运维的物联网平台。
-        物联网项目的常见陷阱与最佳实践。
-        物联网的未来：AGI 时代的万物智联。
+        以 IoT DC3 完成可复现的设备接入、数据处理、AI 查询和受约束执行闭环。
+        物联网项目的常见陷阱、故障注入、验收指标与替代方案。
+      capability_ids: ["DC3.CASE.END_TO_END", "IOT.OPERATIONS.OBSERVABILITY", "AIOT.SAFE_EXECUTION"]
+      scope_in: ["需求到验收的端到端项目、测试、故障恢复和成本复盘"]
+      scope_out: ["重新定义前文章节的通用概念", "未经验证的性能宣传"]
+      case_role: "primary"
+      acceptance_criteria: ["读者能运行或复现最小闭环", "读者能完成重复、乱序、断网、权限和模型超时测试", "读者能解释 DC3 的适用边界和替代能力"]

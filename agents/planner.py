@@ -65,12 +65,14 @@ class PlannerAgent(BaseAgent):
         seen_chapters: set[int] = set()
         for part_data in raw_parts:
             part_name = _required_str(part_data.get("name"), "parts[].name")
-            if part_name in seen_parts:
-                raise RuntimeError(f"候选大纲包含重复篇章: {part_name}")
-            seen_parts.add(part_name)
-            orig_part = next((part for part in state.parts if part.name == part_name), None)
+            orig_part = next(
+                (part for part in state.parts if _compact_label(part.name) == _compact_label(part_name)), None
+            )
             if orig_part is None:
                 raise RuntimeError(f"候选大纲包含未知篇章: {part_name}")
+            if orig_part.name in seen_parts:
+                raise RuntimeError(f"候选大纲包含重复篇章: {orig_part.name}")
+            seen_parts.add(orig_part.name)
 
             raw_chapters = _required_dict_list(part_data.get("chapters"), f"parts[{part_name}].chapters")
             chapters: list[ChapterPlan] = []
@@ -109,7 +111,8 @@ class PlannerAgent(BaseAgent):
             if planted_chapter not in valid_chapter_ids or planned_resolve_chapter not in valid_chapter_ids:
                 raise RuntimeError(f"伏笔 {fs_id} 引用了不存在的章节")
             if planned_resolve_chapter <= planted_chapter:
-                raise RuntimeError(f"伏笔 {fs_id} 的回收章节必须晚于埋入章节")
+                self.logger.warning("已丢弃非法伏笔 %s：回收章节必须晚于埋入章节", fs_id)
+                continue
             foreshadows.append(
                 ForeshadowItem(
                     id=fs_id,
@@ -167,6 +170,11 @@ class PlannerAgent(BaseAgent):
   ]
 }}
 """
+
+
+def _compact_label(value: str) -> str:
+    """忽略模型输出中的空白差异，保留配置中的标准篇名。"""
+    return "".join(value.split())
 
 
 def _required_dict_list(value: object, location: str) -> list[dict[str, Any]]:

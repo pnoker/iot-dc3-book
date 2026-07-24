@@ -556,6 +556,46 @@ def test_worker_project_uses_runtime_config_snapshot(monkeypatch) -> None:
     assert calls == [("config", cfg)]
 
 
+def test_sync_manuscript_section_dry_run_reports_change_without_writing(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings())
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    state.upsert_section_content(
+        SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\\n\\n旧正文")
+    )
+    project._save_write_checkpoint("book", state)
+    chapter_dir = tmp_path / "manuscript" / "chapter-01"
+    chapter_dir.mkdir(parents=True)
+    (chapter_dir / "1.1.1.md").write_text("### 1.1.1 一\\n\\n旧正文", encoding="utf-8")
+
+    result = project.sync_manuscript_section(
+        "book", "1.1.1", "### 1.1.1 一\\n\\n新正文", dry_run=True
+    )
+    assert result["changed"] is True
+    assert result["dry_run"] is True
+    assert "旧正文" in project.load_write_checkpoint("book").get_section_content("1.1.1").markdown
+
+
+def test_sync_manuscript_section_rejects_drift(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings())
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=False, min_figures_per_section=0)
+    state.upsert_section_content(
+        SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\\n\\n旧正文")
+    )
+    project._save_write_checkpoint("book", state)
+    chapter_dir = tmp_path / "manuscript" / "chapter-01"
+    chapter_dir.mkdir(parents=True)
+    (chapter_dir / "1.1.1.md").write_text("### 1.1.1 一\\n\\n镜像另一版本", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="稿件镜像与 checkpoint 已发生漂移"):
+        project.sync_manuscript_section("book", "1.1.1", "### 1.1.1 一\\n\\n新正文", dry_run=True)
+
+
 def test_recover_manuscript_imports_orphan_sections_and_chapters(tmp_path) -> None:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)

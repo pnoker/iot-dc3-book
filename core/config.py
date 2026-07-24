@@ -148,7 +148,19 @@ def config_to_book_state(cfg: ConfigDict | AppConfig) -> BookState:
 
     parts: list[PartPlan] = []
     for part_cfg in app_config.parts:
-        chapters = [ChapterPlan(id=ch.id, title=ch.title, summary=ch.summary) for ch in part_cfg.chapters]
+        chapters = [
+            ChapterPlan(
+                id=ch.id,
+                title=ch.title,
+                summary=ch.summary,
+                capability_ids=ch.capability_ids,
+                scope_in=ch.scope_in,
+                scope_out=ch.scope_out,
+                case_role=ch.case_role,
+                acceptance_criteria=ch.acceptance_criteria,
+            )
+            for ch in part_cfg.chapters
+        ]
         parts.append(PartPlan(name=part_cfg.name, prefix=part_cfg.prefix, chapters=chapters))
 
     style_cfg = app_config.style

@@ -171,14 +171,26 @@ class BookProject:
         state = config_to_book_state(self.cfg)
         state.current_phase = "planning"
         candidates = self.planner.plan_candidates(state, n=2)
-        review = self.plan_reviewer.review(state, candidates)
+        valid_candidates: list[dict[str, Any]] = []
+        candidate_errors: list[str] = []
+        for index, candidate in enumerate(candidates):
+            try:
+                self.planner.build_plan(state, candidate)
+            except RuntimeError as exc:
+                candidate_errors.append(f"候选 {index + 1}: {exc}")
+                logger.warning("⚠️ [大纲] 已淘汰非法候选 %d: %s", index + 1, exc)
+            else:
+                valid_candidates.append(candidate)
+        if not valid_candidates:
+            raise RuntimeError("所有候选大纲均未通过结构校验。" + " | ".join(candidate_errors))
+        review = self.plan_reviewer.review(state, valid_candidates)
         best_index = review.get("best_index")
-        if not isinstance(best_index, int) or not 0 <= best_index < len(candidates):
+        if not isinstance(best_index, int) or not 0 <= best_index < len(valid_candidates):
             raise RuntimeError(f"大纲评审 best_index 无效: {best_index}")
         if review.get("pass") is not True:
             raise RuntimeError(f"大纲评审未通过，已阻断: {review.get('reason', '')}")
 
-        parts, foreshadows = self.planner.build_plan(state, candidates[best_index])
+        parts, foreshadows = self.planner.build_plan(state, valid_candidates[best_index])
         state.parts = parts
         state.foreshadows = foreshadows
         for chapter in state.get_all_chapters_flat():
@@ -187,6 +199,108 @@ class BookProject:
         state.current_phase = "plan_review"
         self._save_state_envelope(self.outline_current_path, state, kind="outline.current")
         return state
+
+    def migrate_outline_contracts(self, source: str | None = None, *, dry_run: bool = True) -> dict[str, object]:
+        """将配置中的章节合同确定性迁入现有大纲，保留原蓝图和小节结构。"""
+        source_path = Path(source).resolve() if source else self.outline_approved_path
+        if not source_path.exists():
+            raise FileNotFoundError(f"大纲文件不存在: {source_path}")
+        state = self._load_state_envelope(source_path, expected_kind=None)
+        configured = config_to_book_state(self.cfg)
+        configured_by_id = {chapter.id: chapter for chapter in configured.get_all_chapters_flat()}
+        changed: list[int] = []
+        for chapter in state.get_all_chapters_flat():
+            contract = configured_by_id.get(chapter.id)
+            if contract is None:
+                raise RuntimeError(f"配置中缺少第{chapter.id}章")
+            before = chapter.model_dump(mode="python")
+            chapter.title = contract.title
+            chapter.summary = contract.summary
+            chapter.capability_ids = list(contract.capability_ids)
+            chapter.scope_in = list(contract.scope_in)
+            chapter.scope_out = list(contract.scope_out)
+            chapter.case_role = contract.case_role
+            chapter.acceptance_criteria = list(contract.acceptance_criteria)
+            if chapter.blueprint is not None:
+                chapter.blueprint.chapter_id = chapter.id
+                chapter.blueprint.title = chapter.title
+                chapter.blueprint.scope_in = list(chapter.scope_in)
+                chapter.blueprint.scope_out = list(chapter.scope_out)
+                chapter.blueprint.capability_ids = list(chapter.capability_ids)
+                chapter.blueprint.case_role = chapter.case_role
+                chapter.blueprint.acceptance_criteria = list(chapter.acceptance_criteria)
+            if chapter.model_dump(mode="python") != before:
+                changed.append(chapter.id)
+        result = {
+            "source": str(source_path),
+            "target": str(self.outline_current_path),
+            "dry_run": dry_run,
+            "changed_chapters": changed,
+            "audit": self._outline_audit_state(state, source_path),
+        }
+        if not dry_run:
+            self._save_state_envelope(self.outline_current_path, state, kind="outline.current")
+        return result
+
+    def outline_audit(self, source: str | None = None) -> dict[str, object]:
+        """审计章节合同、能力覆盖和案例主责，不修改大纲文件。"""
+        source_path = Path(source).resolve() if source else self.outline_approved_path
+        if not source_path.exists():
+            raise FileNotFoundError(f"大纲文件不存在: {source_path}")
+        state = self._load_state_envelope(source_path, expected_kind=None)
+        return self._outline_audit_state(state, source_path)
+
+    def _outline_audit_state(self, state: BookState, source_path: Path) -> dict[str, object]:
+        chapters = state.get_all_chapters_flat()
+        known_ids = {
+            capability_id
+            for chapter in chapters
+            for capability_id in chapter.capability_ids
+        }
+        rows: list[dict[str, object]] = []
+        blockers: list[str] = []
+        for chapter in chapters:
+            blueprint = chapter.blueprint
+            issues: list[str] = []
+            if blueprint is None:
+                issues.append("缺少 blueprint")
+            else:
+                if blueprint.chapter_id != chapter.id:
+                    issues.append(f"blueprint.chapter_id={blueprint.chapter_id} 与章节 ID 不一致")
+                if blueprint.title != chapter.title:
+                    issues.append("blueprint.title 与章节标题不一致")
+                if not blueprint.reader_outcome:
+                    issues.append("缺少 reader_outcome")
+                if not blueprint.thesis:
+                    issues.append("缺少 thesis")
+                if not blueprint.acceptance_criteria:
+                    issues.append("缺少 acceptance_criteria")
+                if not blueprint.capability_ids:
+                    issues.append("缺少 capability_ids")
+                for section in blueprint.sections:
+                    unknown = [item for item in section.capability_ids if item not in known_ids]
+                    if unknown:
+                        issues.append(f"小节 {section.section_id} 存在未知 capability_id: {', '.join(unknown)}")
+            if not chapter.scope_in:
+                issues.append("缺少 scope_in")
+            if not chapter.scope_out:
+                issues.append("缺少 scope_out")
+            if not chapter.acceptance_criteria:
+                issues.append("缺少章节 acceptance_criteria")
+            rows.append({"chapter_id": chapter.id, "title": chapter.title, "issues": issues})
+            blockers.extend(f"第{chapter.id}章：{issue}" for issue in issues)
+        capability_rows = [
+            {"capability_id": item, "chapters": [chapter.id for chapter in chapters if item in chapter.capability_ids]}
+            for item in sorted(known_ids)
+        ]
+        return {
+            "source": str(source_path),
+            "pass": not blockers,
+            "blocking_issue_count": len(blockers),
+            "issues": blockers,
+            "chapters": rows,
+            "capabilities": capability_rows,
+        }
 
     def outline_approve(self, source: str | None = None) -> BookState:
         """批准大纲，写作阶段只消费 approved outline。"""
@@ -718,29 +832,185 @@ class BookProject:
     def patch_section(self, thread_id: str, section_id: str, markdown: str) -> BookState:
         """用人工编辑后的 Markdown 覆盖指定三级小节。"""
         with self._write_operation_lock(thread_id, "write.patch_section"):
+            return self._patch_section_unlocked(thread_id, section_id, markdown)
+
+    def migrate_write_plan(
+            self,
+            thread_id: str,
+            *,
+            source: str | None = None,
+            dry_run: bool = True,
+    ) -> dict[str, object]:
+        """将批准大纲的规划合入现有 checkpoint，保留已写正文。"""
+        with self._write_operation_lock(thread_id, "write.plan.migrate"):
+            source_path = Path(source).resolve() if source else self.outline_approved_path
+            outline = self._load_state_envelope(source_path, expected_kind=None)
+            state = self.load_write_checkpoint(thread_id)
+            active_workers = self._active_worker_checkpoint_paths(thread_id)
+            if active_workers:
+                raise RuntimeError("规划迁移被拒绝：仍存在未合并 worker checkpoint。")
+            outline_by_id = {chapter.id: chapter for chapter in outline.get_all_chapters_flat()}
+            existing_ids = {section.id for section in state.get_all_sections_flat()}
+            content_ids = {content.section_id for content in state.section_contents}
+            added: list[str] = []
+            changed_chapters: list[int] = []
+            for chapter in state.get_all_chapters_flat():
+                source_chapter = outline_by_id.get(chapter.id)
+                if source_chapter is None:
+                    raise RuntimeError(f"新大纲缺少第{chapter.id}章")
+                if chapter.title != source_chapter.title:
+                    raise RuntimeError(
+                        f"第{chapter.id}章标题冲突: checkpoint={chapter.title!r}, outline={source_chapter.title!r}。"
+                        "请先单独迁移章节标题，再合入规划。"
+                    )
+                old_ids = {section.id for section in chapter.sections}
+                old_statuses = {section.id: section.status for section in chapter.sections}
+                source_ids = {section.id for section in source_chapter.sections}
+                removed = old_ids - source_ids
+                if removed:
+                    raise RuntimeError(f"规划迁移拒绝删除已有小节: {', '.join(sorted(removed))}")
+                duplicate = (source_ids - old_ids) & content_ids
+                if duplicate:
+                    raise RuntimeError(f"新增规划与已有正文 ID 冲突: {', '.join(sorted(duplicate))}")
+                added.extend(sorted(source_ids - old_ids))
+                chapter.summary = source_chapter.summary
+                chapter.capability_ids = list(source_chapter.capability_ids)
+                chapter.scope_in = list(source_chapter.scope_in)
+                chapter.scope_out = list(source_chapter.scope_out)
+                chapter.case_role = source_chapter.case_role
+                chapter.acceptance_criteria = list(source_chapter.acceptance_criteria)
+                chapter.outline = source_chapter.outline
+                chapter.key_points = list(source_chapter.key_points)
+                chapter.blueprint = source_chapter.blueprint.model_copy(deep=True) if source_chapter.blueprint else None
+                chapter.sections = [
+                    section.model_copy(update={"status": old_statuses.get(section.id, "pending")}, deep=True)
+                    for section in source_chapter.sections
+                ]
+                if source_ids != old_ids:
+                    changed_chapters.append(chapter.id)
+            all_ids = [section.id for section in state.get_all_sections_flat()]
+            if len(all_ids) != len(set(all_ids)):
+                raise RuntimeError("迁移后的 SectionPlan ID 不唯一")
+            if existing_ids - set(all_ids):
+                raise RuntimeError("迁移后存在旧小节丢失")
+            result: dict[str, object] = {
+                "thread_id": thread_id,
+                "source": str(source_path),
+                "checkpoint": str(self.write_checkpoint_path(thread_id)),
+                "dry_run": dry_run,
+                "added_sections": added,
+                "changed_chapters": changed_chapters,
+                "sections_before": len(existing_ids),
+                "sections_after": len(all_ids),
+                "section_contents": len(state.section_contents),
+            }
+            if dry_run:
+                return result
+            backup = self._backup_checkpoint_for_operation(
+                self.write_checkpoint_path(thread_id), "plan-migrate"
+            )
+            state.publication_approved = False
+            self._save_write_checkpoint(thread_id, state)
+            result["checkpoint_backup"] = str(backup) if backup else None
+            return result
+
+    def sync_manuscript_section(
+            self,
+            thread_id: str,
+            section_id: str,
+            markdown: str,
+            *,
+            dry_run: bool = False,
+            force: bool = False,
+    ) -> dict[str, object]:
+        """显式将外部 Markdown 小节同步到 checkpoint 和 manuscript。"""
+        with self._write_operation_lock(thread_id, "write.manuscript.sync"):
             state = self.load_write_checkpoint(thread_id)
             section = state.get_section_plan(section_id)
             if section is None:
                 raise ValueError(f"三级小节不存在: {section_id}")
-            content = SectionContent(
-                section_id=section.id,
-                chapter_id=section.chapter_id,
-                title=section.title,
-                markdown=self._normalize_markdown_output(markdown),
-                word_count=count_words(self._normalize_markdown_output(markdown)),
-            )
-            state.upsert_section_content(content)
-            state.mark_section_status(section.id, "written")
-            previous_brief = self._previous_section_brief(state, section)
-            content = self._review_section_until_pass(state, section, content, previous_brief, thread_id)
-            state.upsert_section_content(content)
-            if state.get_chapter_content(section.chapter_id) is not None or self._chapter_sections_complete(
-                state, section.chapter_id
+            current = state.get_section_content(section_id)
+            normalized = self._normalize_markdown_output(markdown)
+            mirror_path = self._section_file_path(section.chapter_id, section_id)
+            mirror = mirror_path.read_text(encoding="utf-8") if mirror_path.exists() else None
+            checkpoint_markdown = self._normalize_markdown_output(current.markdown) if current is not None else None
+            if (
+                current is not None
+                and mirror is not None
+                and self._normalize_markdown_output(mirror) != checkpoint_markdown
+                and not force
             ):
-                self._assemble_chapter(state, section.chapter_id, thread_id=thread_id)
-            self._save_section_file(state, content)
-            self._save_write_checkpoint(thread_id, state)
-            return state
+                raise RuntimeError(
+                    f"稿件镜像与 checkpoint 已发生漂移，拒绝覆盖: {mirror_path}。"
+                    "请先人工确认版本，或使用 --force 明确覆盖。"
+                )
+            result: dict[str, object] = {
+                "thread_id": thread_id,
+                "section_id": section_id,
+                "chapter_id": section.chapter_id,
+                "dry_run": dry_run,
+                "force": force,
+                "changed": checkpoint_markdown is None or normalized != checkpoint_markdown,
+                "new_section": current is None,
+                "mirror": str(mirror_path),
+                "checkpoint": str(self.write_checkpoint_path(thread_id)),
+            }
+            if dry_run or (checkpoint_markdown is not None and normalized == checkpoint_markdown):
+                return result
+            checkpoint_backup = self._backup_checkpoint_for_operation(
+                self.write_checkpoint_path(thread_id), "manuscript-sync"
+            )
+            manuscript_backup = self._backup_manuscript_for_operation("manuscript-sync")
+            self._patch_section_unlocked(thread_id, section_id, normalized, assemble=False)
+            result.update({
+                "checkpoint_backup": str(checkpoint_backup) if checkpoint_backup else None,
+                "manuscript_backup": str(manuscript_backup) if manuscript_backup else None,
+            })
+            return result
+
+    def _patch_section_unlocked(
+            self,
+            thread_id: str,
+            section_id: str,
+            markdown: str,
+            *,
+            assemble: bool = True,
+    ) -> BookState:
+        state = self.load_write_checkpoint(thread_id)
+        section = state.get_section_plan(section_id)
+        if section is None:
+            raise ValueError(f"三级小节不存在: {section_id}")
+        normalized = self._normalize_markdown_output(markdown)
+        content = SectionContent(
+            section_id=section.id,
+            chapter_id=section.chapter_id,
+            title=section.title,
+            markdown=normalized,
+            word_count=count_words(normalized),
+        )
+        state.upsert_section_content(content)
+        state.mark_section_status(section.id, "written")
+        previous_brief = self._previous_section_brief(state, section)
+        content = self._review_section_until_pass(state, section, content, previous_brief, thread_id)
+        state.upsert_section_content(content)
+        if assemble and (
+            state.get_chapter_content(section.chapter_id) is not None
+            or self._chapter_sections_complete(state, section.chapter_id)
+        ):
+            self._assemble_chapter(state, section.chapter_id, thread_id=thread_id)
+        elif not assemble:
+            chapter = next(
+                (item for item in state.get_all_chapters_flat() if item.id == section.chapter_id), None
+            )
+            chapter_content = self._assemble_chapter_from_sections_deterministic(state, section.chapter_id)
+            state.upsert_chapter_content(chapter_content)
+            if chapter is not None:
+                state.mark_chapter_status(chapter.id, "written")
+            state.publication_approved = False
+            self._save_chapter_file(state, chapter_content)
+        self._save_section_file(state, content)
+        self._save_write_checkpoint(thread_id, state)
+        return state
 
     def recover_manuscript(self, thread_id: str) -> dict[str, object]:
         """把现有 manuscript 草稿显式导入小节级 checkpoint。"""
@@ -1355,6 +1625,9 @@ class BookProject:
                 key_points=item.key_points,
                 evidence_needed=item.evidence_needed,
                 required_elements=item.required_elements,
+                capability_ids=item.capability_ids,
+                claim_ids=item.claim_ids,
+                case_mode=item.case_mode,
             )
             for item in blueprint.sections
         ]
@@ -1688,6 +1961,24 @@ class BookProject:
             state.set_current_section_by_id(previous_section_id)
         self._save_chapter_file(state, content)
         logger.info("📚 [合稿] 第%d章完成，%d 字", chapter.id, content.word_count)
+
+    def _assemble_chapter_from_sections_deterministic(self, state: BookState, chapter_id: int) -> ChapterContent:
+        """按规划顺序直接拼接小节，供人工同步后生成待审校章节。"""
+        chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
+        if chapter is None:
+            raise RuntimeError(f"章节不存在: {chapter_id}")
+        sections = state.get_chapter_section_contents(chapter_id)
+        if not sections:
+            raise RuntimeError(f"第{chapter_id}章尚无小节正文，无法合稿。")
+        markdown = self._normalize_markdown_output(
+            "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in sections)])
+        )
+        return ChapterContent(
+            chapter_id=chapter.id,
+            title=chapter.title,
+            markdown=markdown,
+            word_count=count_words(markdown),
+        )
 
     def _assemble_chapter_from_sections(
             self,

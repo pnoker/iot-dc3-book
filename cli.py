@@ -31,11 +31,13 @@ outline_app = typer.Typer(help="大纲生成、导出、批准", add_completion=
 write_app = typer.Typer(help="小节级写作与断点恢复", add_completion=False)
 figures_app = typer.Typer(help="图表资产生成", add_completion=False)
 references_app = typer.Typer(help="出版前引用标记审计与清理", add_completion=False)
+manuscript_app = typer.Typer(help="稿件源同步与冲突检查", add_completion=False)
 app.add_typer(kb_app, name="kb")
 app.add_typer(outline_app, name="outline")
 app.add_typer(write_app, name="write")
 write_app.add_typer(figures_app, name="figures")
 write_app.add_typer(references_app, name="references")
+write_app.add_typer(manuscript_app, name="manuscript")
 
 ResultT = TypeVar("ResultT")
 
@@ -151,6 +153,30 @@ def outline_generate(
         )
 
     _execute_project(ctx, generate)
+
+
+@outline_app.command("migrate-contracts")
+def outline_migrate_contracts(
+        ctx: typer.Context,
+        source: Annotated[str | None, typer.Option("--source", help="合同迁移来源；默认 approved.json")] = None,
+        dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只预览迁移结果，不覆盖 current.json")] = True,
+) -> None:
+    """把 parts.yaml 的章节合同迁入现有蓝图，保留原小节结构。"""
+
+    def migrate(project: BookProject, _thread_id: str) -> None:
+        typer.echo(json.dumps(project.migrate_outline_contracts(source, dry_run=dry_run), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, migrate)
+
+
+@outline_app.command("audit")
+def outline_audit(ctx: typer.Context, source: Annotated[str | None, typer.Option("--source", help="指定要审计的大纲 JSON；默认 approved.json")] = None) -> None:
+    """审计章节合同与能力覆盖，不修改大纲。"""
+
+    def audit(project: BookProject, _thread_id: str) -> None:
+        typer.echo(json.dumps(project.outline_audit(source), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, audit)
 
 
 @outline_app.command("approve")
@@ -806,6 +832,38 @@ def write_patch_section(
         get_logger("main").info("✅ 三级小节已应用人工补丁: %s", section_id)
 
     _execute_project(ctx, patch)
+
+
+@manuscript_app.command("migrate-plan")
+def write_manuscript_migrate_plan(
+        ctx: typer.Context,
+        source: Annotated[str | None, typer.Option("--source", help="规划来源；默认 approved.json")] = None,
+        dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只预览，不写入 checkpoint")] = True,
+) -> None:
+    """将批准大纲的新 SectionPlan 合入现有 checkpoint，保留已有正文。"""
+
+    def migrate(project: BookProject, thread_id: str) -> None:
+        typer.echo(json.dumps(project.migrate_write_plan(thread_id, source=source, dry_run=dry_run), ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, migrate)
+
+
+@manuscript_app.command("sync")
+def write_manuscript_sync(
+        ctx: typer.Context,
+        section_id: Annotated[str, typer.Option("--section-id", help="三级小节编号，例如 1.1.1")],
+        file: Annotated[str, typer.Option("--file", help="待导入的 Markdown 小节文件")],
+        dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只检查冲突和变更，不写入 checkpoint 或 manuscript")] = True,
+        force: Annotated[bool, typer.Option("--force", help="确认以输入文件覆盖已漂移的 manuscript/checkpoint 内容")] = False,
+) -> None:
+    """将显式指定的小节 Markdown 同步到 checkpoint 和 manuscript。"""
+
+    def sync(project: BookProject, thread_id: str) -> None:
+        markdown = Path(file).read_text(encoding="utf-8")
+        result = project.sync_manuscript_section(thread_id, section_id, markdown, dry_run=dry_run, force=force)
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, sync)
 
 
 @write_app.command("recover-manuscript")

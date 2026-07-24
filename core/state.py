@@ -93,6 +93,9 @@ class BlueprintSection(BaseModel):
     key_points: list[str] = Field(default_factory=list)
     evidence_needed: list[str] = Field(default_factory=list)
     required_elements: list[str] = Field(default_factory=list)
+    capability_ids: list[str] = Field(default_factory=list)
+    claim_ids: list[str] = Field(default_factory=list)
+    case_mode: Literal["none", "mapping", "supporting", "primary"] = "none"
 
 
 class ChapterBlueprint(BaseModel):
@@ -103,6 +106,12 @@ class ChapterBlueprint(BaseModel):
     target_words: int = 12000
     reader_outcome: str = ""
     thesis: str = ""
+    scope_in: list[str] = Field(default_factory=list)
+    scope_out: list[str] = Field(default_factory=list)
+    capability_ids: list[str] = Field(default_factory=list)
+    required_claims: list[str] = Field(default_factory=list)
+    acceptance_criteria: list[str] = Field(default_factory=list)
+    case_role: Literal["none", "supporting", "primary"] = "none"
     sections: list[BlueprintSection] = Field(default_factory=list)
     case_studies: list[str] = Field(default_factory=list)
     figures: list[str] = Field(default_factory=list)
@@ -119,6 +128,29 @@ class EvidenceNote(BaseModel):
     source: str
     locator: str = ""
     excerpt: str
+    title: str = ""
+    publisher: str = ""
+    version: str = ""
+    publication_date: str = ""
+    accessed_at: str = ""
+    url: str = ""
+    source_tier: Literal["primary", "official", "secondary", "vendor", "author"] = "secondary"
+    supports_claim_ids: list[str] = Field(default_factory=list)
+
+
+class ClaimRecord(BaseModel):
+    """章节级可审计声明登记项。"""
+
+    id: str
+    statement: str
+    claim_type: Literal[
+        "standard", "version", "performance", "metric", "case", "design", "hypothesis"
+    ] = "design"
+    section_id: str = ""
+    evidence_ids: list[str] = Field(default_factory=list)
+    status: Literal["verified", "hypothesis", "example", "deprecated"] = "hypothesis"
+    as_of_date: str = ""
+    owner: str = ""
 
 
 class ResearchDossier(BaseModel):
@@ -127,6 +159,7 @@ class ResearchDossier(BaseModel):
     chapter_id: int
     queries: list[str] = Field(default_factory=list)
     key_claims: list[str] = Field(default_factory=list)
+    claims: list[ClaimRecord] = Field(default_factory=list)
     evidence_notes: list[EvidenceNote] = Field(default_factory=list)
     source_notes: list[str] = Field(default_factory=list)
     web_notes: list[str] = Field(default_factory=list)
@@ -147,6 +180,9 @@ class SectionPlan(BaseModel):
     key_points: list[str] = Field(default_factory=list)
     evidence_needed: list[str] = Field(default_factory=list)
     required_elements: list[str] = Field(default_factory=list)
+    capability_ids: list[str] = Field(default_factory=list)
+    claim_ids: list[str] = Field(default_factory=list)
+    case_mode: Literal["none", "mapping", "supporting", "primary"] = "none"
     status: SectionStatus = "pending"
 
 
@@ -156,6 +192,11 @@ class ChapterPlan(BaseModel):
     id: int
     title: str
     summary: str = ""
+    capability_ids: list[str] = Field(default_factory=list)
+    scope_in: list[str] = Field(default_factory=list)
+    scope_out: list[str] = Field(default_factory=list)
+    case_role: Literal["none", "supporting", "primary"] = "none"
+    acceptance_criteria: list[str] = Field(default_factory=list)
     outline: str = ""  # 详细大纲（Planner 生成）
     key_points: list[str] = Field(default_factory=list)
     blueprint: ChapterBlueprint | None = None
