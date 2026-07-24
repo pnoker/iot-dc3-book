@@ -6,7 +6,7 @@
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
     <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
     <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-orange-sm" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#F59E0B"/></marker>
+    <marker id="ah-orange-sm" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
   </defs>
 
   <!-- canvas -->
@@ -171,10 +171,10 @@
 
   <!-- async dashed arrows (orange) -->
   <g stroke="#F59E0B" stroke-width="1.8" fill="none" stroke-dasharray="5 4">
-    <line x1="1007" y1="272" x2="1075" y2="295" marker-end="url(#ah-orange-sm)"/>
-    <line x1="1225" y1="272" x2="1157" y2="295" marker-end="url(#ah-orange-sm)"/>
-    <line x1="1075" y1="348" x2="1007" y2="378" marker-end="url(#ah-orange-sm)"/>
-    <line x1="1157" y1="348" x2="1225" y2="378" marker-end="url(#ah-orange-sm)"/>
+    <path d="M 1007 272 L 1007 283 L 1035 283 L 1035 293" marker-end="url(#ah-orange-sm)"/>
+    <path d="M 1225 272 L 1225 283 L 1197 283 L 1197 293" marker-end="url(#ah-orange-sm)"/>
+    <path d="M 1035 347 L 1035 366 L 1007 366 L 1007 378" marker-end="url(#ah-orange-sm)"/>
+    <path d="M 1197 347 L 1197 366 L 1225 366 L 1225 378" marker-end="url(#ah-orange-sm)"/>
   </g>
 
   <!-- signal block -->

@@ -2,10 +2,10 @@
   data-style="architecture-diagram-wireframe-white"
   font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
   <defs>
-    <marker id="ah-blue" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-green" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-orange" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-gray" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#64748B"/></marker>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
   </defs>
 
   <!-- canvas -->

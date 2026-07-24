@@ -1,90 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">边缘计算节点典型部署架构</title>
+  <desc id="desc">读者应理解边缘计算节点典型部署架构中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="72.800" width="1152.000" height="614.400" viewBox="0 0 1500.000 800.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0,11 4,0 8" fill="#2563EB"/></marker>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
-<rect x="0" y="0" width="1500" height="800" fill="#FFFFFF"/>
-<circle cx="64" cy="44" r="6" fill="#2563EB"/>
-<text x="82" y="52" fill="#0F172A" font-size="22" font-weight="700">图3-10 物模型驱动设备互操作</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">物模型作为中间抽象层，屏蔽异构设备协议差异，向上提供统一的数据与服务接口</text>
-<rect x="1350" y="30" width="100" height="26" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1400" y="47" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">ARCHITECTURE</text>
-<line x1="58" y1="100" x2="1442" y2="100" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="80" y="120" width="1340" height="125" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="8 4"/>
-<rect x="80" y="270" width="1340" height="190" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
-<rect x="80" y="485" width="1340" height="190" rx="12" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="8 4"/>
-<rect x="88" y="128" width="44" height="16" fill="#FFFFFF"/>
-<text x="96" y="140" fill="#F59E0B" font-size="11" font-weight="600">应用层</text>
-<rect x="88" y="278" width="116" height="16" fill="#FFFFFF"/>
-<text x="96" y="290" fill="#2563EB" font-size="11" font-weight="600">物模型层（抽象层）</text>
-<rect x="88" y="493" width="116" height="16" fill="#FFFFFF"/>
-<text x="96" y="505" fill="#10B981" font-size="11" font-weight="600">设备层（异构协议）</text>
-<line x1="215" y1="543" x2="320" y2="427" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<line x1="380" y1="328" x2="700" y2="218" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<line x1="435" y1="543" x2="380" y2="427" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<line x1="655" y1="543" x2="440" y2="427" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<line x1="995" y1="543" x2="750" y2="427" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<line x1="750" y1="328" x2="750" y2="218" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<line x1="1120" y1="328" x2="800" y2="218" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<rect x="248" y="465" width="58" height="14" fill="#FFFFFF"/>
-<text x="277" y="476" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">映射·温度</text>
-<rect x="374" y="465" width="58" height="14" fill="#FFFFFF"/>
-<text x="403" y="476" text-anchor="middle" fill="#475569" font-size="10">映射·温度</text>
-<rect x="490" y="465" width="78" height="14" fill="#FFFFFF"/>
-<text x="529" y="476" text-anchor="middle" fill="#475569" font-size="10">映射·振动频率</text>
-<rect x="812" y="465" width="78" height="14" fill="#FFFFFF"/>
-<text x="851" y="476" text-anchor="middle" fill="#475569" font-size="10">映射·读取标签</text>
-<rect x="560" y="248" width="48" height="14" fill="#FFFFFF"/>
-<text x="584" y="259" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">标准属性</text>
-<rect x="726" y="248" width="48" height="14" fill="#FFFFFF"/>
-<text x="750" y="259" text-anchor="middle" fill="#475569" font-size="10">标准服务</text>
-<rect x="893" y="248" width="48" height="14" fill="#FFFFFF"/>
-<text x="917" y="259" text-anchor="middle" fill="#475569" font-size="10">标准事件</text>
-<rect x="640" y="158" width="220" height="58" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-<text x="750" y="185" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">应用层</text>
-<text x="750" y="205" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">统一数据与服务接口</text>
-<rect x="280" y="330" width="200" height="95" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="380" y="363" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">属性</text>
-<text x="380" y="385" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">温度·振动频率</text>
-<rect x="650" y="330" width="200" height="95" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="750" y="363" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">服务</text>
-<text x="750" y="385" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">读取标签</text>
-<rect x="1020" y="330" width="200" height="95" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1120" y="363" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">事件</text>
-<text x="1120" y="385" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">状态推送</text>
-<rect x="120" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="215" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">温湿度计</text>
-<text x="215" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Zigbee</text>
-<rect x="340" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="435" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">智能温控</text>
-<text x="435" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Wi-Fi</text>
-<rect x="560" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="655" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">振动传感器</text>
-<text x="655" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">BLE</text>
-<rect x="900" y="545" width="190" height="95" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="995" y="578" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">标签读写器</text>
-<text x="995" y="600" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Modbus</text>
-<rect x="1250" y="335" width="165" height="75" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="1260" y="358" fill="#2563EB" font-size="11" font-weight="700">物模型层</text>
-<text x="1260" y="378" fill="#334155" font-size="10">屏蔽异构协议差异</text>
-<text x="1260" y="396" fill="#334155" font-size="10">统一为属性·服务·事件</text>
-<line x1="58" y1="710" x2="1442" y2="710" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="70" y="735" width="14" height="10" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="90" y="744" fill="#64748B" font-size="11" font-weight="600">设备层·异构接入</text>
-<rect x="290" y="735" width="14" height="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="310" y="744" fill="#64748B" font-size="11" font-weight="600">物模型层·标准化</text>
-<rect x="530" y="735" width="14" height="10" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-<text x="550" y="744" fill="#64748B" font-size="11" font-weight="600">应用层·统一消费</text>
-<line x1="760" y1="740" x2="785" y2="740" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="802" y="744" fill="#64748B" font-size="11" font-weight="600">主链路·标准化输出</text>
-<line x1="960" y1="740" x2="985" y2="740" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="1002" y="744" fill="#64748B" font-size="11" font-weight="600">能力映射</text>
-<line x1="1110" y1="740" x2="1135" y2="740" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="1152" y="744" fill="#64748B" font-size="11" font-weight="600">事件推送</text>
-<text x="750" y="780" text-anchor="middle" fill="#94A3B8" font-size="10">图3-10 物模型作为中间抽象层，将异构设备能力标准化为属性、服务、事件，向上提供统一接口。</text>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">边缘计算节点典型部署架构</title>
+  <desc id="desc">读者应理解边缘计算节点典型部署架构中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">边缘计算节点典型部署架构</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解边缘计算节点典型部署架构中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+    <!-- 区域边界：设备与边缘域 -->
+    <rect x="450" y="340" width="900" height="370" rx="14" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="8,4" opacity="0.6"/>
+    <text x="460" y="362" fill="#D97706" font-size="14" font-weight="600">设备与边缘域</text>
+
+    <!-- 第3层：云平台 -->
+    <rect x="500" y="150" width="800" height="150" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/>
+    <text x="900" y="180" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">第3层 云平台（远程管理与模型训练）</text>
+    <text x="900" y="210" fill="#475569" font-size="12" text-anchor="middle">
+      <tspan x="900" dy="0">云侧使用全量历史数据训练模型，下发至边缘网关；</tspan>
+      <tspan x="900" dy="20">同时接收边缘上传的时序数据与告警事件。</tspan>
+    </text>
+
+    <!-- 第2层：边缘网关 -->
+    <rect x="500" y="350" width="800" height="150" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+    <text x="900" y="380" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">第2层 边缘网关（靠近汇聚点）</text>
+    <text x="900" y="410" fill="#475569" font-size="12" text-anchor="middle">
+      <tspan x="900" dy="0">网关接收多条传感器链路的处理后数据，执行协议转换（格式标准化如MQTT）、</tspan>
+      <tspan x="900" dy="20">跨传感器时间对齐，并运行轻量型AI推理模型。</tspan>
+    </text>
+
+    <!-- 第1层：传感器端 -->
+    <rect x="500" y="550" width="800" height="150" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+    <text x="900" y="580" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">第1层 传感器端（靠近被监测对象）</text>
+    <text x="900" y="610" fill="#475569" font-size="12" text-anchor="middle">
+      <tspan x="900" dy="0">传感器接Cortex-M4级MCU，执行A/D转换、滑动去噪、阈值判断。</tspan>
+      <tspan x="900" dy="20">只上传变化超限或离散事件，实现自适应采样。</tspan>
+    </text>
+
+    <!-- 连线（先于卡片绘制，但为了可见性，放在后面，使用偏移让箭头在卡片外） -->
+    <!-- 第1层到第2层：实线，特征值/事件 -->
+    <line x1="900" y1="545" x2="900" y2="505" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+    <rect x="830" y="517" width="80" height="20" rx="4" fill="white" opacity="0.9"/>
+    <text x="870" y="531" fill="#2563EB" font-size="11" text-anchor="middle" font-weight="600">特征值/事件</text>
+
+    <!-- 第2层到第3层：实线，聚合值/异常告警 -->
+    <line x1="900" y1="345" x2="900" y2="305" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+    <rect x="820" y="317" width="90" height="20" rx="4" fill="white" opacity="0.9"/>
+    <text x="865" y="331" fill="#2563EB" font-size="11" text-anchor="middle" font-weight="600">聚合值/异常告警</text>
+
+    <!-- 第3层到第2层：虚线，训练后模型/阈值 -->
+    <line x1="900" y1="305" x2="900" y2="345" stroke="#64748B" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+    <rect x="920" y="317" width="90" height="20" rx="4" fill="white" opacity="0.9"/>
+    <text x="965" y="331" fill="#64748B" font-size="11" text-anchor="middle" font-weight="600">训练后模型/阈值</text>
+
+    <!-- 第2层到第1层：虚线，参数调整/唤醒指令 -->
+    <line x1="900" y1="505" x2="900" y2="545" stroke="#64748B" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+    <rect x="920" y="517" width="100" height="20" rx="4" fill="white" opacity="0.9"/>
+    <text x="970" y="531" fill="#64748B" font-size="11" text-anchor="middle" font-weight="600">参数调整/唤醒指令</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">已处理数据或压缩数据上传方向</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">模型参数、阈值或配置下发方向</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">边缘计算节点典型部署架构。物理世界中各类传感器靠近被监测对象布放，附接MCU级节点完成首级处理（采样、滤波、阈值判断）；这些节点通过短距或长距无线链路（BLE、LoRa、RS-485）连接至边缘网关，网关汇聚数据后由应用处理器级节点执行协议转换与通道融合；网关再与云端IoT平台</text>
+  <text x="900" y="870" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">（如IoT DC3）进行双向数据同步。云侧承担模型训练和高阶分析任务，推理结果可沿相同路径下发给现场，形成完整闭环。架构图中包含了从端侧到云侧的三层结构及其数据流方向。</text>
   </svg>
 </svg>

@@ -1,115 +1,161 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MQTT 发布/订阅模型与内部机制</title>
-<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1600px,100vw);height:auto;display:block}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MQTT 发布/订阅模型与内部机制</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="MQTT 发布/订阅模型与内部机制" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
-<defs>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">MQTT 发布/订阅模型与内部机制</title>
+  <desc id="desc">读者应理解MQTT 发布/订阅模型与内部机制中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">MQTT 发布/订阅模型与内部机制</title>
+  <desc id="desc">读者应理解MQTT 发布/订阅模型与内部机制中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">MQTT 发布/订阅模型与内部机制</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解MQTT 发布/订阅模型与内部机制中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">DATAFLOW</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="分层数据流图：从左到右依次为发布者、Broker、订阅者">
+  <!-- 底部链路层横条 -->
+  <rect x="100" y="650" width="1600" height="60" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="900" y="684" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">TCP/UDP 传输层</text>
+  <text x="900" y="700" fill="#64748B" font-size="12" text-anchor="middle">可靠的网络连接</text>
 
-<rect x="0" y="0" width="1600" height="1000" fill="#FFFFFF"/>
+  <!-- 发布者 (左侧) -->
+  <rect x="200" y="200" width="160" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="280" y="230" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">发布者</text>
+  <text x="280" y="252" fill="#64748B" font-size="12" text-anchor="middle">传感器 / 设备</text>
 
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">MQTT 发布/订阅模型与内部机制</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">发布者经 Broker 主题匹配与 QoS 握手投递至订阅者，兼述保留与遗嘱机制</text>
-<rect x="1476" y="30" width="96" height="24" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1524" y="46" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">DATAFLOW</text>
-<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="200" y="320" width="160" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="280" y="350" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">发布者</text>
+  <text x="280" y="372" fill="#64748B" font-size="12" text-anchor="middle">应用客户端</text>
 
-<rect x="380" y="200" width="860" height="620" rx="12" fill="none" stroke="#2563EB" stroke-dasharray="8 4" stroke-width="1.2"/>
-<text x="392" y="192" fill="#2563EB" font-size="11" font-weight="600">Broker · 平台服务域</text>
+  <rect x="200" y="440" width="160" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="280" y="470" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">发布者</text>
+  <text x="280" y="492" fill="#64748B" font-size="12" text-anchor="middle">遥测设备</text>
 
-<line x1="290" y1="340" x2="408" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="349" y="332" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">PUBLISH</text>
+  <!-- 订阅者 (右侧) -->
+  <rect x="1350" y="200" width="160" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1430" y="230" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">订阅者</text>
+  <text x="1430" y="252" fill="#64748B" font-size="12" text-anchor="middle">仪表盘应用</text>
 
-<line x1="780" y1="340" x2="838" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="809" y="332" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">匹配订阅者</text>
+  <rect x="1350" y="320" width="160" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1430" y="350" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">订阅者</text>
+  <text x="1430" y="372" fill="#64748B" font-size="12" text-anchor="middle">移动客户端</text>
 
-<line x1="1210" y1="340" x2="1328" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="1269" y="332" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">QoS 投递</text>
+  <rect x="1350" y="440" width="160" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1430" y="470" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">订阅者</text>
+  <text x="1430" y="492" fill="#64748B" font-size="12" text-anchor="middle">边缘设备</text>
 
-<line x1="595" y1="450" x2="595" y2="518" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#ah-violet)"/>
-<text x="606" y="488" fill="#7C3AED" font-size="10" font-weight="600">retain=1 写入</text>
+  <!-- Broker 容器 -->
+  <rect x="500" y="150" width="700" height="520" rx="14" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="8,4" />
+  <text x="520" y="178" fill="#2563EB" font-size="20" font-weight="700">MQTT Broker</text>
 
-<polyline points="595,720 595,770 1290,770 1290,375 1328,375" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-violet)"/>
-<text x="940" y="762" fill="#7C3AED" font-size="10" font-weight="600" text-anchor="middle">新订阅者连接 · 投递保留值</text>
+  <!-- 主题树匹配模块 -->
+  <rect x="550" y="200" width="240" height="90" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <text x="670" y="230" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">主题树匹配</text>
+  <text x="670" y="252" fill="#64748B" font-size="12" text-anchor="middle">支持 + / # 通配符</text>
 
-<polyline points="1210,620 1430,620 1430,397" fill="none" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-red)"/>
-<text x="1320" y="612" fill="#E11D48" font-size="10" font-weight="600" text-anchor="middle">遗嘱消息投递</text>
+  <!-- QoS 状态机模块 -->
+  <rect x="850" y="200" width="180" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="940" y="226" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">QoS 0</text>
+  <text x="940" y="244" fill="#64748B" font-size="11" text-anchor="middle">直接交付</text>
 
-<rect x="90" y="285" width="200" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="190" y="325" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">发布者</text>
-<text x="190" y="350" fill="#475569" font-size="10" text-anchor="middle">Publisher 客户端</text>
-<text x="190" y="372" fill="#475569" font-size="10" text-anchor="middle">发布 PUBLISH 报文</text>
+  <rect x="850" y="285" width="180" height="70" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="940" y="311" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">QoS 1</text>
+  <text x="940" y="329" fill="#64748B" font-size="11" text-anchor="middle">握手确认</text>
 
-<rect x="1330" y="285" width="200" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1430" y="325" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">订阅者</text>
-<text x="1430" y="350" fill="#475569" font-size="10" text-anchor="middle">Subscriber 客户端</text>
-<text x="1430" y="372" fill="#475569" font-size="10" text-anchor="middle">注册主题过滤器</text>
+  <rect x="850" y="370" width="180" height="70" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="940" y="396" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">QoS 2</text>
+  <text x="940" y="414" fill="#64748B" font-size="11" text-anchor="middle">四步握手</text>
 
-<rect x="410" y="250" width="370" height="200" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="595" y="283" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">主题树匹配</text>
-<text x="595" y="308" fill="#475569" font-size="10" text-anchor="middle">通配符层级过滤器</text>
-<text x="595" y="348" fill="#475569" font-size="11" text-anchor="middle">支持 + 单层 / # 多层通配</text>
-<text x="595" y="373" fill="#64748B" font-size="11" text-anchor="middle">如：home/+/temp</text>
-<text x="595" y="398" fill="#475569" font-size="11" text-anchor="middle">匹配目标订阅者集合</text>
+  <!-- 保留消息缓存区 -->
+  <rect x="550" y="350" width="240" height="90" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="670" y="380" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">保留消息缓存</text>
+  <text x="670" y="402" fill="#64748B" font-size="12" text-anchor="middle">存储最后一条 retain 消息</text>
 
-<rect x="840" y="250" width="370" height="200" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="1025" y="283" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">QoS 状态机</text>
-<text x="1025" y="308" fill="#475569" font-size="10" text-anchor="middle">分级握手状态机</text>
-<text x="1025" y="348" fill="#475569" font-size="11" text-anchor="middle">QoS 0 · 至多一次 · 无握手</text>
-<text x="1025" y="373" fill="#475569" font-size="11" text-anchor="middle">QoS 1 · 至少一次 · PUBACK</text>
-<text x="1025" y="398" fill="#475569" font-size="11" text-anchor="middle">QoS 2 · 恰好一次 · 4 步握手</text>
+  <!-- 遗嘱消息控制器 -->
+  <rect x="550" y="470" width="240" height="80" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="670" y="498" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">遗嘱消息控制器</text>
+  <text x="670" y="518" fill="#64748B" font-size="11" text-anchor="middle">客户端异常断开时触发</text>
 
-<rect x="410" y="520" width="370" height="200" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-<text x="595" y="553" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">保留消息缓存</text>
-<text x="595" y="578" fill="#475569" font-size="10" text-anchor="middle">retain=1 消息快照</text>
-<text x="595" y="618" fill="#475569" font-size="11" text-anchor="middle">每主题仅保留最后一条</text>
-<text x="595" y="643" fill="#475569" font-size="11" text-anchor="middle">新订阅者连接即投递</text>
-<text x="595" y="668" fill="#475569" font-size="11" text-anchor="middle">持久化最新值</text>
+  <!-- 连线：发布者 → Broker（常规消息） -->
+  <!-- 发布者1 -->
+  <path d="M 360 240 L 500 240" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="390" y="225" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="420" y="239" fill="#0F172A" font-size="11" text-anchor="middle">发布消息</text>
 
-<rect x="840" y="520" width="370" height="200" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-<text x="1025" y="553" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">遗嘱消息控制</text>
-<text x="1025" y="578" fill="#475569" font-size="10" text-anchor="middle">Will Message 控制器</text>
-<text x="1025" y="618" fill="#475569" font-size="11" text-anchor="middle">KeepAlive 心跳超时检测</text>
-<text x="1025" y="643" fill="#475569" font-size="11" text-anchor="middle">异常断开 → 发布遗嘱</text>
-<text x="1025" y="668" fill="#475569" font-size="11" text-anchor="middle">遗嘱在 CONNECT 时预设</text>
+  <!-- 发布者2 -->
+  <path d="M 360 360 L 500 360" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="390" y="345" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="420" y="359" fill="#0F172A" font-size="11" text-anchor="middle">发布消息</text>
 
-<rect x="90" y="835" width="460" height="50" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="110" y="855" fill="#0F172A" font-size="11" font-weight="700">主题匹配</text>
-<text x="110" y="873" fill="#334155" font-size="10">依据订阅过滤器（含 + / # 通配符）匹配目标订阅者集合</text>
+  <!-- 发布者3 -->
+  <path d="M 360 480 L 550 480" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="420" y="465" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="450" y="479" fill="#0F172A" font-size="11" text-anchor="middle">发布消息</text>
 
-<rect x="570" y="835" width="460" height="50" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="590" y="855" fill="#0F172A" font-size="11" font-weight="700">QoS 握手</text>
-<text x="590" y="873" fill="#334155" font-size="10">QoS 1 启动 PUBACK、QoS 2 启动 4 步握手状态机</text>
+  <!-- 保留消息：从缓存到新订阅者（虚线紫色） -->
+  <path d="M 790 395 L 1350 240" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="1000" y="300" width="90" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="1045" y="314" fill="#7C3AED" font-size="11" text-anchor="middle">保留消息推送</text>
 
-<rect x="1050" y="835" width="460" height="50" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="1070" y="855" fill="#0F172A" font-size="11" font-weight="700">保留与遗嘱</text>
-<text x="1070" y="873" fill="#334155" font-size="10">retain=1 更新缓存最新值；异常断开时自动发布遗嘱</text>
+  <!-- 遗嘱消息：从遗嘱控制器广播（虚线红色） -->
+  <path d="M 790 510 L 1350 440" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="1000" y="465" width="90" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="1045" y="479" fill="#DC2626" font-size="11" text-anchor="middle">遗嘱消息广播</text>
 
-<line x1="58" y1="915" x2="1542" y2="915" stroke="#E2E8F0" stroke-width="1"/>
-<line x1="80" y1="940" x2="110" y2="940" stroke="#2563EB" stroke-width="2"/>
-<text x="118" y="944" fill="#64748B" font-size="11" font-weight="600">消息主链路</text>
-<line x1="290" y1="940" x2="320" y2="940" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text x="328" y="944" fill="#64748B" font-size="11" font-weight="600">保留消息流</text>
-<line x1="500" y1="940" x2="530" y2="940" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text x="538" y="944" fill="#64748B" font-size="11" font-weight="600">遗嘱消息流</text>
-<rect x="780" y="935" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="802" y="944" fill="#64748B" font-size="11" font-weight="600">Broker 核心模块</text>
-<rect x="1030" y="935" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-<text x="1052" y="944" fill="#64748B" font-size="11" font-weight="600">保留消息缓存</text>
-<rect x="1320" y="935" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
-<text x="1342" y="944" fill="#64748B" font-size="11" font-weight="600">遗嘱控制模块</text>
+  <!-- Broker → 订阅者（常规消息） -->
+  <path d="M 1200 240 L 1350 240" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1240" y="225" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="1270" y="239" fill="#0F172A" font-size="11" text-anchor="middle">分发消息</text>
 
-<text x="800" y="985" fill="#94A3B8" font-size="10" text-anchor="middle">图9-2 MQTT 发布/订阅模型与内部机制</text>
+  <path d="M 1200 360 L 1350 360" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1240" y="345" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="1270" y="359" fill="#0F172A" font-size="11" text-anchor="middle">分发消息</text>
 
+  <path d="M 1200 480 L 1350 440" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1240" y="465" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="1270" y="479" fill="#0F172A" font-size="11" text-anchor="middle">分发消息</text>
+
+  <!-- 内部连线（简化：主题树→QoS→输出） -->
+  <path d="M 790 245 L 850 235" fill="none" stroke="#64748B" stroke-width="1" marker-end="url(#bp-arrow)"/>
+  <path d="M 790 395 L 850 390" fill="none" stroke="#64748B" stroke-width="1" marker-end="url(#bp-arrow)"/>
+  <path d="M 850 315 L 790 395" fill="none" stroke="#64748B" stroke-width="1" marker-end="url(#bp-arrow)"/>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：常规消息流</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：遗嘱消息流</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色框：QoS 0 处理模块</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">MQTT 发布/订阅模型与内部机制</text>
+  </svg>
 </svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">dataflow</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">分层数据流图：从左到右依次为发布者、Broker、订阅者。Broker 内部拆分为主题树匹配模块、QoS 状态机（0/1/2）、保留消息缓存区、遗嘱消息控制器。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
 </body>
 </html>

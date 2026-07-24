@@ -1,0 +1,163 @@
+请按 architecture-diagram 技能的浅色出版印刷风格，重绘下面这张书籍插图。
+
+硬性要求：
+1. 输出 self-contained HTML，主体为 inline SVG；同时导出同名 SVG 与 PNG。
+2. 使用 1800×900 白色画布、极淡网格、浅色填充、饱和描边、深色文字、圆角卡片和清晰箭头，图例置于主体边界外。
+3. 节点短标签优先，解释写入 callouts；禁止“节点1/节点2/container/service/user”等占位词。
+4. 每张图只表达一个主结论，主链路高亮，边界、层级、时序或决策关系必须一眼可读。
+5. 中文字体使用系统无衬线字体栈；PNG 需适合 Word 印刷，文字不得重叠或过小。
+6. 保持全书统一视觉语义：蓝=核心平台，青绿=边缘/接入，橙=AI/智能，紫=数据，红=安全/风险，灰=外部依赖。
+
+图表 brief：
+{
+  "id": "fig-2-3",
+  "type": "layered",
+  "title": "五层架构模型与传统四层架构的对比示意",
+  "purpose": "直观对比经典四层架构与引入智能层后数据路径长度、决策触发方式以及控制回路的差异，帮助读者建立从线性采集到闭环执行的整体认知。",
+  "audience_takeaway": "读者应理解五层架构模型与传统四层架构的对比示意中的主链路、责任边界和工程取舍。",
+  "visual_focus": "从四层-感知层到五层-感知层的主链路。",
+  "layout": "并排两列的分层布局。左侧为四层结构，右侧为五层结构。感知层使用浅青色（#E0F7FA），网络层使用橙色（#FFE0B2），平台层使用绿色（#C8E6C9），智能层使用紫色（#E1BEE7），应用层使用灰色（#BDBDBD）。两列水平对齐。",
+  "components": [
+    {
+      "id": "r1",
+      "label": "四层-应用层",
+      "type": "application",
+      "group": "application_domain",
+      "priority": "primary",
+      "shape": "card"
+    },
+    {
+      "id": "r2",
+      "label": "四层-平台层",
+      "type": "platform",
+      "group": "platform_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r3",
+      "label": "四层-网络层",
+      "type": "platform",
+      "group": "platform_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r4",
+      "label": "四层-感知层",
+      "type": "platform",
+      "group": "platform_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r5",
+      "label": "五层-应用层",
+      "type": "application",
+      "group": "application_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r6",
+      "label": "五层-智能层（新增）",
+      "type": "ai",
+      "group": "intelligence_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r7",
+      "label": "五层-平台层",
+      "type": "platform",
+      "group": "platform_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r8",
+      "label": "五层-网络层",
+      "type": "platform",
+      "group": "platform_domain",
+      "priority": "normal",
+      "shape": "card"
+    },
+    {
+      "id": "r9",
+      "label": "五层-感知层",
+      "type": "platform",
+      "group": "platform_domain",
+      "priority": "normal",
+      "shape": "card"
+    }
+  ],
+  "connections": [
+    {
+      "from": "r4",
+      "to": "r1",
+      "label": "数据流（采集→存储→展示）",
+      "style": "solid",
+      "direction": "request"
+    },
+    {
+      "from": "r9",
+      "to": "r5",
+      "label": "数据流",
+      "style": "solid",
+      "direction": "request"
+    },
+    {
+      "from": "r7",
+      "to": "r6",
+      "label": "读取数据与分析",
+      "style": "solid",
+      "direction": "request"
+    },
+    {
+      "from": "r6",
+      "to": "r7",
+      "label": "命令下发",
+      "style": "solid",
+      "direction": "request"
+    },
+    {
+      "from": "r7",
+      "to": "r9",
+      "label": "控制流",
+      "style": "dashed",
+      "direction": "request"
+    }
+  ],
+  "regions": [
+    {
+      "id": "application_domain",
+      "label": "业务应用域",
+      "role": "业务价值交付边界"
+    },
+    {
+      "id": "platform_domain",
+      "label": "平台服务域",
+      "role": "核心服务能力边界"
+    },
+    {
+      "id": "intelligence_domain",
+      "label": "智能决策域",
+      "role": "模型、规则与 Agent 边界"
+    }
+  ],
+  "callouts": [
+    "四层-感知层 → 四层-应用层（数据流（采集→存储→展示））",
+    "五层-感知层 → 五层-应用层（数据流）",
+    "五层-平台层 → 五层-智能层（读取数据与分析）"
+  ],
+  "legend": [
+    "数据正向采集与传递方向",
+    "智能层产生的决策指令，通过平台层回流至底层设备",
+    "控制流，从平台层经过网络层下发至感知层"
+  ],
+  "caption": "五层架构模型与经典四层架构的对比。左侧为经典四层架构：数据单向从感知层经平台层流向应用层，没有标准化的回写路径。右侧为五层架构：新增的智能层（紫色）嵌入在平台层与应用层之间，数据流形成闭环（感知层→网络层→平台层→智能层，然后智能层将执行指令返回平台层向下转发，同时将结果向上提交应用层），实现了理解、决策、执行的逻辑收敛。",
+  "visual_constraints": [
+    "节点标签使用短名词短语，解释性文字放入 callouts 或正文。",
+    "图例放在底部，不遮挡主体结构。"
+  ]
+}

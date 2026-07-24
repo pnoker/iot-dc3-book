@@ -1,106 +1,135 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>移动互联网应用生态示意</title>
-<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1500px,100vw);height:auto;display:block}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图1-4 智慧工厂设备连接拓扑示意</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="950" viewBox="0 0 1500 950" role="img" aria-label="移动互联网应用生态示意" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-4 智慧工厂设备连接拓扑示意</title>
+  <desc id="desc">读者应理解智慧工厂设备连接拓扑示意中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图1-4 智慧工厂设备连接拓扑示意</title>
+  <desc id="desc">读者应理解智慧工厂设备连接拓扑示意中的主链路、责任边界和工程取舍。</desc>
   <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图1-4 智慧工厂设备连接拓扑示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解智慧工厂设备连接拓扑示意中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">TOPOLOGY</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="topology">
+  <!-- 设备与边缘域边界 -->
+  <rect x="120" y="210" width="660" height="460" rx="14" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="140" y="235" fill="#D97706" font-size="14" font-weight="bold" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">设备与边缘域</text>
 
-  <rect x="0" y="0" width="1500" height="950" fill="#FFFFFF"/>
+  <!-- 分层容器 -->
+  <rect x="140" y="250" width="260" height="400" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="270" y="275" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">感知层 (BLE/ZigBee)</text>
 
-  <g id="title">
-    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">移动互联网应用生态示意</text>
-    <text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">以用户为中心的星形生态，人—应用—服务构成闭环</text>
-    <rect x="1332" y="28" width="98" height="22" rx="11" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="1381" y="44" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">TOPOLOGY</text>
-    <line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-  </g>
+  <rect x="500" y="250" width="260" height="400" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="630" y="275" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">网络层 (5G/NB-IoT)</text>
 
-  <g id="boundary">
-    <rect x="70" y="115" width="1360" height="717" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
-    <text x="750" y="138" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">业务应用域 · 以用户为中心的星形生态</text>
-  </g>
+  <rect x="860" y="250" width="260" height="400" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="990" y="275" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">平台层 (云平台)</text>
 
-  <g id="arrows" fill="none">
-    <line x1="679" y1="468" x2="537" y2="367" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-    <line x1="740" y1="449" x2="800" y2="266" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-    <line x1="777" y1="500" x2="923" y2="500" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-    <line x1="740" y1="551" x2="800" y2="734" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-    <line x1="679" y1="532" x2="537" y2="633" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-    <line x1="832" y1="266" x2="981" y2="468" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  </g>
+  <rect x="1220" y="250" width="260" height="400" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1350" y="275" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">应用层 (AI/决策)</text>
 
-  <g id="nodes">
-    <g>
-      <rect x="419" y="305" width="156" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-      <text x="497" y="331" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">即时通信</text>
-      <text x="497" y="349" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">熟人关系</text>
-    </g>
-    <g>
-      <rect x="732" y="204" width="156" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-      <text x="810" y="230" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">社交媒体</text>
-      <text x="810" y="248" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">社交半径</text>
-    </g>
-    <g>
-      <rect x="925" y="470" width="156" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-      <text x="1003" y="496" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">移动支付</text>
-      <text x="1003" y="514" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">交易闭环</text>
-    </g>
-    <g>
-      <rect x="732" y="736" width="156" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-      <text x="810" y="762" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">地图/出行</text>
-      <text x="810" y="780" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">物理移动</text>
-    </g>
-    <g>
-      <rect x="419" y="635" width="156" height="60" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-      <text x="497" y="661" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">短视频</text>
-      <text x="497" y="679" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">内容入口</text>
-    </g>
+  <!-- 连接线（先于节点绘制） -->
+  <!-- 数据流：传感器 → 网关 -->
+  <path d="M 390 340 L 420 340 L 420 430 L 510 430" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <path d="M 390 450 L 510 450" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <path d="M 390 560 L 420 560 L 420 490 L 510 490" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
 
-    <g id="user">
-      <circle cx="723" cy="500" r="52" fill="#FFFFFF" stroke="#64748B" stroke-width="2.5"/>
-      <text x="723" y="496" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">用户</text>
-      <text x="723" y="516" fill="#64748B" font-size="10" font-weight="500" text-anchor="middle">生态原点</text>
-    </g>
-  </g>
+  <!-- 数据流：网关 → 云平台 -->
+  <path d="M 740 430 L 870 430" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
 
-  <g id="arrow-labels">
-    <g><rect x="579" y="410" width="58" height="16" fill="#FFFFFF"/><text x="608" y="422" fill="#475569" font-size="10" text-anchor="middle">聊天/红包</text></g>
-    <g><rect x="741" y="349" width="58" height="16" fill="#FFFFFF"/><text x="770" y="361" fill="#475569" font-size="10" text-anchor="middle">分享/点赞</text></g>
-    <g><rect x="805" y="492" width="90" height="16" fill="#FFFFFF"/><text x="850" y="504" fill="#2563EB" font-size="10" font-weight="700" text-anchor="middle">扫码支付/转账</text></g>
-    <g><rect x="741" y="635" width="58" height="16" fill="#FFFFFF"/><text x="770" y="647" fill="#475569" font-size="10" text-anchor="middle">导航/约车</text></g>
-    <g><rect x="579" y="574" width="58" height="16" fill="#FFFFFF"/><text x="608" y="586" fill="#475569" font-size="10" text-anchor="middle">拍摄/发布</text></g>
-    <g><rect x="878" y="359" width="58" height="16" fill="#FFFFFF"/><text x="907" y="371" fill="#475569" font-size="10" text-anchor="middle">内嵌支付</text></g>
-  </g>
+  <!-- 数据流：云平台 → 应用层 -->
+  <path d="M 1100 430 L 1230 430" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
 
-  <g id="callout">
-    <rect x="928" y="542" width="150" height="46" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-    <text x="1003" y="562" fill="#2563EB" font-size="11" font-weight="700" text-anchor="middle">主链路：用户→移动支付</text>
-    <text x="1003" y="580" fill="#475569" font-size="10" text-anchor="middle">社交关系延伸至交易</text>
-  </g>
+  <!-- 控制流：自动告警 → 闭环控制 -->
+  <path d="M 1350 490 L 1350 510" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
 
-  <g id="legend">
-    <line x1="70" y1="850" x2="1430" y2="850" stroke="#E2E8F0" stroke-width="1"/>
-    <circle cx="88" cy="865" r="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-    <text x="102" y="869" fill="#64748B" font-size="11" font-weight="600">中心节点：用户</text>
-    <rect x="200" y="860" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="220" y="869" fill="#64748B" font-size="11" font-weight="600">外围节点：应用模块</text>
-    <line x1="340" y1="865" x2="372" y2="865" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-    <text x="380" y="869" fill="#64748B" font-size="11" font-weight="600">主链路（用户→移动支付）</text>
-    <line x1="540" y1="865" x2="572" y2="865" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-    <text x="580" y="869" fill="#64748B" font-size="11" font-weight="600">用户访问链路</text>
-    <line x1="680" y1="865" x2="712" y2="865" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-    <text x="720" y="869" fill="#64748B" font-size="11" font-weight="600">模块间交叉连接</text>
-  </g>
+  <!-- 控制流：闭环控制 → 网关（减速指令） -->
+  <path d="M 1240 560 L 1240 620 L 660 620 L 660 480 L 640 480" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
 
-  <text x="750" y="912" fill="#94A3B8" font-size="10" text-anchor="middle">移动互联网以用户为中心：即时通信维系熟人关系，社交媒体扩大社交半径，移动支付将社交延伸至交易，地图/出行解决物理移动，短视频成为内容消费入口；模块交叉连接体现应用的复合功能集成。</text>
+  <!-- 连接标签 -->
+  <rect x="780" y="430" width="80" height="24" rx="4" fill="white" stroke="#94A3B8" stroke-width="1"/>
+  <text x="820" y="447" text-anchor="middle" font-size="12" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">5G/NB-IoT</text>
+
+  <rect x="1130" y="430" width="80" height="24" rx="4" fill="white" stroke="#94A3B8" stroke-width="1"/>
+  <text x="1170" y="447" text-anchor="middle" font-size="12" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">趋势数据</text>
+
+  <rect x="860" y="605" width="80" height="24" rx="4" fill="white" stroke="#DC2626" stroke-width="1"/>
+  <text x="900" y="622" text-anchor="middle" font-size="12" fill="#DC2626" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">减速指令</text>
+
+  <!-- 节点：感知层 -->
+  <rect x="150" y="300" width="240" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="270" y="330" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">振动传感器</text>
+  <text x="270" y="355" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">BLE 协议</text>
+
+  <rect x="150" y="410" width="240" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="270" y="440" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">光电计数器</text>
+  <text x="270" y="465" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">ZigBee 协议</text>
+
+  <rect x="150" y="520" width="240" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="270" y="550" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">温湿度探头</text>
+  <text x="270" y="575" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">ZigBee 协议</text>
+
+  <!-- 节点：网络层 -->
+  <rect x="520" y="380" width="220" height="100" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="630" y="415" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">车间边缘网关</text>
+  <text x="630" y="455" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">数据汇聚 / 异常检测</text>
+
+  <!-- 节点：平台层 -->
+  <rect x="880" y="380" width="220" height="100" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="990" y="415" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">工业物联网云平台</text>
+  <text x="990" y="455" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">时序数据库 / 趋势分析</text>
+
+  <!-- 节点：应用层 -->
+  <rect x="1240" y="300" width="220" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1350" y="330" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">预测性维护模块</text>
+  <text x="1350" y="355" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">趋势分析</text>
+
+  <rect x="1240" y="410" width="220" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1350" y="440" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">自动告警系统</text>
+  <text x="1350" y="465" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">规则引擎</text>
+
+  <rect x="1240" y="520" width="220" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1350" y="550" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">闭环控制</text>
+  <text x="1350" y="575" text-anchor="middle" font-size="12" fill="#64748B" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif">下发减速指令</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头: 数据流（传感器信号、统计特征、时序数据）</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头: 控制流（告警通知、减速指令）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">矩形图标: 设备/系统节点</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">示意一场智慧工厂的典型物联连接拓扑。车间传感器每小时上报一次均方根振动值，边缘网关抓取异常波形后直接触发告警，同时上传至云平台做趋势分析。云平台模型判断当前设备即将失效，自动向传送带控制器下发减速指令，避免带病运行产生残次品。整个过程无需人工介入，数据在物与系统之间循环流动。</text>
+  </svg>
 </svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">topology</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">分层拓扑布局，从左至右依次排列“感知层 → 网络层 → 平台层 → 应用层”。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
 </body>
 </html>

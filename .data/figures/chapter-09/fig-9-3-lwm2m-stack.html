@@ -16,189 +16,130 @@
 <body>
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图 9-3 LwM2M 协议栈与逻辑实体交互架构</title>
+  <desc id="desc">读者应理解该架构中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图 9-3 LwM2M 协议栈与逻辑实体交互架构</title>
+  <desc id="desc">读者应理解该架构中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- canvas -->
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
-
-  <!-- ============ TITLE ============ -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图 9-3 LwM2M 协议栈与逻辑实体交互架构</text>
-  <text x="84" y="70" font-size="12" fill="#64748B">从底层传输到上层设备管理：三大实体 · 五种核心交互 · 协议栈分层</text>
-  <rect x="1610" y="24" width="150" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
-  <text x="1685" y="45" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">ARCHITECTURE</text>
-  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图 9-3 LwM2M 协议栈与逻辑实体交互架构</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解该架构中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+    <!-- 公网/无线接入边界虚线 -->
+    <line x1="580" y1="130" x2="580" y2="620" stroke="#64748B" stroke-width="2" stroke-dasharray="8,4" />
+    <text x="590" y="135" fill="#64748B" font-size="11" font-weight="600">公网/无线接入</text>
 
-  <!-- ============ PLATFORM DOMAIN BOUNDARY (right) ============ -->
-  <rect x="1170" y="138" width="580" height="478" rx="12" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1188" y="126" width="150" height="24" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="1263" y="143" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">平台服务域</text>
+    <!-- LwM2M Client 设备端 -->
+    <g id="c3">
+        <rect x="150" y="200" width="350" height="360" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+        <text x="325" y="230" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">LwM2M Client</text>
+        <text x="325" y="248" fill="#64748B" font-size="12" text-anchor="middle">设备端</text>
+        
+        <!-- Object 层 -->
+        <rect x="160" y="260" width="330" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+        <text x="325" y="290" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">Object: /3303 Temperature Sensor</text>
+        
+        <!-- Instance 0 -->
+        <rect x="170" y="330" width="140" height="100" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+        <text x="240" y="355" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">Instance 0</text>
+        <circle cx="200" cy="390" r="8" fill="#0F766E" />
+        <text x="215" y="394" fill="#0F172A" font-size="11">5700</text>
+        <circle cx="250" cy="390" r="8" fill="#0F766E" />
+        <text x="265" y="394" fill="#0F172A" font-size="11">5701</text>
+        
+        <!-- Instance 1 -->
+        <rect x="330" y="330" width="140" height="100" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+        <text x="400" y="355" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">Instance 1</text>
+        <circle cx="360" cy="390" r="8" fill="#0F766E" />
+        <text x="375" y="394" fill="#0F172A" font-size="11">5700</text>
+        <circle cx="410" cy="390" r="8" fill="#0F766E" />
+        <text x="425" y="394" fill="#0F172A" font-size="11">5701</text>
+    </g>
 
-  <!-- ============ CLIENT DOMAIN BOUNDARY (left) ============ -->
-  <rect x="60" y="138" width="600" height="478" rx="12" fill="none" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="78" y="126" width="150" height="24" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-  <text x="153" y="143" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">设备边缘域</text>
+    <!-- Bootstrap Server 引导服务器 -->
+    <g id="c1">
+        <rect x="700" y="150" width="320" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+        <text x="860" y="185" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">Bootstrap Server</text>
+        <text x="860" y="205" fill="#64748B" font-size="12" text-anchor="middle">引导服务器</text>
+    </g>
 
-  <!-- ============ BOUNDARY LINE (公网/无线接入边界) ============ -->
-  <line x1="915" y1="150" x2="915" y2="616" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="6 5"/>
-  <rect x="838" y="150" width="154" height="24" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.1"/>
-  <text x="915" y="167" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle">公网 / 无线接入边界</text>
+    <!-- LwM2M Server 管理服务器 -->
+    <g id="c2">
+        <rect x="700" y="360" width="320" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+        <text x="860" y="395" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">LwM2M Server</text>
+        <text x="860" y="415" fill="#64748B" font-size="12" text-anchor="middle">管理服务器</text>
+    </g>
 
-  <!-- ============ CLIENT CARD ============ -->
-  <rect x="80" y="160" width="560" height="290" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="100" y="188" font-size="15" font-weight="700" fill="#0F172A">LwM2M Client</text>
-  <text x="100" y="206" font-size="10" fill="#475569">设备端 · 运行于受限设备</text>
+    <!-- 协议栈底座 -->
+    <g id="c4">
+        <!-- 无线接入 -->
+        <rect x="120" y="620" width="1560" height="40" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" />
+        <text x="900" y="645" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">NB-IoT / 5G / LoRaWAN</text>
+        <!-- UDP/DTLS -->
+        <rect x="120" y="660" width="1560" height="40" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" />
+        <text x="900" y="685" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">UDP / DTLS</text>
+        <!-- CoAP -->
+        <rect x="120" y="700" width="1560" height="40" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" />
+        <text x="900" y="725" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">CoAP (CON / NON / ACK / RST)</text>
+    </g>
 
-  <!-- object tree header -->
-  <text x="100" y="232" font-size="11" font-weight="600" fill="#64748B">对象树（标准化读写接口）</text>
+    <!-- 连线：引导配置 (Bootstrap->Client) -->
+    <line x1="700" y1="200" x2="500" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+    <g>
+        <rect x="570" y="210" width="80" height="20" rx="4" fill="white" stroke="none" />
+        <text x="610" y="224" fill="#0F172A" font-size="11" font-weight="600" text-anchor="middle">引导配置</text>
+    </g>
 
-  <!-- Level 1: Object -->
-  <rect x="100" y="244" width="180" height="48" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.6"/>
-  <text x="190" y="265" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">Object 3303</text>
-  <text x="190" y="282" font-size="10" fill="#475569" text-anchor="middle">温度传感器</text>
+    <!-- 连线：注册/更新 (Client->LwM2M Server) -->
+    <line x1="500" y1="400" x2="700" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+    <g>
+        <rect x="570" y="385" width="80" height="20" rx="4" fill="white" stroke="none" />
+        <text x="610" y="399" fill="#0F172A" font-size="11" font-weight="600" text-anchor="middle">注册/更新</text>
+    </g>
 
-  <!-- connector L1 -> L2 -->
-  <line x1="190" y1="292" x2="190" y2="312" stroke="#94A3B8" stroke-width="1.2"/>
-  <line x1="190" y1="312" x2="330" y2="312" stroke="#94A3B8" stroke-width="1.2"/>
-  <line x1="330" y1="312" x2="330" y2="330" stroke="#94A3B8" stroke-width="1.2"/>
+    <!-- 连线：观察/读写/升级 (LwM2M Server->Client) 虚线 -->
+    <line x1="700" y1="440" x2="500" y2="440" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)" />
+    <g>
+        <rect x="560" y="425" width="110" height="20" rx="4" fill="white" stroke="none" />
+        <text x="615" y="439" fill="#0F172A" font-size="11" font-weight="600" text-anchor="middle">观察/读写/升级</text>
+    </g>
 
-  <!-- Level 2: ObjectInstance -->
-  <rect x="270" y="330" width="140" height="44" rx="6" fill="#F8FAFC" stroke="#10B981" stroke-width="1.4"/>
-  <text x="340" y="350" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">Instance /0</text>
-  <text x="340" y="366" font-size="9" fill="#475569" text-anchor="middle">对象实例</text>
+    <!-- 连线：通知/响应 (Client->LwM2M Server) -->
+    <line x1="500" y1="480" x2="700" y2="480" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+    <g>
+        <rect x="570" y="465" width="80" height="20" rx="4" fill="white" stroke="none" />
+        <text x="610" y="479" fill="#0F172A" font-size="11" font-weight="600" text-anchor="middle">通知/响应</text>
+    </g>
 
-  <!-- connector L2 -> L3 -->
-  <line x1="340" y1="374" x2="340" y2="392" stroke="#94A3B8" stroke-width="1.2"/>
-  <line x1="260" y1="392" x2="540" y2="392" stroke="#94A3B8" stroke-width="1.2"/>
-  <line x1="260" y1="392" x2="260" y2="406" stroke="#94A3B8" stroke-width="1.2"/>
-  <line x1="400" y1="392" x2="400" y2="406" stroke="#94A3B8" stroke-width="1.2"/>
-  <line x1="540" y1="392" x2="540" y2="406" stroke="#94A3B8" stroke-width="1.2"/>
+    <!-- Callout 卡片 1 -->
+    <g>
+        <rect x="1100" y="170" width="520" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+        <text x="1130" y="195" fill="#0F172A" font-size="11">对象树的标准化使得不同厂商的设备</text>
+        <text x="1130" y="215" fill="#0F172A" font-size="11">共享同一套读写接口。</text>
+    </g>
 
-  <!-- Level 3: Resources (dots) -->
-  <circle cx="260" cy="416" r="7" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
-  <text x="260" y="441" font-size="9" fill="#475569" text-anchor="middle">5700 值</text>
-
-  <circle cx="400" cy="416" r="7" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
-  <text x="400" y="441" font-size="9" fill="#475569" text-anchor="middle">5601 单位</text>
-
-  <circle cx="540" cy="416" r="7" fill="#FFFFFF" stroke="#10B981" stroke-width="1.8"/>
-  <text x="540" y="441" font-size="9" fill="#475569" text-anchor="middle">5602 量程</text>
-
-  <!-- client side message-flow note -->
-  <line x1="80" y1="478" x2="640" y2="478" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="360" y="500" font-size="10" fill="#64748B" text-anchor="middle">资源以 RESTful 路径寻址：/3303/0/5700</text>
-
-  <!-- ============ BOOTSTRAP SERVER CARD ============ -->
-  <rect x="1200" y="160" width="520" height="150" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="1220" y="190" font-size="15" font-weight="700" fill="#0F172A">Bootstrap Server</text>
-  <text x="1220" y="208" font-size="10" fill="#475569">引导服务器 · 首次/重置时介入</text>
-  <line x1="1220" y1="220" x2="1700" y2="220" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1220" y="240" font-size="10" fill="#475569">▸ 下发目标 Server 地址、PSK / 证书、Lifetime</text>
-  <text x="1220" y="258" font-size="10" fill="#475569">▸ 与 LwM2M Server 物理可分离</text>
-  <text x="1220" y="278" font-size="10" fill="#64748B">承载：CoAP over UDP/DTLS</text>
-  <rect x="1220" y="288" width="120" height="18" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="1280" y="301" font-size="9" fill="#64748B" text-anchor="middle">priority: primary</text>
-
-  <!-- ============ LwM2M SERVER CARD ============ -->
-  <rect x="1200" y="350" width="520" height="240" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="1220" y="380" font-size="15" font-weight="700" fill="#0F172A">LwM2M Server</text>
-  <text x="1220" y="398" font-size="10" fill="#475569">管理服务器 · 维护设备注册表</text>
-  <line x1="1220" y1="410" x2="1700" y2="410" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1220" y="430" font-size="10" fill="#475569">▸ 注册 / 注销 / 生命周期更新</text>
-  <text x="1220" y="448" font-size="10" fill="#475569">▸ 读 / 写 / 执行 / 远程配置</text>
-  <text x="1220" y="466" font-size="10" fill="#475569">▸ Observe 资源订阅与通知</text>
-  <text x="1220" y="484" font-size="10" fill="#475569">▸ 固件升级（块写 + 触发）</text>
-  <!-- db cylinder: 注册表 -->
-  <ellipse cx="1640" cy="520" rx="60" ry="9" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4"/>
-  <rect x="1580" y="520" width="120" height="46" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4"/>
-  <ellipse cx="1640" cy="566" rx="60" ry="9" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4"/>
-  <ellipse cx="1640" cy="520" rx="60" ry="9" fill="none" stroke="#2563EB" stroke-width="1.4"/>
-  <text x="1640" y="548" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">设备注册表</text>
-
-  <!-- ============ INTERACTION ARROWS ============ -->
-  <!-- 1. Bootstrap -> Client (引导配置) -->
-  <line x1="1200" y1="250" x2="642" y2="262" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="780" y="226" width="150" height="20" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="855" y="241" font-size="10" font-weight="600" fill="#0F172A" text-anchor="middle">① 引导配置</text>
-
-  <!-- 2. Client -> LwM2M Server (注册/更新) MAIN -->
-  <line x1="640" y1="360" x2="1198" y2="418" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
-  <rect x="780" y="378" width="190" height="20" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="875" y="393" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">② 注册 / 更新 (主链路)</text>
-
-  <!-- 3. LwM2M Server -> Client (观察/读写/升级) dashed -->
-  <line x1="1200" y1="500" x2="642" y2="450" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <rect x="780" y="456" width="190" height="20" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="875" y="471" font-size="10" font-weight="600" fill="#334155" text-anchor="middle">③ 观察 / 读写 / 升级</text>
-
-  <!-- 4. Client -> LwM2M Server (通知/响应) -->
-  <line x1="640" y1="540" x2="1198" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="780" y="548" width="160" height="20" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="860" y="563" font-size="10" font-weight="600" fill="#0F172A" text-anchor="middle">④ 通知 / 响应</text>
-
-  <!-- ============ PROTOCOL STACK (bottom bands) ============ -->
-  <text x="60" y="650" font-size="11" font-weight="600" fill="#64748B">协议栈底座（自下而上承载）</text>
-
-  <!-- CoAP -->
-  <rect x="60" y="660" width="1680" height="40" rx="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4"/>
-  <text x="80" y="685" font-size="12" font-weight="700" fill="#0F172A">CoAP</text>
-  <text x="140" y="685" font-size="10" fill="#475569">应用层 · 消息类型：CON / NON / ACK / RST · Method：GET/POST/PUT</text>
-  <text x="1700" y="685" font-size="10" font-weight="600" fill="#64748B" text-anchor="end">L7</text>
-
-  <!-- UDP / DTLS -->
-  <rect x="60" y="704" width="1680" height="40" rx="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4"/>
-  <text x="80" y="729" font-size="12" font-weight="700" fill="#0F172A">UDP / DTLS</text>
-  <text x="170" y="729" font-size="10" fill="#475569">传输层 · PSK / 证书加密 · 低开销握手，适配受限网络</text>
-  <text x="1700" y="729" font-size="10" font-weight="600" fill="#64748B" text-anchor="end">L4</text>
-
-  <!-- Radio access -->
-  <rect x="60" y="748" width="1680" height="40" rx="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.4"/>
-  <text x="80" y="773" font-size="12" font-weight="700" fill="#0F172A">无线接入</text>
-  <text x="170" y="773" font-size="10" fill="#475569">NB-IoT  ·  5G  ·  LoRaWAN  ——  跨公网的 IP / 非空承载</text>
-  <text x="1700" y="773" font-size="10" font-weight="600" fill="#64748B" text-anchor="end">L1/L2</text>
-
-  <!-- up-bearing arrow on left of stack -->
-  <line x1="1740" y1="786" x2="1740" y2="664" stroke="#64748B" stroke-width="1.4" marker-end="url(#ah-gray)"/>
-  <text x="1752" y="728" font-size="9" fill="#64748B" transform="rotate(-90 1752 728)">逐层承载</text>
-
-  <!-- ============ CALLOUTS ============ -->
-  <rect x="60" y="810" width="820" height="76" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.1"/>
-  <text x="76" y="832" font-size="11" font-weight="600" fill="#2563EB">▲ 设计要点</text>
-  <text x="76" y="852" font-size="10" fill="#334155">· 对象树标准化使不同厂商设备共享同一套 RESTful 读写接口（/Obj/Inst/Res）。</text>
-  <text x="76" y="870" font-size="10" fill="#334155">· 引导服务器仅在首次或重置时介入，正常运行时设备直接与 LwM2M Server 交互。</text>
-
-  <rect x="900" y="810" width="840" height="76" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.1"/>
-  <text x="916" y="832" font-size="11" font-weight="600" fill="#10B981">▲ 工程取舍</text>
-  <text x="916" y="852" font-size="10" fill="#334155">· CoAP + DTLS over UDP：小报文、低功耗，适配 NB-IoT 等高延迟低带宽链路。</text>
-  <text x="916" y="870" font-size="10" fill="#334155">· Observe 模式把"轮询读"转为"服务器订阅 + 设备推送"，省电省带宽。</text>
-
-  <!-- ============ LEGEND ============ -->
-  <line x1="60" y1="908" x2="1740" y2="908" stroke="#E2E8F0" stroke-width="1"/>
-  <rect x="80" y="922" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="104" y="932" font-size="10" fill="#475569">平台侧实体（Bootstrap / LwM2M Server）</text>
-
-  <rect x="400" y="922" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="424" y="932" font-size="10" fill="#475569">设备侧实体（LwM2M Client）</text>
-
-  <rect x="700" y="922" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
-  <text x="724" y="932" font-size="10" fill="#475569">协议栈底座</text>
-
-  <line x1="870" y1="928" x2="910" y2="928" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="918" y="932" font-size="10" fill="#475569">同步请求 / 响应（主链路高亮）</text>
-
-  <line x1="1200" y1="928" x2="1240" y2="928" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="1248" y="932" font-size="10" fill="#475569">观察 / 异步推送</text>
-
-  <!-- ============ CAPTION ============ -->
-  <text x="900" y="980" font-size="10" fill="#94A3B8" text-anchor="middle">图 9-3  LwM2M 协议栈层次（无线接入 → UDP/DTLS → CoAP）以及三大实体之间的引导、注册、观察/通知、读写/配置、固件升级五种核心交互流程</text>
+    <!-- Callout 卡片 2 -->
+    <g>
+        <rect x="1100" y="270" width="520" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+        <text x="1130" y="295" fill="#0F172A" font-size="11">引导服务器仅在首次或重置时介入，</text>
+        <text x="1130" y="315" fill="#0F172A" font-size="11">正常运行时设备直接与 LwM2M Server 交互。</text>
+    </g>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色 = 平台侧实体</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线 = 同步请求/响应；虚线 = 观察/异步推送</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图 9-3 展示 LwM2M 协议栈层次以及三大实体之间的引导、注册、观察/通知、读写/配置、固件升级五种交互流程。</text>
   </svg>
 </svg>
     <section class="meta">

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图13-2 数据上链流程图</title>
+  <desc id="desc">读者应理解数据上链流程图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图13-2 数据上链流程图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解数据上链流程图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- 区域边界 -->
+  <rect x="140" y="260" width="470" height="150" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" rx="10"/>
+  <text x="150" y="280" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">设备与边缘域</text>
+  <rect x="700" y="140" width="250" height="150" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" rx="10"/>
+  <text x="710" y="160" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">链下存储域</text>
+  <rect x="700" y="390" width="250" height="150" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" rx="10"/>
+  <text x="710" y="410" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">链上存证域</text>
+  <rect x="1140" y="260" width="230" height="150" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" rx="10"/>
+  <text x="1150" y="280" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证域</text>
+
+  <!-- 连线（先绘制，确保在节点下方） -->
+  <path d="M 310 335 L 420 335" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <path d="M 495 300 L 495 230 L 750 230 L 750 215" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <path d="M 495 370 L 495 410 L 750 410 L 750 465" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <path d="M 900 215 L 1100 215 L 1100 315 L 1180 315" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <path d="M 900 465 L 1100 465 L 1100 355 L 1180 355" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+
+  <!-- 连线标签 -->
+  <g font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif" font-size="11" fill="#0F172A">
+    <!-- 传感器→边缘节点 -->
+    <rect x="340" y="318" width="60" height="20" fill="white" rx="4" stroke="none"/>
+    <text x="370" y="333" text-anchor="middle">采样数据</text>
+    <!-- 边缘节点→IPFS -->
+    <rect x="590" y="218" width="60" height="20" fill="white" rx="4" stroke="none"/>
+    <text x="620" y="233" text-anchor="middle">原始数据</text>
+    <!-- 边缘节点→区块链 -->
+    <rect x="590" y="398" width="80" height="20" fill="white" rx="4" stroke="none"/>
+    <text x="630" y="413" text-anchor="middle">哈希+元数据</text>
+    <!-- IPFS→验证方 -->
+    <rect x="970" y="198" width="80" height="20" fill="white" rx="4" stroke="none"/>
+    <text x="1010" y="213" text-anchor="middle">提供原始数据</text>
+    <!-- 区块链→验证方 -->
+    <rect x="970" y="448" width="100" height="20" fill="white" rx="4" stroke="none"/>
+    <text x="1020" y="463" text-anchor="middle">查询哈希是否存在</text>
+  </g>
+
+  <!-- 节点 -->
+  <!-- 传感器（边缘） -->
+  <rect x="180" y="300" width="130" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="245" y="326" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">传感器</text>
+  <text x="245" y="348" fill="#475569" font-size="11" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">设备采样生成JSON</text>
+
+  <!-- 边缘节点（平台） -->
+  <rect x="420" y="300" width="150" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="495" y="326" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">边缘节点</text>
+  <text x="495" y="348" fill="#475569" font-size="11" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">聚合数据·计算哈希</text>
+
+  <!-- IPFS/Arweave（外部） -->
+  <rect x="750" y="180" width="150" height="70" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="825" y="206" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">IPFS/Arweave</text>
+  <text x="825" y="228" fill="#475569" font-size="11" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">链下存储</text>
+
+  <!-- 区块链（平台） -->
+  <rect x="750" y="430" width="150" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="825" y="456" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">区块链</text>
+  <text x="825" y="478" fill="#475569" font-size="11" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">链上存证·智能合约</text>
+
+  <!-- 验证方（平台） -->
+  <rect x="1180" y="300" width="150" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1255" y="326" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证方</text>
+  <text x="1255" y="348" fill="#475569" font-size="11" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">比对哈希验证完整性</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色=设备/传感器；蓝色=核心处理逻辑；灰色=外部存储系统</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头=同步/主动推送；虚线箭头=查询/读取</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图13-2 展示数据从传感器采样到链下存储和链上存证，最终验证方通过两侧数据比对确认完整性的典型流程。</text>
+</svg>

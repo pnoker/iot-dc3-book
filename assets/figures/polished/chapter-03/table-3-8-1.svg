@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">感知层技术工程检查清单</title>
+  <desc id="desc">读者应理解感知层技术工程检查清单中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">感知层技术工程检查清单</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解感知层技术工程检查清单中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">MATRIX</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="matrix">
+  <!-- 外框 -->
+  <rect x="120" y="145" width="1400" height="616" fill="none" stroke="#E2E8F0" stroke-width="1.5" />
+  <!-- 表头背景 -->
+  <rect x="120" y="145" width="1400" height="40" fill="#EFF6FF" />
+  <!-- 表头下分割线 -->
+  <line x1="120" y1="185" x2="1520" y2="185" stroke="#2563EB" stroke-width="1.5" />
+  <!-- 表头文字 -->
+  <text x="245" y="173" fill="#0F172A" font-size="16" font-weight="bold" text-anchor="middle">领域</text>
+  <text x="595" y="173" fill="#0F172A" font-size="16" font-weight="bold" text-anchor="middle">检查项</text>
+  <text x="1170" y="173" fill="#0F172A" font-size="16" font-weight="bold" text-anchor="middle">自检说明</text>
+  <!-- 数据行 0 -->
+  <rect x="120" y="185" width="1400" height="48" fill="#FFFFFF" />
+  <text x="130" y="215" fill="#0F172A" font-size="15" font-weight="bold">传感器</text>
+  <text x="380" y="215" fill="#0F172A" font-size="15">传感器选型</text>
+  <text x="830" y="215" fill="#64748B" font-size="13">对照物理量范围预留余量，避免非线性偏移</text>
+  <!-- 数据行 1 -->
+  <rect x="120" y="233" width="1400" height="48" fill="#F8FAFC" />
+  <text x="130" y="263" fill="#0F172A" font-size="15" font-weight="bold">接口</text>
+  <text x="380" y="263" fill="#0F172A" font-size="15">传感器接口</text>
+  <text x="830" y="263" fill="#64748B" font-size="13">模拟信号需考虑ADC精度与屏蔽；数字接口注意地址冲突</text>
+  <!-- 数据行 2 -->
+  <rect x="120" y="281" width="1400" height="48" fill="#FFFFFF" />
+  <text x="130" y="311" fill="#0F172A" font-size="15" font-weight="bold">信号</text>
+  <text x="380" y="311" fill="#0F172A" font-size="15">信号调理</text>
+  <text x="830" y="311" fill="#64748B" font-size="13">快速变化信号需高采样率；关注噪声等效位宽</text>
+  <!-- 数据行 3 -->
+  <rect x="120" y="329" width="1400" height="48" fill="#F8FAFC" />
+  <text x="130" y="359" fill="#0F172A" font-size="15" font-weight="bold">RFID</text>
+  <text x="380" y="359" fill="#0F172A" font-size="15">RFID频段选择</text>
+  <text x="830" y="359" fill="#64748B" font-size="13">金属和液体环境不适合UHF；有源标签需评估电池更换成本</text>
+  <!-- 数据行 4 -->
+  <rect x="120" y="377" width="1400" height="48" fill="#FFFFFF" />
+  <text x="130" y="407" fill="#0F172A" font-size="15" font-weight="bold">防碰撞</text>
+  <text x="380" y="407" fill="#0F172A" font-size="15">防碰撞协议</text>
+  <text x="830" y="407" fill="#64748B" font-size="13">大批量读写需评估Q算法或改进型帧时隙ALOHA协议</text>
+  <!-- 数据行 5 -->
+  <rect x="120" y="425" width="1400" height="48" fill="#F8FAFC" />
+  <text x="130" y="455" fill="#0F172A" font-size="15" font-weight="bold">定位</text>
+  <text x="380" y="455" fill="#0F172A" font-size="15">定位技术融合</text>
+  <text x="830" y="455" fill="#64748B" font-size="13">单源技术有盲区，需设计降级方案；卡尔曼滤波初始化注意防漂移</text>
+  <!-- 数据行 6 -->
+  <rect x="120" y="473" width="1400" height="48" fill="#FFFFFF" />
+  <text x="130" y="503" fill="#0F172A" font-size="15" font-weight="bold">边缘节点</text>
+  <text x="380" y="503" fill="#0F172A" font-size="15">边缘节点硬件</text>
+  <text x="830" y="503" fill="#64748B" font-size="13">不只关注CPU主频，需评估NPU或DSP可用性及总功耗预算</text>
+  <!-- 数据行 7 -->
+  <rect x="120" y="521" width="1400" height="48" fill="#F8FAFC" />
+  <text x="130" y="551" fill="#0F172A" font-size="15" font-weight="bold">数据预处理</text>
+  <text x="380" y="551" fill="#0F172A" font-size="15">数据预处理</text>
+  <text x="830" y="551" fill="#64748B" font-size="13">滑动平均有相位延迟；实时场景优先用卡尔曼滤波</text>
+  <!-- 数据行 8 -->
+  <rect x="120" y="569" width="1400" height="48" fill="#FFFFFF" />
+  <text x="130" y="599" fill="#0F172A" font-size="15" font-weight="bold">端侧AI</text>
+  <text x="380" y="599" fill="#0F172A" font-size="15">端侧AI部署</text>
+  <text x="830" y="599" fill="#64748B" font-size="13">从float32转int8需使用校准集，避免精度退化</text>
+  <!-- 数据行 9 -->
+  <rect x="120" y="617" width="1400" height="48" fill="#F8FAFC" />
+  <text x="130" y="647" fill="#0F172A" font-size="15" font-weight="bold">自适应采样</text>
+  <text x="380" y="647" fill="#0F172A" font-size="15">自适应采样</text>
+  <text x="830" y="647" fill="#64748B" font-size="13">阈值太小功耗大，太大漏事件，需统计历史数据确定基准</text>
+  <!-- 数据行 10 -->
+  <rect x="120" y="665" width="1400" height="48" fill="#FFFFFF" />
+  <text x="130" y="695" fill="#0F172A" font-size="15" font-weight="bold">物模型</text>
+  <text x="380" y="695" fill="#0F172A" font-size="15">物模型设计</text>
+  <text x="830" y="695" fill="#64748B" font-size="13">缺少服务或事件会导致无法闭环控制</text>
+  <!-- 数据行 11 -->
+  <rect x="120" y="713" width="1400" height="48" fill="#F8FAFC" />
+  <text x="130" y="743" fill="#0F172A" font-size="15" font-weight="bold">互通验证</text>
+  <text x="380" y="743" fill="#0F172A" font-size="15">数据互通验证</text>
+  <text x="830" y="743" fill="#64748B" font-size="13">用IoT DC3物模型管理接口测试设备影子同步</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">无</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">表3-8-1 感知层技术工程检查清单</text>
+</svg>

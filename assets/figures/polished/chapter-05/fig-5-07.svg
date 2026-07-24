@@ -3,7 +3,7 @@
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#94A3B8"/></marker>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
     <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-orange" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0,11 4,0 8" fill="#F59E0B"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
     <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
     <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
     <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
@@ -130,7 +130,7 @@
   <text x="489" y="587" font-size="9" fill="#10B981" text-anchor="middle">解析送判</text>
   <line x1="820" y1="595" x2="978" y2="595" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
   <text x="899" y="587" font-size="9" fill="#F59E0B" text-anchor="middle">硬阈值超限</text>
-  <path d="M 700,545 C 700,505 1460,505 1460,543" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <path d="M 700 545 L 700 505 L 1460 505 L 1460 543" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
   <text x="1080" y="512" font-size="9" fill="#10B981" text-anchor="middle">软阈值 / 正常 → MQTT 上行</text>
 
   <!-- ===== L4 Device ===== -->

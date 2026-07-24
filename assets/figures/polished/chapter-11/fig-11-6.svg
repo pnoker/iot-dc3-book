@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图11-6 云边协同分层架构示意</title>
+  <desc id="desc">读者应理解云边协同不是简单地把计算下放，而是按延迟、数据量和算力三个维度进行任务卸载；每层有其清晰的职责边界。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-6 云边协同分层架构示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解云边协同不是简单地把计算下放，而是按延迟、数据量和算力三个维度进行任务卸载；每层有其清晰的职责边界。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 四层区域虚线框 -->
+  <rect x="550" y="155" width="700" height="120" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="560" y="173" font-size="12" fill="#64748B" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">云端域</text>
+  
+  <rect x="550" y="305" width="700" height="120" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="560" y="323" font-size="12" fill="#64748B" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">汇聚边缘域</text>
+  
+  <rect x="550" y="455" width="700" height="120" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="560" y="473" font-size="12" fill="#64748B" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">路侧边缘域</text>
+  
+  <rect x="550" y="605" width="700" height="120" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="560" y="623" font-size="12" fill="#64748B" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">设备域</text>
+  
+  <!-- 连线（先于节点绘制） -->
+  <!-- 数据流1：设备->路侧 -->
+  <line x1="900" y1="625" x2="900" y2="555" stroke="#2563EB" stroke-width="2.5"/>
+  <!-- 数据流2：路侧->汇聚 -->
+  <line x1="900" y1="475" x2="900" y2="405" stroke="#2563EB" stroke-width="2.5"/>
+  <!-- 数据流3：汇聚->云端 -->
+  <line x1="900" y1="325" x2="900" y2="255" stroke="#2563EB" stroke-width="2.5"/>
+  <!-- 模型下发：云端->汇聚（虚线） -->
+  <line x1="900" y1="255" x2="900" y2="325" stroke="#F97316" stroke-width="2.5" stroke-dasharray="6,4"/>
+  
+  <!-- 箭头多边形 -->
+  <polygon points="900,555 895,563 905,563" fill="#2563EB"/>
+  <polygon points="900,405 895,413 905,413" fill="#2563EB"/>
+  <polygon points="900,255 895,263 905,263" fill="#2563EB"/>
+  <polygon points="900,325 895,317 905,317" fill="#F97316"/>
+  
+  <!-- 节点卡片 -->
+  <!-- 云端层 -->
+  <rect x="700" y="175" width="400" height="80" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="900" y="201" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">云端层</text>
+  <text x="900" y="221" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">云平台 / 训练集群</text>
+  <text x="900" y="237" font-size="11" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">全局训练</text>
+  
+  <!-- 汇聚边缘层 -->
+  <rect x="700" y="325" width="400" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="351" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">汇聚边缘层</text>
+  <text x="900" y="371" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">区域服务器 / 5G MEC</text>
+  <text x="900" y="387" font-size="11" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">短期预测</text>
+  
+  <!-- 路侧边缘层 -->
+  <rect x="700" y="475" width="400" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="900" y="501" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">路侧边缘层</text>
+  <text x="900" y="521" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">RSU / 嵌入式节点</text>
+  <text x="900" y="537" font-size="11" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">毫秒级实时响应</text>
+  
+  <!-- 设备层 -->
+  <rect x="700" y="625" width="400" height="80" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="900" y="651" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">设备层</text>
+  <text x="900" y="671" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">车辆、摄像头、地磁线圈</text>
+  
+  <!-- 连线标签背景和文本 -->
+  <!-- 原始数据流 -->
+  <rect x="610" y="580" width="80" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="650" y="594" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">原始数据流</text>
+  
+  <!-- 聚合统计流 -->
+  <rect x="610" y="430" width="80" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="650" y="444" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">聚合统计流</text>
+  
+  <!-- 压缩训练数据 -->
+  <rect x="605" y="280" width="90" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="650" y="294" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">压缩训练数据</text>
+  
+  <!-- 模型更新下发 -->
+  <rect x="1110" y="280" width="80" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="1150" y="294" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">模型更新下发</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色/青绿色=边缘计算节点</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头=实时或聚合数据流；虚线箭头=模型或配置下发</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-6 云边协同分层架构示意：设备层数据经路侧RSU实时处理后，聚合统计上传至区域汇聚节点，汇聚节点运行短期预测模型，并与云端进行训练数据交换。</text>
+</svg>

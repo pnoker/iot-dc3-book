@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图10-6 规则引擎告警触发与预测性维护工单闭环</title>
+  <title>图10-7 IoT DC3平台微服务架构</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -65,13 +65,13 @@
 
 <!-- 连线：主流程(蓝实线) -->
 <line x1="220" y1="325" x2="356" y2="325" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<line x1="560" y1="315" x2="696" y2="200" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<line x1="560" y1="325" x2="696" y2="324" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<line x1="560" y1="335" x2="696" y2="448" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<path d="M 560 325 L 670 325 L 670 192 L 696 192" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<path d="M 560 325 L 696 325" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<path d="M 560 325 L 670 325 L 670 456 L 696 456" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 <text x="620" y="300" fill="#2563EB" font-size="10" text-anchor="middle">并行触发</text>
-<line x1="920" y1="324" x2="1078" y2="356" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+<path d="M 920 324 L 1000 324 L 1000 356 L 1078 356" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 <!-- 升级路径(橙虚线) -->
-<line x1="1280" y1="356" x2="1436" y2="330" stroke="#F59E0B" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-orange)"/>
+<path d="M 1280 356 L 1410 356 L 1410 324 L 1440 324" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-orange)"/>
 <text x="1360" y="330" fill="#B45309" font-size="10" text-anchor="middle">是·超时升级</text>
 <!-- 闭环回流 -->
 <path d="M 1180 406 L 1180 560 L 460 560 L 460 379" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
@@ -90,8 +90,8 @@
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左至右流程图。起点温度数据流入→菱形条件判定（&gt;80℃且窗口≥10s）→分出三个并行动作节点（调用AI推理/创建高优先级工单/钉钉通知）；创建工单→菱形“工单超时未关闭？”，超时且持续超限则虚线升级通知上级，正常则工单关闭。</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自下而上五层：物理设备层 → 驱动接入层 → 平台服务层 → 智能决策层 → 业务应用层。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

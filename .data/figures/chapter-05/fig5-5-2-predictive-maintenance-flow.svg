@@ -1,182 +1,83 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">从数据采集到告警触发的预测性维护流程</title>
+  <desc id="desc">读者应理解从数据采集到告警触发的预测性维护流程中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="155.827" width="1152.000" height="448.346" viewBox="0 0 1850.000 720.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#94A3B8"/></marker>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">从数据采集到告警触发的预测性维护流程</title>
+  <desc id="desc">读者应理解从数据采集到告警触发的预测性维护流程中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- canvas -->
-  <rect x="0" y="0" width="1850" height="720" fill="#FFFFFF"/>
-
-  <!-- ============ Title area ============ -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">从数据采集到告警触发的预测性维护流程</text>
-  <text x="84" y="70" font-size="12" fill="#64748B">数据流 · 告警流 · 模型更新流的交互关系与责任边界</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">从数据采集到告警触发的预测性维护流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解从数据采集到告警触发的预测性维护流程中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- 设备层节点（边缘域卡片） -->
+  <rect x="125" y="360" width="150" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="200" y="390" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">设备层</text>
+  <text x="200" y="415" fill="#475569" font-size="12" text-anchor="middle">电机电流采集</text>
 
-  <rect x="1700" y="24" width="126" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1763" y="42" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1">FLOWCHART</text>
+  <!-- 数据管道节点（数据域圆柱） -->
+  <rect x="390" y="350" width="120" height="100" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <ellipse cx="450" cy="350" rx="60" ry="15" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="450" y="390" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">数据管道</text>
+  <text x="450" y="415" fill="#475569" font-size="12" text-anchor="middle">MQTT+时序DB</text>
 
-  <line x1="60" y1="103" x2="1790" y2="103" stroke="#E2E8F0"/>
+  <!-- 模型层节点（智能域卡片） -->
+  <rect x="625" y="360" width="150" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="700" y="390" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">模型层</text>
+  <text x="700" y="415" fill="#475569" font-size="12" text-anchor="middle">Prophet预测</text>
 
-  <!-- ============ Region boundary boxes ============ -->
-  <!-- C1 edge -->
-  <rect x="60" y="150" width="220" height="300" rx="12" fill="none" stroke="#10B981" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="74" y="140" width="150" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-  <text x="82" y="155" font-size="11" font-weight="700" fill="#10B981">设备与边缘域</text>
-  <text x="74" y="184" font-size="9" fill="#64748B">现场异构资源边界</text>
+  <!-- 评分层节点（平台域卡片） -->
+  <rect x="875" y="360" width="150" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="950" y="390" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">评分层</text>
+  <text x="950" y="415" fill="#475569" font-size="12" text-anchor="middle">滑动窗口异常评分</text>
 
-  <!-- C2 data -->
-  <rect x="320" y="150" width="220" height="300" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="334" y="140" width="132" height="22" rx="4" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.2"/>
-  <text x="342" y="155" font-size="11" font-weight="700" fill="#7C3AED">数据资产域</text>
-  <text x="334" y="184" font-size="9" fill="#64748B">数据沉淀与治理</text>
+  <!-- 决策层节点（智能域菱形） -->
+  <polygon points="1140,400 1200,340 1260,400 1200,460" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1200" y="405" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">异常评分?</text>
 
-  <!-- C3 intelligence (model) -->
-  <rect x="580" y="150" width="220" height="300" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="594" y="140" width="132" height="22" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
-  <text x="602" y="155" font-size="11" font-weight="700" fill="#F59E0B">智能决策域</text>
-  <text x="594" y="184" font-size="9" fill="#64748B">模型训练与预测</text>
+  <!-- 数据流连线（绿色） -->
+  <!-- 设备层 → 数据管道 -->
+  <line x1="275" y1="400" x2="390" y2="400" stroke="#10B981" stroke-width="2"/>
+  <polygon points="390,400 380,395 380,405" fill="#10B981"/>
+  <rect x="310" y="382" width="70" height="16" rx="3" fill="white" opacity="0.9"/>
+  <text x="345" y="394" fill="#0F172A" font-size="11" text-anchor="middle">电流数据上传</text>
 
-  <!-- C4 platform (scoring) -->
-  <rect x="840" y="150" width="220" height="300" rx="12" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="854" y="140" width="132" height="22" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="862" y="155" font-size="11" font-weight="700" fill="#2563EB">平台服务域</text>
-  <text x="854" y="184" font-size="9" fill="#64748B">核心评分服务能力</text>
+  <!-- 数据管道 → 模型层 -->
+  <line x1="510" y1="400" x2="625" y2="400" stroke="#10B981" stroke-width="2"/>
+  <polygon points="625,400 635,395 635,405" fill="#10B981"/>
+  <rect x="547" y="382" width="70" height="16" rx="3" fill="white" opacity="0.9"/>
+  <text x="582" y="394" fill="#0F172A" font-size="11" text-anchor="middle">历史数据供训练</text>
 
-  <!-- C5 intelligence (decision + alarm + ops) -->
-  <rect x="1100" y="150" width="690" height="300" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="1114" y="140" width="168" height="22" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
-  <text x="1122" y="155" font-size="11" font-weight="700" fill="#F59E0B">智能决策域 · 告警</text>
-  <text x="1114" y="184" font-size="9" fill="#64748B">规则判断 / 告警触发 / 运维反馈</text>
+  <!-- 模型层 → 评分层 -->
+  <line x1="775" y1="400" x2="875" y2="400" stroke="#10B981" stroke-width="2"/>
+  <polygon points="875,400 885,395 885,405" fill="#10B981"/>
+  <rect x="805" y="382" width="70" height="16" rx="3" fill="white" opacity="0.9"/>
+  <text x="840" y="394" fill="#0F172A" font-size="11" text-anchor="middle">输出预测区间</text>
 
-  <!-- ============ Nodes (main row, cy≈300) ============ -->
-  <!-- r1 设备层 (edge, card) -->
-  <rect x="95" y="260" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="170" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备层</text>
-  <text x="170" y="318" font-size="10" fill="#64748B" text-anchor="middle">电机电流采集</text>
+  <!-- 评分层 → 决策层 -->
+  <line x1="1025" y1="400" x2="1140" y2="400" stroke="#10B981" stroke-width="2"/>
+  <polygon points="1140,400 1150,395 1150,405" fill="#10B981"/>
+  <rect x="1063" y="382" width="70" height="16" rx="3" fill="white" opacity="0.9"/>
+  <text x="1098" y="394" fill="#0F172A" font-size="11" text-anchor="middle">传递评分结果</text>
 
-  <!-- r2 数据管道 (data, cylinder) cx=430 body 260-350 -->
-  <g stroke="#7C3AED" stroke-width="2" fill="#FFFFFF">
-    <rect x="355" y="272" width="150" height="78"/>
-    <ellipse cx="430" cy="272" rx="75" ry="12"/>
-    <ellipse cx="430" cy="350" rx="75" ry="12"/>
-  </g>
-  <text x="430" y="306" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据管道</text>
-  <text x="430" y="326" font-size="10" fill="#64748B" text-anchor="middle">MQTT / 时序库</text>
+  <!-- 反馈回路（蓝色弧线）决策层 → 模型层 -->
+  <path d="M 1140 400 C 1100 250, 800 250, 775 400" fill="none" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="775,400 765,395 765,405" fill="#2563EB"/>
+  <rect x="870" y="240" width="80" height="16" rx="3" fill="white" opacity="0.9"/>
+  <text x="910" y="252" fill="#0F172A" font-size="11" text-anchor="middle">增量更新</text>
 
-  <!-- r5 模型层 (ai, card) cx=690 -->
-  <rect x="615" y="260" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="690" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">模型层</text>
-  <text x="690" y="318" font-size="10" fill="#64748B" text-anchor="middle">Prophet 周期预测</text>
-
-  <!-- r6 评分层 (platform, card) cx=950 -->
-  <rect x="875" y="260" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="950" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">评分层</text>
-  <text x="950" y="318" font-size="10" fill="#64748B" text-anchor="middle">残差 · 滑动评分</text>
-
-  <!-- r8 决策层 (ai, diamond) cx=1210 cy=300 -->
-  <polygon points="1210,235 1310,300 1210,365 1110,300" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="1210" y="296" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">评分</text>
-  <text x="1210" y="314" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">&gt; 阈值?</text>
-
-  <!-- 告警推送 (red, card) cx=1480 -->
-  <rect x="1400" y="260" width="160" height="80" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-  <text x="1480" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">告警推送</text>
-  <text x="1480" y="318" font-size="10" fill="#64748B" text-anchor="middle">Webhook / SMTP</text>
-
-  <!-- 运维系统 (red/gray, card) cx=1720 -->
-  <rect x="1640" y="260" width="140" height="80" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-  <text x="1710" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">运维系统</text>
-  <text x="1710" y="318" font-size="10" fill="#64748B" text-anchor="middle">人工确认</text>
-
-  <!-- ============ Main chain arrows (green, data flow) ============ -->
-  <!-- 设备层 -> 数据管道 -->
-  <line x1="245" y1="300" x2="350" y2="300" stroke="#10B981" stroke-width="2.4" marker-end="url(#ah-green)"/>
-  <text x="297" y="291" font-size="10" fill="#475569" text-anchor="middle">电流上传</text>
-
-  <!-- 数据管道 -> 模型层 -->
-  <line x1="510" y1="300" x2="610" y2="300" stroke="#10B981" stroke-width="2.4" marker-end="url(#ah-green)"/>
-  <text x="560" y="291" font-size="10" fill="#475569" text-anchor="middle">历史训练</text>
-
-  <!-- 模型层 -> 评分层 -->
-  <line x1="765" y1="300" x2="870" y2="300" stroke="#10B981" stroke-width="2.4" marker-end="url(#ah-green)"/>
-  <text x="817" y="291" font-size="10" fill="#475569" text-anchor="middle">预测区间</text>
-
-  <!-- 评分层 -> 决策层 -->
-  <line x1="1025" y1="300" x2="1105" y2="300" stroke="#10B981" stroke-width="2.4" marker-end="url(#ah-green)"/>
-  <text x="1065" y="291" font-size="10" fill="#475569" text-anchor="middle">异常评分</text>
-
-  <!-- ============ Alarm branch (red) ============ -->
-  <!-- 决策层 -> 告警推送 (超阈值) -->
-  <line x1="1310" y1="300" x2="1395" y2="300" stroke="#E11D48" stroke-width="2.2" marker-end="url(#ah-red)"/>
-  <text x="1352" y="291" font-size="10" font-weight="600" fill="#E11D48" text-anchor="middle">超阈值</text>
-
-  <!-- 告警推送 -> 运维系统 -->
-  <line x1="1560" y1="300" x2="1635" y2="300" stroke="#E11D48" stroke-width="2.2" marker-end="url(#ah-red)"/>
-  <text x="1597" y="291" font-size="10" fill="#475569" text-anchor="middle">推送</text>
-
-  <!-- 正常分支 (gray dashed stub) -->
-  <line x1="1210" y1="365" x2="1210" y2="415" stroke="#94A3B8" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="1224" y="394" font-size="10" fill="#64748B">正常 · 持续监测</text>
-
-  <!-- ============ Feedback loop (blue dashed): 运维系统 -> 模型层 ============ -->
-  <polyline points="1710,340 1710,485 690,485 690,340" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <text x="1100" y="477" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">模型增量更新（反馈回路）</text>
-
-  <!-- ============ Callout ============ -->
-  <rect x="60" y="515" width="1730" height="44" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
-  <text x="78" y="542" font-size="11" fill="#334155">
-    主链路：设备层（电流采集）→ 数据管道（MQTT/时序库）→ 模型层（Prophet 预测）→ 评分层（残差滑动评分）→ 决策层（阈值判断）；超阈值触发告警推送至运维系统，人工确认后反馈至模型层执行增量更新。
-  </text>
-
-  <!-- ============ Legend ============ -->
-  <line x1="60" y1="580" x2="1790" y2="580" stroke="#E2E8F0"/>
-  <text x="60" y="606" font-size="11" font-weight="700" fill="#475569">图例</text>
-
-  <!-- legend: data flow (green) -->
-  <line x1="120" y1="624" x2="160" y2="624" stroke="#10B981" stroke-width="2.4" marker-end="url(#ah-green)"/>
-  <text x="170" y="628" font-size="11" fill="#475569">数据流（主链路）</text>
-
-  <!-- legend: alarm (red) -->
-  <line x1="330" y1="624" x2="370" y2="624" stroke="#E11D48" stroke-width="2.2" marker-end="url(#ah-red)"/>
-  <text x="380" y="628" font-size="11" fill="#475569">告警流</text>
-
-  <!-- legend: feedback (blue dashed) -->
-  <line x1="480" y1="624" x2="520" y2="624" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <text x="530" y="628" font-size="11" fill="#475569">模型增量更新（反馈）</text>
-
-  <!-- legend: shapes -->
-  <rect x="720" y="616" width="20" height="14" rx="3" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
-  <text x="748" y="628" font-size="11" fill="#475569">进程</text>
-
-  <g stroke="#64748B" stroke-width="1.6" fill="#FFFFFF">
-    <rect x="800" y="617" width="22" height="12"/>
-    <ellipse cx="811" cy="617" rx="11" ry="3"/>
-    <ellipse cx="811" cy="629" rx="11" ry="3"/>
-  </g>
-  <text x="830" y="628" font-size="11" fill="#475569">数据存储</text>
-
-  <polygon points="918,616 934,624 918,632 902,624" fill="#FFFFFF" stroke="#64748B" stroke-width="1.6"/>
-  <text x="944" y="628" font-size="11" fill="#475569">判断</text>
-
-  <!-- domain color chips -->
-  <rect x="1010" y="617" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.6"/>
-  <text x="1032" y="628" font-size="11" fill="#475569">边缘</text>
-  <rect x="1078" y="617" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
-  <text x="1100" y="628" font-size="11" fill="#475569">数据</text>
-  <rect x="1146" y="617" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.6"/>
-  <text x="1168" y="628" font-size="11" fill="#475569">智能</text>
-  <rect x="1214" y="617" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="1236" y="628" font-size="11" fill="#475569">平台</text>
-  <rect x="1282" y="617" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.6"/>
-  <text x="1304" y="628" font-size="11" fill="#475569">告警/高危</text>
-
-  <!-- ============ Caption ============ -->
-  <text x="925" y="690" font-size="10" fill="#94A3B8" text-anchor="middle">图5-16 预测性维护管道数据流示意</text>
+  <!-- 反馈回路标签（线上方）已包含 -->
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色箭头为数据流，红色箭头为告警流，蓝色箭头为模型更新流</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图5-16 预测性维护管道数据流示意</text>
   </svg>
 </svg>

@@ -1,156 +1,110 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图9-8 物联网标准化演进时间线</title>
+  <desc id="desc">应理解标准化从垂直割据→水平整合→语义统一的三阶段主线，以及MCP在当前阶段的定位。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="104.800" width="1152.000" height="550.400" viewBox="0 0 1800.000 860.000" preserveAspectRatio="xMidYMid meet">
-<rect x="0" y="0" width="1800" height="860" fill="#FFFFFF"/>
-
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图9-8 物联网标准化演进时间线</title>
+  <desc id="desc">应理解标准化从垂直割据→水平整合→语义统一的三阶段主线，以及MCP在当前阶段的定位。</desc>
   <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-axis" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0,10 4,0 8" fill="#94A3B8"/></marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- ============ 标题区 ============ -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="46" font-size="22" font-weight="700" fill="#0F172A">图9-8 物联网标准化演进时间线</text>
-  <text x="82" y="72" font-size="12" fill="#64748B">从标准割据 → 联盟水平整合 → 语义统一：MCP 是现有成果的融合体</text>
-  <rect x="1640" y="26" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
-  <text x="1700" y="46" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">TIMELINE</text>
-  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-
-  <!-- ============ 阶段边界框 ============ -->
-  <!-- Stage 1: 割据期 (灰) -->
-  <rect x="60" y="125" width="550" height="435" rx="12" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.95"/>
-  <rect x="76" y="138" width="250" height="26" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
-  <text x="90" y="156" font-size="13" font-weight="700" fill="#64748B">标准割据期 (2000–2010，示意)</text>
-  <text x="76" y="184" font-size="11" fill="#475569">垂直标准各行其是，协议与数据模型互不相通</text>
-
-  <!-- Stage 2: 整合期 (蓝) -->
-  <rect x="630" y="125" width="490" height="435" rx="12" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.95"/>
-  <rect x="646" y="138" width="250" height="26" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
-  <text x="660" y="156" font-size="13" font-weight="700" fill="#2563EB">联盟整合期 (2010–2018，示意)</text>
-  <text x="646" y="184" font-size="11" fill="#475569">水平平台与资源模型搭建，跨厂商抽象</text>
-
-  <!-- Stage 3: 语义期 (橙) -->
-  <rect x="1140" y="125" width="600" height="435" rx="12" fill="#F8FAFC" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.95"/>
-  <rect x="1156" y="138" width="270" height="26" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.2"/>
-  <text x="1170" y="156" font-size="13" font-weight="700" fill="#F59E0B">语义互操作期 (2018–，示意)</text>
-  <text x="1156" y="184" font-size="11" fill="#475569">语义本体与 AI 交互展开，走向统一语义</text>
-
-  <!-- ============ 标准节点卡片 ============ -->
-  <!-- Stage 1 cards (灰) -->
-  <g>
-    <rect x="85" y="240" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-    <text x="160" y="285" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus</text>
-    <text x="160" y="305" font-size="10" fill="#64748B" text-anchor="middle">工业总线</text>
-    <text x="160" y="322" font-size="9" fill="#94A3B8" text-anchor="middle">1979 / 寄存器语义</text>
-  </g>
-  <g>
-    <rect x="255" y="240" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-    <text x="330" y="285" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">ZigBee</text>
-    <text x="330" y="305" font-size="10" fill="#64748B" text-anchor="middle">短距无线</text>
-    <text x="330" y="322" font-size="9" fill="#94A3B8" text-anchor="middle">联盟profile栈</text>
-  </g>
-  <g>
-    <rect x="425" y="240" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-    <text x="500" y="285" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">OMA DM</text>
-    <text x="500" y="305" font-size="10" fill="#64748B" text-anchor="middle">设备管理</text>
-    <text x="500" y="322" font-size="9" fill="#94A3B8" text-anchor="middle">移动终端远程管理</text>
-  </g>
-
-  <!-- Stage 2 cards (蓝, primary) -->
-  <g>
-    <rect x="685" y="240" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="760" y="285" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">oneM2M</text>
-    <text x="760" y="305" font-size="10" fill="#2563EB" text-anchor="middle">水平平台</text>
-    <text x="760" y="322" font-size="9" fill="#94A3B8" text-anchor="middle">共性业务能力 / 资源树</text>
-  </g>
-  <g>
-    <rect x="895" y="240" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="970" y="285" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">IETF CoRE</text>
-    <text x="970" y="305" font-size="10" fill="#2563EB" text-anchor="middle">受限REST</text>
-    <text x="970" y="322" font-size="9" fill="#94A3B8" text-anchor="middle">CoAP / 资源模型</text>
-  </g>
-
-  <!-- Stage 3 cards -->
-  <g>
-    <rect x="1195" y="240" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-    <text x="1270" y="285" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">W3C WoT</text>
-    <text x="1270" y="305" font-size="10" fill="#F59E0B" text-anchor="middle">语义对齐</text>
-    <text x="1270" y="322" font-size="9" fill="#94A3B8" text-anchor="middle">TD 本体 / Thing Description</text>
-  </g>
-  <!-- MCP focal card (蓝, 主结论/主链路终点) -->
-  <g>
-    <rect x="1455" y="234" width="158" height="112" rx="7" fill="#EFF6FF" stroke="#2563EB" stroke-width="3"/>
-    <text x="1534" y="280" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">MCP</text>
-    <text x="1534" y="300" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">当前趋势 · 统一语义</text>
-    <text x="1534" y="318" font-size="9" fill="#475569" text-anchor="middle">融合 TD/资源模型</text>
-    <text x="1534" y="332" font-size="9" fill="#475569" text-anchor="middle">面向 AI 工具交互</text>
-  </g>
-
-  <!-- ============ 融合箭头（汇聚通道） ============ -->
-  <!-- Stage1 → oneM2M : 接入抽象 (3条虚线灰) -->
-  <path d="M160,340 L160,400 L740,400 L740,344" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <path d="M330,340 L330,420 L760,420 L760,344" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <path d="M500,340 L500,440 L780,440 L780,344" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <rect x="555" y="395" width="92" height="18" rx="3" fill="#FFFFFF"/>
-  <text x="601" y="408" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle">接入抽象</text>
-
-  <!-- Stage2 → W3C WoT : 语义对齐 (2条虚线灰) -->
-  <path d="M760,340 L760,470 L1250,470 L1250,344" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <path d="M970,340 L970,490 L1270,490 L1270,344" fill="none" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <rect x="1060" y="465" width="92" height="18" rx="3" fill="#FFFFFF"/>
-  <text x="1106" y="478" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle">语义对齐</text>
-
-  <!-- W3C WoT → MCP : 融合演进 (主链路 蓝实线) -->
-  <path d="M1345,290 L1448,290" fill="none" stroke="#2563EB" stroke-width="2.6" marker-end="url(#ah-blue)"/>
-  <rect x="1356" y="262" width="82" height="18" rx="3" fill="#FFFFFF"/>
-  <text x="1397" y="275" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">融合演进</text>
-
-  <!-- ============ 时间轴 ============ -->
-  <line x1="80" y1="600" x2="1748" y2="600" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#ah-axis)"/>
-  <text x="70" y="588" font-size="10" fill="#94A3B8" text-anchor="end">时间 →</text>
-
-  <!-- 年份刻度 -->
-  <g font-size="11" fill="#64748B" text-anchor="middle">
-    <line x1="80" y1="595" x2="80" y2="605" stroke="#94A3B8"/><text x="80" y="624">2000</text>
-    <line x1="350" y1="595" x2="350" y2="605" stroke="#94A3B8"/><text x="350" y="624">2005</text>
-    <line x1="620" y1="595" x2="620" y2="605" stroke="#94A3B8"/><text x="620" y="624">2010</text>
-    <line x1="890" y1="595" x2="890" y2="605" stroke="#94A3B8"/><text x="890" y="624">2015</text>
-    <line x1="1140" y1="595" x2="1140" y2="605" stroke="#94A3B8"/><text x="1140" y="624">2018</text>
-    <line x1="1440" y1="595" x2="1440" y2="605" stroke="#94A3B8"/><text x="1440" y="624">2022</text>
-    <line x1="1720" y1="595" x2="1720" y2="605" stroke="#94A3B8"/><text x="1720" y="624">2025</text>
-  </g>
-
-  <!-- ============ 图例 ============ -->
-  <text x="60" y="664" font-size="11" font-weight="700" fill="#475569" letter-spacing="1">图例</text>
-  <g font-size="11" fill="#334155">
-    <rect x="110" y="655" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-    <text x="132" y="665">割据期 · 垂直领域标准</text>
-
-    <rect x="320" y="655" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="342" y="665">整合期 · 水平平台 / MCP 主链路</text>
-
-    <rect x="580" y="655" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-    <text x="602" y="665">语义期 · 语义互操作 (W3C WoT)</text>
-
-    <line x1="840" y1="661" x2="880" y2="661" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4"/>
-    <text x="888" y="665">融合关系（标准间演进/对齐）</text>
-
-    <line x1="1120" y1="661" x2="1160" y2="661" stroke="#2563EB" stroke-width="2.6"/>
-    <text x="1168" y="665">主链路（融合演进）</text>
-  </g>
-
-  <!-- ============ callout ============ -->
-  <rect x="60" y="690" width="1680" height="62" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-  <circle cx="82" cy="721" r="4" fill="#2563EB"/>
-  <text x="96" y="716" font-size="12" font-weight="700" fill="#0F172A">读图要点</text>
-  <text x="96" y="736" font-size="11" fill="#334155">阶段变化代表标准化层次从「语法接入」到「语义互操作」的提升；MCP 并非从零制定的新协议，而是对 oneM2M 资源模型、CoAP/CoRE、W3C WoT 语义成果的融合与面向 AI 工具的再封装。</text>
-
-  <!-- ============ caption ============ -->
-  <text x="900" y="800" font-size="10" fill="#94A3B8" text-anchor="middle">图9-8 物联网标准化演进时间线（基于公开标准信息整理，时间范围与阶段起止年为示意性节点划分）</text>
-  <text x="900" y="818" font-size="9" fill="#CBD5E1" text-anchor="middle">来源：本书教学示意图，年份节点仅用于说明阶段关系</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图9-8 物联网标准化演进时间线</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">应理解标准化从垂直割据→水平整合→语义统一的三阶段主线，以及MCP在当前阶段的定位。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">TIMELINE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="timeline">
+  <!-- Phase region 1: 标准割据期 -->
+  <rect x="150" y="160" width="450" height="360" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="165" y="185" fill="#475569" font-size="14" font-weight="600">标准割据期 (2000-2010)</text>
+  <text x="165" y="202" fill="#64748B" font-size="11">垂直标准各行其是</text>
+  
+  <!-- Phase region 2: 联盟整合期 -->
+  <rect x="650" y="160" width="450" height="360" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="665" y="185" fill="#475569" font-size="14" font-weight="600">联盟整合期 (2010-2018)</text>
+  <text x="665" y="202" fill="#64748B" font-size="11">水平平台与资源模型搭建</text>
+  
+  <!-- Phase region 3: 语义互操作期 -->
+  <rect x="1150" y="160" width="450" height="360" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1165" y="185" fill="#475569" font-size="14" font-weight="600">语义互操作期 (2018-)</text>
+  <text x="1165" y="202" fill="#64748B" font-size="11">语义本体与AI交互展开</text>
+  
+  <!-- Arrows (drawn before cards) -->
+  <!-- Modbus -> oneM2M -->
+  <line x1="340" y1="225" x2="780" y2="225" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <rect x="540" y="213" width="60" height="18" fill="white" rx="4"/>
+  <text x="570" y="226" fill="#0F172A" font-size="11" text-anchor="middle">接入抽象</text>
+  
+  <!-- ZigBee -> oneM2M -->
+  <line x1="340" y1="325" x2="780" y2="225" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <rect x="540" y="263" width="60" height="18" fill="white" rx="4"/>
+  <text x="570" y="276" fill="#0F172A" font-size="11" text-anchor="middle">接入抽象</text>
+  
+  <!-- OMA DM -> oneM2M -->
+  <line x1="340" y1="425" x2="780" y2="225" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <rect x="540" y="313" width="60" height="18" fill="white" rx="4"/>
+  <text x="570" y="326" fill="#0F172A" font-size="11" text-anchor="middle">接入抽象</text>
+  
+  <!-- oneM2M -> W3C WoT -->
+  <line x1="900" y1="225" x2="1230" y2="325" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <rect x="1045" y="263" width="60" height="18" fill="white" rx="4"/>
+  <text x="1075" y="276" fill="#0F172A" font-size="11" text-anchor="middle">语义对齐</text>
+  
+  <!-- IETF CoRE -> W3C WoT -->
+  <line x1="900" y1="425" x2="1230" y2="325" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <rect x="1045" y="363" width="60" height="18" fill="white" rx="4"/>
+  <text x="1075" y="376" fill="#0F172A" font-size="11" text-anchor="middle">语义对齐</text>
+  
+  <!-- W3C WoT -> MCP -->
+  <line x1="1350" y1="325" x2="1450" y2="325" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1380" y="313" width="60" height="18" fill="white" rx="4"/>
+  <text x="1410" y="326" fill="#0F172A" font-size="11" text-anchor="middle">融合演进</text>
+  
+  <!-- Cards -->
+  <!-- Modbus -->
+  <rect x="220" y="200" width="120" height="50" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <text x="280" y="228" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">Modbus</text>
+  
+  <!-- ZigBee -->
+  <rect x="220" y="300" width="120" height="50" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <text x="280" y="328" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">ZigBee</text>
+  
+  <!-- OMA DM -->
+  <rect x="220" y="400" width="120" height="50" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
+  <text x="280" y="428" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">OMA DM</text>
+  
+  <!-- oneM2M -->
+  <rect x="780" y="200" width="120" height="50" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="840" y="228" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">oneM2M</text>
+  
+  <!-- IETF CoRE -->
+  <rect x="780" y="400" width="120" height="50" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="840" y="428" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">IETF CoRE</text>
+  
+  <!-- W3C WoT -->
+  <rect x="1230" y="300" width="120" height="50" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1290" y="328" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">W3C WoT</text>
+  
+  <!-- MCP -->
+  <rect x="1460" y="300" width="120" height="50" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1520" y="328" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">MCP</text>
+  
+  <!-- Timeline axis -->
+  <line x1="150" y1="560" x2="1600" y2="560" stroke="#94A3B8" stroke-width="2"/>
+  <text x="375" y="580" fill="#64748B" font-size="12" text-anchor="middle">2000-2010</text>
+  <text x="875" y="580" fill="#64748B" font-size="12" text-anchor="middle">2010-2018</text>
+  <text x="1375" y="580" fill="#64748B" font-size="12" text-anchor="middle">2018-</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">灰色：垂直领域标准（割据期）</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：水平平台/中间层（整合期）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色：语义互操作与AI交互（语义期）</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图9-8 物联网标准化演进时间线（基于公开标准信息整理，时间范围与阶段起止年为示意性节点划分）。</text>
   </svg>
 </svg>

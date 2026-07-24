@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">物模型驱动平台无关的应用开发（假设场景）</title>
+  <desc id="desc">读者应理解物模型驱动平台无关的应用开发（假设场景）中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">物模型驱动平台无关的应用开发（假设场景）</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解物模型驱动平台无关的应用开发（假设场景）中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- 水平分隔线 -->
+  <line x1="100" y1="250" x2="1700" y2="250" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="100" y1="390" x2="1700" y2="390" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="100" y1="560" x2="1700" y2="560" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- 层标题 -->
+  <text x="900" y="242" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">应用层</text>
+  <text x="900" y="382" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">统一物模型层</text>
+  <text x="900" y="552" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">物模型适配层</text>
+  <text x="900" y="575" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">物理设备层</text>
+  <!-- 连线（先于卡片） -->
+  <!-- 1 device-a -> adapter-module -->
+  <line x1="280" y1="580" x2="280" y2="485" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="250" y="522" width="60" height="20" rx="3" fill="white"/>
+  <text x="280" y="536" fill="#0F172A" font-size="12" text-anchor="middle">原始报文</text>
+  <!-- 2 device-b -> adapter-module -->
+  <line x1="440" y1="580" x2="440" y2="485" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="410" y="522" width="60" height="20" rx="3" fill="white"/>
+  <text x="440" y="536" fill="#0F172A" font-size="12" text-anchor="middle">KNX帧</text>
+  <!-- 3 device-c -> adapter-module -->
+  <line x1="600" y1="580" x2="600" y2="485" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="570" y="522" width="60" height="20" rx="3" fill="white"/>
+  <text x="600" y="536" fill="#0F172A" font-size="12" text-anchor="middle">DL/T645</text>
+  <!-- 4 adapter-module -> device-shadow -->
+  <line x1="880" y1="480" x2="950" y2="480" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="885" y="460" width="70" height="20" rx="3" fill="white"/>
+  <text x="920" y="474" fill="#0F172A" font-size="12" text-anchor="middle">离线缓存/上线同步</text>
+  <!-- 5 adapter-module -> property-set -->
+  <line x1="280" y1="445" x2="280" y2="360" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="250" y="392" width="60" height="20" rx="3" fill="white"/>
+  <text x="280" y="406" fill="#0F172A" font-size="12" text-anchor="middle">语义化数据</text>
+  <!-- 6 adapter-module -> cmd-set -->
+  <line x1="440" y1="445" x2="440" y2="360" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="410" y="392" width="60" height="20" rx="3" fill="white"/>
+  <text x="440" y="406" fill="#0F172A" font-size="12" text-anchor="middle">指令映射</text>
+  <!-- 7 adapter-module -> event-set -->
+  <line x1="600" y1="445" x2="600" y2="360" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="570" y="392" width="60" height="20" rx="3" fill="white"/>
+  <text x="600" y="406" fill="#0F172A" font-size="12" text-anchor="middle">事件映射</text>
+  <!-- 8 property-set -> app-dashboard -->
+  <line x1="280" y1="280" x2="280" y2="220" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="250" y="240" width="60" height="20" rx="3" fill="white"/>
+  <text x="280" y="254" fill="#0F172A" font-size="12" text-anchor="middle">读取位号值</text>
+  <!-- 9 event-set -> app-alarm -->
+  <line x1="600" y1="280" x2="600" y2="220" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow-risk)"/>
+  <rect x="570" y="240" width="60" height="20" rx="3" fill="white"/>
+  <text x="600" y="254" fill="#0F172A" font-size="12" text-anchor="middle">触发告警规则</text>
+  <!-- 10 property-set -> app-report -->
+  <path d="M 250 280 L 250 248 L 410 248 L 410 220" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="330" y="240" width="60" height="20" rx="3" fill="white"/>
+  <text x="360" y="254" fill="#0F172A" font-size="12" text-anchor="middle">历史数据聚合</text>
+  <!-- 11 app-dashboard -> cmd-set -->
+  <path d="M 340 220 L 340 258 L 475 258 L 475 280" fill="none" stroke="#0F766E" stroke-width="1.5" marker-end="url(#bp-arrow)"/>
+  <rect x="330" y="240" width="60" height="20" rx="3" fill="white"/>
+  <text x="360" y="254" fill="#0F172A" font-size="12" text-anchor="middle">下发指令</text>
+  <!-- 12 device-shadow -> adapter-module -->
+  <line x1="950" y1="480" x2="880" y2="480" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="885" y="460" width="60" height="20" rx="3" fill="white"/>
+  <text x="915" y="474" fill="#0F172A" font-size="12" text-anchor="middle">影子同步</text>
+  <!-- 组件：应用层 -->
+  <rect x="210" y="160" width="140" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="280" y="195" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">仪表盘</text>
+  <rect x="370" y="160" width="140" height="60" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="440" y="195" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">报表服务</text>
+  <rect x="530" y="160" width="140" height="60" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="600" y="195" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">告警服务</text>
+  <!-- 组件：统一物模型层 -->
+  <rect x="210" y="280" width="140" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="280" y="315" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">位号集合</text>
+  <rect x="370" y="280" width="140" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="440" y="315" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">指令集合</text>
+  <rect x="530" y="280" width="140" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="600" y="315" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">事件集合</text>
+  <!-- 组件：物模型适配层 -->
+  <!-- adapter-module 大框 -->
+  <rect x="180" y="420" width="700" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="530" y="440" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">协议转换与语义映射</text>
+  <!-- 三个子图标 -->
+  <rect x="210" y="455" width="140" height="40" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
+  <text x="280" y="480" fill="#0F172A" font-size="12" text-anchor="middle">原始报文</text>
+  <rect x="370" y="455" width="140" height="40" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
+  <text x="440" y="480" fill="#0F172A" font-size="12" text-anchor="middle">KNX帧</text>
+  <rect x="530" y="455" width="140" height="40" rx="4" fill="#F8FAFC" stroke="#2563EB" stroke-width="1"/>
+  <text x="600" y="480" fill="#0F172A" font-size="12" text-anchor="middle">DL/T645</text>
+  <!-- device-shadow 虚线框 + 阴影 -->
+  <rect x="955" y="425" width="200" height="120" rx="10" fill="#E2E8F0"/>
+  <rect x="950" y="420" width="200" height="120" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="1050" y="460" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">设备影子</text>
+  <text x="1050" y="480" fill="#64748B" font-size="12" text-anchor="middle">离线缓存</text>
+  <!-- 组件：物理设备层 -->
+  <rect x="210" y="580" width="140" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="280" y="610" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">设备A</text>
+  <rect x="370" y="580" width="140" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="440" y="610" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">设备B</text>
+  <rect x="530" y="580" width="140" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="600" y="610" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">设备C</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">数据流或控制流</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">异步同步或影子缓存</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">抽象概念或运行时缓冲区</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图注：物模型作为中间适配层，屏蔽底层协议的差异和厂商私有格式。设备影子在适配层与应用层之间建立缓冲，将同步问题转化为异步状态管理。应用开发人员只需在统一物模型层面编程，不接触任何协议的十六进制细节。</text>
+</svg>

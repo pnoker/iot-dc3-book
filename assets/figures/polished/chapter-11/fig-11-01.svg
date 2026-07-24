@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1100" width="1800" height="1100" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
   <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto-start-reverse"><polygon points="0 0,10 4,0 8" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto-start-reverse"><polygon points="0 0,10 4,0 8" fill="#64748B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto-start-reverse"><polygon points="0 0,10 4,0 8" fill="#10B981"/></marker>
-    <marker id="ah-amber" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto-start-reverse"><polygon points="0 0,10 4,0 8" fill="#D97706"/></marker>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
   </defs>
 
   <!-- canvas -->

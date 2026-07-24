@@ -1,108 +1,113 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>图1-5 物联网系统五要素关系示意</title>
-<style>html,body{margin:0;padding:0;background:#FFFFFF}body{min-height:100vh;display:flex;align-items:center;justify-content:center}svg{width:min(1600px,100vw);height:auto;display:block}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图1-5 物联网价值迁移路径</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-label="图1-5 物联网系统五要素关系示意" data-style="architecture-diagram-wireframe-white" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',Arial,sans-serif">
-<defs>
-<marker id="ah-blue" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-green" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-orange" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-<marker id="ah-violet" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-<marker id="ah-red" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-<marker id="ah-gray" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
-<rect x="0" y="0" width="1600" height="760" fill="#FFFFFF"/>
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图1-5 物联网系统五要素关系示意</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">感知→传输→处理→应用四层串联，安全机制贯穿全栈</text>
-<rect x="1430" y="28" width="130" height="24" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1495" y="44" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">ARCHITECTURE</text>
-<line x1="58" y1="103" x2="1542" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="80" y="185" width="240" height="180" rx="12" fill="none" stroke="#10B981" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="94" y="207" fill="#10B981" font-size="11" font-weight="600">设备与边缘域</text>
-<text x="94" y="223" fill="#94A3B8" font-size="9" font-weight="500">现场异构资源边界</text>
-<rect x="480" y="185" width="640" height="180" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="494" y="207" fill="#2563EB" font-size="11" font-weight="600">平台服务域</text>
-<text x="494" y="223" fill="#94A3B8" font-size="9" font-weight="500">核心服务能力边界</text>
-<rect x="1280" y="185" width="240" height="180" rx="12" fill="none" stroke="#E11D48" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="1294" y="207" fill="#E11D48" font-size="11" font-weight="600">治理与安全域</text>
-<text x="1294" y="223" fill="#94A3B8" font-size="9" font-weight="500">风险控制与责任边界</text>
-<line x1="302" y1="287" x2="498" y2="287" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="400" y="273" text-anchor="middle" fill="#334155" font-size="10" font-weight="500">数据上传</text>
-<line x1="702" y1="287" x2="898" y2="287" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="800" y="273" text-anchor="middle" fill="#334155" font-size="10" font-weight="500">数据转发</text>
-<line x1="1102" y1="287" x2="1298" y2="287" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="1200" y="273" text-anchor="middle" fill="#334155" font-size="10" font-weight="500">结果推送</text>
-<line x1="1298" y1="315" x2="1102" y2="315" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<line x1="898" y1="315" x2="702" y2="315" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<line x1="498" y1="315" x2="302" y2="315" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-<text x="800" y="331" text-anchor="middle" fill="#64748B" font-size="10" font-weight="500">控制指令下发</text>
-<rect x="100" y="245" width="200" height="110" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="200" y="278" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="700">感知层</text>
-<text x="200" y="297" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">传感器 · 执行器</text>
-<circle cx="178" cy="328" r="11" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="178" y="332" text-anchor="middle" fill="#10B981" font-size="11" font-weight="700">S</text>
-<circle cx="222" cy="328" r="11" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="222" y="332" text-anchor="middle" fill="#10B981" font-size="11" font-weight="700">A</text>
-<rect x="500" y="245" width="200" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="600" y="278" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="700">传输层</text>
-<text x="600" y="297" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">Wi-Fi · LoRa · BLE</text>
-<path d="M 588 334 A 14 14 0 0 1 612 334" fill="none" stroke="#2563EB" stroke-width="1.5"/>
-<path d="M 593 334 A 9 9 0 0 1 607 334" fill="none" stroke="#2563EB" stroke-width="1.5"/>
-<circle cx="600" cy="336" r="2.5" fill="#2563EB"/>
-<rect x="900" y="245" width="200" height="110" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-<text x="1000" y="278" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="700">处理层</text>
-<text x="1000" y="297" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">规则引擎 · 时序库</text>
-<rect x="992" y="320" width="16" height="16" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-<rect x="996" y="324" width="8" height="8" rx="1" fill="#F59E0B" fill-opacity="0.15" stroke="#F59E0B" stroke-width="1"/>
-<line x1="996" y1="320" x2="996" y2="316" stroke="#F59E0B" stroke-width="1.5"/>
-<line x1="1004" y1="320" x2="1004" y2="316" stroke="#F59E0B" stroke-width="1.5"/>
-<line x1="996" y1="336" x2="996" y2="340" stroke="#F59E0B" stroke-width="1.5"/>
-<line x1="1004" y1="336" x2="1004" y2="340" stroke="#F59E0B" stroke-width="1.5"/>
-<rect x="1300" y="245" width="200" height="110" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-<text x="1400" y="278" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="700">应用层</text>
-<text x="1400" y="297" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">手机 · 大屏 · 告警</text>
-<rect x="1384" y="318" width="12" height="20" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-<circle cx="1390" cy="334" r="1.2" fill="#7C3AED"/>
-<rect x="1404" y="322" width="16" height="13" rx="1" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-<line x1="1404" y1="327" x2="1420" y2="327" stroke="#7C3AED" stroke-width="1"/>
-<line x1="1404" y1="331" x2="1416" y2="331" stroke="#7C3AED" stroke-width="1"/>
-<line x1="200" y1="355" x2="200" y2="420" stroke="#E11D48" stroke-width="1" stroke-dasharray="4 4" opacity="0.45"/>
-<line x1="600" y1="355" x2="600" y2="420" stroke="#E11D48" stroke-width="1" stroke-dasharray="4 4" opacity="0.45"/>
-<line x1="1000" y1="355" x2="1000" y2="420" stroke="#E11D48" stroke-width="1" stroke-dasharray="4 4" opacity="0.45"/>
-<line x1="1400" y1="355" x2="1400" y2="420" stroke="#E11D48" stroke-width="1" stroke-dasharray="4 4" opacity="0.45"/>
-<rect x="100" y="420" width="1400" height="110" rx="12" fill="#E11D48" fill-opacity="0.03" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="8 4"/>
-<text x="125" y="455" fill="#E11D48" font-size="15" font-weight="700">安全层</text>
-<text x="125" y="473" fill="#64748B" font-size="10" font-weight="500">贯穿全栈</text>
-<circle cx="560" cy="455" r="4" fill="#E11D48"/>
-<text x="560" y="478" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">认证</text>
-<text x="560" y="495" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">身份鉴权</text>
-<circle cx="900" cy="455" r="4" fill="#E11D48"/>
-<text x="900" y="478" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">加密</text>
-<text x="900" y="495" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">数据保护</text>
-<circle cx="1240" cy="455" r="4" fill="#E11D48"/>
-<text x="1240" y="478" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">审计</text>
-<text x="1240" y="495" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">行为追溯</text>
-<line x1="58" y1="575" x2="1542" y2="575" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="120" y="594" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="140" y="603" fill="#64748B" font-size="11" font-weight="600">感知层（设备/边缘）</text>
-<rect x="380" y="594" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="400" y="603" fill="#64748B" font-size="11" font-weight="600">传输层（平台服务）</text>
-<rect x="640" y="594" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-<text x="660" y="603" fill="#64748B" font-size="11" font-weight="600">处理层（智能计算）</text>
-<rect x="900" y="594" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-<text x="920" y="603" fill="#64748B" font-size="11" font-weight="600">应用层（数据服务）</text>
-<rect x="1180" y="594" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="3 2"/>
-<text x="1200" y="603" fill="#64748B" font-size="11" font-weight="600">安全层（贯穿全栈）</text>
-<line x1="120" y1="630" x2="148" y2="630" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="156" y="634" fill="#64748B" font-size="11" font-weight="600">数据上报（主链路）</text>
-<line x1="440" y1="630" x2="568" y2="630" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah-gray)"/>
-<text x="576" y="634" fill="#64748B" font-size="11" font-weight="600">控制指令下发（逆向）</text>
-<text x="800" y="685" text-anchor="middle" fill="#94A3B8" font-size="10">图1-5 物联网系统五要素关系示意</text>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-5 物联网价值迁移路径</title>
+  <desc id="desc">读者应看到价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图1-5 物联网价值迁移路径</title>
+  <desc id="desc">读者应看到价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图1-5 物联网价值迁移路径</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应看到价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- 区域边界 -->
+  <rect x="100" y="140" width="450" height="310" rx="14" fill="transparent" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="115" y="160" fill="#D97706" font-size="13" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600">低价值区</text>
+  
+  <rect x="550" y="140" width="450" height="310" rx="14" fill="transparent" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="565" y="160" fill="#D97706" font-size="13" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600">中价值区</text>
+  
+  <rect x="1000" y="140" width="450" height="310" rx="14" fill="transparent" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1015" y="160" fill="#D97706" font-size="13" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600">高价值区</text>
+  
+  <!-- 连线（先于节点绘制） -->
+  <!-- 主节点间箭头 -->
+  <line x1="475" y1="240" x2="620" y2="240" stroke="#2563EB" stroke-width="4" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="925" y1="240" x2="1070" y2="240" stroke="#2563EB" stroke-width="6" marker-end="url(#bp-arrow-primary)"/>
+  
+  <!-- 箭头标签 -->
+  <rect x="510" y="227" width="80" height="22" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="550" y="242" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">价值汇聚</text>
+  
+  <rect x="965" y="227" width="80" height="22" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1005" y="242" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">数据驱动</text>
+  
+  <!-- 虚线对应连接 -->
+  <line x1="325" y1="300" x2="325" y2="315" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
+  <line x1="775" y1="300" x2="775" y2="315" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
+  <line x1="1225" y1="300" x2="1225" y2="315" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
+  
+  <!-- 虚线标签 -->
+  <text x="335" y="312" fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">对应</text>
+  <text x="785" y="312" fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">对应</text>
+  <text x="1235" y="312" fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">对应</text>
+  
+  <!-- 节点（后绘制，盖住部分连线） -->
+  <!-- 连接层 -->
+  <rect x="175" y="180" width="300" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="325" y="206" fill="#0F172A" font-size="15" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600" text-anchor="middle">连接层</text>
+  <text x="325" y="226" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">模组、SIM、连接管理</text>
+  
+  <!-- 平台层 -->
+  <rect x="625" y="180" width="300" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="775" y="206" fill="#0F172A" font-size="15" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600" text-anchor="middle">平台层</text>
+  <text x="775" y="226" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">设备管理、规则引擎</text>
+  
+  <!-- 智能层 -->
+  <rect x="1075" y="180" width="300" height="120" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1225" y="206" fill="#0F172A" font-size="15" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600" text-anchor="middle">智能层</text>
+  <text x="1225" y="226" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">数据分析、AI决策</text>
+  
+  <!-- 商业模式节点 -->
+  <rect x="225" y="320" width="200" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="325" y="346" fill="#0F172A" font-size="14" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600" text-anchor="middle">按连接计费</text>
+  <text x="325" y="366" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">低毛利</text>
+  
+  <rect x="675" y="320" width="200" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="775" y="346" fill="#0F172A" font-size="14" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600" text-anchor="middle">按设备/消息计费</text>
+  <text x="775" y="366" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">中等毛利</text>
+  
+  <rect x="1125" y="320" width="200" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1225" y="346" fill="#0F172A" font-size="14" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-weight="600" text-anchor="middle">按决策/效果计费</text>
+  <text x="1225" y="366" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" text-anchor="middle">高毛利</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色方框 = 平台/连接服务</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头 = 价值流向；宽度代表相对价值占比</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图1-5 物联网产业价值重心从连接层向平台层、最终向智能决策层迁移的路径。</text>
+  </svg>
 </svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">水平流向，三个主节点从左到右排列，下方通过虚线连接商业模式标签。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
 </body>
 </html>

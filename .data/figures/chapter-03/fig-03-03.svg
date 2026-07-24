@@ -1,68 +1,131 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图3-3 TinyML模型训练与部署全流程</title>
+  <desc id="desc">读者应理解TinyML模型训练与部署全流程中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="43.750" y="24.000" width="1112.500" height="712.000" viewBox="0 0 1500.000 960.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
-<rect x="0" y="0" width="1500" height="960" fill="#FFFFFF"/>
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图3-7 三角测量定位示意图</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">三点定位：目标接收三基站信号估距，以 r₁/r₂/r₃ 为半径作圆，三圆交汇即位置</text>
-<rect x="1330" y="30" width="112" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1386" y="47" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">FLOWCHART</text>
-<line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="70" y="120" width="1360" height="740" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="90" y="144" fill="#2563EB" font-size="11" font-weight="600">平台服务域</text>
-<circle cx="520" cy="340" r="280" fill="rgba(37,99,235,0.04)" stroke="#2563EB" stroke-width="2"/>
-<circle cx="920" cy="340" r="280" fill="rgba(37,99,235,0.04)" stroke="#2563EB" stroke-width="2"/>
-<circle cx="720" cy="620" r="200" fill="rgba(37,99,235,0.04)" stroke="#2563EB" stroke-width="2"/>
-<line x1="563" y1="368" x2="711.6" y2="464.6" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<line x1="877" y1="368" x2="728.4" y2="464.6" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<line x1="720" y1="592" x2="720" y2="480" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<text x="590" y="415" text-anchor="middle" fill="#475569" font-size="11" font-weight="600">r₁</text>
-<text x="850" y="415" text-anchor="middle" fill="#475569" font-size="11" font-weight="600">r₂</text>
-<text x="695" y="540" text-anchor="end" fill="#475569" font-size="11" font-weight="600">r₃</text>
-<polygon points="720,536 785,431 655,431" fill="rgba(225,29,72,0.20)" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="4 3"/>
-<line x1="720" y1="420" x2="720" y2="431" stroke="#E11D48" stroke-width="1"/>
-<text x="720" y="414" text-anchor="middle" fill="#E11D48" font-size="11" font-weight="700">交汇区</text>
-<circle cx="720" cy="470" r="7" fill="#64748B" stroke="#FFFFFF" stroke-width="2"/>
-<text x="732" y="475" fill="#0F172A" font-size="12" font-weight="700">目标 T</text>
-<path d="M 720 536 L 1178 635" fill="none" stroke="#E11D48" stroke-width="2" marker-end="url(#ah-red)"/>
-<rect x="460" y="312" width="120" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="520" y="338" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">基站 1</text>
-<text x="520" y="356" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">r₁ 测距锚点</text>
-<rect x="860" y="312" width="120" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="920" y="338" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">基站 2</text>
-<text x="920" y="356" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">r₂ 测距锚点</text>
-<rect x="660" y="592" width="120" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="720" y="618" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">基站 3</text>
-<text x="720" y="636" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">r₃ 测距锚点</text>
-<rect x="1180" y="600" width="160" height="70" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-<text x="1260" y="628" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">定位结果</text>
-<text x="1260" y="648" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">三圆交汇 · 最小二乘解</text>
-<rect x="110" y="420" width="300" height="128" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="125" y="445" fill="#0F172A" font-size="12" font-weight="700">测距与交汇</text>
-<text x="125" y="468" fill="#334155" font-size="11">基站与目标间距离通过 ToA</text>
-<text x="125" y="486" fill="#334155" font-size="11">或 RSSI 估算，得 r₁/r₂/r₃。</text>
-<text x="125" y="504" fill="#334155" font-size="11">以各半径作圆，三圆公共</text>
-<text x="125" y="522" fill="#334155" font-size="11">交汇区即目标位置。</text>
-<line x1="58" y1="884" x2="1442" y2="884" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="90" y="900" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="112" y="910" fill="#64748B" font-size="11" font-weight="600">基站(测距锚点)</text>
-<circle cx="297" cy="905" r="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="312" y="910" fill="#64748B" font-size="11" font-weight="600">覆盖范围圆</text>
-<rect x="455" y="900" width="14" height="10" rx="2" fill="rgba(225,29,72,0.20)" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="477" y="910" fill="#64748B" font-size="11" font-weight="600">交汇定位结果</text>
-<line x1="640" y1="905" x2="670" y2="905" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<text x="680" y="910" fill="#64748B" font-size="11" font-weight="600">测距 r₁/r₂/r₃</text>
-<circle cx="838" cy="905" r="5" fill="#64748B" stroke="#FFFFFF" stroke-width="1.5"/>
-<text x="852" y="910" fill="#64748B" font-size="11" font-weight="600">目标 T</text>
-<text x="750" y="945" text-anchor="middle" fill="#94A3B8" font-size="10">图3-7 三点定位原理示意；工程中多以最小二乘法求解最终坐标。</text>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图3-3 TinyML模型训练与部署全流程</title>
+  <desc id="desc">读者应理解TinyML模型训练与部署全流程中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-3 TinyML模型训练与部署全流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解TinyML模型训练与部署全流程中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- 阶段框背景 -->
+  <rect x="80" y="150" width="375" height="380" rx="10" fill="white" stroke="#2563EB" stroke-dasharray="8,4" stroke-width="1.5"/>
+  <rect x="495" y="150" width="375" height="380" rx="10" fill="white" stroke="#7C3AED" stroke-dasharray="8,4" stroke-width="1.5"/>
+  <rect x="910" y="150" width="375" height="380" rx="10" fill="white" stroke="#F97316" stroke-dasharray="8,4" stroke-width="1.5"/>
+  <rect x="1325" y="150" width="375" height="380" rx="10" fill="white" stroke="#16A34A" stroke-dasharray="8,4" stroke-width="1.5"/>
+  
+  <!-- 阶段框标题 -->
+  <text x="267.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段1：数据准备</text>
+  <text x="682.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段2：云端训练</text>
+  <text x="1097.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段3：模型优化</text>
+  <text x="1512.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段4：端侧部署</text>
+  
+  <!-- 内部节点：阶段1 -->
+  <rect x="167.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="267.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">数据采集</text>
+  <text x="267.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">传感器</text>
+  
+  <rect x="167.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="267.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">数据标注</text>
+  <text x="267.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">预处理</text>
+  
+  <rect x="167.5" y="360" width="200" height="60" rx="8" fill="white" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="267.5" y="386" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">标注数据集</text>
+  <text x="267.5" y="408" text-anchor="middle" font-size="11" fill="#64748B">训练/验证/测试</text>
+  
+  <!-- 内部节点：阶段2 -->
+  <rect x="582.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="682.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型构建</text>
+  <text x="682.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">轻量级</text>
+  
+  <rect x="582.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="682.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型训练</text>
+  <text x="682.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">云端</text>
+  
+  <rect x="582.5" y="360" width="200" height="60" rx="8" fill="white" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="682.5" y="386" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">float32模型</text>
+  <text x="682.5" y="408" text-anchor="middle" font-size="11" fill="#64748B">全精度</text>
+  
+  <!-- 内部节点：阶段3 -->
+  <rect x="997.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1097.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型量化</text>
+  <text x="1097.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">float32→int8</text>
+  
+  <rect x="997.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1097.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型剪枝</text>
+  <text x="1097.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">稀疏化</text>
+  
+  <!-- 判定菱形 -->
+  <path d="M 1047.5,400 L 1097.5,365 L 1147.5,400 L 1097.5,435 Z" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1097.5" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">精度验证</text>
+  
+  <!-- 内部节点：阶段4 -->
+  <rect x="1412.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1512.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型编译</text>
+  <text x="1512.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">C代码</text>
+  
+  <rect x="1412.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1512.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">固件烧录</text>
+  <text x="1512.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">MCU</text>
+  
+  <rect x="1412.5" y="360" width="200" height="60" rx="8" fill="white" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1512.5" y="386" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">本地推理</text>
+  <text x="1512.5" y="408" text-anchor="middle" font-size="11" fill="#64748B">传感器节点</text>
+  
+  <!-- 内部连线 -->
+  <line x1="267.5" y1="260" x2="267.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="267.5" y1="340" x2="267.5" y2="360" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="682.5" y1="260" x2="682.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="682.5" y1="340" x2="682.5" y2="360" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="1097.5" y1="260" x2="1097.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="1097.5" y1="340" x2="1097.5" y2="365" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="1512.5" y1="260" x2="1512.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <line x1="1512.5" y1="340" x2="1512.5" y2="360" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  
+  <!-- 阶段间主箭头 -->
+  <!-- 阶段1->2 -->
+  <path d="M 367.5 390 L 475 390 L 475 230 L 582.5 230" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
+  <!-- 阶段2->3 -->
+  <path d="M 782.5 390 L 890 390 L 890 230 L 997.5 230" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
+  <!-- 阶段3->4（精度通过） -->
+  <path d="M 1147.5 400 L 1305 400 L 1305 230 L 1412.5 230" fill="none" stroke="#16A34A" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
+  
+  <!-- 回退路径 -->
+  <path d="M 1047.5,400 L 850,400 L 850,280 L 782.5,280" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  
+  <!-- 箭头标签 -->
+  <!-- 阶段1->2标签 -->
+  <rect x="440" y="295" width="70" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="475" y="309" text-anchor="middle" font-size="11" fill="#2563EB">正向数据流</text>
+  
+  <!-- 阶段2->3标签 -->
+  <rect x="855" y="295" width="70" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="890" y="309" text-anchor="middle" font-size="11" fill="#2563EB">正向数据流</text>
+  
+  <!-- 阶段3->4标签 -->
+  <rect x="1270" y="310" width="70" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="1305" y="324" text-anchor="middle" font-size="11" fill="#16A34A">精度达标</text>
+  
+  <!-- 回退标签 -->
+  <rect x="860" y="385" width="80" height="20" rx="4" fill="white" stroke="none"/>
+  <text x="900" y="399" text-anchor="middle" font-size="11" fill="#DC2626">精度损失>2%</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：数据准备；紫色：云端训练；橙色：模型优化；绿色：端侧部署</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">粗实线箭头：正向数据流；虚线箭头：回退迭代路径</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">菱形：判定节点，表示精度验证</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-3 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。</text>
   </svg>
 </svg>

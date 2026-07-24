@@ -1,68 +1,119 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图3-3 RFID在智能仓储中的应用拓扑示意</title>
+  <desc id="desc">读者应理解RFID在智能仓储中的应用拓扑示意中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="43.750" y="24.000" width="1112.500" height="712.000" viewBox="0 0 1500.000 960.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-</defs>
-<rect x="0" y="0" width="1500" height="960" fill="#FFFFFF"/>
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图3-7 三角测量定位示意图</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">三点定位：目标接收三基站信号估距，以 r₁/r₂/r₃ 为半径作圆，三圆交汇即位置</text>
-<rect x="1330" y="30" width="112" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1386" y="47" text-anchor="middle" fill="#64748B" font-size="11" font-weight="700">FLOWCHART</text>
-<line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="70" y="120" width="1360" height="740" rx="12" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="90" y="144" fill="#2563EB" font-size="11" font-weight="600">平台服务域</text>
-<circle cx="520" cy="340" r="280" fill="rgba(37,99,235,0.04)" stroke="#2563EB" stroke-width="2"/>
-<circle cx="920" cy="340" r="280" fill="rgba(37,99,235,0.04)" stroke="#2563EB" stroke-width="2"/>
-<circle cx="720" cy="620" r="200" fill="rgba(37,99,235,0.04)" stroke="#2563EB" stroke-width="2"/>
-<line x1="563" y1="368" x2="711.6" y2="464.6" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<line x1="877" y1="368" x2="728.4" y2="464.6" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<line x1="720" y1="592" x2="720" y2="480" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<text x="590" y="415" text-anchor="middle" fill="#475569" font-size="11" font-weight="600">r₁</text>
-<text x="850" y="415" text-anchor="middle" fill="#475569" font-size="11" font-weight="600">r₂</text>
-<text x="695" y="540" text-anchor="end" fill="#475569" font-size="11" font-weight="600">r₃</text>
-<polygon points="720,536 785,431 655,431" fill="rgba(225,29,72,0.20)" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="4 3"/>
-<line x1="720" y1="420" x2="720" y2="431" stroke="#E11D48" stroke-width="1"/>
-<text x="720" y="414" text-anchor="middle" fill="#E11D48" font-size="11" font-weight="700">交汇区</text>
-<circle cx="720" cy="470" r="7" fill="#64748B" stroke="#FFFFFF" stroke-width="2"/>
-<text x="732" y="475" fill="#0F172A" font-size="12" font-weight="700">目标 T</text>
-<path d="M 720 536 L 1178 635" fill="none" stroke="#E11D48" stroke-width="2" marker-end="url(#ah-red)"/>
-<rect x="460" y="312" width="120" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="520" y="338" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">基站 1</text>
-<text x="520" y="356" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">r₁ 测距锚点</text>
-<rect x="860" y="312" width="120" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="920" y="338" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">基站 2</text>
-<text x="920" y="356" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">r₂ 测距锚点</text>
-<rect x="660" y="592" width="120" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="720" y="618" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">基站 3</text>
-<text x="720" y="636" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">r₃ 测距锚点</text>
-<rect x="1180" y="600" width="160" height="70" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-<text x="1260" y="628" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">定位结果</text>
-<text x="1260" y="648" text-anchor="middle" fill="#475569" font-size="10" font-weight="500">三圆交汇 · 最小二乘解</text>
-<rect x="110" y="420" width="300" height="128" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="125" y="445" fill="#0F172A" font-size="12" font-weight="700">测距与交汇</text>
-<text x="125" y="468" fill="#334155" font-size="11">基站与目标间距离通过 ToA</text>
-<text x="125" y="486" fill="#334155" font-size="11">或 RSSI 估算，得 r₁/r₂/r₃。</text>
-<text x="125" y="504" fill="#334155" font-size="11">以各半径作圆，三圆公共</text>
-<text x="125" y="522" fill="#334155" font-size="11">交汇区即目标位置。</text>
-<line x1="58" y1="884" x2="1442" y2="884" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="90" y="900" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="112" y="910" fill="#64748B" font-size="11" font-weight="600">基站(测距锚点)</text>
-<circle cx="297" cy="905" r="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="312" y="910" fill="#64748B" font-size="11" font-weight="600">覆盖范围圆</text>
-<rect x="455" y="900" width="14" height="10" rx="2" fill="rgba(225,29,72,0.20)" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="477" y="910" fill="#64748B" font-size="11" font-weight="600">交汇定位结果</text>
-<line x1="640" y1="905" x2="670" y2="905" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4"/>
-<text x="680" y="910" fill="#64748B" font-size="11" font-weight="600">测距 r₁/r₂/r₃</text>
-<circle cx="838" cy="905" r="5" fill="#64748B" stroke="#FFFFFF" stroke-width="1.5"/>
-<text x="852" y="910" fill="#64748B" font-size="11" font-weight="600">目标 T</text>
-<text x="750" y="945" text-anchor="middle" fill="#94A3B8" font-size="10">图3-7 三点定位原理示意；工程中多以最小二乘法求解最终坐标。</text>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图3-3 RFID在智能仓储中的应用拓扑示意</title>
+  <desc id="desc">读者应理解RFID在智能仓储中的应用拓扑示意中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-3 RFID在智能仓储中的应用拓扑示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解RFID在智能仓储中的应用拓扑示意中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 区域边界 -->
+  <!-- 云端层 -->
+  <rect x="110" y="130" width="1560" height="130" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="120" y="150" fill="#0F172A" font-size="14" font-weight="600">云端层</text>
+  <!-- 边缘层 -->
+  <rect x="110" y="290" width="1560" height="130" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="120" y="310" fill="#0F172A" font-size="14" font-weight="600">边缘层</text>
+  <!-- 现场层 -->
+  <rect x="110" y="450" width="1560" height="270" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="120" y="470" fill="#0F172A" font-size="14" font-weight="600">现场层</text>
+  <!-- 入库区 -->
+  <rect x="130" y="470" width="420" height="230" rx="8" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="140" y="488" fill="#64748B" font-size="12">入库区</text>
+  <!-- 货架区 -->
+  <rect x="580" y="470" width="520" height="230" rx="8" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="590" y="488" fill="#64748B" font-size="12">货架区</text>
+  <!-- 出库区 -->
+  <rect x="1130" y="470" width="520" height="230" rx="8" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="1140" y="488" fill="#64748B" font-size="12">出库区</text>
+
+  <!-- 连线（先绘制，确保在节点下方） -->
+  <!-- RFID标签 → 固定式读写器A（双向） -->
+  <line x1="840" y1="630" x2="340" y2="540" stroke="#2563EB" stroke-width="1.5"/>
+  <polygon points="840,635 835,620 845,620" fill="#2563EB" transform="rotate(-26.6,840,630)"/>
+  <polygon points="340,545 335,530 345,530" fill="#2563EB" transform="rotate(153.4,340,540)"/>
+  <!-- RFID标签 → 固定式读写器B（双向） -->
+  <line x1="840" y1="630" x2="1390" y2="540" stroke="#2563EB" stroke-width="1.5"/>
+  <polygon points="840,635 835,620 845,620" fill="#2563EB" transform="rotate(26.6,840,630)"/>
+  <polygon points="1390,545 1385,530 1395,530" fill="#2563EB" transform="rotate(-153.4,1390,540)"/>
+  <!-- RFID标签 → 手持终端（双向） -->
+  <line x1="840" y1="630" x2="840" y2="520" stroke="#2563EB" stroke-width="1.5"/>
+  <polygon points="840,635 835,620 845,620" fill="#2563EB"/>
+  <polygon points="840,515 835,530 845,530" fill="#2563EB"/>
+  <!-- 固定式读写器A → RFID中间件（有线，实线） -->
+  <line x1="340" y1="500" x2="850" y2="400" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <polygon points="850,405 835,395 845,390" fill="#0F766E" transform="rotate(-135,850,400)"/>
+  <!-- 固定式读写器B → RFID中间件（有线，实线） -->
+  <line x1="1390" y1="500" x2="850" y2="400" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <polygon points="850,405 835,395 845,390" fill="#0F766E" transform="rotate(-45,850,400)"/>
+  <!-- 手持终端 → RFID中间件（无线，虚线） -->
+  <line x1="840" y1="480" x2="840" y2="400" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <polygon points="840,405 835,395 845,395" fill="#2563EB"/>
+  <!-- RFID中间件 → 仓库管理系统（虚线，事件） -->
+  <line x1="850" y1="320" x2="850" y2="250" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <polygon points="850,255 845,245 855,245" fill="#2563EB"/>
+
+  <!-- 节点 -->
+  <!-- 仓库管理系统 (WMS/ERP) -->
+  <g>
+    <rect x="700" y="170" width="300" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="700" y="170" width="300" height="80" rx="10" fill="white" fill-opacity="0.5"/>
+    <text x="850" y="200" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">仓库管理系统 (WMS/ERP)</text>
+    <text x="850" y="220" fill="#64748B" font-size="12" text-anchor="middle">应用服务器 + 数据库</text>
+  </g>
+  <!-- RFID中间件 -->
+  <g>
+    <rect x="740" y="320" width="220" height="80" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="740" y="320" width="220" height="80" rx="10" fill="white" fill-opacity="0.5"/>
+    <text x="850" y="350" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">RFID中间件</text>
+    <text x="850" y="370" fill="#64748B" font-size="12" text-anchor="middle">边缘服务器/工控机</text>
+  </g>
+  <!-- 固定式读写器A（入库） -->
+  <g>
+    <rect x="230" y="500" width="220" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="230" y="500" width="220" height="80" rx="10" fill="white" fill-opacity="0.5"/>
+    <text x="340" y="530" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">固定式读写器A</text>
+    <text x="340" y="550" fill="#64748B" font-size="11" text-anchor="middle">天线×2 · 入库门禁</text>
+  </g>
+  <!-- 固定式读写器B（出库） -->
+  <g>
+    <rect x="1280" y="500" width="220" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="1280" y="500" width="220" height="80" rx="10" fill="white" fill-opacity="0.5"/>
+    <text x="1390" y="530" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">固定式读写器B</text>
+    <text x="1390" y="550" fill="#64748B" font-size="11" text-anchor="middle">天线×2 · 出库门禁</text>
+  </g>
+  <!-- 手持终端（货架区） -->
+  <g>
+    <rect x="730" y="440" width="220" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="730" y="440" width="220" height="80" rx="10" fill="white" fill-opacity="0.5"/>
+    <text x="840" y="470" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">手持终端</text>
+    <text x="840" y="490" fill="#64748B" font-size="11" text-anchor="middle">移动式UHF手持机</text>
+  </g>
+  <!-- RFID标签 -->
+  <g>
+    <rect x="765" y="600" width="150" height="60" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="765" y="600" width="150" height="60" rx="8" fill="white" fill-opacity="0.5"/>
+    <text x="840" y="625" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">RFID标签</text>
+    <text x="840" y="645" fill="#64748B" font-size="11" text-anchor="middle">EPC Gen2 无源</text>
+  </g>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">云端层：深蓝色背景</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">有线连接：实线箭头；无线连接：虚线箭头</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">读写器元件：主机带天线图标；手持机元件：手持设备图标</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-3 展示UHF RFID在仓储场景中固定式门禁与手持终端配合使用的典型部署模式。假设场景：固定式读写器在数秒内可读取约50-100个标签（取决于标签密度与天线安装角度）。不同区域用不同颜色标识。</text>
   </svg>
 </svg>

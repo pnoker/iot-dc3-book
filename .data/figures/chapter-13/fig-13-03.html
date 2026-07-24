@@ -16,166 +16,147 @@
 <body>
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图13-3 中心化 vs 去中心化物联网架构对比图</title>
+  <desc id="desc">读者应理解中心化 vs 去中心化物联网架构对比图中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="103.934" y="24.000" width="992.131" height="712.000" viewBox="0 0 1700.000 1220.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图13-3 中心化 vs 去中心化物联网架构对比图</title>
+  <desc id="desc">读者应理解中心化 vs 去中心化物联网架构对比图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- canvas -->
-  <rect x="0" y="0" width="1700" height="1220" fill="#FFFFFF"/>
-
-  <!-- ===== Title area ===== -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图13-3 设备DID注册与验证流程</text>
-  <text x="82" y="72" font-size="12" fill="#64748B">设备身份生命周期：硬件密钥生成 → 链上注册 → 验证方自主验证（链上操作以虚线区分）</text>
-  <rect x="1530" y="26" width="150" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1605" y="44" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">SEQUENCE</text>
-  <line x1="40" y1="103" x2="1660" y2="103" stroke="#E2E8F0"/>
-
-  <!-- ===== Participant headers ===== -->
-  <!-- 设备1 -->
-  <rect x="190" y="128" width="260" height="64" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="320" y="156" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备1（身份主体）</text>
-  <text x="320" y="178" font-size="10" fill="#64748B" text-anchor="middle">安全飞地 · ECDSA 私钥不可导出</text>
-  <!-- 智能合约 -->
-  <rect x="720" y="128" width="260" height="64" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="850" y="156" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">DeviceDIDRegistry</text>
-  <text x="850" y="178" font-size="10" fill="#64748B" text-anchor="middle">智能合约 · 区块链链上状态</text>
-  <!-- 设备2 -->
-  <rect x="1250" y="128" width="260" height="64" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="1380" y="156" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备2（验证方）</text>
-  <text x="1380" y="178" font-size="10" fill="#64748B" text-anchor="middle">ecrecover 恢复地址 · 比对 owner</text>
-
-  <!-- ===== Lifelines ===== -->
-  <line x1="320" y1="192" x2="320" y2="1090" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="5 4"/>
-  <line x1="850" y1="192" x2="850" y2="1090" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="5 4"/>
-  <line x1="1380" y1="192" x2="1380" y2="1090" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="5 4"/>
-
-  <!-- activation bars (subtle) -->
-  <rect x="316" y="235" width="8" height="180" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
-  <rect x="316" y="650" width="8" height="60" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
-  <rect x="846" y="405" width="8" height="180" fill="#EFF6FF" stroke="#2563EB" stroke-width="1"/>
-  <rect x="846" y="740" width="8" height="100" fill="#EFF6FF" stroke="#2563EB" stroke-width="1"/>
-  <rect x="1376" y="740" width="8" height="280" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
-
-  <!-- ===== Steps ===== -->
-
-  <!-- Step 1: 设备1 internal - 生成密钥对 (self loop right) -->
-  <circle cx="70" cy="250" r="13" fill="#10B981"/>
-  <text x="70" y="255" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-  <path d="M 324 250 H 372 v 20 H 330" fill="none" stroke="#10B981" stroke-width="1.8" marker-end="url(#ah-green)"/>
-  <text x="384" y="258" font-size="12" fill="#0F172A">安全飞地生成 ECDSA 密钥对</text>
-  <text x="384" y="274" font-size="10" fill="#64748B">privateKey 永不离开飞地，仅 publicKey 可导出</text>
-
-  <!-- Step 2: 设备1 internal - 构造DID (self loop right) -->
-  <circle cx="70" cy="335" r="13" fill="#10B981"/>
-  <text x="70" y="340" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-  <path d="M 324 335 H 372 v 20 H 330" fill="none" stroke="#10B981" stroke-width="1.8" marker-end="url(#ah-green)"/>
-  <text x="384" y="343" font-size="12" fill="#0F172A">根据公钥哈希构造 DID 字符串</text>
-  <text x="384" y="359" font-size="10" fill="#64748B" font-family="'JetBrains Mono',monospace">did:example:0xabcd…  ( = keccak256(pubKey) )</text>
-
-  <!-- Step 3: 设备1 -> 合约 registerDevice (链上 虚线 blue) -->
-  <circle cx="70" cy="420" r="13" fill="#2563EB"/>
-  <text x="70" y="425" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-  <line x1="324" y1="420" x2="844" y2="420" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-blue)"/>
-  <text x="584" y="412" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">registerDevice(did, publicKeyHash)</text>
-  <text x="584" y="437" font-size="10" fill="#64748B" text-anchor="middle">链上交易 · 携带设备1以太坊账户签名</text>
-
-  <!-- Step 4: 合约 internal - 验证签名写状态 (self loop right) -->
-  <circle cx="70" cy="495" r="13" fill="#2563EB"/>
-  <text x="70" y="500" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-  <path d="M 854 495 H 902 v 20 H 860" fill="none" stroke="#2563EB" stroke-width="1.8" marker-end="url(#ah-blue)"/>
-  <text x="914" y="503" font-size="12" fill="#0F172A">验证签名，写入链上状态</text>
-  <text x="914" y="519" font-size="10" fill="#64748B" font-family="'JetBrains Mono',monospace">(owner, publicKeyHash, timestamp, isActive=true)</text>
-
-  <!-- Step 5: 合约 -> 区块链 日志入块 (链上 虚线 blue, block icon) -->
-  <circle cx="70" cy="575" r="13" fill="#2563EB"/>
-  <text x="70" y="580" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
-  <!-- block cube icon -->
-  <g>
-    <rect x="900" y="568" width="30" height="22" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
-    <line x1="900" y1="576" x2="930" y2="576" stroke="#2563EB" stroke-width="1"/>
-    <line x1="900" y1="583" x2="930" y2="583" stroke="#2563EB" stroke-width="1"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图13-3 中心化 vs 去中心化物联网架构对比图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解中心化 vs 去中心化物联网架构对比图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 左栏：中心化架构 -->
+  <!-- 红色虚线框 -->
+  <rect x="160" y="150" width="600" height="500" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="8,4" rx="10"/>
+  <text x="680" y="665" fill="#DC2626" font-size="12" font-weight="600">单一故障点范围</text>
+  
+  <!-- 左栏连线：设备到中心 -->
+  <g stroke="#2563EB" stroke-width="1.5" fill="none" marker-end="url(#bp-arrow-primary)">
+    <line x1="290" y1="410" x2="520" y2="225"/>
+    <line x1="530" y1="410" x2="520" y2="225"/>
+    <line x1="410" y1="510" x2="520" y2="225"/>
+    <line x1="650" y1="510" x2="520" y2="225"/>
+    <line x1="470" y1="610" x2="520" y2="225"/>
   </g>
-  <path d="M 854 575 H 896" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-blue)"/>
-  <text x="942" y="583" font-size="12" fill="#0F172A">日志 DIDRegistered 写入区块</text>
-  <text x="942" y="599" font-size="10" fill="#64748B">区块确认后不可篡改，作为注册凭证</text>
+  
+  <!-- 左栏节点 -->
+  <!-- 中心平台 -->
+  <rect x="400" y="180" width="240" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="520" y="215" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">中心化云平台</text>
+  <text x="520" y="240" fill="#64748B" font-size="12" text-anchor="middle">认证中心</text>
+  
+  <!-- 设备群 -->
+  <rect x="220" y="380" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="290" y="410" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">传感器1</text>
+  <text x="290" y="428" fill="#64748B" font-size="11" text-anchor="middle">终端设备</text>
+  
+  <rect x="460" y="380" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="530" y="410" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">传感器2</text>
+  <text x="530" y="428" fill="#64748B" font-size="11" text-anchor="middle">终端设备</text>
+  
+  <rect x="340" y="480" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="410" y="510" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">传感器3</text>
+  <text x="410" y="528" fill="#64748B" font-size="11" text-anchor="middle">终端设备</text>
+  
+  <rect x="580" y="480" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="650" y="510" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">传感器4</text>
+  <text x="650" y="528" fill="#64748B" font-size="11" text-anchor="middle">终端设备</text>
+  
+  <rect x="400" y="580" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="470" y="610" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">传感器5</text>
+  <text x="470" y="628" fill="#64748B" font-size="11" text-anchor="middle">终端设备</text>
+  
+  <!-- 左栏标注 -->
+  <text x="130" y="200" fill="#DC2626" font-size="12" font-weight="600">单点信任</text>
+  <text x="130" y="222" fill="#DC2626" font-size="12" font-weight="600">全局瓶颈</text>
+  <text x="130" y="244" fill="#DC2626" font-size="12" font-weight="600">认证中心</text>
 
-  <!-- Step 6: 设备1 -> 设备2 握手 (链下 实线 green) -->
-  <circle cx="70" cy="665" r="13" fill="#10B981"/>
-  <text x="70" y="670" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
-  <line x1="324" y1="665" x2="1374" y2="665" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="849" y="657" font-size="12" font-weight="600" fill="#10B981" text-anchor="middle">握手消息（DID + 随机挑战 + 对挑战的签名）</text>
-  <text x="849" y="682" font-size="10" fill="#64748B" text-anchor="middle">链下 P2P 通信 · 无 gas · 低延迟</text>
+  <!-- 右栏：去中心化架构 -->
+  <!-- 绿色高亮框 -->
+  <rect x="880" y="160" width="660" height="460" fill="none" stroke="#16A34A" stroke-width="2" rx="10"/>
+  <text x="1540" y="615" fill="#16A34A" font-size="12" font-weight="600" text-anchor="end">无单点失败</text>
 
-  <!-- Step 7: 设备2 -> 合约 查询DID文档 (链上 虚线 blue) -->
-  <circle cx="70" cy="755" r="13" fill="#2563EB"/>
-  <text x="70" y="760" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
-  <line x1="1376" y1="755" x2="858" y2="755" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-blue)"/>
-  <text x="1117" y="747" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">didDocs[didHash] 静态调用查询</text>
-  <text x="1117" y="772" font-size="10" fill="#64748B" text-anchor="middle">链上只读 · staticcall · 不消耗 gas</text>
+  <!-- 右栏连线：区块链节点之间网状 -->
+  <g stroke="#2563EB" stroke-width="1.5" fill="none">
+    <line x1="1040" y1="227.5" x2="1200" y2="227.5"/>
+    <line x1="1200" y1="227.5" x2="1360" y2="227.5"/>
+    <line x1="1040" y1="347.5" x2="1200" y2="347.5"/>
+    <line x1="1200" y1="347.5" x2="1360" y2="347.5"/>
+    <line x1="1040" y1="227.5" x2="1040" y2="347.5"/>
+    <line x1="1200" y1="227.5" x2="1200" y2="347.5"/>
+    <line x1="1360" y1="227.5" x2="1360" y2="347.5"/>
+    <line x1="1040" y1="227.5" x2="1200" y2="347.5"/>
+    <line x1="1200" y1="227.5" x2="1360" y2="347.5"/>
+    <line x1="1360" y1="227.5" x2="1200" y2="347.5"/>
+    <line x1="1200" y1="227.5" x2="1040" y2="347.5"/>
+  </g>
 
-  <!-- Step 8: 合约 -> 设备2 返回DID文档 (链下 实线 gray response) -->
-  <circle cx="70" cy="835" r="13" fill="#64748B"/>
-  <text x="70" y="840" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">8</text>
-  <line x1="854" y1="835" x2="1374" y2="835" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
-  <text x="1117" y="827" font-size="12" fill="#475569" text-anchor="middle">返回 DID 文档（owner, publicKeyHash, isActive）</text>
-  <text x="1117" y="852" font-size="10" fill="#64748B" text-anchor="middle">响应回传 · 验证方本地缓存</text>
+  <!-- 设备到区块链节点连线 -->
+  <g stroke="#2563EB" stroke-width="1.5" fill="none" marker-end="url(#bp-arrow-primary)">
+    <line x1="1010" y1="530" x2="1040" y2="227.5"/>
+    <line x1="1010" y1="530" x2="1040" y2="347.5"/>
+    <line x1="1430" y1="530" x2="1360" y2="227.5"/>
+    <line x1="1430" y1="530" x2="1360" y2="347.5"/>
+  </g>
 
-  <!-- Step 9: 设备2 internal - ecrecover+isActive (self loop left) -->
-  <circle cx="70" cy="920" r="13" fill="#10B981"/>
-  <text x="70" y="925" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">9</text>
-  <path d="M 1376 920 H 1328 v 20 H 1370" fill="none" stroke="#10B981" stroke-width="1.8" marker-end="url(#ah-green)"/>
-  <text x="1316" y="928" font-size="12" fill="#0F172A" text-anchor="end">ecrecover 恢复签名地址，比对 owner，检查 isActive</text>
-  <text x="1316" y="944" font-size="10" fill="#64748B" text-anchor="end">完全本地验证 · 无需信任任何中间方</text>
+  <!-- 设备间P2P连线（双向） -->
+  <g stroke="#0F766E" stroke-width="1.5" fill="none">
+    <line x1="1010" y1="560" x2="1430" y2="560" marker-end="url(#bp-arrow)"/>
+    <line x1="1430" y1="560" x2="1010" y2="560" marker-end="url(#bp-arrow)"/>
+  </g>
+  <text x="1220" y="555" fill="#0F766E" font-size="11" text-anchor="middle">P2P通信</text>
 
-  <!-- Step 10: 设备2 -> 设备1 返回结果 (链下 实线 gray response) + fail branch -->
-  <circle cx="70" cy="1010" r="13" fill="#64748B"/>
-  <text x="70" y="1015" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">10</text>
-  <line x1="1376" y1="1010" x2="326" y2="1010" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
-  <text x="849" y="1002" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">返回验证结果（通过 / 失败）</text>
-  <!-- fail branch callout -->
-  <line x1="1380" y1="1035" x2="1380" y2="1060" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="4 3"/>
-  <line x1="1380" y1="1060" x2="1200" y2="1060" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
-  <text x="1290" y="1054" font-size="10" font-weight="600" fill="#E11D48" text-anchor="middle">失败：握手终止</text>
+  <!-- 右栏节点 -->
+  <rect x="1000" y="200" width="80" height="55" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1040" y="226" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">共识节点</text>
+  <text x="1040" y="244" fill="#64748B" font-size="11" text-anchor="middle">区块链</text>
+  
+  <rect x="1160" y="200" width="80" height="55" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1200" y="226" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">共识节点</text>
+  <text x="1200" y="244" fill="#64748B" font-size="11" text-anchor="middle">区块链</text>
+  
+  <rect x="1320" y="200" width="80" height="55" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1360" y="226" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">共识节点</text>
+  <text x="1360" y="244" fill="#64748B" font-size="11" text-anchor="middle">区块链</text>
+  
+  <rect x="1000" y="320" width="80" height="55" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1040" y="346" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">共识节点</text>
+  <text x="1040" y="364" fill="#64748B" font-size="11" text-anchor="middle">区块链</text>
+  
+  <rect x="1160" y="320" width="80" height="55" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1200" y="346" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">共识节点</text>
+  <text x="1200" y="364" fill="#64748B" font-size="11" text-anchor="middle">区块链</text>
+  
+  <rect x="1320" y="320" width="80" height="55" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1360" y="346" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">共识节点</text>
+  <text x="1360" y="364" fill="#64748B" font-size="11" text-anchor="middle">区块链</text>
 
-  <!-- lifeline bottom caps -->
-  <rect x="300" y="1088" width="40" height="6" fill="#94A3B8"/>
-  <rect x="830" y="1088" width="40" height="6" fill="#94A3B8"/>
-  <rect x="1360" y="1088" width="40" height="6" fill="#94A3B8"/>
+  <!-- 右栏设备 -->
+  <rect x="940" y="500" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1010" y="530" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">轻节点设备</text>
+  <text x="1010" y="548" fill="#64748B" font-size="11" text-anchor="middle">物联网终端</text>
+  
+  <rect x="1360" y="500" width="140" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1430" y="530" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">轻节点设备</text>
+  <text x="1430" y="548" fill="#64748B" font-size="11" text-anchor="middle">物联网终端</text>
 
-  <!-- ===== Legend ===== -->
-  <line x1="40" y1="1110" x2="1660" y2="1110" stroke="#E2E8F0"/>
-  <text x="40" y="1132" font-size="11" font-weight="700" fill="#475569">图例</text>
-
-  <!-- legend item: solid green -->
-  <line x1="120" y1="1145" x2="160" y2="1145" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="172" y="1149" font-size="11" fill="#334155">实线 · 链下通信（设备间，速度快、无 gas）</text>
-
-  <!-- legend item: dashed blue -->
-  <line x1="500" y1="1145" x2="540" y2="1145" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#ah-blue)"/>
-  <text x="552" y="1149" font-size="11" fill="#334155">虚线 · 链上交易/查询（有 gas 成本与区块确认延迟）</text>
-
-  <!-- legend item: gray response -->
-  <line x1="950" y1="1145" x2="990" y2="1145" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
-  <text x="1002" y="1149" font-size="11" fill="#334155">灰实线 · 响应/回传</text>
-
-  <!-- legend item: self loop -->
-  <path d="M 1180 1141 H 1208 v 10 H 1186" fill="none" stroke="#10B981" stroke-width="1.6" marker-end="url(#ah-green)"/>
-  <text x="1222" y="1149" font-size="11" fill="#334155">自环 · 内部计算（飞地/合约状态/本地验证）</text>
-
-  <!-- legend item: fail -->
-  <line x1="1490" y1="1145" x2="1530" y2="1145" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ah-red)"/>
-  <text x="1542" y="1149" font-size="11" fill="#334155">失败分支</text>
-
-  <!-- ===== Caption ===== -->
-  <text x="850" y="1195" font-size="10" fill="#94A3B8" text-anchor="middle">图13-3 设备DID注册与验证流程：从安全飞地密钥生成、链上注册到验证方自主 ecrecover 验证的完整身份生命周期；链上操作（步骤3/5/7）以虚线区分。</text>
+  <!-- 右栏标注 -->
+  <text x="1410" y="200" fill="#0F172A" font-size="12" font-weight="600">分布式共识</text>
+  <text x="1410" y="222" fill="#0F172A" font-size="12" font-weight="600">P2P通信</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：服务器/节点</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图13-3 中心化与去中心化物联网架构的核心差异。中心化模型依赖单一可信中介，去中心化模型通过分布式账本和共识机制将信任分散到网络节点。</text>
   </svg>
 </svg>
     <section class="meta">

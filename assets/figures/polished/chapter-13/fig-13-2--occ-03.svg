@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图13-2 设备DID注册与验证流程</title>
+  <desc id="desc">读者应理解设备DID注册与验证流程中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图13-2 设备DID注册与验证流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解设备DID注册与验证流程中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="sequence">
+  <line x1="200" y1="170" x2="200" y2="700" stroke="#94A3B8" stroke-dasharray="4,4" stroke-width="1.5"/>
+  <line x1="700" y1="170" x2="700" y2="700" stroke="#94A3B8" stroke-dasharray="4,4" stroke-width="1.5"/>
+  <line x1="1200" y1="170" x2="1200" y2="700" stroke="#94A3B8" stroke-dasharray="4,4" stroke-width="1.5"/>
+  <rect x="140" y="130" width="120" height="40" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="200" y="155" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle">设备1</text>
+  <rect x="640" y="130" width="120" height="40" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="700" y="155" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle">智能合约</text>
+  <rect x="1140" y="130" width="120" height="40" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1200" y="155" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle">设备2</text>
+  <path d="M200,180 L220,180 L220,190 L200,190" fill="none" stroke="#0F766E" stroke-width="1.5"/>
+  <polygon points="200,185 200,195 190,190" fill="#0F766E"/>
+  <text x="225" y="188" fill="#0F172A" font-size="12" dominant-baseline="middle">1. 生成密钥对</text>
+  <path d="M200,225 L220,225 L220,235 L200,235" fill="none" stroke="#0F766E" stroke-width="1.5"/>
+  <polygon points="200,230 200,240 190,235" fill="#0F766E"/>
+  <text x="225" y="233" fill="#0F172A" font-size="12" dominant-baseline="middle">2. 构造DID</text>
+  <line x1="200" y1="270" x2="700" y2="270" stroke="#2563EB" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <polygon points="700,265 700,275 710,270" fill="#2563EB"/>
+  <rect x="360" y="258" width="180" height="18" rx="3" fill="white"/>
+  <text x="450" y="270" fill="#0F172A" font-size="12" text-anchor="middle" dominant-baseline="middle">3. 注册交易</text>
+  <path d="M700,315 L720,315 L720,325 L700,325" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+  <polygon points="700,320 700,330 690,325" fill="#2563EB"/>
+  <text x="725" y="323" fill="#0F172A" font-size="12" dominant-baseline="middle">4. 验证签名</text>
+  <path d="M700,360 L720,360 L720,370 L700,370" fill="none" stroke="#2563EB" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <polygon points="700,365 700,375 690,370" fill="#2563EB"/>
+  <text x="725" y="368" fill="#0F172A" font-size="12" dominant-baseline="middle">5. 日志区块</text>
+  <line x1="200" y1="405" x2="1200" y2="405" stroke="#0F766E" stroke-width="1.5"/>
+  <polygon points="1200,400 1200,410 1210,405" fill="#0F766E"/>
+  <rect x="600" y="393" width="200" height="18" rx="3" fill="white"/>
+  <text x="700" y="405" fill="#0F172A" font-size="12" text-anchor="middle" dominant-baseline="middle">6. 握手消息</text>
+  <line x1="1200" y1="450" x2="700" y2="450" stroke="#2563EB" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <polygon points="700,445 700,455 690,450" fill="#2563EB"/>
+  <rect x="870" y="438" width="160" height="18" rx="3" fill="white"/>
+  <text x="950" y="450" fill="#0F172A" font-size="12" text-anchor="middle" dominant-baseline="middle">7. 查询DID</text>
+  <line x1="700" y1="495" x2="1200" y2="495" stroke="#2563EB" stroke-width="1.5"/>
+  <polygon points="1200,490 1200,500 1210,495" fill="#2563EB"/>
+  <rect x="870" y="483" width="160" height="18" rx="3" fill="white"/>
+  <text x="950" y="495" fill="#0F172A" font-size="12" text-anchor="middle" dominant-baseline="middle">8. 返回文档</text>
+  <path d="M1200,540 L1180,540 L1180,550 L1200,550" fill="none" stroke="#0F766E" stroke-width="1.5"/>
+  <polygon points="1200,545 1200,555 1210,550" fill="#0F766E"/>
+  <text x="1170" y="548" fill="#0F172A" font-size="12" text-anchor="end" dominant-baseline="middle">9. 验证签名</text>
+  <line x1="1200" y1="585" x2="200" y2="585" stroke="#0F766E" stroke-width="1.5"/>
+  <polygon points="200,580 200,590 190,585" fill="#0F766E"/>
+  <rect x="600" y="573" width="200" height="18" rx="3" fill="white"/>
+  <text x="700" y="585" fill="#0F172A" font-size="12" text-anchor="middle" dominant-baseline="middle">10. 返回结果</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：链下通信，速度快，无gas消耗</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：链上交易/查询，有gas成本和区块确认延迟</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图13-2 展示设备从硬件密钥生成、DID注册到验证方自主验证的完整身份生命周期。链上操作以虚线区分。</text>
+</svg>

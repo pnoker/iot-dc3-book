@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">物联网协议栈与分类图</title>
+  <desc id="desc">读者应理解物联网协议栈与分类图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">物联网协议栈与分类图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解物联网协议栈与分类图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 箭头连线（先绘制） -->
+  <line x1="850" y1="645" x2="850" y2="605" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="850" y1="525" x2="850" y2="485" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="850" y1="405" x2="850" y2="365" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="850" y1="285" x2="850" y2="245" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+
+  <!-- 区域边界 -->
+  <rect x="230" y="275" width="1240" height="460" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <rect x="230" y="115" width="1240" height="140" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+
+  <!-- 层条带 -->
+  <rect x="250" y="645" width="1200" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="250" y="525" width="1200" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="250" y="405" width="1200" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="250" y="285" width="1200" height="80" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <rect x="250" y="125" width="1200" height="120" rx="10" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+
+  <!-- 层名称 -->
+  <text x="265" y="690" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC','Microsoft YaHei',sans-serif">感知层</text>
+  <text x="265" y="570" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC','Microsoft YaHei',sans-serif">无线接入</text>
+  <text x="265" y="450" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC','Microsoft YaHei',sans-serif">网络层 (IP)</text>
+  <text x="265" y="330" font-size="16" font-weight="bold" fill="#0F172A" font-family="'PingFang SC','Microsoft YaHei',sans-serif">传输层</text>
+  <text x="250" y="140" font-size="14" font-weight="bold" fill="#0F172A" font-family="'PingFang SC','Microsoft YaHei',sans-serif">应用层协议（通信模型分类）</text>
+
+  <!-- 应用层子区域 -->
+  <rect x="260" y="145" width="585" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="865" y="145" width="585" height="90" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="270" y="168" font-size="12" fill="#475569" font-weight="500" font-family="'PingFang SC','Microsoft YaHei',sans-serif">发布/订阅</text>
+  <text x="875" y="168" font-size="12" fill="#475569" font-weight="500" font-family="'PingFang SC','Microsoft YaHei',sans-serif">请求/响应</text>
+
+  <!-- 左边协议卡片 -->
+  <rect x="265" y="180" width="140" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="335" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">MQTT</text>
+  <rect x="410" y="180" width="140" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="480" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">AMQP</text>
+  <rect x="555" y="180" width="140" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="625" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">DDS</text>
+  <rect x="700" y="180" width="140" height="30" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="770" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">XMPP</text>
+
+  <!-- 右边协议卡片 -->
+  <rect x="875" y="180" width="188" height="30" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1"/>
+  <text x="969" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">HTTP</text>
+  <rect x="1068" y="180" width="188" height="30" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1"/>
+  <text x="1162" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">CoAP</text>
+  <rect x="1261" y="180" width="188" height="30" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="1355" y="200" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">LwM2M</text>
+
+  <!-- 传输层内部 TCP/UDP -->
+  <rect x="700" y="310" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1"/>
+  <text x="760" y="330" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">TCP</text>
+  <rect x="840" y="310" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1"/>
+  <text x="900" y="330" font-size="14" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">UDP</text>
+
+  <!-- 左侧竖排标签 -->
+  <text transform="rotate(-90, 120, 425)" x="120" y="425" text-anchor="middle" font-size="22" font-weight="bold" fill="#0F172A" font-family="'PingFang SC','Microsoft YaHei',sans-serif">物联网协议栈</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">颜色区分通信模型: 左侧蓝色系 (发布/订阅) / 右侧橙色系</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">应用层协议: 定义消息格式与交互模式，运行在 TCP/UDP 之上，与底层无线技术无关。</text>
+</svg>

@@ -1,63 +1,141 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="175.200" width="1152.000" height="409.600" viewBox="0 0 1800.000 640.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-</defs>
-<rect x="0" y="0" width="1800" height="640" fill="#FFFFFF"/>
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图10-4 预测性维护 AI 闭环</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">原始信号经五层转换落地为维护工单，执行结果回流校准模型，飞轮闭合</text>
-<rect x="1620" y="28" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1680" y="45" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">FLOW</text>
-<line x1="58" y1="103" x2="1742" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+            <!-- 定义 -->
+            <defs>
+                <!-- 网格背景 -->
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.6"/>
+                </pattern>
 
-<rect x="70" y="240" width="180" height="90" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="160" y="280" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">采集层</text>
-<text x="160" y="302" fill="#64748B" font-size="10" text-anchor="middle">振动/温度 PointValue</text>
+                <!-- 箭头：实线 -->
+                <marker id="arrow-solid" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#64748B" />
+                </marker>
+                <!-- 箭头：虚线 (用于HasProperty) -->
+                <marker id="arrow-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#7C3AED" />
+                </marker>
 
-<rect x="360" y="240" width="200" height="90" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="460" y="275" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">特征提取层</text>
-<text x="460" y="296" fill="#64748B" font-size="10" text-anchor="middle">时域 RMS/峭度</text>
-<text x="460" y="312" fill="#64748B" font-size="10" text-anchor="middle">频域 FFT 包络谱</text>
+                <!-- 投影滤镜 -->
+                <filter id="shadow" x="-4%" y="-4%" width="110%" height="110%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.06"/>
+                </filter>
 
-<rect x="670" y="240" width="200" height="90" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-<text x="770" y="275" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">健康评估层</text>
-<text x="770" y="296" fill="#64748B" font-size="10" text-anchor="middle">HI 健康指标</text>
-<text x="770" y="312" fill="#64748B" font-size="10" text-anchor="middle">RUL 预测 / TSFM</text>
+                <!-- 数据库形状模板 (用于变量节点) -->
+                <g id="shape-database">
+                    <path d="M 0 8 Q 0 0 8 0 L 264 0 Q 272 0 272 8 L 272 56 Q 272 64 264 64 L 8 64 Q 0 64 0 56 Z" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+                    <ellipse cx="136" cy="56" rx="136" ry="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+                    <ellipse cx="136" cy="56" rx="136" ry="10" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+                    <path d="M 0 56 Q 136 66 272 56" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+                </g>
+            </defs>
 
-<rect x="980" y="240" width="180" height="90" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-<text x="1070" y="280" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">决策层</text>
-<text x="1070" y="302" fill="#64748B" font-size="10" text-anchor="middle">规则引擎 + 阈值</text>
+            <!-- 背景网格 -->
+            <rect x="0" y="0" width="1200" height="760" fill="url(#grid)" />
 
-<rect x="1270" y="240" width="180" height="90" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="1360" y="280" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">执行层</text>
-<text x="1360" y="302" fill="#64748B" font-size="10" text-anchor="middle">维护工单派发</text>
+            <!-- ===== 区域边界 (虚线框) ===== -->
+            <!-- 1. 平台服务域 (顶部) -->
+            <rect x="370" y="28" width="460" height="138" rx="14" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,4" stroke-opacity="0.5"/>
+            <text x="384" y="52" class="region-label" fill="#2563EB">平台服务域</text>
+            <text x="384" y="68" class="callout-text" fill="#2563EB" font-size="10">核心服务能力边界</text>
 
-<!-- 主链路 -->
-<line x1="250" y1="285" x2="356" y2="285" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="303" y="275" fill="#2563EB" font-size="9" text-anchor="middle">PointValue</text>
-<line x1="560" y1="285" x2="666" y2="285" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="613" y="275" fill="#2563EB" font-size="9" text-anchor="middle">特征向量</text>
-<line x1="870" y1="285" x2="976" y2="285" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="923" y="275" fill="#2563EB" font-size="9" text-anchor="middle">HI+RUL</text>
-<line x1="1160" y1="285" x2="1266" y2="285" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="1213" y="275" fill="#2563EB" font-size="9" text-anchor="middle">维护工单</text>
+            <!-- 2. 设备与边缘域 -->
+            <rect x="370" y="195" width="460" height="118" rx="14" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8,4" stroke-opacity="0.5"/>
+            <text x="384" y="219" class="region-label" fill="#0F766E">设备与边缘域</text>
+            <text x="384" y="235" class="callout-text" fill="#0F766E" font-size="10">现场异构资源边界</text>
 
-<!-- 反馈回路（虚线加粗，执行→健康评估校准） -->
-<path d="M 1360 330 L 1360 460 L 770 460 L 770 332" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="7 4" marker-end="url(#ah-orange)"/>
-<text x="1065" y="450" fill="#B45309" font-size="11" font-weight="600" text-anchor="middle">执行结果回流：校准 HI 阈值与 RUL 模型（飞轮闭合）</text>
+            <!-- 3. 数据资产域 -->
+            <rect x="170" y="365" width="380" height="118" rx="14" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8,4" stroke-opacity="0.5"/>
+            <text x="184" y="389" class="region-label" fill="#7C3AED">数据资产域</text>
+            <text x="184" y="405" class="callout-text" fill="#7C3AED" font-size="10">数据沉淀与治理边界</text>
 
-<!-- 图例 -->
-<line x1="58" y1="520" x2="1742" y2="520" stroke="#E2E8F0" stroke-width="1"/>
-<line x1="80" y1="548" x2="116" y2="548" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="124" y="552" fill="#64748B" font-size="11" font-weight="600">主链路（数据流）</text>
-<line x1="300" y1="548" x2="336" y2="548" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="7 4" marker-end="url(#ah-orange)"/>
-<text x="344" y="552" fill="#64748B" font-size="11" font-weight="600">反馈回路（模型校准）</text>
+            <!-- 4. 平台服务域 (底部右侧) -->
+            <rect x="650" y="365" width="380" height="118" rx="14" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,4" stroke-opacity="0.5"/>
+            <text x="664" y="389" class="region-label" fill="#2563EB">平台服务域</text>
+            <text x="664" y="405" class="callout-text" fill="#2563EB" font-size="10">核心服务能力边界</text>
 
-<text x="900" y="600" fill="#94A3B8" font-size="10" text-anchor="middle">图10-4 预测性维护五层流水线：采集→特征提取→健康评估(RUL/TSFM)→决策→执行工单；执行结果反哺校准模型，形成持续优化飞轮。</text>
-  </svg>
-</svg>
+            <!-- ===== 连线 (先画，让箭头落在盒子背后) ===== -->
+            <!-- 连线1: c1 -> c2 (Organizes) -->
+            <path d="M 600 127 L 600 215" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow-solid)"/>
+            <rect x="608" y="158" width="78" height="20" rx="4" fill="#FFFFFF" fill-opacity="0.85"/>
+            <text x="610" y="173" class="edge-label" fill="#2563EB">Organizes</text>
+
+            <!-- 连线2: c2 -> c3 (HasComponent) 折线 -->
+            <path d="M 600 287 L 600 335 L 370 335 L 370 388" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#arrow-solid)"/>
+            <rect x="608" y="318" width="96" height="20" rx="4" fill="#FFFFFF" fill-opacity="0.85"/>
+            <text x="610" y="333" class="edge-label" fill="#0F766E">HasComponent</text>
+
+            <!-- 连线3: c3 -> c4 (HasProperty) -->
+            <path d="M 502 424 L 690 424" fill="none" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-dashed)"/>
+            <rect x="555" y="408" width="84" height="20" rx="4" fill="#FFFFFF" fill-opacity="0.85"/>
+            <text x="557" y="423" class="edge-label" fill="#7C3AED">HasProperty</text>
+
+            <!-- ===== 组件节点 ===== -->
+
+            <!-- c1: 根节点 (platform - 蓝色) -->
+            <g filter="url(#shadow)">
+                <rect x="450" y="55" width="300" height="72" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+                <rect x="450" y="55" width="8" height="72" rx="4" fill="#2563EB" />
+                <text x="600" y="82" class="node-title" text-anchor="middle">根节点</text>
+                <text x="600" y="102" class="node-sub" text-anchor="middle">Objects，所有对象的容器</text>
+            </g>
+
+            <!-- c2: 设备对象 (edge - 青绿色) -->
+            <g filter="url(#shadow)">
+                <rect x="450" y="215" width="300" height="72" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+                <rect x="450" y="215" width="8" height="72" rx="4" fill="#0F766E" />
+                <text x="600" y="242" class="node-title" text-anchor="middle">设备对象</text>
+                <text x="600" y="262" class="node-sub" text-anchor="middle">如“电机1”，包含温度、转速等变量</text>
+            </g>
+
+            <!-- c3: 变量节点 (data - 紫色, 数据库形状) -->
+            <g filter="url(#shadow)" transform="translate(230, 388)">
+                <!-- 使用数据库形状 -->
+                <path d="M 0 10 Q 0 0 10 0 L 260 0 Q 270 0 270 10 L 270 52 Q 270 62 260 62 L 10 62 Q 0 62 0 52 Z" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+                <ellipse cx="135" cy="62" rx="135" ry="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+                <ellipse cx="135" cy="62" rx="135" ry="10" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+                <path d="M 0 62 Q 135 72 270 62" fill="none" stroke="#7C3AED" stroke-width="1.5"/>
+                <text x="135" y="24" class="node-title" text-anchor="middle">变量节点</text>
+                <text x="135" y="44" class="node-sub" text-anchor="middle">如“温度”，绑定数据类型与单位</text>
+            </g>
+
+            <!-- c4: 方法节点 (platform - 蓝色) -->
+            <g filter="url(#shadow)">
+                <rect x="690" y="388" width="300" height="72" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+                <rect x="690" y="388" width="8" height="72" rx="4" fill="#2563EB" />
+                <text x="840" y="415" class="node-title" text-anchor="middle">方法节点</text>
+                <text x="840" y="435" class="node-sub" text-anchor="middle">如“复位”，可被客户端远程调用</text>
+            </g>
+
+            <!-- ===== 图例 ===== -->
+            <g transform="translate(200, 540)">
+                <rect x="0" y="0" width="800" height="62" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                <text x="20" y="24" class="legend-text" font-weight="600" fill="#0F172A">图例：</text>
+
+                <!-- 蓝色框 -->
+                <rect x="80" y="10" width="20" height="20" rx="4" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+                <text x="108" y="25" class="legend-text">根节点 / 方法节点（平台域）</text>
+
+                <!-- 青绿色框 -->
+                <rect x="290" y="10" width="20" height="20" rx="4" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+                <text x="318" y="25" class="legend-text">设备对象（边缘域）</text>
+
+                <!-- 紫色框 -->
+                <rect x="470" y="10" width="20" height="20" rx="4" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+                <text x="498" y="25" class="legend-text">变量节点（数据域）</text>
+
+                <!-- 实线箭头 -->
+                <line x1="20" y1="48" x2="60" y2="48" stroke="#64748B" stroke-width="2" marker-end="url(#arrow-solid)"/>
+                <text x="68" y="52" class="legend-text" font-size="11">实线箭头=引用关系</text>
+
+                <!-- 虚线箭头 -->
+                <line x1="210" y1="48" x2="250" y2="48" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-dashed)"/>
+                <text x="258" y="52" class="legend-text" font-size="11">虚线箭头=HasProperty</text>
+            </g>
+
+            <!-- ===== 图注 (caption) ===== -->
+            <text x="600" y="650" class="caption-text" text-anchor="middle">图10-4 OPC UA地址空间以树状节点组织，客户端连入后可直接遍历发现设备的数据结构。</text>
+
+            <!-- 底部装饰线 -->
+            <line x1="200" y1="670" x2="1000" y2="670" stroke="#E2E8F0" stroke-width="1"/>
+            <text x="600" y="690" class="callout-text" text-anchor="middle" font-size="10" fill="#94A3B8">节点通过 Organizes、HasComponent、HasProperty 三种引用方式形成层次化地址空间</text>
+        </svg>

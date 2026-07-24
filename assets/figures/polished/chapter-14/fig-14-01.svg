@@ -22,10 +22,10 @@
 
   <!-- ============ ROLLBACK CURVES (drawn first, behind) ============ -->
   <g id="rollbacks" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" fill="none">
-    <path d="M 395 370 C 340 370, 340 194, 395 194" marker-end="url(#ah-gray)"/>
-    <path d="M 395 546 C 340 546, 340 370, 395 370" marker-end="url(#ah-gray)"/>
-    <path d="M 395 722 C 340 722, 340 546, 395 546" marker-end="url(#ah-gray)"/>
-    <path d="M 395 898 C 340 898, 340 722, 395 722" marker-end="url(#ah-gray)"/>
+    <path d="M 395 370 L 340 370 L 340 194 L 395 194" marker-end="url(#ah-gray)"/>
+    <path d="M 395 546 L 340 546 L 340 370 L 395 370" marker-end="url(#ah-gray)"/>
+    <path d="M 395 722 L 340 722 L 340 546 L 395 546" marker-end="url(#ah-gray)"/>
+    <path d="M 395 898 L 340 898 L 340 722 L 395 722" marker-end="url(#ah-gray)"/>
   </g>
 
   <!-- ============ ROLLBACK REASON PILLS (left lane) ============ -->

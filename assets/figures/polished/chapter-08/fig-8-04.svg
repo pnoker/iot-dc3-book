@@ -28,8 +28,8 @@
     <text x="900" y="160" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">API 网关 · 共享接入层</text>
     <text x="900" y="184" font-size="11" fill="#64748B" text-anchor="middle">JWT 解析 tenant_id · 路由分流 · 限流配额</text>
     <!-- split-routing arrows into each VPC -->
-    <line x1="700" y1="202" x2="560" y2="247" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-    <line x1="1100" y1="202" x2="1380" y2="247" stroke="#E11D48" stroke-width="2.5" marker-end="url(#ah-red)"/>
+    <path d="M 700 202 L 700 226 L 560 226 L 560 250" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <path d="M 1100 202 L 1100 226 L 1380 226 L 1380 250" fill="none" stroke="#E11D48" stroke-width="2.5" marker-end="url(#ah-red)"/>
     <text x="588" y="240" font-size="9" fill="#2563EB">低敏感路由</text>
     <text x="1290" y="240" font-size="9" fill="#E11D48">高敏感路由</text>
   </g>

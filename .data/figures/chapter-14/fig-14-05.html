@@ -306,7 +306,7 @@
 </svg>
     <section class="meta">
       <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">三列分组。左列基础设施（PostgreSQL、RabbitMQ）；中列平台服务（Gateway、Auth、Manager、Data、Agentic）；右列南向驱动（MQTT/Modbus/OPC UA 等，可下沉边缘）与现场设备。所有容器位于 dc3net，固定服务名由环境变量引用；底部标注 PostgreSQL/RabbitMQ/日志卷与 .env 配置注入，不出现 Nacos、Kafka、TDengine 或 Redis。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">三列：基础设施、平台服务、协议 Driver；底部标注 dc3net、卷与 .env 注入。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

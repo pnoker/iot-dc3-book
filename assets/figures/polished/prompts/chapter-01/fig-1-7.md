@@ -1,96 +1,103 @@
-请按 architecture-diagram 技能的出版级暗色技术图风格，重绘下面这张书籍插图。
+请按 architecture-diagram 技能的浅色出版印刷风格，重绘下面这张书籍插图。
 
 硬性要求：
 1. 输出 self-contained HTML，主体为 inline SVG；同时导出同名 SVG 与 PNG。
-2. 画布建议 1600×1000 或 1800×1100，暗色背景、细网格、圆角卡片、清晰箭头、图例置于边界外。
+2. 使用 1800×900 白色画布、极淡网格、浅色填充、饱和描边、深色文字、圆角卡片和清晰箭头，图例置于主体边界外。
 3. 节点短标签优先，解释写入 callouts；禁止“节点1/节点2/container/service/user”等占位词。
 4. 每张图只表达一个主结论，主链路高亮，边界、层级、时序或决策关系必须一眼可读。
-5. 中文字体使用系统无衬线或 JetBrains Mono fallback；PNG 需适合 Word 印刷，文字不得重叠或过小。
+5. 中文字体使用系统无衬线字体栈；PNG 需适合 Word 印刷，文字不得重叠或过小。
 6. 保持全书统一视觉语义：蓝=核心平台，青绿=边缘/接入，橙=AI/智能，紫=数据，红=安全/风险，灰=外部依赖。
 
 图表 brief：
 {
   "id": "fig-1-7",
-  "type": "architecture",
-  "title": "图1-7 RFID 系统基本组成",
-  "purpose": "展示标签、读写器与后台系统之间的物理信号与数据流关系，说明 RFID 如何为物品赋予数字身份。",
-  "audience_takeaway": "RFID 的核心组态是标签-读写器-后台系统，工程关键在于标签类型（有源/无源）和读写器部署方案的选择。",
-  "visual_focus": "从标签到读写器的射频信号链路，以及从读写器到后台系统的数据流链路。",
-  "layout": "从左到右的三节点拓扑：标签（左侧）→ 读写器（中间）→ 后台系统（右侧），标注信号方向与数据流方向。",
+  "type": "flowchart",
+  "title": "图1-7 传统物联网与大模型驱动物联网的对比",
+  "purpose": "直观对比两种物联网模式的决策链路与用户交互路径，突出大模型引入推理能力带来的架构变化。",
+  "audience_takeaway": "读者应理解传统物联网与大模型驱动物联网的对比中的主链路、责任边界和工程取舍。",
+  "visual_focus": "从大模型驱动物联网：用户自然语言描述到终点的主链路。",
+  "layout": "左右两列，每列从上到下分三层：用户交互层、决策层、执行层。左侧为传统物联网，右侧为大模型驱动物联网。两列之间用箭头标识转变方向，底部标注关键差异。",
   "components": [
     {
-      "id": "rfid_tag",
-      "label": "RFID 标签",
-      "type": "edge",
-      "subtitle": "有源/无源，EPC",
-      "group": "rfid_edge",
+      "id": "r1",
+      "label": "传统物联网：用户输入固定指令",
+      "type": "application",
+      "group": "application_domain",
+      "priority": "primary",
+      "shape": "actor"
+    },
+    {
+      "id": "r2",
+      "label": "规则引擎精确匹配 → 直接执行或报…",
+      "type": "platform",
+      "group": "platform_domain",
       "priority": "normal",
       "shape": "card"
     },
     {
-      "id": "rfid_reader",
-      "label": "读写器",
-      "type": "platform",
-      "subtitle": "射频收发+解码",
-      "group": "rfid_mid",
-      "priority": "primary",
-      "shape": "card"
+      "id": "r3",
+      "label": "大模型驱动物联网：用户自然语言描述",
+      "type": "ai",
+      "group": "intelligence_domain",
+      "priority": "normal",
+      "shape": "actor"
     },
     {
-      "id": "rfid_backend_sys",
-      "label": "后台系统",
-      "type": "application",
-      "subtitle": "数据库/ERP",
-      "group": "rfid_backend",
+      "id": "r4",
+      "label": "LLM解析意图并查询设备实时状态…",
+      "type": "edge",
+      "group": "edge_domain",
       "priority": "normal",
       "shape": "card"
     }
   ],
   "connections": [
     {
-      "from": "rfid_tag",
-      "to": "rfid_reader",
-      "label": "射频信号（场区供电+数据回传）",
-      "style": "solid",
-      "direction": "left-to-right"
-    },
-    {
-      "from": "rfid_reader",
-      "to": "rfid_backend_sys",
-      "label": "解码后数据（有线/无线）",
-      "style": "solid",
+      "from": "r3",
+      "to": "llm",
+      "label": "大模型驱动物联网：用户自然语言描述…",
+      "style": "dashed",
       "direction": "request"
     }
   ],
   "regions": [
     {
-      "id": "rfid_edge",
-      "label": "物理环境",
-      "role": "标签被贴附的物品与环境边界"
+      "id": "application_domain",
+      "label": "业务应用域",
+      "role": "业务价值交付边界"
     },
     {
-      "id": "rfid_mid",
-      "label": "接入层",
-      "role": "天线与解码"
+      "id": "platform_domain",
+      "label": "平台服务域",
+      "role": "核心服务能力边界"
     },
     {
-      "id": "rfid_backend",
-      "label": "后台处理域",
-      "role": "业务逻辑与数据持久化"
+      "id": "intelligence_domain",
+      "label": "智能决策域",
+      "role": "模型、规则与 Agent 边界"
+    },
+    {
+      "id": "edge_domain",
+      "label": "设备与边缘域",
+      "role": "现场异构资源边界"
     }
   ],
   "callouts": [
-    "无源标签自身不供电，依赖读写器射频场区激活。",
-    "读写器充当物理信号与数字数据的翻译桥梁。"
+    "传统物联网：用户输入固定指令 → 规则引擎精确匹配 → 直接执行或报警（反馈为闭环箭头）",
+    "大模型驱动物联网：用户自然语言描述 → LLM解析意图并查询设备实时状态 → 生成决策序列 → 用户二次确认后执行…"
   ],
   "legend": [
-    "蓝色：后台系统；青绿色：边缘标签；蓝色：接入读写器。",
-    "实线：射频/数据链路。"
+    "矩形框：用户交互节点",
+    "钻石框：决策节点（规则引擎或LLM）",
+    "圆形：设备节点",
+    "黄色椭圆：用户确认节点",
+    "实线箭头：确定性指令/数据流向",
+    "虚线箭头：基于概率的推荐路径"
   ],
-  "caption": "图1-7 RFID 系统基本组成：标签、读写器与后台系统的物理/逻辑关系。",
+  "caption": "图1-7 传统物联网与大模型驱动物联网的对比示意。左侧为规则驱动的“感知-响应”模式，右侧为推理驱动的“理解-决策-确认”模式。大模型在决策层增加上下文理解和概率推理的能力，同时引入了执行前二次确认的安全机制。",
   "visual_constraints": [
-    "三个节点，简洁布局，标签置于左侧。",
-    "图例放在底部，解释颜色与箭头含义。",
-    "避免过多的技术细节标注在图中，解释放入 callouts。"
+    "节点标签使用短名词短语，解释性文字放入 callouts 或正文。",
+    "图例放在底部，不遮挡主体结构。",
+    "决策节点必须写成可判断的问题或动作，分支标签保持短句。"
   ]
 }

@@ -1,126 +1,67 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图4-3 5G网络切片IoT应用示意</title>
+  <desc id="desc">读者应理解5G网络切片IoT应用示意中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="61.280" width="1152.000" height="637.440" viewBox="0 0 1500.000 830.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-<marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-</defs>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图4-3 5G网络切片IoT应用示意</title>
+  <desc id="desc">读者应理解5G网络切片IoT应用示意中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-3 5G网络切片IoT应用示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解5G网络切片IoT应用示意中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 底层共享层 -->
+  <rect x="200" y="600" width="1400" height="120" rx="15" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="900" y="648" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">5G NR无线接入（含NB-IoT/LTE-M兼容模式）</text>
+  <text x="900" y="678" fill="#0F172A" font-size="14" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">5G核心网（切片选择、会话管理、用户面功能）</text>
 
-<rect x="0" y="0" width="1500" height="830" fill="#FFFFFF"/>
+  <!-- 垂直虚线分隔 -->
+  <line x1="550" y1="250" x2="550" y2="500" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <line x1="1150" y1="250" x2="1150" y2="500" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3"/>
 
-<!-- 标题区 -->
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图4-3 5G网络切片IoT应用示意</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">同一5G物理网络经切片同时承载uRLLC/eMBB/mMTC三类IoT业务</text>
-<rect x="1380" y="28" width="100" height="24" rx="6" fill="#fff" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1430" y="44" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">LAYERED</text>
-<line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- uRLLC切片 -->
+  <rect x="100" y="250" width="400" height="250" rx="15" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="300" y="295" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">uRLLC切片</text>
+  <text x="300" y="320" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">毫秒级时延</text>
+  <text x="130" y="350" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• 工业机器人</text>
+  <text x="130" y="370" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• AGV</text>
 
-<!-- 区域边界 -->
-<rect x="70" y="125" width="1360" height="350" rx="12" fill="none" stroke="#64748B" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="90" y="148" fill="#64748B" font-size="11" font-weight="600">网络切片层 · 逻辑隔离</text>
+  <!-- eMBB切片 -->
+  <rect x="650" y="250" width="400" height="250" rx="15" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="850" y="295" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">eMBB切片</text>
+  <text x="850" y="320" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">Gbps级吞吐</text>
+  <text x="680" y="350" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• AI摄像头</text>
+  <text x="680" y="370" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• 高清监控</text>
 
-<rect x="70" y="510" width="1360" height="180" rx="12" fill="none" stroke="#64748B" stroke-width="1.2" stroke-dasharray="8 4"/>
-<text x="90" y="533" fill="#64748B" font-size="11" font-weight="600">共享基础设施层 · 物理网络</text>
+  <!-- mMTC切片 -->
+  <rect x="1200" y="250" width="400" height="250" rx="15" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1400" y="295" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">mMTC切片</text>
+  <text x="1400" y="320" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">极高连接密度</text>
+  <text x="1230" y="350" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• 水表</text>
+  <text x="1230" y="370" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• 温湿度传感器</text>
+  <text x="1230" y="390" fill="#0F172A" font-size="11" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">• 井盖</text>
+  <rect x="1280" y="460" width="240" height="28" rx="5" fill="none" stroke="#0F766E" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="1400" y="480" fill="#0F766E" font-size="11" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">兼容NB-IoT/eMTC</text>
 
-<!-- 切片间虚线分隔（逻辑隔离） -->
-<line x1="525" y1="175" x2="525" y2="455" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 3"/>
-<line x1="975" y1="175" x2="975" y2="455" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 3"/>
-<text x="525" y="468" fill="#94A3B8" font-size="9" text-anchor="middle">逻辑隔离</text>
-<text x="975" y="468" fill="#94A3B8" font-size="9" text-anchor="middle">逻辑隔离</text>
-
-<!-- 连接箭头：共享层 → 三个切片（先于节点绘制） -->
-<line x1="300" y1="548" x2="300" y2="457" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="312" y="505" fill="#64748B" font-size="10" font-weight="500">承载 uRLLC</text>
-
-<line x1="750" y1="548" x2="750" y2="457" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="762" y="505" fill="#64748B" font-size="10" font-weight="500">承载 eMBB</text>
-
-<!-- 主链路高亮：共享层 → mMTC（绿色 2px） -->
-<line x1="1200" y1="548" x2="1200" y2="457" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-<text x="1212" y="505" fill="#10B981" font-size="10" font-weight="700">主链路 · 承载 mMTC</text>
-
-<!-- 节点：uRLLC 切片 -->
-<rect x="100" y="175" width="400" height="280" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-<text x="300" y="208" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">uRLLC 切片</text>
-<text x="300" y="228" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">超可靠低时延通信</text>
-<line x1="120" y1="244" x2="480" y2="244" stroke="#FECACA" stroke-width="1"/>
-<text x="120" y="268" fill="#334155" font-size="11" font-weight="600">典型终端</text>
-<text x="130" y="288" fill="#475569" font-size="10">· 工业机器人</text>
-<text x="130" y="306" fill="#475569" font-size="10">· AGV / 远程操控</text>
-<text x="130" y="324" fill="#475569" font-size="10">· 运动控制</text>
-<rect x="120" y="340" width="360" height="60" rx="4" fill="#fff" stroke="#CBD5E1" stroke-width="1"/>
-<text x="300" y="358" fill="#E11D48" font-size="10" font-weight="700" text-anchor="middle">性能指标</text>
-<text x="300" y="376" fill="#475569" font-size="10" text-anchor="middle">端到端时延 &lt; 1ms</text>
-<text x="300" y="392" fill="#475569" font-size="10" text-anchor="middle">可靠性 99.999%</text>
-<text x="300" y="425" fill="#94A3B8" font-size="9" text-anchor="middle">场景：工厂自动化 / 远程驾驶</text>
-
-<!-- 节点：eMBB 切片 -->
-<rect x="550" y="175" width="400" height="280" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="750" y="208" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">eMBB 切片</text>
-<text x="750" y="228" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">增强移动宽带</text>
-<line x1="570" y1="244" x2="930" y2="244" stroke="#BFDBFE" stroke-width="1"/>
-<text x="570" y="268" fill="#334155" font-size="11" font-weight="600">典型终端</text>
-<text x="580" y="288" fill="#475569" font-size="10">· AI 摄像头</text>
-<text x="580" y="306" fill="#475569" font-size="10">· 高清监控</text>
-<text x="580" y="324" fill="#475569" font-size="10">· AR / VR 终端</text>
-<rect x="570" y="340" width="360" height="60" rx="4" fill="#fff" stroke="#CBD5E1" stroke-width="1"/>
-<text x="750" y="358" fill="#2563EB" font-size="10" font-weight="700" text-anchor="middle">性能指标</text>
-<text x="750" y="376" fill="#475569" font-size="10" text-anchor="middle">峰值吞吐 Gbps 级</text>
-<text x="750" y="392" fill="#475569" font-size="10" text-anchor="middle">大带宽 / 高速率</text>
-<text x="750" y="425" fill="#94A3B8" font-size="9" text-anchor="middle">场景：视频回传 / 智慧城市</text>
-
-<!-- 节点：mMTC 切片（主链路终点，含继承子集） -->
-<rect x="1000" y="175" width="400" height="280" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="1200" y="208" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">mMTC 切片</text>
-<text x="1200" y="228" fill="#475569" font-size="10" font-weight="500" text-anchor="middle">海量机器通信</text>
-<line x1="1020" y1="244" x2="1380" y2="244" stroke="#A7F3D0" stroke-width="1"/>
-<text x="1020" y="268" fill="#334155" font-size="11" font-weight="600">典型终端</text>
-<text x="1030" y="288" fill="#475569" font-size="10">· 智能计量</text>
-<text x="1030" y="306" fill="#475569" font-size="10">· 传感节点</text>
-<text x="1030" y="324" fill="#475569" font-size="10">· 共享设施终端</text>
-<rect x="1020" y="340" width="360" height="40" rx="4" fill="#fff" stroke="#CBD5E1" stroke-width="1"/>
-<text x="1200" y="358" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">性能指标</text>
-<text x="1200" y="376" fill="#475569" font-size="10" text-anchor="middle">连接密度 10⁶ /km²</text>
-<!-- 继承关系箭头：NB-IoT/eMTC → mMTC -->
-<line x1="1200" y1="393" x2="1200" y2="382" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ah-green)"/>
-<text x="1212" y="391" fill="#10B981" font-size="9" font-weight="600">继承</text>
-<!-- 继承子集节点 -->
-<rect x="1020" y="395" width="360" height="42" rx="4" fill="#fff" stroke="#10B981" stroke-width="1" stroke-dasharray="4 3"/>
-<text x="1200" y="413" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">NB-IoT / eMTC 兼容</text>
-<text x="1200" y="429" fill="#64748B" font-size="9" text-anchor="middle">作为 mMTC 子集继承</text>
-
-<!-- 节点：共享基础设施 -->
-<rect x="100" y="550" width="1300" height="90" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-<line x1="750" y1="550" x2="750" y2="640" stroke="#CBD5E1" stroke-width="1"/>
-<text x="425" y="588" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">5G NR 无线接入</text>
-<text x="425" y="610" fill="#475569" font-size="10" text-anchor="middle">统一空口 · 共享频谱资源</text>
-<text x="1075" y="588" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">5G 核心网</text>
-<text x="1075" y="610" fill="#475569" font-size="10" text-anchor="middle">网络切片选择功能 (NSSF)</text>
-
-<!-- callout：隔离说明 -->
-<text x="750" y="672" fill="#334155" font-size="10" text-anchor="middle">同一物理网络经 NSSF 划分为三个逻辑隔离切片，共享底层资源但互不干扰</text>
-
-<!-- 图例区 -->
-<line x1="58" y1="710" x2="1442" y2="710" stroke="#E2E8F0" stroke-width="1"/>
-<rect x="80" y="744" width="14" height="10" rx="2" fill="#fff" stroke="#E11D48" stroke-width="1.5"/>
-<text x="100" y="753" fill="#64748B" font-size="11" font-weight="600">uRLLC 切片</text>
-<rect x="230" y="744" width="14" height="10" rx="2" fill="#fff" stroke="#2563EB" stroke-width="1.5"/>
-<text x="250" y="753" fill="#64748B" font-size="11" font-weight="600">eMBB 切片</text>
-<rect x="380" y="744" width="14" height="10" rx="2" fill="#fff" stroke="#10B981" stroke-width="1.5"/>
-<text x="400" y="753" fill="#64748B" font-size="11" font-weight="600">mMTC 切片</text>
-<rect x="530" y="744" width="14" height="10" rx="2" fill="#fff" stroke="#64748B" stroke-width="1.5"/>
-<text x="550" y="753" fill="#64748B" font-size="11" font-weight="600">共享基础设施</text>
-<line x1="710" y1="749" x2="745" y2="749" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-<text x="753" y="753" fill="#64748B" font-size="11" font-weight="600">主链路（共享→mMTC）</text>
-<line x1="950" y1="749" x2="985" y2="749" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="993" y="753" fill="#64748B" font-size="11" font-weight="600">继承 / 兼容关系</text>
-
-<!-- caption -->
-<text x="750" y="800" fill="#94A3B8" font-size="10" text-anchor="middle">图4-3 同一5G物理网络经切片同时承载uRLLC/eMBB/mMTC三类IoT场景，满足差异化的时延、吞吐与连接密度需求。</text>
+  <!-- 主链路承载连线 -->
+  <line x1="300" y1="600" x2="300" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="850" y1="600" x2="850" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="1400" y1="600" x2="1400" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">红色：uRLLC切片</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：eMBB切片</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色：mMTC切片</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-3 通过5G网络切片技术，同一物理网络可同时承载不同服务质量需求的IoT场景。uRLLC保障毫秒级时延，mMTC提供极高连接密度，eMBB提供Gbps级吞吐。平台侧仍需协议适配层归一异构终端。</text>
   </svg>
 </svg>

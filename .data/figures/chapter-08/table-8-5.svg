@@ -1,163 +1,107 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">多租户隔离强度对比</title>
+  <desc id="desc">读者应理解多租户隔离强度对比中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="85.600" width="1152.000" height="588.800" viewBox="0 0 1800.000 920.000" preserveAspectRatio="xMidYMid meet">
-<rect x="0" y="0" width="1800" height="920" fill="#FFFFFF"/>
-
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">多租户隔离强度对比</title>
+  <desc id="desc">读者应理解多租户隔离强度对比中的主链路、责任边界和工程取舍。</desc>
   <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- ===== 标题区 ===== -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">多租户隔离强度对比</text>
-  <text x="84" y="70" font-size="12" fill="#64748B">智家云平台 · 三种隔离维度 × 低 / 中 / 高强度的工程取舍</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">多租户隔离强度对比</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解多租户隔离强度对比中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">MATRIX</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="matrix">
+  <!-- 标题行背景 -->
+  <rect x="100" y="150" width="180" height="50" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="190" y="180" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">维度</text>
+  
+  <!-- 低强度列标题 -->
+  <rect x="280" y="150" width="440" height="50" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="500" y="180" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">低强度</text>
+  
+  <!-- 中强度列标题 -->
+  <rect x="720" y="150" width="440" height="50" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="940" y="180" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">中强度</text>
+  
+  <!-- 高强度列标题 -->
+  <rect x="1160" y="150" width="440" height="50" fill="#F5F3FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1380" y="180" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">高强度</text>
 
-  <rect x="1696" y="24" width="80" height="26" rx="5" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1736" y="41" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">MATRIX</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+  <!-- 数据行1：数据隔离 -->
+  <rect x="100" y="210" width="180" height="170" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="110" y="240" fill="#0F172A" font-size="14" font-weight="700">数据隔离</text>
+  
+  <rect x="280" y="210" width="440" height="170" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="300" y="235" fill="#64748B" font-size="12">实现方式：共享Schema</text>
+  <text x="300" y="255" fill="#64748B" font-size="12">跨租户风险：高</text>
+  <text x="300" y="275" fill="#64748B" font-size="12">资源效率：高</text>
+  <text x="300" y="295" fill="#64748B" font-size="12">运维复杂度：低</text>
 
-  <!-- ===== 表格主体 ===== -->
-  <!-- 列背景：低=灰 / 中=浅蓝 / 高=深蓝 -->
-  <rect x="260" y="165" width="500" height="525" fill="#F1F5F9"/>
-  <rect x="760" y="165" width="500" height="525" fill="#EFF6FF"/>
-  <rect x="1260" y="165" width="500" height="525" fill="#DBEAFE"/>
-  <!-- 维度列背景 -->
-  <rect x="40" y="165" width="220" height="525" fill="#F8FAFC"/>
+  <rect x="720" y="210" width="440" height="170" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="740" y="235" fill="#64748B" font-size="12">实现方式：表级隔离</text>
+  <text x="740" y="255" fill="#64748B" font-size="12">跨租户风险：中</text>
+  <text x="740" y="275" fill="#64748B" font-size="12">资源效率：中</text>
+  <text x="740" y="295" fill="#64748B" font-size="12">运维复杂度：中</text>
 
-  <!-- 表头 -->
-  <rect x="40" y="120" width="1720" height="45" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="150" y="148" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">维度 \ 强度</text>
-  <text x="510" y="148" font-size="14" font-weight="700" fill="#64748B" text-anchor="middle">低强度（共享优先）</text>
-  <text x="1010" y="148" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">中强度（逻辑隔离）</text>
-  <text x="1510" y="148" font-size="14" font-weight="700" fill="#1D4ED8" text-anchor="middle">高强度（物理隔离）</text>
+  <rect x="1160" y="210" width="440" height="170" fill="#F5F3FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1180" y="235" fill="#64748B" font-size="12">实现方式：独立数据库</text>
+  <text x="1180" y="255" fill="#64748B" font-size="12">跨租户风险：低</text>
+  <text x="1180" y="275" fill="#64748B" font-size="12">资源效率：低</text>
+  <text x="1180" y="295" fill="#64748B" font-size="12">运维复杂度：高</text>
 
-  <!-- 行分隔线 -->
-  <line x1="40" y1="340" x2="1760" y2="340" stroke="#E2E8F0"/>
-  <line x1="40" y1="515" x2="1760" y2="515" stroke="#E2E8F0"/>
-  <line x1="40" y1="690" x2="1760" y2="690" stroke="#E2E8F0"/>
-  <!-- 列分隔线 -->
-  <line x1="260" y1="120" x2="260" y2="690" stroke="#E2E8F0"/>
-  <line x1="760" y1="165" x2="760" y2="690" stroke="#E2E8F0"/>
-  <line x1="1260" y1="165" x2="1260" y2="690" stroke="#E2E8F0"/>
+  <!-- 数据行2：计算资源隔离 -->
+  <rect x="100" y="390" width="180" height="170" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="110" y="420" fill="#0F172A" font-size="14" font-weight="700">计算资源隔离</text>
+  
+  <rect x="280" y="390" width="440" height="170" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="300" y="415" fill="#64748B" font-size="12">实现方式：共享进程</text>
+  <text x="300" y="435" fill="#64748B" font-size="12">跨租户风险：高</text>
+  <text x="300" y="455" fill="#64748B" font-size="12">资源效率：高</text>
+  <text x="300" y="475" fill="#64748B" font-size="12">运维复杂度：低</text>
 
-  <!-- ===== 行 1：数据隔离 ===== -->
-  <rect x="40" y="165" width="4" height="175" fill="#2563EB"/>
-  <text x="150" y="245" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">数据隔离</text>
-  <text x="150" y="270" font-size="10" fill="#64748B" text-anchor="middle">租户数据</text>
-  <text x="150" y="284" font-size="10" fill="#64748B" text-anchor="middle">可见性边界</text>
+  <rect x="720" y="390" width="440" height="170" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="740" y="415" fill="#64748B" font-size="12">实现方式：容器隔离</text>
+  <text x="740" y="435" fill="#64748B" font-size="12">跨租户风险：中</text>
+  <text x="740" y="455" fill="#64748B" font-size="12">资源效率：中</text>
+  <text x="740" y="475" fill="#64748B" font-size="12">运维复杂度：中</text>
 
-  <!-- 数据隔离 / 低 -->
-  <text x="280" y="200" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="280" y="220" font-size="11" fill="#334155">共享库表 + 租户 ID 字段</text>
-  <line x1="280" y1="232" x2="740" y2="232" stroke="#E2E8F0"/>
-  <circle cx="289" cy="252" r="4" fill="#E11D48"/><text x="300" y="256" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#E11D48">高</tspan>（误查 / 注入串号）</text>
-  <circle cx="289" cy="278" r="4" fill="#10B981"/><text x="300" y="282" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#10B981">高</tspan></text>
-  <circle cx="289" cy="304" r="4" fill="#10B981"/><text x="300" y="308" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#10B981">低</tspan></text>
+  <rect x="1160" y="390" width="440" height="170" fill="#F5F3FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1180" y="415" fill="#64748B" font-size="12">实现方式：独立VM</text>
+  <text x="1180" y="435" fill="#64748B" font-size="12">跨租户风险：低</text>
+  <text x="1180" y="455" fill="#64748B" font-size="12">资源效率：低</text>
+  <text x="1180" y="475" fill="#64748B" font-size="12">运维复杂度：高</text>
 
-  <!-- 数据隔离 / 中 -->
-  <text x="780" y="200" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="780" y="220" font-size="11" fill="#334155">独立 Schema / 独立表空间</text>
-  <line x1="780" y1="232" x2="1240" y2="232" stroke="#E2E8F0"/>
-  <circle cx="789" cy="252" r="4" fill="#F59E0B"/><text x="800" y="256" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#F59E0B">中</tspan>（DDL 失误可串）</text>
-  <circle cx="789" cy="278" r="4" fill="#F59E0B"/><text x="800" y="282" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#F59E0B">中</tspan></text>
-  <circle cx="789" cy="304" r="4" fill="#F59E0B"/><text x="800" y="308" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#F59E0B">中</tspan></text>
+  <!-- 数据行3：网络隔离 -->
+  <rect x="100" y="570" width="180" height="170" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="110" y="600" fill="#0F172A" font-size="14" font-weight="700">网络隔离</text>
+  
+  <rect x="280" y="570" width="440" height="170" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="300" y="595" fill="#64748B" font-size="12">实现方式：共享IP</text>
+  <text x="300" y="615" fill="#64748B" font-size="12">跨租户风险：高</text>
+  <text x="300" y="635" fill="#64748B" font-size="12">资源效率：高</text>
+  <text x="300" y="655" fill="#64748B" font-size="12">运维复杂度：低</text>
 
-  <!-- 数据隔离 / 高 -->
-  <text x="1280" y="200" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="1280" y="220" font-size="11" fill="#334155">独立实例 / 物理分库分簇</text>
-  <line x1="1280" y1="232" x2="1740" y2="232" stroke="#E2E8F0"/>
-  <circle cx="1289" cy="252" r="4" fill="#10B981"/><text x="1300" y="256" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#10B981">极低</tspan>（物理隔绝）</text>
-  <circle cx="1289" cy="278" r="4" fill="#E11D48"/><text x="1300" y="282" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#E11D48">低</tspan>（实例空跑）</text>
-  <circle cx="1289" cy="304" r="4" fill="#E11D48"/><text x="1300" y="308" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#E11D48">高</tspan></text>
+  <rect x="720" y="570" width="440" height="170" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="740" y="595" fill="#64748B" font-size="12">实现方式：VLAN隔离</text>
+  <text x="740" y="615" fill="#64748B" font-size="12">跨租户风险：中</text>
+  <text x="740" y="635" fill="#64748B" font-size="12">资源效率：中</text>
+  <text x="740" y="655" fill="#64748B" font-size="12">运维复杂度：中</text>
 
-  <!-- ===== 行 2：计算资源隔离 ===== -->
-  <rect x="40" y="340" width="4" height="175" fill="#7C3AED"/>
-  <text x="150" y="420" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">计算资源隔离</text>
-  <text x="150" y="445" font-size="10" fill="#64748B" text-anchor="middle">CPU / 内存 / IO</text>
-  <text x="150" y="459" font-size="10" fill="#64748B" text-anchor="middle">共享程度</text>
-
-  <!-- 计算 / 低 -->
-  <text x="280" y="375" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="280" y="395" font-size="11" fill="#334155">共享进程 + 统一线程池</text>
-  <line x1="280" y1="407" x2="740" y2="407" stroke="#E2E8F0"/>
-  <circle cx="289" cy="427" r="4" fill="#E11D48"/><text x="300" y="431" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#E11D48">高</tspan>（吵闹邻居）</text>
-  <circle cx="289" cy="453" r="4" fill="#10B981"/><text x="300" y="457" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#10B981">高</tspan></text>
-  <circle cx="289" cy="479" r="4" fill="#10B981"/><text x="300" y="483" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#10B981">低</tspan></text>
-
-  <!-- 计算 / 中 -->
-  <text x="780" y="375" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="780" y="395" font-size="11" fill="#334155">容器隔离 + cgroup 配额</text>
-  <line x1="780" y1="407" x2="1240" y2="407" stroke="#E2E8F0"/>
-  <circle cx="789" cy="427" r="4" fill="#F59E0B"/><text x="800" y="431" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#F59E0B">中</tspan>（内核共租）</text>
-  <circle cx="789" cy="453" r="4" fill="#F59E0B"/><text x="800" y="457" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#F59E0B">中</tspan></text>
-  <circle cx="789" cy="479" r="4" fill="#F59E0B"/><text x="800" y="483" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#F59E0B">中</tspan></text>
-
-  <!-- 计算 / 高 -->
-  <text x="1280" y="375" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="1280" y="395" font-size="11" fill="#334155">独立 VM / 独占物理节点</text>
-  <line x1="1280" y1="407" x2="1740" y2="407" stroke="#E2E8F0"/>
-  <circle cx="1289" cy="427" r="4" fill="#10B981"/><text x="1300" y="431" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#10B981">极低</tspan>（hypervisor 级）</text>
-  <circle cx="1289" cy="453" r="4" fill="#E11D48"/><text x="1300" y="457" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#E11D48">低</tspan>（碎片化）</text>
-  <circle cx="1289" cy="479" r="4" fill="#E11D48"/><text x="1300" y="483" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#E11D48">高</tspan></text>
-
-  <!-- ===== 行 3：网络隔离 ===== -->
-  <rect x="40" y="515" width="4" height="175" fill="#10B981"/>
-  <text x="150" y="595" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">网络隔离</text>
-  <text x="150" y="620" font-size="10" fill="#64748B" text-anchor="middle">租户网络</text>
-  <text x="150" y="634" font-size="10" fill="#64748B" text-anchor="middle">可达范围</text>
-
-  <!-- 网络 / 低 -->
-  <text x="280" y="550" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="280" y="570" font-size="11" fill="#334155">共享 VPC + 安全组过滤</text>
-  <line x1="280" y1="582" x2="740" y2="582" stroke="#E2E8F0"/>
-  <circle cx="289" cy="602" r="4" fill="#E11D48"/><text x="300" y="606" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#E11D48">高</tspan>（规则错配）</text>
-  <circle cx="289" cy="628" r="4" fill="#10B981"/><text x="300" y="632" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#10B981">高</tspan></text>
-  <circle cx="289" cy="654" r="4" fill="#10B981"/><text x="300" y="658" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#10B981">低</tspan></text>
-
-  <!-- 网络 / 中 -->
-  <text x="780" y="550" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="780" y="570" font-size="11" fill="#334155">独立子网 + NACL / 路由表</text>
-  <line x1="780" y1="582" x2="1240" y2="582" stroke="#E2E8F0"/>
-  <circle cx="789" cy="602" r="4" fill="#F59E0B"/><text x="800" y="606" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#F59E0B">中</tspan>（同 VPC 可达）</text>
-  <circle cx="789" cy="628" r="4" fill="#F59E0B"/><text x="800" y="632" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#F59E0B">中</tspan></text>
-  <circle cx="789" cy="654" r="4" fill="#F59E0B"/><text x="800" y="658" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#F59E0B">中</tspan></text>
-
-  <!-- 网络 / 高 -->
-  <text x="1280" y="550" font-size="12" font-weight="600" fill="#0F172A">典型实现</text>
-  <text x="1280" y="570" font-size="11" fill="#334155">独立 VPC / 专线或对等互通</text>
-  <line x1="1280" y1="582" x2="1740" y2="582" stroke="#E2E8F0"/>
-  <circle cx="1289" cy="602" r="4" fill="#10B981"/><text x="1300" y="606" font-size="11" fill="#475569">跨租户风险：<tspan font-weight="700" fill="#10B981">极低</tspan>（L3 隔断）</text>
-  <circle cx="1289" cy="628" r="4" fill="#E11D48"/><text x="1300" y="632" font-size="11" fill="#475569">资源效率：<tspan font-weight="700" fill="#E11D48">低</tspan>（IP / 网段浪费）</text>
-  <circle cx="1289" cy="654" r="4" fill="#E11D48"/><text x="1300" y="658" font-size="11" fill="#475569">运维复杂度：<tspan font-weight="700" fill="#E11D48">高</tspan></text>
-
-  <!-- ===== 趋势主链路条（贯穿三列，表达主结论） ===== -->
-  <rect x="260" y="705" width="1500" height="34" fill="#FFFFFF" stroke="#E2E8F0" stroke-dasharray="6 4" rx="6"/>
-  <text x="280" y="727" font-size="11" font-weight="700" fill="#2563EB">隔离强度递增 →</text>
-  <text x="520" y="727" font-size="11" fill="#475569">跨租户风险单向<tspan font-weight="700" fill="#10B981">递减</tspan></text>
-  <text x="900" y="727" font-size="11" fill="#475569">资源效率单向<tspan font-weight="700" fill="#E11D48">递减</tspan></text>
-  <text x="1280" y="727" font-size="11" fill="#475569">运维复杂度单向<tspan font-weight="700" fill="#E11D48">递增</tspan></text>
-  <line x1="260" y1="722" x2="1750" y2="722" stroke="#2563EB" stroke-width="0" />
-
-  <!-- ===== 图例 ===== -->
-  <line x1="40" y1="762" x2="1760" y2="762" stroke="#E2E8F0"/>
-  <text x="40" y="786" font-size="11" font-weight="700" fill="#475569">图例</text>
-
-  <rect x="90" y="776" width="16" height="12" rx="2" fill="#F1F5F9" stroke="#CBD5E1"/><text x="112" y="786" font-size="11" fill="#475569">低强度（共享）</text>
-  <rect x="232" y="776" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#93C5FD"/><text x="254" y="786" font-size="11" fill="#475569">中强度（逻辑隔离）</text>
-  <rect x="396" y="776" width="16" height="12" rx="2" fill="#DBEAFE" stroke="#3B82F6"/><text x="418" y="786" font-size="11" fill="#475569">高强度（物理隔离）</text>
-
-  <circle cx="585" cy="782" r="4" fill="#E11D48"/><text x="595" y="786" font-size="11" fill="#475569">高</text>
-  <circle cx="625" cy="782" r="4" fill="#F59E0B"/><text x="635" y="786" font-size="11" fill="#475569">中</text>
-  <circle cx="665" cy="782" r="4" fill="#10B981"/><text x="675" y="786" font-size="11" fill="#475569">低（指标等级）</text>
-
-  <rect x="772" y="776" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB"/><text x="794" y="786" font-size="11" fill="#475569">数据隔离</text>
-  <rect x="872" y="776" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED"/><text x="894" y="786" font-size="11" fill="#475569">计算资源隔离</text>
-  <rect x="998" y="776" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981"/><text x="1020" y="786" font-size="11" fill="#475569">网络隔离</text>
-
-  <!-- ===== caption ===== -->
-  <text x="900" y="900" font-size="10" fill="#94A3B8" text-anchor="middle">表 8-5 多租户隔离强度对比（假设场景：智能家居平台“智家云”）</text>
+  <rect x="1160" y="570" width="440" height="170" fill="#F5F3FF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1180" y="595" fill="#64748B" font-size="12">实现方式：独立VPC</text>
+  <text x="1180" y="615" fill="#64748B" font-size="12">跨租户风险：低</text>
+  <text x="1180" y="635" fill="#64748B" font-size="12">资源效率：低</text>
+  <text x="1180" y="655" fill="#64748B" font-size="12">运维复杂度：高</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">低强度使用灰色背景，中强度使用浅蓝色，高强度使用深蓝色</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">表8-5 多租户隔离强度对比（假设场景：智能家居平台“智家云”）</text>
   </svg>
 </svg>

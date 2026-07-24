@@ -16,225 +16,85 @@
 <body>
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图13-8 基于区块链的供应链溯源系统分层架构</title>
+  <desc id="desc">读者应理解基于区块链的供应链溯源系统分层架构中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+<title id="title">图13-8 基于区块链的供应链溯源系统分层架构</title>
+  <desc id="desc">读者应理解基于区块链的供应链溯源系统分层架构中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- canvas -->
-  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
-
-  <!-- ===== Title area ===== -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="47" font-size="22" font-weight="700" fill="#0F172A">图13-8 基于区块链的供应链溯源系统分层架构</text>
-  <text x="84" y="71" font-size="12" fill="#64748B">四层结构 · 自下而上的数据流动与责任边界</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图13-8 基于区块链的供应链溯源系统分层架构</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解基于区块链的供应链溯源系统分层架构中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 层矩形 -->
+  <rect x="260" y="200" width="1200" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="260" y="340" width="1200" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="260" y="480" width="1200" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="260" y="620" width="1200" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
 
-  <rect x="1670" y="26" width="100" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1720" y="46" font-size="12" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">LAYERED</text>
+  <!-- 层名 -->
+  <text x="220" y="250" text-anchor="end" font-weight="bold" font-size="16" fill="#F97316">应用层</text>
+  <text x="220" y="390" text-anchor="end" font-weight="bold" font-size="16" fill="#2563EB">区块链网络层</text>
+  <text x="220" y="530" text-anchor="end" font-weight="bold" font-size="16" fill="#0F766E">边缘层</text>
+  <text x="220" y="670" text-anchor="end" font-weight="bold" font-size="16" fill="#0F766E">感知层</text>
 
-  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- 层内组件列表 -->
+  <text x="350" y="235" font-size="11" fill="#0F172A">Web端溯源、移动端防伪</text>
+  <text x="350" y="255" font-size="11" fill="#0F172A">企业ERP、数据报表</text>
+  <text x="350" y="375" font-size="11" fill="#0F172A">分布式账本、共识机制、智能合约</text>
+  <text x="350" y="515" font-size="11" fill="#0F172A">边缘网关、嵌入式节点</text>
+  <text x="350" y="650" font-size="11" fill="#0F172A">温度传感器、湿度传感器</text>
+  <text x="350" y="670" font-size="11" fill="#0F172A">RFID读写器、GPS模块</text>
 
-  <!-- ===== Region boundaries (dashed) ===== -->
-  <rect x="40" y="118" width="1720" height="102" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="1744" y="0" visibility="hidden">spacer</text>
-  <text x="1720" y="136" font-size="11" font-weight="700" fill="#F59E0B" text-anchor="end">业务应用域 · 业务价值交付边界</text>
+  <!-- 箭头连线 -->
+  <!-- 感知层到边缘层（实线向上） -->
+  <line x1="850" y1="620" x2="850" y2="580" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="850,580 844,588 856,588" fill="#2563EB"/>
+  <rect x="860" y="595" width="72" height="20" rx="2" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="865" y="609" font-size="10" fill="#0F172A">原始数据</text>
 
-  <rect x="40" y="238" width="1720" height="186" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="1720" y="256" font-size="11" font-weight="700" fill="#2563EB" text-anchor="end">平台服务域 · 核心服务能力边界</text>
+  <!-- 边缘层到区块链网络层（实线向上） -->
+  <line x1="850" y1="480" x2="850" y2="440" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="850,440 844,448 856,448" fill="#2563EB"/>
+  <rect x="860" y="455" width="72" height="20" rx="2" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="865" y="469" font-size="10" fill="#0F172A">交易</text>
 
-  <rect x="40" y="448" width="1720" height="262" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="1720" y="466" font-size="11" font-weight="700" fill="#10B981" text-anchor="end">设备与边缘域 · 现场异构资源边界</text>
+  <!-- 区块链网络层到应用层（实线向上） -->
+  <line x1="850" y1="340" x2="850" y2="300" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="850,300 844,308 856,308" fill="#2563EB"/>
+  <rect x="860" y="315" width="72" height="20" rx="2" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="865" y="329" font-size="10" fill="#0F172A">共识结果</text>
 
-  <!-- ===== Layer band fills ===== -->
-  <rect x="220" y="135" width="1520" height="80" fill="#F59E0B" opacity="0.06"/>
-  <rect x="220" y="255" width="1520" height="150" fill="#2563EB" opacity="0.06"/>
-  <rect x="220" y="455" width="1520" height="90" fill="#10B981" opacity="0.06"/>
-  <rect x="220" y="595" width="1520" height="90" fill="#10B981" opacity="0.06"/>
+  <!-- 应用层到区块链网络层（虚线向下，查询请求） -->
+  <line x1="850" y1="300" x2="850" y2="340" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,4"/>
+  <polygon points="850,340 844,332 856,332" fill="#0F766E"/>
+  <rect x="770" y="315" width="72" height="20" rx="2" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+  <text x="775" y="329" font-size="10" fill="#0F172A">查询请求</text>
 
-  <!-- ===== Layer label cards (left) ===== -->
-  <!-- 应用层 -->
-  <rect x="56" y="150" width="150" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="131" y="174" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">应用层</text>
-  <text x="131" y="191" font-size="10" fill="#64748B" text-anchor="middle">Application</text>
+  <!-- 区域边界 -->
+  <rect x="220" y="470" width="1260" height="280" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="230" y="485" font-size="12" font-weight="bold" fill="#64748B">设备与边缘域</text>
 
-  <!-- 区块链网络层 -->
-  <rect x="56" y="280" width="150" height="100" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="131" y="316" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">区块链</text>
-  <text x="131" y="336" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">网络层</text>
-  <text x="131" y="358" font-size="10" fill="#64748B" text-anchor="middle">Blockchain</text>
+  <rect x="220" y="320" width="1260" height="140" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="230" y="335" font-size="12" font-weight="bold" fill="#64748B">平台服务域</text>
 
-  <!-- 边缘层 -->
-  <rect x="56" y="465" width="150" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="131" y="495" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">边缘层</text>
-  <text x="131" y="515" font-size="10" fill="#64748B" text-anchor="middle">Edge</text>
-
-  <!-- 感知层 -->
-  <rect x="56" y="605" width="150" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="131" y="635" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">感知层</text>
-  <text x="131" y="655" font-size="10" fill="#64748B" text-anchor="middle">Sensing</text>
-
-  <!-- ===== 应用层 components (orange) ===== -->
-  <g>
-    <rect x="230" y="150" width="330" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-    <text x="395" y="173" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Web 端溯源查询</text>
-    <text x="395" y="191" font-size="10" fill="#475569" text-anchor="middle">面向消费者 / 监管方</text>
-  </g>
-  <g>
-    <rect x="620" y="150" width="330" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-    <text x="785" y="173" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">移动端防伪验证</text>
-    <text x="785" y="191" font-size="10" fill="#475569" text-anchor="middle">扫码验真 · 批次追踪</text>
-  </g>
-  <g>
-    <rect x="1010" y="150" width="330" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-    <text x="1175" y="173" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">企业 ERP 对接</text>
-    <text x="1175" y="191" font-size="10" fill="#475569" text-anchor="middle">供应链协同 · 对账</text>
-  </g>
-  <g>
-    <rect x="1400" y="150" width="330" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-    <text x="1565" y="173" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据报表</text>
-    <text x="1565" y="191" font-size="10" fill="#475569" text-anchor="middle">风险预警 · 合规审计</text>
-  </g>
-
-  <!-- ===== 区块链网络层 components (blue, primary) ===== -->
-  <!-- 分布式账本 (database cylinder) -->
-  <g>
-    <ellipse cx="395" cy="278" rx="165" ry="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <rect x="230" y="278" width="330" height="104" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <ellipse cx="395" cy="382" rx="165" ry="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <line x1="230" y1="290" x2="560" y2="290" stroke="#2563EB" stroke-width="1" opacity="0.4"/>
-    <text x="395" y="334" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">分布式账本</text>
-    <text x="395" y="356" font-size="10" fill="#475569" text-anchor="middle">不可篡改 · 全节点复制</text>
-  </g>
-  <g>
-    <rect x="620" y="270" width="330" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="785" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">共识机制</text>
-    <text x="785" y="318" font-size="10" fill="#475569" text-anchor="middle">Raft / PBFT</text>
-    <text x="785" y="348" font-size="9" fill="#64748B" text-anchor="middle">交易排序 · 最终一致性</text>
-    <text x="785" y="368" font-size="9" fill="#64748B" text-anchor="middle">拜占庭容错 · 少数作恶可容忍</text>
-  </g>
-  <g>
-    <rect x="1010" y="270" width="330" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="1175" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">智能合约</text>
-    <text x="1175" y="318" font-size="10" fill="#475569" text-anchor="middle">质检 · 预警 · 冻结</text>
-    <text x="1175" y="348" font-size="9" fill="#64748B" text-anchor="middle">阈值校验 · 自动告警</text>
-    <text x="1175" y="368" font-size="9" fill="#64748B" text-anchor="middle">异常批次链上冻结</text>
-  </g>
-  <g>
-    <rect x="1400" y="270" width="330" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-    <text x="1565" y="296" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">参与方节点</text>
-    <text x="1565" y="318" font-size="10" fill="#475569" text-anchor="middle">生产 · 物流 · 仓储 · 零售</text>
-    <text x="1565" y="348" font-size="9" fill="#64748B" text-anchor="middle">多方共同维护账本</text>
-    <text x="1565" y="368" font-size="9" fill="#64748B" text-anchor="middle">权限隔离 · 身份证书</text>
-  </g>
-
-  <!-- ===== 边缘层 components (green) ===== -->
-  <g>
-    <rect x="230" y="465" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="395" y="493" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">边缘网关</text>
-    <text x="395" y="515" font-size="10" fill="#475569" text-anchor="middle">协议适配 · 数据汇聚</text>
-  </g>
-  <g>
-    <rect x="620" y="465" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="785" y="493" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">嵌入式节点</text>
-    <text x="785" y="515" font-size="10" fill="#475569" text-anchor="middle">本地格式化 · 时间戳</text>
-  </g>
-  <g>
-    <rect x="1010" y="465" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="1175" y="493" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">哈希 &amp; 数字签名</text>
-    <text x="1175" y="515" font-size="10" fill="#475569" text-anchor="middle">SHA-256 · 私钥签名</text>
-  </g>
-  <!-- 本地缓存/IPFS (cylinder) -->
-  <g>
-    <ellipse cx="1565" cy="475" rx="165" ry="9" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <rect x="1400" y="475" width="330" height="50" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <ellipse cx="1565" cy="525" rx="165" ry="9" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="1565" y="503" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">本地缓存 / IPFS</text>
-    <text x="1565" y="520" font-size="10" fill="#475569" text-anchor="middle">原始数据留存</text>
-  </g>
-
-  <!-- ===== 感知层 components (green) ===== -->
-  <g>
-    <rect x="230" y="605" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="395" y="633" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">温度传感器</text>
-    <text x="395" y="655" font-size="10" fill="#475569" text-anchor="middle">冷链温区监测</text>
-  </g>
-  <g>
-    <rect x="620" y="605" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="785" y="633" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">湿度传感器</text>
-    <text x="785" y="655" font-size="10" fill="#475569" text-anchor="middle">仓储环境监测</text>
-  </g>
-  <g>
-    <rect x="1010" y="605" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="1175" y="633" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">RFID 读写器</text>
-    <text x="1175" y="655" font-size="10" fill="#475569" text-anchor="middle">批次身份识别</text>
-  </g>
-  <g>
-    <rect x="1400" y="605" width="330" height="70" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <text x="1565" y="633" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">GPS 模块</text>
-    <text x="1565" y="655" font-size="10" fill="#475569" text-anchor="middle">运输轨迹定位</text>
-  </g>
-
-  <!-- ===== Inter-layer arrows (main uplink chain, center x=900) ===== -->
-  <!-- 感知层 -> 边缘层 (green, solid) -->
-  <line x1="900" y1="595" x2="900" y2="540" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="918" y="572" font-size="11" fill="#475569">原始数据 · RS-485 / Zigbee / BLE</text>
-
-  <!-- 边缘层 -> 区块链网络层 (PRIMARY: blue, bold) -->
-  <line x1="900" y1="455" x2="900" y2="402" stroke="#2563EB" stroke-width="3" marker-end="url(#ah-blue)"/>
-  <text x="918" y="425" font-size="12" font-weight="700" fill="#2563EB">哈希 + 签名 + 元数据 · 打包上链</text>
-  <circle cx="900" cy="428" r="4" fill="#2563EB"/>
-
-  <!-- 区块链网络层 -> 应用层 (blue, solid, data push) -->
-  <line x1="820" y1="255" x2="820" y2="205" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="838" y="234" font-size="11" fill="#475569">共识结果同步</text>
-
-  <!-- 应用层 -> 区块链网络层 (gray, dashed, query request, reverse) -->
-  <line x1="1080" y1="205" x2="1080" y2="252" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="1098" y="234" font-size="11" fill="#64748B">溯源查询请求</text>
-
-  <!-- no-direct-access indicator: 应用层 dashed to 边缘/感知 with X mark -->
-  <g opacity="0.55">
-    <line x1="720" y1="205" x2="720" y2="605" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="3 5"/>
-    <line x1="708" y1="400" x2="732" y2="416" stroke="#E11D48" stroke-width="2"/>
-    <line x1="732" y1="400" x2="708" y2="416" stroke="#E11D48" stroke-width="2"/>
-    <text x="640" y="408" font-size="10" fill="#E11D48" text-anchor="middle">禁止跨层直读</text>
-  </g>
-
-  <!-- ===== Legend ===== -->
-  <line x1="60" y1="730" x2="1740" y2="730" stroke="#E2E8F0" stroke-width="1"/>
-
-  <text x="60" y="755" font-size="12" font-weight="700" fill="#0F172A">图例</text>
-
-  <!-- swatches -->
-  <rect x="120" y="745" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="144" y="755" font-size="11" fill="#475569">设备与边缘（感知层 · 边缘层）</text>
-
-  <rect x="370" y="745" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="394" y="755" font-size="11" fill="#475569">核心服务（区块链网络层）</text>
-
-  <rect x="620" y="745" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="644" y="755" font-size="11" fill="#475569">终端应用（应用层）</text>
-
-  <line x1="850" y1="751" x2="890" y2="751" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-  <text x="900" y="755" font-size="11" fill="#475569">实线：数据推送</text>
-
-  <line x1="1080" y1="751" x2="1120" y2="751" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="1130" y="755" font-size="11" fill="#475569">虚线：查询请求</text>
-
-  <!-- callout -->
-  <rect x="1320" y="738" width="420" height="32" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="1530" y="757" font-size="11" fill="#334155" text-anchor="middle">应用层不直接访问感知/边缘层，原始数据留存于边缘或 IPFS，链上仅存哈希。</text>
-
-  <!-- ===== Caption ===== -->
-  <text x="900" y="800" font-size="10" fill="#94A3B8" text-anchor="middle">图13-8 展示四层结构的职责边界与数据流向：边缘层将原始传感器数据哈希化后上链，区块链网络层负责记录、共识与智能合约执行，应用层仅通过链上数据完成溯源与防伪。</text>
+  <rect x="220" y="180" width="1260" height="120" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="230" y="195" font-size="12" font-weight="bold" fill="#64748B">业务应用域</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心服务（区块链网络层）</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：数据推送；虚线箭头：查询请求</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图13-8 展示四层结构的职责边界和数据流向。边缘层将原始传感器数据哈希化后上链，原始数据保留在边缘存储或IPFS中。区块链网络层负责记录、共识与智能合约执行。</text>
   </svg>
 </svg>
     <section class="meta">

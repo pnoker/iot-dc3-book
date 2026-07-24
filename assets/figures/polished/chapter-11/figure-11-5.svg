@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">城市物联网百万级接入系统架构图</title>
+  <desc id="desc">读者应理解城市物联网百万级接入系统架构图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">城市物联网百万级接入系统架构图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解城市物联网百万级接入系统架构图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 区域边界 -->
+  <rect x="120" y="160" width="490" height="500" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="130" y="185" fill="#0F172A" font-size="14" font-weight="600">设备与边缘域</text>
+  <rect x="660" y="160" width="490" height="500" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="670" y="185" fill="#0F172A" font-size="14" font-weight="600">平台服务域</text>
+  <rect x="1200" y="160" width="490" height="500" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1210" y="185" fill="#0F172A" font-size="14" font-weight="600">数据资产与业务应用域</text>
+
+  <!-- 连线（先于卡片） -->
+  <!-- 1. 负载均衡器 -> MQTT -->
+  <line x1="1110" y1="210" x2="680" y2="290" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="850" y="232" width="90" height="20" rx="4" fill="white" opacity="0.9"/>
+  <text x="895" y="245" fill="#0F172A" font-size="11" text-anchor="middle">连接分配（IP哈希）</text>
+
+  <!-- 2. MQTT -> 消息队列 -->
+  <line x1="1110" y1="290" x2="680" y2="370" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="850" y="312" width="80" height="20" rx="4" fill="white" opacity="0.9"/>
+  <text x="890" y="325" fill="#0F172A" font-size="11" text-anchor="middle">消息发布</text>
+
+  <!-- 3. 消息队列 -> 流处理引擎（垂直） -->
+  <line x1="895" y1="400" x2="895" y2="420" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="900" y="400" width="120" height="20" rx="4" fill="white" opacity="0.9"/>
+  <text x="960" y="413" fill="#0F172A" font-size="11" text-anchor="middle">数据消费（实时处理）</text>
+
+  <!-- 4. 流处理引擎 -> 时序数据库（水平） -->
+  <line x1="1110" y1="450" x2="1220" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1130" y="440" width="90" height="20" rx="4" fill="white" opacity="0.9"/>
+  <text x="1175" y="453" fill="#0F172A" font-size="11" text-anchor="middle">写入聚合结果</text>
+
+  <!-- 5. 消息队列 -> 业务微服务（水平） -->
+  <line x1="1110" y1="370" x2="1220" y2="370" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1130" y="360" width="100" height="20" rx="4" fill="white" opacity="0.9"/>
+  <text x="1180" y="373" fill="#0F172A" font-size="11" text-anchor="middle">主题消费（非实时）</text>
+
+  <!-- 6. 虚线：MQTT -> 设备层 -->
+  <line x1="680" y1="290" x2="570" y2="400" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="580" y="355" width="110" height="20" rx="4" fill="white" opacity="0.9"/>
+  <text x="635" y="368" fill="#0F172A" font-size="11" text-anchor="middle">心跳保活 / 订阅恢复</text>
+
+  <!-- 左栏：设备层 -->
+  <rect x="160" y="200" width="410" height="400" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="365" y="235" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">设备层</text>
+  <!-- 三个设备圆 -->
+  <circle cx="260" cy="300" r="28" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="260" y="305" fill="#0F172A" font-size="13" font-weight="500" text-anchor="middle">灯杆</text>
+  <circle cx="365" cy="300" r="28" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="365" y="305" fill="#0F172A" font-size="13" font-weight="500" text-anchor="middle">车载</text>
+  <circle cx="470" cy="300" r="28" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="470" y="305" fill="#0F172A" font-size="13" font-weight="500" text-anchor="middle">RSU</text>
+
+  <!-- 中栏：平台服务域组件 -->
+  <!-- 负载均衡器 -->
+  <rect x="680" y="180" width="430" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="895" y="208" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">负载均衡器</text>
+  <text x="895" y="226" fill="#64748B" font-size="11" text-anchor="middle">(NGINX)</text>
+
+  <!-- MQTT Broker集群 -->
+  <rect x="680" y="260" width="430" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="895" y="288" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">MQTT Broker集群</text>
+  <text x="895" y="306" fill="#64748B" font-size="11" text-anchor="middle">(EMQX)</text>
+
+  <!-- 消息队列 -->
+  <rect x="680" y="340" width="430" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="895" y="368" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">消息队列</text>
+  <text x="895" y="386" fill="#64748B" font-size="11" text-anchor="middle">(Kafka)</text>
+
+  <!-- 流处理引擎 -->
+  <rect x="680" y="420" width="430" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="895" y="448" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">流处理引擎</text>
+  <text x="895" y="466" fill="#64748B" font-size="11" text-anchor="middle">(Flink)</text>
+
+  <!-- 右栏：数据资产与业务应用域组件 -->
+  <!-- 业务微服务（在z-order中先画，时序数据库后画） -->
+  <rect x="1220" y="340" width="430" height="60" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1435" y="368" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">业务微服务</text>
+
+  <!-- 时序数据库 -->
+  <rect x="1220" y="420" width="430" height="60" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1435" y="448" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">时序数据库</text>
+  <text x="1435" y="466" fill="#64748B" font-size="11" text-anchor="middle">(InfluxDB/TimescaleDB)</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：数据流</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：控制流</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">圆形节点：终端设备</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-5 城市物联网百万级接入系统架构图。负载均衡器按IP哈希分配设备连接到MQTT Broker集群；Broker将消息发布到Kafka分区；流处理引擎从Kafka消费并处理后写入时序数据库；业务微服务直接从Kafka消费特定主题处理非实时数据；虚线控制流表示Broker向</text>
+  <text x="900" y="870" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">设备侧发送心跳和订阅恢复指令。</text>
+</svg>

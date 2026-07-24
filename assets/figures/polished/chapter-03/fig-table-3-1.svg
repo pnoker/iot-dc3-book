@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">常用传感器类型、原理与典型应用</title>
+  <desc id="desc">读者应理解常用传感器类型、原理与典型应用中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">常用传感器类型、原理与典型应用</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解常用传感器类型、原理与典型应用中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">MATRIX</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="matrix" font-family="'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif">
+  <rect x="300" y="150" width="1200" height="35" fill="#F8FAFC" stroke="none"/>
+  <rect x="300" y="185" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="220" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="255" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="290" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="325" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="360" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="395" width="1200" height="35" fill="white" stroke="none"/>
+  <rect x="300" y="430" width="1200" height="35" fill="white" stroke="none"/>
+  <line x1="300" y1="185" x2="1500" y2="185" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="220" x2="1500" y2="220" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="255" x2="1500" y2="255" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="290" x2="1500" y2="290" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="325" x2="1500" y2="325" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="360" x2="1500" y2="360" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="395" x2="1500" y2="395" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="300" y1="430" x2="1500" y2="430" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="480" y1="150" x2="480" y2="465" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="680" y1="150" x2="680" y2="465" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="980" y1="150" x2="980" y2="465" stroke="#94A3B8" stroke-width="1"/>
+  <rect x="300" y="150" width="1200" height="315" fill="none" stroke="#94A3B8" stroke-width="1"/>
+  <text x="308" y="173" font-size="14" font-weight="bold" fill="#0F172A">传感器类型</text>
+  <text x="488" y="173" font-size="14" font-weight="bold" fill="#0F172A">传感原理</text>
+  <text x="688" y="173" font-size="14" font-weight="bold" fill="#0F172A">典型应用</text>
+  <text x="988" y="173" font-size="14" font-weight="bold" fill="#0F172A">选型注意点</text>
+  <text x="308" y="208" font-size="14" fill="#0F172A">温度传感器</text>
+  <text x="488" y="208" font-size="14" fill="#0F172A">热电偶/热电阻</text>
+  <text x="688" y="208" font-size="14" fill="#0F172A">工业炉温监测</text>
+  <text x="988" y="208" font-size="14" fill="#64748B">注意冷端补偿和引线电阻</text>
+  <text x="308" y="243" font-size="14" fill="#0F172A">压力传感器</text>
+  <text x="488" y="243" font-size="14" fill="#0F172A">压阻/电容</text>
+  <text x="688" y="243" font-size="14" fill="#0F172A">管道压力监测</text>
+  <text x="988" y="243" font-size="14" fill="#64748B">注意温漂和过载保护</text>
+  <text x="308" y="278" font-size="14" fill="#0F172A">光电传感器</text>
+  <text x="488" y="278" font-size="14" fill="#0F172A">光电效应</text>
+  <text x="688" y="278" font-size="14" fill="#0F172A">物体检测</text>
+  <text x="988" y="278" font-size="14" fill="#64748B">注意环境光干扰和检测距离</text>
+  <text x="308" y="313" font-size="14" fill="#0F172A">超声波传感器</text>
+  <text x="488" y="313" font-size="14" fill="#0F172A">压电效应</text>
+  <text x="688" y="313" font-size="14" fill="#0F172A">液位测距</text>
+  <text x="988" y="313" font-size="14" fill="#64748B">注意盲区和温度影响声速</text>
+  <text x="308" y="348" font-size="14" fill="#0F172A">位移传感器</text>
+  <text x="488" y="348" font-size="14" fill="#0F172A">电感/电容</text>
+  <text x="688" y="348" font-size="14" fill="#0F172A">精密定位</text>
+  <text x="988" y="348" font-size="14" fill="#64748B">注意线性度和测量范围</text>
+  <text x="308" y="383" font-size="14" fill="#0F172A">加速度计</text>
+  <text x="488" y="383" font-size="14" fill="#0F172A">MEMS</text>
+  <text x="688" y="383" font-size="14" fill="#0F172A">振动检测</text>
+  <text x="988" y="383" font-size="14" fill="#64748B">注意频率响应和量程</text>
+  <text x="308" y="418" font-size="14" fill="#0F172A">气体传感器</text>
+  <text x="488" y="418" font-size="14" fill="#0F172A">电化学/半导体</text>
+  <text x="688" y="418" font-size="14" fill="#0F172A">环境监测</text>
+  <text x="988" y="418" font-size="14" fill="#64748B">注意交叉敏感和寿命</text>
+  <text x="308" y="453" font-size="14" fill="#0F172A">湿度传感器</text>
+  <text x="488" y="453" font-size="14" fill="#0F172A">电容/电阻</text>
+  <text x="688" y="453" font-size="14" fill="#0F172A">暖通空调</text>
+  <text x="988" y="453" font-size="14" fill="#64748B">注意结露和响应时间</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">无图例</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">选型注意点归纳了该原理传感器在工程现场最常遇到的工程陷阱，供选型时权衡。</text>
+</svg>

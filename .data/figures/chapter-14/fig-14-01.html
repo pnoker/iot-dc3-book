@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图14-1 物联网项目全生命周期</title>
+  <title>图14-1 物联网平台分层架构</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -43,10 +43,10 @@
 
   <!-- ============ ROLLBACK CURVES (drawn first, behind) ============ -->
   <g id="rollbacks" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 4" fill="none">
-    <path d="M 395 370 C 340 370, 340 194, 395 194" marker-end="url(#ah-gray)"/>
-    <path d="M 395 546 C 340 546, 340 370, 395 370" marker-end="url(#ah-gray)"/>
-    <path d="M 395 722 C 340 722, 340 546, 395 546" marker-end="url(#ah-gray)"/>
-    <path d="M 395 898 C 340 898, 340 722, 395 722" marker-end="url(#ah-gray)"/>
+    <path d="M 395 370 L 340 370 L 340 194 L 395 194" marker-end="url(#ah-gray)"/>
+    <path d="M 395 546 L 340 546 L 340 370 L 395 370" marker-end="url(#ah-gray)"/>
+    <path d="M 395 722 L 340 722 L 340 546 L 395 546" marker-end="url(#ah-gray)"/>
+    <path d="M 395 898 L 340 898 L 340 722 L 395 722" marker-end="url(#ah-gray)"/>
   </g>
 
   <!-- ============ ROLLBACK REASON PILLS (left lane) ============ -->
@@ -178,8 +178,8 @@
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下纵向流程，五个阶段（需求分析→架构设计→开发实现→部署上线→运维迭代）依次相连，阶段间实线为推进路径，虚线为评审未通过时的回退。</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自下而上四层：设备层（最底部）→ 边缘接入层 → 平台层 → 应用层（最顶部）。层间以水平虚线分隔，标识职责边界。平台层内部用不同颜色区分消息基础设施、数据中心、智能中心。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

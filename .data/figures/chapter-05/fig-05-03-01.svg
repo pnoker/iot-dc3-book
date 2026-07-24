@@ -1,127 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图5-5-3-1 Kappa架构示意图</title>
+  <desc id="desc">读者应理解-3-1 Kappa架构示意图中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="72.800" width="1152.000" height="614.400" viewBox="0 0 1800.000 960.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图5-5-3-1 Kappa架构示意图</title>
+  <desc id="desc">读者应理解-3-1 Kappa架构示意图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- canvas -->
-  <rect x="0" y="0" width="1800" height="960" fill="#FFFFFF"/>
-
-  <!-- ===== Title area ===== -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="47" font-size="22" font-weight="700" fill="#0F172A">图5-5-3-1 Kappa架构示意图</text>
-  <text x="88" y="72" font-size="12" fill="#64748B">单一流处理管道兼容实时与历史分析（Kappa Architecture）</text>
-  <rect x="1658" y="24" width="118" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1717" y="44" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">DATAFLOW</text>
-  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图5-5-3-1 Kappa架构示意图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解-3-1 Kappa架构示意图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">DATAFLOW</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="dataflow">
+  <!-- 区域边界 -->
+  <rect x="120" y="160" width="320" height="340" rx="14" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="8,4" />
+  <text x="140" y="185" fill="#D97706" font-size="14" font-weight="600">数据资产域</text>
+  <rect x="550" y="160" width="900" height="380" rx="14" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="8,4" />
+  <text x="570" y="185" fill="#D97706" font-size="14" font-weight="600">平台服务域</text>
 
-  <!-- ===== Region boundaries ===== -->
-  <!-- data_domain -->
-  <rect x="100" y="150" width="820" height="500" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="120" y="138" width="200" height="26" rx="5" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
-  <text x="220" y="156" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">数据资产域</text>
-  <text x="332" y="156" font-size="10" fill="#94A3B8">数据沉淀与治理边界</text>
+  <!-- 连线（先于节点绘制） -->
+  <!-- 数据源 → 实时流处理（实时数据流） -->
+  <path d="M 390 300 L 640 300 L 640 380 L 700 380" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="480" y="315" width="90" height="22" rx="4" fill="white" fill-opacity="0.9" />
+  <text x="525" y="331" fill="#0F172A" font-size="12" text-anchor="middle">实时数据流</text>
 
-  <!-- platform_domain -->
-  <rect x="960" y="150" width="740" height="500" rx="12" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 4"/>
-  <rect x="980" y="138" width="200" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
-  <text x="1080" y="156" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">平台服务域</text>
-  <text x="1192" y="156" font-size="10" fill="#94A3B8">核心服务能力边界</text>
+  <!-- 数据源 → 消息总线（持久化数据流第一部分） -->
+  <line x1="300" y1="340" x2="300" y2="420" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="240" y="370" width="70" height="22" rx="4" fill="white" fill-opacity="0.9" />
+  <text x="275" y="386" fill="#0F172A" font-size="12" text-anchor="middle">持久化</text>
 
-  <!-- ===== Components ===== -->
-  <!-- r1: 数据源 (database cylinder, data domain purple) -->
-  <rect x="135" y="386" width="190" height="88" fill="#FFFFFF"/>
-  <line x1="135" y1="386" x2="135" y2="474" stroke="#7C3AED" stroke-width="2"/>
-  <line x1="325" y1="386" x2="325" y2="474" stroke="#7C3AED" stroke-width="2"/>
-  <path d="M 135 474 A 95 24 0 0 0 325 474" fill="none" stroke="#7C3AED" stroke-width="2"/>
-  <ellipse cx="230" cy="386" rx="95" ry="24" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="230" y="424" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据源</text>
-  <text x="230" y="446" font-size="10" fill="#475569" text-anchor="middle">传感器 / 设备</text>
-  <text x="230" y="461" font-size="10" fill="#475569" text-anchor="middle">MQTT 代理</text>
+  <!-- 消息总线 → 实时流处理（持久化数据流第二部分） -->
+  <path d="M 390 460 L 800 460 L 800 440" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="520" y="438" width="90" height="22" rx="4" fill="white" fill-opacity="0.9" />
+  <text x="565" y="454" fill="#0F172A" font-size="12" text-anchor="middle">持久化数据流</text>
 
-  <!-- r3: 消息总线 (card, data domain purple) -->
-  <rect x="580" y="210" width="220" height="84" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="690" y="244" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">消息总线</text>
-  <text x="690" y="266" font-size="10" fill="#475569" text-anchor="middle">Kafka Topic</text>
-  <text x="690" y="281" font-size="9" fill="#64748B" text-anchor="middle">持久化事件日志</text>
+  <!-- 实时流处理 → 历史回放（自循环虚线） -->
+  <path d="M860,330 C980,280 900,260 860,320" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)" />
+  <rect x="870" y="280" width="100" height="22" rx="4" fill="white" fill-opacity="0.9" />
+  <text x="920" y="296" fill="#0F172A" font-size="12" text-anchor="middle">历史回放 (Time Travel)</text>
 
-  <!-- r4: 实时流处理 (diamond, platform/primary blue) -->
-  <polygon points="1080,340 1220,430 1080,520 940,430" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.4"/>
-  <text x="1080" y="424" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">实时流处理</text>
-  <text x="1080" y="446" font-size="10" fill="#475569" text-anchor="middle">Flink / Kafka Streams</text>
+  <!-- 实时流处理 → 结果输出（持续输出） -->
+  <line x1="900" y1="380" x2="1210" y2="380" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="1020" y="365" width="90" height="22" rx="4" fill="white" fill-opacity="0.9" />
+  <text x="1065" y="381" fill="#0F172A" font-size="12" text-anchor="middle">持续输出</text>
 
-  <!-- r6: 结果输出 (card, platform blue) -->
-  <rect x="1420" y="378" width="200" height="104" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="1520" y="410" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">结果输出</text>
-  <text x="1520" y="432" font-size="10" fill="#475569" text-anchor="middle">告警系统</text>
-  <text x="1520" y="448" font-size="10" fill="#475569" text-anchor="middle">Dashboard</text>
-  <text x="1520" y="464" font-size="10" fill="#475569" text-anchor="middle">时序数据库</text>
+  <!-- 节点 -->
+  <!-- 数据源 -->
+  <rect x="210" y="260" width="180" height="80" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" />
+  <text x="300" y="286" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">数据源</text>
+  <text x="300" y="315" fill="#64748B" font-size="12" text-anchor="middle">传感器 / 设备 / MQTT 代理</text>
 
-  <!-- ===== Connections ===== -->
-  <!-- 1) 数据源 -> 实时流处理 (实时数据流, main highlighted blue) -->
-  <path d="M 325 440 L 932 430" fill="none" stroke="#2563EB" stroke-width="2.6" marker-end="url(#ah-blue)"/>
-  <rect x="548" y="412" width="120" height="20" rx="4" fill="#FFFFFF"/>
-  <text x="608" y="426" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">实时数据流</text>
+  <!-- 消息总线 -->
+  <rect x="210" y="420" width="180" height="80" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" />
+  <text x="300" y="446" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">消息总线</text>
+  <text x="300" y="475" fill="#64748B" font-size="12" text-anchor="middle">Kafka Topic</text>
 
-  <!-- 2a) 数据源 -> 消息总线 (持久化入口) -->
-  <path d="M 230 386 C 230 330, 480 330, 580 252" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <!-- 实时流处理（菱形） -->
+  <polygon points="700,380 800,320 900,380 800,440" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+  <text x="800" y="378" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">实时流处理</text>
+  <text x="800" y="400" fill="#64748B" font-size="12" text-anchor="middle">Flink / Kafka Streams</text>
 
-  <!-- 2b) 消息总线 -> 实时流处理 (持久化数据流) -->
-  <path d="M 800 252 C 940 252, 980 360, 1018 392" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="838" y="312" width="128" height="20" rx="4" fill="#FFFFFF"/>
-  <text x="902" y="326" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">持久化数据流</text>
-
-  <!-- 3) 实时流处理 -> 结果输出 (持续输出, main highlighted blue) -->
-  <path d="M 1220 430 L 1412 430" fill="none" stroke="#2563EB" stroke-width="2.6" marker-end="url(#ah-blue)"/>
-  <rect x="1276" y="412" width="92" height="20" rx="4" fill="#FFFFFF"/>
-  <text x="1322" y="426" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">持续输出</text>
-
-  <!-- 4) 实时流处理 -> 历史回放 self-loop (dashed gray, 事件时间回溯) -->
-  <path d="M 1100 510 C 1100 628, 1268 628, 1150 472" fill="none" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <rect x="1116" y="600" width="148" height="20" rx="4" fill="#FFFFFF"/>
-  <text x="1190" y="614" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle">历史回放（Time Travel）</text>
-  <text x="1190" y="632" font-size="9" fill="#94A3B8" text-anchor="middle">事件时间回溯 replay</text>
-
-  <!-- ===== Callout ===== -->
-  <rect x="980" y="660" width="700" height="40" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="1000" y="684" font-size="11" fill="#334155">主链路：数据源 → 流处理引擎 → 结果输出；历史分析通过回放同一 Kafka Topic 完成，无需离线批管道。</text>
-
-  <!-- ===== Legend ===== -->
-  <line x1="60" y1="728" x2="1740" y2="728" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="60" y="754" font-size="12" font-weight="700" fill="#475569">图例</text>
-
-  <!-- solid blue arrow -->
-  <line x1="120" y1="782" x2="168" y2="782" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
-  <text x="184" y="786" font-size="11" fill="#475569">实线 · 实时数据流 / 持续输出</text>
-
-  <!-- dashed gray arrow -->
-  <line x1="460" y1="782" x2="508" y2="782" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah-gray)"/>
-  <text x="524" y="786" font-size="11" fill="#475569">虚线 · 历史数据回放</text>
-
-  <!-- cylinder swatch -->
-  <rect x="760" y="775" width="22" height="14" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
-  <ellipse cx="771" cy="775" rx="11" ry="3.5" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
-  <text x="792" y="786" font-size="11" fill="#475569">圆柱 · 数据源 / 数据槽</text>
-
-  <!-- diamond swatch -->
-  <polygon points="1000,774 1014,782 1000,790 986,782" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="1024" y="786" font-size="11" fill="#475569">菱形 · 核心计算引擎</text>
-
-  <!-- purple card swatch -->
-  <rect x="1240" y="774" width="22" height="16" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
-  <text x="1272" y="786" font-size="11" fill="#475569">紫框 · 数据资产域</text>
-
-  <!-- blue card swatch -->
-  <rect x="1430" y="774" width="22" height="16" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="1462" y="786" font-size="11" fill="#475569">蓝框 · 平台服务域</text>
-
-  <!-- ===== Caption ===== -->
-  <text x="900" y="838" font-size="10" fill="#94A3B8" text-anchor="middle">Kappa 架构通过单一流处理管道完成所有计算，历史批量分析借由回放流（replay）实现，消除 Lambda 架构并行维护两条管道的成本。</text>
-  <text x="900" y="856" font-size="9" fill="#CBD5E1" text-anchor="middle">fig-05-08 · chapter 5 · occurrence 8</text>
+  <!-- 结果输出 -->
+  <rect x="1210" y="340" width="180" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="1300" y="366" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">结果输出</text>
+  <text x="1300" y="395" fill="#64748B" font-size="12" text-anchor="middle">告警系统 / Dashboard / 时序数据库</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：实时数据流</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：历史数据回放</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">圆角矩形：数据源或数据槽</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">Kappa架构通过单一流处理管道完成所有计算，历史数据的批量分析通过回放流（replay）实现，消除了Lambda架构并行维护两条管道的成本。</text>
   </svg>
 </svg>

@@ -249,7 +249,7 @@
 </svg>
     <section class="meta">
       <div class="card"><div class="label">图表类型</div><div class="value">layered</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下四层堆叠：用户交互层（Web/HTTP 客户端）→ AI Agent 层（dc3-center-agentic：ChatClient + ToolCallbackProvider + 会话/模型管理）→ 平台服务层（Auth/Manager/Data）→ 数据设备层（PostgreSQL、RabbitMQ、协议 Driver、物理设备）。Agentic→平台服务标 Facade/gRPC，Data↔Driver 标 RabbitMQ。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自上而下四层：用户交互层；AI Agent 层；平台服务层；数据与设备层。Agentic 到平台服务标注 Facade/gRPC，Data 与 Driver 之间标注 RabbitMQ。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

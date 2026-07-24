@@ -1,134 +1,69 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图9-3 CoAP消息格式与选项示意</title>
+  <desc id="desc">读者应理解CoAP消息格式与选项示意中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="114.545" y="24.000" width="970.909" height="712.000" viewBox="0 0 1500.000 1100.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-<marker id="ah-gray" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-<marker id="ah-green" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-<marker id="ah-blue" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-<marker id="ah-red" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-<marker id="ah-light" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#94A3B8"/></marker>
-</defs>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图9-3 CoAP消息格式与选项示意</title>
+  <desc id="desc">读者应理解CoAP消息格式与选项示意中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图9-3 CoAP消息格式与选项示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解CoAP消息格式与选项示意中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- HTTP部分 -->
+  <rect x="200" y="150" width="1300" height="120" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="215" y="172" font-size="16" font-weight="bold" fill="#0F172A">HTTP部分</text>
+  <text x="215" y="200" font-size="14" fill="#0F172A">GET /temperature HTTP/1.1</text>
+  <text x="215" y="222" font-size="14" fill="#0F172A">Host: example.com</text>
+  <text x="215" y="244" font-size="14" fill="#0F172A">User-Agent: CoAP-Client</text>
+  <text x="215" y="266" font-size="14" fill="#0F172A">Accept: application/json</text>
+  <!-- HTTP对比气泡 -->
+  <rect x="1520" y="165" width="80" height="30" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1560" y="185" font-size="14" fill="#0F172A" text-anchor="middle">~300 bytes</text>
 
-<rect x="0" y="0" width="1500" height="1100" fill="#FFFFFF"/>
+  <!-- CoAP部分 -->
+  <text x="215" y="435" font-size="16" font-weight="bold" fill="#0F172A">CoAP部分</text>
+  <!-- CoAP外框 -->
+  <rect x="200" y="450" width="1300" height="100" rx="10" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+  <!-- 内部字段填充 -->
+  <rect x="202" y="452" width="259" height="96" fill="#EFF6FF"/>
+  <rect x="461" y="452" width="130" height="96" fill="#ECFDF5"/>
+  <rect x="591" y="452" width="389" height="96" fill="#FFF7ED"/>
+  <rect x="980" y="452" width="518" height="96" fill="#F8FAFC"/>
+  <!-- 分割线 -->
+  <line x1="461" y1="452" x2="461" y2="548" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="591" y1="452" x2="591" y2="548" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="980" y1="452" x2="980" y2="548" stroke="#2563EB" stroke-width="1.5"/>
+  <!-- 字段文字 -->
+  <text x="331" y="492" font-size="12" fill="#0F172A" text-anchor="middle">固定头部</text>
+  <text x="331" y="510" font-size="12" fill="#0F172A" text-anchor="middle">4 Bytes</text>
+  <text x="526" y="492" font-size="12" fill="#0F172A" text-anchor="middle">Token</text>
+  <text x="526" y="510" font-size="12" fill="#0F172A" text-anchor="middle">2 Bytes</text>
+  <text x="786" y="492" font-size="12" fill="#0F172A" text-anchor="middle">Options</text>
+  <text x="786" y="510" font-size="12" fill="#0F172A" text-anchor="middle">6 Bytes</text>
+  <text x="1239" y="492" font-size="12" fill="#0F172A" text-anchor="middle">Payload</text>
+  <text x="1239" y="510" font-size="12" fill="#0F172A" text-anchor="middle">8 Bytes</text>
+  <!-- CoAP对比气泡 -->
+  <rect x="1520" y="465" width="80" height="30" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1560" y="485" font-size="14" fill="#0F172A" text-anchor="middle">~20 bytes</text>
 
-<!-- 标题区 -->
-<circle cx="64" cy="40" r="6" fill="#2563EB"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-weight="700">图9-3 MQTT会话连接与心跳交互示意</text>
-<text x="82" y="78" fill="#64748B" font-size="12" font-weight="500">客户端与Broker从连接建立、心跳保活、断线遗嘱到重连恢复的完整时序</text>
-<rect x="1358" y="26" width="110" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-<text x="1413" y="44" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">SEQUENCE</text>
-
-<line x1="58" y1="103" x2="1442" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-
-<!-- 区域边界（生命线车道） -->
-<rect x="170" y="112" width="260" height="898" rx="12" fill="none" stroke="#10B981" stroke-dasharray="8 4" stroke-width="1.2"/>
-<text x="300" y="128" fill="#10B981" font-size="11" font-weight="600" text-anchor="middle">客户端域</text>
-<rect x="650" y="112" width="260" height="898" rx="12" fill="none" stroke="#2563EB" stroke-dasharray="8 4" stroke-width="1.2"/>
-<text x="780" y="128" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">Broker域</text>
-
-<!-- 阶段标签 -->
-<text x="66" y="240" fill="#64748B" font-size="11" font-weight="700">① 会话建立</text>
-<text x="66" y="400" fill="#64748B" font-size="11" font-weight="700">② 心跳保活</text>
-<text x="66" y="495" fill="#64748B" font-size="11" font-weight="700">③ 断线与遗嘱</text>
-<text x="66" y="720" fill="#64748B" font-size="11" font-weight="700">④ 重连与会话恢复</text>
-
-<!-- 断线红色离线带（生命线下层） -->
-<rect x="295" y="505" width="10" height="200" fill="#FEE2E2" opacity="0.55"/>
-
-<!-- 生命线 -->
-<line x1="300" y1="196" x2="300" y2="495" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6 6"/>
-<line x1="300" y1="705" x2="300" y2="1010" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6 6"/>
-<line x1="780" y1="196" x2="780" y2="1010" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6 6"/>
-<line x1="1260" y1="566" x2="1260" y2="960" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6 6"/>
-
-<!-- 断线标记 -->
-<line x1="292" y1="487" x2="308" y2="503" stroke="#E11D48" stroke-width="2.5"/>
-<line x1="308" y1="487" x2="292" y2="503" stroke="#E11D48" stroke-width="2.5"/>
-<text x="300" y="525" fill="#E11D48" font-size="10" font-weight="600" text-anchor="middle">网络断线</text>
-<text x="300" y="610" fill="#E11D48" font-size="9" font-weight="500" text-anchor="middle" opacity="0.75">离线</text>
-
-<!-- 消息箭头 -->
-<line x1="310" y1="240" x2="778" y2="240" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="544" y="232" fill="#475569" font-size="10.5" font-weight="500" text-anchor="middle">CONNECT (CleanSession=false, KA=60s)</text>
-
-<line x1="770" y1="300" x2="302" y2="300" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="536" y="292" fill="#475569" font-size="10.5" font-weight="500" text-anchor="middle">CONNACK (SessionPresent=false)</text>
-
-<line x1="310" y1="400" x2="778" y2="400" stroke="#94A3B8" stroke-width="1" marker-end="url(#ah-light)"/>
-<text x="544" y="392" fill="#94A3B8" font-size="10" text-anchor="middle">PINGREQ</text>
-
-<line x1="770" y1="438" x2="302" y2="438" stroke="#94A3B8" stroke-width="1" marker-end="url(#ah-light)"/>
-<text x="536" y="430" fill="#94A3B8" font-size="10" text-anchor="middle">PINGRESP</text>
-
-<line x1="790" y1="595" x2="1258" y2="595" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ah-red)"/>
-<text x="1024" y="587" fill="#E11D48" font-size="10.5" font-weight="600" text-anchor="middle">PUBLISH (Will Message)</text>
-
-<path d="M 305 712 L 360 712 L 360 734 L 308 734" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ah-green)"/>
-<text x="372" y="728" fill="#10B981" font-size="10.5" font-weight="600">重连策略 (1s,2s,4s...)</text>
-
-<line x1="310" y1="775" x2="778" y2="775" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-<text x="544" y="767" fill="#10B981" font-size="11" font-weight="700" text-anchor="middle">CONNECT (Reconnect)</text>
-
-<line x1="770" y1="840" x2="302" y2="840" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="536" y="832" fill="#2563EB" font-size="11" font-weight="700" text-anchor="middle">CONNACK (SessionPresent=true)</text>
-
-<line x1="770" y1="915" x2="302" y2="915" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-<text x="536" y="907" fill="#2563EB" font-size="11" font-weight="700" text-anchor="middle">离线缓存消息 (QoS 1/2)</text>
-
-<!-- 参与者头部 -->
-<rect x="200" y="140" width="200" height="56" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-<text x="300" y="162" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Client</text>
-<text x="300" y="180" fill="#475569" font-size="9.5" font-weight="500" text-anchor="middle">sensor01 · MQTT客户端</text>
-
-<rect x="680" y="140" width="200" height="56" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<text x="780" y="162" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Broker</text>
-<text x="780" y="180" fill="#475569" font-size="9.5" font-weight="500" text-anchor="middle">MQTT代理服务器</text>
-
-<rect x="1160" y="510" width="200" height="56" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-<text x="1260" y="532" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Subscriber</text>
-<text x="1260" y="550" fill="#475569" font-size="9.5" font-weight="500" text-anchor="middle">遗嘱消息订阅者</text>
-
-<!-- 标注 callout -->
-<rect x="910" y="222" width="250" height="34" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="922" y="244" fill="#334155" font-size="10" font-weight="500">CONNECT/CONNACK：同步请求-确认</text>
-
-<rect x="910" y="392" width="240" height="34" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="922" y="414" fill="#334155" font-size="10" font-weight="500">心跳周期 = Keep Alive 60s</text>
-
-<rect x="910" y="478" width="240" height="34" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="922" y="500" fill="#334155" font-size="10" font-weight="500">Broker 1.5×KA≈90s 超时判定离线</text>
-
-<rect x="910" y="610" width="250" height="34" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="922" y="632" fill="#334155" font-size="10" font-weight="500">遗嘱消息广播给所有订阅者</text>
-
-<rect x="910" y="725" width="120" height="28" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="970" y="744" fill="#10B981" font-size="10.5" font-weight="700" text-anchor="middle">★ 主链路</text>
-
-<rect x="910" y="865" width="300" height="50" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-<text x="922" y="885" fill="#334155" font-size="10" font-weight="600">会话持久化：SessionPresent=true</text>
-<text x="922" y="903" fill="#475569" font-size="10" font-weight="500">推送断线期间 QoS 1/2 缓存消息</text>
-
-<!-- 图例 -->
-<line x1="58" y1="1028" x2="1442" y2="1028" stroke="#E2E8F0" stroke-width="1"/>
-
-<rect x="70" y="1044" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-<text x="90" y="1053" fill="#64748B" font-size="11" font-weight="600">客户端</text>
-<rect x="170" y="1044" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-<text x="190" y="1053" fill="#64748B" font-size="11" font-weight="600">Broker</text>
-<rect x="270" y="1044" width="14" height="10" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-<text x="290" y="1053" fill="#64748B" font-size="11" font-weight="600">订阅者</text>
-<line x1="370" y1="1049" x2="400" y2="1049" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-<text x="408" y="1053" fill="#64748B" font-size="11" font-weight="600">实线：同步请求/响应</text>
-<line x1="590" y1="1049" x2="620" y2="1049" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah-gray)"/>
-<text x="628" y="1053" fill="#64748B" font-size="11" font-weight="600">虚线：异步广播/自消息</text>
-<line x1="850" y1="1049" x2="880" y2="1049" stroke="#10B981" stroke-width="2.5" marker-end="url(#ah-green)"/>
-<text x="888" y="1053" fill="#64748B" font-size="11" font-weight="600">加粗：主链路(重连恢复)</text>
-
-<line x1="66" y1="1075" x2="76" y2="1081" stroke="#E11D48" stroke-width="2"/>
-<line x1="76" y1="1075" x2="66" y2="1081" stroke="#E11D48" stroke-width="2"/>
-<text x="84" y="1080" fill="#64748B" font-size="11" font-weight="600">红色：断线/遗嘱(风险事件)</text>
-<text x="480" y="1080" fill="#64748B" font-size="11" font-weight="600">心跳 KA=60s，Broker 超时 1.5×KA≈90s 判定离线</text>
+  <!-- 箭头连线 -->
+  <line x1="850" y1="270" x2="850" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <!-- 箭头标签 -->
+  <rect x="870" y="330" width="180" height="50" rx="5" fill="white" stroke="#64748B" stroke-width="1"/>
+  <text x="880" y="350" font-size="12" fill="#0F172A">完成相同的</text>
+  <text x="880" y="370" font-size="12" fill="#0F172A">“查询温度资源”功能</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">CoAP头部各字段用不同颜色区分：固定头部（蓝色）、Token（</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">CoAP固定头最小4字节，典型请求头在10–20字节之间（资料：[S1]）；HTTP即使最简请求也超过100字节。</text>
   </svg>
 </svg>

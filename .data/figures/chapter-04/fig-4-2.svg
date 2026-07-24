@@ -1,164 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图4-2 统一接入层的逻辑定位与内部能力分层</title>
+  <desc id="desc">读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="52.308" y="24.000" width="1095.385" height="712.000" viewBox="0 0 1600.000 1040.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图4-2 统一接入层的逻辑定位与内部能力分层</title>
+  <desc id="desc">读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- canvas -->
-  <rect x="0" y="0" width="1600" height="1040" fill="#FFFFFF"/>
-
-  <!-- ===== Title region ===== -->
-  <circle cx="64" cy="44" r="6" fill="#2563EB"/>
-  <text x="84" y="51" font-size="22" font-weight="700" fill="#0F172A">图4-2 统一接入层的逻辑定位与内部能力分层</text>
-  <text x="84" y="74" font-size="12" fill="#64748B">从异构协议到标准化业务事件的三层加工路径 · 自下而上的数据流</text>
-
-  <rect x="1470" y="30" width="100" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1520" y="47" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1">LAYERED</text>
-
-  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
-
-  <!-- ===== 统一接入层 logical boundary (platform/blue dashed) ===== -->
-  <rect x="200" y="250" width="1000" height="398" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <rect x="220" y="238" width="200" height="26" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="320" y="256" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">统一接入层（中间层）</text>
-
-  <!-- ===== Top: Application layer card ===== -->
-  <rect x="300" y="140" width="900" height="78" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-  <text x="324" y="172" font-size="15" font-weight="700" fill="#0F172A">应用层 · 业务服务</text>
-  <text x="324" y="194" font-size="11" fill="#475569">告警引擎 · 数据分析 · 可视化面板 · 规则引擎</text>
-  <text x="1176" y="172" font-size="10" fill="#94A3B8" text-anchor="end">application 域</text>
-  <rect x="1080" y="158" width="84" height="18" rx="4" fill="#F8FAFC" stroke="#E2E8F0"/>
-  <text x="1122" y="171" font-size="9" fill="#64748B" text-anchor="middle">数字世界</text>
-
-  <!-- ===== Sub-layer 1 (top of access layer): 安全与认证 (security/red) ===== -->
-  <rect x="300" y="290" width="900" height="78" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-  <text x="324" y="322" font-size="15" font-weight="700" fill="#0F172A">安全与认证层</text>
-  <text x="324" y="344" font-size="11" fill="#475569">设备身份校验 · TLS 终结 · 密钥协商 · 数据完整性校验</text>
-  <rect x="1080" y="306" width="100" height="18" rx="4" fill="#FEF2F2" stroke="#FECACA"/>
-  <text x="1130" y="319" font-size="9" fill="#E11D48" text-anchor="middle">子层 3 · 可信化</text>
-
-  <!-- ===== Sub-layer 2: 统一设备模型 (platform/blue) ===== -->
-  <rect x="300" y="420" width="900" height="78" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="324" y="452" font-size="15" font-weight="700" fill="#0F172A">统一设备模型层</text>
-  <text x="324" y="474" font-size="11" fill="#475569">位号 / 指令 → 属性 · 事件 · 服务的物模型 JSON Schema 映射</text>
-  <rect x="1080" y="436" width="100" height="18" rx="4" fill="#EFF6FF" stroke="#BFDBFE"/>
-  <text x="1130" y="449" font-size="9" fill="#2563EB" text-anchor="middle">子层 2 · 模型化</text>
-
-  <!-- ===== Sub-layer 3 (bottom of access layer): 协议转换与适配 (platform/blue) ===== -->
-  <rect x="300" y="550" width="900" height="78" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="324" y="582" font-size="15" font-weight="700" fill="#0F172A">协议转换与适配层</text>
-  <text x="324" y="604" font-size="11" fill="#475569">连接管理 · 报文解析 · 数据格式归一 · 协议驱动隔离</text>
-  <rect x="1080" y="566" width="100" height="18" rx="4" fill="#EFF6FF" stroke="#BFDBFE"/>
-  <text x="1130" y="579" font-size="9" fill="#2563EB" text-anchor="middle">子层 1 · 归一化</text>
-
-  <!-- sub-layer separators (dashed, inside boundary) -->
-  <line x1="220" y1="395" x2="1180" y2="395" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="220" y1="525" x2="1180" y2="525" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 4"/>
-
-  <!-- ===== Bottom: Heterogeneous device layer (edge/green) ===== -->
-  <rect x="300" y="755" width="900" height="130" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="324" y="787" font-size="15" font-weight="700" fill="#0F172A">异构设备与协议层</text>
-  <text x="324" y="806" font-size="11" fill="#475569">物理世界 · 不同格式的原始报文</text>
-  <rect x="1080" y="771" width="100" height="18" rx="4" fill="#ECFDF5" stroke="#A7F3D0"/>
-  <text x="1130" y="784" font-size="9" fill="#10B981" text-anchor="middle">物理世界</text>
-
-  <!-- device chips -->
-  <g font-size="11" fill="#065F46">
-    <rect x="318" y="822" width="166" height="48" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-    <text x="401" y="845" text-anchor="middle" font-weight="600">Modbus RTU PLC</text>
-    <text x="401" y="861" text-anchor="middle" font-size="9" fill="#64748B">轮询寄存器</text>
-
-    <rect x="498" y="822" width="166" height="48" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-    <text x="581" y="845" text-anchor="middle" font-weight="600">MQTT 温湿度传感器</text>
-    <text x="581" y="861" text-anchor="middle" font-size="9" fill="#64748B">topic 订阅</text>
-
-    <rect x="678" y="822" width="166" height="48" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-    <text x="761" y="845" text-anchor="middle" font-weight="600">LoRaWAN 水表</text>
-    <text x="761" y="861" text-anchor="middle" font-size="9" fill="#64748B">上行帧</text>
-
-    <rect x="858" y="822" width="166" height="48" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-    <text x="941" y="845" text-anchor="middle" font-weight="600">BLE 信标广播帧</text>
-    <text x="941" y="861" text-anchor="middle" font-size="9" fill="#64748B">无连接广播</text>
-
-    <rect x="1038" y="822" width="146" height="48" rx="5" fill="#FFFFFF" stroke="#10B981" stroke-width="1.2"/>
-    <text x="1111" y="845" text-anchor="middle" font-weight="600">NB-IoT 终端</text>
-    <text x="1111" y="861" text-anchor="middle" font-size="9" fill="#64748B">CoAP/UDP</text>
-  </g>
-
-  <!-- ===== Main path arrows (bottom-to-top, blue solid) ===== -->
-  <!-- A4: device -> protocol adapt -->
-  <line x1="800" y1="753" x2="800" y2="632" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="812" y="682" width="92" height="20" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="858" y="696" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">原始报文</text>
-
-  <!-- A3: protocol -> thing model -->
-  <line x1="800" y1="548" x2="800" y2="502" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="812" y="515" width="104" height="20" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="864" y="529" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">结构化键值</text>
-
-  <!-- A2: thing model -> security -->
-  <line x1="800" y1="418" x2="800" y2="372" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="812" y="385" width="104" height="20" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="864" y="399" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">物模型实例</text>
-
-  <!-- A1: security -> app -->
-  <line x1="800" y1="288" x2="800" y2="222" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <rect x="812" y="245" width="116" height="20" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="870" y="259" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">可信属性/事件</text>
-
-  <!-- ===== Callout (right side) ===== -->
-  <rect x="1240" y="290" width="320" height="170" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="1256" y="316" font-size="12" font-weight="700" fill="#0F172A">实现说明</text>
-  <line x1="1256" y1="324" x2="1544" y2="324" stroke="#E2E8F0"/>
-  <text x="1256" y="346" font-size="11" fill="#334155">三个子层是逻辑上的顺序处理，</text>
-  <text x="1256" y="364" font-size="11" fill="#334155">实际实现中每个子层可能由独立</text>
-  <text x="1256" y="382" font-size="11" fill="#334155">的微服务或 SDK 组件完成。</text>
-  <text x="1256" y="410" font-size="11" fill="#334155">协议适配层最易随设备种类增加</text>
-  <text x="1256" y="428" font-size="11" fill="#334155">而膨胀，须严格隔离每个协议的</text>
-  <text x="1256" y="446" font-size="11" fill="#334155">驱动，避免相互污染。</text>
-
-  <!-- callout pointer (dashed gray) -->
-  <line x1="1240" y1="589" x2="1200" y2="589" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 3"/>
-  <rect x="1240" y="548" width="320" height="96" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="1256" y="572" font-size="12" font-weight="700" fill="#0F172A">膨胀风险点</text>
-  <line x1="1256" y1="580" x2="1544" y2="580" stroke="#E2E8F0"/>
-  <text x="1256" y="602" font-size="11" fill="#334155">协议转换与适配层是接入层中</text>
-  <text x="1256" y="620" font-size="11" fill="#334155">最易膨胀的组件——每新增一种</text>
-  <text x="1256" y="638" font-size="11" fill="#334155">协议都需独立的驱动隔离单元。</text>
-
-  <!-- ===== Legend ===== -->
-  <line x1="40" y1="920" x2="1560" y2="920" stroke="#E2E8F0"/>
-  <text x="40" y="948" font-size="11" font-weight="700" fill="#475569">图例</text>
-
-  <g font-size="11" fill="#475569">
-    <rect x="96" y="938" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <text x="120" y="948">设备 / 边缘（物理世界）</text>
-
-    <rect x="288" y="938" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="312" y="948">平台 / 主链路（接入子层）</text>
-
-    <rect x="496" y="938" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
-    <text x="520" y="948">安全 / 认证</text>
-
-    <rect x="624" y="938" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-    <text x="648" y="948">应用 / 业务（数字世界）</text>
-
-    <line x1="832" y1="944" x2="860" y2="944" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="8 4"/>
-    <text x="868" y="948">逻辑边界（统一接入层）</text>
-
-    <line x1="1040" y1="944" x2="1070" y2="944" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-    <text x="1080" y="948">数据流方向（自下而上）</text>
-  </g>
-
-  <!-- ===== Caption ===== -->
-  <text x="800" y="1015" font-size="10" fill="#94A3B8" text-anchor="middle">图4-2 统一接入层的逻辑定位与内部能力分层，明确了从异构协议到标准化业务事件的三层加工路径</text>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-2 统一接入层的逻辑定位与内部能力分层</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered"><line x1="560" y1="650" x2="1240" y2="650" stroke="#94A3B8" stroke-width="1.5"/><line x1="560" y1="540" x2="1240" y2="540" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/><line x1="560" y1="420" x2="1240" y2="420" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/><line x1="560" y1="290" x2="1240" y2="290" stroke="#94A3B8" stroke-width="1.5"/><rect x="580" y="660" width="640" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="900" y="692" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">异构设备与协议</text><text x="900" y="714" fill="#64748B" font-size="12" text-anchor="middle">Modbus/MQTT/LoRaWAN/BLE/NB-IoT</text><rect x="580" y="560" width="640" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="900" y="592" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">协议转换与适配</text><text x="900" y="614" fill="#64748B" font-size="12" text-anchor="middle">连接管理·报文解析·格式归一</text><rect x="580" y="440" width="640" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="900" y="472" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">统一设备模型</text><text x="900" y="494" fill="#64748B" font-size="12" text-anchor="middle">位号→属性/事件/服务映射</text><rect x="580" y="320" width="640" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="900" y="352" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">安全与认证</text><text x="900" y="374" fill="#64748B" font-size="12" text-anchor="middle">身份校验·TLS终结·密钥协商</text><rect x="580" y="180" width="640" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="900" y="212" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">应用层业务服务</text><text x="900" y="234" fill="#64748B" font-size="12" text-anchor="middle">告警·分析·可视化</text><line x1="900" y1="662" x2="900" y2="638" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="642" width="90" height="20" rx="3" fill="white"/><text x="910" y="656" fill="#0F172A" font-size="12" text-anchor="start">原始报文</text></g><line x1="900" y1="562" x2="900" y2="518" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="532" width="100" height="20" rx="3" fill="white"/><text x="910" y="546" fill="#0F172A" font-size="12" text-anchor="start">结构化键值</text></g><line x1="900" y1="442" x2="900" y2="398" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="412" width="100" height="20" rx="3" fill="white"/><text x="910" y="426" fill="#0F172A" font-size="12" text-anchor="start">物模型实例</text></g><line x1="900" y1="322" x2="900" y2="258" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="282" width="110" height="20" rx="3" fill="white"/><text x="910" y="296" fill="#0F172A" font-size="12" text-anchor="start">可信属性/事件</text></g></g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">底层：浅绿色，表示物理世界</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">中层：浅灰色，内部的三个子层用浅蓝、浅青、浅橙区分，分别对应协议</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">顶层：浅蓝色，表示数字世界业务服务</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-2 统一接入层的逻辑定位与内部能力分层，明确了从异构协议到标准化业务事件的三层加工路径。</text>
   </svg>
 </svg>

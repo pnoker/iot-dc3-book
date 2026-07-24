@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图3-6 防碰撞算法决策流程</title>
+  <desc id="desc">读者应理解防碰撞算法决策流程中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-6 防碰撞算法决策流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解防碰撞算法决策流程中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart" transform="translate(0,0)">
+  <!-- 区域边界 -->
+  <rect x="450" y="200" width="600" height="290" rx="14" fill="transparent" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4" />
+  <text x="465" y="220" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">智能决策域</text>
+  <rect x="470" y="360" width="860" height="380" rx="14" fill="transparent" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4" />
+  <text x="485" y="380" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">平台服务域</text>
+
+  <!-- 连线（先于节点） -->
+  <line x1="900" y1="190" x2="900" y2="230" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  
+  <!-- 决策1 是分支 -->
+  <path d="M 900 330 L 900 360 L 1200 360 L 1200 390" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <!-- 决策1 否分支 -->
+  <path d="M 900 330 L 900 350 L 600 350 L 600 370" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  
+  <!-- 决策2 是分支 -->
+  <line x1="600" y1="470" x2="600" y2="510" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <!-- 决策2 否分支 -->
+  <path d="M 600 470 L 600 490 L 1100 490 L 1100 420" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  
+  <!-- 处理节点1 到 结束 -->
+  <path d="M 1200 450 L 1200 640 L 950 640 L 950 650" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <!-- 处理节点2 到 结束 -->
+  <path d="M 600 570 L 600 640 L 850 640 L 850 650" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+
+  <!-- 分支标签 -->
+  <!-- 决策1 是标签 -->
+  <g>
+    <rect x="1030" y="344" width="40" height="18" rx="3" fill="white" stroke="none" />
+    <text x="1050" y="357" text-anchor="middle" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">是</text>
+  </g>
+  <!-- 决策1 否标签 -->
+  <g>
+    <rect x="735" y="334" width="30" height="18" rx="3" fill="white" stroke="none" />
+    <text x="750" y="347" text-anchor="middle" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">否</text>
+  </g>
+  <!-- 决策2 是标签 -->
+  <g>
+    <rect x="612" y="478" width="20" height="18" rx="3" fill="white" stroke="none" />
+    <text x="622" y="491" text-anchor="middle" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">是</text>
+  </g>
+  <!-- 决策2 否标签 -->
+  <g>
+    <rect x="835" y="474" width="30" height="18" rx="3" fill="white" stroke="none" />
+    <text x="850" y="487" text-anchor="middle" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">否</text>
+  </g>
+
+  <!-- 节点（白色底 + 彩色面） -->
+  <!-- 开始：多标签环境 -->
+  <g>
+    <ellipse cx="900" cy="155" rx="100" ry="35" fill="white" />
+    <ellipse cx="900" cy="155" rx="100" ry="35" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+    <text x="900" y="161" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="600" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">多标签环境</text>
+  </g>
+
+  <!-- 决策1：标签数量 >> 100？ -->
+  <g>
+    <polygon points="900,230 1020,280 900,330 780,280" fill="white" />
+    <polygon points="900,230 1020,280 900,330 780,280" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" />
+    <text x="900" y="286" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="600" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">标签数量 >> 100？</text>
+  </g>
+
+  <!-- 决策2：要求严格按序读取？ -->
+  <g>
+    <polygon points="600,370 720,420 600,470 480,420" fill="white" />
+    <polygon points="600,370 720,420 600,470 480,420" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" />
+    <text x="600" y="426" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="600" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">要求严格按序读取？</text>
+  </g>
+
+  <!-- 处理节点1：采用帧时隙ALOHA -->
+  <g>
+    <rect x="1100" y="390" width="200" height="60" rx="8" fill="white" />
+    <rect x="1100" y="390" width="200" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+    <text x="1200" y="425" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="600" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">采用帧时隙ALOHA</text>
+  </g>
+
+  <!-- 处理节点2：采用二进制搜索 -->
+  <g>
+    <rect x="500" y="510" width="200" height="60" rx="8" fill="white" />
+    <rect x="500" y="510" width="200" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+    <text x="600" y="545" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="600" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">采用二进制搜索</text>
+  </g>
+
+  <!-- 结束：部署应用 -->
+  <g>
+    <ellipse cx="900" cy="680" rx="90" ry="30" fill="white" />
+    <ellipse cx="900" cy="680" rx="90" ry="30" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+    <text x="900" y="686" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="600" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">部署应用</text>
+  </g>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">起始/终止：椭圆形</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">决策：菱形</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">处理：矩形</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-6 防碰撞算法工程选型决策流程示意</text>
+</svg>

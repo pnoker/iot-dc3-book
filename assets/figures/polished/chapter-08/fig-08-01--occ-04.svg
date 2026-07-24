@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图8-1 安全启动多层信任链流程</title>
+  <desc id="desc">读者应理解安全启动多层信任链流程中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-1 安全启动多层信任链流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解安全启动多层信任链流程中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- 连线：第一阶段 -->
+  <line x1="630" y1="175" x2="700" y2="175" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="665" y="168" fill="#DC2626" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证失败</text>
+  <line x1="490" y1="200" x2="490" y2="260" stroke="#10B981" stroke-width="2"/>
+  <text x="500" y="225" fill="#10B981" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证通过</text>
+
+  <!-- 连线：第二阶段 -->
+  <line x1="630" y1="285" x2="700" y2="285" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="665" y="278" fill="#DC2626" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证失败</text>
+  <line x1="490" y1="310" x2="490" y2="370" stroke="#10B981" stroke-width="2"/>
+  <text x="500" y="335" fill="#10B981" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证通过</text>
+
+  <!-- 连线：第三阶段 -->
+  <line x1="630" y1="395" x2="700" y2="395" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="665" y="388" fill="#DC2626" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证失败</text>
+  <line x1="490" y1="420" x2="490" y2="480" stroke="#10B981" stroke-width="2"/>
+  <text x="500" y="445" fill="#10B981" font-size="12" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证通过</text>
+
+  <!-- 连线：第四阶段（两条） -->
+  <line x1="630" y1="505" x2="700" y2="505" stroke="#10B981" stroke-width="2"/>
+  <text x="665" y="498" fill="#10B981" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">校验通过</text>
+  <line x1="630" y1="515" x2="700" y2="515" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="665" y="528" fill="#DC2626" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">校验失败</text>
+
+  <!-- 节点 r1 -->
+  <rect x="350" y="150" width="280" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="490" y="170" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">BootROM</text>
+  <text x="490" y="188" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证 SBL 签名</text>
+
+  <!-- 节点 r2 -->
+  <rect x="700" y="150" width="240" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="820" y="170" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">通过则加载</text>
+  <text x="820" y="188" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">否则停机</text>
+
+  <!-- 节点 r3 -->
+  <rect x="350" y="260" width="280" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="490" y="280" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">SBL</text>
+  <text x="490" y="298" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证 U-Boot 签名</text>
+
+  <!-- 节点 r4 -->
+  <rect x="700" y="260" width="240" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="820" y="280" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">通过则加载</text>
+  <text x="820" y="298" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">否则回退恢复模式</text>
+
+  <!-- 节点 r5 -->
+  <rect x="350" y="370" width="280" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="490" y="390" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">U-Boot</text>
+  <text x="490" y="408" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">验证内核签名</text>
+
+  <!-- 节点 r6 -->
+  <rect x="700" y="370" width="240" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="820" y="390" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">通过则解压执行</text>
+  <text x="820" y="408" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">否则停机</text>
+
+  <!-- 节点 r7 -->
+  <rect x="350" y="480" width="280" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="490" y="500" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">内核镜像</text>
+  <text x="490" y="518" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">校验 RootFS 完整性</text>
+
+  <!-- 节点 r8 -->
+  <rect x="700" y="480" width="240" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="820" y="500" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">通过则挂载</text>
+  <text x="820" y="518" fill="#475569" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">否则拒绝启动</text>
+
+  <!-- Root of Trust 注释框 -->
+  <rect x="120" y="150" width="160" height="40" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="200" y="175" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">Root of Trust (RoT)</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色实线：验证通过路径</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">红色虚线：验证失败路径（停机或恢复模式）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">BootROM 标注为 Root of Trust (RoT)</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-1 安全启动的多层信任链流程，展示从 BootROM 到文件系统的逐级签名验证关系。</text>
+</svg>

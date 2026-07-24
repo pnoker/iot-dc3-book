@@ -50,21 +50,21 @@
 
   <!-- ============ ARROWS (drawn under nodes) ============ -->
   <!-- ① 发起任务 : 操作员 -> LLM (blue solid) -->
-  <line x1="460" y1="198" x2="650" y2="330" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <path d="M 460 190 L 548 190 L 548 352 L 650 352" fill="none" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
   <!-- ② RAG 检索 SOP : LLM -> 向量知识库 (blue solid) -->
   <line x1="730" y1="440" x2="730" y2="537" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
   <!-- ③ 返回操作步骤 : 向量知识库 -> LLM (blue solid) -->
   <line x1="830" y1="537" x2="830" y2="440" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
   <!-- ④ 调用工具 : LLM -> Tool-Calling (blue solid) -->
-  <line x1="910" y1="360" x2="1170" y2="415" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <line x1="910" y1="400" x2="1170" y2="400" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
   <!-- ⑤ 工具下发 : Tool-Calling -> 设备层 (green dashed) -->
   <line x1="1250" y1="490" x2="1250" y2="690" stroke="#10B981" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-green)"/>
   <!-- ⑥ 回传结果 : 设备层 -> Tool-Calling (green dashed) -->
   <line x1="1350" y1="690" x2="1350" y2="490" stroke="#10B981" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#ah-green)"/>
   <!-- ⑦ 结果回传 : Tool-Calling -> LLM (blue solid) -->
-  <line x1="1170" y1="465" x2="910" y2="410" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <line x1="1170" y1="430" x2="910" y2="430" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
   <!-- ⑧ 组织回复 : LLM -> 操作员 (blue solid) -->
-  <line x1="650" y1="410" x2="460" y2="230" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+  <path d="M 650 410 L 588 410 L 588 220 L 460 220" fill="none" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ah-blue)"/>
 
   <!-- ============ STEP BADGES + LABELS ============ -->
   <!-- ① -->

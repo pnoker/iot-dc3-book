@@ -16,172 +16,83 @@
 <body>
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">出版级插图</title>
-  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <title id="title">图11-7 LSTM交通流预测模型架构图</title>
+  <desc id="desc">读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="72.800" width="1152.000" height="614.400" viewBox="0 0 1800.000 960.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图11-7 LSTM交通流预测模型架构图</title>
+  <desc id="desc">读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-7 LSTM交通流预测模型架构图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 虚线框：特征提取阶段 -->
+  <rect x="620" y="290" width="740" height="280" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="640" y="320" fill="#D97706" font-size="14" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">特征提取阶段</text>
 
-  <!-- canvas -->
-  <rect x="0" y="0" width="1800" height="960" fill="#FFFFFF"/>
+  <!-- 输入数据块 -->
+  <rect x="280" y="380" width="280" height="130" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="420" y="415" fill="#0F172A" font-size="16" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">输入数据</text>
+  <text x="420" y="435" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(batch_size, 96, 3)</text>
+  <text x="300" y="465" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif">● 流量值（标准化）</text>
+  <text x="300" y="482" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif">● 时刻编码 [0,1]</text>
+  <text x="300" y="499" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif">● 星期特征（one-hot）</text>
 
-  <!-- ===== Title area ===== -->
-  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
-  <text x="84" y="49" font-size="22" font-weight="700" fill="#0F172A">LSTM 交通流预测模型架构图</text>
-  <text x="84" y="74" font-size="12" fill="#64748B">短时交通流预测 · 单层 LSTM 前向数据流（输入 96 步 × 3 通道 → 输出未来 6 步）</text>
+  <!-- LSTM层 -->
+  <rect x="640" y="310" width="360" height="240" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="820" y="350" fill="#0F172A" font-size="18" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">LSTM层</text>
+  <text x="820" y="375" fill="#475569" font-size="13" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">64个LSTM单元</text>
 
-  <rect x="1660" y="28" width="104" height="28" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1712" y="46" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">LAYERED</text>
-  <line x1="60" y1="103" x2="1740" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- LSTM内部门控标注区 -->
+  <rect x="680" y="470" width="220" height="60" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+  <text x="700" y="488" fill="#0F172A" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">遗忘门: σ, *</text>
+  <text x="700" y="505" fill="#0F172A" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">输入门: σ, tanh, *</text>
+  <text x="700" y="522" fill="#0F172A" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">输出门: σ, tanh</text>
 
-  <!-- global forward direction label -->
-  <text x="900" y="142" font-size="12" font-weight="600" fill="#2563EB" text-anchor="middle">前向传播方向  ▶  从左至右</text>
-  <line x1="700" y1="152" x2="1100" y2="152" stroke="#2563EB" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>
+  <!-- Dropout层 -->
+  <rect x="1080" y="310" width="260" height="80" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1210" y="345" fill="#0F172A" font-size="16" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">Dropout(0.2)</text>
+  <text x="1210" y="365" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(batch_size, 64)</text>
 
-  <!-- ===== Feature extraction region (dashed boundary around LSTM + Dropout) ===== -->
-  <rect x="400" y="250" width="800" height="250" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <rect x="416" y="240" width="150" height="22" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
-  <text x="491" y="255" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">特征提取阶段</text>
+  <!-- 全连接层 -->
+  <rect x="1080" y="430" width="260" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1210" y="465" fill="#0F172A" font-size="16" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">Dense(6)</text>
+  <text x="1210" y="485" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">激活函数: 线性</text>
 
-  <!-- ===== Input block ===== -->
-  <rect x="70" y="330" width="300" height="240" rx="8" fill="#2563EB" fill-opacity="0.06" stroke="#2563EB" stroke-width="2"/>
-  <text x="220" y="360" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">输入数据块</text>
-  <text x="220" y="380" font-size="11" fill="#475569" text-anchor="middle">Input · 多通道时序张量</text>
-  <rect x="100" y="398" width="240" height="34" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
-  <text x="220" y="420" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">(batch_size, 96, 3)</text>
+  <!-- 箭头与标注 -->
+  <line x1="560" y1="445" x2="635" y2="445" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="575" y="430" width="60" height="18" fill="white" rx="3"/>
+  <text x="605" y="443" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(96,3)</text>
 
-  <!-- input channel annotations -->
-  <text x="90" y="456" font-size="10" font-weight="600" fill="#475569">① 流量值</text>
-  <text x="90" y="470" font-size="9" fill="#64748B">实数 · 已标准化</text>
-  <text x="90" y="494" font-size="10" font-weight="600" fill="#475569">② 时刻编码</text>
-  <text x="90" y="508" font-size="9" fill="#64748B">归一化标量 [0, 1]</text>
-  <text x="90" y="532" font-size="10" font-weight="600" fill="#475569">③ 星期特征</text>
-  <text x="90" y="546" font-size="9" fill="#64748B">one-hot（示意周一）</text>
+  <line x1="1000" y1="330" x2="1075" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1020" y="315" width="40" height="18" fill="white" rx="3"/>
+  <text x="1040" y="328" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(64)</text>
 
-  <!-- ===== LSTM block ===== -->
-  <rect x="430" y="280" width="380" height="310" rx="8" fill="#10B981" fill-opacity="0.06" stroke="#10B981" stroke-width="2"/>
-  <text x="620" y="310" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LSTM 层</text>
-  <text x="620" y="328" font-size="11" fill="#475569" text-anchor="middle">单层 · 序列特征提取</text>
-  <rect x="480" y="346" width="280" height="40" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1"/>
-  <text x="620" y="371" font-size="14" font-weight="700" fill="#10B981" text-anchor="middle">64 个 LSTM 单元</text>
+  <line x1="1000" y1="480" x2="900" y2="480" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
 
-  <!-- internal cell state flow -->
-  <line x1="500" y1="410" x2="740" y2="410" stroke="#10B981" stroke-width="1.4" marker-end="url(#ah-green)"/>
-  <text x="620" y="402" font-size="9" fill="#64748B" text-anchor="middle">单元状态 C_t 流动</text>
+  <line x1="1210" y1="390" x2="1210" y2="425" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1195" y="400" width="30" height="18" fill="white" rx="3"/>
+  <text x="1210" y="413" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(6)</text>
 
-  <text x="620" y="442" font-size="10" fill="#475569" text-anchor="middle">隐状态输出 (batch_size, 64)</text>
-
-  <!-- gate quick ref inside card -->
-  <rect x="460" y="460" width="320" height="118" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="1" stroke-dasharray="3 3"/>
-  <text x="620" y="478" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle">门控机制（数学符号）</text>
-  <text x="475" y="500" font-size="10" fill="#0F172A">遗忘门 f<tspan font-size="9" fill="#64748B">  σ(·) ⊙ C</tspan></text>
-  <text x="475" y="528" font-size="10" fill="#0F172A">输入门 i<tspan font-size="9" fill="#64748B">  σ(·) , tanh(·)</tspan></text>
-  <text x="475" y="556" font-size="10" fill="#0F172A">输出门 o<tspan font-size="9" fill="#64748B">  σ(·) , tanh(·)</tspan></text>
-  <text x="735" y="500" font-size="9" fill="#64748B" text-anchor="end">σ · *</text>
-  <text x="735" y="528" font-size="9" fill="#64748B" text-anchor="end">σ · tanh · *</text>
-  <text x="735" y="556" font-size="9" fill="#64748B" text-anchor="end">σ · tanh</text>
-
-  <!-- ===== Dropout block ===== -->
-  <rect x="880" y="288" width="300" height="184" rx="8" fill="#F59E0B" fill-opacity="0.07" stroke="#F59E0B" stroke-width="2"/>
-  <text x="1030" y="318" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Dropout 层</text>
-  <text x="1030" y="336" font-size="11" fill="#475569" text-anchor="middle">正则化 · 抑制过拟合</text>
-  <rect x="920" y="354" width="220" height="36" rx="4" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1"/>
-  <text x="1030" y="377" font-size="13" font-weight="700" fill="#D97706" text-anchor="middle">Dropout(0.2)</text>
-  <!-- mini mask dots -->
-  <circle cx="930" cy="412" r="3" fill="#F59E0B"/>
-  <circle cx="950" cy="412" r="3" fill="#F59E0B" opacity="0.2"/>
-  <circle cx="970" cy="412" r="3" fill="#F59E0B"/>
-  <circle cx="990" cy="412" r="3" fill="#F59E0B" opacity="0.2"/>
-  <circle cx="1010" cy="412" r="3" fill="#F59E0B"/>
-  <text x="1030" y="416" font-size="9" fill="#64748B" text-anchor="middle">keep 0.8 / drop 0.2</text>
-  <circle cx="1070" cy="412" r="3" fill="#F59E0B"/>
-  <circle cx="1090" cy="412" r="3" fill="#F59E0B" opacity="0.2"/>
-  <circle cx="1110" cy="412" r="3" fill="#F59E0B"/>
-  <text x="1030" y="452" font-size="10" fill="#475569" text-anchor="middle">输出形状 (batch_size, 64)</text>
-
-  <!-- ===== Dense / output block ===== -->
-  <rect x="1260" y="540" width="320" height="190" rx="8" fill="#F59E0B" fill-opacity="0.05" stroke="#D97706" stroke-width="2"/>
-  <text x="1420" y="570" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">全连接层（输出层）</text>
-  <text x="1420" y="588" font-size="11" fill="#475569" text-anchor="middle">Dense · 线性激活</text>
-  <rect x="1300" y="606" width="240" height="38" rx="4" fill="#FFFFFF" stroke="#D97706" stroke-width="1"/>
-  <text x="1420" y="631" font-size="14" font-weight="700" fill="#D97706" text-anchor="middle">Dense(6) · linear</text>
-  <text x="1420" y="666" font-size="10" fill="#475569" text-anchor="middle">输出未来 6 步连续流量</text>
-  <text x="1420" y="682" font-size="10" font-weight="700" fill="#D97706" text-anchor="middle">(batch_size, 6)</text>
-  <text x="1420" y="710" font-size="10" font-weight="600" fill="#0F172A" text-anchor="middle">预测输出 ŷ</text>
-
-  <!-- ===== main pipeline arrows ===== -->
-  <!-- Input -> LSTM -->
-  <line x1="370" y1="450" x2="424" y2="450" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
-  <rect x="362" y="420" width="74" height="20" rx="3" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="399" y="434" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">(B,96,3)→(B,64)</text>
-
-  <!-- LSTM -> Dropout -->
-  <line x1="810" y1="395" x2="874" y2="380" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
-  <rect x="806" y="350" width="74" height="20" rx="3" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="843" y="364" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">(B,64)→(B,64)</text>
-
-  <!-- Dropout -> Dense -->
-  <path d="M 1180 430 Q 1260 430 1290 540" fill="none" stroke="#2563EB" stroke-width="2.2" marker-end="url(#ah-blue)"/>
-  <rect x="1208" y="470" width="74" height="20" rx="3" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1245" y="484" font-size="9" font-weight="600" fill="#2563EB" text-anchor="middle">(B,64)→(B,6)</text>
-
-  <!-- ===== callouts ===== -->
-  <!-- callout: data flow chain -->
-  <rect x="70" y="606" width="640" height="36" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="86" y="628" font-size="11" fill="#334155">数据流主链路（维度变化）： (B, 96, 3) ▶ (B, 64) ▶ (B, 64) ▶ (B, 6)</text>
-
-  <!-- ===== Legend ===== -->
-  <line x1="60" y1="794" x2="1740" y2="794" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="64" y="822" font-size="11" font-weight="700" fill="#475569">图例</text>
-
-  <!-- legend: 流量值 -->
-  <circle cx="140" cy="842" r="9" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="140" y="846" font-size="9" font-weight="700" fill="#2563EB" text-anchor="middle">车</text>
-  <text x="158" y="846" font-size="11" fill="#334155">流量值</text>
-
-  <!-- legend: 时刻编码 -->
-  <circle cx="290" cy="842" r="9" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-  <line x1="290" y1="835" x2="290" y2="849" stroke="#7C3AED" stroke-width="1"/>
-  <line x1="283" y1="842" x2="297" y2="842" stroke="#7C3AED" stroke-width="1"/>
-  <text x="308" y="846" font-size="11" fill="#334155">时刻编码</text>
-
-  <!-- legend: 星期编码 -->
-  <rect x="436" y="833" width="16" height="16" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-  <line x1="436" y1="839" x2="452" y2="839" stroke="#10B981" stroke-width="1"/>
-  <text x="462" y="846" font-size="11" fill="#334155">星期编码</text>
-
-  <!-- legend: 门控机制 -->
-  <g transform="translate(600,842)">
-    <circle cx="0" cy="0" r="9" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-    <path d="M -4 0 A 4 4 0 1 1 2 3" fill="none" stroke="#F59E0B" stroke-width="1.4"/>
-    <circle cx="0" cy="0" r="1.2" fill="#F59E0B"/>
-  </g>
-  <text x="618" y="846" font-size="11" fill="#334155">门控机制</text>
-
-  <!-- legend: layer color chips -->
-  <rect x="760" y="836" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="784" y="846" font-size="11" fill="#334155">输入层</text>
-
-  <rect x="870" y="836" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-  <text x="894" y="846" font-size="11" fill="#334155">LSTM 层</text>
-
-  <rect x="986" y="836" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-  <text x="1010" y="846" font-size="11" fill="#334155">Dropout 层</text>
-
-  <rect x="1110" y="836" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-  <text x="1134" y="846" font-size="11" fill="#334155">输出层（Dense）</text>
-
-  <rect x="1278" y="836" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3 2"/>
-  <text x="1302" y="846" font-size="11" fill="#334155">主链路（蓝实线）/ 区域边界（虚线）</text>
-
-  <!-- ===== caption ===== -->
-  <text x="900" y="930" font-size="10" fill="#94A3B8" text-anchor="middle">图 11-7  展示 LSTM 模型处理交通流量序列的层次结构：多通道输入经 LSTM 特征提取（64 单元 + 门控），Dropout 正则后由全连接层输出未来 6 步预测。</text>
+  <line x1="1340" y1="470" x2="1380" y2="470" stroke="#F97316" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1390" y="475" fill="#F97316" font-size="14" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">预测输出</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">圆形+车辆符号=流量值</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">时钟符号=时刻编码</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">日历符号=星期编码</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-7 展示LSTM模型处理交通流量序列的层次结构，从多通道输入经LSTM特征提取后输出未来6步预测。</text>
   </svg>
 </svg>
     <section class="meta">
