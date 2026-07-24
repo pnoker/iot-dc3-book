@@ -288,86 +288,86 @@
     {
       "source": "dc3",
       "path": "ai/agentic.md",
-      "size": 16755,
-      "mtime_ns": 1782463767496101122
+      "size": 15749,
+      "mtime_ns": 1784178585184705076
     },
     {
       "source": "dc3",
       "path": "ai/index.md",
-      "size": 3633,
-      "mtime_ns": 1783565395415661221
+      "size": 3319,
+      "mtime_ns": 1784178585185069909
     },
     {
       "source": "dc3",
       "path": "ai/mcp.md",
-      "size": 13718,
-      "mtime_ns": 1782639734382077559
+      "size": 12246,
+      "mtime_ns": 1784178585185512409
     },
     {
       "source": "dc3",
       "path": "ai/spring-ai-deep-dive.md",
-      "size": 13353,
-      "mtime_ns": 1783565395047645984
+      "size": 11547,
+      "mtime_ns": 1784178585186004451
     },
     {
       "source": "dc3",
       "path": "architecture/auth-rbac.md",
-      "size": 16150,
-      "mtime_ns": 1783565392346403345
+      "size": 14519,
+      "mtime_ns": 1784178585186322576
     },
     {
       "source": "dc3",
       "path": "architecture/command-plane.md",
-      "size": 12797,
-      "mtime_ns": 1782893789576768984
+      "size": 11802,
+      "mtime_ns": 1784178585186862992
     },
     {
       "source": "dc3",
       "path": "architecture/data-plane.md",
-      "size": 16038,
-      "mtime_ns": 1782893789577118192
+      "size": 14723,
+      "mtime_ns": 1784178585187131325
     },
     {
       "source": "dc3",
       "path": "architecture/domain-model.md",
-      "size": 15245,
-      "mtime_ns": 1782639734382669309
+      "size": 12233,
+      "mtime_ns": 1784178585187615075
     },
     {
       "source": "dc3",
       "path": "architecture/facade-modes.md",
-      "size": 7630,
-      "mtime_ns": 1782639734382904476
+      "size": 7056,
+      "mtime_ns": 1784178585187950075
     },
     {
       "source": "dc3",
       "path": "architecture/index.md",
-      "size": 11312,
-      "mtime_ns": 1782893789577546359
+      "size": 12028,
+      "mtime_ns": 1784178585188427325
     },
     {
       "source": "dc3",
       "path": "architecture/modules.md",
-      "size": 15110,
-      "mtime_ns": 1782639734383065060
+      "size": 13213,
+      "mtime_ns": 1784178585188822491
     },
     {
       "source": "dc3",
       "path": "architecture/services.md",
-      "size": 14195,
-      "mtime_ns": 1782639734383218685
+      "size": 12298,
+      "mtime_ns": 1784178585189144949
     },
     {
       "source": "dc3",
       "path": "automation/cli.md",
-      "size": 13349,
-      "mtime_ns": 1783414200496787270
+      "size": 11865,
+      "mtime_ns": 1784178585189675991
     },
     {
       "source": "dc3",
       "path": "automation/index.md",
-      "size": 2088,
-      "mtime_ns": 1782639734383519435
+      "size": 1927,
+      "mtime_ns": 1784178585189964366
     },
     {
       "source": "dc3",
@@ -396,200 +396,200 @@
     {
       "source": "dc3",
       "path": "development/api-documentation.md",
-      "size": 13277,
-      "mtime_ns": 1783565395765530328
+      "size": 12293,
+      "mtime_ns": 1784178585190270491
     },
     {
       "source": "dc3",
       "path": "development/changelog.md",
-      "size": 6768,
-      "mtime_ns": 1782660723241721463
+      "size": 6571,
+      "mtime_ns": 1784178585190555824
     },
     {
       "source": "dc3",
       "path": "development/driver-authoring.md",
-      "size": 23474,
-      "mtime_ns": 1782639734384261477
+      "size": 21575,
+      "mtime_ns": 1784178585190935282
     },
     {
       "source": "dc3",
       "path": "development/index.md",
-      "size": 9979,
-      "mtime_ns": 1782656530207564500
+      "size": 9570,
+      "mtime_ns": 1784178585191353699
     },
     {
       "source": "dc3",
       "path": "development/testing.md",
-      "size": 10042,
-      "mtime_ns": 1782656530208244951
+      "size": 9502,
+      "mtime_ns": 1784178585191767407
     },
     {
       "source": "dc3",
       "path": "drivers/bacnet-ip.md",
-      "size": 14523,
-      "mtime_ns": 1782639734384713727
+      "size": 14360,
+      "mtime_ns": 1784178585192056907
     },
     {
       "source": "dc3",
       "path": "drivers/ble.md",
-      "size": 12686,
-      "mtime_ns": 1782463767499537111
+      "size": 12683,
+      "mtime_ns": 1784178585192449156
     },
     {
       "source": "dc3",
       "path": "drivers/can.md",
-      "size": 12700,
-      "mtime_ns": 1782463767499636363
+      "size": 12697,
+      "mtime_ns": 1784178585192907448
     },
     {
       "source": "dc3",
       "path": "drivers/coap.md",
-      "size": 14645,
-      "mtime_ns": 1782639734385017893
+      "size": 14357,
+      "mtime_ns": 1784178585193143031
     },
     {
       "source": "dc3",
       "path": "drivers/dlms.md",
-      "size": 14020,
-      "mtime_ns": 1782639734385181060
+      "size": 13680,
+      "mtime_ns": 1784178585193481698
     },
     {
       "source": "dc3",
       "path": "drivers/ethernet-ip.md",
-      "size": 12355,
-      "mtime_ns": 1782639734385342560
+      "size": 12063,
+      "mtime_ns": 1784178585193974739
     },
     {
       "source": "dc3",
       "path": "drivers/fins.md",
-      "size": 11966,
-      "mtime_ns": 1782639734385504185
+      "size": 11062,
+      "mtime_ns": 1784178585194423531
     },
     {
       "source": "dc3",
       "path": "drivers/http.md",
-      "size": 12755,
-      "mtime_ns": 1782463767500577091
+      "size": 12752,
+      "mtime_ns": 1784178585194964030
     },
     {
       "source": "dc3",
       "path": "drivers/iec104.md",
-      "size": 13203,
-      "mtime_ns": 1782639734385655477
+      "size": 12916,
+      "mtime_ns": 1784178585195539822
     },
     {
       "source": "dc3",
       "path": "drivers/index.md",
       "size": 4966,
-      "mtime_ns": 1783565395997211907
+      "mtime_ns": 1783678408883171928
     },
     {
       "source": "dc3",
       "path": "drivers/listening-virtual.md",
-      "size": 11213,
-      "mtime_ns": 1782639734385826310
+      "size": 10917,
+      "mtime_ns": 1784178585197431863
     },
     {
       "source": "dc3",
       "path": "drivers/lwm2m.md",
-      "size": 12197,
-      "mtime_ns": 1782639734385993310
+      "size": 11922,
+      "mtime_ns": 1784178585197867529
     },
     {
       "source": "dc3",
       "path": "drivers/matrix.md",
-      "size": 8670,
-      "mtime_ns": 1783565396250321755
+      "size": 8698,
+      "mtime_ns": 1784178585198338321
     },
     {
       "source": "dc3",
       "path": "drivers/melsec.md",
-      "size": 9989,
-      "mtime_ns": 1782463767501613487
+      "size": 9983,
+      "mtime_ns": 1784178585199424404
     },
     {
       "source": "dc3",
       "path": "drivers/modbus-rtu.md",
-      "size": 10625,
-      "mtime_ns": 1782463767501879368
+      "size": 10622,
+      "mtime_ns": 1784178585199956529
     },
     {
       "source": "dc3",
       "path": "drivers/modbus-tcp.md",
-      "size": 11934,
-      "mtime_ns": 1782639734386159310
+      "size": 11574,
+      "mtime_ns": 1784178585200366778
     },
     {
       "source": "dc3",
       "path": "drivers/mqtt.md",
-      "size": 13681,
-      "mtime_ns": 1782639734386500560
+      "size": 13284,
+      "mtime_ns": 1784178585200632903
     },
     {
       "source": "dc3",
       "path": "drivers/mysql.md",
-      "size": 13185,
-      "mtime_ns": 1782639734386683686
+      "size": 13051,
+      "mtime_ns": 1784178585200897695
     },
     {
       "source": "dc3",
       "path": "drivers/opc-da.md",
-      "size": 9833,
-      "mtime_ns": 1782639734386851686
+      "size": 9719,
+      "mtime_ns": 1784178585201274361
     },
     {
       "source": "dc3",
       "path": "drivers/opc-ua.md",
-      "size": 10718,
-      "mtime_ns": 1782639734387041894
+      "size": 10394,
+      "mtime_ns": 1784178585201639069
     },
     {
       "source": "dc3",
       "path": "drivers/oracle.md",
-      "size": 15749,
-      "mtime_ns": 1782639734387231977
+      "size": 15455,
+      "mtime_ns": 1784178585201919736
     },
     {
       "source": "dc3",
       "path": "drivers/plcs7.md",
-      "size": 9631,
-      "mtime_ns": 1782639734387492894
+      "size": 9426,
+      "mtime_ns": 1784178585202290569
     },
     {
       "source": "dc3",
       "path": "drivers/postgresql.md",
-      "size": 11603,
-      "mtime_ns": 1782463767502966182
+      "size": 11600,
+      "mtime_ns": 1784178585202762819
     },
     {
       "source": "dc3",
       "path": "drivers/serial.md",
-      "size": 15074,
-      "mtime_ns": 1782639734387660436
+      "size": 14701,
+      "mtime_ns": 1784178585203077486
     },
     {
       "source": "dc3",
       "path": "drivers/sl651.md",
-      "size": 10934,
-      "mtime_ns": 1782639734387831353
+      "size": 10641,
+      "mtime_ns": 1784178585203546819
     },
     {
       "source": "dc3",
       "path": "drivers/snmp.md",
-      "size": 12726,
-      "mtime_ns": 1782639734388003353
+      "size": 12464,
+      "mtime_ns": 1784178585203917235
     },
     {
       "source": "dc3",
       "path": "drivers/sqlserver.md",
-      "size": 14845,
-      "mtime_ns": 1782639734388177144
+      "size": 14711,
+      "mtime_ns": 1784178585204410152
     },
     {
       "source": "dc3",
       "path": "drivers/tcp-udp.md",
-      "size": 10923,
-      "mtime_ns": 1782639734388336603
+      "size": 10598,
+      "mtime_ns": 1784178585204905943
     },
     {
       "source": "dc3",
@@ -600,68 +600,74 @@
     {
       "source": "dc3",
       "path": "drivers/zigbee.md",
-      "size": 11893,
-      "mtime_ns": 1782463767503870618
+      "size": 11890,
+      "mtime_ns": 1784178585205375026
     },
     {
       "source": "dc3",
       "path": "foundations/aiot.md",
-      "size": 14306,
-      "mtime_ns": 1782639734388531728
+      "size": 13970,
+      "mtime_ns": 1784178585205771068
     },
     {
       "source": "dc3",
       "path": "foundations/data-pipeline.md",
-      "size": 12260,
-      "mtime_ns": 1782639734388692145
+      "size": 11688,
+      "mtime_ns": 1784178585206285401
     },
     {
       "source": "dc3",
       "path": "foundations/edge-cloud.md",
-      "size": 12795,
-      "mtime_ns": 1782639734388865478
+      "size": 12129,
+      "mtime_ns": 1784178585206715276
     },
     {
       "source": "dc3",
       "path": "foundations/fieldbus.md",
-      "size": 12861,
-      "mtime_ns": 1783565394829065136
+      "size": 12089,
+      "mtime_ns": 1784178585207193859
     },
     {
       "source": "dc3",
       "path": "foundations/identification.md",
-      "size": 13836,
-      "mtime_ns": 1783565914294334871
+      "size": 13072,
+      "mtime_ns": 1784178585207532567
     },
     {
       "source": "dc3",
       "path": "foundations/index.md",
-      "size": 3580,
-      "mtime_ns": 1782893789579024150
+      "size": 3571,
+      "mtime_ns": 1784178585207845900
     },
     {
       "source": "dc3",
       "path": "foundations/iot-protocols.md",
-      "size": 17106,
-      "mtime_ns": 1783565395120193543
+      "size": 16475,
+      "mtime_ns": 1784178585208190942
     },
     {
       "source": "dc3",
       "path": "foundations/security.md",
-      "size": 14097,
-      "mtime_ns": 1782639734389619311
+      "size": 13491,
+      "mtime_ns": 1784178585208656942
     },
     {
       "source": "dc3",
       "path": "foundations/sensing.md",
-      "size": 12123,
-      "mtime_ns": 1783565393802318299
+      "size": 11924,
+      "mtime_ns": 1784178585209110358
+    },
+    {
+      "source": "dc3",
+      "path": "frontend/frontend-testing-guardrails.md",
+      "size": 3567,
+      "mtime_ns": 1784465533516986622
     },
     {
       "source": "dc3",
       "path": "frontend/index.md",
-      "size": 4364,
-      "mtime_ns": 1782663472926286773
+      "size": 4361,
+      "mtime_ns": 1784178585209524775
     },
     {
       "source": "dc3",
@@ -672,110 +678,110 @@
     {
       "source": "dc3",
       "path": "guide/index.md",
-      "size": 5982,
-      "mtime_ns": 1783414176857094954
+      "size": 5746,
+      "mtime_ns": 1784178585209956483
     },
     {
       "source": "dc3",
       "path": "guide/logging.md",
-      "size": 11000,
-      "mtime_ns": 1782639908715133187
+      "size": 10700,
+      "mtime_ns": 1784178585210367483
     },
     {
       "source": "dc3",
       "path": "guide/observability.md",
-      "size": 9494,
-      "mtime_ns": 1782639734390232353
+      "size": 8978,
+      "mtime_ns": 1784178585210747066
     },
     {
       "source": "dc3",
       "path": "guide/troubleshooting.md",
-      "size": 13731,
-      "mtime_ns": 1783414164593798771
+      "size": 13070,
+      "mtime_ns": 1784178585211065066
     },
     {
       "source": "dc3",
       "path": "guide/usage.md",
-      "size": 12122,
-      "mtime_ns": 1783414172078221352
+      "size": 11162,
+      "mtime_ns": 1784178585211655357
     },
     {
       "source": "dc3",
       "path": "index.md",
-      "size": 3961,
-      "mtime_ns": 1782893789580372858
+      "size": 4026,
+      "mtime_ns": 1783690004340007750
     },
     {
       "source": "dc3",
       "path": "introduction/concepts.md",
-      "size": 7377,
-      "mtime_ns": 1782639734390749645
+      "size": 6432,
+      "mtime_ns": 1784178585212064482
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/attribute-config.md",
-      "size": 9904,
-      "mtime_ns": 1782639734390879728
+      "size": 9515,
+      "mtime_ns": 1784178585212657065
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/command.md",
-      "size": 9913,
-      "mtime_ns": 1782639734391019937
+      "size": 9579,
+      "mtime_ns": 1784178585213156440
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/device.md",
-      "size": 6241,
-      "mtime_ns": 1782639734391318812
+      "size": 5884,
+      "mtime_ns": 1784178585213532648
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/driver.md",
-      "size": 9176,
-      "mtime_ns": 1782639734391480812
+      "size": 8641,
+      "mtime_ns": 1784178585214052398
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/event.md",
-      "size": 5724,
-      "mtime_ns": 1782639734391676312
+      "size": 5392,
+      "mtime_ns": 1784178585214579356
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/point-value.md",
-      "size": 6917,
-      "mtime_ns": 1782639734391879645
+      "size": 6689,
+      "mtime_ns": 1784178585214984398
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/point.md",
-      "size": 6588,
-      "mtime_ns": 1782639734392089520
+      "size": 6452,
+      "mtime_ns": 1784178585215431022
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/profile.md",
-      "size": 7077,
-      "mtime_ns": 1782639734392322979
+      "size": 8543,
+      "mtime_ns": 1784178585215947981
     },
     {
       "source": "dc3",
       "path": "introduction/concepts/tenant.md",
-      "size": 7288,
-      "mtime_ns": 1782639734392574270
+      "size": 6991,
+      "mtime_ns": 1784178585216267064
     },
     {
       "source": "dc3",
       "path": "introduction/glossary.md",
-      "size": 8919,
-      "mtime_ns": 1783565395347740726
+      "size": 8916,
+      "mtime_ns": 1784178585216725980
     },
     {
       "source": "dc3",
       "path": "introduction/index.md",
-      "size": 6396,
-      "mtime_ns": 1782639734392793270
+      "size": 5551,
+      "mtime_ns": 1784178585217171480
     },
     {
       "source": "dc3",
@@ -786,8 +792,14 @@
     {
       "source": "dc3",
       "path": "introduction/paths.md",
-      "size": 3196,
-      "mtime_ns": 1782639734392947646
+      "size": 2775,
+      "mtime_ns": 1784178585217581980
+    },
+    {
+      "source": "dc3",
+      "path": "introduction/technology-stack.md",
+      "size": 3504,
+      "mtime_ns": 1784178585218092730
     },
     {
       "source": "dc3",
@@ -798,44 +810,44 @@
     {
       "source": "dc3",
       "path": "operation/alarms.md",
-      "size": 11861,
-      "mtime_ns": 1782639734393118437
+      "size": 9572,
+      "mtime_ns": 1784178585218613646
     },
     {
       "source": "dc3",
       "path": "operation/data-commands.md",
-      "size": 11567,
-      "mtime_ns": 1782639734393268229
+      "size": 10597,
+      "mtime_ns": 1784178585219106813
     },
     {
       "source": "dc3",
       "path": "operation/device-onboarding.md",
-      "size": 13744,
-      "mtime_ns": 1782639734393426854
+      "size": 13041,
+      "mtime_ns": 1784178585219513229
     },
     {
       "source": "dc3",
       "path": "operation/index.md",
-      "size": 7687,
-      "mtime_ns": 1783414182674893593
+      "size": 7386,
+      "mtime_ns": 1784178585219792937
     },
     {
       "source": "dc3",
       "path": "quickstart/environment.md",
-      "size": 26171,
-      "mtime_ns": 1782639751162431072
+      "size": 25743,
+      "mtime_ns": 1784178585220199062
     },
     {
       "source": "dc3",
       "path": "quickstart/first-device.md",
-      "size": 15696,
-      "mtime_ns": 1783565393427744447
+      "size": 15175,
+      "mtime_ns": 1784178585220469062
     },
     {
       "source": "dc3",
       "path": "quickstart/index.md",
-      "size": 11046,
-      "mtime_ns": 1783414185894235626
+      "size": 10753,
+      "mtime_ns": 1784178585220891895
     }
   ]
 }
