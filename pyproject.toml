@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-book-builder = "main:main"
+book-builder = "book_builder.cli:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -21,5 +21,4 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/book_builder"]
-force-include = { "main.py" = "main.py" }
 artifacts = ["src/book_builder/templates/*.md.j2", "src/book_builder/pdf_style.css"]

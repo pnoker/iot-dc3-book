@@ -12,7 +12,8 @@ from book_builder.config import load_config
 from book_builder.figures import collect_figure_assets
 from book_builder.log import get_logger, setup_logging
 from book_builder.manuscript import load_manuscript
-from book_builder.output import generate_markdown_output, generate_pdf_output
+from book_builder.markdown import generate_markdown_output
+from book_builder.pdf import generate_pdf_output
 
 app = typer.Typer(help="book-builder: 纯手工写稿 + 自动组装成书", no_args_is_help=True)
 
@@ -21,7 +22,7 @@ logger = get_logger("cli")
 
 @app.command()
 def build(
-    config_dir: Annotated[str, typer.Option("--config", help="配置与资源目录路径")] = "book",
+    config_dir: Annotated[str, typer.Option("--config", help="配置目录路径")] = "book/config",
     output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
     manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
     figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
@@ -30,7 +31,7 @@ def build(
 ) -> None:
     """从手稿 Markdown 和图表资产组装出版稿。
 
-    读取 book/ 下的 YAML 配置和 book/manuscript/ 下的手稿文件，
+    读取 book/config/ 下的 YAML 配置和 book/manuscript/ 下的手稿文件，
     收集图表资产，生成层级化 Markdown 输出和单文件 book.md。
     """
     setup_logging(level=log_level)
@@ -51,7 +52,6 @@ def build(
             f"{output_dir}/figures",
             source_figures_dir=figures_dir,
             illustration_config=cfg.style.illustrations.model_dump(),
-            project_dir=Path(config_dir).parent,
         )
         figure_assets = figure_result.assets
         if figure_result.missing:
@@ -59,8 +59,10 @@ def build(
         logger.info("图表资产: %d 个已收集", len(figure_assets))
 
     # 3) 生成 Markdown
+    cover_html = Path(config_dir).parent / "assets" / "cover.html"
     result = generate_markdown_output(
-        chapters, cfg.parts, cfg, output_dir, figure_assets=figure_assets,
+        chapters, cfg.parts, cfg, output_dir,
+        figure_assets=figure_assets, cover_html=cover_html,
     )
     logger.info("✅ 构建完成: %s", result["output_dir"])
     logger.info("   book.md: %s", result["book_markdown"])
@@ -68,7 +70,7 @@ def build(
 
 @app.command()
 def pdf(
-    config_dir: Annotated[str, typer.Option("--config", help="配置与资源目录路径")] = "book",
+    config_dir: Annotated[str, typer.Option("--config", help="配置目录路径")] = "book/config",
     output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
     manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
     figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
@@ -80,7 +82,7 @@ def pdf(
     """从手稿组装并导出 PDF。
 
     先执行 build 组装手稿（除非 --skip-build），再通过 Pandoc + Chrome 生成 PDF。
-    封面页面从 book/cover.html 单独渲染并合并为首页。
+    封面页面从 book/assets/cover.html 单独渲染并合并为首页。
     """
     setup_logging(level=log_level)
     cfg = load_config(config_dir)
@@ -88,6 +90,7 @@ def pdf(
     out = Path(output_dir)
     book_md = out / cfg.output.book_markdown
     book_clean = out / "book_clean.md"
+    cover_html = Path(config_dir).parent / "assets" / "cover.html"
 
     if not skip_build:
         chapters = load_manuscript(cfg.parts, manuscript_dir)
@@ -96,11 +99,11 @@ def pdf(
             f"{output_dir}/figures",
             source_figures_dir=figures_dir,
             illustration_config=cfg.style.illustrations.model_dump(),
-            project_dir=Path(config_dir).parent,
         )
         # 不阻断：缺失图表时 book-figure 块保留在输出中
         generate_markdown_output(
-            chapters, cfg.parts, cfg, str(out), figure_assets=figure_result.assets,
+            chapters, cfg.parts, cfg, str(out),
+            figure_assets=figure_result.assets, cover_html=cover_html,
         )
 
     if not book_clean.exists():
@@ -108,7 +111,6 @@ def pdf(
         raise typer.Exit(1)
 
     resolved_css = css_file or str(Path(__file__).resolve().parent / "pdf_style.css")
-    cover_html = Path(config_dir) / "cover.html"
 
     pdf_path = generate_pdf_output(
         book_clean,

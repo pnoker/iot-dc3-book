@@ -6,17 +6,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 book-builder 是一个纯手工写作 + 自动组装导出工具。不需要任何 Agent/LLM/RAG，作者在 `book/manuscript/` 下手工维护 Markdown 手稿，工具负责组装成层级化出版稿并导出 PDF。
 
-所有资源统一放在 `book/` 目录下：配置 YAML、手稿、图表资产、封面、PDF 样式。
+所有资源统一放在 `book/` 目录下：配置、手稿、图表资产、封面、PDF 样式。
 
 ## Common Commands
 
 ```bash
-uv run python main.py build              # 组装手稿 → 层级化 MD + book.md
-uv run python main.py build --log-level DEBUG  # 详细日志
-uv run python main.py build --skip-figures     # 跳过图表收集
+uv run book-builder build              # 组装手稿 → 层级化 MD + book.md
+uv run book-builder build --log-level DEBUG  # 详细日志
+uv run book-builder build --skip-figures     # 跳过图表收集
 
-uv run python main.py pdf                # 组装 + 导出 PDF
-uv run python main.py pdf --skip-build   # 跳过组装，直接用已有 book.md
+uv run book-builder pdf                # 组装 + 导出 PDF
+uv run book-builder pdf --skip-build   # 跳过组装，直接用已有 book.md
 ```
 
 No tests, no linting — this is a pure writing tool.
@@ -24,24 +24,26 @@ No tests, no linting — this is a pure writing tool.
 ## Architecture
 
 ```
-book/*.yaml → src/book_builder/config.py (AppConfig)
+book/config/*.yaml → src/book_builder/config.py (AppConfig)
                         ↓
 book/manuscript/chapter-XX/chapter.md → src/book_builder/manuscript.py
                         ↓
-book/figures/manifest.json → src/book_builder/figures.py (FigureAsset[])
-book/figures/polished/     ↗
+book/figures/chapter-XX/{figure_id}.png → src/book_builder/figures.py (FigureAsset[])
                         ↓
-src/book_builder/output.py → output/{00-封面.md ... 08-附录.md, book.md, book_clean.md}
-                           → generate_pdf_output() → pandoc → Chrome headless → book.pdf
+src/book_builder/markdown.py → output/{00-封面.md ... 08-附录.md, book.md, book_clean.md}
+src/book_builder/pdf.py      → generate_pdf_output() → pandoc → Chrome headless → book.pdf
 ```
 
 ### Key Components
 
-- **`src/book_builder/config.py`** — 极简 Pydantic 配置模型（`extra="ignore"`）。从 `book/` 下 5 个 YAML 加载：`book/parts/style/author/output`。
-- **`src/book_builder/manuscript.py`** — `load_manuscript(parts)` 遍历 parts 中的章节，优先读 `chapter.md`，不存在则从 `X.Y.Z.md` 节文件拼接。
-- **`src/book_builder/figures.py`** — 扫描章节 markdown 中的 `book-figure` YAML 块，匹配 polished SVGs 或 manifest PNGs，复制到 `output/figures/`。`replace_book_figures_with_images()` 将代码块替换为 `<img>` 引用。
-- **`src/book_builder/output.py`** — `generate_markdown_output()` 用 Jinja2 模板生成层级化 MD + 单文件 `book.md`。`generate_pdf_output()` 通过 pandoc + Chrome headless 生成 PDF。
-- **`src/book_builder/cli.py`** — Typer CLI：`build` 和 `pdf` 两个命令。
+- **`src/book_builder/config.py`** — 极简 Pydantic 配置模型（`extra="ignore"`）。从 `book/config/` 下 5 个 YAML 加载：`book/parts/style/author/output`。只消费组装导出所需字段；`style.yaml` 的写作规范字段、`parts.yaml` 每章的 `summary`/`capability_ids`/`scope_*`/`acceptance_criteria` 等 agent 时代字段被自动忽略（保留在 YAML 中作为作者写作参考）。
+- **`src/book_builder/manuscript.py`** — `load_manuscript(parts)` 遍历 parts 中的章节，优先读 `chapter.md`，不存在或为空则从 `X.Y.Z.md` 节文件按编号排序拼接。
+- **`src/book_builder/figures.py`** — 扫描章节 markdown 中的 `book-figure` YAML 块，按 `figure_id` 在 `book/figures/chapter-XX/` 找同名 PNG 匹配资产，复制到 `output/figures/`。未匹配的不阻断构建，原 `book-figure` 块保留。`replace_book_figures_with_images()` 将代码块替换为图片引用（层级文件用 `../` 前缀，book.md 用直接路径）。
+- **`src/book_builder/markdown_assets.py`** — `book-figure` 代码块解析与 YAML payload 规范化，供 figures.py 复用。
+- **`src/book_builder/markdown.py`** — `generate_markdown_output()` 用 Jinja2 模板组装层级化 MD + 单文件 `book.md`（及去掉 pandoc 图片属性的 `book_clean.md`）。
+- **`src/book_builder/pdf.py`** — `generate_pdf_output()` 通过 pandoc → Chrome headless 生成 PDF，封面单独渲染并用 pypdf 合并；`generate_cover_image()` 把封面 HTML 渲染为 PNG。
+- **`src/book_builder/log.py`** — 基于 rich 的统一日志，控制台 + 轮转文件（`logs/book-builder.log`）。
+- **`src/book_builder/cli.py`** — Typer CLI：`build` 和 `pdf` 两个命令，入口 `book_builder.cli:main`。
 
 ### Data Flow
 
@@ -50,6 +52,7 @@ book/manuscript/chapter-01/chapter.md  (作者手工维护)
     ↓ build
 output/05-基础篇 · 物联网平台底座/01-物联网概述：从连接到智能.md
 output/book.md                           (单文件合集)
+output/book_clean.md                     (pandoc 用，去图片属性)
     ↓ pdf
 output/book.pdf
 ```
@@ -58,18 +61,19 @@ output/book.pdf
 
 `book/` 统一存放所有配置与资源：
 
-- `book/book.yaml` — 书名/作者/ISBN
-- `book/parts.yaml` — 篇章结构（只保留 `id`/`title`，agent 字段自动忽略）
-- `book/style.yaml` — `illustrations` 图表渲染配置（marker/类型/调色板等）
-- `book/author.yaml` — 作者简介 + 序言/导读内容
-- `book/output.yaml` — 输出目录/pandoc 路径
-- `book/manuscript/` — 14 章手稿 (chapter-01~14/chapter.md)
-- `book/figures/` — 图表资产 manifest
-- `book/figures/polished/` — 出版级 SVG 图表
-- `book/cover.html` — PDF 封面
+- `book/config/` — 5 个 YAML 配置（`book`/`parts`/`style`/`author`/`output`）
+  - `parts.yaml` 篇章结构（仅 `id`/`title`，agent 字段已移除）
+  - `style.yaml` 图表渲染配置（仅 `illustrations` 中工具消费的字段，agent 字段已移除）
+- `book/assets/` — 静态资源（`cover.html` 封面、`logo.svg` 封面 logo）
+- `book/manuscript/` — 14 章手稿（chapter-01~14/chapter.md，可拆分为 `X.Y.Z.md` 节文件）
+- `book/figures/chapter-XX/` — 图表资产（`{figure_id}.html`/`.svg`/`.png`，文件名与手稿 `figure_id` 一致；命名统一规则）
 
 ## Environment
 
-- Python 3.13，依赖管理用 `uv`
-- pandoc + Chrome/Edge 是 PDF 导出的系统依赖（非 Python 包）
+- Python 3.13（开发版本，兼容 3.11+），依赖管理用 `uv`
+- Python 依赖：`pyyaml`、`typer`、`jinja2`、`pydantic`、`rich`、`pypdf`
+- 系统依赖（非 Python 包）：
+  - `pandoc` — Markdown → HTML（PDF 导出必需）
+  - Chrome/Edge — HTML → PDF 渲染（PDF 导出必需，无则仅输出 Markdown）
+  - `pdftoppm`（可选）— 封面 HTML → PNG，缺失时回退 `sips`（macOS）或 Chrome 截图
 - `.env` 不再需要（无 LLM API key）

@@ -1,0 +1,40 @@
+# 全书篇章结构 - 三篇 14 章（工具只读 id/title，其余 agent 字段已移除）
+- name: "基础篇 · 物联网平台底座"
+  prefix: "一"
+  chapters:
+    - id: 1
+      title: "物联网概述：从连接到智能"
+    - id: 2
+      title: "物联网体系架构"
+    - id: 3
+      title: "感知层技术基础"
+    - id: 4
+      title: "网络层通信技术"
+    - id: 5
+      title: "平台层与数据处理"
+
+- name: "技术篇 · AIoT 与智能体能力"
+  prefix: "二"
+  chapters:
+    - id: 6
+      title: "物联网软件开发技术"
+    - id: 7
+      title: "AIoT 与智能体应用"
+    - id: 8
+      title: "物联网安全技术"
+    - id: 9
+      title: "物联网协议与标准"
+
+- name: "应用篇 · 场景实践与智能体应用"
+  prefix: "三"
+  chapters:
+    - id: 10
+      title: "工业物联网与智能制造"
+    - id: 11
+      title: "智慧城市与车联网"
+    - id: 12
+      title: "农业物联网与环境监测"
+    - id: 13
+      title: "可信数据协作、分布式身份与隐私计算"
+    - id: 14
+      title: "IoT DC3 项目实战：从平台到智能体应用"

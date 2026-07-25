@@ -39,10 +39,6 @@ class IllustrationConfig(BaseModel):
     """全书图表规格标记与视觉约束。"""
     marker: str = "book-figure"
     renderer: str = "html-svg"
-    polished_assets_dir: str = "book/figures/polished"
-    polished_required_for_export: bool = False
-    polished_required_for_draft: bool = False
-    polished_min_png_bytes: int = 4096
     theme: str = "technical-publication-light"
     palette: dict[str, str] = Field(default_factory=dict)
     allowed_types: list[str] = Field(default_factory=list)
@@ -73,8 +69,8 @@ class AppConfig(BaseModel):
     output: OutputConfig = Field(default_factory=OutputConfig)
 
 
-def load_config(config_dir: str = "book") -> AppConfig:
-    """从 config/ 目录加载并合并所有 .yaml 文件为 AppConfig。"""
+def load_config(config_dir: str = "book/config") -> AppConfig:
+    """从配置目录加载并合并所有 .yaml 文件为 AppConfig。"""
     config_path = Path(config_dir)
     if not config_path.is_dir():
         raise FileNotFoundError(f"配置目录不存在: {config_dir}")

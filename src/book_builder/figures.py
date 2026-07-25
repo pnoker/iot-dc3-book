@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import re
 import shutil
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -57,7 +56,7 @@ class FigureSpec:
 
 @dataclass(frozen=True)
 class FigureAsset:
-    """已生成的图表资产。"""
+    """已匹配的图表资产。"""
     chapter_id: int
     section_id: str
     occurrence: int
@@ -70,7 +69,7 @@ class FigureAsset:
     png_path: str
     markdown_path: str
     body_hash: str
-    source: str = "generated"
+    source: str = "filesystem"
     quality_tier: str = "standard"
 
 
@@ -93,18 +92,9 @@ class FigureScanResult:
 
 
 @dataclass(frozen=True)
-class PolishedFigureSource:
-    """出版级精品图源文件。"""
-    html_path: Path | None = None
-    svg_path: Path | None = None
-    png_path: Path | None = None
-
-
-@dataclass(frozen=True)
 class FigureExportResult:
     """收集并复制到导出目录的图表资产。"""
     figures_dir: str
-    manifest: str
     assets: list[FigureAsset]
     missing: list[FigureFailure]
 
@@ -149,7 +139,7 @@ def _string_list(value: object) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Spec scanning (no BookState dependency)
+# Spec scanning
 # ---------------------------------------------------------------------------
 
 def _scan_figure_specs_from_chapters(
@@ -235,88 +225,18 @@ def _parse_figure_spec(
 
 
 # ---------------------------------------------------------------------------
-# Manifest / Polished asset matching
+# Asset matching
 # ---------------------------------------------------------------------------
 
-def _load_manifest_assets(manifest_path: Path) -> dict[tuple[int, int, str], FigureAsset]:
-    """从 .data/figures/manifest.json 加载已生成图表资产索引。"""
-    if not manifest_path.exists():
-        return {}
-    try:
-        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return {}
-    assets: dict[tuple[int, int, str], FigureAsset] = {}
-    for raw in payload.get("generated", []):
-        if not isinstance(raw, dict):
-            continue
-        try:
-            asset = FigureAsset(
-                chapter_id=int(raw["chapter_id"]),
-                section_id=str(raw.get("section_id", "")),
-                occurrence=int(raw["occurrence"]),
-                figure_id=str(raw["figure_id"]),
-                figure_type=str(raw["figure_type"]),
-                title=str(raw["title"]),
-                caption=str(raw["caption"]),
-                svg_path=str(raw["svg_path"]),
-                html_path=str(raw["html_path"]),
-                png_path=str(raw["png_path"]),
-                markdown_path=str(raw["markdown_path"]),
-                body_hash=str(raw["body_hash"]),
-                source=str(raw.get("source") or "generated"),
-                quality_tier=str(raw.get("quality_tier") or "standard"),
-            )
-        except (KeyError, TypeError, ValueError):
-            continue
-        assets[(asset.chapter_id, asset.occurrence, asset.body_hash)] = asset
-    return assets
-
-
-def _resolve_polished_dir(project_dir: Path, illustrations: dict[str, Any]) -> Path:
-    raw_dir = normalize_book_figure_scalar(
-        illustrations.get("polished_assets_dir") or "book/figures/polished"
-    )
-    path = Path(raw_dir)
-    if path.is_absolute():
-        return path
-    return project_dir / path
-
-
-def _find_polished_source(spec: FigureSpec, polished_dir: Path) -> PolishedFigureSource | None:
-    """在 polished assets 目录查找匹配的出版级图表。"""
-    chapter_dir = polished_dir / f"chapter-{spec.chapter_id:02d}"
-    stems = _polished_stem_candidates(spec)
-    html_path = _first_existing(chapter_dir, stems, ".html")
-    svg_path = _first_existing(chapter_dir, stems, ".svg")
-    png_path = _first_existing(chapter_dir, stems, ".png")
-    if html_path is None and svg_path is None and png_path is None:
-        return None
-    return PolishedFigureSource(html_path=html_path, svg_path=svg_path, png_path=png_path)
-
-
-def _polished_stem_candidates(spec: FigureSpec) -> list[str]:
-    """返回可能的 polished 资产文件名（不含扩展名）。"""
-    fallback = _fallback_figure_id(spec.chapter_id, spec.occurrence)
-    candidates = [
-        f"{_safe_slug(spec.figure_id)}--occ-{spec.occurrence:02d}",
-        spec.figure_id,
-        _safe_slug(spec.figure_id),
-        fallback,
-    ]
-    result: list[str] = []
-    for c in candidates:
-        normalized = str(c).strip()
-        if normalized and normalized not in result:
-            result.append(normalized)
-    return result
-
-
-def _first_existing(chapter_dir: Path, stems: list[str], suffix: str) -> Path | None:
-    for stem in stems:
-        path = chapter_dir / f"{stem}{suffix}"
-        if path.exists():
-            return path
+def _find_figure_png_by_id(
+    source_figures_dir: Path, chapter_id: int, figure_id: str
+) -> Path | None:
+    """按 figure_id 在 figures/chapter-XX/ 查找同名 PNG。"""
+    chapter_dir = source_figures_dir / f"chapter-{chapter_id:02d}"
+    for stem in (figure_id, _safe_slug(figure_id)):
+        png = chapter_dir / f"{stem}.png"
+        if png.exists():
+            return png
     return None
 
 
@@ -330,67 +250,32 @@ def collect_figure_assets(
     *,
     source_figures_dir: str | Path,
     illustration_config: dict[str, Any] | None = None,
-    project_dir: str | Path | None = None,
 ) -> FigureExportResult:
-    """从手稿扫描 book-figure，匹配 polished/manifest 资产，复制 PNG 到导出目录。
+    """从手稿扫描 book-figure，按 figure_id 匹配同名 PNG，复制到导出目录。
 
-    - 优先匹配 polished assets（book/figures/polished/）
-    - 其次匹配 .data/figures/manifest.json 中的已生成资产
-    - 未匹配的记录到 missing，不阻断构建
+    匹配规则：在 figures/chapter-XX/ 下查找与 figure_id 同名的 PNG。
+    未匹配的不阻断构建，原 book-figure 块保留。
     """
     illustration_cfg = illustration_config or {}
     source_dir = Path(source_figures_dir)
     export_dir = Path(export_figures_dir)
-    manifest_path = source_dir / "manifest.json"
-    proj_dir = Path(project_dir) if project_dir else Path.cwd()
-    polished_dir = _resolve_polished_dir(proj_dir, illustration_cfg)
-
-    manifest_assets = _load_manifest_assets(manifest_path)
     scan_result = _scan_figure_specs_from_chapters(chapters, illustration_cfg)
-
-    logger.info(
-        "图表扫描: %d 个 book-figure, %d 个 manifest 资产, polished=%s",
-        len(scan_result.specs), len(manifest_assets), polished_dir,
-    )
+    logger.info("图表扫描: %d 个 book-figure", len(scan_result.specs))
 
     assets: list[FigureAsset] = []
     missing: list[FigureFailure] = list(scan_result.failed)
 
     for spec in scan_result.specs:
-        polished_source = _find_polished_source(spec, polished_dir)
-        manifest_asset = manifest_assets.get((spec.chapter_id, spec.occurrence, spec.body_hash))
-
-        # 确定 PNG 来源：优先 polished PNG，其次 manifest PNG
-        png_source: Path | None = None
-        source_tag = "generated"
-        quality = "standard"
-        svg_path = ""
-        html_path = ""
-
-        if polished_source is not None:
-            source_tag = "polished"
-            quality = "publication"
-            svg_path = str(polished_source.svg_path) if polished_source.svg_path else ""
-            html_path = str(polished_source.html_path) if polished_source.html_path else ""
-            # 优先用 polished 自带的 PNG
-            if polished_source.png_path is not None:
-                png_source = polished_source.png_path
-            # 否则回退到 manifest PNG（body_hash 可能不匹配，但尽量用）
-            elif manifest_asset is not None and Path(manifest_asset.png_path).exists():
-                png_source = Path(manifest_asset.png_path)
-        elif manifest_asset is not None and Path(manifest_asset.png_path).exists():
-            png_source = Path(manifest_asset.png_path)
-
+        png_source = _find_figure_png_by_id(source_dir, spec.chapter_id, spec.figure_id)
         if png_source is None:
             missing.append(FigureFailure(
                 chapter_id=spec.chapter_id, section_id=spec.section_id,
                 occurrence=spec.occurrence, figure_id=spec.figure_id,
-                reason="缺少匹配的 PNG 资产（polished 和 manifest 均无 PNG）",
+                reason=f"缺少同名 PNG: figures/chapter-{spec.chapter_id:02d}/{spec.figure_id}.png",
                 body_hash=spec.body_hash,
             ))
             continue
 
-        # 复制 PNG 到导出目录
         stem = png_source.stem
         chapter_export_dir = export_dir / f"chapter-{spec.chapter_id:02d}"
         chapter_export_dir.mkdir(parents=True, exist_ok=True)
@@ -401,15 +286,11 @@ def collect_figure_assets(
         assets.append(FigureAsset(
             chapter_id=spec.chapter_id, section_id=spec.section_id,
             occurrence=spec.occurrence, figure_id=spec.figure_id,
-            figure_type=spec.figure_type, title=spec.title,
-            caption=spec.caption,
-            svg_path=svg_path,
-            html_path=html_path,
+            figure_type=spec.figure_type, title=spec.title, caption=spec.caption,
+            svg_path="", html_path="",
             png_path=str(target_png),
             markdown_path=markdown_path,
             body_hash=spec.body_hash,
-            source=source_tag,
-            quality_tier=quality,
         ))
 
     if missing:
@@ -421,7 +302,6 @@ def collect_figure_assets(
 
     return FigureExportResult(
         figures_dir=str(export_dir),
-        manifest=str(manifest_path),
         assets=assets,
         missing=missing,
     )
