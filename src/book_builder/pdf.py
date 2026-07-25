@@ -66,7 +66,7 @@ def generate_pdf_output(
     # Chrome headless: html → pdf
     chrome_cmd = [
         chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-        f"--print-to-pdf={body_pdf}", f"file://{html_path}",
+        f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
     ]
     completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
     if completed.returncode != 0:
@@ -77,7 +77,7 @@ def generate_pdf_output(
         cover_pdf = pdf_path.with_name(".book_cover.pdf")
         cover_cmd = [
             chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-            f"--print-to-pdf={cover_pdf}", f"file://{cover_path}",
+            f"--print-to-pdf={cover_pdf}", cover_path.resolve().as_uri(),
         ]
         cover_done = subprocess.run(cover_cmd, check=False, capture_output=True, text=True)
         if cover_done.returncode == 0 and cover_pdf.exists():
@@ -129,7 +129,7 @@ def generate_cover_image(
     cover_pdf = png_path.with_name(".cover_tmp.pdf")
     pdf_cmd = [
         chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-        f"--print-to-pdf={cover_pdf}", f"file://{cover_path}",
+        f"--print-to-pdf={cover_pdf}", cover_path.resolve().as_uri(),
     ]
     pdf_done = subprocess.run(pdf_cmd, check=False, capture_output=True, text=True)
 
@@ -163,7 +163,7 @@ def generate_cover_image(
         chrome, "--headless", "--disable-gpu", "--hide-scrollbars",
         "--default-background-color=00000000", f"--screenshot={png_path}",
         "--window-size=1240,1754", "--force-device-scale-factor=1",
-        f"file://{cover_path}",
+        cover_path.resolve().as_uri(),
     ]
     completed = subprocess.run(fallback, check=False, capture_output=True, text=True)
     if completed.returncode == 0 and png_path.exists():
