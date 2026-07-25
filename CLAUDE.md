@@ -4,113 +4,72 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-mi-book-writer 是一个面向长篇技术书的多 Agent 出版级写作系统。通过三个阶段完成从知识库到出版稿的全流程：`kb`（知识库索引）→ `outline`（大纲生成与批准）→ `write`（小节级写作与审校）。
+book-builder 是一个纯手工写作 + 自动组装导出工具。不需要任何 Agent/LLM/RAG，作者在 `book/manuscript/` 下手工维护 Markdown 手稿，工具负责组装成层级化出版稿并导出 PDF。
+
+所有资源统一放在 `book/` 目录下：配置 YAML、手稿、图表资产、封面、PDF 样式。
 
 ## Common Commands
 
-所有命令通过 `uv run python main.py` 执行，全局参数（`--config`、`--thread-id`、`--log-level`）放在子命令之前。
-
 ```bash
-# 知识库
-uv run python main.py kb status          # 索引健康状态
-uv run python main.py kb build           # 增量构建
-uv run python main.py kb build --rebuild # 全量重建
+uv run python main.py build              # 组装手稿 → 层级化 MD + book.md
+uv run python main.py build --log-level DEBUG  # 详细日志
+uv run python main.py build --skip-figures     # 跳过图表收集
 
-# 大纲
-uv run python main.py outline status     # 大纲状态
-uv run python main.py outline generate   # 生成大纲（已存在则拒绝，用 --force 覆盖）
-uv run python main.py outline approve    # 批准大纲
-
-# 写作
-uv run python main.py write start        # 创建写作 checkpoint（--fresh 覆盖）
-uv run python main.py write status       # 写作进度
-uv run python main.py write resume all   # 续写全书（或 1、1.1、1.1.1 指定范围）
-uv run python main.py write audit        # 出版审计诊断
-uv run python main.py write export all   # 导出（markdown/word/pdf/all）
-
-# 图表
-uv run python main.py write figures build       # 生成图表资产
-uv run python main.py write figures audit       # 审计图表覆盖率
-
-# 引用标记
-uv run python main.py write references audit    # 审计 [S]/[W] 标记
-uv run python main.py write references clean    # 清理标记（--mode remove/footnote/endnote）
+uv run python main.py pdf                # 组装 + 导出 PDF
+uv run python main.py pdf --skip-build   # 跳过组装，直接用已有 book.md
 ```
 
-## Testing & Linting
-
-```bash
-uv run pytest                              # 全部测试
-uv run pytest tests/test_state.py          # 单文件
-uv run pytest tests/test_state.py::test_fn  # 单测试
-uv run ruff check .                        # lint
-uv run ruff format --check .               # 格式检查
-uv run mypy core agents                    # 类型检查
-```
+No tests, no linting — this is a pure writing tool.
 
 ## Architecture
 
-### Two-Layer Structure
-
-- **`core/`** — 基础设施：LLM 客户端、RAG 引擎、状态模型、配置、质量规则、输出生成
-- **`agents/`** — 多 Agent 编排：每个 Agent（`BaseAgent` 子类）封装一个 LLM 驱动的角色
+```
+book/*.yaml → src/book_builder/config.py (AppConfig)
+                        ↓
+book/manuscript/chapter-XX/chapter.md → src/book_builder/manuscript.py
+                        ↓
+book/figures/manifest.json → src/book_builder/figures.py (FigureAsset[])
+book/figures/polished/     ↗
+                        ↓
+src/book_builder/output.py → output/{00-封面.md ... 08-附录.md, book.md, book_clean.md}
+                           → generate_pdf_output() → pandoc → Chrome headless → book.pdf
+```
 
 ### Key Components
 
-- **`core/workflow.py` — `BookProject`**：核心编排器，三阶段流水线（kb/outline/write）。写入操作使用文件锁（`_write_operation_lock`）防止并发冲突。
-- **`core/state.py` — `BookState`**：Pydantic 模型，全书状态的唯一真相源。贯穿大纲、写作、审校、导出全流程。
-- **`core/config_models.py` — `AppConfig`**：强类型配置（`extra="forbid"`），从 `config/*.yaml` 加载。配置拼写错误会直接报错。
-- **`cli.py`**：Typer CLI，`kb`/`outline`/`write` 三个子命令组，`write` 下还有 `figures`/`references` 子组。
-- **`core/llm_client.py` — `LLMClient`**：统一 LLM 调用，支持 chat/embed，带重试和超时。
-- **`core/rag.py` — `RAGEngine`**：混合检索（dense + BM25 + RRF），可选 rerank 和 contextualize。
-
-### Agent Pipeline
-
-`agents/` 下每个文件对应一个角色：
-- `planner` → `plan_reviewer` → `chapter_architect`：大纲阶段
-- `research` → `writer` → `assembler`：写作阶段
-- `fact_checker` + `citation_guard` + `style_guard` + `editor`：质量门（对抗式多视角复核，`_adversarial_vote`）
-- `director`：全书终审
-- `figure_designer`：图表资产生成
+- **`src/book_builder/config.py`** — 极简 Pydantic 配置模型（`extra="ignore"`）。从 `book/` 下 5 个 YAML 加载：`book/parts/style/author/output`。
+- **`src/book_builder/manuscript.py`** — `load_manuscript(parts)` 遍历 parts 中的章节，优先读 `chapter.md`，不存在则从 `X.Y.Z.md` 节文件拼接。
+- **`src/book_builder/figures.py`** — 扫描章节 markdown 中的 `book-figure` YAML 块，匹配 polished SVGs 或 manifest PNGs，复制到 `output/figures/`。`replace_book_figures_with_images()` 将代码块替换为 `<img>` 引用。
+- **`src/book_builder/output.py`** — `generate_markdown_output()` 用 Jinja2 模板生成层级化 MD + 单文件 `book.md`。`generate_pdf_output()` 通过 pandoc + Chrome headless 生成 PDF。
+- **`src/book_builder/cli.py`** — Typer CLI：`build` 和 `pdf` 两个命令。
 
 ### Data Flow
 
 ```
-config/*.yaml → AppConfig → BookState
-                            ↓
-                    .data/outlines/current.json → approved.json
-                            ↓
-                    .data/write/<thread-id>.json (checkpoint)
-                            ↓
-                    .data/manuscript/chapter-XX/section-id.md
-                            ↓
-                    output/ (book.md, book.docx, book.pdf)
+book/manuscript/chapter-01/chapter.md  (作者手工维护)
+    ↓ build
+output/05-基础篇 · 物联网平台底座/01-物联网概述：从连接到智能.md
+output/book.md                           (单文件合集)
+    ↓ pdf
+output/book.pdf
 ```
 
-### Concurrency Model
+## Resource Directory
 
-写作支持章节级并发（`writing.parallel_chapters`），每个章节在独立 `BookProject` 实例中顺序写完，通过 `_merge_chapter_state` 合回主线程 checkpoint。Worker checkpoint 存放在 `.data/write/workers/<thread-id>/chapter-XX.json`。
+`book/` 统一存放所有配置与资源：
 
-### Quality Gates
-
-每个小节和章节都经过多轮质量审校：
-- **小节级**：字数、标题、图表规格、禁用词（确定性检查）
-- **章节级**：确定性门（字数/结构/原创性）→ LLM 四视角对抗门（事实/引用/风格/编辑）
-
-## Config Directory
-
-`config/` 下的 YAML 文件通过 `AppConfig` 加载，必须全部存在且拼写正确（`extra="forbid"`）：
-- `book.yaml` — 书籍元数据
-- `parts.yaml` — 篇章结构
-- `style.yaml` — 写作风格与图表规范
-- `llm.yaml` — LLM 和 Embedding 配置（含 API key，不入库）
-- `references.yaml` — 参考资料源和检索策略
-- `quality.yaml` — 出版质量门阈值
-- `writing.yaml` — 写作流水线参数
-- `output.yaml` — 输出路径和格式
+- `book/book.yaml` — 书名/作者/ISBN
+- `book/parts.yaml` — 篇章结构（只保留 `id`/`title`，agent 字段自动忽略）
+- `book/style.yaml` — `illustrations` 图表渲染配置（marker/类型/调色板等）
+- `book/author.yaml` — 作者简介 + 序言/导读内容
+- `book/output.yaml` — 输出目录/pandoc 路径
+- `book/manuscript/` — 14 章手稿 (chapter-01~14/chapter.md)
+- `book/figures/` — 图表资产 manifest
+- `book/figures/polished/` — 出版级 SVG 图表
+- `book/cover.html` — PDF 封面
 
 ## Environment
 
 - Python 3.13，依赖管理用 `uv`
-- `.env` 放 API key（`DEEPSEEK_API_KEY`、`OPENROUTER_API_KEY`），已 gitignore
-- LLM 默认 DeepSeek，Embedding 默认 OpenRouter
+- pandoc + Chrome/Edge 是 PDF 导出的系统依赖（非 Python 包）
+- `.env` 不再需要（无 LLM API key）

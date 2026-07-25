@@ -10,9 +10,6 @@ wheels/
 *.egg-info
 *.egg
 
-# Node / frontend
-node_modules/
-
 # Virtual environments
 .venv
 
@@ -22,27 +19,8 @@ node_modules/
 *.swp
 *.swo
 
-# RAG 索引缓存
-.rag_index.json
-.data/chroma/
-.data/backups/
-
-# 稿件治理过程备份（不入版本控制，恢复演练用）
-.data/write/*.lock
-.data/write/workers/
-.data/write/*.before-*.json
-.data/write/book-1.json.before-*.bak
-.data/outlines/*.before-*.json
-.data/manuscript/chapter-*/chapter.before-*.md
-.data/figures/manifest.before-*.json
-
-# 数据库与索引缓存（大二进制生成产物，不入版本控制）
-.data/checkpoint.db
-.data/bm25_index.json
-
-# 临时工作产物（保留可复用脚本）
-.tmp/*
-!.tmp/*.py
+# 构建产物
+output/
 
 # 日志
 *.log
@@ -55,5 +33,5 @@ node_modules/
 Thumbs.db
 .claude/settings.local.json
 
-# scodex: ignore project-local Codex config/auth (contains API keys)
+# Codex
 .codex/

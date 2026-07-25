@@ -1,0 +1,5 @@
+# 输出配置
+dir: "./output"
+structure: "hierarchical"
+book_markdown: "book.md"
+pandoc_bin: "pandoc"
