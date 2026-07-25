@@ -12,7 +12,7 @@ from book_builder.config import load_config
 from book_builder.figures import collect_figure_assets
 from book_builder.log import get_logger, setup_logging
 from book_builder.manuscript import load_manuscript
-from book_builder.markdown import generate_markdown_output
+from book_builder.markdown import assemble_book_markdown, generate_markdown_output
 from book_builder.pdf import generate_pdf_output
 
 app = typer.Typer(help="book-builder: 纯手工写稿 + 自动组装成书", no_args_is_help=True)
@@ -123,6 +123,66 @@ def pdf(
         logger.info("✅ PDF 导出完成: %s", pdf_path)
     else:
         typer.echo("⚠️  PDF 未生成（缺少 Chrome/Edge），仅 Markdown 可用")
+
+
+@app.command()
+def sample(
+    config_dir: Annotated[str, typer.Option("--config", help="配置目录路径")] = "book/config",
+    output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
+    manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
+    figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
+    until_chapter: Annotated[int, typer.Option("--until-chapter", help="样张截止章节(含),默认第1章")] = 1,
+    css_file: Annotated[str | None, typer.Option("--css", help="PDF 样式 CSS 文件")] = None,
+    chrome_bin: Annotated[str | None, typer.Option("--chrome", help="Chrome/Edge 可执行文件路径")] = None,
+    log_level: Annotated[str, typer.Option("--log-level", help="日志级别")] = "INFO",
+) -> None:
+    """生成样张 PDF（只到指定章节），用于提交编辑社。
+
+    组装封面/作者/序/导读/目录 + 第1章到 until_chapter 章（不含附录），
+    导出为 book-sample.pdf。中间文件自动清理。
+    """
+    setup_logging(level=log_level)
+    cfg = load_config(config_dir)
+    out = Path(output_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    cover_html = Path(config_dir).parent / "assets" / "cover.html"
+
+    chapters = load_manuscript(cfg.parts, manuscript_dir)
+    chapters = {cid: md for cid, md in chapters.items() if cid <= until_chapter}
+    logger.info("样张范围: 第1-%d章", until_chapter)
+
+    figure_result = collect_figure_assets(
+        chapters,
+        f"{output_dir}/figures",
+        source_figures_dir=figures_dir,
+        illustration_config=cfg.style.illustrations.model_dump(),
+    )
+
+    sample_md = out / ".book-sample.md"
+    sample_md.write_text(
+        assemble_book_markdown(
+            chapters, cfg.parts, cfg, figure_result.assets, until_chapter=until_chapter,
+        ),
+        encoding="utf-8",
+    )
+
+    resolved_css = css_file or str(Path(__file__).resolve().parent / "pdf_style.css")
+    try:
+        pdf_path = generate_pdf_output(
+            sample_md,
+            out / "book-sample.pdf",
+            css_file=resolved_css if Path(resolved_css).exists() else None,
+            chrome_bin=chrome_bin,
+            pandoc_bin=cfg.output.pandoc_bin,
+            cover_html=cover_html if cover_html.exists() else None,
+        )
+    finally:
+        sample_md.unlink(missing_ok=True)
+
+    if pdf_path:
+        logger.info("✅ 样张导出完成: %s", pdf_path)
+    else:
+        typer.echo("⚠️  样张未生成（缺少 Chrome/Edge）")
 
 
 def main(argv: list[str] | None = None) -> None:

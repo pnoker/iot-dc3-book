@@ -17,6 +17,9 @@ uv run book-builder build --skip-figures     # 跳过图表收集
 
 uv run book-builder pdf                # 组装 + 导出 PDF
 uv run book-builder pdf --skip-build   # 跳过组装，直接用已有 book.md
+
+uv run book-builder sample             # 生成样张 PDF（只到第1章，提交编辑社）
+uv run book-builder sample --until-chapter 3  # 样张到第3章
 ```
 
 No tests, no linting — this is a pure writing tool.
@@ -43,7 +46,7 @@ src/book_builder/pdf.py      → generate_pdf_output() → pandoc → Chrome hea
 - **`src/book_builder/markdown.py`** — `generate_markdown_output()` 用 Jinja2 模板组装层级化分章 MD + 单文件 `book.md` + 封面图（`cover.png`）。
 - **`src/book_builder/pdf.py`** — `generate_pdf_output()` 通过 pandoc → Chrome headless 生成 PDF，封面单独渲染并用 pypdf 合并，中间文件自动清理；`generate_cover_image()` 把封面 HTML 渲染为 PNG。
 - **`src/book_builder/log.py`** — 基于 rich 的统一日志，控制台 + 轮转文件（`logs/book-builder.log`）。
-- **`src/book_builder/cli.py`** — Typer CLI：`build` 和 `pdf` 两个命令，入口 `book_builder.cli:main`。
+- **`src/book_builder/cli.py`** — Typer CLI：`build`、`pdf`、`sample` 三个命令，入口 `book_builder.cli:main`。
 
 ### Data Flow
 

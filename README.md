@@ -11,6 +11,10 @@ uv run book-builder build
 # 组装 + 导出 PDF（需要 pandoc + Chrome/Edge）
 uv run book-builder pdf
 uv run book-builder pdf --skip-build   # 跳过组装，直接用已有 book.md
+
+# 生成样张 PDF（只到第1章，提交编辑社）
+uv run book-builder sample
+uv run book-builder sample --until-chapter 3   # 样张到第3章
 ```
 
 ## 目录结构

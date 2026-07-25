@@ -28,6 +28,56 @@ def get_template_environment() -> Environment:
     )
 
 
+def assemble_book_markdown(
+    chapters: dict[int, str],
+    parts: list[PartConfig],
+    cfg: AppConfig,
+    figure_assets: list[FigureAsset] | None,
+    *,
+    until_chapter: int | None = None,
+) -> str:
+    """组装单文件合集 markdown（用直接路径引用图）。
+
+    until_chapter 设定时只包含该章及之前的章节、且不含附录（用于样张）。
+    无入选章节的篇会跳过篇标题。
+    """
+    env = get_template_environment()
+    figure_marker = str(cfg.style.illustrations.marker or "book-figure")
+    assets = figure_assets or []
+    sections: list[str] = []
+
+    sections.append(_render(env, "cover.md.j2"))
+    profile = cfg.author.get("profile")
+    if profile:
+        sections.append(_render(env, "author_profile.md.j2", profile=profile))
+    preface = cfg.author.get("preface")
+    if preface:
+        sections.append(_render(env, "preface.md.j2", preface=preface))
+        sections.append(_render(env, "reading_guide.md.j2", preface=preface, parts=parts))
+    sections.append(_render(env, "toc.md.j2", parts=parts))
+
+    for part in parts:
+        part_chapters = [
+            c for c in part.chapters
+            if until_chapter is None or c.id <= until_chapter
+        ]
+        if not part_chapters:
+            continue
+        sections.append(f"# {part.prefix}、{part.name}\n")
+        for chapter in part_chapters:
+            content = chapters.get(chapter.id)
+            if content is None:
+                continue
+            sections.append(replace_book_figures_with_images(
+                content, chapter.id, assets, marker=figure_marker,
+            ))
+
+    if until_chapter is None:
+        sections.append(_render(env, "appendix.md.j2"))
+
+    return _join_markdown_parts(sections)
+
+
 def generate_markdown_output(
     chapters: dict[int, str],
     parts: list[PartConfig],
@@ -39,9 +89,7 @@ def generate_markdown_output(
 ) -> dict[str, object]:
     """将全书内容输出为层级化分章 MD 与单文件 book.md，并生成封面图。
 
-    最终产出：层级化分章 MD（00-封面.md … 08-附录.md、篇章/章节 MD）+
-    book.md（合集）+ cover.png。图表 PNG 由 collect_figure_assets 复制到
-    output/figures/。层级文件用 ../ 前缀引用图片，book.md 用直接路径。
+    层级文件用 `../` 前缀引用图片，book.md 用直接路径。
     """
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -51,74 +99,41 @@ def generate_markdown_output(
         generate_cover_image(cover_html, out / "cover.png")
 
     env = get_template_environment()
-    illustration_cfg = cfg.style.illustrations.model_dump()
-    figure_marker = str(illustration_cfg.get("marker") or "book-figure")
+    figure_marker = str(cfg.style.illustrations.marker or "book-figure")
     assets = figure_assets or []
 
-    manuscript_parts: list[str] = []
-
-    # 封面
-    cover = _render(env, "cover.md.j2")
-    _write_file(out / "00-封面.md", cover)
-    manuscript_parts.append(cover)
-
-    # 作者简介
-    author_cfg = cfg.author
-    profile = author_cfg.get("profile")
+    # 层级化分章 MD（用 ../ 前缀引用图片）
+    _write_file(out / "00-封面.md", _render(env, "cover.md.j2"))
+    profile = cfg.author.get("profile")
     if profile:
-        author_md = _render(env, "author_profile.md.j2", profile=profile)
-        _write_file(out / "01-作者简介.md", author_md)
-        manuscript_parts.append(author_md)
-
-    # 序言 & 导读
-    preface = author_cfg.get("preface")
+        _write_file(out / "01-作者简介.md", _render(env, "author_profile.md.j2", profile=profile))
+    preface = cfg.author.get("preface")
     if preface:
-        preface_md = _render(env, "preface.md.j2", preface=preface)
-        reading_guide = _render(env, "reading_guide.md.j2", preface=preface, parts=parts)
-        _write_file(out / "02-序.md", preface_md)
-        _write_file(out / "03-导读.md", reading_guide)
-        manuscript_parts.extend([preface_md, reading_guide])
+        _write_file(out / "02-序.md", _render(env, "preface.md.j2", preface=preface))
+        _write_file(out / "03-导读.md", _render(env, "reading_guide.md.j2", preface=preface, parts=parts))
+    _write_file(out / "04-目录.md", _render(env, "toc.md.j2", parts=parts))
 
-    # 目录
-    toc_content = _render(env, "toc.md.j2", parts=parts)
-    _write_file(out / "04-目录.md", toc_content)
-    manuscript_parts.append(toc_content)
-
-    # 篇章章节
     part_start_index = 5  # 前 4 个序号已用（封面/作者/序+导读/目录）
     for part_idx, part in enumerate(parts):
         dir_name = f"{part_idx + part_start_index:02d}-{part.name}"
         part_dir = out / dir_name
         part_dir.mkdir(parents=True, exist_ok=True)
-        manuscript_parts.append(f"# {part.prefix}、{part.name}\n")
-
         for chapter in part.chapters:
             content = chapters.get(chapter.id)
             if content is None:
                 logger.warning("第%d章(%s) 缺少手稿内容，已跳过", chapter.id, chapter.title)
                 continue
-
             filename = f"{chapter.id:02d}-{chapter.title}.md"
-            # 层级文件中用相对路径引用图片
             chapter_markdown = replace_book_figures_with_images(
                 content, chapter.id, assets, marker=figure_marker, image_prefix="../",
             )
-            # book.md 合集中用直接路径
-            book_chapter_markdown = replace_book_figures_with_images(
-                content, chapter.id, assets, marker=figure_marker,
-            )
-
             _write_file(part_dir / filename, chapter_markdown)
-            manuscript_parts.append(book_chapter_markdown)
 
-    # 附录
-    appendix = _render(env, "appendix.md.j2")
-    _write_file(out / "08-附录.md", appendix)
-    manuscript_parts.append(appendix)
+    _write_file(out / "08-附录.md", _render(env, "appendix.md.j2"))
 
-    # 合成 book.md
+    # 单文件合集 book.md
     book_path = out / cfg.output.book_markdown
-    _write_file(book_path, _join_markdown_parts(manuscript_parts))
+    _write_file(book_path, assemble_book_markdown(chapters, parts, cfg, assets))
 
     logger.info("Markdown 输出完成: %s", book_path)
     return {"output_dir": str(out), "book_markdown": str(book_path)}
