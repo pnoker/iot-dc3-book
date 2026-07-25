@@ -89,7 +89,6 @@ def pdf(
 
     out = Path(output_dir)
     book_md = out / cfg.output.book_markdown
-    book_clean = out / "book_clean.md"
     cover_html = Path(config_dir).parent / "assets" / "cover.html"
 
     if not skip_build:
@@ -106,14 +105,14 @@ def pdf(
             figure_assets=figure_result.assets, cover_html=cover_html,
         )
 
-    if not book_clean.exists():
-        typer.echo(f"错误: 缺少 {book_clean}，请先执行 build")
+    if not book_md.exists():
+        typer.echo(f"错误: 缺少 {book_md}，请先执行 build")
         raise typer.Exit(1)
 
     resolved_css = css_file or str(Path(__file__).resolve().parent / "pdf_style.css")
 
     pdf_path = generate_pdf_output(
-        book_clean,
+        book_md,
         out / "book.pdf",
         css_file=resolved_css if Path(resolved_css).exists() else None,
         chrome_bin=chrome_bin,

@@ -22,7 +22,11 @@ def generate_pdf_output(
     pandoc_bin: str = "pandoc",
     cover_html: str | Path | None = None,
 ) -> str | None:
-    """从 Markdown 生成 PDF：pandoc 转 HTML → Chrome headless 转 PDF。"""
+    """从 book.md 生成 PDF：pandoc 转 HTML → Chrome headless 转 PDF，封面单独渲染合并。
+
+    中间文件（.book_body.md、book.html、临时 PDF）在导出后自动清理，
+    最终只保留 book.pdf。
+    """
     markdown_path = Path(markdown_file)
     if not markdown_path.exists():
         raise FileNotFoundError(f"Markdown 文件不存在: {markdown_path}")
@@ -37,74 +41,71 @@ def generate_pdf_output(
     pdf_path = Path(pdf_file)
     pdf_path.parent.mkdir(parents=True, exist_ok=True)
     html_path = pdf_path.with_suffix(".html")
-
+    body_pdf = pdf_path.with_name(".book_body.pdf")
+    cover_pdf = pdf_path.with_name(".book_cover.pdf")
     cover_path = Path(cover_html) if cover_html else None
     has_cover = bool(cover_path and cover_path.exists())
 
-    pandoc_input = markdown_path
+    # pandoc 输入：去图片属性 + 去封面 cover.png 引用（封面单独渲染）
+    text = markdown_path.read_text(encoding="utf-8")
+    body_text = re.sub(r"(!\[[^\]]*\]\([^)]*\))\s*\{[^}]*\}", r"\1", text)
     if has_cover:
-        text = markdown_path.read_text(encoding="utf-8")
-        stripped = re.sub(r"^\s*!\[[^\]]*\]\(cover\.png\)\s*\n", "", text, count=1)
-        if stripped != text:
-            pandoc_input = pdf_path.with_name(".book_body.md")
-            pandoc_input.write_text(stripped, encoding="utf-8")
+        body_text = re.sub(r"^\s*!\[[^\]]*\]\(cover\.png\)\s*\n", "", body_text, count=1)
+    pandoc_input = pdf_path.with_name(".book_body.md")
 
-    # pandoc: markdown → html
-    cmd = [
-        resolved_pandoc, str(pandoc_input), "-o", str(html_path),
-        "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
-    ]
-    if css_file and Path(css_file).exists():
-        css_href = os.path.relpath(Path(css_file).resolve(), html_path.parent.resolve())
-        cmd += ["--css", css_href]
-    completed = subprocess.run(cmd, check=False, capture_output=True, text=True, cwd=None)
-    if completed.returncode != 0:
-        raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
+    try:
+        pandoc_input.write_text(body_text, encoding="utf-8")
 
-    body_pdf = pdf_path.with_name(".book_body.pdf") if has_cover else pdf_path
-
-    # Chrome headless: html → pdf
-    chrome_cmd = [
-        chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-        f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
-    ]
-    completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
-    if completed.returncode != 0:
-        raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
-
-    # 合并封面
-    if has_cover:
-        cover_pdf = pdf_path.with_name(".book_cover.pdf")
-        cover_cmd = [
-            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-            f"--print-to-pdf={cover_pdf}", cover_path.resolve().as_uri(),
+        # pandoc: markdown → html
+        cmd = [
+            resolved_pandoc, str(pandoc_input), "-o", str(html_path),
+            "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
         ]
-        cover_done = subprocess.run(cover_cmd, check=False, capture_output=True, text=True)
-        if cover_done.returncode == 0 and cover_pdf.exists():
-            try:
-                from pypdf import PdfReader, PdfWriter
-                writer = PdfWriter()
-                for page in PdfReader(str(cover_pdf)).pages:
-                    writer.add_page(page)
-                for page in PdfReader(str(body_pdf)).pages:
-                    writer.add_page(page)
-                with open(pdf_path, "wb") as f:
-                    writer.write(f)
-            except Exception as exc:
-                logger.warning("封面 PDF 合并失败，输出仅正文 PDF: %s", exc)
-                if body_pdf != pdf_path:
-                    body_pdf.replace(pdf_path)
-            finally:
-                cover_pdf.unlink(missing_ok=True)
-                if body_pdf != pdf_path:
-                    body_pdf.unlink(missing_ok=True)
-        else:
-            logger.warning("封面 PDF 渲染失败，输出仅正文 PDF: %s", cover_done.stderr.strip())
-            if body_pdf != pdf_path:
-                body_pdf.replace(pdf_path)
+        if css_file and Path(css_file).exists():
+            css_href = os.path.relpath(Path(css_file).resolve(), html_path.parent.resolve())
+            cmd += ["--css", css_href]
+        completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+        if completed.returncode != 0:
+            raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
-    if pandoc_input != markdown_path:
-        pandoc_input.unlink(missing_ok=True)
+        # Chrome headless: html → pdf
+        chrome_cmd = [
+            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+            f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
+        ]
+        completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
+        if completed.returncode != 0:
+            raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
+
+        # 合并封面
+        if has_cover:
+            cover_cmd = [
+                chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+                f"--print-to-pdf={cover_pdf}", cover_path.resolve().as_uri(),
+            ]
+            cover_done = subprocess.run(cover_cmd, check=False, capture_output=True, text=True)
+            if cover_done.returncode == 0 and cover_pdf.exists() and body_pdf.exists():
+                try:
+                    from pypdf import PdfReader, PdfWriter
+                    writer = PdfWriter()
+                    for page in PdfReader(str(cover_pdf)).pages:
+                        writer.add_page(page)
+                    for page in PdfReader(str(body_pdf)).pages:
+                        writer.add_page(page)
+                    with open(pdf_path, "wb") as f:
+                        writer.write(f)
+                except Exception as exc:
+                    logger.warning("封面 PDF 合并失败，输出仅正文 PDF: %s", exc)
+                    body_pdf.replace(pdf_path)
+            else:
+                logger.warning("封面 PDF 渲染失败，输出仅正文 PDF: %s", cover_done.stderr.strip())
+                body_pdf.replace(pdf_path)
+        else:
+            body_pdf.replace(pdf_path)
+    finally:
+        # 清理所有中间文件，只保留 book.pdf
+        for tmp in (pandoc_input, html_path, body_pdf, cover_pdf):
+            tmp.unlink(missing_ok=True)
 
     logger.info("PDF 输出完成: %s", pdf_path)
     return str(pdf_path)

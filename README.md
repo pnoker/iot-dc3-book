@@ -34,7 +34,7 @@ book-builder/
 │   ├── assets/           # cover.html + logo.svg
 │   ├── manuscript/       # 14 章手稿 (chapter-01~14/chapter.md)
 │   └── figures/          # 图表资产 (chapter-XX/{figure_id}.{html,svg,png})
-└── output/               # 构建产物
+└── output/               # book.md + book.pdf + cover.png + figures/
 ```
 
 ## 系统依赖

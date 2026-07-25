@@ -40,21 +40,21 @@ src/book_builder/pdf.py      → generate_pdf_output() → pandoc → Chrome hea
 - **`src/book_builder/manuscript.py`** — `load_manuscript(parts)` 遍历 parts 中的章节，优先读 `chapter.md`，不存在或为空则从 `X.Y.Z.md` 节文件按编号排序拼接。
 - **`src/book_builder/figures.py`** — 扫描章节 markdown 中的 `book-figure` YAML 块，按 `figure_id` 在 `book/figures/chapter-XX/` 找同名 PNG 匹配资产，复制到 `output/figures/`。未匹配的不阻断构建，原 `book-figure` 块保留。`replace_book_figures_with_images()` 将代码块替换为图片引用（层级文件用 `../` 前缀，book.md 用直接路径）。
 - **`src/book_builder/markdown_assets.py`** — `book-figure` 代码块解析与 YAML payload 规范化，供 figures.py 复用。
-- **`src/book_builder/markdown.py`** — `generate_markdown_output()` 用 Jinja2 模板组装层级化 MD + 单文件 `book.md`（及去掉 pandoc 图片属性的 `book_clean.md`）。
-- **`src/book_builder/pdf.py`** — `generate_pdf_output()` 通过 pandoc → Chrome headless 生成 PDF，封面单独渲染并用 pypdf 合并；`generate_cover_image()` 把封面 HTML 渲染为 PNG。
+- **`src/book_builder/markdown.py`** — `generate_markdown_output()` 用 Jinja2 模板组装单文件 `book.md` + 封面图（`cover.png`）。
+- **`src/book_builder/pdf.py`** — `generate_pdf_output()` 通过 pandoc → Chrome headless 生成 PDF，封面单独渲染并用 pypdf 合并，中间文件自动清理；`generate_cover_image()` 把封面 HTML 渲染为 PNG。
 - **`src/book_builder/log.py`** — 基于 rich 的统一日志，控制台 + 轮转文件（`logs/book-builder.log`）。
 - **`src/book_builder/cli.py`** — Typer CLI：`build` 和 `pdf` 两个命令，入口 `book_builder.cli:main`。
 
 ### Data Flow
 
 ```
-book/manuscript/chapter-01/chapter.md  (作者手工维护)
+book/manuscript/chapter-XX/chapter.md  (作者手工维护)
     ↓ build
-output/05-基础篇 · 物联网平台底座/01-物联网概述：从连接到智能.md
-output/book.md                           (单文件合集)
-output/book_clean.md                     (pandoc 用，去图片属性)
+output/book.md        (单文件合集，含图引用)
+output/cover.png      (封面图)
+output/figures/       (图表 PNG)
     ↓ pdf
-output/book.pdf
+output/book.pdf       (中间文件自动清理)
 ```
 
 ## Resource Directory
