@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图3-23 物模型与设备实例的关系：属性、动作、事件的交互模式</title>
+  <desc id="desc">读者应理解物模型与设备实例的关系：属性、动作、事件的交互模式中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-23 物模型与设备实例的关系：属性、动作、事件的交互模式</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解物模型与设备实例的关系：属性、动作、事件的交互模式中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 区域边界 -->
+  <rect x="160" y="140" width="1280" height="120" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="180" y="162" font-size="12" fill="#64748B">智能决策域</text>
+  <rect x="160" y="290" width="1280" height="150" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="180" y="312" font-size="12" fill="#64748B">设备与边缘域</text>
+  <rect x="160" y="480" width="400" height="160" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="180" y="502" font-size="12" fill="#64748B">数据资产域</text>
+  <rect x="600" y="480" width="400" height="160" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="620" y="502" font-size="12" fill="#64748B">平台服务域</text>
+  <rect x="1040" y="480" width="400" height="160" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1060" y="502" font-size="12" fill="#64748B">治理域</text>
+
+  <!-- 连线（先于节点绘制，避免覆盖） -->
+  <!-- 物模型→设备A 虚线 -->
+  <line x1="800" y1="235" x2="430" y2="320" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <rect x="500" y="260" width="40" height="16" fill="white" rx="3"/>
+  <text x="520" y="273" font-size="11" fill="#0F172A" text-anchor="middle">复用</text>
+
+  <!-- 物模型→设备B 虚线 -->
+  <line x1="800" y1="235" x2="970" y2="320" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <rect x="820" y="260" width="40" height="16" fill="white" rx="3"/>
+  <text x="840" y="273" font-size="11" fill="#0F172A" text-anchor="middle">复用</text>
+
+  <!-- 设备A→数据存储 实线 -->
+  <line x1="430" y1="400" x2="360" y2="520" stroke="#334155" stroke-width="1.5"/>
+  <rect x="310" y="440" width="80" height="16" fill="white" rx="3"/>
+  <text x="350" y="453" font-size="11" fill="#0F172A" text-anchor="middle">上报属性值</text>
+
+  <!-- 设备B→数据存储 实线 -->
+  <line x1="970" y1="400" x2="360" y2="520" stroke="#334155" stroke-width="1.5"/>
+  <rect x="600" y="440" width="80" height="16" fill="white" rx="3"/>
+  <text x="640" y="453" font-size="11" fill="#0F172A" text-anchor="middle">上报属性值</text>
+
+  <!-- 远程控制→设备A 实线 -->
+  <line x1="800" y1="520" x2="430" y2="400" stroke="#334155" stroke-width="1.5"/>
+  <rect x="540" y="440" width="80" height="16" fill="white" rx="3"/>
+  <text x="580" y="453" font-size="11" fill="#0F172A" text-anchor="middle">下发动作</text>
+
+  <!-- 远程控制→设备B 实线 -->
+  <line x1="800" y1="520" x2="970" y2="400" stroke="#334155" stroke-width="1.5"/>
+  <rect x="820" y="440" width="80" height="16" fill="white" rx="3"/>
+  <text x="860" y="453" font-size="11" fill="#0F172A" text-anchor="middle">下发动作</text>
+
+  <!-- 设备A→告警服务 虚线 -->
+  <line x1="540" y1="360" x2="1090" y2="555" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <rect x="740" y="440" width="80" height="16" fill="white" rx="3"/>
+  <text x="780" y="453" font-size="11" fill="#0F172A" text-anchor="middle">推送事件</text>
+
+  <!-- 设备B→告警服务 虚线 -->
+  <line x1="1080" y1="360" x2="1090" y2="555" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <rect x="1070" y="440" width="80" height="16" fill="white" rx="3"/>
+  <text x="1110" y="453" font-size="11" fill="#0F172A" text-anchor="middle">推送事件</text>
+
+  <!-- 节点矩形 -->
+  <!-- 物模型模板 -->
+  <rect x="640" y="165" width="320" height="70" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="800" y="205" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Model-T-100 物模型</text>
+
+  <!-- 设备A -->
+  <rect x="320" y="320" width="220" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="430" y="365" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">设备A</text>
+
+  <!-- 设备B -->
+  <rect x="860" y="320" width="220" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="970" y="365" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">设备B</text>
+
+  <!-- 数据存储 -->
+  <rect x="210" y="520" width="300" height="70" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="360" y="560" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">数据存储</text>
+
+  <!-- 远程控制 -->
+  <rect x="650" y="520" width="300" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="800" y="560" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">远程控制</text>
+
+  <!-- 告警服务 -->
+  <rect x="1090" y="520" width="300" height="70" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1240" y="560" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">告警服务</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">symbols=dashed-line=复用/模板关系</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-23 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。</text>
+</svg>

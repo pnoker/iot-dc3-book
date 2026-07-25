@@ -137,16 +137,35 @@ def test_kb_build_passes_rebuild_flag(monkeypatch) -> None:
         def __init__(self, config_path: str) -> None:
             calls.append(("init", config_path))
 
-        def kb_build(self, *, rebuild: bool = False) -> dict[str, object]:
-            calls.append(("kb_build", rebuild))
-            return {"rebuild": rebuild}
+        def kb_build(self, *, rebuild: bool = False, sparse_only: bool = False) -> dict[str, object]:
+            calls.append(("kb_build", rebuild, sparse_only))
+            return {"rebuild": rebuild, "sparse_only": sparse_only}
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
     result = runner.invoke(app, ["kb", "build", "--rebuild"])
 
     assert result.exit_code == 0
     assert '"rebuild": true' in result.output
-    assert calls == [("init", "config"), ("kb_build", True)]
+    assert calls == [("init", "config"), ("kb_build", True, False)]
+
+
+def test_kb_build_passes_sparse_only_flag(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def kb_build(self, *, rebuild: bool = False, sparse_only: bool = False) -> dict[str, object]:
+            calls.append(("kb_build", rebuild, sparse_only))
+            return {"chunks": 12, "sparse_only": sparse_only}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(app, ["kb", "build", "--sparse-only"])
+
+    assert result.exit_code == 0
+    assert '"sparse_only": true' in result.output
+    assert calls == [("init", "config"), ("kb_build", False, True)]
 
 
 def test_write_resume_passes_human_target(monkeypatch) -> None:
@@ -185,6 +204,28 @@ def test_write_recover_manuscript_command(monkeypatch) -> None:
     assert result.exit_code == 0
     assert '"sections_recovered": 2' in result.output
     assert calls == [("init", "config"), ("recover_manuscript", "book-1")]
+
+
+def test_write_manuscript_rebuild_chapters_command(monkeypatch) -> None:
+    calls = []
+
+    class FakeProject:
+        def __init__(self, config_path: str) -> None:
+            calls.append(("init", config_path))
+
+        def rebuild_manuscript_chapters(self, thread_id: str, *, dry_run: bool = True) -> dict[str, object]:
+            calls.append(("rebuild_manuscript_chapters", thread_id, dry_run))
+            return {"chapters": 14, "secondary_headings": 79, "dry_run": dry_run}
+
+    monkeypatch.setattr("cli.BookProject", FakeProject)
+    result = runner.invoke(
+        app,
+        ["--thread-id", "book-2", "write", "manuscript", "rebuild-chapters", "--no-dry-run"],
+    )
+
+    assert result.exit_code == 0
+    assert '"secondary_headings": 79' in result.output
+    assert calls == [("init", "config"), ("rebuild_manuscript_chapters", "book-2", False)]
 
 
 def test_write_figures_build_command(monkeypatch) -> None:
@@ -329,7 +370,13 @@ def test_write_export_defaults_to_all(monkeypatch) -> None:
 
         def write_export(self, thread_id: str, *, target: str = "all", draft: bool = False) -> dict[str, object]:
             calls.append(("write_export", thread_id, target, draft))
-            return {"target": target, "draft": draft, "output_dir": "output", "book_markdown": "output/book.md", "word_file": "output/book.docx"}
+            return {
+                "target": target,
+                "draft": draft,
+                "output_dir": "output",
+                "book_markdown": "output/book.md",
+                "word_file": "output/book.docx",
+            }
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
     result = runner.invoke(app, ["write", "export"])
@@ -348,7 +395,12 @@ def test_write_export_draft_option(monkeypatch) -> None:
 
         def write_export(self, thread_id: str, *, target: str = "all", draft: bool = False) -> dict[str, object]:
             calls.append(("write_export", thread_id, target, draft))
-            return {"target": target, "draft": draft, "output_dir": "output/draft", "book_markdown": "output/draft/book.md"}
+            return {
+                "target": target,
+                "draft": draft,
+                "output_dir": "output/draft",
+                "book_markdown": "output/draft/book.md",
+            }
 
     monkeypatch.setattr("cli.BookProject", FakeProject)
     result = runner.invoke(app, ["write", "export", "markdown", "--draft"])
@@ -666,12 +718,10 @@ def test_write_contents_distinguishes_review_and_quality_status(monkeypatch) -> 
                 title="第一章",
                 markdown="正文",
                 publication_feedback=(
-                    '{"pass": false, "issues": '
-                    '[{"code": "asset.invalid_book_figure", "message": "图表规格块不完整"}]}'
+                    '{"pass": false, "issues": [{"code": "asset.invalid_book_figure", "message": "图表规格块不完整"}]}'
                 ),
                 fact_feedback=(
-                    '{"pass": false, "issues": '
-                    '[{"code": "fact.unsourced_statistics", "message": "统计数据缺少来源"}]}'
+                    '{"pass": false, "issues": [{"code": "fact.unsourced_statistics", "message": "统计数据缺少来源"}]}'
                 ),
             ),
             ChapterContent(chapter_id=2, title="第二章", markdown="正文"),

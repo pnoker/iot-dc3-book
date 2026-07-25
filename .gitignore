@@ -28,6 +28,8 @@ node_modules/
 .data/backups/
 
 # 稿件治理过程备份（不入版本控制，恢复演练用）
+.data/write/*.lock
+.data/write/workers/
 .data/write/*.before-*.json
 .data/write/book-1.json.before-*.bak
 .data/outlines/*.before-*.json

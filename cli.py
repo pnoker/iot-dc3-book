@@ -51,13 +51,13 @@ LogBackupCountOption = Annotated[int, typer.Option("--log-backup-count", help="�
 
 @app.callback(invoke_without_command=True)
 def callback(
-        ctx: typer.Context,
-        config: ConfigOption = "config",
-        thread_id: ThreadIdOption = "book-1",
-        log_level: LogLevelOption = "INFO",
-        log_file: LogFileOption = None,
-        log_max_bytes: LogMaxBytesOption = 10 * 1024 * 1024,
-        log_backup_count: LogBackupCountOption = 10,
+    ctx: typer.Context,
+    config: ConfigOption = "config",
+    thread_id: ThreadIdOption = "book-1",
+    log_level: LogLevelOption = "INFO",
+    log_file: LogFileOption = None,
+    log_max_bytes: LogMaxBytesOption = 10 * 1024 * 1024,
+    log_backup_count: LogBackupCountOption = 10,
 ) -> None:
     """保存全局选项。"""
     ctx.obj = {
@@ -116,13 +116,23 @@ def kb_status(ctx: typer.Context) -> None:
 
 @kb_app.command("build")
 def kb_build(
-        ctx: typer.Context,
-        rebuild: Annotated[bool, typer.Option("--rebuild", help="清空现有索引后全量重建")] = False,
+    ctx: typer.Context,
+    rebuild: Annotated[bool, typer.Option("--rebuild", help="清空现有索引后全量重建")] = False,
+    sparse_only: Annotated[
+        bool,
+        typer.Option("--sparse-only", help="仅从本地资料重建 BM25，不访问 Chroma 或 embedding"),
+    ] = False,
 ) -> None:
-    """增量构建知识库；只有传 --rebuild 才全量重建。"""
+    """增量构建知识库，或独立重建 BM25 稀疏索引。"""
 
     def build(project: BookProject, _thread_id: str) -> None:
-        typer.echo(json.dumps(project.kb_build(rebuild=rebuild), ensure_ascii=False, indent=2))
+        typer.echo(
+            json.dumps(
+                project.kb_build(rebuild=rebuild, sparse_only=sparse_only),
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
 
     _execute_project(ctx, build)
 
@@ -139,8 +149,8 @@ def outline_status(ctx: typer.Context) -> None:
 
 @outline_app.command("generate")
 def outline_generate(
-        ctx: typer.Context,
-        force: Annotated[bool, typer.Option("--force", help="覆盖 .data/outlines/current.json")] = False,
+    ctx: typer.Context,
+    force: Annotated[bool, typer.Option("--force", help="覆盖 .data/outlines/current.json")] = False,
 ) -> None:
     """生成全书大纲和三级写作单元。"""
 
@@ -157,9 +167,9 @@ def outline_generate(
 
 @outline_app.command("migrate-contracts")
 def outline_migrate_contracts(
-        ctx: typer.Context,
-        source: Annotated[str | None, typer.Option("--source", help="合同迁移来源；默认 approved.json")] = None,
-        dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只预览迁移结果，不覆盖 current.json")] = True,
+    ctx: typer.Context,
+    source: Annotated[str | None, typer.Option("--source", help="合同迁移来源；默认 approved.json")] = None,
+    dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只预览迁移结果，不覆盖 current.json")] = True,
 ) -> None:
     """把 parts.yaml 的章节合同迁入现有蓝图，保留原小节结构。"""
 
@@ -170,7 +180,10 @@ def outline_migrate_contracts(
 
 
 @outline_app.command("audit")
-def outline_audit(ctx: typer.Context, source: Annotated[str | None, typer.Option("--source", help="指定要审计的大纲 JSON；默认 approved.json")] = None) -> None:
+def outline_audit(
+    ctx: typer.Context,
+    source: Annotated[str | None, typer.Option("--source", help="指定要审计的大纲 JSON；默认 approved.json")] = None,
+) -> None:
     """审计章节合同与能力覆盖，不修改大纲。"""
 
     def audit(project: BookProject, _thread_id: str) -> None:
@@ -181,8 +194,8 @@ def outline_audit(ctx: typer.Context, source: Annotated[str | None, typer.Option
 
 @outline_app.command("approve")
 def outline_approve(
-        ctx: typer.Context,
-        source: Annotated[str | None, typer.Option("--source", help="指定要批准的大纲 JSON；默认 current.json")] = None,
+    ctx: typer.Context,
+    source: Annotated[str | None, typer.Option("--source", help="指定要批准的大纲 JSON；默认 current.json")] = None,
 ) -> None:
     """批准大纲；写作阶段只读取 approved.json。"""
 
@@ -199,9 +212,9 @@ def outline_approve(
 
 @outline_app.command("export")
 def outline_export(
-        ctx: typer.Context,
-        file: Annotated[str, typer.Option("--file", help="导出文件路径")],
-        approved: Annotated[bool, typer.Option("--approved", help="导出 approved.json；默认导出 current.json")] = False,
+    ctx: typer.Context,
+    file: Annotated[str, typer.Option("--file", help="导出文件路径")],
+    approved: Annotated[bool, typer.Option("--approved", help="导出 approved.json；默认导出 current.json")] = False,
 ) -> None:
     """导出大纲 JSON 供人工审稿。"""
 
@@ -219,8 +232,8 @@ def outline_export(
 
 @write_app.command("start")
 def write_start(
-        ctx: typer.Context,
-        fresh: Annotated[bool, typer.Option("--fresh", help="覆盖当前小节级写作 checkpoint")] = False,
+    ctx: typer.Context,
+    fresh: Annotated[bool, typer.Option("--fresh", help="覆盖当前小节级写作 checkpoint")] = False,
 ) -> None:
     """基于 approved outline 创建小节级写作 checkpoint。"""
 
@@ -242,8 +255,8 @@ def write_status(ctx: typer.Context) -> None:
 
 @write_app.command("audit")
 def write_audit(
-        ctx: typer.Context,
-        json_output: Annotated[bool, typer.Option("--json", help="输出原始 JSON，便于脚本处理")] = False,
+    ctx: typer.Context,
+    json_output: Annotated[bool, typer.Option("--json", help="输出原始 JSON，便于脚本处理")] = False,
 ) -> None:
     """诊断 checkpoint、稿件漂移、失败原因和出版审计问题。"""
 
@@ -270,8 +283,8 @@ def write_contents(ctx: typer.Context) -> None:
 
 @write_app.command("resume")
 def write_resume(
-        ctx: typer.Context,
-        target: Annotated[str, typer.Argument(help="写作目标：current、all、1、1.1 或 1.1.1")] = "current",
+    ctx: typer.Context,
+    target: Annotated[str, typer.Argument(help="写作目标：current、all、1、1.1 或 1.1.1")] = "current",
 ) -> None:
     """按指定章节、二级节、三级小节或全书继续写作。"""
 
@@ -283,8 +296,8 @@ def write_resume(
 
 @write_app.command("section")
 def write_section(
-        ctx: typer.Context,
-        target: Annotated[str, typer.Argument(help="章节/二级节/三级小节编号，例如 1、1.1、1.1.1")],
+    ctx: typer.Context,
+    target: Annotated[str, typer.Argument(help="章节/二级节/三级小节编号，例如 1、1.1、1.1.1")],
 ) -> None:
     """查看小节级 checkpoint 中的章节、二级节或三级小节正文。"""
 
@@ -312,8 +325,13 @@ def _format_write_contents(state: BookState) -> str:
             assembled = "📘 已合稿" if state.get_chapter_content(chapter.id) is not None else "⬜ 未合稿"
             chapter_badge = _chapter_status_badge(state, chapter)
             lines.append(f"  第{chapter.id}章 {chapter.title}")
-            lines.append(f"    章节质量门：{chapter_badge}｜合稿：{assembled}｜小节：{written_count}/{len(chapter.sections)}")
-            if chapter.status == "quality_failed" and (chapter_content := state.get_chapter_content(chapter.id)) is not None:
+            lines.append(
+                f"    章节质量门：{chapter_badge}｜合稿：{assembled}｜小节：{written_count}/{len(chapter.sections)}"
+            )
+            if (
+                chapter.status == "quality_failed"
+                and (chapter_content := state.get_chapter_content(chapter.id)) is not None
+            ):
                 lines.append(f"    质量原因：{_feedback_summary(_chapter_feedback_text(chapter_content), limit=220)}")
             for section_group_id, group_title, sections in _group_chapter_sections(chapter):
                 lines.append(f"    {section_group_id} {group_title}")
@@ -393,10 +411,10 @@ def _audit_worker_checkpoint_label(worker_checkpoints: dict[str, object]) -> str
 
 
 def _audit_progress_line(
-        progress: dict[str, object],
-        count_key: str,
-        content_key: str,
-        labels: dict[str, str],
+    progress: dict[str, object],
+    count_key: str,
+    content_key: str,
+    labels: dict[str, str],
 ) -> str:
     counts = _as_dict(progress.get(count_key))
     total = _sum_count_values(counts)
@@ -671,7 +689,11 @@ def _render_write_target(state: BookState, target: str) -> str:
 
 def _render_chapter_with_status(state: BookState, chapter: ChapterPlan, content: ChapterContent) -> str:
     return "\n\n".join(
-        [_chapter_status_block(chapter, content), _chapter_section_status_block(state, chapter), content.markdown.strip()]
+        [
+            _chapter_status_block(chapter, content),
+            _chapter_section_status_block(state, chapter),
+            content.markdown.strip(),
+        ]
     ).strip()
 
 
@@ -821,9 +843,9 @@ def _section_status_label(status: str) -> str:
 
 @write_app.command("patch-section")
 def write_patch_section(
-        ctx: typer.Context,
-        section_id: Annotated[str, typer.Option("--section-id", help="三级小节编号，例如 1.1.1")],
-        file: Annotated[str, typer.Option("--file", help="Markdown 文件路径")],
+    ctx: typer.Context,
+    section_id: Annotated[str, typer.Option("--section-id", help="三级小节编号，例如 1.1.1")],
+    file: Annotated[str, typer.Option("--file", help="Markdown 文件路径")],
 ) -> None:
     """用本地 Markdown 覆盖指定三级小节，并重新合成所在章节。"""
 
@@ -836,25 +858,33 @@ def write_patch_section(
 
 @manuscript_app.command("migrate-plan")
 def write_manuscript_migrate_plan(
-        ctx: typer.Context,
-        source: Annotated[str | None, typer.Option("--source", help="规划来源；默认 approved.json")] = None,
-        dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只预览，不写入 checkpoint")] = True,
+    ctx: typer.Context,
+    source: Annotated[str | None, typer.Option("--source", help="规划来源；默认 approved.json")] = None,
+    dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只预览，不写入 checkpoint")] = True,
 ) -> None:
     """将批准大纲的新 SectionPlan 合入现有 checkpoint，保留已有正文。"""
 
     def migrate(project: BookProject, thread_id: str) -> None:
-        typer.echo(json.dumps(project.migrate_write_plan(thread_id, source=source, dry_run=dry_run), ensure_ascii=False, indent=2))
+        typer.echo(
+            json.dumps(
+                project.migrate_write_plan(thread_id, source=source, dry_run=dry_run), ensure_ascii=False, indent=2
+            )
+        )
 
     _execute_project(ctx, migrate)
 
 
 @manuscript_app.command("sync")
 def write_manuscript_sync(
-        ctx: typer.Context,
-        section_id: Annotated[str, typer.Option("--section-id", help="三级小节编号，例如 1.1.1")],
-        file: Annotated[str, typer.Option("--file", help="待导入的 Markdown 小节文件")],
-        dry_run: Annotated[bool, typer.Option("--dry-run/--no-dry-run", help="只检查冲突和变更，不写入 checkpoint 或 manuscript")] = True,
-        force: Annotated[bool, typer.Option("--force", help="确认以输入文件覆盖已漂移的 manuscript/checkpoint 内容")] = False,
+    ctx: typer.Context,
+    section_id: Annotated[str, typer.Option("--section-id", help="三级小节编号，例如 1.1.1")],
+    file: Annotated[str, typer.Option("--file", help="待导入的 Markdown 小节文件")],
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run/--no-dry-run", help="只检查冲突和变更，不写入 checkpoint 或 manuscript")
+    ] = True,
+    force: Annotated[
+        bool, typer.Option("--force", help="确认以输入文件覆盖已漂移的 manuscript/checkpoint 内容")
+    ] = False,
 ) -> None:
     """将显式指定的小节 Markdown 同步到 checkpoint 和 manuscript。"""
 
@@ -864,6 +894,23 @@ def write_manuscript_sync(
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
 
     _execute_project(ctx, sync)
+
+
+@manuscript_app.command("rebuild-chapters")
+def write_manuscript_rebuild_chapters(
+    ctx: typer.Context,
+    dry_run: Annotated[
+        bool,
+        typer.Option("--dry-run/--no-dry-run", help="只校验和预览，不写入 checkpoint 或 manuscript"),
+    ] = True,
+) -> None:
+    """从权威小节正文重新生成 H1/H2/H3 章节结构。"""
+
+    def rebuild(project: BookProject, thread_id: str) -> None:
+        result = project.rebuild_manuscript_chapters(thread_id, dry_run=dry_run)
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+
+    _execute_project(ctx, rebuild)
 
 
 @write_app.command("recover-manuscript")
@@ -878,22 +925,24 @@ def write_recover_manuscript(ctx: typer.Context) -> None:
 
 @figures_app.command("build")
 def write_figures_build(
-        ctx: typer.Context,
-        draft: Annotated[bool, typer.Option("--draft", help="输出到 output/draft/figures，用于草稿预览")] = False,
-        force: Annotated[bool, typer.Option("--force", help="忽略 manifest 缓存，强制重新生成全部图表")] = False,
+    ctx: typer.Context,
+    draft: Annotated[bool, typer.Option("--draft", help="输出到 output/draft/figures，用于草稿预览")] = False,
+    force: Annotated[bool, typer.Option("--force", help="忽略 manifest 缓存，强制重新生成全部图表")] = False,
 ) -> None:
     """从当前 checkpoint 生成 HTML/SVG/PNG 图表资产。"""
 
     def build(project: BookProject, thread_id: str) -> None:
-        typer.echo(json.dumps(project.write_figures_build(thread_id, draft=draft, force=force), ensure_ascii=False, indent=2))
+        typer.echo(
+            json.dumps(project.write_figures_build(thread_id, draft=draft, force=force), ensure_ascii=False, indent=2)
+        )
 
     _execute_project(ctx, build)
 
 
 @figures_app.command("audit")
 def write_figures_audit(
-        ctx: typer.Context,
-        draft: Annotated[bool, typer.Option("--draft", help="审计 output/draft/figures 草稿图表资产")] = False,
+    ctx: typer.Context,
+    draft: Annotated[bool, typer.Option("--draft", help="审计 output/draft/figures 草稿图表资产")] = False,
 ) -> None:
     """审计最终入书图表的生成状态和精品图覆盖率。"""
 
@@ -915,13 +964,17 @@ def write_figures_polish_plan(ctx: typer.Context) -> None:
 
 @figures_app.command("upgrade-briefs")
 def write_figures_upgrade_briefs(
-        ctx: typer.Context,
-        dry_run: Annotated[bool, typer.Option("--dry-run", help="只统计将要升级的 book-figure，不写入 checkpoint 和 manuscript")] = False,
+    ctx: typer.Context,
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="只统计将要升级的 book-figure，不写入 checkpoint 和 manuscript")
+    ] = False,
 ) -> None:
     """把旧版 book-figure 描述升级为出版级结构化 brief。"""
 
     def upgrade(project: BookProject, thread_id: str) -> None:
-        typer.echo(json.dumps(project.write_figures_upgrade_briefs(thread_id, dry_run=dry_run), ensure_ascii=False, indent=2))
+        typer.echo(
+            json.dumps(project.write_figures_upgrade_briefs(thread_id, dry_run=dry_run), ensure_ascii=False, indent=2)
+        )
 
     _execute_project(ctx, upgrade)
 
@@ -938,8 +991,8 @@ def write_references_audit(ctx: typer.Context) -> None:
 
 @references_app.command("clean")
 def write_references_clean(
-        ctx: typer.Context,
-        mode: Annotated[str, typer.Option("--mode", help="清理模式：remove、footnote 或 endnote")] = "footnote",
+    ctx: typer.Context,
+    mode: Annotated[str, typer.Option("--mode", help="清理模式：remove、footnote 或 endnote")] = "footnote",
 ) -> None:
     """移除内部证据标记，或转换为脚注/尾注。"""
 
@@ -960,9 +1013,11 @@ def write_references_clean(
 
 @write_app.command("export")
 def write_export(
-        ctx: typer.Context,
-        target: Annotated[str, typer.Argument(help="导出目标：markdown、word 或 all")] = "all",
-        draft: Annotated[bool, typer.Option("--draft", help="导出当前草稿到 output/draft，跳过出版门禁，仅用于预览")] = False,
+    ctx: typer.Context,
+    target: Annotated[str, typer.Argument(help="导出目标：markdown、word 或 all")] = "all",
+    draft: Annotated[
+        bool, typer.Option("--draft", help="导出当前草稿到 output/draft，跳过出版门禁，仅用于预览")
+    ] = False,
 ) -> None:
     """导出出版稿 Markdown、Word 或预览草稿。"""
 

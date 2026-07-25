@@ -77,6 +77,17 @@ def test_books_high_overlap_flags_issue() -> None:
     assert "书.pdf" in issues[0].message
 
 
+def test_books_high_overlap_identifies_section() -> None:
+    markdown = f"# 第1章 测试章\n\n## 1.1 基础\n\n### 1.1.1 测试小节\n\n{_PARA}"
+    rag = _StubRAG([ReferenceChunk(source_file="书.pdf", chapter_or_section="x", text=_PARA, label="books")])
+
+    issues = check_originality(rag, _content(markdown), _settings())
+
+    assert len(issues) == 1
+    assert issues[0].scope == "section"
+    assert issues[0].section_id == "1.1.1"
+
+
 def test_dc3_high_overlap_passes() -> None:
     # 与自有内容（dc3）雷同不算侵权
     rag = _StubRAG([ReferenceChunk(source_file="dc3.md", chapter_or_section="x", text=_PARA, label="dc3")])
@@ -85,7 +96,11 @@ def test_dc3_high_overlap_passes() -> None:
 
 def test_low_overlap_no_issue() -> None:
     rag = _StubRAG(
-        [ReferenceChunk(source_file="书.pdf", chapter_or_section="x", text="完全不相关的一段参考文本内容", label="books")]
+        [
+            ReferenceChunk(
+                source_file="书.pdf", chapter_or_section="x", text="完全不相关的一段参考文本内容", label="books"
+            )
+        ]
     )
     assert check_originality(rag, _content(), _settings()) == []
 

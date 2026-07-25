@@ -3,36 +3,105 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-5 传感器选型决策流程</title>
+  <title>图3-5 室内外定位技术覆盖与精度光谱（示意）</title>
   <style>
-    html, body { margin: 0; padding: 0; background: #FFFFFF; }
-    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    svg { width: min(1200px, 100vw); height: auto; display: block; }
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="图3-5 传感器选型决策流程" data-style="architecture-diagram-white-book">
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图3-5 室内外定位技术覆盖与精度光谱（示意）</title>
+  <desc id="desc">读者应理解室内外定位技术覆盖与精度光谱（示意）中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图3-5 室内外定位技术覆盖与精度光谱（示意）</title>
+  <desc id="desc">读者应理解室内外定位技术覆盖与精度光谱（示意）中的主链路、责任边界和工程取舍。</desc>
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
-    </marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-  <rect x="0" y="0" width="1200" height="760" fill="#FFFFFF"/>
-  <circle cx="64" cy="40" r="6" fill="#22D3EE"/>
-<text x="82" y="48" fill="#0F172A" font-size="22" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">图3-5 传感器选型决策流程</text>
-<text x="82.0" y="78.0" fill="#64748B" font-size="12" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="500" text-anchor="start">读者应理解传感器选型决策流程中的主链路、责任边界和工程取舍</text>
-<rect x="1008.0" y="30.0" width="132.0" height="32.0" rx="6.0" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
-<text x="1074" y="51" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">FLOWCHART</text>
-<line x1="58" y1="103" x2="1142" y2="103" stroke="#CBD5E1" stroke-width="1"/>
-  <line x1="579.0" y1="201.0" x2="621.0" y2="201.0" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-<rect x="72.0" y="160.0" width="507.0" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="82.0" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">01</text>
-<rect x="621.0" y="160.0" width="507.0" height="82.0" rx="6.0" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5"/>
-<text x="631.0" y="176.0" fill="#34D399" font-size="8" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">02</text>
-<text x="874.5" y="208.0" fill="#0F172A" font-size="14" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700" text-anchor="middle">各步骤，每一步可能出现回退（如候选…</text>
-  <line x1="58" y1="675" x2="1142" y2="675" stroke="#CBD5E1" stroke-width="1"/>
-<circle cx="66.0" cy="704.0" r="4" fill="#34D399"/>
-<text x="80.0" y="708.0" fill="#64748B" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="600" text-anchor="start">平台服务</text>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-5 室内外定位技术覆盖与精度光谱（示意）</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解室内外定位技术覆盖与精度光谱（示意）中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 背景：室内（浅灰）与室外（浅蓝） -->
+  <rect x="120" y="320" width="545.22" height="380" fill="#F1F5F9" stroke="none" />
+  <rect x="665.22" y="320" width="1014.78" height="380" fill="#EFF6FF" stroke="none" />
+  
+  <!-- 交界虚线 -->
+  <line x1="665.22" y1="320" x2="665.22" y2="700" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4" />
+
+  <!-- 辅助竖线（0.1m, 0.5m, 1m, 5m） -->
+  <line x1="120" y1="320" x2="120" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="665.22" y1="320" x2="665.22" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="900" y1="320" x2="900" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="1445.22" y1="320" x2="1445.22" y2="700" stroke="#CBD5E1" stroke-width="1" />
+
+  <!-- x轴 -->
+  <line x1="120" y1="700" x2="1680" y2="700" stroke="#64748B" stroke-width="2" />
+
+  <!-- x轴刻度标签 -->
+  <text x="120" y="690" fill="#64748B" font-size="12" text-anchor="middle">0.1m</text>
+  <text x="665.22" y="690" fill="#64748B" font-size="12" text-anchor="middle">0.5m</text>
+  <text x="900" y="690" fill="#64748B" font-size="12" text-anchor="middle">1m</text>
+  <text x="1445.22" y="690" fill="#64748B" font-size="12" text-anchor="middle">5m</text>
+
+  <!-- 技术矩形及文字 -->
+  <!-- GNSS+RTK 高精度室外 -->
+  <rect x="120" y="600" width="545.22" height="80" rx="10" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1.5" />
+  <text x="392.61" y="628" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">GNSS+RTK</text>
+  <text x="392.61" y="652" fill="#475569" font-size="12" text-anchor="middle">厘米级</text>
+
+  <!-- UWB 高精度室内 -->
+  <rect x="120" y="515" width="545.22" height="70" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+  <text x="392.61" y="539.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">UWB</text>
+  <text x="392.61" y="560.5" fill="#475569" font-size="12" text-anchor="middle">分米级</text>
+
+  <!-- GNSS单频 室外 -->
+  <rect x="1134.78" y="450" width="545.22" height="50" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="1407.39" y="467.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">GNSS单频</text>
+  <text x="1407.39" y="482.5" fill="#475569" font-size="12" text-anchor="middle">数米级</text>
+
+  <!-- Wi-Fi指纹 室内外 -->
+  <rect x="900" y="400" width="780" height="30" rx="10" fill="#ECFDF5" stroke="#059669" stroke-width="1.5" />
+  <text x="1290" y="410.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">Wi-Fi指纹</text>
+  <text x="1290" y="419.5" fill="#475569" font-size="12" text-anchor="middle">米级至十米级</text>
+
+  <!-- BLE信标 室内 -->
+  <rect x="900" y="365" width="545.22" height="20" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" />
+  <text x="1172.61" y="379" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">BLE信标</text>
+  <text x="1172.61" y="357" fill="#475569" font-size="12" text-anchor="middle">米量级</text>
+
+  <!-- 地磁指纹 室内外 -->
+  <rect x="1272.06" y="335" width="407.94" height="15" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" />
+  <text x="1476.03" y="346.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">地磁指纹</text>
+  <text x="1476.03" y="327" fill="#475569" font-size="12" text-anchor="middle">数米量级</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">不同颜色区分技术族类</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">矩形高度：综合反映部署成本与端侧功耗的相对投入（越高投入越大）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">浅蓝色背景：室外环境；浅灰色背景：室内环境</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-5 室内外定位技术覆盖与精度光谱示意。横轴为定位精度（米，对数刻度），矩形宽度表示典型精度区间，左边界为最小精度，右边界为最大精度。矩形高度示意工程部署成本与功耗的综合投入，颜色区分技术类型。</text>
+  </svg>
 </svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">timeline</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">水平光谱布局，横轴为对数刻度定位精度（0.1m到10m），各技术以水平矩形条表示，矩形宽度对应典型精度区间，左侧为室外域，右侧为室内域，背景色区分环境。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
 </body>
 </html>

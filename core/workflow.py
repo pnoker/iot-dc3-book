@@ -6,7 +6,6 @@ import json
 import os
 import re
 import shutil
-import threading
 import time
 import uuid
 from collections import Counter
@@ -17,12 +16,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
-from agents.assembler import ChapterAssemblerAgent
 from agents.chapter_architect import ChapterArchitectAgent
 from agents.citation_guard import CitationGuardAgent
 from agents.director import DirectorAgent
 from agents.editor import EditorAgent
-from agents.expander import ExpanderAgent
 from agents.fact_checker import FactCheckerAgent
 from agents.figure_designer import FigureDesignerAgent
 from agents.plan_reviewer import PlanReviewerAgent
@@ -31,6 +28,11 @@ from agents.research import ResearchAgent
 from agents.style_guard import StyleGuardAgent
 from agents.writer import WriterAgent
 from core.ai_flavor import detect_ai_flavor
+from core.chapter_structure import (
+    build_structured_chapter_markdown,
+    expected_chapter_heading_structure,
+    normalize_section_markdown,
+)
 from core.config import config_to_book_state, get_config_paths, get_embed_config, get_llm_config, load_app_config
 from core.config_models import AppConfig
 from core.figure_brief_migration import (
@@ -75,7 +77,6 @@ OUTLINE_VERSION = 1
 WRITE_CHECKPOINT_VERSION = 1
 WORKER_CHECKPOINT_VERSION = 1
 WRITE_LOCK_STALE_SECONDS = 300
-_HEAVY_CHAPTER_REVISION_LOCK = threading.Lock()
 
 
 class BookProject:
@@ -110,8 +111,6 @@ class BookProject:
             web_max_chars_per_url=ref_cfg.web_research.max_chars_per_url,
         )
         self.writer = WriterAgent(self.llm)
-        self.assembler = ChapterAssemblerAgent(self.llm)
-        self.expander = ExpanderAgent(self.llm)
         self.fact_checker = FactCheckerAgent(self.llm, self.rag, query_categories=ref_cfg.query_categories)
         self.citation_guard = CitationGuardAgent(self.llm)
         self.style_guard = StyleGuardAgent(self.llm)
@@ -138,12 +137,22 @@ class BookProject:
             "rag": self.rag.get_status(),
         }
 
-    def kb_build(self, *, rebuild: bool = False) -> dict[str, object]:
+    def kb_build(self, *, rebuild: bool = False, sparse_only: bool = False) -> dict[str, object]:
         """增量构建或显式重建知识库。"""
+        if rebuild and sparse_only:
+            raise ValueError("--rebuild 与 --sparse-only 不能同时使用。")
+        if sparse_only:
+            count = self.rag.rebuild_sparse_index(self.paths.reference_sources)
+            return {
+                "chunks": count,
+                "sparse_only": True,
+                "bm25_index": str(self.paths.bm25_index),
+                "bm25_exists": self.paths.bm25_index.exists(),
+            }
         if rebuild:
             self.reset_rag_index()
         count = self.rag.index_books(self.paths.reference_sources, str(self.paths.rag_manifest))
-        return {"chunks": count, **self.kb_status()}
+        return {"chunks": count, "sparse_only": False, **self.kb_status()}
 
     def outline_status(self) -> dict[str, object]:
         """返回大纲阶段产物状态。"""
@@ -252,11 +261,7 @@ class BookProject:
 
     def _outline_audit_state(self, state: BookState, source_path: Path) -> dict[str, object]:
         chapters = state.get_all_chapters_flat()
-        known_ids = {
-            capability_id
-            for chapter in chapters
-            for capability_id in chapter.capability_ids
-        }
+        known_ids = {capability_id for chapter in chapters for capability_id in chapter.capability_ids}
         rows: list[dict[str, object]] = []
         blockers: list[str] = []
         for chapter in chapters:
@@ -408,7 +413,9 @@ class BookProject:
                     self._save_write_checkpoint(thread_id, state)
                 elif section.status in {"written", "review_failed"}:
                     previous_brief = self._previous_section_brief(state, section)
-                    section_content = self._review_section_until_pass(state, section, section_content, previous_brief, thread_id)
+                    section_content = self._review_section_until_pass(
+                        state, section, section_content, previous_brief, thread_id
+                    )
                     state.upsert_section_content(section_content)
                     self._save_section_file(state, section_content)
                     self._save_write_checkpoint(thread_id, state)
@@ -442,11 +449,11 @@ class BookProject:
         return True
 
     def _write_chapters_parallel(
-            self,
-            state: BookState,
-            target_sections: list[SectionPlan],
-            thread_id: str,
-            target: str,
+        self,
+        state: BookState,
+        target_sections: list[SectionPlan],
+        thread_id: str,
+        target: str,
     ) -> dict[str, object]:
         """按章节并发起草，主线程合并 checkpoint 并执行全书终审。"""
         chapter_ids = list(dict.fromkeys(section.chapter_id for section in target_sections))
@@ -456,13 +463,17 @@ class BookProject:
         logger.info("🚀 [并发写作] %d 个章节并发起草，workers=%d", len(chapter_ids), workers)
         display_state = self._overlay_worker_checkpoints_for_read(thread_id, deepcopy(state))
         for chapter_id in chapter_ids:
-            logger.info("🧭 [并发写作] 第%d章待处理: %s", chapter_id, self._chapter_resume_plan(display_state, chapter_id))
+            logger.info(
+                "🧭 [并发写作] 第%d章待处理: %s", chapter_id, self._chapter_resume_plan(display_state, chapter_id)
+            )
         # 在主线程提交前一次性备好每章的隔离快照，避免 worker 线程内 deepcopy 与主线程合并同一 state 竞争。
         snapshots = {chapter_id: deepcopy(state) for chapter_id in chapter_ids}
         executor = ThreadPoolExecutor(max_workers=workers)
         shutdown_done = False
         futures = {
-            executor.submit(self._write_chapter_in_isolated_state, snapshots[chapter_id], chapter_id, thread_id): chapter_id
+            executor.submit(
+                self._write_chapter_in_isolated_state, snapshots[chapter_id], chapter_id, thread_id
+            ): chapter_id
             for chapter_id in chapter_ids
         }
         try:
@@ -619,6 +630,55 @@ class BookProject:
         if chapter_content is not None:
             self._save_chapter_file(state, chapter_content)
 
+    def _commit_rebuilt_manuscript(self, thread_id: str, state: BookState) -> None:
+        """预写完整稿件目录和 checkpoint，再以可回滚的目录交换提交。"""
+        operation_id = uuid.uuid4().hex
+        staging_dir = self.paths.data_dir / f".manuscript.rebuild-{operation_id}"
+        rollback_dir = self.paths.data_dir / f".manuscript.rollback-{operation_id}"
+        checkpoint_path = self.write_checkpoint_path(thread_id)
+        prepared_checkpoint = checkpoint_path.with_name(f".{checkpoint_path.name}.rebuild-{operation_id}")
+        if self.manuscript_dir.exists():
+            shutil.copytree(self.manuscript_dir, staging_dir)
+        else:
+            staging_dir.mkdir(parents=True)
+        try:
+            for content in state.section_contents:
+                path = staging_dir / f"chapter-{content.chapter_id:02d}" / f"{content.section_id}.md"
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content.markdown, encoding="utf-8")
+            for content in state.chapters:
+                path = staging_dir / f"chapter-{content.chapter_id:02d}" / "chapter.md"
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content.markdown, encoding="utf-8")
+            self._save_state_envelope(prepared_checkpoint, state, kind="write.checkpoint")
+
+            if self.manuscript_dir.exists():
+                self.manuscript_dir.replace(rollback_dir)
+            staging_dir.replace(self.manuscript_dir)
+            try:
+                prepared_checkpoint.replace(checkpoint_path)
+            except Exception:
+                shutil.rmtree(self.manuscript_dir, ignore_errors=True)
+                if rollback_dir.exists():
+                    rollback_dir.replace(self.manuscript_dir)
+                raise
+            if rollback_dir.exists():
+                shutil.rmtree(rollback_dir)
+            self._fsync_directory(self.paths.data_dir)
+            self._fsync_directory(checkpoint_path.parent)
+        finally:
+            shutil.rmtree(staging_dir, ignore_errors=True)
+            prepared_checkpoint.unlink(missing_ok=True)
+            if rollback_dir.exists() and not self.manuscript_dir.exists():
+                rollback_dir.replace(self.manuscript_dir)
+
+    @staticmethod
+    def _section_id_sort_key(section_id: str) -> tuple[int, ...]:
+        try:
+            return tuple(int(part) for part in section_id.split("."))
+        except ValueError:
+            return (10**9,)
+
     @staticmethod
     def _merge_foreshadows(state: BookState, source: BookState) -> None:
         """合并并发章节对伏笔账本的状态更新，避免后完成的章节覆盖先完成章节。"""
@@ -722,12 +782,12 @@ class BookProject:
             return payload
 
     def _generate_export(
-            self,
-            state: BookState,
-            export_target: str,
-            *,
-            output_dir: Path,
-            draft: bool,
+        self,
+        state: BookState,
+        export_target: str,
+        *,
+        output_dir: Path,
+        draft: bool,
     ) -> dict[str, object]:
         cfg = self.cfg.model_dump(mode="python")
         figure_result = collect_figure_assets_for_export(
@@ -783,9 +843,13 @@ class BookProject:
             issues.append(f"当前阶段不是 completed: {state.current_phase}")
         if not state.publication_approved:
             issues.append("全书终审尚未通过: publication_approved=false")
-        missing_sections = [section.id for section in state.get_all_sections_flat() if state.get_section_content(section.id) is None]
+        missing_sections = [
+            section.id for section in state.get_all_sections_flat() if state.get_section_content(section.id) is None
+        ]
         failed_sections = [section.id for section in state.get_all_sections_flat() if section.status != "reviewed"]
-        missing_chapters = [chapter.id for chapter in state.get_all_chapters_flat() if state.get_chapter_content(chapter.id) is None]
+        missing_chapters = [
+            chapter.id for chapter in state.get_all_chapters_flat() if state.get_chapter_content(chapter.id) is None
+        ]
         failed_chapters = [chapter.id for chapter in state.get_all_chapters_flat() if chapter.status != "approved"]
         if missing_sections:
             issues.append("缺少小节正文: " + ", ".join(missing_sections[:10]))
@@ -795,6 +859,9 @@ class BookProject:
             issues.append("缺少章节合稿: " + ", ".join(str(item) for item in missing_chapters[:10]))
         if failed_chapters:
             issues.append("章节质量门未全部通过: " + ", ".join(str(item) for item in failed_chapters[:10]))
+        publication_audit = summarize_publication_audit(state)
+        if audit_has_blocking_issues(publication_audit):
+            issues.append(f"确定性出版审计未通过: {publication_audit.get('summary', '')}")
         if self._require_polished_figures(draft=False):
             figure_audit = audit_figure_assets(
                 state,
@@ -818,9 +885,7 @@ class BookProject:
 
     def _require_polished_figures(self, *, draft: bool) -> bool:
         illustrations = self.cfg.style.illustrations
-        return bool(
-            illustrations.polished_required_for_draft if draft else illustrations.polished_required_for_export
-        )
+        return bool(illustrations.polished_required_for_draft if draft else illustrations.polished_required_for_export)
 
     def _word_reference_docx_path(self) -> Path | None:
         reference_docx = self.cfg.output.word_reference_docx.strip()
@@ -835,11 +900,11 @@ class BookProject:
             return self._patch_section_unlocked(thread_id, section_id, markdown)
 
     def migrate_write_plan(
-            self,
-            thread_id: str,
-            *,
-            source: str | None = None,
-            dry_run: bool = True,
+        self,
+        thread_id: str,
+        *,
+        source: str | None = None,
+        dry_run: bool = True,
     ) -> dict[str, object]:
         """将批准大纲的规划合入现有 checkpoint，保留已写正文。"""
         with self._write_operation_lock(thread_id, "write.plan.migrate"):
@@ -906,22 +971,144 @@ class BookProject:
             }
             if dry_run:
                 return result
-            backup = self._backup_checkpoint_for_operation(
-                self.write_checkpoint_path(thread_id), "plan-migrate"
-            )
+            backup = self._backup_checkpoint_for_operation(self.write_checkpoint_path(thread_id), "plan-migrate")
             state.publication_approved = False
             self._save_write_checkpoint(thread_id, state)
             result["checkpoint_backup"] = str(backup) if backup else None
             return result
 
+    def rebuild_manuscript_chapters(self, thread_id: str, *, dry_run: bool = True) -> dict[str, object]:
+        """从权威小节正文重新构建章节标题骨架，并事务性同步 checkpoint 与 manuscript。"""
+        with self._write_operation_lock(thread_id, "write.manuscript.rebuild_chapters"):
+            active_workers = self._active_worker_checkpoint_paths(thread_id)
+            if active_workers:
+                raise RuntimeError("章节重建被拒绝：仍存在未合并 worker checkpoint。")
+            state = self.load_write_checkpoint(thread_id)
+            checkpoint_path = self.write_checkpoint_path(thread_id)
+            plans = state.get_all_sections_flat()
+            plan_ids = [section.id for section in plans]
+            if len(plan_ids) != len(set(plan_ids)):
+                raise RuntimeError("章节重建被拒绝：SectionPlan ID 不唯一。")
+            content_ids = [content.section_id for content in state.section_contents]
+            if len(content_ids) != len(set(content_ids)):
+                raise RuntimeError("章节重建被拒绝：SectionContent ID 不唯一。")
+            missing_ids = sorted(set(plan_ids) - set(content_ids), key=self._section_id_sort_key)
+            extra_ids = sorted(set(content_ids) - set(plan_ids), key=self._section_id_sort_key)
+            if missing_ids or extra_ids:
+                raise RuntimeError(
+                    f"章节重建被拒绝：小节规划与正文不一致。 缺失={missing_ids[:10]}，规划外={extra_ids[:10]}。"
+                )
+
+            original_markdown = {content.section_id: content.markdown for content in state.section_contents}
+            drifted_sections: list[str] = []
+            missing_mirrors: list[str] = []
+            for section in plans:
+                mirror_path = self._section_file_path(section.chapter_id, section.id)
+                if not mirror_path.exists():
+                    missing_mirrors.append(section.id)
+                    continue
+                mirror = self._normalize_markdown_output(mirror_path.read_text(encoding="utf-8"))
+                checkpoint_markdown = self._normalize_markdown_output(original_markdown[section.id])
+                if mirror != checkpoint_markdown:
+                    drifted_sections.append(section.id)
+            if drifted_sections:
+                raise RuntimeError(
+                    "章节重建被拒绝：小节 manuscript 与 checkpoint 存在漂移，请先同步。"
+                    f" 漂移小节={drifted_sections[:10]}。"
+                )
+
+            content_by_id = {content.section_id: content for content in state.section_contents}
+            normalized_sections: list[str] = []
+            metadata_sections: list[str] = []
+            for section in plans:
+                content = content_by_id[section.id]
+                normalized = normalize_section_markdown(section, content.markdown)
+                if normalized != content.markdown:
+                    normalized_sections.append(section.id)
+                if content.chapter_id != section.chapter_id or content.title != section.title:
+                    metadata_sections.append(section.id)
+                content.chapter_id = section.chapter_id
+                content.title = section.title
+                content.markdown = normalized
+                content.word_count = count_words(normalized)
+
+            chapter_plans = state.get_all_chapters_flat()
+            chapter_ids = [chapter.id for chapter in chapter_plans]
+            existing_chapter_ids = [content.chapter_id for content in state.chapters]
+            if len(existing_chapter_ids) != len(set(existing_chapter_ids)):
+                raise RuntimeError("章节重建被拒绝：ChapterContent ID 不唯一。")
+            extra_chapter_ids = sorted(set(existing_chapter_ids) - set(chapter_ids))
+            if extra_chapter_ids:
+                raise RuntimeError(f"章节重建被拒绝：存在规划外章节正文: {extra_chapter_ids}。")
+
+            existing_chapters = {content.chapter_id: content for content in state.chapters}
+            rebuilt_chapters: list[int] = []
+            secondary_heading_count = 0
+            for chapter in chapter_plans:
+                expected = expected_chapter_heading_structure(chapter)
+                secondary_heading_count += len(expected.parent_headings)
+                chapter_sections = [content_by_id[section.id] for section in chapter.sections]
+                markdown = build_structured_chapter_markdown(chapter, chapter_sections)
+                existing = existing_chapters.get(chapter.id)
+                if existing is None:
+                    rebuilt = ChapterContent(
+                        chapter_id=chapter.id,
+                        title=chapter.title,
+                        markdown=markdown,
+                        word_count=count_words(markdown),
+                    )
+                else:
+                    rebuilt = existing.model_copy(deep=True)
+                    rebuilt.title = chapter.title
+                    rebuilt.markdown = markdown
+                    rebuilt.word_count = count_words(markdown)
+                if existing is None or existing.markdown != markdown or existing.title != chapter.title:
+                    rebuilt_chapters.append(chapter.id)
+                state.upsert_chapter_content(rebuilt)
+
+            result: dict[str, object] = {
+                "thread_id": thread_id,
+                "checkpoint": str(checkpoint_path),
+                "manuscript": str(self.manuscript_dir),
+                "dry_run": dry_run,
+                "sections": len(plans),
+                "chapters": len(chapter_plans),
+                "secondary_headings": secondary_heading_count,
+                "normalized_sections": normalized_sections,
+                "metadata_sections": metadata_sections,
+                "rebuilt_chapters": rebuilt_chapters,
+                "missing_section_mirrors": missing_mirrors,
+                "publication_approved_before": state.publication_approved,
+                "publication_approved_after": False,
+                "recommended_command": f"uv run python main.py --thread-id {thread_id} write resume all",
+            }
+            if dry_run:
+                return result
+
+            checkpoint_backup = self._backup_checkpoint_for_operation(checkpoint_path, "chapter-structure-rebuild")
+            manuscript_backup = self._backup_manuscript_for_operation("chapter-structure-rebuild")
+            state.publication_approved = False
+            state.current_phase = "final_review"
+            state.final_report = ""
+            state.final_revision_chapters = []
+            state.final_revision_round = 0
+            self._commit_rebuilt_manuscript(thread_id, state)
+            result.update(
+                {
+                    "checkpoint_backup": str(checkpoint_backup) if checkpoint_backup is not None else None,
+                    "manuscript_backup": str(manuscript_backup) if manuscript_backup is not None else None,
+                }
+            )
+            return result
+
     def sync_manuscript_section(
-            self,
-            thread_id: str,
-            section_id: str,
-            markdown: str,
-            *,
-            dry_run: bool = False,
-            force: bool = False,
+        self,
+        thread_id: str,
+        section_id: str,
+        markdown: str,
+        *,
+        dry_run: bool = False,
+        force: bool = False,
     ) -> dict[str, object]:
         """显式将外部 Markdown 小节同步到 checkpoint 和 manuscript。"""
         with self._write_operation_lock(thread_id, "write.manuscript.sync"):
@@ -962,19 +1149,21 @@ class BookProject:
             )
             manuscript_backup = self._backup_manuscript_for_operation("manuscript-sync")
             self._patch_section_unlocked(thread_id, section_id, normalized, assemble=False)
-            result.update({
-                "checkpoint_backup": str(checkpoint_backup) if checkpoint_backup else None,
-                "manuscript_backup": str(manuscript_backup) if manuscript_backup else None,
-            })
+            result.update(
+                {
+                    "checkpoint_backup": str(checkpoint_backup) if checkpoint_backup else None,
+                    "manuscript_backup": str(manuscript_backup) if manuscript_backup else None,
+                }
+            )
             return result
 
     def _patch_section_unlocked(
-            self,
-            thread_id: str,
-            section_id: str,
-            markdown: str,
-            *,
-            assemble: bool = True,
+        self,
+        thread_id: str,
+        section_id: str,
+        markdown: str,
+        *,
+        assemble: bool = True,
     ) -> BookState:
         state = self.load_write_checkpoint(thread_id)
         section = state.get_section_plan(section_id)
@@ -999,9 +1188,7 @@ class BookProject:
         ):
             self._assemble_chapter(state, section.chapter_id, thread_id=thread_id)
         elif not assemble:
-            chapter = next(
-                (item for item in state.get_all_chapters_flat() if item.id == section.chapter_id), None
-            )
+            chapter = next((item for item in state.get_all_chapters_flat() if item.id == section.chapter_id), None)
             chapter_content = self._assemble_chapter_from_sections_deterministic(state, section.chapter_id)
             state.upsert_chapter_content(chapter_content)
             if chapter is not None:
@@ -1022,7 +1209,9 @@ class BookProject:
         with self._write_operation_lock(thread_id, "write.figures.upgrade_briefs"):
             state = self.load_write_checkpoint(thread_id)
             checkpoint_path = self.write_checkpoint_path(thread_id)
-            backup_path = None if dry_run else self._backup_checkpoint_for_operation(checkpoint_path, "figure-brief-upgrade")
+            backup_path = (
+                None if dry_run else self._backup_checkpoint_for_operation(checkpoint_path, "figure-brief-upgrade")
+            )
             manuscript_backup = None if dry_run else self._backup_manuscript_for_operation("figure-brief-upgrade")
 
             section_stats = self._upgrade_section_figure_briefs(state, write_files=not dry_run)
@@ -1218,7 +1407,9 @@ class BookProject:
         if not checkpoint_path.exists():
             return None
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        backup_path = checkpoint_path.with_name(f"{checkpoint_path.stem}.before-recover-{timestamp}{checkpoint_path.suffix}")
+        backup_path = checkpoint_path.with_name(
+            f"{checkpoint_path.stem}.before-recover-{timestamp}{checkpoint_path.suffix}"
+        )
         shutil.copy2(checkpoint_path, backup_path)
         return backup_path
 
@@ -1226,7 +1417,9 @@ class BookProject:
         if not checkpoint_path.exists():
             return None
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        backup_path = checkpoint_path.with_name(f"{checkpoint_path.stem}.before-{operation}-{timestamp}{checkpoint_path.suffix}")
+        backup_path = checkpoint_path.with_name(
+            f"{checkpoint_path.stem}.before-{operation}-{timestamp}{checkpoint_path.suffix}"
+        )
         shutil.copy2(checkpoint_path, backup_path)
         return backup_path
 
@@ -1427,7 +1620,12 @@ class BookProject:
         try:
             payload = cast("dict[str, Any]", json.loads(lock_path.read_text(encoding="utf-8")))
         except (json.JSONDecodeError, OSError):
-            return {"exists": True, "path": str(lock_path), "readable": False, "stale": self._is_stale_write_lock(lock_path)}
+            return {
+                "exists": True,
+                "path": str(lock_path),
+                "readable": False,
+                "stale": self._is_stale_write_lock(lock_path),
+            }
         pid = payload.get("pid")
         running = self._pid_is_running(pid) if isinstance(pid, int) else False
         return {
@@ -1462,8 +1660,7 @@ class BookProject:
             for content in state.section_contents
         }
         expected_chapter_paths = {
-            content.chapter_id: self._chapter_file_path(content.chapter_id)
-            for content in state.chapters
+            content.chapter_id: self._chapter_file_path(content.chapter_id) for content in state.chapters
         }
         missing_section_files = [section_id for section_id, path in expected_section_paths.items() if not path.exists()]
         missing_chapter_files = [chapter_id for chapter_id, path in expected_chapter_paths.items() if not path.exists()]
@@ -1502,7 +1699,9 @@ class BookProject:
             failed_sections.append(section.id)
             section_content = state.get_section_content(section.id)
             if section_content is not None:
-                section_codes.update(self._quality_issue_codes(section_content.revision_feedback or section_content.review_feedback))
+                section_codes.update(
+                    self._quality_issue_codes(section_content.revision_feedback or section_content.review_feedback)
+                )
         for chapter in state.get_all_chapters_flat():
             if chapter.status != "quality_failed":
                 continue
@@ -1541,8 +1740,12 @@ class BookProject:
             (section.id for section in state.get_all_sections_flat() if state.get_section_content(section.id) is None),
             "",
         )
-        failed_section = next((section.id for section in state.get_all_sections_flat() if section.status == "review_failed"), "")
-        failed_chapter = next((chapter.id for chapter in state.get_all_chapters_flat() if chapter.status == "quality_failed"), 0)
+        failed_section = next(
+            (section.id for section in state.get_all_sections_flat() if section.status == "review_failed"), ""
+        )
+        failed_chapter = next(
+            (chapter.id for chapter in state.get_all_chapters_flat() if chapter.status == "quality_failed"), 0
+        )
         if missing_section:
             commands.append(f"uv run python main.py write resume {missing_section}")
             commands.append("uv run python main.py write resume all")
@@ -1631,6 +1834,7 @@ class BookProject:
             )
             for item in blueprint.sections
         ]
+        expected_chapter_heading_structure(current)
 
     def _activate_first_section(self, state: BookState) -> None:
         sections = state.get_all_sections_flat()
@@ -1675,7 +1879,9 @@ class BookProject:
 
         raise ValueError("写作目标格式错误，应为 all、1、1.1 或 1.1.1")
 
-    def _move_to_next_unwritten_section(self, state: BookState, last_section_id: str, *, thread_id: str | None = None) -> None:
+    def _move_to_next_unwritten_section(
+        self, state: BookState, last_section_id: str, *, thread_id: str | None = None
+    ) -> None:
         sections = state.get_all_sections_flat()
         if not sections:
             state.current_phase = "completed"
@@ -1698,7 +1904,9 @@ class BookProject:
             raise RuntimeError(f"三级小节不存在: {section.id}")
         self._ensure_chapter_research(state)
         previous_brief = self._previous_section_brief(state, section)
-        markdown = self._normalize_markdown_output(self.writer.write_planned_section(state, section, previous_brief=previous_brief))
+        markdown = self._normalize_markdown_output(
+            self.writer.write_planned_section(state, section, previous_brief=previous_brief)
+        )
         content = SectionContent(
             section_id=section.id,
             chapter_id=section.chapter_id,
@@ -1723,35 +1931,23 @@ class BookProject:
         fence_match = re.search(r"```(?:markdown|md)\s*\n", text, flags=re.IGNORECASE)
         heading_match = re.search(r"^#{1,6}\s+", text, flags=re.MULTILINE)
         if fence_match and (heading_match is None or fence_match.start() < heading_match.start()):
-            text = text[fence_match.end():].strip()
+            text = text[fence_match.end() :].strip()
             if text.endswith("```"):
                 text = text[:-3].strip()
             return text
         if heading_match and heading_match.start() > 0:
-            prefix = text[:heading_match.start()].strip()
+            prefix = text[: heading_match.start()].strip()
             if re.search(r"(以下是|完整.*Markdown|合稿后的完整|我将按照|已统一标题)", prefix):
-                return text[heading_match.start():].strip()
+                return text[heading_match.start() :].strip()
         return text
 
-    @staticmethod
-    def _chapter_revision_shrank_too_much(state: BookState, original: str, revised: str) -> bool:
-        """防止整章修订被 LLM 异常压缩成摘要或代码块残片。"""
-        original_words = count_words(original)
-        revised_words = count_words(revised)
-        if original_words < 2000:
-            return False
-        min_acceptable = int(original_words * 0.45)
-        if state.quality.enabled and original_words >= state.quality.min_words_per_chapter:
-            min_acceptable = max(min_acceptable, state.quality.min_words_per_chapter)
-        return revised_words < min_acceptable
-
     def _review_section_until_pass(
-            self,
-            state: BookState,
-            section: SectionPlan,
-            content: SectionContent,
-            previous_brief: str,
-            thread_id: str | None,
+        self,
+        state: BookState,
+        section: SectionPlan,
+        content: SectionContent,
+        previous_brief: str,
+        thread_id: str | None,
     ) -> SectionContent:
         """执行小节级基础质量闭环。"""
         for round_index in range(state.max_revision_count + 1):
@@ -1794,13 +1990,15 @@ class BookProject:
                     raise RuntimeError(message)
                 return content
 
-            revised = self._normalize_markdown_output(self.writer.revise_planned_section(
-                state,
-                section,
-                content.markdown,
-                feedback,
-                previous_brief=previous_brief,
-            ))
+            revised = self._normalize_markdown_output(
+                self.writer.revise_planned_section(
+                    state,
+                    section,
+                    content.markdown,
+                    feedback,
+                    previous_brief=previous_brief,
+                )
+            )
             content = SectionContent(
                 section_id=section.id,
                 chapter_id=section.chapter_id,
@@ -1818,10 +2016,10 @@ class BookProject:
         return content
 
     def _section_quality_issues(
-            self,
-            state: BookState,
-            section: SectionPlan,
-            content: SectionContent,
+        self,
+        state: BookState,
+        section: SectionPlan,
+        content: SectionContent,
     ) -> list[dict[str, str]]:
         """返回小节级确定性质量问题。"""
         issues: list[dict[str, str]] = []
@@ -1916,16 +2114,19 @@ class BookProject:
         return previous.markdown[:600].replace("\n", " ") if previous else ""
 
     def _assemble_chapter_if_ready(
-            self,
-            state: BookState,
-            chapter_id: int,
-            *,
-            thread_id: str | None = None,
-            retry_failed: bool = False,
+        self,
+        state: BookState,
+        chapter_id: int,
+        *,
+        thread_id: str | None = None,
+        retry_failed: bool = False,
     ) -> None:
         if state.get_chapter_content(chapter_id) is not None:
             chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
-            if chapter is not None and (chapter.status not in {"approved", "quality_failed"} or (retry_failed and chapter.status == "quality_failed")):
+            if chapter is not None and (
+                chapter.status not in {"approved", "quality_failed"}
+                or (retry_failed and chapter.status == "quality_failed")
+            ):
                 self._review_chapter_until_pass(state, chapter_id, thread_id=thread_id)
             return
         if not self._chapter_sections_complete(state, chapter_id):
@@ -1967,12 +2168,8 @@ class BookProject:
         chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
         if chapter is None:
             raise RuntimeError(f"章节不存在: {chapter_id}")
-        sections = state.get_chapter_section_contents(chapter_id)
-        if not sections:
-            raise RuntimeError(f"第{chapter_id}章尚无小节正文，无法合稿。")
-        markdown = self._normalize_markdown_output(
-            "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in sections)])
-        )
+        sections = [item for item in state.section_contents if item.chapter_id == chapter_id]
+        markdown = build_structured_chapter_markdown(chapter, sections)
         return ChapterContent(
             chapter_id=chapter.id,
             title=chapter.title,
@@ -1981,21 +2178,18 @@ class BookProject:
         )
 
     def _assemble_chapter_from_sections(
-            self,
-            state: BookState,
-            chapter_id: int,
-            *,
-            revision_count: int = 0,
+        self,
+        state: BookState,
+        chapter_id: int,
+        *,
+        revision_count: int = 0,
     ) -> ChapterContent:
         """根据当前小节正文重新合成章节正文。"""
         chapter = next((item for item in state.get_all_chapters_flat() if item.id == chapter_id), None)
         if chapter is None:
             raise RuntimeError(f"章节不存在: {chapter_id}")
-        sections = state.get_chapter_section_contents(chapter_id)
-        if not sections:
-            raise RuntimeError(f"第{chapter_id}章尚无小节正文，无法合稿。")
-        raw_markdown = "\n\n".join([f"# 第{chapter.id}章 {chapter.title}", *(item.markdown.strip() for item in sections)])
-        markdown = self._normalize_markdown_output(self.assembler.assemble(state, raw_markdown))
+        sections = [item for item in state.section_contents if item.chapter_id == chapter_id]
+        markdown = build_structured_chapter_markdown(chapter, sections)
         return ChapterContent(
             chapter_id=chapter.id,
             title=chapter.title,
@@ -2005,11 +2199,11 @@ class BookProject:
         )
 
     def _review_chapter_until_pass(
-            self,
-            state: BookState,
-            chapter_id: int,
-            *,
-            thread_id: str | None = None,
+        self,
+        state: BookState,
+        chapter_id: int,
+        *,
+        thread_id: str | None = None,
     ) -> ChapterContent:
         """执行章节级出版质量闭环。"""
         if not state.set_current_chapter_by_id(chapter_id):
@@ -2020,7 +2214,7 @@ class BookProject:
 
         for round_index in range(state.max_revision_count + 1):
             deterministic_report = evaluate_chapter_quality(state, content, base_dir=self.paths.project_dir)
-            # 原创性检索开销大（每段一次 embedding）；仅在确定性门已通过时才跑，避免为必然失败的章节白付成本。
+            # 原创性检索开销大（每段一次稀疏检索）；仅在确定性门已通过时运行。
             if deterministic_report.pass_:
                 originality_issues = check_originality(
                     self.rag,
@@ -2054,7 +2248,9 @@ class BookProject:
                 )
                 continue
 
-            fact_report, citation_report, style_report, editor_report = self._run_chapter_llm_quality_gates(state, chapter_id)
+            fact_report, citation_report, style_report, editor_report = self._run_chapter_llm_quality_gates(
+                state, chapter_id
+            )
             self._store_chapter_quality_reports(
                 state,
                 content,
@@ -2072,8 +2268,7 @@ class BookProject:
                 self._save_write_checkpoint(thread_id, state)
 
             if all(
-                self._report_passed(report)
-                for report in [fact_report, citation_report, style_report, editor_report]
+                self._report_passed(report) for report in [fact_report, citation_report, style_report, editor_report]
             ):
                 content.fact_feedback = ""
                 content.citation_feedback = ""
@@ -2104,9 +2299,9 @@ class BookProject:
         return content
 
     def _run_chapter_llm_quality_gates(
-            self,
-            state: BookState,
-            chapter_id: int,
+        self,
+        state: BookState,
+        chapter_id: int,
     ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
         """并行执行互不依赖的章节 LLM 质量门，降低审校墙钟时间。"""
         gates = {
@@ -2123,38 +2318,45 @@ class BookProject:
         return results["fact"], results["citation"], results["style"], results["editor"]
 
     def _revise_chapter_or_sections_from_feedback(
-            self,
-            state: BookState,
-            content: ChapterContent,
-            feedback: str,
-            revision_count: int,
-            *,
-            thread_id: str | None,
+        self,
+        state: BookState,
+        content: ChapterContent,
+        feedback: str,
+        revision_count: int,
+        *,
+        thread_id: str | None,
     ) -> ChapterContent:
-        """优先按反馈定位三级小节局部返修，定位不到再整章兜底。"""
+        """优先局部返修；无法定位时逐节返修整章并确定性重建标题骨架。"""
         section_ids = self._feedback_section_ids(state, content.chapter_id, feedback)
         if section_ids:
             logger.info("🎯 [章节质量门] 第%d章定位到局部小节: %s", content.chapter_id, ", ".join(section_ids))
-            return self._revise_sections_from_chapter_feedback(
-                state,
-                content,
-                section_ids,
-                feedback,
-                revision_count,
-                thread_id=thread_id,
+        else:
+            section_ids = [
+                section.id for section in state.get_all_sections_flat() if section.chapter_id == content.chapter_id
+            ]
+            logger.info(
+                "🧩 [章节质量门] 第%d章反馈无法定位三级小节，改为逐节返修 %d 个小节",
+                content.chapter_id,
+                len(section_ids),
             )
-        logger.info("🧩 [章节质量门] 第%d章反馈无法定位三级小节，进入章节级修订", content.chapter_id)
-        return self._revise_chapter_from_feedback(state, content, feedback, revision_count)
+        return self._revise_sections_from_chapter_feedback(
+            state,
+            content,
+            section_ids,
+            feedback,
+            revision_count,
+            thread_id=thread_id,
+        )
 
     def _revise_sections_from_chapter_feedback(
-            self,
-            state: BookState,
-            content: ChapterContent,
-            section_ids: list[str],
-            feedback: str,
-            revision_count: int,
-            *,
-            thread_id: str | None,
+        self,
+        state: BookState,
+        content: ChapterContent,
+        section_ids: list[str],
+        feedback: str,
+        revision_count: int,
+        *,
+        thread_id: str | None,
     ) -> ChapterContent:
         """仅修订被章节质量门定位到的三级小节，并重新合稿。"""
         previous_section_id = state.current_section_id
@@ -2167,13 +2369,15 @@ class BookProject:
             if not state.set_current_section_by_id(section_id):
                 continue
             previous_brief = self._previous_section_brief(state, section)
-            revised_markdown = self._normalize_markdown_output(self.writer.revise_planned_section(
-                state,
-                section,
-                section_content.markdown,
-                feedback,
-                previous_brief=previous_brief,
-            ))
+            revised_markdown = self._normalize_markdown_output(
+                self.writer.revise_planned_section(
+                    state,
+                    section,
+                    section_content.markdown,
+                    feedback,
+                    previous_brief=previous_brief,
+                )
+            )
             revised_content = SectionContent(
                 section_id=section.id,
                 chapter_id=section.chapter_id,
@@ -2200,7 +2404,7 @@ class BookProject:
         if previous_section_id:
             state.set_current_section_by_id(previous_section_id)
         if revised_count == 0:
-            return self._revise_chapter_from_feedback(state, content, feedback, revision_count)
+            raise RuntimeError(f"第{content.chapter_id}章没有可返修的小节正文，拒绝直接覆盖章节合稿。")
 
         assembled = self._assemble_chapter_from_sections(state, content.chapter_id, revision_count=revision_count)
         assembled.revision_feedback = feedback
@@ -2222,19 +2426,26 @@ class BookProject:
         known_ids = [section.id for section in state.get_all_sections_flat() if section.chapter_id == chapter_id]
         known = set(known_ids)
         result: list[str] = []
-        for section_id in self._section_ids_from_json_feedback(feedback, known):
+        for section_id in self._section_ids_from_json_feedback(feedback, known_ids, known):
             if section_id not in result:
                 result.append(section_id)
         for section_id in re.findall(rf"\b{chapter_id}\.\d+\.\d+\b", feedback):
             if section_id in known and section_id not in result:
                 result.append(section_id)
+        for section_id in re.findall(rf"(?<![\d.]){chapter_id}\.\d+(?!\.\d)", feedback):
+            self._append_feedback_section_scope(section_id, known_ids, known, result)
         return result
 
-    def _section_ids_from_json_feedback(self, feedback: str, known: set[str]) -> list[str]:
+    def _section_ids_from_json_feedback(
+        self,
+        feedback: str,
+        known_ids: list[str],
+        known: set[str],
+    ) -> list[str]:
         """解析 JSON 反馈中的 section_id 字段。"""
         result: list[str] = []
         for payload in self._json_objects_from_text(feedback):
-            self._collect_section_ids(payload, known, result)
+            self._collect_section_ids(payload, known_ids, known, result)
         return result
 
     @staticmethod
@@ -2255,70 +2466,46 @@ class BookProject:
             index = start + end
         return payloads
 
-    def _collect_section_ids(self, payload: object, known: set[str], result: list[str]) -> None:
+    def _collect_section_ids(
+        self,
+        payload: object,
+        known_ids: list[str],
+        known: set[str],
+        result: list[str],
+    ) -> None:
         if isinstance(payload, dict):
             section_id = payload.get("section_id")
-            if isinstance(section_id, str) and section_id in known and section_id not in result:
-                result.append(section_id)
+            if isinstance(section_id, str):
+                self._append_feedback_section_scope(section_id, known_ids, known, result)
             for value in payload.values():
-                self._collect_section_ids(value, known, result)
+                self._collect_section_ids(value, known_ids, known, result)
         elif isinstance(payload, list):
             for item in payload:
-                self._collect_section_ids(item, known, result)
+                self._collect_section_ids(item, known_ids, known, result)
 
-    def _revise_chapter_from_feedback(
-            self,
-            state: BookState,
-            content: ChapterContent,
-            feedback: str,
-            revision_count: int,
-    ) -> ChapterContent:
-        """按反馈修订章节，并在偏薄时优先扩写。"""
-        current_markdown = self._normalize_markdown_output(content.markdown)
-        revised = self._normalize_markdown_output(self.expander.expand(state, current_markdown, feedback))
-        if revised.strip() == current_markdown.strip():
-            with _HEAVY_CHAPTER_REVISION_LOCK:
-                logger.info("🚦 [章节修订] 第%d章进入整章重写限流区", content.chapter_id)
-                revised = self._normalize_markdown_output(self.writer.revise(state, feedback))
-        if self._chapter_revision_shrank_too_much(state, current_markdown, revised):
-            original_words = count_words(current_markdown)
-            revised_words = count_words(revised)
-            logger.warning(
-                "⚠️ [章节修订] 第%d章修订结果异常缩水，已拒收: %d → %d 字",
-                content.chapter_id,
-                original_words,
-                revised_words,
-            )
-            guarded = content.model_copy(
-                update={
-                    "markdown": current_markdown,
-                    "word_count": original_words,
-                    "revision_feedback": feedback,
-                    "revision_count": revision_count,
-                }
-            )
-            state.upsert_chapter_content(guarded)
-            return guarded
-        new_content = ChapterContent(
-            chapter_id=content.chapter_id,
-            title=content.title,
-            markdown=revised,
-            word_count=count_words(revised),
-            revision_feedback=feedback,
-            revision_count=revision_count,
-        )
-        state.upsert_chapter_content(new_content)
-        self._save_chapter_file(state, new_content)
-        logger.info("🔁 [章节修订] 第%d章第%d轮修订完成，%d 字", content.chapter_id, revision_count, new_content.word_count)
-        return new_content
+    @staticmethod
+    def _append_feedback_section_scope(
+        section_id: str,
+        known_ids: list[str],
+        known: set[str],
+        result: list[str],
+    ) -> None:
+        if section_id in known:
+            if section_id not in result:
+                result.append(section_id)
+            return
+        prefix = f"{section_id}."
+        for known_id in known_ids:
+            if known_id.startswith(prefix) and known_id not in result:
+                result.append(known_id)
 
     def _mark_chapter_quality_failed(
-            self,
-            state: BookState,
-            content: ChapterContent,
-            message: str,
-            *,
-            thread_id: str | None,
+        self,
+        state: BookState,
+        content: ChapterContent,
+        message: str,
+        *,
+        thread_id: str | None,
     ) -> ChapterContent:
         """章节达到修订上限后保留反馈、标记失败，并按配置决定是否继续。"""
         self._annotate_ai_flavor(content)
@@ -2333,15 +2520,15 @@ class BookProject:
         return content
 
     def _store_chapter_quality_reports(
-            self,
-            state: BookState,
-            content: ChapterContent,
-            *,
-            publication_feedback: str,
-            fact_report: dict[str, Any],
-            citation_report: dict[str, Any],
-            style_report: dict[str, Any],
-            editor_report: dict[str, Any],
+        self,
+        state: BookState,
+        content: ChapterContent,
+        *,
+        publication_feedback: str,
+        fact_report: dict[str, Any],
+        citation_report: dict[str, Any],
+        style_report: dict[str, Any],
+        editor_report: dict[str, Any],
     ) -> None:
         """把章节质量报告写回状态，供断点恢复和人工审阅。"""
         content.publication_feedback = publication_feedback
@@ -2439,20 +2626,28 @@ class BookProject:
                 return
 
             for chapter_id in revise_chapter_ids:
-                self._revise_chapter_for_final_review(state, chapter_id, review, round_index + 1)
+                self._revise_chapter_for_final_review(
+                    state,
+                    chapter_id,
+                    review,
+                    round_index + 1,
+                    thread_id=thread_id,
+                )
                 self._review_chapter_until_pass(state, chapter_id, thread_id=thread_id)
             state.final_revision_round = round_index + 1
             if thread_id is not None:
                 self._save_write_checkpoint(thread_id, state)
 
     def _revise_chapter_for_final_review(
-            self,
-            state: BookState,
-            chapter_id: int,
-            review: dict[str, Any],
-            revision_round: int,
+        self,
+        state: BookState,
+        chapter_id: int,
+        review: dict[str, Any],
+        revision_round: int,
+        *,
+        thread_id: str | None = None,
     ) -> None:
-        """根据全书终审反馈返修指定章节。"""
+        """根据全书终审反馈返修小节，并确定性重建指定章节。"""
         if not state.set_current_chapter_by_id(chapter_id):
             raise RuntimeError(f"终审要求返修不存在的章节: {chapter_id}")
         content = state.get_chapter_content(chapter_id)
@@ -2465,27 +2660,17 @@ class BookProject:
                 "review": review,
             }
         )
-        revised = self._normalize_markdown_output(self.writer.revise(state, feedback))
-        current_markdown = self._normalize_markdown_output(content.markdown)
-        if self._chapter_revision_shrank_too_much(state, current_markdown, revised):
-            logger.warning(
-                "⚠️ [终审返修] 第%d章修订结果异常缩水，已拒收: %d → %d 字",
-                chapter_id,
-                count_words(current_markdown),
-                count_words(revised),
-            )
-            return
-        new_content = ChapterContent(
-            chapter_id=content.chapter_id,
-            title=content.title,
-            markdown=revised,
-            word_count=count_words(revised),
-            review_feedback=feedback,
-            revision_feedback=feedback,
-            revision_count=content.revision_count + revision_round,
+        revised = self._revise_chapter_or_sections_from_feedback(
+            state,
+            content,
+            feedback,
+            content.revision_count + revision_round,
+            thread_id=thread_id,
         )
-        state.upsert_chapter_content(new_content)
-        self._save_chapter_file(state, new_content)
+        revised.review_feedback = feedback
+        revised.revision_feedback = feedback
+        state.upsert_chapter_content(revised)
+        self._save_chapter_file(state, revised)
 
     @staticmethod
     def _final_review_revise_chapter_ids(state: BookState, review: dict[str, Any]) -> list[int]:
@@ -2520,6 +2705,7 @@ class BookProject:
             for section in chapter.sections:
                 if not section.id.startswith(f"{chapter.id}.") or len(section.id.split(".")) != 3:
                     raise RuntimeError(f"第{chapter.id}章包含非法三级小节编号: {section.id}")
+            expected_chapter_heading_structure(chapter)
 
     def _save_section_file(self, state: BookState, content: SectionContent) -> None:
         if not self._write_artifacts:

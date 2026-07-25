@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from copy import deepcopy
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -23,15 +24,41 @@ def _state_with_sections() -> BookState:
                         id=1,
                         title="第一章",
                         sections=[
-                            SectionPlan(id="1.1.1", chapter_id=1, title="一", heading="1.1.1 一"),
-                            SectionPlan(id="1.1.2", chapter_id=1, title="二", heading="1.1.2 二"),
-                            SectionPlan(id="1.2.1", chapter_id=1, title="三", heading="1.2.1 三"),
+                            SectionPlan(
+                                id="1.1.1",
+                                chapter_id=1,
+                                title="一",
+                                heading="1.1.1 一",
+                                parent_title="第一组",
+                            ),
+                            SectionPlan(
+                                id="1.1.2",
+                                chapter_id=1,
+                                title="二",
+                                heading="1.1.2 二",
+                                parent_title="第一组",
+                            ),
+                            SectionPlan(
+                                id="1.2.1",
+                                chapter_id=1,
+                                title="三",
+                                heading="1.2.1 三",
+                                parent_title="1.2 第二组",
+                            ),
                         ],
                     ),
                     ChapterPlan(
                         id=2,
                         title="第二章",
-                        sections=[SectionPlan(id="2.1.1", chapter_id=2, title="四", heading="2.1.1 四")],
+                        sections=[
+                            SectionPlan(
+                                id="2.1.1",
+                                chapter_id=2,
+                                title="四",
+                                heading="2.1.1 四",
+                                parent_title="第一组",
+                            )
+                        ],
                     ),
                 ],
             )
@@ -56,6 +83,33 @@ def _mark_book_ready_for_final_review(state: BookState) -> None:
                 )
 
 
+def _assemble_ready_chapters(state: BookState) -> None:
+    project = object.__new__(BookProject)
+    for chapter in state.get_all_chapters_flat():
+        state.upsert_chapter_content(project._assemble_chapter_from_sections_deterministic(state, chapter.id))
+
+
+def _add_remaining_chapter_sections(state: BookState, chapter_id: int, *, exclude: set[str]) -> None:
+    chapter = next(item for item in state.get_all_chapters_flat() if item.id == chapter_id)
+    for section in chapter.sections:
+        if section.id in exclude:
+            continue
+        state.upsert_section_content(
+            SectionContent(
+                section_id=section.id,
+                chapter_id=chapter_id,
+                title=section.title,
+                markdown=(
+                    f"### {section.heading}\n\n正文。\n\n"
+                    f"```book-figure\nid: fig-{section.id}\ntype: architecture\ntitle: 测试架构\n"
+                    "purpose: 验证质量门。\nlayout: 自左向右。\nelements:\n- 输入\n- 输出\n"
+                    "relationships:\n- 输入流向输出\nlegend:\n- 箭头表示流向\n"
+                    "caption: 测试架构图。\nrender_notes: 使用 HTML/SVG 绘制。\n```"
+                ),
+            )
+        )
+
+
 def test_write_target_resolution_accepts_human_scopes() -> None:
     project = object.__new__(BookProject)
     state = _state_with_sections()
@@ -70,6 +124,16 @@ def test_write_target_resolution_accepts_human_scopes() -> None:
         "1.2.1",
         "2.1.1",
     ]
+
+
+def test_chapter_feedback_secondary_id_expands_to_planned_sections() -> None:
+    project = object.__new__(BookProject)
+    state = _state_with_sections()
+    feedback = '{"issues": [{"section_id": "1.1", "description": "第一组需要修订"}]}'
+
+    section_ids = project._feedback_section_ids(state, 1, feedback)
+
+    assert section_ids == ["1.1.1", "1.1.2"]
 
 
 def test_parallel_chapters_only_for_complete_multi_chapter_targets() -> None:
@@ -125,23 +189,14 @@ class _FailingDirector:
         }
 
 
-class _Expander:
-    def __init__(self) -> None:
-        self.calls = 0
-
-    def expand(self, state: BookState, markdown: str, feedback: str = "") -> str:
-        self.calls += 1
-        return "# 第1章 第一章\n\n" + "正文" * 30
-
-
-class _ShrinkingExpander:
-    def expand(self, state: BookState, markdown: str, feedback: str = "") -> str:
-        return "```markdown\n# 第1章 第一章\n\n过短摘要。\n```"
-
-
 class _Assembler:
     def assemble(self, state: BookState, raw_markdown: str) -> str:
         return raw_markdown
+
+
+class _StructureBreakingAssembler:
+    def assemble(self, state: BookState, raw_markdown: str) -> str:
+        raise AssertionError("章节标题骨架不得交给 LLM assembler")
 
 
 class _UnusedWriter:
@@ -149,15 +204,15 @@ class _UnusedWriter:
         self.section_revision_calls: list[str] = []
 
     def revise(self, state: BookState, feedback: str) -> str:
-        raise AssertionError("deterministic short chapter should be fixed by expander")
+        raise AssertionError("chapter markdown must never be rewritten directly")
 
     def revise_planned_section(
-            self,
-            state: BookState,
-            section: SectionPlan,
-            markdown: str,
-            feedback: str,
-            previous_brief: str = "",
+        self,
+        state: BookState,
+        section: SectionPlan,
+        markdown: str,
+        feedback: str,
+        previous_brief: str = "",
     ) -> str:
         self.section_revision_calls.append(section.id)
         return f"{markdown}\n\n已按质量门反馈修订。"
@@ -165,15 +220,19 @@ class _UnusedWriter:
 
 class _FactFixingSectionWriter(_UnusedWriter):
     def revise_planned_section(
-            self,
-            state: BookState,
-            section: SectionPlan,
-            markdown: str,
-            feedback: str,
-            previous_brief: str = "",
+        self,
+        state: BookState,
+        section: SectionPlan,
+        markdown: str,
+        feedback: str,
+        previous_brief: str = "",
     ) -> str:
         self.section_revision_calls.append(section.id)
-        return f"### {section.heading}\n\n" + "正文" * 700 + "\n\n在示意场景中，平台延迟保持在较低水平，市场判断改为定性描述。"
+        return (
+            f"### {section.heading}\n\n"
+            + "正文" * 700
+            + "\n\n在示意场景中，平台延迟保持在较低水平，市场判断改为定性描述。"
+        )
 
 
 class _SuccessfulSectionReviser:
@@ -181,12 +240,12 @@ class _SuccessfulSectionReviser:
         self.calls: list[str] = []
 
     def revise_planned_section(
-            self,
-            state: BookState,
-            section: SectionPlan,
-            markdown: str,
-            feedback: str,
-            previous_brief: str = "",
+        self,
+        state: BookState,
+        section: SectionPlan,
+        markdown: str,
+        feedback: str,
+        previous_brief: str = "",
     ) -> str:
         self.calls.append(section.id)
         return f"### {section.heading}\n\n{section.id} " + "正文" * 220
@@ -216,9 +275,11 @@ class _NoHitRAG:
 def _quality_project(tmp_path) -> BookProject:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
-    project.cfg = SimpleNamespace(quality=QualitySettings(enabled=False, min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(enabled=False, min_figures_per_section=0),
+        references=SimpleNamespace(query_categories=[]),
+    )
     project.rag = _NoHitRAG()
-    project.expander = _Expander()
     project.writer = _UnusedWriter()
     project.assembler = _Assembler()
     project.fact_checker = _PassingCheck()
@@ -293,7 +354,10 @@ def test_load_write_checkpoint_refreshes_runtime_settings_from_current_config(tm
 def test_parallel_chapters_write_and_merge_by_chapter(tmp_path) -> None:
     project = object.__new__(BookProject)
     project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
-    project.cfg = SimpleNamespace(quality=QualitySettings(enabled=False, min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(enabled=False, min_figures_per_section=0),
+        references=SimpleNamespace(query_categories=[]),
+    )
     project.rag = _NoHitRAG()
     project.writer = _ParallelWriter()
     project.assembler = _Assembler()
@@ -411,7 +475,9 @@ def test_parallel_worker_resumes_from_worker_checkpoint(tmp_path) -> None:
         SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n已有正文", word_count=10)
     )
     checkpoint_state.mark_section_status("1.1.1", "reviewed")
-    project._save_state_envelope(project.worker_checkpoint_path("book", 1), checkpoint_state, kind="write.worker.checkpoint")
+    project._save_state_envelope(
+        project.worker_checkpoint_path("book", 1), checkpoint_state, kind="write.worker.checkpoint"
+    )
 
     fresh_snapshot = _state_with_sections()
     for section in fresh_snapshot.get_all_sections_flat():
@@ -443,7 +509,9 @@ def test_read_status_overlays_newer_worker_checkpoint(tmp_path) -> None:
     worker_state.upsert_section_content(
         SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\nworker正文")
     )
-    project._save_state_envelope(project.worker_checkpoint_path("book", 1), worker_state, kind="write.worker.checkpoint")
+    project._save_state_envelope(
+        project.worker_checkpoint_path("book", 1), worker_state, kind="write.worker.checkpoint"
+    )
     project._save_write_checkpoint("book", main_state)
 
     displayed = project.load_write_checkpoint_with_workers("book")
@@ -496,7 +564,12 @@ def test_parallel_worker_retries_review_failed_sections(tmp_path) -> None:
     for section in state.get_all_sections_flat():
         section.target_words = 1
         state.upsert_section_content(
-            SectionContent(section_id=section.id, chapter_id=section.chapter_id, title=section.title, markdown=f"### {section.heading}\n\n已有正文" * 40)
+            SectionContent(
+                section_id=section.id,
+                chapter_id=section.chapter_id,
+                title=section.title,
+                markdown=f"### {section.heading}\n\n已有正文" * 40,
+            )
         )
         state.mark_section_status(section.id, "reviewed")
     failed = state.get_section_plan("1.1.1")
@@ -519,7 +592,10 @@ def test_write_lock_rejects_live_process(tmp_path) -> None:
         encoding="utf-8",
     )
 
-    with pytest.raises(RuntimeError, match="已有写作任务正在运行"), project._write_operation_lock("book", "write.resume"):
+    with (
+        pytest.raises(RuntimeError, match="已有写作任务正在运行"),
+        project._write_operation_lock("book", "write.resume"),
+    ):
         pass
 
 
@@ -570,9 +646,7 @@ def test_sync_manuscript_section_dry_run_reports_change_without_writing(tmp_path
     chapter_dir.mkdir(parents=True)
     (chapter_dir / "1.1.1.md").write_text("### 1.1.1 一\\n\\n旧正文", encoding="utf-8")
 
-    result = project.sync_manuscript_section(
-        "book", "1.1.1", "### 1.1.1 一\\n\\n新正文", dry_run=True
-    )
+    result = project.sync_manuscript_section("book", "1.1.1", "### 1.1.1 一\\n\\n新正文", dry_run=True)
     assert result["changed"] is True
     assert result["dry_run"] is True
     assert "旧正文" in project.load_write_checkpoint("book").get_section_content("1.1.1").markdown
@@ -594,6 +668,106 @@ def test_sync_manuscript_section_rejects_drift(tmp_path) -> None:
 
     with pytest.raises(RuntimeError, match="稿件镜像与 checkpoint 已发生漂移"):
         project.sync_manuscript_section("book", "1.1.1", "### 1.1.1 一\\n\\n新正文", dry_run=True)
+
+
+def _save_rebuild_fixture(project: BookProject, state: BookState) -> None:
+    for chapter in state.get_all_chapters_flat():
+        chapter.status = "approved"
+        for section in chapter.sections:
+            section.status = "reviewed"
+            if state.get_section_content(section.id) is None:
+                markdown = f"## {section.heading}\n\n正文。\n\n### 内部主题\n\n细节。"
+                state.upsert_section_content(
+                    SectionContent(
+                        section_id=section.id,
+                        chapter_id=chapter.id,
+                        title=section.title,
+                        markdown=markdown,
+                        review_feedback="已通过小节审校",
+                        revision_count=2,
+                    )
+                )
+    state.current_phase = "completed"
+    state.publication_approved = True
+    _assemble_ready_chapters(state)
+    state.final_report = '{"pass": true}'
+    project._save_write_checkpoint("book", state)
+    for section_content in state.section_contents:
+        path = project._section_file_path(section_content.chapter_id, section_content.section_id)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(section_content.markdown, encoding="utf-8")
+    for chapter_content in state.chapters:
+        path = project._chapter_file_path(chapter_content.chapter_id)
+        path.write_text(chapter_content.markdown, encoding="utf-8")
+
+
+def test_rebuild_manuscript_chapters_dry_run_does_not_write(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings())
+    state = _state_with_sections()
+    _save_rebuild_fixture(project, state)
+    checkpoint_before = project.write_checkpoint_path("book").read_bytes()
+    manuscript_before = project._section_file_path(1, "1.1.1").read_bytes()
+
+    result = project.rebuild_manuscript_chapters("book", dry_run=True)
+
+    assert result["dry_run"] is True
+    assert result["chapters"] == 2
+    assert result["sections"] == 4
+    assert result["secondary_headings"] == 3
+    assert result["publication_approved_before"] is True
+    assert result["publication_approved_after"] is False
+    assert project.write_checkpoint_path("book").read_bytes() == checkpoint_before
+    assert project._section_file_path(1, "1.1.1").read_bytes() == manuscript_before
+    assert not list(tmp_path.glob("write/book.before-chapter-structure-rebuild-*.json"))
+    assert not list(tmp_path.glob("backups/manuscript.before-chapter-structure-rebuild-*"))
+
+
+def test_rebuild_manuscript_chapters_backs_up_and_preserves_review_metadata(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings())
+    state = _state_with_sections()
+    _save_rebuild_fixture(project, state)
+
+    result = project.rebuild_manuscript_chapters("book", dry_run=False)
+    rebuilt = project.load_write_checkpoint("book")
+
+    assert result["dry_run"] is False
+    assert Path(result["checkpoint_backup"]).exists()
+    assert Path(result["manuscript_backup"]).exists()
+    assert rebuilt.publication_approved is False
+    assert rebuilt.current_phase == "final_review"
+    assert rebuilt.final_report == ""
+    assert rebuilt.get_section_plan("1.1.1").status == "reviewed"
+    section = rebuilt.get_section_content("1.1.1")
+    assert section is not None
+    assert section.review_feedback == "已通过小节审校"
+    assert section.revision_count == 2
+    assert section.markdown.startswith("### 1.1.1 一")
+    assert "#### 内部主题" in section.markdown
+    chapter = rebuilt.get_chapter_content(1)
+    assert chapter is not None
+    assert chapter.markdown.startswith("# 第1章 第一章\n\n## 1.1 第一组")
+    assert "## 1.2 第二组" in chapter.markdown
+    assert project._chapter_file_path(1).read_text(encoding="utf-8") == chapter.markdown
+    assert project._section_file_path(1, "1.1.1").read_text(encoding="utf-8") == section.markdown
+
+
+def test_rebuild_manuscript_chapters_rejects_section_drift(tmp_path) -> None:
+    project = object.__new__(BookProject)
+    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path)
+    project.cfg = SimpleNamespace(quality=QualitySettings())
+    state = _state_with_sections()
+    _save_rebuild_fixture(project, state)
+    project._section_file_path(1, "1.1.1").write_text("### 1.1.1 一\n\n外部修改。", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="manuscript 与 checkpoint 存在漂移"):
+        project.rebuild_manuscript_chapters("book", dry_run=False)
+
+    assert project.load_write_checkpoint("book").publication_approved is True
+    assert not list(tmp_path.glob("write/book.before-chapter-structure-rebuild-*.json"))
 
 
 def test_recover_manuscript_imports_orphan_sections_and_chapters(tmp_path) -> None:
@@ -625,18 +799,32 @@ def test_recover_manuscript_imports_orphan_sections_and_chapters(tmp_path) -> No
     assert result["backup"] is not None
 
 
-def test_chapter_quality_gate_revises_short_chapter_then_approves(tmp_path) -> None:
+def test_chapter_quality_gate_revises_all_sections_for_unscoped_feedback(tmp_path) -> None:
     project = _quality_project(tmp_path)
+    writer = _SuccessfulSectionReviser()
+    project.writer = writer
     state = _state_with_sections()
-    state.quality = QualitySettings(enabled=True, min_words_per_chapter=20)
+    state.quality = QualitySettings(enabled=True, min_words_per_chapter=1000)
     state.max_revision_count = 1
     state.set_current_chapter_by_id(1)
-    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 短"))
+    for section in state.get_current_chapter().sections:
+        section.target_words = 1
+        state.upsert_section_content(
+            SectionContent(
+                section_id=section.id,
+                chapter_id=section.chapter_id,
+                title=section.title,
+                markdown=f"### {section.heading}\n\n短。",
+            )
+        )
+    state.upsert_chapter_content(project._assemble_chapter_from_sections_deterministic(state, 1))
 
     content = project._review_chapter_until_pass(state, 1)
 
-    assert project.expander.calls == 1
+    assert writer.calls == ["1.1.1", "1.1.2", "1.2.1"]
     assert content.revision_count == 1
+    assert "## 1.1 第一组" in content.markdown
+    assert "## 1.2 第二组" in content.markdown
     assert state.get_chapter_content(1).fact_feedback == ""
     assert state.get_chapter_content(1).review_feedback == ""
     assert state.get_current_chapter().status == "approved"
@@ -681,7 +869,9 @@ def test_section_review_requires_book_figure(tmp_path) -> None:
     section = state.get_section_plan("1.1.1")
     assert section is not None
     section.target_words = 1
-    content = SectionContent(section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n正文", word_count=2)
+    content = SectionContent(
+        section_id="1.1.1", chapter_id=1, title="一", markdown="### 1.1.1 一\n\n正文", word_count=2
+    )
 
     reviewed = project._review_section_until_pass(state, section, content, "", "book")
 
@@ -712,7 +902,9 @@ def test_section_review_persists_reviewed_checkpoint(tmp_path) -> None:
 
 def test_write_resume_retries_review_failed_section(tmp_path) -> None:
     project = _quality_project(tmp_path)
-    project.cfg = SimpleNamespace(quality=QualitySettings(min_figures_per_section=0), references=SimpleNamespace(query_categories=[]))
+    project.cfg = SimpleNamespace(
+        quality=QualitySettings(min_figures_per_section=0), references=SimpleNamespace(query_categories=[])
+    )
     writer = _SuccessfulSectionReviser()
     project.writer = writer
     state = _state_with_sections()
@@ -774,21 +966,147 @@ def test_normalize_markdown_output_strips_explanation_before_unclosed_fence() ->
     assert "```book-figure" in normalized
 
 
-def test_chapter_revision_rejects_catastrophic_shrink(tmp_path) -> None:
-    project = _quality_project(tmp_path)
-    project.expander = _ShrinkingExpander()
+def test_chapter_assembly_builds_secondary_headings_and_normalizes_section_hierarchy() -> None:
+    project = object.__new__(BookProject)
+    project.assembler = _StructureBreakingAssembler()
     state = _state_with_sections()
-    state.quality = QualitySettings(enabled=True, min_words_per_chapter=9000)
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown=("## 1.1.1 错误层级标题\n\n正文。\n\n### 内部主题\n\n```python\n# 代码中的注释\n```"),
+        )
+    )
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.2",
+            chapter_id=1,
+            title="二",
+            markdown="### 1.1.2 二\n\n正文。\n\n## 内部结论\n",
+        )
+    )
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.2.1",
+            chapter_id=1,
+            title="三",
+            markdown="## 核心检查点\n\n正文。",
+        )
+    )
+
+    content = project._assemble_chapter_from_sections(state, 1)
+
+    assert content.markdown.startswith("# 第1章 第一章\n\n## 1.1 第一组")
+    assert content.markdown.count("## 1.1 第一组") == 1
+    assert "## 1.2 第二组" in content.markdown
+    assert "## 1.2 1.2 第二组" not in content.markdown
+    assert "### 1.1.1 一" in content.markdown
+    assert "### 1.1.2 二" in content.markdown
+    assert "### 1.2.1 三" in content.markdown
+    assert "#### 内部主题" in content.markdown
+    assert "#### 内部结论" in content.markdown
+    assert "#### 核心检查点" in content.markdown
+    assert "```python\n# 代码中的注释\n```" in content.markdown
+
+
+def test_section_heading_normalization_keeps_numbered_internal_headings() -> None:
+    project = object.__new__(BookProject)
+    state = _state_with_sections()
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown="### 1.1.1 一\n\n#### 1.1.1.1 内部主题\n\n正文。",
+        )
+    )
+    state.upsert_section_content(
+        SectionContent(section_id="1.1.2", chapter_id=1, title="二", markdown="### 1.1.2 二\n\n正文。")
+    )
+    state.upsert_section_content(
+        SectionContent(section_id="1.2.1", chapter_id=1, title="三", markdown="### 1.2.1 三\n\n正文。")
+    )
+
+    content = project._assemble_chapter_from_sections_deterministic(state, 1)
+
+    assert "### 1.1.1 一" in content.markdown
+    assert "#### 1.1.1.1 内部主题" in content.markdown
+
+
+def test_chapter_assembly_rejects_content_before_section_heading() -> None:
+    project = object.__new__(BookProject)
+    state = _state_with_sections()
+    state.upsert_section_content(
+        SectionContent(
+            section_id="1.1.1",
+            chapter_id=1,
+            title="一",
+            markdown="模型思考说明。\n\n### 1.1.1 一\n\n正文。",
+        )
+    )
+    state.upsert_section_content(
+        SectionContent(section_id="1.1.2", chapter_id=1, title="二", markdown="### 1.1.2 二\n\n正文。")
+    )
+    state.upsert_section_content(
+        SectionContent(section_id="1.2.1", chapter_id=1, title="三", markdown="### 1.2.1 三\n\n正文。")
+    )
+
+    with pytest.raises(RuntimeError, match=r"1.1.1.*编号标题前存在正文或模型说明"):
+        project._assemble_chapter_from_sections_deterministic(state, 1)
+
+
+def test_chapter_assembly_rejects_conflicting_parent_titles() -> None:
+    project = object.__new__(BookProject)
+    state = _state_with_sections()
+    state.get_section_plan("1.1.2").parent_title = "冲突分组"
+    for section in state.get_current_chapter().sections:
+        state.upsert_section_content(
+            SectionContent(
+                section_id=section.id,
+                chapter_id=section.chapter_id,
+                title=section.title,
+                markdown=f"### {section.heading}\n\n正文。",
+            )
+        )
+
+    with pytest.raises(RuntimeError, match=r"1.1.*parent_title.*冲突"):
+        project._assemble_chapter_from_sections_deterministic(state, 1)
+
+
+def test_chapter_assembly_rejects_missing_parent_title() -> None:
+    project = object.__new__(BookProject)
+    state = _state_with_sections()
+    state.get_section_plan("1.1.1").parent_title = ""
+    for section in state.get_current_chapter().sections:
+        state.upsert_section_content(
+            SectionContent(
+                section_id=section.id,
+                chapter_id=section.chapter_id,
+                title=section.title,
+                markdown=f"### {section.heading}\n\n正文。",
+            )
+        )
+
+    with pytest.raises(RuntimeError, match=r"1.1.1.*parent_title.*为空"):
+        project._assemble_chapter_from_sections_deterministic(state, 1)
+
+
+def test_unscoped_chapter_revision_refuses_missing_section_sources(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    state = _state_with_sections()
     state.set_current_chapter_by_id(1)
-    original = "# 第1章 第一章\n\n" + "这是完整章节正文。" * 1200
-    content = ChapterContent(chapter_id=1, title="第一章", markdown=original, word_count=10806)
+    content = ChapterContent(chapter_id=1, title="第一章", markdown="# 第1章 第一章\n\n旧合稿")
     state.upsert_chapter_content(content)
 
-    revised = project._revise_chapter_from_feedback(state, content, "反馈", 1)
-
-    assert revised.markdown == original
-    assert revised.word_count == 10806
-    assert revised.revision_count == 1
+    with pytest.raises(RuntimeError, match="没有可返修的小节正文"):
+        project._revise_chapter_or_sections_from_feedback(
+            state,
+            content,
+            "全章深度不足",
+            1,
+            thread_id=None,
+        )
 
 
 def test_chapter_quality_gate_revises_targeted_sections_before_chapter_fallback(tmp_path) -> None:
@@ -805,11 +1123,11 @@ def test_chapter_quality_gate_revises_targeted_sections_before_chapter_fallback(
             markdown="### 1.1.1 一\n\n正文。",
         )
     )
+    _add_remaining_chapter_sections(state, 1, exclude={"1.1.1"})
     state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第1章 第一章\n\n正文。"))
 
     content = project._review_chapter_until_pass(state, 1)
 
-    assert project.expander.calls == 0
     assert project.writer.section_revision_calls == ["1.1.1", "1.1.1"]
     assert content.revision_count == 1
     assert "已按质量门反馈修订" in state.get_section_content("1.1.1").markdown
@@ -836,12 +1154,12 @@ def test_chapter_fact_gate_revises_located_section_without_chapter_rewrite(tmp_p
             word_count=1400,
         )
     )
+    _add_remaining_chapter_sections(state, 1, exclude={"1.1.1"})
     state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown=f"# 第1章 第一章\n\n{markdown}"))
 
     content = project._review_chapter_until_pass(state, 1)
 
     assert writer.section_revision_calls == ["1.1.1"]
-    assert project.expander.calls == 0
     assert content.publication_feedback == ""
     assert state.get_current_chapter().status == "approved"
 
@@ -865,6 +1183,7 @@ def test_chapter_targeted_revision_reviews_revised_section(tmp_path) -> None:
             word_count=520,
         )
     )
+    _add_remaining_chapter_sections(state, 1, exclude={"1.1.1"})
     chapter_content = ChapterContent(chapter_id=1, title="第一章", markdown="# 第1章 第一章\n\n正文。")
 
     project._revise_sections_from_chapter_feedback(
@@ -905,14 +1224,39 @@ def test_final_review_marks_report_and_continues_at_revision_limit(tmp_path) -> 
     state.quality = QualitySettings(continue_on_failure=True)
     state.max_final_revision_round = 0
     _mark_book_ready_for_final_review(state)
-    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
-    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+    _assemble_ready_chapters(state)
 
     project._final_review_if_ready(state)
 
     assert state.publication_approved is False
     assert state.final_revision_chapters == [1]
     assert "未达到出版标准" in state.final_report
+
+
+def test_final_review_revision_rebuilds_heading_structure_from_sections(tmp_path) -> None:
+    project = _quality_project(tmp_path)
+    writer = _SuccessfulSectionReviser()
+    project.writer = writer
+    state = _state_with_sections()
+    state.quality = QualitySettings(enabled=False)
+    _mark_book_ready_for_final_review(state)
+    for section in state.get_all_sections_flat():
+        section.target_words = 1
+    _assemble_ready_chapters(state)
+
+    project._revise_chapter_for_final_review(
+        state,
+        1,
+        {"pass": False, "revise_chapters": [{"chapter_id": 1, "reason": "全章深度不足"}]},
+        1,
+    )
+
+    revised = state.get_chapter_content(1)
+    assert revised is not None
+    assert writer.calls == ["1.1.1", "1.1.2", "1.2.1"]
+    assert revised.markdown.startswith("# 第1章 第一章\n\n## 1.1 第一组")
+    assert "\n\n## 1.2 第二组\n\n### 1.2.1 三" in revised.markdown
+    assert revised.revision_count == 1
 
 
 def test_final_review_blocks_on_publication_audit_before_llm(tmp_path) -> None:
@@ -956,8 +1300,7 @@ def test_final_review_marks_completed_book_publication_approved(tmp_path) -> Non
     state = _state_with_sections()
     state.current_phase = "completed"
     _mark_book_ready_for_final_review(state)
-    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
-    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+    _assemble_ready_chapters(state)
 
     project._final_review_if_ready(state)
 
@@ -967,7 +1310,12 @@ def test_final_review_marks_completed_book_publication_approved(tmp_path) -> Non
 
 def test_write_export_rejects_unapproved_book(tmp_path) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.paths = SimpleNamespace(
+        project_dir=tmp_path,
+        data_dir=tmp_path,
+        output_dir=tmp_path / "output",
+        figures_dir=tmp_path / ".data" / "figures",
+    )
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -983,7 +1331,12 @@ def test_write_export_rejects_unapproved_book(tmp_path) -> None:
 
 def test_write_export_draft_allows_unapproved_preview(tmp_path) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.paths = SimpleNamespace(
+        project_dir=tmp_path,
+        data_dir=tmp_path,
+        output_dir=tmp_path / "output",
+        figures_dir=tmp_path / ".data" / "figures",
+    )
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -1006,7 +1359,12 @@ def test_write_export_draft_allows_unapproved_preview(tmp_path) -> None:
 
 def test_write_export_markdown_generates_book_file(tmp_path) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.paths = SimpleNamespace(
+        project_dir=tmp_path,
+        data_dir=tmp_path,
+        output_dir=tmp_path / "output",
+        figures_dir=tmp_path / ".data" / "figures",
+    )
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -1016,8 +1374,7 @@ def test_write_export_markdown_generates_book_file(tmp_path) -> None:
     state.current_phase = "completed"
     state.publication_approved = True
     _mark_book_ready_for_final_review(state)
-    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
-    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+    _assemble_ready_chapters(state)
     project._save_write_checkpoint("book-1", state)
 
     result = project.write_export("book-1", target="markdown")
@@ -1025,12 +1382,17 @@ def test_write_export_markdown_generates_book_file(tmp_path) -> None:
     assert result["target"] == "markdown"
     assert result["book_markdown"] == str(tmp_path / "output" / "book.md")
     assert "word_file" not in result
-    assert "# 第一章" in (tmp_path / "output" / "book.md").read_text(encoding="utf-8")
+    assert "# 第1章 第一章" in (tmp_path / "output" / "book.md").read_text(encoding="utf-8")
 
 
 def test_write_export_all_generates_word_from_markdown(tmp_path, monkeypatch) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.paths = SimpleNamespace(
+        project_dir=tmp_path,
+        data_dir=tmp_path,
+        output_dir=tmp_path / "output",
+        figures_dir=tmp_path / ".data" / "figures",
+    )
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -1039,8 +1401,7 @@ def test_write_export_all_generates_word_from_markdown(tmp_path, monkeypatch) ->
     state.current_phase = "completed"
     state.publication_approved = True
     _mark_book_ready_for_final_review(state)
-    state.upsert_chapter_content(ChapterContent(chapter_id=1, title="第一章", markdown="# 第一章\n\n正文"))
-    state.upsert_chapter_content(ChapterContent(chapter_id=2, title="第二章", markdown="# 第二章\n\n正文"))
+    _assemble_ready_chapters(state)
     project._save_write_checkpoint("book-1", state)
     calls = []
 
@@ -1059,7 +1420,12 @@ def test_write_export_all_generates_word_from_markdown(tmp_path, monkeypatch) ->
 
 def test_write_export_draft_uses_root_pdf_css(tmp_path, monkeypatch) -> None:
     project = object.__new__(BookProject)
-    project.paths = SimpleNamespace(project_dir=tmp_path, data_dir=tmp_path, output_dir=tmp_path / "output", figures_dir=tmp_path / ".data" / "figures")
+    project.paths = SimpleNamespace(
+        project_dir=tmp_path,
+        data_dir=tmp_path,
+        output_dir=tmp_path / "output",
+        figures_dir=tmp_path / ".data" / "figures",
+    )
     project.cfg = _workflow_app_config()
     project.cfg.quality.enabled = False
     project._write_checkpoint_path_override = None
@@ -1074,7 +1440,9 @@ def test_write_export_draft_uses_root_pdf_css(tmp_path, monkeypatch) -> None:
     css_file.write_text("@page { size: A4; }", encoding="utf-8")
     calls = []
 
-    def fake_pdf(markdown_file, pdf_file, *, css_file=None, chrome_bin=None, pandoc_bin="pandoc", cover_html=None) -> str:
+    def fake_pdf(
+        markdown_file, pdf_file, *, css_file=None, chrome_bin=None, pandoc_bin="pandoc", cover_html=None
+    ) -> str:
         calls.append((str(markdown_file), str(pdf_file), str(css_file)))
         return str(pdf_file)
 

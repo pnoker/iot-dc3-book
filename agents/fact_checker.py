@@ -30,6 +30,7 @@ _FACT_CHECKER_SYSTEM = """你是一位严格的技术事实核查编辑。
 4. 不要求逐句引用，但关键事实必须能被证据或常识性技术知识支撑
 5. 不负责文风和格式，这些交给 Style Guard
 6. 对没有证据的精确数字，不要建议“补一个来源”；应建议删除数字、改为定性表达，或标注为假设/示意场景
+7. 不要因为正文中的 [S]/[W] 编号未出现在独立证据列表而报错；引用编号由 Citation Guard 单独审核
 
 ## 输出格式
 ```json
@@ -58,7 +59,8 @@ _PERSPECTIVES: list[tuple[str, str]] = [
     ("性能/成本/市场结论", "重点审查时延/吞吐/成本/市场金额/占比等量化结论，以及由其推出的工程实践结论是否有依据。"),
 ]
 
-_HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*$", re.MULTILINE)
+_HEADING_RE = re.compile(r"^(?P<marks>#{1,6})\s+(?P<title>.+?)\s*$", re.MULTILINE)
+_MAX_EVIDENCE_QUERIES = 12
 
 
 class FactCheckerAgent(BaseAgent):
@@ -106,19 +108,45 @@ class FactCheckerAgent(BaseAgent):
 
     def _gather_evidence(self, title: str, summary: str, markdown: str) -> list[ReferenceChunk]:
         """从作者实际写出的结构（标题 + 小节标题 + 概述）出发独立检索证据并去重。"""
-        headings = _HEADING_RE.findall(markdown)
-        queries = [f"{title} {summary}".strip(), *headings[:6]]
+        queries = self._evidence_queries(title, summary, markdown)
         evidence: list[ReferenceChunk] = []
+        additional: list[ReferenceChunk] = []
         seen: set[str] = set()
         for query in queries:
             if not query.strip():
                 continue
+            query_hits: list[ReferenceChunk] = []
             for chunk in self.rag.retrieve(query, top_k=4, categories=self.query_categories):
                 if chunk.text not in seen:
                     seen.add(chunk.text)
-                    evidence.append(chunk)
-        evidence.sort(key=lambda c: c.relevance_score, reverse=True)
-        return evidence[:12]
+                    query_hits.append(chunk)
+            if query_hits:
+                evidence.append(query_hits[0])
+                additional.extend(query_hits[1:])
+        if len(evidence) >= 12:
+            return evidence[:12]
+        additional.sort(key=lambda chunk: chunk.relevance_score, reverse=True)
+        return [*evidence, *additional[: 12 - len(evidence)]]
+
+    @staticmethod
+    def _evidence_queries(title: str, summary: str, markdown: str) -> list[str]:
+        """优先覆盖全部 H2，再用均匀采样的 H3 补足查询预算。"""
+        secondary: list[str] = []
+        tertiary: list[str] = []
+        for heading in _HEADING_RE.finditer(markdown):
+            level = len(heading.group("marks"))
+            heading_title = heading.group("title")
+            if level == 2:
+                secondary.append(heading_title)
+            elif level == 3:
+                tertiary.append(heading_title)
+
+        chapter_query = f"{title} {summary}".strip()
+        heading_budget = _MAX_EVIDENCE_QUERIES - int(bool(chapter_query))
+        selected_secondary = _sample_evenly(secondary, heading_budget)
+        remaining = heading_budget - len(selected_secondary)
+        selected_tertiary = _sample_evenly(tertiary, remaining)
+        return list(dict.fromkeys([chapter_query, *selected_secondary, *selected_tertiary]))
 
     @staticmethod
     def _build_evidence_prompt(evidence: list[ReferenceChunk]) -> str:
@@ -131,3 +159,14 @@ class FactCheckerAgent(BaseAgent):
             lines.append(ref.text[:500])
             lines.append("")
         return "\n".join(lines)
+
+
+def _sample_evenly(values: list[str], limit: int) -> list[str]:
+    if limit <= 0 or not values:
+        return []
+    if len(values) <= limit:
+        return values
+    if limit == 1:
+        return [values[-1]]
+    indexes = [round(index * (len(values) - 1) / (limit - 1)) for index in range(limit)]
+    return [values[index] for index in indexes]

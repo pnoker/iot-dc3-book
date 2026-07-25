@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 
 from core.rag import RAGEngine
+from core.rag_bm25 import BM25Index
 from core.rag_chunking import split_text
 from core.rag_pdf import _page_has_ocr_candidate, extract_pdf_pages
 from core.rag_sources import ReferenceSource
@@ -47,6 +48,7 @@ def test_chroma_client_initialization_is_serialized_across_engines(tmp_path, mon
 
     assert max_active_calls == 1
 
+
 def test_index_books_indexes_pdf_and_markdown_with_unique_ids(tmp_path, monkeypatch) -> None:
     # 两个来源：一个含 PDF，一个含 Markdown（含同名 index.md 场景由 label 前缀保证唯一）
     books = tmp_path / "books"
@@ -70,7 +72,10 @@ def test_index_books_indexes_pdf_and_markdown_with_unique_ids(tmp_path, monkeypa
         chunk_overlap=100,
         persist_dir=str(tmp_path / "chroma"),
     )
-    sources = [ReferenceSource(books, "books", categories=("iot",)), ReferenceSource(docs, "dc3", categories=("iot", "dc3"))]
+    sources = [
+        ReferenceSource(books, "books", categories=("iot",)),
+        ReferenceSource(docs, "dc3", categories=("iot", "dc3")),
+    ]
 
     count = engine.index_books(sources, str(tmp_path / "manifest.json"))
 
@@ -159,7 +164,9 @@ def test_sparse_retrieve_uses_bm25_without_embedding(tmp_path) -> None:
         persist_dir=str(tmp_path / "chroma"),
         bm25_path=str(tmp_path / "bm25.json"),
     )
-    engine.index_books([ReferenceSource(docs, "books", categories=("iot", "protocol"))], str(tmp_path / "manifest.json"))
+    engine.index_books(
+        [ReferenceSource(docs, "books", categories=("iot", "protocol"))], str(tmp_path / "manifest.json")
+    )
     embed_calls["count"] = 0
 
     hits = engine.retrieve_sparse("Modbus 协议", top_k=2, categories=["protocol"])
@@ -167,6 +174,90 @@ def test_sparse_retrieve_uses_bm25_without_embedding(tmp_path) -> None:
     assert hits
     assert any("Modbus" in hit.text for hit in hits)
     assert embed_calls["count"] == 0
+
+
+def test_sparse_retrieve_does_not_touch_chroma_collection(tmp_path) -> None:
+    bm25_path = tmp_path / "bm25.json"
+    BM25Index.build(
+        ["chunk-1"],
+        ["Modbus 是主从式工业串行通信协议。"],
+        [{"source_file": "books/modbus.md", "chapter_or_section": "协议", "label": "books"}],
+    ).save(str(bm25_path))
+    engine = RAGEngine(
+        embed_fn=lambda text: (_ for _ in ()).throw(AssertionError("稀疏检索不应调用 embedding")),
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(bm25_path),
+    )
+
+    class ExplodingCollection:
+        def count(self):
+            raise AssertionError("稀疏检索不应访问 Chroma count")
+
+        def get(self, *args, **kwargs):
+            raise AssertionError("稀疏检索不应访问 Chroma get")
+
+    engine._collection = ExplodingCollection()
+
+    hits = engine.retrieve_sparse("Modbus", top_k=1)
+
+    assert len(hits) == 1
+    assert hits[0].text == "Modbus 是主从式工业串行通信协议。"
+
+
+def test_hybrid_retrieve_falls_back_to_sparse_when_chroma_is_unhealthy(tmp_path, monkeypatch) -> None:
+    bm25_path = tmp_path / "bm25.json"
+    BM25Index.build(
+        ["chunk-1"],
+        ["Modbus 是主从式工业串行通信协议。"],
+        [{"source_file": "books/modbus.md", "chapter_or_section": "协议", "label": "books"}],
+    ).save(str(bm25_path))
+    engine = RAGEngine(
+        embed_fn=lambda text: (_ for _ in ()).throw(AssertionError("降级检索不应调用 embedding")),
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(bm25_path),
+    )
+    monkeypatch.setattr(engine, "_probe_dense_index", lambda: (False, 0, "native signal 11"), raising=False)
+
+    hits = engine.retrieve("Modbus", top_k=1)
+
+    assert len(hits) == 1
+    assert hits[0].text == "Modbus 是主从式工业串行通信协议。"
+    assert engine._collection is None
+
+
+def test_pure_dense_retrieve_fails_cleanly_when_chroma_is_unhealthy(tmp_path, monkeypatch) -> None:
+    engine = RAGEngine(
+        embed_fn=lambda text: [1.0, 0.0],
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+    )
+    monkeypatch.setattr(engine, "_probe_dense_index", lambda: (False, 0, "native signal 11"), raising=False)
+
+    with pytest.raises(RuntimeError, match=r"Chroma.*native signal 11"):
+        engine.retrieve("Modbus", top_k=1, hybrid=False)
+
+
+def test_rebuild_sparse_index_avoids_chroma_and_embedding(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "modbus.md").write_text("# 协议\n" + "Modbus 是工业通信协议。" * 8, encoding="utf-8")
+    engine = RAGEngine(
+        embed_fn=lambda text: (_ for _ in ()).throw(AssertionError("稀疏索引不应调用 embedding")),
+        persist_dir=str(tmp_path / "chroma"),
+        bm25_path=str(tmp_path / "bm25.json"),
+    )
+
+    class ExplodingCollection:
+        def count(self):
+            raise AssertionError("稀疏索引不应访问 Chroma")
+
+    engine._collection = ExplodingCollection()
+
+    count = engine.rebuild_sparse_index([ReferenceSource(docs, "books", categories=("protocol",))])
+    hits = engine.retrieve_sparse("Modbus", top_k=1)
+
+    assert count == 1
+    assert hits and "Modbus" in hits[0].text
 
 
 def test_retrieve_hybrid_false_is_pure_dense(tmp_path, monkeypatch) -> None:
@@ -221,7 +312,8 @@ def test_retrieve_category_filter_scopes_results(tmp_path) -> None:
         bm25_path=str(tmp_path / "bm25.json"),
     )
     src = ReferenceSource(
-        docs, "dc3",
+        docs,
+        "dc3",
         categories=("dc3",),
         dir_categories=(("ai", ("ai",)), ("net", ("network",))),
     )

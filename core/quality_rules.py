@@ -16,7 +16,7 @@ from core.markdown_assets import (
     find_placeholder_images,
     missing_local_images,
 )
-from core.originality import char_ngram_overlap, split_paragraphs
+from core.originality import char_ngram_overlap, split_paragraphs_with_sections
 from core.state import BookState, ChapterContent, QualitySettings, SectionContent
 from core.wordcount import count_words
 
@@ -94,12 +94,15 @@ _SOURCE_HINT_RE = re.compile(
     re.I,
 )
 _HYPOTHETICAL_HINT_RE = re.compile(r"(假设|示意|示例|例如|比如|建议|可设为|可以设为|取值|演示|样例)")
+_CLAIM_BLOCK_SPLIT_RE = re.compile(r"\n\s*\n|(?=^\s*[-*+]\s+)", re.MULTILINE)
+_CLAIM_HEADING_RE = re.compile(r"^ {0,3}(?P<marks>#{1,6})(?:[ \t]+|$)(?P<title>.*)$")
+_CODE_FENCE_RE = re.compile(r"^ {0,3}(?P<marks>`{3,}|~{3,}).*$")
 
 
 def evaluate_chapter_quality(
-        state: BookState,
-        content: ChapterContent,
-        base_dir: Path | None = None,
+    state: BookState,
+    content: ChapterContent,
+    base_dir: Path | None = None,
 ) -> PublicationQualityReport:
     """执行非 LLM 的章节出版质量校验。"""
     settings = state.quality
@@ -158,11 +161,11 @@ def ensure_book_releasable(state: BookState, base_dir: Path | None = None) -> No
 
 
 def check_originality(
-        rag: RAGEngine,
-        content: ChapterContent,
-        settings: QualitySettings,
-        *,
-        categories: Sequence[str] | None = None,
+    rag: RAGEngine,
+    content: ChapterContent,
+    settings: QualitySettings,
+    *,
+    categories: Sequence[str] | None = None,
 ) -> list[PublicationIssue]:
     """检测章节正文是否与参考书原文（label=books）高度雷同，产出侵权风险问题。
 
@@ -173,7 +176,8 @@ def check_originality(
         return []
 
     issues: list[PublicationIssue] = []
-    for index, paragraph in enumerate(split_paragraphs(content.markdown), start=1):
+    for index, located_paragraph in enumerate(split_paragraphs_with_sections(content.markdown), start=1):
+        paragraph = located_paragraph.text
         if len(paragraph) < settings.originality_min_paragraph_chars:
             continue
         best_overlap = 0.0
@@ -186,11 +190,19 @@ def check_originality(
                 best_overlap = overlap
                 best_source = hit.source_file
         if best_overlap >= settings.originality_max_overlap:
+            location = (
+                f"三级小节 {located_paragraph.section_id} 的第{index}段"
+                if located_paragraph.section_id
+                else f"第{index}段"
+            )
             issues.append(
                 PublicationIssue(
                     code="originality.suspected_copy",
+                    scope="section" if located_paragraph.section_id else "chapter",
+                    section_id=located_paragraph.section_id,
+                    excerpt=paragraph[:200],
                     message=(
-                        f"第{index}段与《{best_source}》字符 {settings.originality_ngram}-gram 重叠 "
+                        f"{location}与《{best_source}》字符 {settings.originality_ngram}-gram 重叠 "
                         f"{best_overlap:.0%}，疑似贴着原文改写，存在侵权风险。"
                     ),
                     suggestion="用自己的组织方式重写该段：改变论述结构、举例和措辞，而不是在原文上替换个别词。",
@@ -200,11 +212,11 @@ def check_originality(
 
 
 def _check_word_count(
-        settings: QualitySettings,
-        actual_words: int,
-        target_words: int,
-        max_words: int,
-        issues: list[PublicationIssue],
+    settings: QualitySettings,
+    actual_words: int,
+    target_words: int,
+    max_words: int,
+    issues: list[PublicationIssue],
 ) -> None:
     if actual_words < settings.min_words_per_chapter:
         issues.append(
@@ -225,11 +237,11 @@ def _check_word_count(
 
 
 def _check_structure(
-        settings: QualitySettings,
-        markdown: str,
-        heading_count: int,
-        figure_or_table_count: int,
-        issues: list[PublicationIssue],
+    settings: QualitySettings,
+    markdown: str,
+    heading_count: int,
+    figure_or_table_count: int,
+    issues: list[PublicationIssue],
 ) -> None:
     if heading_count < settings.min_heading_count:
         issues.append(
@@ -249,7 +261,7 @@ def _check_structure(
         )
     if settings.require_exercises:
         exercise_match = _EXERCISE_RE.search(markdown)
-        exercise_count = len(_EXERCISE_ITEM_RE.findall(markdown[exercise_match.start():])) if exercise_match else 0
+        exercise_count = len(_EXERCISE_ITEM_RE.findall(markdown[exercise_match.start() :])) if exercise_match else 0
         if not exercise_match or exercise_count < settings.min_exercise_count:
             issues.append(
                 PublicationIssue(
@@ -269,10 +281,10 @@ def _check_structure(
 
 
 def _check_section_figures(
-        state: BookState,
-        content: ChapterContent,
-        marker: str,
-        issues: list[PublicationIssue],
+    state: BookState,
+    content: ChapterContent,
+    marker: str,
+    issues: list[PublicationIssue],
 ) -> None:
     min_figures = state.quality.min_figures_per_section
     if min_figures <= 0:
@@ -293,10 +305,10 @@ def _check_section_figures(
 
 
 def _check_assets(
-        settings: QualitySettings,
-        markdown: str,
-        base_dir: Path | None,
-        issues: list[PublicationIssue],
+    settings: QualitySettings,
+    markdown: str,
+    base_dir: Path | None,
+    issues: list[PublicationIssue],
 ) -> None:
     if settings.forbid_placeholder_images:
         placeholders = find_placeholder_images(markdown)
@@ -321,13 +333,15 @@ def _check_assets(
 
 
 def _check_book_figure_specs(
-        markdown: str,
-        marker: str,
-        required_fields: list[str] | None,
-        allowed_types: list[str] | None,
-        issues: list[PublicationIssue],
+    markdown: str,
+    marker: str,
+    required_fields: list[str] | None,
+    allowed_types: list[str] | None,
+    issues: list[PublicationIssue],
 ) -> None:
-    invalid = find_invalid_book_figures(markdown, marker=marker, required_fields=required_fields, allowed_types=allowed_types)
+    invalid = find_invalid_book_figures(
+        markdown, marker=marker, required_fields=required_fields, allowed_types=allowed_types
+    )
     if invalid:
         issues.append(
             PublicationIssue(
@@ -339,10 +353,10 @@ def _check_book_figure_specs(
 
 
 def _check_unsourced_hard_facts(
-        settings: QualitySettings,
-        state: BookState,
-        content: ChapterContent,
-        issues: list[PublicationIssue],
+    settings: QualitySettings,
+    state: BookState,
+    content: ChapterContent,
+    issues: list[PublicationIssue],
 ) -> None:
     if not settings.forbid_unsourced_statistics:
         return
@@ -360,24 +374,57 @@ def _check_unsourced_hard_facts(
 def _unsourced_claim_excerpts(markdown: str) -> tuple[list[str], list[str]]:
     vague_statistics: list[str] = []
     hard_facts: list[str] = []
-    for paragraph in re.split(r"\n\s*\n", markdown):
-        text = paragraph.strip().replace("\n", " ")
-        if not text or text.startswith("|") or text.startswith("#") or _SOURCE_HINT_RE.search(text):
+    hypothetical_heading_level: int | None = None
+    prose_markdown = _strip_fenced_code_blocks(markdown)
+    for paragraph in _CLAIM_BLOCK_SPLIT_RE.split(prose_markdown):
+        stripped = paragraph.strip()
+        heading = _CLAIM_HEADING_RE.match(stripped)
+        if heading is not None:
+            level = len(heading.group("marks"))
+            if hypothetical_heading_level is not None and level <= hypothetical_heading_level:
+                hypothetical_heading_level = None
+            if _HYPOTHETICAL_HINT_RE.search(heading.group("title")):
+                hypothetical_heading_level = level
+            continue
+        text = stripped.replace("\n", " ")
+        if not text or text.startswith("|") or _SOURCE_HINT_RE.search(text):
+            continue
+        if hypothetical_heading_level is not None or _HYPOTHETICAL_HINT_RE.search(text):
             continue
         if _VAGUE_STAT_RE.search(text):
             vague_statistics.append(text[:120])
             continue
-        if _HARD_FACT_RE.search(text) and not _HYPOTHETICAL_HINT_RE.search(text):
+        if _HARD_FACT_RE.search(text):
             hard_facts.append(text[:120])
     return vague_statistics, hard_facts
 
 
+def _strip_fenced_code_blocks(markdown: str) -> str:
+    lines: list[str] = []
+    active_fence: tuple[str, int] | None = None
+    for line in markdown.splitlines():
+        fence = _CODE_FENCE_RE.match(line)
+        if active_fence is not None:
+            if fence is not None:
+                marks = fence.group("marks")
+                if marks[0] == active_fence[0] and len(marks) >= active_fence[1]:
+                    active_fence = None
+            continue
+        if fence is not None:
+            marks = fence.group("marks")
+            active_fence = (marks[0], len(marks))
+            lines.append("")
+            continue
+        lines.append(line)
+    return "\n".join(lines)
+
+
 def _append_unsourced_claim_issues(
-        issues: list[PublicationIssue],
-        vague_statistics: list[str],
-        hard_facts: list[str],
-        *,
-        section_content: SectionContent | None,
+    issues: list[PublicationIssue],
+    vague_statistics: list[str],
+    hard_facts: list[str],
+    *,
+    section_content: SectionContent | None,
 ) -> None:
     scope: Literal["chapter", "section"] = "section" if section_content is not None else "chapter"
     section_id = section_content.section_id if section_content is not None else ""

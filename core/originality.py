@@ -10,10 +10,10 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-# 与 quality_rules._check_unsourced_hard_facts 一致的段落切法：空行分段，
-# 跳过标题、表格、代码块/规格块围栏行，避免把结构化内容误判为抄袭。
-_PARAGRAPH_SEP_RE = re.compile(r"\n\s*\n")
-_SKIP_PREFIXES = ("#", "|", "```", ">")
+_ATX_HEADING_RE = re.compile(r"^ {0,3}(?P<marks>#{1,6})(?:[ \t]+|$)(?P<title>.*)$")
+_SECTION_ID_RE = re.compile(r"^(?P<section_id>\d+\.\d+\.\d+)(?:[ \t]+|$)")
+_FENCE_RE = re.compile(r"^ {0,3}(?P<marks>`{3,}|~{3,}).*$")
+_SKIP_PREFIXES = ("|", ">")
 
 
 @dataclass
@@ -26,14 +26,66 @@ class SimilarityHit:
     matched_excerpt: str
 
 
+@dataclass(frozen=True)
+class MarkdownParagraph:
+    """代码围栏外的正文段落及其所属三级小节。"""
+
+    text: str
+    section_id: str = ""
+
+
 def split_paragraphs(markdown: str) -> list[str]:
     """按自然段落切分正文，跳过标题/表格/代码块围栏等非正文行。"""
-    paragraphs: list[str] = []
-    for block in _PARAGRAPH_SEP_RE.split(markdown):
-        text = block.strip()
-        if not text or text.startswith(_SKIP_PREFIXES):
+    return [paragraph.text for paragraph in split_paragraphs_with_sections(markdown)]
+
+
+def split_paragraphs_with_sections(markdown: str) -> list[MarkdownParagraph]:
+    """切分正文段落，并根据 H3 标题记录所属三级小节。"""
+    paragraphs: list[MarkdownParagraph] = []
+    current_lines: list[str] = []
+    current_section_id = ""
+    active_fence: tuple[str, int] | None = None
+
+    def flush_paragraph() -> None:
+        if not current_lines:
+            return
+        text = "\n".join(current_lines).strip()
+        current_lines.clear()
+        if text:
+            paragraphs.append(MarkdownParagraph(text=text, section_id=current_section_id))
+
+    for line in markdown.splitlines():
+        fence = _FENCE_RE.match(line)
+        if active_fence is not None:
+            if fence is not None:
+                marks = fence.group("marks")
+                if marks[0] == active_fence[0] and len(marks) >= active_fence[1]:
+                    active_fence = None
             continue
-        paragraphs.append(text)
+        if fence is not None:
+            flush_paragraph()
+            marks = fence.group("marks")
+            active_fence = (marks[0], len(marks))
+            continue
+
+        stripped = line.strip()
+        if not stripped:
+            flush_paragraph()
+            continue
+        heading = _ATX_HEADING_RE.match(line)
+        if heading is not None:
+            flush_paragraph()
+            if len(heading.group("marks")) == 3:
+                section_match = _SECTION_ID_RE.match(heading.group("title").strip())
+                if section_match is not None:
+                    current_section_id = section_match.group("section_id")
+            continue
+        if stripped.startswith(_SKIP_PREFIXES):
+            flush_paragraph()
+            continue
+        current_lines.append(line)
+
+    flush_paragraph()
     return paragraphs
 
 

@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc" data-style="architecture-diagram-wireframe-white" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">图3-9 三角测量定位原理示意</title>
+  <desc id="desc">读者应理解三角测量定位原理示意中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-9 三角测量定位原理示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解三角测量定位原理示意中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 网格 -->
+  <g stroke="#E2E8F0" stroke-width="0.5">
+    <line x1="80" y1="125" x2="80" y2="750" />
+    <line x1="180" y1="125" x2="180" y2="750" />
+    <line x1="280" y1="125" x2="280" y2="750" />
+    <line x1="380" y1="125" x2="380" y2="750" />
+    <line x1="480" y1="125" x2="480" y2="750" />
+    <line x1="580" y1="125" x2="580" y2="750" />
+    <line x1="680" y1="125" x2="680" y2="750" />
+    <line x1="780" y1="125" x2="780" y2="750" />
+    <line x1="880" y1="125" x2="880" y2="750" />
+    <line x1="980" y1="125" x2="980" y2="750" />
+    <line x1="1080" y1="125" x2="1080" y2="750" />
+    <line x1="1180" y1="125" x2="1180" y2="750" />
+    <line x1="1280" y1="125" x2="1280" y2="750" />
+    <line x1="1380" y1="125" x2="1380" y2="750" />
+    <line x1="1480" y1="125" x2="1480" y2="750" />
+    <line x1="1580" y1="125" x2="1580" y2="750" />
+    <line x1="1680" y1="125" x2="1680" y2="750" />
+    <line x1="80" y1="225" x2="1720" y2="225" />
+    <line x1="80" y1="325" x2="1720" y2="325" />
+    <line x1="80" y1="425" x2="1720" y2="425" />
+    <line x1="80" y1="525" x2="1720" y2="525" />
+    <line x1="80" y1="625" x2="1720" y2="625" />
+    <line x1="80" y1="725" x2="1720" y2="725" />
+  </g>
+
+  <!-- 坐标轴 -->
+  <g stroke="#64748B" stroke-width="1.5" fill="none">
+    <!-- x轴 -->
+    <line x1="400" y1="445" x2="1650" y2="445" />
+    <polygon points="1650,445 1640,440 1640,450" fill="#64748B" />
+    <!-- y轴 -->
+    <line x1="400" y1="445" x2="400" y2="150" />
+    <polygon points="400,150 395,160 405,160" fill="#64748B" />
+  </g>
+
+  <!-- 刻度标签 -->
+  <g fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">
+    <text x="400" y="465">0</text>
+    <text x="500" y="465">10</text>
+    <text x="600" y="465">20</text>
+    <text x="700" y="465">30</text>
+    <text x="800" y="465">40</text>
+    <text x="900" y="465">50</text>
+    <text x="1000" y="465">60</text>
+  </g>
+  <g fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="end">
+    <text x="385" y="449">0</text>
+    <text x="385" y="429">2</text>
+    <text x="385" y="409">4</text>
+    <text x="385" y="389">6</text>
+    <text x="385" y="369">8</text>
+    <text x="385" y="349">10</text>
+  </g>
+
+  <!-- 轴标签 -->
+  <g fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">
+    <text x="1700" y="455">X (m)</text>
+    <text x="390" y="140">Y (m)</text>
+  </g>
+
+  <!-- 三个虚线圆 -->
+  <g fill="rgba(249,115,22,0.08)" stroke="#F97316" stroke-width="1.5" stroke-dasharray="8,8">
+    <!-- A圆 -->
+    <circle cx="400" cy="445" r="305" />
+    <!-- B圆 -->
+    <circle cx="1000" cy="445" r="305" />
+    <!-- C圆 -->
+    <circle cx="700" cy="405" r="280" />
+  </g>
+
+  <!-- 圆半径标注 -->
+  <g fill="#F97316" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+    <text x="105" y="370">r=30.5m</text>
+    <text x="1050" y="370">r=30.5m</text>
+    <text x="670" y="180">r=28.0m</text>
+  </g>
+
+  <!-- 三个基站节点 -->
+  <g fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5">
+    <circle cx="400" cy="445" r="8" />
+    <circle cx="1000" cy="445" r="8" />
+    <circle cx="700" cy="405" r="8" />
+  </g>
+  <g fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">
+    <text x="415" y="450">A (0,0)</text>
+    <text x="1015" y="450">B (60,0)</text>
+    <text x="715" y="410">C (30,4)</text>
+  </g>
+
+  <!-- 交叠区域三角形 -->
+  <polygon points="698,426 702,426 700,434" fill="rgba(0,0,0,0.25)" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
+
+  <!-- 理想交点P -->
+  <circle cx="700" cy="428" r="4" fill="#DC2626" />
+  <text x="705" y="432" fill="#DC2626" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">P</text>
+
+  <!-- 最小二乘点Q -->
+  <circle cx="704" cy="432" r="4" fill="#2563EB" />
+  <text x="709" y="436" fill="#2563EB" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">Q</text>
+
+  <!-- 从P到Q的偏移虚线 -->
+  <line x1="700" y1="428" x2="704" y2="432" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3" />
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心能力；橙色=智能/风险路径</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-9 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
+</svg>

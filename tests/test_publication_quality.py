@@ -84,7 +84,12 @@ def test_publication_quality_locates_unsourced_hard_facts_to_section() -> None:
     ]
     state.section_contents = [
         SectionContent(section_id="1.1.1", chapter_id=1, title="小节一", markdown="### 1.1.1 小节一\n\n工程背景。"),
-        SectionContent(section_id="1.1.2", chapter_id=1, title="小节二", markdown="### 1.1.2 小节二\n\n2023年，平台将端到端时延稳定控制在50ms。"),
+        SectionContent(
+            section_id="1.1.2",
+            chapter_id=1,
+            title="小节二",
+            markdown="### 1.1.2 小节二\n\n2023年，平台将端到端时延稳定控制在50ms。",
+        ),
     ]
 
     report = evaluate_chapter_quality(state, content)
@@ -113,6 +118,79 @@ def test_publication_quality_allows_sourced_or_hypothetical_hard_facts() -> None
 
     assert "fact.unsourced_hard_fact" not in sourced_codes
     assert "fact.unsourced_hard_fact" not in hypothetical_codes
+
+
+def test_publication_quality_allows_illustrative_progress_percentage() -> None:
+    content = ChapterContent(
+        chapter_id=1,
+        title="概述",
+        markdown=(
+            "# 第1章 概述\n\n"
+            "- **固件包写入**：平台通过块传输写入镜像。\n"
+            "- **状态反馈**：平台可以获得例如‘升级中 20%’、‘校验失败’等进度状态。"
+        ),
+    )
+
+    codes = {issue.code for issue in evaluate_chapter_quality(_state(content), content).issues}
+
+    assert "fact.unsourced_statistics" not in codes
+
+
+def test_publication_quality_ignores_hard_facts_inside_fenced_blocks() -> None:
+    content = ChapterContent(
+        chapter_id=1,
+        title="概述",
+        markdown="""# 第1章 概述
+
+图表和配置块中的数字用于渲染或示例，不是正文事实断言。
+
+```book-figure
+id: "fig-01-01"
+type: "flowchart"
+title: "图1-1 测试流程"
+purpose: "说明测试流程。"
+layout: "宽100%，图例透明度20%。"
+elements:
+  - "步骤A"
+relationships:
+  - "步骤A持续30秒后进入步骤B"
+legend:
+  - "蓝色=步骤"
+caption: "图1-1 展示测试流程。"
+render_notes: "HTML/SVG 统一绘制。"
+```
+
+```yaml
+interval: 5秒
+timeout: 50ms
+```
+""",
+    )
+
+    codes = {issue.code for issue in evaluate_chapter_quality(_state(content), content).issues}
+
+    assert "fact.unsourced_statistics" not in codes
+    assert "fact.unsourced_hard_fact" not in codes
+
+
+def test_publication_quality_honors_hypothetical_heading_scope() -> None:
+    content = ChapterContent(
+        chapter_id=1,
+        title="概述",
+        markdown=(
+            "# 第1章 概述\n\n"
+            "#### 假设场景：温室选型\n\n"
+            "温度控制需在±1°C以内，湿度需在±5% RH以内。\n\n"
+            "#### 真实项目结论\n\n"
+            "数据显示，60%的设备需要提前更换。"
+        ),
+    )
+
+    report = evaluate_chapter_quality(_state(content), content)
+    issue = next(issue for issue in report.issues if issue.code == "fact.unsourced_statistics")
+
+    assert "60%" in issue.message
+    assert "±5%" not in issue.message
 
 
 def test_publication_quality_accepts_structured_chapter(tmp_path) -> None:

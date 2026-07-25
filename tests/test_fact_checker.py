@@ -14,7 +14,11 @@ class _RecordingRAG:
 
     def retrieve(self, query: str, top_k: int = 5, *, categories: Any = None, **_: Any) -> list[ReferenceChunk]:
         self.queries.append(query)
-        return [ReferenceChunk(source_file="books/x.pdf", chapter_or_section="协议", text=f"证据:{query}", relevance_score=1.0)]
+        return [
+            ReferenceChunk(
+                source_file="books/x.pdf", chapter_or_section="协议", text=f"证据:{query}", relevance_score=1.0
+            )
+        ]
 
 
 class _CapturingLLM:
@@ -52,12 +56,28 @@ def test_fact_checker_retrieves_independent_evidence_from_chapter_structure() ->
     assert any("物联网概述" in q for q in rag.queries)
 
 
+def test_fact_checker_retrieves_evidence_for_late_secondary_heading() -> None:
+    state = _state()
+    state.chapters[0].markdown = (
+        "# 第一章\n\n"
+        + "\n\n".join(f"## 1.{index} 主题{index}\n正文。" for index in range(1, 8))
+        + "\n\n## 1.8 MCP 协议\n正文。"
+    )
+    rag = _RecordingRAG()
+
+    FactCheckerAgent(_CapturingLLM(), rag).check(state)
+
+    assert any("MCP 协议" in query for query in rag.queries)
+
+
 def test_fact_checker_feeds_retrieved_evidence_not_state_reference_chunks() -> None:
     rag = _RecordingRAG()
     llm = _CapturingLLM()
     state = _state()
     # 故意在 state 里放入与本章无关的旧参考，验证核查不再依赖它
-    state.reference_chunks = [ReferenceChunk(source_file="stale.md", chapter_or_section="旧", text="旧的作者参考资料", relevance_score=1.0)]
+    state.reference_chunks = [
+        ReferenceChunk(source_file="stale.md", chapter_or_section="旧", text="旧的作者参考资料", relevance_score=1.0)
+    ]
 
     FactCheckerAgent(llm, rag).check(state)
 

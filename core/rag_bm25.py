@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
 logger = get_logger("rag")
+BM25_FORMAT_VERSION = 2
 
 # 切 ASCII 词、数字、下划线连缀（补 jieba 对英文技术术语的切分）
 _ASCII_TOKEN_RE = re.compile(r"[A-Za-z0-9_]+")
@@ -40,17 +41,35 @@ def tokenize(text: str) -> list[str]:
 class BM25Index:
     """内存 BM25 索引，支持落盘/加载与带 metadata 过滤的检索。"""
 
-    def __init__(self, ids: list[str], tokens: list[list[str]], metadatas: list[dict[str, Any]]) -> None:
+    def __init__(
+        self,
+        ids: list[str],
+        tokens: list[list[str]],
+        metadatas: list[dict[str, Any]],
+        documents: list[str],
+    ) -> None:
+        if not (len(ids) == len(tokens) == len(metadatas) == len(documents)):
+            raise ValueError("BM25 ids/tokens/metadatas/documents 长度不一致")
         self._ids = ids
         self._tokens = tokens
         self._metadatas = metadatas
+        self._documents = documents
+        self._position_by_id = {chunk_id: index for index, chunk_id in enumerate(ids)}
         self._bm25 = BM25Okapi(tokens) if tokens else None
 
     @classmethod
-    def build(cls, ids: Sequence[str], documents: Sequence[str], metadatas: Sequence[dict[str, Any]]) -> BM25Index:
+    def build(
+        cls,
+        ids: Sequence[str],
+        documents: Sequence[str],
+        metadatas: Sequence[dict[str, Any]],
+        *,
+        payload_documents: Sequence[str] | None = None,
+    ) -> BM25Index:
         """从文档正文构建索引（分词一次）。"""
         tokens = [tokenize(doc) for doc in documents]
-        return cls(list(ids), tokens, [dict(m) for m in metadatas])
+        stored_documents = list(payload_documents) if payload_documents is not None else list(documents)
+        return cls(list(ids), tokens, [dict(m) for m in metadatas], stored_documents)
 
     def save(self, path: str) -> None:
         """落盘：存 token（非模型），加载时免重分词。"""
@@ -58,7 +77,13 @@ class BM25Index:
         p.parent.mkdir(parents=True, exist_ok=True)
         with open(p, "w", encoding="utf-8") as f:
             json.dump(
-                {"ids": self._ids, "tokens": self._tokens, "metadatas": self._metadatas},
+                {
+                    "version": BM25_FORMAT_VERSION,
+                    "ids": self._ids,
+                    "tokens": self._tokens,
+                    "metadatas": self._metadatas,
+                    "documents": self._documents,
+                },
                 f,
                 ensure_ascii=False,
             )
@@ -72,13 +97,22 @@ class BM25Index:
         try:
             with open(p, encoding="utf-8") as f:
                 data = json.load(f)
-            return cls(data["ids"], data["tokens"], data["metadatas"])
+            if data.get("version") != BM25_FORMAT_VERSION or "documents" not in data:
+                raise RuntimeError(
+                    "BM25 索引格式过旧，缺少稀疏检索正文。请执行 `uv run python main.py kb build --sparse-only` 重建。"
+                )
+            return cls(data["ids"], data["tokens"], data["metadatas"], data["documents"])
         except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
             raise RuntimeError(f"BM25 索引读取失败或已损坏: {path}") from exc
 
-    def search(
-            self, query: str, top_n: int, where: dict[str, Any] | None = None
-    ) -> list[tuple[str, float]]:
+    def get_payload(self, chunk_id: str) -> tuple[str, dict[str, Any]] | None:
+        """返回命中分块的原始正文与 metadata，不访问向量数据库。"""
+        position = self._position_by_id.get(chunk_id)
+        if position is None:
+            return None
+        return self._documents[position], dict(self._metadatas[position])
+
+    def search(self, query: str, top_n: int, where: dict[str, Any] | None = None) -> list[tuple[str, float]]:
         """检索，返回 [(id, score)]，按分数降序。where 在 Python 侧过滤同域。"""
         if self._bm25 is None:
             return []

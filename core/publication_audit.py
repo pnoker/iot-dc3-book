@@ -7,6 +7,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Literal
 
+from core.chapter_structure import expected_chapter_heading_structure, extract_markdown_headings
 from core.originality import split_paragraphs
 from core.state import BookState
 
@@ -46,6 +47,7 @@ def audit_publication_readiness(state: BookState) -> list[PublicationAuditIssue]
     """返回全书发布前必须处理的确定性问题。"""
     issues: list[PublicationAuditIssue] = []
     _audit_chapter_and_section_completion(state, issues)
+    _audit_chapter_heading_structure(state, issues)
     _audit_unresolved_foreshadows(state, issues)
     _audit_duplicate_paragraphs(state, issues)
     _audit_terminology_consistency(state, issues)
@@ -192,6 +194,104 @@ def _audit_chapter_and_section_completion(state: BookState, issues: list[Publica
                         suggestion=f"执行 `uv run python main.py write resume {section.id}` 完成审校。",
                     )
                 )
+
+
+def _audit_chapter_heading_structure(state: BookState, issues: list[PublicationAuditIssue]) -> None:
+    chapter_contents = {content.chapter_id: content for content in state.chapters if content.markdown.strip()}
+    for chapter in state.get_all_chapters_flat():
+        content = chapter_contents.get(chapter.id)
+        if content is None:
+            continue
+        try:
+            expected = expected_chapter_heading_structure(chapter)
+        except RuntimeError as exc:
+            issues.append(
+                PublicationAuditIssue(
+                    code="chapter.heading.invalid_plan",
+                    severity="blocker",
+                    chapter_id=chapter.id,
+                    message=f"第{chapter.id}章标题规划无效: {exc}",
+                    suggestion="修复 SectionPlan 编号、顺序、parent_title 和标题契约后重新合稿。",
+                )
+            )
+            continue
+
+        headings = extract_markdown_headings(content.markdown)
+        actual_h1 = [heading.title for heading in headings if heading.level == 1]
+        actual_h2 = [heading.title for heading in headings if heading.level == 2]
+        actual_h3 = [heading.title for heading in headings if heading.level == 3]
+        h1_matches = actual_h1 == [expected.chapter_heading]
+        h2_matches = actual_h2 == list(expected.parent_headings)
+        h3_matches = actual_h3 == list(expected.section_headings)
+        if not h1_matches:
+            issues.append(
+                PublicationAuditIssue(
+                    code="chapter.heading.h1_mismatch",
+                    severity="blocker",
+                    chapter_id=chapter.id,
+                    message=f"第{chapter.id}章 H1 与规划不一致: {actual_h1!r}。",
+                    suggestion=f"重新合稿，H1 应为 `{expected.chapter_heading}`。",
+                )
+            )
+        if not actual_h2 and expected.parent_headings:
+            code = "chapter.heading.h2_missing"
+            message = f"第{chapter.id}章缺少全部二级标题。"
+        elif not h2_matches:
+            code = "chapter.heading.h2_mismatch"
+            message = f"第{chapter.id}章 H2 与规划不一致: {actual_h2!r}。"
+        else:
+            code = ""
+            message = ""
+        if code:
+            issues.append(
+                PublicationAuditIssue(
+                    code=code,
+                    severity="blocker",
+                    chapter_id=chapter.id,
+                    message=message,
+                    suggestion=f"重新合稿，H2 应依次为: {list(expected.parent_headings)!r}。",
+                )
+            )
+        if not h3_matches:
+            missing = [heading for heading in expected.section_headings if heading not in actual_h3]
+            issue_code = "chapter.heading.h3_missing" if missing else "chapter.heading.h3_mismatch"
+            issues.append(
+                PublicationAuditIssue(
+                    code=issue_code,
+                    severity="blocker",
+                    chapter_id=chapter.id,
+                    message=f"第{chapter.id}章 H3 与规划不一致，缺失: {missing!r}，实际: {actual_h3!r}。",
+                    suggestion="从权威 SectionContent 重新确定性合稿，不要人工维护章节标题骨架。",
+                )
+            )
+        if h1_matches and h2_matches and h3_matches:
+            actual_ordered = tuple(heading for heading in headings if heading.level <= 3)
+            if actual_ordered != expected.ordered_headings:
+                issues.append(
+                    PublicationAuditIssue(
+                        code="chapter.heading.skeleton_order",
+                        severity="blocker",
+                        chapter_id=chapter.id,
+                        message=f"第{chapter.id}章 H1/H2/H3 标题齐全，但层级挂载或顺序与规划不一致。",
+                        suggestion="从权威 SectionContent 重新确定性合稿，恢复 H1 → H2 → H3 的规划顺序。",
+                    )
+                )
+        previous_level: int | None = None
+        for heading in headings:
+            if previous_level is not None and heading.level > previous_level + 1:
+                issues.append(
+                    PublicationAuditIssue(
+                        code="chapter.heading.level_jump",
+                        severity="blocker",
+                        chapter_id=chapter.id,
+                        message=(
+                            f"第{chapter.id}章标题层级从 H{previous_level} 跳至 H{heading.level}: {heading.title}。"
+                        ),
+                        suggestion="重新合稿并确保标题层级按 H1/H2/H3/H4-H6 逐级展开。",
+                    )
+                )
+                break
+            previous_level = heading.level
 
 
 def _audit_unresolved_foreshadows(state: BookState, issues: list[PublicationAuditIssue]) -> None:

@@ -1848,7 +1848,7 @@
           {
             "id": 3,
             "title": "感知层技术基础",
-            "summary": "传感器、RFID、定位技术、边缘计算节点。\n感知层的智能化趋势：端侧 AI（TinyML）、智能传感器、自适应采样。\n物模型（Profile）与设备抽象：如何用统一模型描述千差万别的物理设备。\n",
+            "summary": "传感器、RFID、定位技术、边缘计算节点。\n感知层的智能化趋势：端侧 AI（TinyML）、智能传感器、自适应采样。\n物模型（Thing Model）与设备抽象：如何用统一模型描述千差万别的物理设备。\n",
             "capability_ids": [
               "IOT.SENSING.DEVICE_MODEL",
               "IOT.SENSING.EDGE_AI"
@@ -2230,9 +2230,9 @@
                 },
                 {
                   "section_id": "3.7.1",
-                  "title": "物模型（Profile）概念与必要性",
+                  "title": "物模型（Thing Model）概念与 Profile 实现",
                   "parent_title": "物模型与设备抽象",
-                  "heading": "3.7.1 物模型（Profile）概念与必要性",
+                  "heading": "3.7.1 物模型（Thing Model）概念与 Profile 实现",
                   "target_words": 1000,
                   "purpose": "引出物模型作为统一描述语言的价值。",
                   "key_points": [
@@ -2716,8 +2716,8 @@
               {
                 "id": "3.7.1",
                 "chapter_id": 3,
-                "title": "物模型（Profile）概念与必要性",
-                "heading": "3.7.1 物模型（Profile）概念与必要性",
+                "title": "物模型（Thing Model）概念与 Profile 实现",
+                "heading": "3.7.1 物模型（Thing Model）概念与 Profile 实现",
                 "parent_title": "物模型与设备抽象",
                 "target_words": 1000,
                 "purpose": "引出物模型作为统一描述语言的价值。",
@@ -5493,7 +5493,7 @@
                 {
                   "section_id": "7.1.1",
                   "title": "AIoT 的定义与演进脉络",
-                  "parent_title": "AIoT 技术全景",
+                  "parent_title": "AIoT 技术全景与演进",
                   "heading": "7.1.1 AIoT 的定义与演进脉络",
                   "target_words": 1200,
                   "purpose": "明确AIoT概念、发展历程和核心驱动力，为后续技术讨论奠定基础。",
@@ -5516,7 +5516,7 @@
                 {
                   "section_id": "7.1.2",
                   "title": "大模型在物联网中的角色：从感知到认知",
-                  "parent_title": "AIoT 技术全景",
+                  "parent_title": "AIoT 技术全景与演进",
                   "heading": "7.1.2 大模型在物联网中的角色：从感知到认知",
                   "target_words": 1000,
                   "purpose": "阐释大模型如何赋予物联网认知能力，以及典型应用场景。",
@@ -5539,7 +5539,7 @@
                 {
                   "section_id": "7.1.3",
                   "title": "Agent 架构：让物联网自主决策",
-                  "parent_title": "AIoT 技术全景",
+                  "parent_title": "AIoT 技术全景与演进",
                   "heading": "7.1.3 Agent 架构：让物联网自主决策",
                   "target_words": 1000,
                   "purpose": "介绍Agent的基本概念、ReAct模式、在物联网中如何实现自主任务分解与执行。",
@@ -5562,7 +5562,7 @@
                 {
                   "section_id": "7.1.4",
                   "title": "RAG 与 Tool-Calling：扩展知识边界",
-                  "parent_title": "AIoT 技术全景",
+                  "parent_title": "AIoT 技术全景与演进",
                   "heading": "7.1.4 RAG 与 Tool-Calling：扩展知识边界",
                   "target_words": 1000,
                   "purpose": "说明RAG如何让LLM获取外部知识，Tool-Calling如何让LLM操作实际系统。",
@@ -5586,7 +5586,7 @@
                 {
                   "section_id": "7.1.5",
                   "title": "MCP 协议：跨系统交互标准",
-                  "parent_title": "AIoT 技术全景",
+                  "parent_title": "AIoT 技术全景与演进",
                   "heading": "7.1.5 MCP 协议：跨系统交互标准",
                   "target_words": 800,
                   "purpose": "介绍MCP（Model Context Protocol）在物联网生态中的作用，统一设备/平台交互方式。",
@@ -5609,7 +5609,7 @@
                 {
                   "section_id": "7.1.6",
                   "title": "RAG Eval：分层评测检索与生成",
-                  "parent_title": "7.1 AIoT 技术全景与演进",
+                  "parent_title": "AIoT 技术全景与演进",
                   "heading": "7.1.6 RAG Eval：分层评测检索与生成",
                   "target_words": 2200,
                   "purpose": "建立面向物联网知识问答的分层 RAG 评测方法，回答检索、生成与端到端效果如何被证据化验证。",
@@ -6022,7 +6022,7 @@
                 {
                   "section_id": "7.5.4",
                   "title": "Agent Eval：结果、轨迹、安全与成本",
-                  "parent_title": "7.5 从 Copilot 到 Agent",
+                  "parent_title": "从 Copilot 到 Agent：物联网运维的范式转移",
                   "heading": "7.5.4 Agent Eval：结果、轨迹、安全与成本",
                   "target_words": 2400,
                   "purpose": "定义 Agent 的任务结果、工具轨迹、安全约束和运行代价评测，避免仅凭回答流畅度判断系统可用。",
@@ -6146,7 +6146,7 @@
                 "chapter_id": 7,
                 "title": "AIoT 的定义与演进脉络",
                 "heading": "7.1.1 AIoT 的定义与演进脉络",
-                "parent_title": "AIoT 技术全景",
+                "parent_title": "AIoT 技术全景与演进",
                 "target_words": 1200,
                 "purpose": "明确AIoT概念、发展历程和核心驱动力，为后续技术讨论奠定基础。",
                 "key_points": [
@@ -6171,7 +6171,7 @@
                 "chapter_id": 7,
                 "title": "大模型在物联网中的角色：从感知到认知",
                 "heading": "7.1.2 大模型在物联网中的角色：从感知到认知",
-                "parent_title": "AIoT 技术全景",
+                "parent_title": "AIoT 技术全景与演进",
                 "target_words": 1000,
                 "purpose": "阐释大模型如何赋予物联网认知能力，以及典型应用场景。",
                 "key_points": [
@@ -6196,7 +6196,7 @@
                 "chapter_id": 7,
                 "title": "Agent 架构：让物联网自主决策",
                 "heading": "7.1.3 Agent 架构：让物联网自主决策",
-                "parent_title": "AIoT 技术全景",
+                "parent_title": "AIoT 技术全景与演进",
                 "target_words": 1000,
                 "purpose": "介绍Agent的基本概念、ReAct模式、在物联网中如何实现自主任务分解与执行。",
                 "key_points": [
@@ -6221,7 +6221,7 @@
                 "chapter_id": 7,
                 "title": "RAG 与 Tool-Calling：扩展知识边界",
                 "heading": "7.1.4 RAG 与 Tool-Calling：扩展知识边界",
-                "parent_title": "AIoT 技术全景",
+                "parent_title": "AIoT 技术全景与演进",
                 "target_words": 1000,
                 "purpose": "说明RAG如何让LLM获取外部知识，Tool-Calling如何让LLM操作实际系统。",
                 "key_points": [
@@ -6247,7 +6247,7 @@
                 "chapter_id": 7,
                 "title": "MCP 协议：跨系统交互标准",
                 "heading": "7.1.5 MCP 协议：跨系统交互标准",
-                "parent_title": "AIoT 技术全景",
+                "parent_title": "AIoT 技术全景与演进",
                 "target_words": 800,
                 "purpose": "介绍MCP（Model Context Protocol）在物联网生态中的作用，统一设备/平台交互方式。",
                 "key_points": [
@@ -6272,7 +6272,7 @@
                 "chapter_id": 7,
                 "title": "RAG Eval：分层评测检索与生成",
                 "heading": "7.1.6 RAG Eval：分层评测检索与生成",
-                "parent_title": "7.1 AIoT 技术全景与演进",
+                "parent_title": "AIoT 技术全景与演进",
                 "target_words": 2200,
                 "purpose": "建立面向物联网知识问答的分层 RAG 评测方法，回答检索、生成与端到端效果如何被证据化验证。",
                 "key_points": [
@@ -6719,7 +6719,7 @@
                 "chapter_id": 7,
                 "title": "Agent Eval：结果、轨迹、安全与成本",
                 "heading": "7.5.4 Agent Eval：结果、轨迹、安全与成本",
-                "parent_title": "7.5 从 Copilot 到 Agent",
+                "parent_title": "从 Copilot 到 Agent：物联网运维的范式转移",
                 "target_words": 2400,
                 "purpose": "定义 Agent 的任务结果、工具轨迹、安全约束和运行代价评测，避免仅凭回答流畅度判断系统可用。",
                 "key_points": [
@@ -6945,7 +6945,7 @@
                 {
                   "section_id": "8.1.4",
                   "title": "NIST AI RMF：把 Agent 风险纳入治理闭环",
-                  "parent_title": "8.1 安全基础与原则",
+                  "parent_title": "物联网安全概述",
                   "heading": "8.1.4 NIST AI RMF：把 Agent 风险纳入治理闭环",
                   "target_words": 2000,
                   "purpose": "用 Govern、Map、Measure、Manage 四函数把 AIoT Agent 的责任、风险、测量证据和处置策略连接成治理闭环。",
@@ -7051,7 +7051,7 @@
                 {
                   "section_id": "8.2.4",
                   "title": "设备生命周期、SBOM 与安全供应链",
-                  "parent_title": "8.2 设备安全",
+                  "parent_title": "设备安全与认证",
                   "heading": "8.2.4 设备生命周期、SBOM 与安全供应链",
                   "target_words": 2200,
                   "purpose": "把设备从制造、注册、运行到退役的全生命周期与软件供应链安全统一到治理与证据链。",
@@ -7312,7 +7312,7 @@
                 {
                   "section_id": "8.5.4",
                   "title": "Agent 安全：工具、记忆、身份与自主性",
-                  "parent_title": "8.5 AI 时代的安全",
+                  "parent_title": "AI时代的安全挑战",
                   "heading": "8.5.4 Agent 安全：工具、记忆、身份与自主性",
                   "target_words": 2600,
                   "purpose": "从模型风险扩展到 Agent 系统风险，覆盖工具、身份、记忆、委派、长期状态和自主执行的攻击面与运行时控制。",
@@ -7540,7 +7540,7 @@
                 "chapter_id": 8,
                 "title": "NIST AI RMF：把 Agent 风险纳入治理闭环",
                 "heading": "8.1.4 NIST AI RMF：把 Agent 风险纳入治理闭环",
-                "parent_title": "8.1 安全基础与原则",
+                "parent_title": "物联网安全概述",
                 "target_words": 2000,
                 "purpose": "用 Govern、Map、Measure、Manage 四函数把 AIoT Agent 的责任、风险、测量证据和处置策略连接成治理闭环。",
                 "key_points": [
@@ -7654,7 +7654,7 @@
                 "chapter_id": 8,
                 "title": "设备生命周期、SBOM 与安全供应链",
                 "heading": "8.2.4 设备生命周期、SBOM 与安全供应链",
-                "parent_title": "8.2 设备安全",
+                "parent_title": "设备安全与认证",
                 "target_words": 2200,
                 "purpose": "把设备从制造、注册、运行到退役的全生命周期与软件供应链安全统一到治理与证据链。",
                 "key_points": [
@@ -7935,7 +7935,7 @@
                 "chapter_id": 8,
                 "title": "Agent 安全：工具、记忆、身份与自主性",
                 "heading": "8.5.4 Agent 安全：工具、记忆、身份与自主性",
-                "parent_title": "8.5 AI 时代的安全",
+                "parent_title": "AI时代的安全挑战",
                 "target_words": 2600,
                 "purpose": "从模型风险扩展到 Agent 系统风险，覆盖工具、身份、记忆、委派、长期状态和自主执行的攻击面与运行时控制。",
                 "key_points": [
@@ -12511,7 +12511,7 @@
                 {
                   "section_id": "14.2.1",
                   "title": "项目背景与需求定义",
-                  "parent_title": "IoT DC3项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.1 项目背景与需求定义",
                   "target_words": 1000,
                   "purpose": "介绍IoT DC3开源项目背景，定义实战需求范围。",
@@ -12535,7 +12535,7 @@
                 {
                   "section_id": "14.2.2",
                   "title": "系统架构设计",
-                  "parent_title": "IoT DC3项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.2 系统架构设计",
                   "target_words": 1200,
                   "purpose": "详细呈现IoT DC3的分层架构与微服务组件。",
@@ -12560,7 +12560,7 @@
                 {
                   "section_id": "14.2.3",
                   "title": "核心模块实现",
-                  "parent_title": "IoT DC3项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.3 核心模块实现",
                   "target_words": 1500,
                   "purpose": "通过代码示例展示设备注册、数据采集与告警规则等核心功能实现。",
@@ -12586,7 +12586,7 @@
                 {
                   "section_id": "14.2.4",
                   "title": "设备接入与数据流",
-                  "parent_title": "IoT DC3项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.4 设备接入与数据流",
                   "target_words": 1000,
                   "purpose": "展示典型设备接入流程与数据流转过程。",
@@ -12611,7 +12611,7 @@
                 {
                   "section_id": "14.2.5",
                   "title": "AI运维功能实现",
-                  "parent_title": "IoT DC3项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.5 AI运维功能实现",
                   "target_words": 1200,
                   "purpose": "介绍如何在IoT DC3中集成简单AI模型进行异常检测和预测性维护。",
@@ -12636,7 +12636,7 @@
                 {
                   "section_id": "14.2.6",
                   "title": "部署与测试",
-                  "parent_title": "IoT DC3项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.6 部署与测试",
                   "target_words": 1000,
                   "purpose": "描述使用Docker Compose或Kubernetes部署IoT DC3及进行功能测试。",
@@ -12661,7 +12661,7 @@
                 {
                   "section_id": "14.2.7",
                   "title": "可复现实验、验收指标与证据包",
-                  "parent_title": "14.2 IoT DC3 端到端项目实战",
+                  "parent_title": "IoT DC3 端到端项目实战",
                   "heading": "14.2.7 可复现实验、验收指标与证据包",
                   "target_words": 2800,
                   "purpose": "定义从版本锁定、工作负载、故障注入到指标和原始结果的可复现实验契约，使项目结论能够被第三方验证。",
@@ -12977,7 +12977,7 @@
                 "chapter_id": 14,
                 "title": "项目背景与需求定义",
                 "heading": "14.2.1 项目背景与需求定义",
-                "parent_title": "IoT DC3项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 1000,
                 "purpose": "介绍IoT DC3开源项目背景，定义实战需求范围。",
                 "key_points": [
@@ -13003,7 +13003,7 @@
                 "chapter_id": 14,
                 "title": "系统架构设计",
                 "heading": "14.2.2 系统架构设计",
-                "parent_title": "IoT DC3项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 1200,
                 "purpose": "详细呈现IoT DC3的分层架构与微服务组件。",
                 "key_points": [
@@ -13030,7 +13030,7 @@
                 "chapter_id": 14,
                 "title": "核心模块实现",
                 "heading": "14.2.3 核心模块实现",
-                "parent_title": "IoT DC3项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 1500,
                 "purpose": "通过代码示例展示设备注册、数据采集与告警规则等核心功能实现。",
                 "key_points": [
@@ -13058,7 +13058,7 @@
                 "chapter_id": 14,
                 "title": "设备接入与数据流",
                 "heading": "14.2.4 设备接入与数据流",
-                "parent_title": "IoT DC3项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 1000,
                 "purpose": "展示典型设备接入流程与数据流转过程。",
                 "key_points": [
@@ -13085,7 +13085,7 @@
                 "chapter_id": 14,
                 "title": "AI运维功能实现",
                 "heading": "14.2.5 AI运维功能实现",
-                "parent_title": "IoT DC3项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 1200,
                 "purpose": "介绍如何在IoT DC3中集成简单AI模型进行异常检测和预测性维护。",
                 "key_points": [
@@ -13112,7 +13112,7 @@
                 "chapter_id": 14,
                 "title": "部署与测试",
                 "heading": "14.2.6 部署与测试",
-                "parent_title": "IoT DC3项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 1000,
                 "purpose": "描述使用Docker Compose或Kubernetes部署IoT DC3及进行功能测试。",
                 "key_points": [
@@ -13139,7 +13139,7 @@
                 "chapter_id": 14,
                 "title": "可复现实验、验收指标与证据包",
                 "heading": "14.2.7 可复现实验、验收指标与证据包",
-                "parent_title": "14.2 IoT DC3 端到端项目实战",
+                "parent_title": "IoT DC3 端到端项目实战",
                 "target_words": 2800,
                 "purpose": "定义从版本锁定、工作负载、故障注入到指标和原始结果的可复现实验契约，使项目结论能够被第三方验证。",
                 "key_points": [
@@ -13351,7 +13351,7 @@
       },
       {
         "id": "F003",
-        "description": "物模型（Profile）与设备抽象定义后，未说明如何被上层AI使用，为后续Agent调用设备留下悬念。",
+        "description": "物模型（Thing Model）与设备抽象定义后，未说明如何被上层AI使用，为后续Agent调用设备留下悬念。",
         "planted_chapter": 3,
         "planned_resolve_chapter": 7,
         "status": "planted",

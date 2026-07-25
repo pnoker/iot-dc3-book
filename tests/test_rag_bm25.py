@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from core.rag_bm25 import BM25Index, tokenize
@@ -57,6 +59,18 @@ def test_bm25_save_load_roundtrip_without_retokenize(tmp_path, monkeypatch) -> N
 
     assert loaded is not None
     assert calls == []  # 加载未触发重分词
+    assert loaded.get_payload("a") == ("Modbus 协议接入", {"label": "x"})
+
+
+def test_bm25_load_rejects_legacy_index_without_documents(tmp_path) -> None:
+    path = tmp_path / "bm25.json"
+    path.write_text(
+        json.dumps({"ids": ["a"], "tokens": [["modbus"]], "metadatas": [{"label": "x"}]}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(RuntimeError, match=r"格式过旧.*sparse-only"):
+        BM25Index.load(str(path))
 
 
 def test_bm25_load_missing_returns_none(tmp_path) -> None:
