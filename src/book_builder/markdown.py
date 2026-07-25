@@ -132,7 +132,7 @@ def generate_markdown_output(
     _write_file(out / "08-附录.md", _render(env, "appendix.md.j2"))
 
     # 单文件合集 book.md
-    book_path = out / cfg.output.book_markdown
+    book_path = out / f"{cfg.book.title}.md"
     _write_file(book_path, assemble_book_markdown(chapters, parts, cfg, assets))
 
     logger.info("Markdown 输出完成: %s", book_path)

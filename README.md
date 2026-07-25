@@ -12,9 +12,9 @@ uv run book-builder build
 uv run book-builder pdf
 uv run book-builder pdf --skip-build   # 跳过组装，直接用已有 book.md
 
-# 生成样张 PDF（只到第1章，提交编辑社）
+# 生成样稿 PDF（只到第1章，提交编辑社）
 uv run book-builder sample
-uv run book-builder sample --until-chapter 3   # 样张到第3章
+uv run book-builder sample --until-chapter 3   # 样稿到第3章
 ```
 
 ## 目录结构
@@ -38,7 +38,7 @@ book-builder/
 │   ├── assets/           # cover.html + logo.svg
 │   ├── manuscript/       # 14 章手稿 (chapter-01~14/chapter.md)
 │   └── figures/          # 图表资产 (chapter-XX/{figure_id}.{html,svg,png})
-└── output/               # 层级 MD + book.md + book.pdf + cover.png + figures/
+└── output/               # 层级 MD + 书名.md/.pdf/—样稿.pdf + cover.png + figures/
 ```
 
 ## 系统依赖

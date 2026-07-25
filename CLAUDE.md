@@ -18,8 +18,8 @@ uv run book-builder build --skip-figures     # 跳过图表收集
 uv run book-builder pdf                # 组装 + 导出 PDF
 uv run book-builder pdf --skip-build   # 跳过组装，直接用已有 book.md
 
-uv run book-builder sample             # 生成样张 PDF（只到第1章，提交编辑社）
-uv run book-builder sample --until-chapter 3  # 样张到第3章
+uv run book-builder sample             # 生成样稿 PDF（只到第1章，提交编辑社）
+uv run book-builder sample --until-chapter 3  # 样稿到第3章
 ```
 
 No tests, no linting — this is a pure writing tool.
@@ -55,11 +55,11 @@ book/manuscript/chapter-XX/chapter.md  (作者手工维护)
     ↓ build
 output/00-封面.md … 08-附录.md       (层级化分章 MD)
 output/05-篇名/01-章名.md
-output/book.md        (单文件合集，含图引用)
+output/AIoT 技术与实践.md   (单文件合集，含图引用)
 output/cover.png      (封面图)
 output/figures/       (图表 PNG)
     ↓ pdf
-output/book.pdf       (中间文件自动清理)
+output/AIoT 技术与实践.pdf  (中间文件自动清理)
 ```
 
 ## Resource Directory

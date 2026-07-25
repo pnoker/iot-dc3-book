@@ -88,7 +88,7 @@ def pdf(
     cfg = load_config(config_dir)
 
     out = Path(output_dir)
-    book_md = out / cfg.output.book_markdown
+    book_md = out / f"{cfg.book.title}.md"
     cover_html = Path(config_dir).parent / "assets" / "cover.html"
 
     if not skip_build:
@@ -113,7 +113,7 @@ def pdf(
 
     pdf_path = generate_pdf_output(
         book_md,
-        out / "book.pdf",
+        out / f"{cfg.book.title}.pdf",
         css_file=resolved_css if Path(resolved_css).exists() else None,
         chrome_bin=chrome_bin,
         pandoc_bin=cfg.output.pandoc_bin,
@@ -131,12 +131,12 @@ def sample(
     output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
     manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
     figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
-    until_chapter: Annotated[int, typer.Option("--until-chapter", help="样张截止章节(含),默认第1章")] = 1,
+    until_chapter: Annotated[int, typer.Option("--until-chapter", help="样稿截止章节(含),默认第1章")] = 1,
     css_file: Annotated[str | None, typer.Option("--css", help="PDF 样式 CSS 文件")] = None,
     chrome_bin: Annotated[str | None, typer.Option("--chrome", help="Chrome/Edge 可执行文件路径")] = None,
     log_level: Annotated[str, typer.Option("--log-level", help="日志级别")] = "INFO",
 ) -> None:
-    """生成样张 PDF（只到指定章节），用于提交编辑社。
+    """生成样稿 PDF（只到指定章节），用于提交编辑社。
 
     组装封面/作者/序/导读/目录 + 第1章到 until_chapter 章（不含附录），
     导出为 book-sample.pdf。中间文件自动清理。
@@ -149,7 +149,7 @@ def sample(
 
     chapters = load_manuscript(cfg.parts, manuscript_dir)
     chapters = {cid: md for cid, md in chapters.items() if cid <= until_chapter}
-    logger.info("样张范围: 第1-%d章", until_chapter)
+    logger.info("样稿范围: 第1-%d章", until_chapter)
 
     figure_result = collect_figure_assets(
         chapters,
@@ -170,7 +170,7 @@ def sample(
     try:
         pdf_path = generate_pdf_output(
             sample_md,
-            out / "book-sample.pdf",
+            out / f"{cfg.book.title}—样稿.pdf",
             css_file=resolved_css if Path(resolved_css).exists() else None,
             chrome_bin=chrome_bin,
             pandoc_bin=cfg.output.pandoc_bin,
@@ -180,9 +180,9 @@ def sample(
         sample_md.unlink(missing_ok=True)
 
     if pdf_path:
-        logger.info("✅ 样张导出完成: %s", pdf_path)
+        logger.info("✅ 样稿导出完成: %s", pdf_path)
     else:
-        typer.echo("⚠️  样张未生成（缺少 Chrome/Edge）")
+        typer.echo("⚠️  样稿未生成（缺少 Chrome/Edge）")
 
 
 def main(argv: list[str] | None = None) -> None:

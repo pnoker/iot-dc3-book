@@ -51,10 +51,9 @@ class StyleConfig(BaseModel):
 
 
 class OutputConfig(BaseModel):
-    """输出配置 — 去掉 word 相关字段。"""
+    """输出配置。"""
     dir: str = "./output"
     structure: str = "hierarchical"
-    book_markdown: str = "book.md"
     pandoc_bin: str = "pandoc"
 
 
