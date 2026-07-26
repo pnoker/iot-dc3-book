@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="{{ language }}">
 <head>
 <meta charset="utf-8">
-<title>AIoT 技术与实践</title>
+<title>{{ title }}</title>
 <style>
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; }
@@ -117,8 +117,8 @@
 
   <div class="top">
     <div class="tag">AI 原生</div>
-    <div class="title">万物智联</div>
-    <div class="subtitle">构建面向 AI 场景演进的分布式工业物联网平台</div>
+    <div class="title">{{ title }}</div>
+    <div class="subtitle">{{ subtitle }}</div>
     <div class="divider"></div>
     <div class="highlights">
       <div><span class="dot">●</span>五层架构 · 智能层 · 物联网平台底座</div>
@@ -132,7 +132,7 @@
     <div class="author-wrap">
       <div class="logo-mark"><img src="logo.svg" alt="IoT DC3"></div>
       <div class="author">
-        张红元
+        {{ author }}
         <small>IoT DC3 开源作者 · 架构师 · 物联网专家</small>
       </div>
     </div>

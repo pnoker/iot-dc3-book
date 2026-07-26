@@ -23,7 +23,7 @@ logger = get_logger("cli")
 @app.command()
 def build(
     config_dir: Annotated[str, typer.Option("--config", help="配置目录路径")] = "book/config",
-    output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
+    output_dir: Annotated[str | None, typer.Option("--output", help="输出目录，默认读取 output.dir")] = None,
     manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
     figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
     skip_figures: Annotated[bool, typer.Option("--skip-figures", help="跳过图表资产收集")] = False,
@@ -36,6 +36,7 @@ def build(
     """
     setup_logging(level=log_level)
     cfg = load_config(config_dir)
+    output_dir = output_dir or cfg.output.dir
     assert cfg.parts, "配置中缺少篇章结构"
 
     # 1) 读取手稿
@@ -71,7 +72,7 @@ def build(
 @app.command()
 def pdf(
     config_dir: Annotated[str, typer.Option("--config", help="配置目录路径")] = "book/config",
-    output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
+    output_dir: Annotated[str | None, typer.Option("--output", help="输出目录，默认读取 output.dir")] = None,
     manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
     figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
     css_file: Annotated[str | None, typer.Option("--css", help="PDF 样式 CSS 文件")] = None,
@@ -86,6 +87,7 @@ def pdf(
     """
     setup_logging(level=log_level)
     cfg = load_config(config_dir)
+    output_dir = output_dir or cfg.output.dir
 
     out = Path(output_dir)
     book_md = out / f"{cfg.book.title}.md"
@@ -118,6 +120,7 @@ def pdf(
         chrome_bin=chrome_bin,
         pandoc_bin=cfg.output.pandoc_bin,
         cover_html=cover_html if cover_html.exists() else None,
+        metadata=cfg.book.model_dump(),
     )
     if pdf_path:
         logger.info("✅ PDF 导出完成: %s", pdf_path)
@@ -128,7 +131,7 @@ def pdf(
 @app.command()
 def sample(
     config_dir: Annotated[str, typer.Option("--config", help="配置目录路径")] = "book/config",
-    output_dir: Annotated[str, typer.Option("--output", help="输出目录")] = "./output",
+    output_dir: Annotated[str | None, typer.Option("--output", help="输出目录，默认读取 output.dir")] = None,
     manuscript_dir: Annotated[str, typer.Option("--manuscript", help="手稿目录")] = "book/manuscript",
     figures_dir: Annotated[str, typer.Option("--figures-dir", help="图表资产目录")] = "book/figures",
     until_chapter: Annotated[int, typer.Option("--until-chapter", help="样稿截止章节(含),默认第1章")] = 1,
@@ -143,6 +146,7 @@ def sample(
     """
     setup_logging(level=log_level)
     cfg = load_config(config_dir)
+    output_dir = output_dir or cfg.output.dir
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
     cover_html = Path(config_dir).parent / "assets" / "cover.html"

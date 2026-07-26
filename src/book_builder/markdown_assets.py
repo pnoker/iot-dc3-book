@@ -22,7 +22,6 @@ _BOOK_FIGURE_REQUIRED_FIELDS = [
     "layout",
     "elements",
     "relationships",
-    "legend",
     "caption",
     "render_notes",
 ]

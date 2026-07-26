@@ -22,7 +22,7 @@ logger = get_logger("figures")
 
 _DEFAULT_REQUIRED_FIELDS = [
     "id", "type", "title", "purpose", "layout", "elements",
-    "relationships", "legend", "caption", "render_notes",
+    "relationships", "caption", "render_notes",
 ]
 _DEFAULT_ALLOWED_TYPES = [
     "architecture", "sequence", "flowchart", "dataflow",

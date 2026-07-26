@@ -6,7 +6,11 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
+from typing import Any
+
+from jinja2 import Environment, select_autoescape
 
 from book_builder.log import get_logger
 
@@ -21,6 +25,7 @@ def generate_pdf_output(
     chrome_bin: str | None = None,
     pandoc_bin: str = "pandoc",
     cover_html: str | Path | None = None,
+    metadata: dict[str, Any] | None = None,
 ) -> str | None:
     """从 book.md 生成 PDF：pandoc 转 HTML → Chrome headless 转 PDF，封面单独渲染合并。
 
@@ -43,7 +48,12 @@ def generate_pdf_output(
     html_path = pdf_path.with_suffix(".html")
     body_pdf = pdf_path.with_name(".book_body.pdf")
     cover_pdf = pdf_path.with_name(".book_cover.pdf")
-    cover_path = Path(cover_html) if cover_html else None
+    cover_template = Path(cover_html) if cover_html else None
+    cover_path = (
+        _render_cover_html(cover_template, metadata)
+        if cover_template and cover_template.exists()
+        else None
+    )
     has_cover = bool(cover_path and cover_path.exists())
 
     # pandoc 输入：去图片属性 + 去封面 cover.png 引用（封面单独渲染）
@@ -61,6 +71,8 @@ def generate_pdf_output(
             resolved_pandoc, str(pandoc_input), "-o", str(html_path),
             "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
         ]
+        for key, value in _pandoc_metadata(metadata).items():
+            cmd += ["--metadata", f"{key}={value}"]
         if css_file and Path(css_file).exists():
             css_href = os.path.relpath(Path(css_file).resolve(), html_path.parent.resolve())
             cmd += ["--css", css_href]
@@ -106,22 +118,29 @@ def generate_pdf_output(
         # 清理所有中间文件，只保留 book.pdf
         for tmp in (pandoc_input, html_path, body_pdf, cover_pdf):
             tmp.unlink(missing_ok=True)
+        if cover_path and cover_path != cover_template:
+            cover_path.unlink(missing_ok=True)
 
     logger.info("PDF 输出完成: %s", pdf_path)
     return str(pdf_path)
 
 
 def generate_cover_image(
-    cover_html: str | Path, output_png: str | Path, *, chrome_bin: str | None = None
+    cover_html: str | Path,
+    output_png: str | Path,
+    *,
+    chrome_bin: str | None = None,
+    metadata: dict[str, Any] | None = None,
 ) -> None:
-    """用 Chrome headless 把封面 HTML 转为 PNG。"""
+    """用 Chrome headless 把封面 HTML 模板转为 PNG。"""
     chrome = chrome_bin or _find_chrome()
     if chrome is None:
         logger.warning("未找到 Chrome，跳过封面图生成。")
         return
-    cover_path = Path(cover_html)
-    if not cover_path.exists():
+    cover_template = Path(cover_html)
+    if not cover_template.exists():
         return
+    cover_path = _render_cover_html(cover_template, metadata)
     png_path = Path(output_png)
     png_path.parent.mkdir(parents=True, exist_ok=True)
     png_path.unlink(missing_ok=True)
@@ -145,6 +164,7 @@ def generate_cover_image(
             )
             if conv.returncode == 0 and png_path.exists():
                 cover_pdf.unlink(missing_ok=True)
+                cover_path.unlink(missing_ok=True)
                 logger.info("封面图生成: %s", png_path)
                 return
         sips = shutil.which("sips")
@@ -155,6 +175,7 @@ def generate_cover_image(
             )
             cover_pdf.unlink(missing_ok=True)
             if conv.returncode == 0 and png_path.exists():
+                cover_path.unlink(missing_ok=True)
                 logger.info("封面图生成: %s", png_path)
                 return
         cover_pdf.unlink(missing_ok=True)
@@ -167,10 +188,52 @@ def generate_cover_image(
         cover_path.resolve().as_uri(),
     ]
     completed = subprocess.run(fallback, check=False, capture_output=True, text=True)
+    cover_path.unlink(missing_ok=True)
     if completed.returncode == 0 and png_path.exists():
         logger.info("封面图生成（截图回退）: %s", png_path)
     else:
         logger.warning("封面图生成失败: %s", completed.stderr.strip())
+
+
+def _render_cover_html(
+    cover_template: Path,
+    metadata: dict[str, Any] | None,
+) -> Path:
+    """用书籍元数据渲染临时封面，同时保留模板目录中的相对资源路径。"""
+    template = Environment(
+        autoescape=select_autoescape(enabled_extensions=("html",)),
+    ).from_string(cover_template.read_text(encoding="utf-8"))
+    rendered = template.render(**(metadata or {}))
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        suffix=".html",
+        prefix=".cover-rendered-",
+        dir=cover_template.parent,
+        delete=False,
+    ) as temporary:
+        temporary.write(rendered)
+        return Path(temporary.name)
+
+
+def _pandoc_metadata(metadata: dict[str, Any] | None) -> dict[str, str]:
+    """筛选并映射 Pandoc 使用的书籍元数据。"""
+    if not metadata:
+        return {}
+    field_names = {
+        "title": "title",
+        "subtitle": "subtitle",
+        "author": "author",
+        "language": "lang",
+        "isbn": "isbn",
+        "publisher": "publisher",
+        "edition": "edition",
+    }
+    return {
+        pandoc_name: str(metadata[source_name])
+        for source_name, pandoc_name in field_names.items()
+        if metadata.get(source_name) not in (None, "")
+    }
 
 
 def _find_chrome() -> str | None:

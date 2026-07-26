@@ -38,7 +38,6 @@ class PartConfig(BaseModel):
 class IllustrationConfig(BaseModel):
     """全书图表规格标记与视觉约束。"""
     marker: str = "book-figure"
-    renderer: str = "html-svg"
     theme: str = "technical-publication-light"
     palette: dict[str, str] = Field(default_factory=dict)
     allowed_types: list[str] = Field(default_factory=list)
@@ -46,14 +45,13 @@ class IllustrationConfig(BaseModel):
 
 
 class StyleConfig(BaseModel):
-    """写作风格配置 — 仅保留图表渲染相关，去掉 agent 写作指导字段。"""
+    """图表规格与视觉参考配置。"""
     illustrations: IllustrationConfig = Field(default_factory=IllustrationConfig)
 
 
 class OutputConfig(BaseModel):
     """输出配置。"""
     dir: str = "./output"
-    structure: str = "hierarchical"
     pandoc_bin: str = "pandoc"
 
 
@@ -87,6 +85,15 @@ def load_config(config_dir: str = "book/config") -> AppConfig:
         merged[yf.stem] = data
 
     app_config = AppConfig.model_validate(merged)
+
+    profile = app_config.author.get("profile")
+    profile_name = profile.get("name") if isinstance(profile, dict) else None
+    if profile_name and profile_name != app_config.book.author:
+        raise ValueError(
+            "作者姓名不一致: "
+            f"book.author={app_config.book.author!r}, "
+            f"author.profile.name={profile_name!r}"
+        )
 
     total_chapters = sum(len(p.chapters) for p in app_config.parts)
     from book_builder.log import get_logger

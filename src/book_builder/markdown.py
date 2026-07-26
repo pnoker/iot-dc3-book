@@ -96,7 +96,11 @@ def generate_markdown_output(
 
     # 封面图
     if cover_html and Path(cover_html).exists():
-        generate_cover_image(cover_html, out / "cover.png")
+        generate_cover_image(
+            cover_html,
+            out / "cover.png",
+            metadata=cfg.book.model_dump(),
+        )
 
     env = get_template_environment()
     figure_marker = str(cfg.style.illustrations.marker or "book-figure")

@@ -1,4 +1,4 @@
-# 全书篇章结构 - 三篇 14 章（工具只读 id/title，其余 agent 字段已移除）
+# 全书篇章结构 - 三篇 14 章（篇使用 name/prefix，章使用 id/title）
 - name: "基础篇 · 物联网平台底座"
   prefix: "一"
   chapters:

@@ -1,5 +1,5 @@
-# 写作风格规范 —— 纯写作分支，仅保留工具消费的 illustrations 配置
-# （tone/terminology/format/ai_*/component_schema/design_principles 等 agent 字段已移除）
+# 图表规格与视觉参考。全书写作规范见 book/WRITING_GUIDE.md。
+# marker、allowed_types、required_fields 由构建器消费；theme、palette 供人工或外部制图工具参考。
 illustrations:
   marker: "book-figure"
   theme: "technical-publication-light"
@@ -32,5 +32,7 @@ illustrations:
     - "title"
     - "purpose"
     - "layout"
+    - "elements"
+    - "relationships"
     - "caption"
     - "render_notes"
