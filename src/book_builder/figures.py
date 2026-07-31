@@ -27,6 +27,7 @@ _DEFAULT_REQUIRED_FIELDS = [
 _DEFAULT_ALLOWED_TYPES = [
     "architecture", "sequence", "flowchart", "dataflow",
     "pyramid", "layered", "topology", "lifecycle", "matrix", "timeline",
+    "framework",
 ]
 _PUBLICATION_IMAGE_WIDTH = "15cm"
 

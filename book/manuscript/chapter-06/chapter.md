@@ -949,7 +949,7 @@ render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，三层纵列排布
 
 对当前 IoT DC3，Compose、固定服务名与环境变量已经构成可运行基线。是否升级到 k3s、Kubernetes 或多集群管理，应由节点规模、发布频率、故障恢复目标和团队运维能力共同决定，而不是把混合集群当作默认起点。
 
-微服务的容器化为物联网平台提供了弹性基础。当容器化部署趋于稳定后，数据管道与流处理就成为下一步需要解决的问题——数据怎么从边缘可靠地进入云端，如何在流中完成初步分析，这些正好是下一节要展开的内容。
+微服务的容器化为物联网平台提供了弹性基础。当容器化部署趋于稳定后，数据管道与流处理成为平台层要解决的核心问题——数据怎么从边缘可靠地进入云端，如何在流中完成初步分析（第 5 章已展开其通用设计），本章 6.3 将以 IoT DC3 为例展示工程落地。
 
 #### 边缘原生与离线自治
 
@@ -1259,7 +1259,7 @@ IoT DC3 的通信取舍可以归纳为一句话：同步链路解决“马上拿
 | 代码规范 | 静态检查工具集成 | 构建阶段强制通过 | 如 SonarQube / Checkstyle / SpotBugs，配置文件纳入版本库 |
 | 代码规范 | 统一异常处理 | Handler 类全覆盖 | 使用 `@ControllerAdvice` 或自定义拦截器，避免 try-catch 污染业务逻辑 |
 | 日志体系 | 日志分级标准化 | 按 ERROR/WARN/INFO/DEBUG 输出 | 禁止直接 `System.out`，日志格式统一含时间戳、线程、traceId |
-| 日志体系 | 链路追踪 ID 注入 | 每个请求携带 traceId | 使用 Spring Cloud Sleuth 或 MDC 手动注入，设备事件日志同样带 traceId |
+| 日志体系 | 链路追踪 ID 注入 | 每个请求携带 traceId | 使用 Micrometer Tracing 或 MDC 手动注入，设备事件日志同样带 traceId |
 | 健康检查 | Actuator 自定义端点 | `/actuator/health` 返回业务状态 | 至少检查数据库连接、消息队列状态、驱动心跳 |
 | 健康检查 | 启动/存活/就绪探针 | Kubernetes 就绪探针可配置 | `/actuator/health/liveness` 和 `/actuator/health/readiness` 分离 |
 | 指标监控 | Prometheus 端点暴露 | 采集器能拉取 `/actuator/prometheus` | 注册 Micrometer 指标，设备采集数、消息处理耗时、位号读写计数等业务指标 |

@@ -1351,7 +1351,7 @@ public class DriverFactory {
 
 #### 在 IoT DC3 中，这套模式已经落地
 
-IoT DC3 内置的多套协议驱动按独立 Java 微服务组织，但没有 Nacos 注册，也没有 `AbstractDriver` 基类。驱动启动时由 `DriverRegisterService` 经 gRPC 向 Manager 提交业务元数据；协议实现通过 `DriverCustomService` 聚合的 `DriverLifecycle`、`DriverProtocol`、`DriverHealth` 等细粒度 SPI 接入 SDK；点位命令、位号值和状态事件经 RabbitMQ 流转。这就是“协议碎片化”工程挑战的落地方案：不管底层协议是 BLE、Modbus 还是 OPC UA，中心服务面对的都是稳定的数据模型与消息契约。
+IoT DC3 内置的多套协议驱动按独立微服务组织，但没有服务注册中心，也没有统一的基类抽象。驱动启动时完成业务元数据注册；协议实现通过细粒度 SPI 接口接入 SDK；点位命令、位号值和状态事件经消息队列流转。这就是“协议碎片化”工程挑战的落地方案：不管底层协议是 BLE、Modbus 还是 OPC UA，中心服务面对的都是稳定的数据模型与消息契约。
 
 ## 4.4 IoT DC3的28协议驱动架构与Driver SDK
 
@@ -1367,7 +1367,7 @@ IoT DC3 采用前后端分离的微服务架构。前端用 Vue.js 构建管理�
 
 #### 28协议驱动的含义与覆盖范围
 
-IoT DC3所称“内置28个协议驱动”并非数量上限，而是当前官方版本已封装的协议适配器数量。驱动框架完全开放——开发者基于Driver SDK可以开发任意自定义协议驱动，注册后平台自动识别。这28种驱动的覆盖范围包括：常见现场总线（Modbus RTU/TCP）、工业无线（LoRaWAN、NB-IoT、BLE）、PLC协议（Siemens S7、三菱MC协议）、SCADA数据格式（OPC UA），甚至包括数据库驱动（直接查询数据库中的数据作为设备输入）和虚拟测试驱动（模拟设备，用于开发和测试）。对照4.3节讨论的协议碎片化问题，IoT DC3的应对策略不是“发明新标准消灭碎片”，而是“用统一的驱动框架消化碎片”。每种协议一个驱动封装其细节，对外暴露一致的读写接口。
+IoT DC3所称“内置28个协议驱动”并非数量上限，而是当前官方版本已封装的协议适配器数量。驱动框架完全开放——开发者基于Driver SDK可以开发任意自定义协议驱动，注册后平台自动识别。这28种驱动的覆盖范围包括：常见现场总线（Modbus RTU/TCP）、工业无线（LoRaWAN、NB-IoT、BLE）、PLC协议（Siemens S7、三菱MC协议）、SCADA数据格式（OPC UA），甚至包括数据库驱动（直接查询数据库中的数据作为设备输入）和虚拟测试驱动（模拟设备，用于开发和测试）。对照4.2节讨论的协议碎片化问题，IoT DC3的应对策略不是“发明新标准消灭碎片”，而是“用统一的驱动框架消化碎片”。每种协议一个驱动封装其细节，对外暴露一致的读写接口。
 
 #### 驱动进程通信模型
 
@@ -1379,15 +1379,15 @@ IoT DC3所称“内置28个协议驱动”并非数量上限，而是当前官�
 
 从开发者视角，新增驱动大致分四步：
 
-1. **编写驱动实现类**：实现 `DriverCustomService`，或按需实现 `DriverLifecycle`、`DriverProtocol`、`DriverHealth` 等能力接口。读写方法接收 SDK 已解析的驱动属性、位号属性、设备和位号元数据，协议实现只负责构造请求、解析响应并返回标准化结果。
+1. **编写协议实现**：按目标协议构造请求、解析响应，返回标准化结果。这是唯一与具体协议相关的部分，取决于协议的复杂程度。
 
-2. **配置驱动元信息**：在驱动配置中声明服务名、主机、租户、客户端及支持的驱动/位号/命令/事件属性。驱动启动时由 `DriverRegisterService` 把这些业务元数据同步到 Manager。
+2. **声明驱动元信息**：配置驱动名称、所支持协议的属性模型（位号、命令、事件），让平台知道它能接入什么。
 
-3. **打包启动**：用 Maven 打成可执行 JAR，通过容器或 `java -jar` 运行。启动流程经 gRPC 向 Manager 完成业务注册，并初始化协议资源与调度任务；不存在向 Nacos 注册服务实例的步骤。
+3. **打包启动并完成业务注册**：将驱动打包为独立进程启动，向平台完成业务元数据注册。这里的注册是"让平台认识这台驱动"的业务注册，而不是向服务注册中心登记实例。
 
-4. **绑定设备**：在平台控制台创建设备时选择该驱动类型，填写设备连接参数（如IP、端口、设备地址），平台自动将设备与驱动实例关联，驱动随即开始周期性采集。
+4. **绑定设备**：在平台控制台创建设备时选择该驱动类型，填写设备连接参数（如 IP、端口、设备地址），平台自动将设备与驱动实例关联，驱动随即开始周期性采集。
 
-上述流程中，步骤1是最耗时的部分，取决于目标协议的复杂程度。步骤2到4属于配置工作，一名熟悉平台操作的工程师几分钟即可完成。整个流程不需要改动平台核心代码，也不涉及数据库表结构变更。团队可以分工：A组专注LoRa驱动优化，B组开发私有油井通信协议，各司其职，通过统一的Driver SDK标准接口保证互操作性。
+前三步中，第 1 步耗时取决于目标协议复杂程度，第 2-4 步属于配置工作。整个流程不需要改动平台核心代码，也不涉及数据库表结构变更。团队可以按协议分工并行开发——A 组专注 LoRa 驱动优化，B 组开发私有通信协议——通过统一的驱动 SDK 接口保证互操作性。对资源受限的网关设备，也可把多个轻量驱动打包到单个进程，用线程隔离替代进程隔离以降低资源开销。（具体 SDK 接口签名见第 14 章项目实战。）
 
 驱动层独立部署带来了更高的运维复杂性——进程数量增多、监控和日志成本上升。实践中，对于资源受限的网关设备，可以把多个轻量驱动打包到单个进程中，通过线程隔离而非进程隔离来降低资源开销。IoT DC3支持这种混合部署模式，工程团队需要根据设备规模、部署环境资源、协议变更频率做出权衡。
 
@@ -1477,69 +1477,21 @@ visual_constraints:
 render_notes: 使用HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。驱动层的黄色边框应加粗以提高视觉优先级。元素间距均匀，整体画布宽高比建议16:9。
 ```
 
-### 4.4.2 Driver SDK的设计与实现要点
+### 4.4.2 Driver SDK 的设计要点
 
-Driver SDK 的核心目标是把协议实现与平台共性能力分开。当前源码没有 `AbstractDriver` 骨架类，而是使用组合式 SPI：协议驱动可以实现聚合接口 `DriverCustomService`，也可以只实现所需的 `DriverLifecycle`、`DriverProtocol`、`DriverMetadataListener`、`DriverHealth`、`DeviceHealth`、`DriverCommand` 与 `DriverValidator`。
+Driver SDK 的目标是把协议实现与平台共性能力分开。IoT DC3 没有提供统一的基类骨架，而是采用组合式 SPI：协议驱动按需实现连接生命周期、读写、健康检查、命令、校验等细粒度接口——需要哪些能力就实现哪些接口，而不是被迫继承一个包含全部方法的抽象类。这是一个值得借鉴的取舍：统一基类抽象会迫使驱动承担它用不到的方法，细粒度接口组合则让不同协议各取所需。
 
-```java
-public interface DriverCustomService extends DriverLifecycle,
-        DriverMetadataListener, DriverHealth, DeviceHealth,
-        DriverProtocol, DriverCommand, DriverValidator {
-}
-```
+平台运行时通过三类服务契约调用协议实现：**读**（从元数据缓存解析设备与位号配置，委托协议读取并上报）、**写**（校验设备位号关系并委托协议写入，返回设备确认）、**命令**（执行自定义命令并回执）。驱动启动时完成业务注册与协议初始化，运行阶段通过消息队列收发命令、回执与状态事件。这里的业务注册用于让平台获得驱动及属性模型，不是向 Nacos、Eureka 一类服务注册中心登记实例。
 
-平台运行时通过三类服务契约调用协议实现：
+开发协议驱动时应把精力集中在三个边界：第一，协议连接与重连策略由具体驱动负责，不能假设 SDK 提供统一的连接管理器；第二，粘包、帧边界、字节序与校验码应在协议实现内测试；第三，异常通过领域异常和结果回执表达，不能吞掉后让消息被误确认。这样既复用 SDK 的元数据、命令与消息契约，又保留不同协议所需的实现自由度。（具体接口签名与源码见第 14 章项目实战。）
 
-- `DriverRegisterService.initial()`：组装驱动、租户、客户端及属性元数据，并由 `DriverClient.driverRegister()` 经 gRPC 同步到 Manager。
-- `DriverReadService.read(deviceId, pointId)`：从本地元数据缓存解析设备、位号和属性配置，再委托 `DriverProtocol.read()`，成功后调用 `DriverSenderService.pointValueSender()`。
-- `DriverWriteService.write(deviceId, pointId, value)`：校验设备与位号关系、完成类型转换，再委托 `DriverProtocol.write()` 返回设备确认结果。
+### 4.4.3 加载、寻址与命令路由的工程边界
 
-```java
-public interface DriverProtocol {
-    ReadPointValue read(Map<String, AttributeBO> driverConfig,
-            Map<String, AttributeBO> pointConfig, DeviceBO device, PointBO point);
+驱动独立部署后，平台需要知道它支持什么协议、当前是否在线、命令该投递到哪个队列。IoT DC3 的回答是：业务元数据注册、状态事件、按驱动标识绑定的命令队列——并明确不依赖 Nacos、Eureka 一类的服务注册中心。这是一个值得强调的概念边界：**业务注册**让平台获得驱动及其属性模型，而**服务注册中心**负责实例发现与负载均衡，两者不能混为一谈。驱动用固定服务名寻址（可通过环境变量覆盖），在容器网络中由 DNS 解析，配置边界清晰。
 
-    Boolean write(Map<String, AttributeBO> driverConfig,
-            Map<String, AttributeBO> pointConfig, DeviceBO device, PointBO point,
-            WritePointValue writePointValue);
-}
-```
+同一协议需要多实例时，必须显式规划服务名、客户端标识、设备绑定与队列消费关系，不能默认套用注册中心的轮询负载均衡。驱动升级按容器编排与消息语义执行：新实例通过健康检查、完成业务注册并开始消费后，再停止旧实例；命令带幂等标识去重，避免切换期间重复执行。
 
-驱动启动由 `DriverInitRunner` 编排：先调用 `DriverRegisterService` 向 Manager 完成业务注册，失败时按上限退避重试；注册成功后执行协议自定义初始化，再初始化状态、读取和自定义任务。这里的业务注册用于让平台获得驱动及属性模型，不是向 Nacos、Eureka 一类服务注册中心登记实例。
-
-运行阶段，Data 把点位读写和自定义命令发布到 RabbitMQ。Driver 的 `PointCommandReceiver`、`CommandReceiver` 消费后做过期校验、`commandId` 去重和设备级串行化，再调用 `DriverReadService`、`DriverWriteService` 或 `DriverCommand`。结果回执、位号值和状态事件由 `DriverSenderService` 发回 RabbitMQ。
-
-开发协议驱动时应把精力集中在三个边界：第一，协议连接和重连策略由具体驱动负责，不能假设 SDK 有统一 `ConnectionManager`；第二，TCP 粘包、串口帧边界、字节序和校验码应在协议实现内测试；第三，异常通过领域异常和结果回执表达，不能吞掉后让消息被误 ack。这样既复用 SDK 的元数据、命令和消息契约，又保留不同协议所需的实现自由度。
-
-### 4.4.3 多协议驱动的加载与管理
-
-驱动独立部署后，平台需要知道它支持什么协议和属性、当前是否在线、命令该投递到哪个队列。IoT DC3 对这三个问题的回答分别是：Manager 业务注册、RabbitMQ 状态事件、按驱动服务名绑定的命令队列。当前实现不依赖 Nacos、ZooKeeper 或其他服务注册中心。
-
-#### 启动与业务注册
-
-驱动启动后，`DriverInitRunner` 调用 `DriverRegisterService.initial()`。实现类从 `DriverProperties` 读取驱动名称、编码、服务名、主机、租户、客户端以及驱动/位号/命令/事件属性，组装 `RegisterBO`，再由 `DriverClient.driverRegister()` 通过 gRPC 调用 Manager。Manager 返回并保存平台侧业务元数据，驱动随后完成协议资源和调度任务初始化。
-
-```book-figure
-id: fig-driver-load-sequence
-type: sequence
-title: 图4-8 IoT DC3 驱动启动与业务注册时序
-purpose: 展示 Driver 从进程启动到 Manager 业务注册、协议初始化、RabbitMQ 队列监听和状态上报的真实顺序
-layout: DriverInitRunner、DriverRegisterService、Manager(gRPC)、DriverCustomService、RabbitMQ 五个参与者；先业务注册，再协议初始化和调度初始化，最后监听命令并上报状态
-caption: 图4-8 驱动启动后先经 gRPC 向 Manager 同步业务元数据，再初始化协议资源与调度任务；运行时通过 RabbitMQ 收发命令、回执和状态。业务注册不等于服务注册中心。
-render_notes: 浅色时序图，实线表示 gRPC 同步调用，虚线表示 RabbitMQ 异步消息；底部标注固定服务名、容器 DNS 与环境变量寻址。
-```
-
-#### 在线状态与命令路由
-
-驱动和设备状态由 SDK 定时任务构造状态 DTO，经 `DriverSenderService` 发布到 RabbitMQ。点位命令队列使用驱动服务名生成队列和 routing key，Data 只需把命令投递到相应交换机；Driver 消费后执行并发送结果回执。平台因此不需要从服务注册中心查询驱动租约，也不存在临时节点自动删除的机制。
-
-同一协议需要多实例时，必须显式规划服务名、客户端标识、设备绑定和队列消费关系，不能默认套用注册中心的轮询负载均衡。驱动升级也应按容器编排与消息语义执行：新实例先通过 readiness、完成 Manager 业务注册并开始消费，再停止旧实例；命令用 `commandId` 去重，避免切换期间重复执行。
-
-#### 服务寻址与配置边界
-
-Gateway 路由和 gRPC Channel 使用静态服务名，允许通过环境变量覆盖；Compose 网络 DNS 负责把 `dc3-center-manager`、`dc3-center-data` 等名称解析到容器。驱动业务属性由项目配置与 Manager 元数据管理。若其他项目确实需要跨集群动态实例发现，可另行评估注册中心，但那是通用架构选项，不能反写成 IoT DC3 当前实现。
-
-驱动加载与管理的核心不是“注册中心热插拔”，而是四个可验证契约：启动时业务注册成功、运行时状态消息可观测、命令队列路由明确、升级期间命令幂等。满足这四点，独立驱动才能在不修改中心服务的前提下安全扩展。
+驱动加载与管理的核心不是“注册中心热插拔”，而是四个可验证契约：启动时业务注册成功、运行时状态消息可观测、命令队列路由明确、升级期间命令幂等。满足这四点，独立驱动才能在不修改中心服务的前提下安全扩展。（若确实需要跨集群动态实例发现，可另行评估注册中心，但那是通用架构选项，不应反写成 DC3 的当前实现。）
 
 ## 4.5 工程案例：多协议网关统一接入实现
 
@@ -1760,7 +1712,7 @@ IoT DC3 中，产品是设备类型的抽象模板，设备是具体的物理实
 驱动是协议适配的执行单元——一个独立微服务，封装特定协议的连接、数据解析和指令下发逻辑。在路灯项目中，需要部署 NB-IoT 驱动和 LoRa 驱动。
 
 **上传与启动流程**：
-1. **获得驱动包**：根据 IoT DC3 Driver SDK 编写或获取 NB-IoT、LoRa 驱动 JAR（或容器镜像）。驱动实现 `DriverCustomService` 或所需的细粒度 SPI；启动时由 `DriverRegisterService` 经 gRPC 向 Manager 提交驱动与属性业务元数据，不依赖服务注册中心。
+1. **获得驱动包**：根据 IoT DC3 Driver SDK 编写或获取 NB-IoT、LoRa 驱动包（或容器镜像）。驱动实现所需的细粒度 SPI；启动时完成驱动与属性业务元数据注册，不依赖服务注册中心。
 2. **上传至平台**：在后台“驱动管理”模块中，填写驱动名称（如 `dc3-driver-nbiot`）、版本号和类型标签。
 3. **启动实例**：点击“启动”后，平台将其部署为独立微服务实例。检查日志模块输出 “Driver nbiot-server started, registered to center”。状态变为“在线”后，驱动即准备就绪。
 
@@ -1962,7 +1914,7 @@ render_notes: 使用 SVG 绘制四层分层架构图。设备层底部左右排�
 
 原始规范读起来比二手教程费劲，但这是校正理解偏差最有效的路径——很多网上定性的结论，在规范里有精确的量化边界。
 
-- **3GPP 规范**（TS 22.261、TS 36.300/38.300）：TS 22.261 定义了 5G 第一阶段服务需求，包括 mMTC 和 uRLLC 的量化指标。TS 36.300 第 23 章详细描述了 NB-IoT 和 eMTC 的 eDRX/PSM 时序窗口，看完能准确回答“终端省电时具体关了哪些模块”——本章 4.2.2 节只讲了结论。
+- **3GPP 规范**（TS 22.261、TS 36.300/38.300）：TS 22.261 定义了 5G 第一阶段服务需求，包括 mMTC 和 uRLLC 的量化指标。TS 36.300 第 23 章详细描述了 NB-IoT 和 eMTC 的 eDRX/PSM 时序窗口，看完能准确回答“终端省电时具体关了哪些模块”——本章 4.1.1 节只讲了结论。
 - **LoRa Alliance 技术规范（RP-002-1.0.3）**：比多数博客清晰地定义了 Class A/B/C 的接收窗差异。核心就一句话：三个 Class 的功耗差距，本质上源于接收窗开启频率不同。读完可以自己估算不同场景下的电池寿命。
 - **各联盟基础规范**：Wi-Fi Alliance 搜 “HaLow Base Specification”，Zigbee 联盟搜 “Zigbee 3.0 Base Device Behavior Specification”，BLE SIG 搜 “Mesh Model Binding Specification”。每个协议在互通性测试时定下的强制功能集，正是碎片化的收敛边界。
 
@@ -1978,7 +1930,7 @@ render_notes: 使用 SVG 绘制四层分层架构图。设备层底部左右排�
 技术选型和架构选择最终要放到行业演变的脉络中去判断。
 
 - **《物联网系统开发：从零到一》（叶树铭著，2022年）**：这本书与本章的对话关系在于——“知道某个功能该在哪一层做”比知道协议属性更重要。它把后台设计里常见的困难和经验拆成了可复用的模式（资料：[S8]）。
-- **《5G物联网及NB-IoT技术详解》（江林华编著，电子工业出版社，2018年）**：虽然 Release 版本停在 13，但第 2 章和第 8 章对 LoRa 与 NB-IoT 的博弈分析引用了 3GPP 冻结技术和 Semtech 芯片手册里的扩频因子说明，对理解 4.2.4 节“LPWAN 的两种路线”有直接辅助作用。
+- **《5G物联网及NB-IoT技术详解》（江林华编著，电子工业出版社，2018年）**：虽然 Release 版本停在 13，但第 2 章和第 8 章对 LoRa 与 NB-IoT 的博弈分析引用了 3GPP 冻结技术和 Semtech 芯片手册里的扩频因子说明，对理解 4.1 节“LPWAN 的两种路线”有直接辅助作用。
 
 ```book-figure
 id: fig-ch4-learning-path

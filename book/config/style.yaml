@@ -26,6 +26,7 @@ illustrations:
     - "lifecycle"
     - "matrix"
     - "timeline"
+    - "framework"
   required_fields:
     - "id"
     - "type"

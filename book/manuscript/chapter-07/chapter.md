@@ -171,7 +171,7 @@ IoT DC3 的 Agentic Center 正是按这个思路设计的。它通过 Spring AI 
 
 #### 2. 多模态融合：不止是文本对话
 
-工业场景的输入不限于文本和数字。摄像头拍到设备面板异常指示灯闪烁，运维人员拍了张照片发到群聊问“这是什么意思？”——传统平台无法处理这种输入。多模态大模型（例如 OpenAI 的 GPT-4o、Anthropic 的 Claude 4 等主流模型）可以同时接受图像和文本输入：照片里的闪烁灯模式、仪表指针位置、电线烧焦的颜色，都能纳入推理范围。
+工业场景的输入不限于文本和数字。摄像头拍到设备面板异常指示灯闪烁，运维人员拍了张照片发到群聊问“这是什么意思？”——传统平台无法处理这种输入。多模态大模型（例如 OpenAI 的 GPT-5、Anthropic 的 Claude 4.5 等主流模型）可以同时接受图像和文本输入：照片里的闪烁灯模式、仪表指针位置、电线烧焦的颜色，都能纳入推理范围。
 
 但职责边界需要划清：大模型擅长语义推理，不负责毫秒级实时控制。电机紧急刹车、继电器跳闸这类响应，仍由硬件控制器和边缘实时系统承担。大模型的注意力放在认知层——帮运维人员理解“为什么出了这个异常”“下一步该做什么”。这与消防系统的分工类似：喷淋头由温度传感器即时触发，但“全楼是否疏散、通知哪几个部门”的判断，托付给懂上下文的决策者。大模型扮演的正是这个决策辅助角色，工作重点是减少人的认知负担而非取代硬件控制回路。
 
@@ -401,30 +401,33 @@ IoT DC3 当前从 `ToolContext` 提取租户、用户和会话上下文，Tool �
 
 RAG 的核心思路很直白：模型在生成回复之前，先从外部知识库检索最相关的信息片段作为上下文，然后再生成。这样一来，大语言模型不必靠训练参数里封存的记忆来作答——那些记忆可能已经过期，甚至根本没存过你系统里的专有设备。在物联网运维场景中，RAG 的检索对象通常包括设备安装手册、Modbus 寄存器映射表、历史故障记录、标准化作业流程（SOP）、驱动程序升级日志等。
 
-一个典型的检索流程是：操作员在对话中问“这台温控器报 E4 故障该做什么”，系统先把查询转换成向量表示，在文档向量库中检索最相关的故障排除记录，连同原始问题一起发给大语言模型，模型据此生成排查步骤并列出需要检查的位号。对 IoT DC3 而言，这是一种可选的智能告警扩展方案；当前默认 Agentic Center 尚未内置 VectorStore、案例入库任务和自动告警触发流水线，不能把 RAG 写成已上线能力。
+一个典型的检索流程是：操作员在对话中问“这台温控器报 E4 故障该做什么”，系统先把查询转换成向量表示，在文档向量库中检索最相关的故障排除记录，连同原始问题一起发给大语言模型，模型据此生成排查步骤并列出需要检查的位号。对 IoT DC3 而言，这是一种可选的智能告警扩展方案；其当前实现尚未内置向量库、案例入库任务与自动告警触发流水线。这里要区分两个层面：RAG 是完整 AI Native 平台应具备的扩展能力，DC3 当前实现只是它的一部分——后文会说明这条能力的边界与第 14 章的落地路径，而不是把"尚未实现"等同于"不该具备"。
 
 RAG 的工程难点在于检索质量。知识库里混入过时的维护记录，模型就可能基于错误信息给出建议；向量化分块时把 SOP 的步骤 A 和步骤 D 切到了同一个块，模型拿到的上下文就是混乱的。实践中通常引入两个工程手段：文档版本管理和检索结果重排序。新部署的设备文档必须标注版本号，过期的文档从向量库中移除或降权；检索到的候选条目再用轻量级排序模型（如 Cohere Rerank 或 BGE Reranker）重排一次，确保最相关的文档优先进入大语言模型上下文窗口。
 
 用 LangChain 实现 RAG 的示意代码如下：
 
 ```python
-from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import RetrievalQA
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains import create_retrieval_chain
+from langchain_core.prompts import ChatPromptTemplate
 
 # 加载运维知识库（设备文档、SOP）
-vectorstore = FAISS.load_local("iot_knowledge_base", OpenAIEmbeddings())
+embeddings = OpenAIEmbeddings()
+vectorstore = FAISS.load_local("iot_knowledge_base", embeddings, allow_dangerous_deserialization=True)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
-qa_chain = RetrievalQA.from_chain_type(
-    llm=ChatOpenAI(model="gpt-4o", temperature=0),
-    chain_type="stuff",
-    retriever=retriever
+llm = ChatOpenAI(model="gpt-5", temperature=0)
+prompt = ChatPromptTemplate.from_template(
+    "根据以下资料回答问题：\n\n资料：\n{context}\n\n问题：{input}"
 )
+question_answer_chain = create_stuff_documents_chain(llm, prompt)
+rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-response = qa_chain.run("二号除尘风机持续高温告警，该怎么处理？")
-print(response)
+response = rag_chain.invoke({"input": "二号除尘风机持续高温告警，该怎么处理？"})
+print(response["answer"])
 # 输出：检索到2024-08的维护记录，第一步检查变频器散热风道是否堵塞。
 ```
 
@@ -665,6 +668,8 @@ REST 仍是平台真实业务 API，MCP 在其上提供面向模型的 Tool 目�
 
 外部 Agent 可以通过 `tools/list` 动态发现可见能力，并按顺序调用多个 Tool 完成“查设备→查位号→读历史→生成建议”等多步任务。但每一步仍是独立的受控调用，不能因为使用了 MCP 就默认获得更高权限或自动执行高风险操作。
 
+**从 MCP 到 A2A：智能体之间的互操作（前瞻）。** MCP 解决的是“智能体如何调用工具”，而 A2A（Agent-to-Agent，2025 年多家厂商联合提出）解决“智能体之间如何发现彼此、分配任务、交接执行”——业界常把两者比作“MCP 给智能体一双手，A2A 让智能体之间有同事”。A2A 通过 Agent Card 描述能力并支持任务委派，预计 2027 年起在跨系统、跨组织的多智能体场景逐步规模化。对物联网的意义在于：当平台把设备能力以 MCP 暴露给外部智能体后，不同智能体（设备巡检的、能源调度的、排产的）之间还需要 A2A 来协调分工——这正是“Internet of Agents”的雏形。完整的 AI Native 平台应同时规划 MCP（工具层）与 A2A（编排层）两层互操作；IoT DC3 当前实现的是 MCP 工具层，A2A 编排属于平台演进方向（详见第 14 章展望）。
+
 ```book-figure
 id: fig-7-04
 type: architecture
@@ -851,7 +856,7 @@ public void streamHealthReport() {
 | 流式调用 (Stream) | 长分析、实时看进展 | 请求→逐段推送 | “分析全天趋势异常” |
 | 函数调用 (Function) | 执行操作、写值返回 | 请求→模型决策→调用业务代码→返回结果 | “把风机转速调到 1500 rpm” |
 
-设计上，`ChatClient` 做了一层巧妙的抽象：它不关心你接的是 GPT-4o 还是 DeepSeek，只要模型暴露 OpenAI 兼容的 Chat Completions 端点，调用方式完全一致。这意味着物联网平台在“选模型”这件事上有了自由度——今天用 GPT，明天换成私有化部署的 DeepSeek，业务代码不需要改动一行，切换成本就是改配置文件。IoT DC3 的 Agentic Center 正是基于这个设计的产物，一条聊天消息变成设备指令，依赖的就是 `ChatClient` 的同步或流式对话接口与函数调用机制的组合。
+设计上，`ChatClient` 做了一层巧妙的抽象：它不关心你接的是 GPT-5 还是 DeepSeek，只要模型暴露 OpenAI 兼容的 Chat Completions 端点，调用方式完全一致。这意味着物联网平台在“选模型”这件事上有了自由度——今天用 GPT，明天换成私有化部署的 DeepSeek，业务代码不需要改动一行，切换成本就是改配置文件。IoT DC3 的 Agentic Center 正是基于这个设计的产物，一条聊天消息变成设备指令，依赖的就是 `ChatClient` 的同步或流式对话接口与函数调用机制的组合。
 
 掌握了这三种调用方式，接下来就可以看看函数调用具体是怎么定义和注册的——那就是 Spring AI 让大模型“碰”设备的关键机制。
 
@@ -1167,9 +1172,9 @@ IoT DC3 的 Agentic Center 将 `ChatMemory` 对接平台内部表结构，对话
 
 #### 当前实现边界
 
-IoT DC3 当前的 Agentic Center 基于 Java 21、Spring Boot 4.0.6 与 Spring AI 2.0.0。对外提供 OpenAI Chat Completions 风格的 Web/HTTP 接口，内部由 `ChatClient` 完成模型调用，由 `MessageChatMemoryAdvisor` 与 PostgreSQL 中的会话、消息表保存多轮上下文。模型 Provider 和模型配置也存放在 PostgreSQL，并由 `ChatClientFactory` 按请求中的模型选择创建或复用客户端。
+IoT DC3 当前的 Agentic Center 基于 Java 21、Spring Boot 4.x 与 Spring AI 2.x（具体版本随发布更新）。对外提供 OpenAI Chat Completions 风格的 Web/HTTP 接口，内部由 `ChatClient` 完成模型调用，由 `MessageChatMemoryAdvisor` 与 PostgreSQL 中的会话、消息表保存多轮上下文。模型 Provider 和模型配置也存放在 PostgreSQL，并由 `ChatClientFactory` 按请求中的模型选择创建或复用客户端。
 
-源码中共有 10 个 Tool 类，但 `agenticToolCallbackProvider` 当前只显式注册 8 个：`TenantTool`、`UserTool`、`DeviceTool`、`DriverTool`、`ProfileTool`、`PointTool`、`PointValueTool`、`SystemTool`。`CommandTool` 与 `EventTool` 虽已有类定义，但没有加入当前 Provider，因此不能写成默认会话中可调用的工具。
+Agentic Center 的工具体系采用“查询为主、控制受限”的分级：当前显式注册的是设备、驱动、物模型、位号、系统等查询类工具；自动重启设备、告警自动触发等控制类工具尚未开放（具体注册清单与源码见第 14 章）。分级开放“读—建议—写—自主执行”的工具集，是完整 AI Native 平台应具备的能力演进路径，DC3 当前实现处于“读 + 受限写”这一档。
 
 #### 四层职责
 
@@ -1404,7 +1409,7 @@ GPU 资源是大多数团队面对的门槛。不同参数规模的模型对显�
 
 **混合模式：分层决策，不二选一**
 
-不是所有请求都需要私有化。小陈后来采用的方案是混合路由：简单的设备状态查询走本地 DeepSeek，响应快且数据不出域；复杂的故障根因分析走云端 GPT-4o，利用更强推理能力；涉及工艺参数的敏感查询再回本地。Agentic Center 的 `dc3_model_provider` 表支持配置多个提供商并可按会话选择模型（资料：[S4]）。实现混合路由只差一个路由逻辑：
+不是所有请求都需要私有化。小陈后来采用的方案是混合路由：简单的设备状态查询走本地 DeepSeek，响应快且数据不出域；复杂的故障根因分析走云端 GPT-5，利用更强推理能力；涉及工艺参数的敏感查询再回本地。Agentic Center 的 `dc3_model_provider` 表支持配置多个提供商并可按会话选择模型（资料：[S4]）。实现混合路由只差一个路由逻辑：
 
 ```java
 // 示意代码：按请求特征选择模型后端
@@ -1445,7 +1450,7 @@ elements:
   - "Agentic Center：对话入口与工具编排层，蓝色块。"
   - "路由决策节点：根据敏感标签和查询复杂度分流，菱形决策框。"
   - "本地推理引擎：Ollama / vLLM / LocalAI + 本地模型，青绿色块。"
-  - "云端推理引擎：GPT-4o / Claude 等公有云服务，橙色块。"
+  - "云端推理引擎：GPT-5 / Claude 4.5 等公有云服务，橙色块。"
   - "敏感数据边界虚线：圈住本地推理引擎及企业内部网络。"
 relationships:
   - "Agentic Center → 路由决策：请求带敏感标签或简单查询。"
@@ -1483,7 +1488,7 @@ components:
   - id: "cloud_inference"
     label: "云端推理引擎"
     type: "external"
-    subtitle: "GPT-4o / Claude / 通义千问"
+    subtitle: "GPT-5 / Claude 4.5 / 通义千问"
     group: "public_network"
     priority: "normal"
     shape: "card"
@@ -1943,7 +1948,7 @@ Agent Eval 的价值是把自主度变成可控制的发布变量。只有当结
 
 **协议与标准**
 
-- **MCP（Model Context Protocol）规范草案**：定义了模型与外部资源间的标准化接口。IoT DC3 的 MCP 网关是此规范的工程落地示例（资料：[S1][S4]）。
+- **MCP（Model Context Protocol）**：定义了模型与外部资源间的标准化接口，现已由 Linux Foundation 托管，成为智能体接入工具的事实标准。IoT DC3 的 MCP 网关是此规范的工程落地示例（资料：[S1][S4]）。
 - **OpenAI Chat Completions 与 Anthropic Messages API 规范**：IoT DC3 当前分别通过 OpenAI-compatible 与 Anthropic Provider 接入。理解各自的 Tool Calling 协议与参数差异，有助于排查模型切换后的工具调用问题（资料：[S10]）。
 
 **核心论文与框架代码**
