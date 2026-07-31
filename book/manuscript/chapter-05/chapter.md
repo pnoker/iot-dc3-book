@@ -231,6 +231,7 @@ client_sub.loop_forever()
 id: fig-05-03
 type: flowchart
 title: 图5-3 设备认证与数据加密流程
+audience_takeaway: "读者应理解证书与Token两条认证路径并存：TLS 1.3握手1RTT完成，DTLS多1次往返做重传保护，Token需配合refresh与短有效期防泄漏。"
 purpose: 展示物联网设备接入平台时证书/Token认证与TLS/DTLS加密传输的完整路径。
 visual_focus: 从设备发起连接到平台完成加密通道建立的主链路；TLS 1.3握手优化和Token刷新机制作为关键支线。
 design_level: implementation
@@ -449,6 +450,7 @@ Kafka支持广播和集群两种订阅隔离模式：同一Topic的多个消费�
 id: "fig-05-06"
 type: "dataflow"
 title: "图5-6 消息队列缓冲削峰示意"
+audience_takeaway: "读者应理解洪峰时队列水位升高而下游不直接承压，消费者按自身能力拉取削峰，多个消费者组可独立消费同一Topic满足不同时效。"
 purpose: "说明消息队列在设备洪峰到来时如何暂存消息，防止后端处理系统过载。"
 visual_focus: "从设备群到时间轴的主链路。"
 design_level: "implementation"
@@ -944,6 +946,7 @@ if __name__ == "__main__":
 id: "fig-05-07"
 type: "framework"
 title: "图5-7 云边协同三大挑战的关联与权衡三角架"
+audience_takeaway: "读者应理解数据一致性、安全性、运维三挑战互相牵制：强加密拖慢同步、放宽一致性引入漏洞、强化安全加重运维，工程须取平衡点。"
 purpose: "展示云边协同架构中数据一致性、安全性和运维三个核心挑战之间的相互约束关系，以及各层面的应对策略。"
 layout: "一个大等边三角形，三个顶点分别标注“数据一致性”、“安全性”、“运维”。三角形内部划分出三个楔形区域，分别对应每个顶点主导的应对策略集。三角形中心标注“工程权衡区”。"
 elements:
@@ -1395,6 +1398,7 @@ render_notes: "HTML/SVG渲染，浅色背景，白底卡片，圆角矩形，使
 id: fig5-5-2-predictive-maintenance-flow
 type: flowchart
 title: 从数据采集到告警触发的预测性维护流程
+audience_takeaway: "读者应理解预测性维护靠残差驱动：Prophet预测值与实际值求残差、滑动窗口打分，超阈值才告警，运维确认后回流触发模型增量更新。"
 purpose: 展示预测性维护管道的完整阶段，以及数据流、告警流、模型更新流之间的交互关系
 visual_focus: 从设备层到决策层：传递评分结果的主链路。
 design_level: implementation
@@ -1616,6 +1620,7 @@ Lambda架构曾尝试兼顾两种模式：一条实时流提供低延迟结果�
 id: fig-05-03-01
 type: dataflow
 title: 图5-5-3-1 Kappa架构示意图
+audience_takeaway: "读者应理解Kappa用单一流管道同时覆盖实时与历史：消息总线持久化原始流，历史分析靠Time Travel回放而非另建批管道，省去Lambda双管道维护。"
 purpose: 展示Kappa架构如何通过单一流处理管道兼容实时与历史分析
 visual_focus: 从数据源到结果输出：持续输出的主链路。
 design_level: implementation
@@ -1796,6 +1801,7 @@ AIoT 数据管道需要一个稳定的数据契约，而不是让每个消费者
 id: fig-5-8-system-architecture
 type: architecture
 title: 工厂设备状态监控系统四层架构图（假设场景）
+audience_takeaway: "读者应理解边缘两级阈值把安全与智能分流：一级阈值本地GPIO直接停机不经云端，二级及以上才经MQTT/Kafka上云做AI分析。"
 purpose: 展示设备层、边缘层、消息层、云层四层架构，以及传感器数据从现场到告警的完整流经路径，包括本地紧急停机路径和云端AI分析路径。
 visual_focus: 从起点到邮件/短信通知后采取行动的主链路。
 design_level: logical
@@ -2056,6 +2062,7 @@ Grafana的告警规则配置为：基于`alert_events`表，当新数据插入�
 id: fig-5-9
 type: matrix
 title: 平台层工程检查矩阵
+audience_takeaway: "读者应理解检查矩阵在五维×四属性交叉点给出可验证检查项并按绿黄红标风险等级，如消息队列须acks=all、复制因子≥2。"
 purpose: 提供平台层设计时需关注的五个维度与四个检查属性，帮助工程师快速定位潜在风险
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: decision
@@ -2154,6 +2161,7 @@ render_notes: 'HTML/SVG渲染时，表格每个单元格内容不超过15个中�
 id: fig-5-13
 type: architecture
 title: 图5-13 平台层延伸阅读工具链全景图
+audience_takeaway: "读者应理解开源工具沿数据上报→消费落库→查询告警的数据流链条分层，且边缘与容器编排层以虚框横跨消息与时序两层。"
 purpose: 展示本节推荐的开源工具在物联网平台层中各层级的分布
 visual_focus: 从设备接入到可视化与监控的主链路。
 design_level: logical

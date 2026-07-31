@@ -173,6 +173,7 @@ public class MqttConfig {
 id: fig-6-3
 type: dataflow
 title: 图6-3 物联网REST API端点设计示例（示意）
+audience_takeaway: "读者应理解API以带v1前缀的资源型端点组织，上报与指令下发走写路径(经接入层校验、去重、队列)，历史查询走读路径并按时间窗参数化。"
 purpose: 展示物联网后端常见API端点布局，体现读写分离、版本控制、资源型端点设计。
 visual_focus: 从device到终点的主链路。
 design_level: implementation
@@ -548,6 +549,7 @@ render_notes: "HTML/SVG渲染，浅色背景，四层布局，不同协议用不
 id: fig-06-03
 type: architecture
 title: 图6-3 智能楼宇物联网系统微服务参考架构（示意）
+audience_takeaway: "读者应理解楼宇中MQTT/Modbus/BACnet三类异种协议统一由边缘网关的协议驱动接入，微服务按领域边界拆分且各自独立存储，数据流与控制流分离传递。"
 purpose: 展示按DDD限界上下文拆分的智能楼宇微服务分层架构，以及数据流与控制流的分离路径。
 visual_focus: 从起点到对应的协议驱动层服务，实线箭头的主链路。
 design_level: logical
@@ -643,6 +645,7 @@ render_notes: HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。
 id: fig-06-01
 type: lifecycle
 title: 图6-1 单体到微服务演进阶段图
+audience_takeaway: "读者应理解微服务演进由团队规模与协作摩擦驱动，每前进一步都要用新架构问题(单点故障、数据一致性、分布式事务成本)换取部署与分工的收益。"
 purpose: 展示物联网项目从单体原型到多服务演进的典型路径，标注各阶段关键特征与风险。
 visual_focus: 从阶段节点间用粗箭头到箭头上方标注演进动机：第一支箭 '…的主链路。
 design_level: implementation
@@ -872,6 +875,7 @@ spec:
 id: fig-6-6
 type: layered
 title: 图6-6 物联网微服务容器部署的端-边-云分层架构
+audience_takeaway: "读者应理解边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。"
 purpose: 展示从端设备、边缘节点到云端的数据流与控制流，以及各层使用的容器编排工具
 visual_focus: 从云端层到端设备层的主链路。
 design_level: logical
@@ -1330,6 +1334,7 @@ public class DeviceDriverHealthIndicator implements HealthIndicator {
 id: fig-6-4
 type: layered
 title: 微服务可观测性分层架构
+audience_takeaway: "读者应理解可观测性中服务主动暴露端点、Prometheus以pull模式拉取指标、日志与指标分通道存储(ES/Prometheus)，健康状态并入业务指标统一告警。"
 purpose: 展示从代码规范到告警通知的完整监控链路，说明各层组件及数据流
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: logical

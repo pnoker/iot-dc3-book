@@ -80,6 +80,7 @@ V2X的通信模式按交互对象分为四类：
 id: fig-11-1
 type: flowchart
 title: 图11-1 V2X通信技术选型决策路径图
+audience_takeaway: "读者应理解时延是首要维度:碰撞预警百毫秒级用DSRC,毫秒级编队须NR-V2X,稀疏覆盖靠Mode 4直连兜底。"
 purpose: 展示从业务时延需求、基础设施覆盖、演进预期和后装兼容性四个维度出发，选择DSRC、LTE-V2X或NR-V2X的决策路径。
 visual_focus: 从node到node的主链路。
 design_level: implementation
@@ -307,6 +308,7 @@ RSU与路口信号机之间的数据交互是智慧交通中最基础也最有�
 id: fig-11-2-rsu-obu-sequence
 type: sequence
 title: 图11-2 RSU与OBU通信流程
+audience_takeaway: "读者应理解RSU是路侧枢纽:信号机灯色经串口轮询编码SPAT,雷达目标经以太网编码RSI,OBU融合CAN数据供ADAS。"
 purpose: 展示信号机、RSU、雷达、OBU、车载HMI以及ADAS域控制器之间的消息交互顺序和时序关系
 visual_focus: 从信号机到终点的主链路。
 design_level: implementation
@@ -955,6 +957,7 @@ S = N / (1 + O(N))
 id: figure-11-5
 type: architecture
 title: 城市物联网百万级接入系统架构图
+audience_takeaway: "读者应理解百万级接入靠两段解耦:IP哈希维持设备-Broker长连接,MQTT转Kafka削峰后按实时与非实时分路消费。"
 purpose: 展示百万级接入系统的拓扑结构，说明各层如何协同处理设备洪峰、实现水平扩展
 visual_focus: 从负载均衡器到设备层的主链路。
 design_level: logical
@@ -1172,6 +1175,7 @@ Kafka与Flink的集成尤为紧密。Flink将Kafka消费者封装为自己的Sou
 id: "fig-11-5"
 type: "architecture"
 title: "图11-5 城市物联网消息队列与数据流处理架构"
+audience_takeaway: "读者应理解高频传感流走Kafka/Flink实时聚合入时序库,控制指令走RocketMQ事务管道,两类通道隔离避免互扰。"
 purpose: "展示从设备层到最终数据消费的完整消息流转路径，突出消息队列作为缓冲和分发枢纽，以及流处理引擎如何实现数据精炼。"
 visual_focus: "从设备层经Kafka/RocketMQ到达Flink/Spark流处理层的主链路，以及可选归档路径。"
 design_level: "logical"
@@ -1589,6 +1593,7 @@ render_notes: "HTML/SVG渲染，浅色背景，圆角矩形，四层分明，箭
 id: fig-11-7
 type: layered
 title: 图11-7 LSTM交通流预测模型架构图
+audience_takeaway: "读者应理解输入96步×3通道(流量/时刻/星期)经LSTM压缩为64维,Dropout防过拟合,Dense(6)输出未来6步。"
 purpose: 直观展示短时交通流预测中单层LSTM网络从输入到输出各阶段的数据变换流程，帮助理解维度和特征在不同层之间的变化。
 visual_focus: 从数据流方向：从左至右，全局标注前向…到(64)→(64)→(6)的主链路。
 design_level: logical
@@ -2040,6 +2045,7 @@ render_notes: "HTML/SVG 渲染，浅色背景，坐标轴带网格线，图例�
 id: fig-11-5
 type: flowchart
 title: 图11-5 智慧交通系统集成部署工程检查流程
+audience_takeaway: "读者应理解四泳道检查须串行递进:先验设备制式与接口兼容,再验网关压测与QoS,继而PKI证书与签名,最后总线与灾备就绪方可上线。"
 purpose: 展示四个检查域在部署流程中的依赖关系与先后顺序，帮助工程师规划执行步骤和风险节点
 visual_focus: 从泳道4两个决策节点顺序通过后到达终点部署上线的主链路。
 design_level: implementation
@@ -2168,6 +2174,7 @@ Horizon的AI模块主要覆盖两个场景。
 id: fig11-10
 type: architecture
 title: 新区城市大脑系统部署架构图
+audience_takeaway: "读者应理解端-边-云职责切分:云端训练模型,12个边缘RSU内嵌推理引擎与控制Agent就地闭环,端层设备仅采集上报。"
 purpose: 展示 Horizon 项目端-边-云三层部署拓扑，标注协议栈和三个关键闭环的数据流路径
 visual_focus: 从端层到云层的主链路，以及三个闭环路径（交通预测闭环、能耗优化闭环、应急响应闭环）的高亮标识。
 design_level: logical

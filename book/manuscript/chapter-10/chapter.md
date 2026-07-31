@@ -224,6 +224,7 @@ render_notes: "HTML表格结构，无边框；列宽比例20/40/40；行高60px�
 id: fig-10-2
 type: architecture
 title: 数字孪生五维模型架构图
+audience_takeaway: "读者应理解连接层是数字孪生枢纽:传感器值经CN上行、控制指令下行,模型输出沉淀为知识反哺业务,形成自我进化的双向闭环。"
 purpose: 展示数字孪生的五个核心维度及它们之间的数据与控制流向，帮助读者理解CPS在工程层面的完整协作关系
 visual_focus: 从PE到Data & Service的主链路。
 design_level: logical
@@ -698,6 +699,7 @@ OPC UA地址空间是一个对象模型的树形结构，根节点是Objects，�
 id: fig-10-04
 type: topology
 title: 图10-4 OPC UA地址空间树状结构
+audience_takeaway: "读者应理解OPC UA以三种引用类型区分层次:Organizes组织设备、HasComponent含变量/方法、HasProperty挂元数据。"
 purpose: 展示OPC UA服务端以对象模型组织的节点树结构，说明变量节点、对象节点和方法节点的层次关系。
 visual_focus: 从根节点到方法节点的主链路。
 design_level: logical
@@ -1083,6 +1085,7 @@ df = df[~df.index.duplicated(keep='first')]
 id: fig-10-15
 type: flowchart
 title: 图10-15 原始数据与清洗后数据对比
+audience_takeaway: "读者应理解清洗须先判异常成因:通信中断的缺失段用前向填充,电磁干扰的毛刺替换为平滑值,两类异常处理手段不同。"
 purpose: 展示清洗前后温度序列的变化，说明缺失填充和毛刺过滤的效果。
 visual_focus: 从原始数据到清洗后数据的主链路。
 design_level: implementation
@@ -1165,6 +1168,7 @@ render_notes: HTML/SVG渲染，线条颜色使用全局配色规则，异常位�
 id: fig-10-10
 type: architecture
 title: 图10-10 AI模型部署架构（从训练到边缘推理）
+audience_takeaway: "读者应理解模型仓库一份模型可同时服务REST与专用推理,边缘只跑裁剪模型且仅上报结果,与云端分工避免重复工单。"
 purpose: 展示模型从训练环境产出、导出、部署到推理服务并接入IoT DC3平台的完整链路。
 visual_focus: 从训练阶段经模型仓库到推理服务的主链路，以及边缘推理节点本地推理后上报结果到数据中心的虚线路径。
 design_level: logical
@@ -1579,6 +1583,7 @@ IoT DC3 采用微服务架构，围绕“连接、存储、规则、智能”四
 id: fig-10-06
 type: architecture
 title: 图10-7 IoT DC3平台微服务架构
+audience_takeaway: "读者应理解规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。"
 purpose: 展示IoT DC3核心模块（设备中心、数据中心、规则引擎、智能中心）之间的职责边界和数据闭环路径。
 visual_focus: 主链路从设备驱动经数据中心到规则引擎和智能中心，规则引擎与智能中心之间用虚线表示“快判转深析”的可选路径。
 design_level: logical
@@ -1800,6 +1805,7 @@ POST /api/v1/device/save
 id: fig-10-04
 type: dataflow
 title: 图10-4 IoT DC3设备接入与数据采集数据流
+audience_takeaway: "读者应理解原始位号到展示曲线需三层改造:驱动归一为语义PointValue、数据中心对齐时间戳与单位、时序库按设备+位号分区。"
 purpose: 展示从设备注册、驱动绑定到实时上报和存储的端到端流程。
 visual_focus: 从设备驱动绑定到Grafana大屏的主链路。
 design_level: implementation
@@ -2149,6 +2155,7 @@ render_notes: "采用从左至右流程图布局，节点使用圆角矩形，�
 id: fig-10-14
 type: layered
 title: 图10-14 本章知识体系图谱
+audience_takeaway: "读者应理解本章四层知识逐级递进且每层落在IoT DC3具体模块上,分析决策经平台层下发设备,形成带返回线的闭环。"
 purpose: 展示工业物联网与智能制造四层知识体系的结构化映射：从概念驱动到平台落地。
 visual_focus: 从感知层通过驱动模块向上到平台层，实线箭头的主链路。
 design_level: logical

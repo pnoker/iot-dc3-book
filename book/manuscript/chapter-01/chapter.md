@@ -76,6 +76,7 @@
 id: fig-1-1
 type: timeline
 title: 图1-1 三次浪潮演进时间线示意
+audience_takeaway: "读者应理解三次浪潮的核心驱动力依次从信息数字化、人的移动性转向物的数字化,连接规模从约10亿、20亿跃升一个数量级至百亿级。"
 purpose: 直观展示PC互联网、移动互联网、万物互联三个阶段的时间范围、连接主体、连接规模与核心驱动力
 visual_focus: 从从移动互联网到万物互联：实线箭头，标注'技术演进'的主链路。
 design_level: implementation
@@ -244,6 +245,7 @@ PC互联网完成了“信息触网”的使命——把内容从纸面搬上屏
 id: fig-1-2
 type: topology
 title: 移动互联网应用生态示意
+audience_takeaway: "读者应理解移动互联网以用户为唯一中心,应用模块围绕用户辐射,且通过社交内嵌支付等交叉连接实现功能聚合而非各自孤立。"
 purpose: 展示移动互联网时代以用户为中心的星形应用生态，突出“人-应用-服务”的连接闭环。
 visual_focus: 从用户到移动支付的主链路。
 design_level: logical
@@ -384,6 +386,7 @@ PC 互联网联结的是信息，移动互联网联结的是人。第三次浪�
 id: fig-01-04
 type: topology
 title: 图1-4 智慧工厂设备连接拓扑示意
+audience_takeaway: "读者应理解边缘网关只上传均方根等统计特征而非原始波形,云侧趋势分析后控制流反向下发减速指令,虚实双线构成无人介入的闭环决策。"
 purpose: 展示从感知层到应用层的完整设备连接链路，以及数据流与控制流的走向，说明万物互联场景下数据如何从传感器汇聚、经边缘处理、上云分析、最终形成闭环决策。
 visual_focus: 从起点到至边缘网关的主链路。
 design_level: logical
@@ -1008,6 +1011,7 @@ render_notes: "HTML/SVG渲染，浅色背景，圆角矩形，箭头带渐变粗
 id: fig-1-7
 type: flowchart
 title: 图1-7 传统物联网与大模型驱动物联网的对比
+audience_takeaway: "读者应理解传统物联网靠静态规则精确匹配、被动响应,大模型驱动改为上下文概率推理并新增执行前用户二次确认,从被动转向主动。"
 purpose: 直观对比两种物联网模式的决策链路与用户交互路径，突出大模型引入推理能力带来的架构变化。
 visual_focus: 从大模型驱动物联网：用户自然语言描述到终点的主链路。
 design_level: implementation
@@ -1169,6 +1173,7 @@ resp = client.chat.completions.create(
 id: fig1-6
 type: architecture
 title: 传统物联网端-云架构与AIoT边-端-云协同架构对比
+audience_takeaway: "读者应理解传统架构端云直连数据上传、指令下发,AIoT在两者之间插入边缘侧承担实时推理与本地决策,端云改为经边缘间接交互、云侧退居模型训练与知识下推。"
 purpose: 直观对比大模型介入前后物联网拓扑结构的演变，突出边缘层作为推理枢纽的角色，以及数据流和信息流方向的变化。
 visual_focus: 从传统架构=name=感知层到AIoT新架构=name=端侧的主链路。
 design_level: logical
@@ -1290,6 +1295,7 @@ AIoT的核心机制是数据闭环（Data Loop）。整个系统像一个人体�
 id: fig-1-5-1
 type: flowchart
 title: AIoT数据闭环流程
+audience_takeaway: "读者应理解AIoT是感知-学习-决策-执行的循环,执行结果反馈回感知驱动持续自我优化,区别于传统IoT的单向数据管道。"
 purpose: 展示AIoT中从感知到学习、决策、执行，再到反馈优化的循环过程，直观区别于传统IoT的单向数据流。
 visual_focus: 从step1到step1的主链路。
 design_level: implementation
@@ -1402,6 +1408,7 @@ render_notes: 使用HTML+SVG实现。主体为四个横向排列的圆角矩形�
 id: fig-1-5-2-1
 type: architecture
 title: 图1-5-2 边云协同AIoT三级架构示意
+audience_takeaway: "读者应理解云侧只下发量化剪枝模型并回收低置信度样本,边缘负责实时推理,端侧靠低功耗AI芯片本地响应,三层形成训练-推理-反馈闭环。"
 purpose: 展示AIoT中端、边、云三层之间的智能分工与数据流向，突出边缘计算作为实时推理载体的位置，以及模型下沉形成的闭环。
 visual_focus: 从云层到边缘层：原始数据上报的主链路。
 design_level: logical
@@ -1552,6 +1559,7 @@ AI大模型的引入进一步放大了这种差异。过去物联网系统的“
 id: figure-1.16
 type: matrix
 title: 实践建议优先级矩阵
+audience_takeaway: "读者应理解应优先执行投入产出高且实施难度低的条目,如用三次浪潮框架重新定位项目、分隔感知值与推理值,而非先投原型搭建。"
 purpose: 将本章核心概念转化为5条可立即执行行动建议，并按投入产出和实施难度两个维度评估优先级，帮助读者快速决策从哪一条开始。
 visual_focus: 从建议编号到建议3：评估规则引擎承载极限的主链路。
 design_level: decision

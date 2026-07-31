@@ -475,6 +475,7 @@ RAG 解决的是模型“知不知道”的问题，Tool-Calling 解决的是模
 id: fig-7-4
 type: dataflow
 title: 图7-4 RAG + Tool-Calling 联合工作流
+audience_takeaway: "读者应理解 RAG 检索 SOP 步骤灌入模型，Tool-Calling 据此落成关泵指令，二者在泳道中职责分离。"
 purpose: 展示一个运维任务从用户发起到 LLM 推理、RAG 检索、Tool-Calling 执行直至设备响应的完整数据流向和职责划分。
 visual_focus: 从操作员到终点的主链路。
 design_level: implementation
@@ -957,6 +958,7 @@ public void demoFunctionCalling() {
 id: fig-7-4-function-calling-flow
 type: sequence
 title: 图7-4 Function Calling 交互流程：从自然语言到设备操作
+audience_takeaway: "读者应理解 LLM 全程不执行设备操作，只输出 JSON 函数调用请求，实际调用与结果回填都由 ChatClient 中转。"
 purpose: 展示 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例，说明操作员、ChatClient、LLM、LightTool 之间的消息交换顺序。
 visual_focus: 从操作员到终点的主链路。
 design_level: implementation
@@ -1189,6 +1191,7 @@ Agentic Center 的工具体系采用“查询为主、控制受限”的分级�
 id: fig-7-07
 type: layered
 title: 图7-7 Agentic Center 四层架构
+audience_takeaway: "读者应理解 Tool 经 Facade/gRPC 复用能力而非 Feign 旁路，会话与数据存于 PostgreSQL，不设命令服务。"
 purpose: 展示 Agentic Center 如何叠加在 IoT DC3 既有平台能力之上，并标明真实通信与存储边界。
 layout: 自上而下四层：用户交互层；AI Agent 层；平台服务层；数据与设备层。Agentic 到平台服务标注 Facade/gRPC，Data 与 Driver 之间标注 RabbitMQ。
 caption: 图7-7 Agentic Center 四层架构：Tool 通过 Facade/gRPC 复用平台能力，会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转。
@@ -1324,6 +1327,7 @@ public AgenticToolResult<PointCommandResult> writePointValue(
 id: fig-7-09
 type: architecture
 title: 图7-9 Agentic Center 当前能力与知识对齐边界
+audience_takeaway: "读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。"
 purpose: 区分当前已实现的 Tools、Web/HTTP 与 MCP Tools 端点，以及仅用于知识对齐的 Skills 和 CLI 概念。
 layout: 左侧“当前已实现”区域包含 Agentic @Tool、Web/HTTP 对话和 MCP Tools；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧用虚线关系箭头连接。
 caption: 图7-9 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为实现边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。
@@ -1669,6 +1673,7 @@ ChatMemory 只能回答模型看过哪些消息，不能证明外部动作是否
 id: fig-7-5-3-1
 type: architecture
 title: IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线
+audience_takeaway: "读者应理解自主程度逐阶段升高，但人工确认点从未消失——从每步确认转为关键节点确认，高风险白名单始终不可绕过。"
 purpose: 展示从 Copilot 到 Agent 的三阶段演进路径，说明自主程度、人工介入、风险控制和信任度的递进关系
 visual_focus: 从时间顺序：第一阶段到#1565c0 结束，使用 lin…的主链路。
 design_level: logical

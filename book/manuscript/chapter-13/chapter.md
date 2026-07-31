@@ -24,6 +24,7 @@
 id: fig-13-1
 type: architecture
 title: 图13-1 中心化物联网架构的信任困境
+audience_takeaway: "读者应理解星型拓扑把信任全部压向唯一云平台，三个困境沿'问题蔓延'层层叠加，根因是单一信任锚点。"
 purpose: 展示中心化架构下三个信任困境——单点故障、数据篡改、跨主体互信成本高——之间的关联，以及它们最终都指向信任缺失的根因。
 visual_focus: 从左栏到右栏最下方的主链路。
 design_level: logical
@@ -149,6 +150,7 @@ render_notes: HTML/SVG渲染，浅色背景，圆角矩形。左栏动画：设�
 id: fig-13-2
 type: pyramid
 title: 图13-2 区块链与物联网融合的信任三角
+audience_takeaway: "读者应理解信任三角三个维度各司其职：账本保数据一致、签名与共识保来源可信、合约保规则自动执行，缺一不可。"
 purpose: 展示分布式账本、数字签名与共识机制、智能合约三者如何共同支撑物联网系统的可信基础。
 visual_focus: 从左端到顶部：驱动可信业务逻辑的主链路。
 design_level: decision
@@ -367,6 +369,7 @@ DID方案带来的核心转变是信任源头的迁移：从信任中心化注�
 id: fig-13-2
 type: sequence
 title: 图13-2 设备DID注册与验证流程
+audience_takeaway: "读者应理解验证方离线即可核验身份：仅凭签名用ecrecover反推签名地址并与链上owner比对，私钥终生不出安全飞地。"
 purpose: 展示从设备出厂、注册到被另一设备验证的完整身份生命周期。
 visual_focus: 从设备1内部到设备2→设备1的主链路。
 design_level: implementation
@@ -548,6 +551,7 @@ render_notes: 标准时序图布局，参与者列于顶部，生命线垂直向
 id: fig-13-2
 type: flowchart
 title: 图13-2 数据上链流程图
+audience_takeaway: "读者应理解存证是'链下存原文、链上存指纹'的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。"
 purpose: 展示从传感器采样到链上存证、链下存储、验证的完整流程，说明链下存储与链上指纹的协作关系。
 visual_focus: 从传感器到终点的主链路。
 design_level: implementation
@@ -745,6 +749,7 @@ contract DataVerification {
 id: figure-13-4
 type: architecture
 title: 数据验证与溯源机制时序图
+audience_takeaway: "读者应理解溯源依赖事件日志的链下索引：合约只存哈希与所有权映射，历史查询由监听器从DataStored事件重建而不重扫区块。"
 purpose: 展示数据从传感器产生到链上验证的完整流程，重点突出事件日志的索引作用和验证函数的调用路径。
 visual_focus: 从1. 传感器到边缘节点：推送原始数据的主链路。
 design_level: logical
@@ -816,6 +821,7 @@ render_notes: SVG 绘制，纵向布局，时间轴左侧标注时间刻度（T0
 id: fig-13-6
 type: matrix
 title: 图13-6 供应链核心痛点与区块链价值点映射
+audience_takeaway: "读者应理解每个痛点都有对应价值点且为线性映射，最粗箭头表明'信息孤岛→多方共享账本'是区块链在供应链中力度最大的解。"
 purpose: 展示供应链场景的四个典型困难与区块链技术对应解耦方案的映射关系。
 visual_focus: 从每一条痛点通过虚线箭头指向其直接对…到分布式账本的箭头最粗的主链路。
 design_level: decision
@@ -903,6 +909,7 @@ render_notes: 错位排列，每对映射下方可附加简短文字说明。采
 id: fig-13-8
 type: layered
 title: 图13-8 基于区块链的供应链溯源系统分层架构
+audience_takeaway: "读者应理解应用层无权直连感知层与边缘层，任何数据查询都须经区块链网络层中转，链上成为唯一可信数据出口。"
 purpose: 展示从物理感知到业务展示的四层结构，以及数据在各层间的流动方向。
 visual_focus: 从边缘层将计算出的数据哈希、数字签名…到应用层，实线箭头；应用层发起的查询…的主链路。
 design_level: logical
@@ -1097,6 +1104,7 @@ render_notes: HTML/SVG渲染，浅色背景。四层自下而上堆叠，每层�
 id: fig-13-03
 type: architecture
 title: 图13-3 中心化 vs 去中心化物联网架构对比图
+audience_takeaway: "读者应理解两者差异在故障影响域：中心化单点失效即全网瘫痪，去中心化任一共识节点失效不影响全局，代价是数据流由汇聚变P2P。"
 purpose: 直观对比两种架构在组件角色、通信模型、信任锚点和故障影响范围上的差异。
 visual_focus: 从左栏顶部到右栏标注的主链路。
 design_level: logical
@@ -1285,6 +1293,7 @@ AI、区块链与物联网三者的结合，常被描述为“可信智能三角
 id: fig-13-4
 type: architecture
 title: 图13-4 AI+区块链+物联网三角范式关系图
+audience_takeaway: "读者应理解三方构成闭环：IoT供数据、AI推理并上链存证、链上预言机回控设备，数据单向流入而信任反向锚定，闭环方可审计。"
 purpose: 展示AI、区块链、物联网三者之间的互补关系和核心交互链路。
 visual_focus: 从IoT到终点的主链路。
 design_level: logical

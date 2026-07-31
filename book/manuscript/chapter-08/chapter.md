@@ -24,6 +24,7 @@
 id: fig-08-01
 type: layered
 title: 图8-1 物联网安全威胁分层分类
+audience_takeaway: "读者应理解物理接触可沿“提取固件密钥→伪造平台身份”逐层升级为跨租户数据窃取，威胁本质是跨层传导的链条，故安全必须全链路防御。"
 purpose: 建立全局威胁认知，展示威胁如何从底层向高层扩散，以及跨层攻击向量
 visual_focus: 从攻击路径可逐层递进，例如：物理接触…到提取固件密钥 → 伪造平台身份的主链路。
 design_level: logical
@@ -125,6 +126,7 @@ render_notes: HTML/SVG 渲染，浅色背景，四层垂直排列，左侧用纵
 id: fig-8-2
 type: layered
 title: 图8-2 物联网纵深防御多层模型
+audience_takeaway: "读者应理解单层防御失守可被相邻层补偿控制承接，如Layer2缺硬件信任根时由Layer3证书锁定与异常流量检测兜底。"
 purpose: 展示从物理安全到应用安全的多个防御面，以及补偿控制的跨层连接。
 visual_focus: 从补偿控制（灰色虚线）到终点的主链路。
 design_level: logical
@@ -380,6 +382,7 @@ X.509证书是最成熟的公钥基础设施（PKI）。设备持有私钥与证
 id: fig-08-02
 type: sequence
 title: 图8-2 TLS 1.3与EDHOC握手流程对比
+audience_takeaway: "读者应理解EDHOC仅3条消息即完成双向认证并协商出会话密钥，无需像TLS那样往返传输证书链，消息数与载荷均显著更小。"
 purpose: 对比展示TLS 1.3双向认证握手与EDHOC轻量握手的消息交换流程，帮助读者理解两种协议在消息数量和结构上的差异。
 visual_focus: 从TLS流程：从设备到终点的主链路。
 design_level: implementation
@@ -530,6 +533,7 @@ OTA（Over-the-Air）更新给攻击者打开了一扇新门。如果更新机�
 id: fig-08-01
 type: flowchart
 title: 图8-1 安全启动多层信任链流程
+audience_takeaway: "读者应理解信任链根植于不可篡改的BootROM（内含OTP公钥指纹），每一级只验证上一级签名，任一级失败即停机或回退恢复模式。"
 purpose: 展示从芯片上电到Linux内核启动的逐级验证过程，强调每一级都依赖上一级签名的信任关系。
 visual_focus: 从BootROM 验证 SBL 签名到通过则挂载，否则拒绝启动的主链路。
 design_level: implementation
@@ -703,6 +707,7 @@ PUF 也有短板。输出可能受温度、电压和芯片老化影响而波动�
 id: fig-8-11
 type: layered
 title: 图8-11 防篡改设计的纵深防线
+audience_takeaway: "读者应理解密钥派生与签名全程在安全元件内部闭环，PUF派生私钥永不通过SPI暴露给主控，物理取芯也拿不到明文私钥。"
 purpose: 展示从外壳到芯片内部的四层物理安全防护体系，以及安全元件内部密钥派生的数据流
 visual_focus: 从主控发起签名请求到终点的主链路。
 design_level: logical
@@ -859,6 +864,7 @@ TLS 1.3 把步骤 2 和 3 合并，且默认使用 ECDHE 密钥交换，提供�
 id: fig-08-01
 type: sequence
 title: 图8-1 TLS 1.3握手流程
+audience_takeaway: "读者应理解TLS握手仅ClientHello与ServerHello为明文，Finished起即用会话密钥加密，双向认证时客户端须额外出示证书。"
 purpose: 展示从ClientHello到应用数据全加密的四个主要步骤，包含双向认证示意。
 visual_focus: 从客户端 → 服务端到客户端 ↔ 服务端的主链路。
 design_level: implementation
@@ -1096,6 +1102,7 @@ OSCORE 是专门为受限设备和受限网络设计的应用层安全协议，�
 id: fig-08-08
 type: dataflow
 title: 图8-8 CoAP 的 OSCORE 安全处理流程示意
+audience_takeaway: "读者应理解OSCORE以“加密+MAC校验+序列号滑动窗口”一次打包完成机密性、完整性与防重放，序列号重复即拒绝并返回4.01。"
 purpose: 展示从受限设备发送 CoAP 请求到平台接收验证的全过程中，OSCORE 如何完成加密、完整性校验和防重放的一体化处理，并给出通过和拒绝两条收尾分支。
 visual_focus: 从CoAP Client 生成原始请求到终点的主链路。
 design_level: implementation
@@ -1177,6 +1184,7 @@ render_notes: HTML/SVG 渲染，水平布局，从左至右绘制主要实体和
 id: figure-8-7
 type: architecture
 title: 物联网微隔离架构示意图
+audience_takeaway: "读者应理解微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。"
 purpose: 展示从设备层到策略编排层的四层分层模型，说明微分段如何通过SDN控制器实现逐设备级别的隔离规则，防止横向移动。
 visual_focus: 从layer1到layer1的主链路。
 design_level: logical
@@ -1341,6 +1349,7 @@ print(decrypted_data.decode())
 id: fig-key-lifecycle
 type: flowchart
 title: 图8-5 密钥生命周期管理与云边协同流程
+audience_takeaway: "读者应理解密钥状态沿生成、分发、轮换、撤销、销毁迁移，云端与边缘经TLS加密通道协同管理，撤销即从可用态剔除。"
 purpose: 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥状态转换。
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: implementation
@@ -1481,6 +1490,7 @@ DP 的优势在于提供了一个可量化的隐私保护参数——ε（隐私
 id: fig-8-3
 type: flowchart
 title: 数据脱敏与匿名化决策流程
+audience_takeaway: "读者应理解脱敏只是弱保护，匿名化须注入差分隐私并通过重识别风险评估方可发布，仅掩盖一层即发布是重识别泄露的根源。"
 purpose: 展示在数据发布前，如何根据数据敏感等级选择脱敏或匿名化策略，并最终通过重识别风险评估。
 visual_focus: 从id到from的主链路。
 design_level: implementation
@@ -1862,6 +1872,7 @@ JWT 在物联网中也有一个需要注意的局限：令牌一旦签发，在�
 id: table-8-5
 type: matrix
 title: 多租户隔离强度对比
+audience_takeaway: "读者应理解隔离强度与跨租户风险反向、与资源效率和运维复杂度也反向，强隔离必有成本代价，需按租户价值取舍。"
 purpose: 对比三种主要隔离维度在不同隔离强度（低/中/高）下的实现方式、跨租户风险、资源效率和运维复杂度
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: decision
@@ -1942,6 +1953,7 @@ render_notes: HTML表格，表头加粗居中，第一列左对齐加底色。�
 id: fig-8-10
 type: architecture
 title: 智能家居多租户系统架构
+audience_takeaway: "读者应理解混合隔离由网关解析tenant_id后分流，高价值租户B独占VPC、Pod池与MySQL实例，普通租户共享资源以摊薄成本。"
 purpose: 展示混合隔离策略下不同租户在数据、计算、网络三个维度的隔离方式与资源分配
 visual_focus: 从起点到终点的主链路。
 design_level: logical
@@ -2735,6 +2747,7 @@ IoT DC3 的审计能力保证了“谁在什么时候做了什么”这条信息
 id: fig-8-7
 type: architecture
 title: 本章参考资料分类导图
+audience_takeaway: "读者应理解12条参考资料按六大主题域归档，其中协议安全问题仅[S5][S6]两条、AI安全仅[S4][S8]两条，可据此判断支撑密度。"
 purpose: 帮助读者快速定位本书研究资料包中 12 条参考资料对应的安全主题域，理解各参考资料的主要覆盖范围。
 visual_focus: 从[S9]到终点的主链路。
 design_level: logical

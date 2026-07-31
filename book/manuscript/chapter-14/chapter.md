@@ -1173,6 +1173,7 @@ AGI（Artificial General Intelligence，通用人工智能）这个标签在GPT-
 id: fig-14-04
 type: architecture
 title: 图14-4 AGI时代物联网架构演进
+audience_takeaway: "读者应理解AGI时代智能层由规则+固定模型升级为Agent编排与动态模型调度,自动决策须经独立安全护栏层校验后才可下发。"
 purpose: 展示从传统IoT平台到AGI时代平台的核心层次变化：智能层升级为Agent编排+动态模型调度，安全护栏层独立并旁路所有自动决策。
 visual_focus: 从起点到终点的主链路。
 design_level: logical

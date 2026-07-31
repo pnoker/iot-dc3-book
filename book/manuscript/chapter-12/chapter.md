@@ -93,6 +93,7 @@
 id: fig-12-1
 type: topology
 title: 图12-1 环境传感网络部署拓扑示意
+audience_takeaway: "读者应理解终端节点与云端不直连——大量LoRa传感器先星型汇聚到单一网关,再由网关经4G/有线回传上云,网关承担隔离与汇聚中继角色。"
 purpose: 显示农业环境传感网络的星型拓扑结构，涵盖终端节点、网关与云平台之间的通信关系。
 visual_focus: 从顶层（云平台层）到底层（终端节点层）的主链路。
 design_level: logical
@@ -672,6 +673,7 @@ def irrigation_decision(moisture, rain_prob_12h):
 id: fig-12-04
 type: matrix
 title: 图12-4 LoRa / NB-IoT / Sigfox 技术维度对比雷达图
+audience_takeaway: "读者应理解三项技术功耗与速率反向取舍——NB-IoT速率最高(4)而功耗最差(2),Sigfox功耗最优(4)但速率最低(1),LoRa生态最开放(5)居中平衡。"
 purpose: 在同一坐标系下展示三项技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六个维度的相对强弱，辅助选型决策
 visual_focus: 从LoRa到Sigfox的主链路。
 design_level: decision
