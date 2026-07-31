@@ -473,7 +473,6 @@ id: fig-7-4
 type: dataflow
 title: 图7-4 RAG + Tool-Calling 联合工作流
 purpose: 展示一个运维任务从用户发起到 LLM 推理、RAG 检索、Tool-Calling 执行直至设备响应的完整数据流向和职责划分。
-audience_takeaway: 读者应理解RAG + Tool-Calling 联合工作流中的主链路、责任边界和工程取舍。
 visual_focus: 从操作员到终点的主链路。
 design_level: implementation
 layout: 水平泳道布局，从上到下四条泳道：用户层、AI 推理层、知识检索层、设备执行层。
@@ -954,7 +953,6 @@ id: fig-7-4-function-calling-flow
 type: sequence
 title: 图7-4 Function Calling 交互流程：从自然语言到设备操作
 purpose: 展示 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例，说明操作员、ChatClient、LLM、LightTool 之间的消息交换顺序。
-audience_takeaway: 读者应理解Function Calling 交互流程：从自然语言到设备操作中的主链路、责任边界和工程取舍。
 visual_focus: 从操作员到终点的主链路。
 design_level: implementation
 layout: 纵向顺序排列参与者，箭头从上至下表示时序。
@@ -1667,7 +1665,6 @@ id: fig-7-5-3-1
 type: architecture
 title: IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线
 purpose: 展示从 Copilot 到 Agent 的三阶段演进路径，说明自主程度、人工介入、风险控制和信任度的递进关系
-audience_takeaway: 读者应理解IoT DC3 Agentic Center 的 Copilo…中的主链路、责任边界和工程取舍。
 visual_focus: 从时间顺序：第一阶段到#1565c0 结束，使用 lin…的主链路。
 design_level: logical
 layout: 水平时间轴，从左至右分为三个等宽色块

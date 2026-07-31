@@ -81,7 +81,6 @@ id: fig-11-1
 type: flowchart
 title: 图11-1 V2X通信技术选型决策路径图
 purpose: 展示从业务时延需求、基础设施覆盖、演进预期和后装兼容性四个维度出发，选择DSRC、LTE-V2X或NR-V2X的决策路径。
-audience_takeaway: 读者应理解V2X通信技术选型决策路径图中的主链路、责任边界和工程取舍。
 visual_focus: 从node到node的主链路。
 design_level: implementation
 layout: 有向图，从上到下依次分支，每个节点有两个或更多出口，最终汇至三种技术方案或多模方案。
@@ -309,7 +308,6 @@ id: fig-11-2-rsu-obu-sequence
 type: sequence
 title: 图11-2 RSU与OBU通信流程
 purpose: 展示信号机、RSU、雷达、OBU、车载HMI以及ADAS域控制器之间的消息交互顺序和时序关系
-audience_takeaway: 读者应理解RSU与OBU通信流程中的主链路、责任边界和工程取舍。
 visual_focus: 从信号机到终点的主链路。
 design_level: implementation
 layout: 垂直方向，六条生命线，自左向右排列
@@ -958,7 +956,6 @@ id: figure-11-5
 type: architecture
 title: 城市物联网百万级接入系统架构图
 purpose: 展示百万级接入系统的拓扑结构，说明各层如何协同处理设备洪峰、实现水平扩展
-audience_takeaway: 读者应理解城市物联网百万级接入系统架构图中的主链路、责任边界和工程取舍。
 visual_focus: 从负载均衡器到设备层的主链路。
 design_level: logical
 layout: left-to-right three-layer
@@ -1176,7 +1173,6 @@ id: "fig-11-5"
 type: "architecture"
 title: "图11-5 城市物联网消息队列与数据流处理架构"
 purpose: "展示从设备层到最终数据消费的完整消息流转路径，突出消息队列作为缓冲和分发枢纽，以及流处理引擎如何实现数据精炼。"
-audience_takeaway: "读者应理解城市物联网消息队列与数据流处理架构中的主链路、责任边界和工程取舍——设备接入、消息缓冲、流式计算、存储/服务四层职责清晰。"
 visual_focus: "从设备层经Kafka/RocketMQ到达Flink/Spark流处理层的主链路，以及可选归档路径。"
 design_level: "logical"
 layout: "自上而下四层：设备层→消息队列层→流处理层→存储与服务层。"
@@ -1594,7 +1590,6 @@ id: fig-11-7
 type: layered
 title: 图11-7 LSTM交通流预测模型架构图
 purpose: 直观展示短时交通流预测中单层LSTM网络从输入到输出各阶段的数据变换流程，帮助理解维度和特征在不同层之间的变化。
-audience_takeaway: 读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。
 visual_focus: 从数据流方向：从左至右，全局标注前向…到(64)→(64)→(6)的主链路。
 design_level: logical
 layout: 从左至右水平流向，共四个主要模块。
@@ -2046,7 +2041,6 @@ id: fig-11-5
 type: flowchart
 title: 图11-5 智慧交通系统集成部署工程检查流程
 purpose: 展示四个检查域在部署流程中的依赖关系与先后顺序，帮助工程师规划执行步骤和风险节点
-audience_takeaway: 读者应理解智慧交通系统集成部署工程检查流程中的主链路、责任边界和工程取舍。
 visual_focus: 从泳道4两个决策节点顺序通过后到达终点部署上线的主链路。
 design_level: implementation
 layout: 横向泳道图，四条水平泳道，从上到下排布；泳道之间用带箭头的流程线连接
@@ -2175,7 +2169,6 @@ id: fig11-10
 type: architecture
 title: 新区城市大脑系统部署架构图
 purpose: 展示 Horizon 项目端-边-云三层部署拓扑，标注协议栈和三个关键闭环的数据流路径
-audience_takeaway: 读者应理解新区城市大脑系统部署架构图中的主链路、责任边界和工程取舍。边的价值在于将延迟敏感的推理闭环做在本地，云的责任在于模型训练和跨部门路由。
 visual_focus: 从端层到云层的主链路，以及三个闭环路径（交通预测闭环、能耗优化闭环、应急响应闭环）的高亮标识。
 design_level: logical
 layout: 自上而下的三层分层拓扑图，每层为一个横向矩形区块；顶层浅蓝、中间层浅灰、底层浅绿

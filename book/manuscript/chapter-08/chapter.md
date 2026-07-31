@@ -25,7 +25,6 @@ id: fig-08-01
 type: layered
 title: 图8-1 物联网安全威胁分层分类
 purpose: 建立全局威胁认知，展示威胁如何从底层向高层扩散，以及跨层攻击向量
-audience_takeaway: 读者应理解物联网安全威胁分层分类中的主链路、责任边界和工程取舍。
 visual_focus: 从攻击路径可逐层递进，例如：物理接触…到提取固件密钥 → 伪造平台身份的主链路。
 design_level: logical
 layout: 按OSI分层从下到上排列，左右两侧标注横切威胁
@@ -127,7 +126,6 @@ id: fig-8-2
 type: layered
 title: 图8-2 物联网纵深防御多层模型
 purpose: 展示从物理安全到应用安全的多个防御面，以及补偿控制的跨层连接。
-audience_takeaway: 读者应理解物联网纵深防御多层模型中的主链路、责任边界和工程取舍。
 visual_focus: 从补偿控制（灰色虚线）到终点的主链路。
 design_level: logical
 layout: 垂直堆叠的矩形条，自底向上排列。左侧红色箭头标注攻击路径，右侧绿色箭头标注防御阻断路径，灰色虚线表示补偿控制连线。
@@ -383,7 +381,6 @@ id: fig-08-02
 type: sequence
 title: 图8-2 TLS 1.3与EDHOC握手流程对比
 purpose: 对比展示TLS 1.3双向认证握手与EDHOC轻量握手的消息交换流程，帮助读者理解两种协议在消息数量和结构上的差异。
-audience_takeaway: 读者应理解TLS 1.3与EDHOC握手流程对比中的主链路、责任边界和工程取舍。
 visual_focus: 从TLS流程：从设备到终点的主链路。
 design_level: implementation
 layout: 两段并列序列图，左侧TLS 1.3流程，右侧EDHOC流程。时间轴从上到下。
@@ -534,7 +531,6 @@ id: fig-08-01
 type: flowchart
 title: 图8-1 安全启动多层信任链流程
 purpose: 展示从芯片上电到Linux内核启动的逐级验证过程，强调每一级都依赖上一级签名的信任关系。
-audience_takeaway: 读者应理解安全启动多层信任链流程中的主链路、责任边界和工程取舍。
 visual_focus: 从BootROM 验证 SBL 签名到通过则挂载，否则拒绝启动的主链路。
 design_level: implementation
 layout: 自上而下链式流程，起点：上电复位，终点：正常启动或拒绝启动。
@@ -708,7 +704,6 @@ id: fig-8-11
 type: layered
 title: 图8-11 防篡改设计的纵深防线
 purpose: 展示从外壳到芯片内部的四层物理安全防护体系，以及安全元件内部密钥派生的数据流
-audience_takeaway: 读者应理解防篡改设计的纵深防线中的主链路、责任边界和工程取舍。
 visual_focus: 从主控发起签名请求到终点的主链路。
 design_level: logical
 layout: 纵向从上到下四层，每层用虚线隔开；左侧标注物理结构，右侧展开安全元件内部逻辑
@@ -838,6 +833,8 @@ render_notes: 四层区域用透明度渐变的背景色区分（从外壳的不
 
 ### 8.3.1 网络传输加密技术
 
+> **阅读提示**：TLS/DTLS 的协议规范在第 9 章有完整介绍，MQTT/CoAP 场景下的传输加密实践在第 4 章的设备接入中已有展开。本节聚焦安全视角——从威胁模型、证书管理和密钥轮换的角度讨论传输加密工程，而非协议本身。如果你需要 TLS 握手流程的完整时序，请参见第 9 章图 9-4；MQTT over TLS 的 Broker 配置示例见第 4 章。
+
 一台部署在油田井口的压力传感器，每隔几秒就把现场油压数据通过 MQTT 上报到云端控制平台。如果这条链路没有加密，攻击者只需要在信号覆盖范围内搭建一个伪造的接收设备就能截获无线信号——油压、阀门状态、甚至控制指令一览无余。换成供水管网或化工厂，后果就不是隐私泄漏，而是安全事故。
 
 网络传输加密解决的就是这个问题：在不可信的链路上，确保数据从发送方到接收方之间“看不见，改不了”。本小节从 TLS 和 DTLS 两个协议入手，讲清楚它们怎么工作，在 IoT 场景下怎么配置，以及那个最常被忘掉的环节——密钥管理。
@@ -863,7 +860,6 @@ id: fig-08-01
 type: sequence
 title: 图8-1 TLS 1.3握手流程
 purpose: 展示从ClientHello到应用数据全加密的四个主要步骤，包含双向认证示意。
-audience_takeaway: 读者应理解TLS 1.3握手流程中的主链路、责任边界和工程取舍。
 visual_focus: 从客户端 → 服务端到客户端 ↔ 服务端的主链路。
 design_level: implementation
 layout: 纵向时序，参与者包括客户端（设备）和服务端（平台）。
@@ -1101,7 +1097,6 @@ id: fig-08-08
 type: dataflow
 title: 图8-8 CoAP 的 OSCORE 安全处理流程示意
 purpose: 展示从受限设备发送 CoAP 请求到平台接收验证的全过程中，OSCORE 如何完成加密、完整性校验和防重放的一体化处理，并给出通过和拒绝两条收尾分支。
-audience_takeaway: 读者应理解CoAP 的 OSCORE 安全处理流程示意中的主链路、责任边界和工程取舍。
 visual_focus: 从CoAP Client 生成原始请求到终点的主链路。
 design_level: implementation
 layout: 水平流向，从左至右依次排列：CoAP Client 方框、OSCORE 处理子模块、网络链路线、CoAP Server 方框、OSCORE 反处理子模块、通过分支和拒绝分支。
@@ -1183,7 +1178,6 @@ id: figure-8-7
 type: architecture
 title: 物联网微隔离架构示意图
 purpose: 展示从设备层到策略编排层的四层分层模型，说明微分段如何通过SDN控制器实现逐设备级别的隔离规则，防止横向移动。
-audience_takeaway: 读者应理解物联网微隔离架构示意图中的主链路、责任边界和工程取舍。
 visual_focus: 从layer1到layer1的主链路。
 design_level: logical
 layout: 四层堆叠分层，自底向上依次为物理设备层、接入网关层、微分段控制层、全局策略编排层，层间用带箭头的实线或虚线连接。
@@ -1348,7 +1342,6 @@ id: fig-key-lifecycle
 type: flowchart
 title: 图8-5 密钥生命周期管理与云边协同流程
 purpose: 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥状态转换。
-audience_takeaway: 读者应理解密钥生命周期管理与云边协同流程中的主链路、责任边界和工程取舍。
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: implementation
 layout: 从上到下的泳道流程图
@@ -1489,7 +1482,6 @@ id: fig-8-3
 type: flowchart
 title: 数据脱敏与匿名化决策流程
 purpose: 展示在数据发布前，如何根据数据敏感等级选择脱敏或匿名化策略，并最终通过重识别风险评估。
-audience_takeaway: 读者应理解数据脱敏与匿名化决策流程中的主链路、责任边界和工程取舍。
 visual_focus: 从id到from的主链路。
 design_level: implementation
 layout: 自上而下的正交流程图
@@ -1871,7 +1863,6 @@ id: table-8-5
 type: matrix
 title: 多租户隔离强度对比
 purpose: 对比三种主要隔离维度在不同隔离强度（低/中/高）下的实现方式、跨租户风险、资源效率和运维复杂度
-audience_takeaway: 读者应理解多租户隔离强度对比中的主链路、责任边界和工程取舍。
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: decision
 layout: 表格，行为三种维度（数据隔离、计算资源隔离、网络隔离），每行三个强度等级（低/中/高），列包含典型实现方式、跨租户风险、资源效率高低、运维复杂度高低四项指标
@@ -1952,7 +1943,6 @@ id: fig-8-10
 type: architecture
 title: 智能家居多租户系统架构
 purpose: 展示混合隔离策略下不同租户在数据、计算、网络三个维度的隔离方式与资源分配
-audience_takeaway: 读者应理解智能家居多租户系统架构中的主链路、责任边界和工程取舍。
 visual_focus: 从起点到终点的主链路。
 design_level: logical
 layout: 分层架构图，从上到下依次为：租户边界层（三个租户图标）、网关与认证层（API Gateway + JWT解析）、微服务层（共享Pod池与独享Pod池）、数据存储层（MySQL集群和Redis集群，共享与独享分别标记）、基础设施层（VPC-1与VPC-2）
@@ -2744,7 +2734,6 @@ id: fig-8-7
 type: architecture
 title: 本章参考资料分类导图
 purpose: 帮助读者快速定位本书研究资料包中 12 条参考资料对应的安全主题域，理解各参考资料的主要覆盖范围。
-audience_takeaway: 读者应理解本章参考资料分类导图中的主链路、责任边界和工程取舍。
 visual_focus: 从[S9]到终点的主链路。
 design_level: logical
 layout: two_column_vertical

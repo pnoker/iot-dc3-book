@@ -1,9 +1,14 @@
 # 全书篇章结构 - 三篇 14 章（篇使用 name/prefix，章使用 id/title）
-- name: "基础篇 · 物联网平台底座"
+# 全书主线：从工业软件到 AI 智能体，构建多协议、云原生、AI Native 工业物联网平台
+
+- name: "基础篇 · 从工业软件到物联网平台底座"
   prefix: "一"
+  description: >
+    以工业软件（SCADA/DCS/MES/PLC）的局限性为起点，阐述物联网平台如何补上数据归一、
+    能力开放和闭环自动化三层能力。覆盖体系架构、感知、通信和平台数据处理。
   chapters:
     - id: 1
-      title: "物联网概述：从连接到智能"
+      title: "物联网概述：从工业软件到 AI 智能体"
     - id: 2
       title: "物联网体系架构"
     - id: 3
@@ -13,8 +18,12 @@
     - id: 5
       title: "平台层与数据处理"
 
-- name: "技术篇 · AIoT 与智能体能力"
+- name: "技术篇 · 云原生与 AI 智能体能力"
   prefix: "二"
+  description: >
+    在平台底座之上，注入软件工程（微服务、容器化、DevOps）、AI 智能体
+    （Spring AI、Function Calling、MCP、RAG）、安全与标准化能力，
+    完成从"连接平台"到"AI Native 平台"的能力跃迁。
   chapters:
     - id: 6
       title: "物联网软件开发技术"
@@ -25,8 +34,12 @@
     - id: 9
       title: "物联网协议与标准"
 
-- name: "应用篇 · 场景实践与智能体应用"
+- name: "应用篇 · 多场景实践与可信协作"
   prefix: "三"
+  description: >
+    将同一套多协议、云原生、AI Native 技术底座投射到工业、城市、农业三个差异化场景，
+    验证平台的跨场景适应性。以可信数据协作（DID、区块链、联邦学习）补充跨组织信任维度，
+    以 IoT DC3 项目实战收束全书。
   chapters:
     - id: 10
       title: "工业物联网与智能制造"

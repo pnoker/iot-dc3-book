@@ -232,7 +232,6 @@ id: fig-05-03
 type: flowchart
 title: 图5-3 设备认证与数据加密流程
 purpose: 展示物联网设备接入平台时证书/Token认证与TLS/DTLS加密传输的完整路径。
-audience_takeaway: 读者应理解设备认证与数据加密流程中的主链路、责任边界和工程取舍。
 visual_focus: 从设备发起连接到平台完成加密通道建立的主链路；TLS 1.3握手优化和Token刷新机制作为关键支线。
 design_level: implementation
 layout: 从左到右泳道图，设备侧、网络、平台侧三个泳道。
@@ -449,7 +448,6 @@ id: "fig-05-06"
 type: "dataflow"
 title: "图5-6 消息队列缓冲削峰示意"
 purpose: "说明消息队列在设备洪峰到来时如何暂存消息，防止后端处理系统过载。"
-audience_takeaway: "读者应理解消息队列缓冲削峰示意中的主链路、责任边界和工程取舍。"
 visual_focus: "从设备群到时间轴的主链路。"
 design_level: "implementation"
 layout: "从左到右数据流：设备群→Topic分区→消费者组→后端服务。时间轴上展示瞬时流量尖峰和队列水位变化。"
@@ -1393,7 +1391,6 @@ id: fig5-5-2-predictive-maintenance-flow
 type: flowchart
 title: 从数据采集到告警触发的预测性维护流程
 purpose: 展示预测性维护管道的完整阶段，以及数据流、告警流、模型更新流之间的交互关系
-audience_takeaway: 读者应理解从数据采集到告警触发的预测性维护流程中的主链路、责任边界和工程取舍。
 visual_focus: 从设备层到决策层：传递评分结果的主链路。
 design_level: implementation
 layout: 从左至右水平布局，进程使用圆角矩形，数据存储使用圆柱，判断使用菱形
@@ -1615,7 +1612,6 @@ id: fig-05-03-01
 type: dataflow
 title: 图5-5-3-1 Kappa架构示意图
 purpose: 展示Kappa架构如何通过单一流处理管道兼容实时与历史分析
-audience_takeaway: 读者应理解-3-1 Kappa架构示意图中的主链路、责任边界和工程取舍。
 visual_focus: 从数据源到结果输出：持续输出的主链路。
 design_level: implementation
 layout: 单行流向布局，左中右三列
@@ -1796,7 +1792,6 @@ id: fig-5-8-system-architecture
 type: architecture
 title: 工厂设备状态监控系统四层架构图（假设场景）
 purpose: 展示设备层、边缘层、消息层、云层四层架构，以及传感器数据从现场到告警的完整流经路径，包括本地紧急停机路径和云端AI分析路径。
-audience_takeaway: 读者应理解工厂设备状态监控系统四层架构图（假设场景）中的主链路、责任边界和工程取舍。
 visual_focus: 从起点到邮件/短信通知后采取行动的主链路。
 design_level: logical
 layout: 自上而下的四层结构，每层用浅色背景矩形框区分。层间箭头表示数据流方向，本地紧急停机路径用橙色粗箭头标出，与云端链路形成对比。
@@ -2057,7 +2052,6 @@ id: fig-5-9
 type: matrix
 title: 平台层工程检查矩阵
 purpose: 提供平台层设计时需关注的五个维度与四个检查属性，帮助工程师快速定位潜在风险
-audience_takeaway: 读者应理解平台层工程检查矩阵中的主链路、责任边界和工程取舍。
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: decision
 layout: 5行 × 4列表格
@@ -2156,7 +2150,6 @@ id: fig-5-13
 type: architecture
 title: 图5-13 平台层延伸阅读工具链全景图
 purpose: 展示本节推荐的开源工具在物联网平台层中各层级的分布
-audience_takeaway: 读者应理解平台层延伸阅读工具链全景图中的主链路、责任边界和工程取舍。
 visual_focus: 从设备接入到可视化与监控的主链路。
 design_level: logical
 layout: 水平方向分层排列，每层一个矩形条，从上到下依次为“可视化与监控”“消息与流处理”“边缘与容器编排”“时序存储”和“设备接入”

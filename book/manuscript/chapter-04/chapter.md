@@ -13,7 +13,6 @@ id: fig-04-01
 type: topology
 title: 图4‑1 NB‑IoT 网络架构示意
 purpose: 展示一个传感器数据从终端到应用的完整穿越路径，并区分各层角色在 3GPP 体系中的职责，帮助读者理解 NB‑IoT 的端到端通信模型。
-audience_takeaway: 读者应理解图4‑1 NB‑IoT 网络架构示意中的主链路、责任边界和工程取舍。
 visual_focus: 从上行数据流：实线向上箭头从终端层到终点的主链路。
 design_level: logical
 layout: 自上而下垂直分列，包含五层结构，核心网部分内部再拆解为三个功能实体。底部为终端，顶部为应用，中间层按数据流方向依次连接。
@@ -114,7 +113,6 @@ id: fig-04-02-lorawan-arch
 type: topology
 title: 图4-2 LoRaWAN网络架构示意
 purpose: 展示终端节点、网关、网络服务器和应用服务器之间的连接关系，说明LoRaWAN星形拓扑和网关透明转发特性。
-audience_takeaway: 读者应理解LoRaWAN网络架构示意中的主链路、责任边界和工程取舍。
 visual_focus: 从终端到终点的主链路。
 design_level: logical
 layout: 从上到下分为四层——应用服务器层、网络服务器层、网关层、终端节点层。每层用水平矩形框表示，层级间用箭头表示数据流方向（上行用实线，下行用虚线）。网关层包含多个网关矩形，终端层包含多个终端圆形。
@@ -264,7 +262,6 @@ id: fig-04-03
 type: layered
 title: 图4-3 5G网络切片IoT应用示意
 purpose: 展示同一张5G物理网络通过切片技术同时承载uRLLC、eMBB、mMTC三类IoT业务，以及NB-IoT/LTE-M作为mMTC子集的继承关系。
-audience_takeaway: 读者应理解5G网络切片IoT应用示意中的主链路、责任边界和工程取舍。
 visual_focus: 从底层共享层到mMTC切片的主链路。
 design_level: logical
 layout: 自下而上分两层，底层为共享的5G NR无线接入层与5G核心网，顶层为三个逻辑隔离的垂直切片。
@@ -437,7 +434,6 @@ id: fig-04-05
 type: matrix
 title: 图4-5 主流 IoT 无线技术选型雷达图（示意框架）
 purpose: 定性展示六种技术在五项工程维度上的相对优势与折中，辅助选型判断。
-audience_takeaway: 读者应理解主流 IoT 无线技术选型雷达图（示意框架）中的主链路、责任边界和工程取舍。
 visual_focus: 从五根轴对应五项维度到每个技术在五轴上的相对优势用半透明…的主链路。
 design_level: decision
 layout: 五边形雷达图，五轴等角度分布（72°），轴名从正上方顺时针标记：距离、速率、功耗（越低越省电）、成本（越低越省钱）、部署便捷性。
@@ -577,7 +573,6 @@ id: fig-04-09
 type: layered
 title: 图4-9 多种协议设备的接入困境
 purpose: 展示在一个物联网网关或平台上，接入多种异构协议设备时各层所面临的复杂度和重复适配工作。
-audience_takeaway: 读者应理解多种协议设备的接入困境中的主链路、责任边界和工程取舍。
 visual_focus: 从设备到平台：统一数据模型转换（转换逻辑因…的主链路。
 design_level: logical
 layout: 上下三层纵向排布：设备层→协议转换层→平台层。设备层多个图标水平排列，每个设备向下引出独立路径穿过转换层到达平台层。
@@ -819,7 +814,6 @@ id: fig-4-4
 type: layered
 title: 图4-4 统一接入层四层架构
 purpose: 展示统一接入层内部的四个功能层以及各层间的接口与数据流向。
-audience_takeaway: 读者应理解统一接入层四层架构中的主链路、责任边界和工程取舍。
 visual_focus: 从设备抽象层向下到协议泛化层的 read/write的主链路。
 design_level: logical
 layout: 自上而下竖向堆叠，层间用实线分隔并标注接口箭头。
@@ -1044,7 +1038,6 @@ id: fig-4-5
 type: dataflow
 title: 图4-5 设备抽象与物模型映射示意图
 purpose: 展示从底层原生数据（Modbus寄存器、BLE特征值、LoRaWAN负载）到统一物模型实例的映射过程，说明设备抽象层如何屏蔽协议差异，实现数据模型标准化。
-audience_takeaway: 读者应理解设备抽象与物模型映射示意图中的主链路、责任边界和工程取舍。
 visual_focus: '从Modbus 寄存器值到数据映射层 : 解析值的主链路。'
 design_level: implementation
 layout: 从左至右三列流向：原生数据→驱动解析→数据映射层→物模型实例→平台消费方
@@ -1228,7 +1221,6 @@ id: fig-04-04
 type: architecture
 title: 图4-4 协议适配器接口与驱动实现架构
 purpose: 展示 ProtocolAdapter 接口层与多个具体协议驱动实现层的静态关系，以及每个驱动内部依赖的关键通信组件。
-audience_takeaway: 读者应理解协议适配器接口与驱动实现架构中的主链路、责任边界和工程取舍。
 visual_focus: 从接口层到实现层的主链路。
 design_level: logical
 layout: 自上而下分为两层：接口层（ProtocolAdapter）和实现层（ModbusRtuAdapter、MqttAdapter、BluetoothGattAdapter、LoRaWanAdapter）。每个实现类下方以虚线框列出其组合的底层组件。
@@ -1404,7 +1396,6 @@ id: fig-04-05
 type: architecture
 title: 图4-5 IoT DC3整体架构及驱动层位置
 purpose: 展示IoT DC3的四层体系（前端、核心服务、驱动层、设备层）和驱动层在其中的数据流向与解耦位置。
-audience_takeaway: 读者应理解IoT DC3整体架构及驱动层位置中的主链路、责任边界和工程取舍。
 visual_focus: 从第二层与第三层之间：两条虚线箭头…到一个或多个设备图标，用实线箭头表示…的主链路。
 design_level: logical
 layout: 自上而下四层布局，层与层之间用水平分隔线隔开，层内元素水平排列。整体居中，宽度按最长层设置。
@@ -1848,7 +1839,6 @@ id: 4.6.1-1
 type: architecture
 title: 协议碎片化→统一接入层→Driver SDK 架构映射
 purpose: 展示从异构协议终端到业务应用层的分层架构，突出 Driver SDK 作为适配桥梁的作用，以及统一接入层如何屏蔽底层差异。
-audience_takeaway: 读者应理解协议碎片化→统一接入层→Driver SDK 架构映射中的主链路、责任边界和工程取舍。
 visual_focus: 从进入下一判断到进入下一判断的主链路。
 design_level: logical
 layout: 水平分层（四层）：自下而上为设备层、驱动层、统一接入层、业务应用层。每层之间用带箭头的竖线连接，表示数据流转和指令转发。
@@ -1995,7 +1985,6 @@ id: fig-ch4-learning-path
 type: layered
 title: 图4-5 延伸阅读三圈学习路径
 purpose: 将推荐资源按学习阶段分层，展示从权威认知到动手实践再到行业视野的进阶路线，帮助读者定位当前学习阶段。
-audience_takeaway: 读者应理解延伸阅读三圈学习路径中的主链路、责任边界和工程取舍。
 visual_focus: 从将推荐资源按学习阶段分层，展示从权…到动手实践再到行业视野的进阶路线，帮…的主链路。
 design_level: logical
 layout: vertical stacked
