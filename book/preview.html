@@ -215,10 +215,17 @@ function copyName(ev,fid){
   if(ev){ev.stopPropagation();ev.preventDefault();}
   const d=data.find(x=>x.fid===fid);
   const txt=d?d.fid+' '+d.title:fid;
-  const done=()=>showToast('已复制: '+txt);
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(fallback);}
-  else fallback();
-  function fallback(){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done();}
+  const ta=document.createElement('textarea');
+  ta.value=txt;
+  ta.style.position='fixed';
+  ta.style.opacity='0';
+  document.body.appendChild(ta);
+  ta.focus();ta.select();ta.setSelectionRange(0,99999);
+  let ok=false;
+  try{ok=document.execCommand('copy');}catch(e){}
+  ta.remove();
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).catch(()=>{});}
+  showToast((ok?'✅ 已复制: ':'复制失败,请手动复制: ')+txt);
 }
 function showToast(msg){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';document.body.appendChild(el);}el.textContent=msg;el.className='show';clearTimeout(el._tm);el._tm=setTimeout(()=>el.className='',2000);}
 </script></body></html>
