@@ -17,90 +17,148 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图5-5 云边协同三大挑战的关联与权衡三角架</title>
-  <desc id="desc">读者应理解设备边缘、网关边缘、区域边缘的边界以及规则下发和聚合上报两条数据主链路。</desc>
+  <desc id="desc">数据一致性、安全性、运维三挑战构成等边三角形，实线双箭头表示互相牵制，中心为工程权衡区。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="tri-arrow" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 9 3.5, 0 7" fill="#475569"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图5-5 云边协同三大挑战的关联与权衡三角架</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解设备边缘、网关边缘、区域边缘的边界以及规则下发和聚合上报两条数据主链路。</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">三大挑战互相牵制：强加密拖慢同步、放宽一致性引入漏洞、强化安全加重运维；工程须取平衡点。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FRAMEWORK</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="architecture">
-  <!-- Region boundaries -->
-  <rect x="100" y="140" width="1600" height="120" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="120" y="170" fill="#D97706" font-size="14" font-weight="600">云端域</text>
-  <rect x="100" y="280" width="1600" height="120" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="120" y="310" fill="#D97706" font-size="14" font-weight="600">区域MEC域</text>
-  <rect x="100" y="420" width="1600" height="120" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="120" y="450" fill="#D97706" font-size="14" font-weight="600">网关边界</text>
-  <rect x="100" y="560" width="1600" height="120" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="120" y="590" fill="#D97706" font-size="14" font-weight="600">现场设备域</text>
 
-  <!-- Connections (aggregated upload solid green, rule push dashed orange) -->
-  <!-- Aggregated upload: device->gateway, gateway->regional, regional->cloud -->
-  <line x1="920" y1="580" x2="920" y2="520" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="920" y1="440" x2="920" y2="380" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="920" y1="300" x2="920" y2="240" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <g data-layout="framework">
+  <!-- Triangle edges: solid double-headed arrows (mutual constraint) -->
+  <line x1="658" y1="205" x2="1142" y2="205" stroke="#475569" stroke-width="2" marker-start="url(#tri-arrow)" marker-end="url(#tri-arrow)"/>
+  <line x1="634" y1="246.5" x2="876" y2="665.5" stroke="#475569" stroke-width="2" marker-start="url(#tri-arrow)" marker-end="url(#tri-arrow)"/>
+  <line x1="1166" y1="246.5" x2="924" y2="665.5" stroke="#475569" stroke-width="2" marker-start="url(#tri-arrow)" marker-end="url(#tri-arrow)"/>
 
-  <!-- Rule push: cloud->regional, regional->gateway, gateway->device -->
-  <line x1="880" y1="240" x2="880" y2="300" stroke="#F97316" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  <line x1="880" y1="380" x2="880" y2="440" stroke="#F97316" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  <line x1="880" y1="520" x2="880" y2="580" stroke="#F97316" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <!-- Vertex 1: 数据一致性 (left) -->
+  <circle cx="610" cy="205" r="48" fill="#2563EB"/>
+  <g transform="translate(610,190)">
+    <line x1="0" y1="-12" x2="0" y2="12" stroke="#FFFFFF" stroke-width="2.2"/>
+    <circle cx="0" cy="-7" r="2.6" fill="#FFFFFF"/>
+    <circle cx="0" cy="0" r="2.6" fill="#FFFFFF"/>
+    <polygon points="-3.2,12 3.2,12 0,17" fill="#FFFFFF"/>
+  </g>
+  <text x="610" y="222" fill="#FFFFFF" font-size="15" font-weight="700" text-anchor="middle">数据一致性</text>
 
-  <!-- Connection labels -->
-  <rect x="930" y="540" width="80" height="20" rx="4" fill="white" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="970" y="555" fill="#0F172A" font-size="11" text-anchor="middle">Modbus/OPC UA</text>
-  <rect x="930" y="400" width="70" height="20" rx="4" fill="white" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="965" y="415" fill="#0F172A" font-size="11" text-anchor="middle">MQTT桥接</text>
-  <rect x="930" y="260" width="60" height="20" rx="4" fill="white" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="960" y="275" fill="#0F172A" font-size="11" text-anchor="middle">长期存储</text>
-  <rect x="830" y="260" width="60" height="20" rx="4" fill="white" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="860" y="275" fill="#0F172A" font-size="11" text-anchor="middle">规则容器</text>
-  <rect x="830" y="400" width="70" height="20" rx="4" fill="white" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="865" y="415" fill="#0F172A" font-size="11" text-anchor="middle">代理下发</text>
-  <rect x="830" y="540" width="60" height="20" rx="4" fill="white" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="860" y="555" fill="#0F172A" font-size="11" text-anchor="middle">执行指令</text>
+  <!-- Vertex 2: 安全性 (right) -->
+  <circle cx="1190" cy="205" r="48" fill="#DC2626"/>
+  <g transform="translate(1190,190)">
+    <path d="M 0,-13 L 11,-7 V 4 C 11,13 0,17 0,17 C 0,17 -11,13 -11,4 V -7 Z" fill="#FFFFFF"/>
+    <circle cx="0" cy="2" r="2.6" fill="#DC2626"/>
+    <rect x="-1.2" y="4" width="2.4" height="4" fill="#DC2626"/>
+  </g>
+  <text x="1190" y="222" fill="#FFFFFF" font-size="15" font-weight="700" text-anchor="middle">安全性</text>
 
-  <!-- Component nodes -->
-  <!-- Cloud platform -->
-  <rect x="740" y="160" width="320" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="900" y="196" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">云端平台</text>
-  <text x="900" y="226" fill="#64748B" font-size="12" text-anchor="middle">AI训练 + 时序库 + 规则下发</text>
+  <!-- Vertex 3: 运维 (bottom) -->
+  <circle cx="900" cy="707" r="48" fill="#0F766E"/>
+  <g transform="translate(900,692)">
+    <g fill="none" stroke="#FFFFFF" stroke-width="2.4">
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(0)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(45)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(90)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(135)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(180)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(225)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(270)"/>
+      <line x1="0" y1="-9" x2="0" y2="-13" transform="rotate(315)"/>
+      <circle r="9"/>
+    </g>
+    <circle r="3" fill="#0F766E"/>
+    <path d="M 13 4 A 7 7 0 0 1 24 4" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+    <line x1="18.5" y1="4" x2="15.5" y2="0.5" stroke="#FFFFFF" stroke-width="1.6"/>
+  </g>
+  <text x="900" y="724" fill="#FFFFFF" font-size="15" font-weight="700" text-anchor="middle">运维</text>
 
-  <!-- Regional edge -->
-  <rect x="740" y="300" width="320" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="900" y="336" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">区域边缘 (MEC)</text>
-  <text x="900" y="366" fill="#64748B" font-size="12" text-anchor="middle">KubeEdge + 容器推理</text>
+  <!-- Center trade-off zone -->
+  <circle cx="900" cy="372" r="128" fill="#F5F5F5" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,5"/>
+  <rect x="852" y="210" width="96" height="26" rx="13" fill="#FFFFFF" stroke="#94A3B8"/>
+  <text x="900" y="228" fill="#475569" font-size="12" text-anchor="middle">权衡</text>
+  <g transform="translate(900,322)">
+    <path d="M -20 16 L 20 16 L 0 4 Z" fill="#475569"/>
+    <line x1="0" y1="4" x2="0" y2="-14" stroke="#475569" stroke-width="3"/>
+    <line x1="-28" y1="-14" x2="28" y2="-14" stroke="#475569" stroke-width="3"/>
+    <line x1="-28" y1="-14" x2="-28" y2="-4" stroke="#475569" stroke-width="2.5"/>
+    <path d="M -34 -4 A 6 6 0 0 0 -22 -4" fill="none" stroke="#475569" stroke-width="2.5"/>
+    <line x1="28" y1="-14" x2="28" y2="-4" stroke="#475569" stroke-width="2.5"/>
+    <path d="M 22 -4 A 6 6 0 0 0 34 -4" fill="none" stroke="#475569" stroke-width="2.5"/>
+  </g>
+  <text x="900" y="400" fill="#0F172A" font-size="20" font-weight="700" text-anchor="middle">工程决策点</text>
+  <text x="900" y="424" fill="#64748B" font-size="12" text-anchor="middle">项目可接受的平衡点</text>
 
-  <!-- Gateway edge -->
-  <rect x="740" y="440" width="320" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="900" y="476" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">网关边缘</text>
-  <text x="900" y="506" fill="#64748B" font-size="12" text-anchor="middle">EdgeX + 规则引擎</text>
+  <!-- Relationship labels -->
+  <rect x="700" y="123" width="400" height="62" rx="10" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="900" y="141" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">一致性 ↔ 安全性</text>
+  <text x="900" y="162" fill="#334155" font-size="12" text-anchor="middle">强加密 / 强校验 → 同步延迟增大 · 一致性受限</text>
+  <text x="900" y="179" fill="#334155" font-size="12" text-anchor="middle">放宽一致性 → 未校验 · 引入安全漏洞</text>
 
-  <!-- Device edge -->
-  <rect x="740" y="580" width="320" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="900" y="616" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">设备边缘</text>
-  <text x="900" y="646" fill="#64748B" font-size="12" text-anchor="middle">MCU传感器/PLC</text>
+  <rect x="430" y="300" width="180" height="86" rx="10" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="520" y="318" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">一致性 ↔ 运维</text>
+  <text x="520" y="340" fill="#334155" font-size="12" text-anchor="middle">强一致 → 同步机制复杂</text>
+  <text x="520" y="358" fill="#334155" font-size="12" text-anchor="middle">同步复杂 → 运维负担加重</text>
+  <text x="520" y="376" fill="#334155" font-size="12" text-anchor="middle">最终一致 → 运维更简单</text>
+
+  <rect x="1190" y="300" width="180" height="86" rx="10" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1280" y="318" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">安全性 ↔ 运维</text>
+  <text x="1280" y="340" fill="#334155" font-size="12" text-anchor="middle">安全策略↑ → 运维复杂度↑</text>
+  <text x="1280" y="358" fill="#334155" font-size="12" text-anchor="middle">简化运维 → 安全等级下降</text>
+
+  <!-- Vertex 1 strategy panel -->
+  <rect x="80" y="325" width="320" height="210" rx="14" fill="#FFFFFF" stroke="#93C5FD"/>
+  <rect x="80" y="325" width="6" height="210" fill="#2563EB"/>
+  <text x="104" y="358" fill="#2563EB" font-size="15" font-weight="700">一致性策略集</text>
+  <circle cx="112" cy="387" r="3.5" fill="#2563EB"/>
+  <text x="128" y="392" fill="#334155" font-size="13">最终一致性模型</text>
+  <circle cx="112" cy="429" r="3.5" fill="#2563EB"/>
+  <text x="128" y="434" fill="#334155" font-size="13">版本向量 / 乐观锁</text>
+  <circle cx="112" cy="471" r="3.5" fill="#2563EB"/>
+  <text x="128" y="476" fill="#334155" font-size="13">冲突合并策略</text>
+
+  <!-- Vertex 2 strategy panel -->
+  <rect x="1400" y="325" width="320" height="210" rx="14" fill="#FFFFFF" stroke="#FCA5A5"/>
+  <rect x="1400" y="325" width="6" height="210" fill="#DC2626"/>
+  <text x="1424" y="358" fill="#DC2626" font-size="15" font-weight="700">安全性策略集</text>
+  <circle cx="1432" cy="387" r="3.5" fill="#DC2626"/>
+  <text x="1448" y="392" fill="#334155" font-size="13">硬件信任根 (TPM)</text>
+  <circle cx="1432" cy="429" r="3.5" fill="#DC2626"/>
+  <text x="1448" y="434" fill="#334155" font-size="13">OTA 签名验签</text>
+  <circle cx="1432" cy="471" r="3.5" fill="#DC2626"/>
+  <text x="1448" y="476" fill="#334155" font-size="13">安全启动与运行时防护</text>
+
+  <!-- Vertex 3 strategy chips -->
+  <rect x="442" y="788" width="275" height="50" rx="10" fill="#FFFFFF" stroke="#99F6E4"/>
+  <circle cx="487" cy="813" r="3.5" fill="#0F766E"/>
+  <text x="517" y="817" fill="#334155" font-size="13">OTA 批量管理</text>
+  <rect x="762" y="788" width="275" height="50" rx="10" fill="#FFFFFF" stroke="#99F6E4"/>
+  <circle cx="807" cy="813" r="3.5" fill="#0F766E"/>
+  <text x="837" y="817" fill="#334155" font-size="13">远程配置下发</text>
+  <rect x="1082" y="788" width="275" height="50" rx="10" fill="#FFFFFF" stroke="#99F6E4"/>
+  <circle cx="1127" cy="813" r="3.5" fill="#0F766E"/>
+  <text x="1157" y="817" fill="#334155" font-size="13">可观测性与自动告警</text>
 </g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色=设备与边缘节点；蓝色=网关与云平台；橙色=规则/智能流</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线=数据或执行流；虚线=配置或指令下发</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图5-5 展示从设备边缘到云端的层次与协同模式，左侧标注EdgeX/KubeEdge的典型部署位置。</text>
+  <line x1="64" y1="860" x2="1736" y2="860" stroke="#E2E8F0"/>
+  <rect x="90" y="868" width="14" height="10" rx="2" fill="#2563EB"/>
+  <text x="110" y="878" fill="#64748B" font-size="11">数据一致性</text>
+  <rect x="210" y="868" width="14" height="10" rx="2" fill="#DC2626"/>
+  <text x="230" y="878" fill="#64748B" font-size="11">安全性</text>
+  <rect x="300" y="868" width="14" height="10" rx="2" fill="#0F766E"/>
+  <text x="320" y="878" fill="#64748B" font-size="11">运维</text>
+  <rect x="380" y="868" width="14" height="10" rx="2" fill="#F5F5F5" stroke="#94A3B8"/>
+  <text x="400" y="878" fill="#64748B" font-size="11">权衡区</text>
+  <text x="520" y="878" fill="#64748B" font-size="11">实线双箭头 = 挑战间相互制约</text>
+  <text x="900" y="892" fill="#94A3B8" font-size="11" text-anchor="middle">图5-5 云边协同的难点在于三个维度互相牵制：强化安全加重运维复杂度、追求强一致影响系统弹性；工程核心是找到项目可接受的平衡点。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自下而上分层：设备边缘→网关边缘→区域边缘→云端；左侧标注边缘框架选项。</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">framework</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">等边三角形：左=数据一致性，右=安全性，底=运维；实线双箭头表示互相牵制，中心为工程权衡区。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

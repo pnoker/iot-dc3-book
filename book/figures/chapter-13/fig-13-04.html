@@ -17,213 +17,124 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图13-4 数据上链流程图</title>
-  <desc id="desc">读者应理解存证是</desc>
+  <desc id="desc">读者应理解存证是“链下存原文、链上存指纹”的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="91.429" y="24.000" width="1017.143" height="712.000" viewBox="0 0 1600.000 1120.000" preserveAspectRatio="xMidYMid meet">
-<rect x="0" y="0" width="1600" height="1120" fill="#FFFFFF"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="f134-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+      <marker id="f134-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+      <marker id="f134-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+      <marker id="f134-accent" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/></marker>
+      <marker id="f134-query" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/></marker>
+    </defs>
+    <rect width="1800" height="900" fill="#F8FAFC"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="47" fill="#0F172A" font-size="22" font-weight="700">图13-4 数据上链流程图</text>
+    <text x="88" y="70" fill="#64748B" font-size="12">读者应理解存证是“链下存原文、链上存指纹”的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。</text>
+    <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+    <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
 
-  <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-  </defs>
+    <g data-layout="flowchart">
+      <!-- ===== 主链路连线 ===== -->
+      <!-- 传感器 → 边缘节点：采样数据 -->
+      <line x1="430" y1="452" x2="536" y2="452" stroke="#0F766E" stroke-width="2" marker-end="url(#f134-teal)"/>
+      <text x="483" y="442" fill="#0F766E" font-size="11.5" font-weight="600" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">采样数据</text>
 
-  <!-- ===== Title area ===== -->
-  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图13-4 数据上链流程图</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">去中心化身份生命周期 + 同一数据ID的链上溯源事件链</text>
-  <rect x="1454" y="26" width="106" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1507" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">SEQUENCE</text>
-  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+      <!-- 边缘节点 → 区块链：哈希+元数据（关键链上路径，accent 高亮） -->
+      <path d="M 695,410 V 245 H 1046" fill="none" stroke="#F97316" stroke-width="2" marker-end="url(#f134-accent)"/>
+      <text x="830" y="235" fill="#F97316" font-size="11.5" font-weight="600" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">哈希+元数据</text>
 
-  <!-- ===== Part A header ===== -->
-  <text x="60" y="132" font-size="15" font-weight="700" fill="#0F172A">① DID 身份生命周期</text>
-  <text x="60" y="151" font-size="11" fill="#64748B">设备 → DID合约 → 验证方（链上操作虚线 / 链下操作实线）</text>
+      <!-- 边缘节点 → IPFS/Arweave：原始数据 -->
+      <path d="M 695,494 V 635 H 1046" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#f134-gray)"/>
+      <text x="830" y="625" fill="#475569" font-size="11.5" font-weight="600" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">原始数据</text>
 
-  <!-- ===== Part A: participants ===== -->
-  <!-- 设备 (green / participant) -->
-  <rect x="190" y="170" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="300" y="192" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">设备（身份主体）</text>
-  <text x="300" y="208" font-size="9" fill="#64748B" text-anchor="middle">安全元件 · 密钥对</text>
+      <!-- 区块链 → 验证方：查询哈希是否存在（虚线=查询） -->
+      <path d="M 1350,245 H 1440 V 452 H 1476" fill="none" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#f134-query)"/>
+      <text x="1395" y="238" fill="#64748B" font-size="11" font-weight="600" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">查询哈希是否存在</text>
 
-  <!-- DID 合约 (blue / on-chain) -->
-  <rect x="690" y="170" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="800" y="192" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">DID 合约（链上）</text>
-  <text x="800" y="208" font-size="9" fill="#64748B" text-anchor="middle">registerDevice() / isActive</text>
+      <!-- IPFS/Arweave → 验证方：提供原始数据（虚线=读取） -->
+      <path d="M 1350,635 H 1410 V 482 H 1476" fill="none" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#f134-query)"/>
+      <text x="1380" y="628" fill="#64748B" font-size="11" font-weight="600" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">提供原始数据</text>
 
-  <!-- 验证方 (gray / verifier) -->
-  <rect x="1190" y="170" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-  <text x="1300" y="192" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">验证方（Verifier）</text>
-  <text x="1300" y="208" font-size="9" fill="#64748B" text-anchor="middle">ecrecover 签名校验</text>
+      <!-- ===== 节点：传感器（青绿） ===== -->
+      <rect x="120" y="410" width="310" height="84" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+      <circle cx="164" cy="452" r="14" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+      <path d="M 155,452 H 160 L 163,447 L 166,457 L 169,449 L 171,452 H 175" fill="none" stroke="#0F766E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <text x="192" y="446" fill="#0F172A" font-size="15" font-weight="700">传感器</text>
+      <text x="192" y="468" fill="#475569" font-size="11">设备采样 · 生成 JSON 记录</text>
 
-  <!-- ===== Part A: lifelines ===== -->
-  <line x1="300" y1="216" x2="300" y2="548" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="800" y1="216" x2="800" y2="548" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="1300" y1="216" x2="1300" y2="548" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+      <!-- ===== 节点：边缘节点（蓝，关键节点加粗） ===== -->
+      <rect x="540" y="410" width="310" height="84" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2.5"/>
+      <circle cx="584" cy="452" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+      <rect x="575" y="444" width="18" height="15" rx="2.5" fill="none" stroke="#2563EB" stroke-width="1.7"/>
+      <rect x="579" y="447" width="3" height="3" fill="#2563EB"/>
+      <rect x="586" y="447" width="3" height="3" fill="#2563EB"/>
+      <line x1="579" y1="452.5" x2="589" y2="452.5" stroke="#2563EB" stroke-width="1.5"/>
+      <line x1="579" y1="456" x2="589" y2="456" stroke="#2563EB" stroke-width="1.5"/>
+      <text x="612" y="446" fill="#0F172A" font-size="15" font-weight="700">边缘节点</text>
+      <text x="612" y="468" fill="#475569" font-size="11">聚合数据 · 计算哈希</text>
+      <text x="612" y="487" fill="#64748B" font-size="9.5">（可构建 Merkle 树）</text>
 
-  <!-- ===== Part A: messages ===== -->
-  <!-- ① device self: keygen (off-chain, solid green) -->
-  <path d="M300,244 H344 V262 H306" fill="none" stroke="#10B981" stroke-width="1.8" marker-end="url(#ah-green)"/>
-  <text x="352" y="257" font-size="10" fill="#475569">① 安全元件生成密钥对（链下）</text>
+      <!-- ===== 节点：区块链（蓝，链上存证，关键节点加粗） ===== -->
+      <rect x="1050" y="165" width="300" height="112" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2.5"/>
+      <circle cx="1094" cy="221" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+      <rect x="1085" y="216" width="8" height="10" rx="2" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+      <rect x="1092" y="216" width="8" height="10" rx="2" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+      <rect x="1099" y="216" width="8" height="10" rx="2" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+      <text x="1122" y="206" fill="#0F172A" font-size="15" font-weight="700">区块链</text>
+      <text x="1122" y="228" fill="#475569" font-size="11">智能合约接收哈希 · 写入日志事件</text>
+      <rect x="1156" y="240" width="88" height="20" rx="10" fill="#2563EB"/>
+      <text x="1200" y="254" fill="#FFFFFF" font-size="10" font-weight="600" text-anchor="middle">链上存证</text>
 
-  <!-- ② device self: construct DID (off-chain, solid green) -->
-  <path d="M300,286 H344 V304 H306" fill="none" stroke="#10B981" stroke-width="1.8" marker-end="url(#ah-green)"/>
-  <text x="352" y="299" font-size="10" fill="#475569">② hash(公钥) → 构造 DID（链下）</text>
+      <!-- ===== 节点：IPFS/Arweave（灰，链下存储） ===== -->
+      <rect x="1050" y="585" width="300" height="112" rx="10" fill="#F1F5F9" stroke="#475569" stroke-width="2"/>
+      <circle cx="1094" cy="641" r="14" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+      <ellipse cx="1094" cy="635" rx="8" ry="3.2" fill="none" stroke="#475569" stroke-width="1.6"/>
+      <path d="M 1086,635 V 646 A 8,3.2 0 0 0 1102,646 V 635" fill="none" stroke="#475569" stroke-width="1.6"/>
+      <path d="M 1086,640.5 A 8,3.2 0 0 0 1102,640.5" fill="none" stroke="#475569" stroke-width="1.6"/>
+      <text x="1122" y="626" fill="#0F172A" font-size="15" font-weight="700">IPFS / Arweave</text>
+      <text x="1122" y="648" fill="#475569" font-size="11">去中心化存储节点</text>
+      <rect x="1156" y="660" width="88" height="20" rx="10" fill="#475569"/>
+      <text x="1200" y="674" fill="#FFFFFF" font-size="10" font-weight="600" text-anchor="middle">链下存储</text>
 
-  <!-- ③ device -> contract: registerDevice (on-chain, dashed blue) -->
-  <line x1="306" y1="338" x2="794" y2="338" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <text x="550" y="330" font-size="10" font-weight="600" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">③ registerDevice(did, pubKeyHash)（链上）</text>
+      <!-- ===== 节点：验证方（蓝，关键节点加粗） ===== -->
+      <rect x="1480" y="400" width="250" height="104" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2.5"/>
+      <circle cx="1524" cy="452" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+      <path d="M 1516,452 L 1521,458 L 1532,445" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <text x="1552" y="446" fill="#0F172A" font-size="15" font-weight="700">验证方</text>
+      <text x="1552" y="470" fill="#475569" font-size="10.5">取原始数据 · 重算哈希 · 链上比对</text>
+      <text x="1552" y="492" fill="#F97316" font-size="10" font-weight="600">比对一致 → 确认完整性</text>
+    </g>
 
-  <!-- ④ contract self: verify + isActive (on-chain, dashed blue) -->
-  <path d="M800,378 H848 V396 H806" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <text x="856" y="391" font-size="10" fill="#475569">④ 校验签名 → isActive=true（链上）</text>
+    <!-- ===== 图例 ===== -->
+    <line x1="64" y1="800" x2="1736" y2="800" stroke="#E2E8F0"/>
+    <g font-size="11" fill="#475569">
+      <rect x="100" y="806" width="20" height="14" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+      <text x="128" y="816">青绿 = 设备 / 传感器</text>
 
-  <!-- ⑤ verifier -> contract: query (on-chain, dashed gray) -->
-  <line x1="1294" y1="432" x2="806" y2="432" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  <text x="1050" y="424" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">⑤ 查询 DID 文档（链上）</text>
+      <rect x="320" y="806" width="20" height="14" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+      <text x="348" y="816">蓝 = 核心处理 / 链上</text>
 
-  <!-- ⑥ contract -> verifier: return (on-chain, dashed gray) -->
-  <line x1="806" y1="472" x2="1294" y2="472" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  <text x="1050" y="464" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">⑥ 返回 owner + DID 文档（链上）</text>
+      <rect x="540" y="806" width="20" height="14" rx="2" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
+      <text x="568" y="816">灰 = 外部存储 / 链下</text>
 
-  <!-- ⑦ verifier self: ecrecover (off-chain, solid gray) -->
-  <path d="M1300,514 H1256 V532 H1296" fill="none" stroke="#64748B" stroke-width="1.8" marker-end="url(#ah-gray)"/>
-  <text x="1248" y="525" font-size="10" fill="#475569" text-anchor="end">⑦ ecrecover 恢复地址，比对 owner（链下）</text>
+      <line x1="760" y1="813" x2="794" y2="813" stroke="#64748B" stroke-width="2"/>
+      <polygon points="794,813 787,809 787,817" fill="#64748B"/>
+      <text x="802" y="816">实线 = 同步 / 主动推送</text>
 
-  <!-- Revocation callout (annotates contract lifeline) -->
-  <rect x="850" y="540" width="360" height="32" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="862" y="556" font-size="10" font-weight="700" fill="#334155">⚠ DID 撤销</text>
-  <text x="862" y="568" font-size="9" fill="#64748B">owner 调合约 isActive=false，区块确认后全网即时可见</text>
+      <line x1="1000" y1="813" x2="1034" y2="813" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4"/>
+      <polygon points="1034,813 1027,809 1027,817" fill="#64748B"/>
+      <text x="1042" y="816">虚线 = 查询 / 读取</text>
+    </g>
 
-  <!-- ===== Divider between parts ===== -->
-  <line x1="40" y1="588" x2="1560" y2="588" stroke="#E2E8F0" stroke-width="1"/>
-
-  <!-- ===== Part B header ===== -->
-  <text x="60" y="614" font-size="15" font-weight="700" fill="#0F172A">② 供应链溯源事件链</text>
-  <text x="60" y="633" font-size="11" fill="#64748B">四环节以同一 dataID 向链上提交事件，串联成可审计流转链；与上部 DID 合约共享同一链上状态。监管方只读查询。</text>
-
-  <!-- ===== Part B: stage cards (green / participants) ===== -->
-  <!-- 农场 -->
-  <rect x="60" y="658" width="300" height="86" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="210" y="686" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">农场</text>
-  <text x="210" y="705" font-size="10" fill="#475569" text-anchor="middle">环节 ① · 产地 / 批次</text>
-  <text x="210" y="721" font-size="9" fill="#64748B" text-anchor="middle">dataID=#A1 · 首个事件</text>
-  <text x="210" y="736" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">签名提交</text>
-
-  <!-- 屠宰 -->
-  <rect x="400" y="658" width="300" height="86" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="550" y="686" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">屠宰场</text>
-  <text x="550" y="705" font-size="10" fill="#475569" text-anchor="middle">环节 ② · 接收 + 加工</text>
-  <text x="550" y="721" font-size="9" fill="#64748B" text-anchor="middle">dataID=#A1</text>
-  <text x="550" y="736" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">prev = 农场地址</text>
-
-  <!-- 物流 -->
-  <rect x="740" y="658" width="300" height="86" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="890" y="686" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">物流</text>
-  <text x="890" y="705" font-size="10" fill="#475569" text-anchor="middle">环节 ③ · 冷链运输</text>
-  <text x="890" y="721" font-size="9" fill="#64748B" text-anchor="middle">dataID=#A1</text>
-  <text x="890" y="736" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">prev = 屠宰地址</text>
-
-  <!-- 零售 -->
-  <rect x="1080" y="658" width="300" height="86" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="1230" y="686" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">零售</text>
-  <text x="1230" y="705" font-size="10" fill="#475569" text-anchor="middle">环节 ④ · 上架销售</text>
-  <text x="1230" y="721" font-size="9" fill="#64748B" text-anchor="middle">dataID=#A1</text>
-  <text x="1230" y="736" font-size="9" font-weight="600" fill="#10B981" text-anchor="middle">prev = 物流地址</text>
-
-  <!-- physical transfer arrows (off-chain, solid green) -->
-  <line x1="360" y1="701" x2="396" y2="701" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="378" y="693" font-size="9" fill="#10B981" text-anchor="middle">实物</text>
-  <line x1="700" y1="701" x2="736" y2="701" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="718" y="693" font-size="9" fill="#10B981" text-anchor="middle">实物</text>
-  <line x1="1040" y1="701" x2="1076" y2="701" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="1058" y="693" font-size="9" fill="#10B981" text-anchor="middle">实物</text>
-
-  <!-- ===== Part B: on-chain event log cylinder ===== -->
-  <!-- body fill -->
-  <rect x="60" y="790" width="1320" height="115" fill="#F8FAFC"/>
-  <!-- side walls -->
-  <line x1="60" y1="790" x2="60" y2="905" stroke="#2563EB" stroke-width="1.5"/>
-  <line x1="1380" y1="790" x2="1380" y2="905" stroke="#2563EB" stroke-width="1.5"/>
-  <!-- top rim (full ellipse) -->
-  <ellipse cx="720" cy="790" rx="660" ry="16" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <!-- bottom front arc -->
-  <path d="M60,905 A660,16 0 0 0 1380,905" fill="none" stroke="#2563EB" stroke-width="1.5"/>
-  <!-- log title -->
-  <text x="720" y="816" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">链上事件日志 · 同一 dataID 串联不可篡改事件</text>
-
-  <!-- submit-event arrows (on-chain, dashed blue): card bottom -> chip top -->
-  <line x1="210" y1="744" x2="210" y2="834" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <line x1="550" y1="744" x2="550" y2="834" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <line x1="890" y1="744" x2="890" y2="834" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <line x1="1230" y1="744" x2="1230" y2="834" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <text x="220" y="828" font-size="9" font-weight="600" fill="#2563EB">提交事件（dataID + 签名）</text>
-
-  <!-- event chips (blue / on-chain events) -->
-  <rect x="110" y="836" width="200" height="42" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="210" y="854" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">事件 E1 · dataID=#A1</text>
-  <text x="210" y="870" font-size="9" fill="#64748B" text-anchor="middle">prev = ∅（首个）</text>
-
-  <rect x="450" y="836" width="200" height="42" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="550" y="854" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">事件 E2 · dataID=#A1</text>
-  <text x="550" y="870" font-size="9" fill="#64748B" text-anchor="middle">prev = 农场地址</text>
-
-  <rect x="790" y="836" width="200" height="42" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="890" y="854" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">事件 E3 · dataID=#A1</text>
-  <text x="890" y="870" font-size="9" fill="#64748B" text-anchor="middle">prev = 屠宰地址</text>
-
-  <rect x="1130" y="836" width="200" height="42" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="1230" y="854" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">事件 E4 · dataID=#A1</text>
-  <text x="1230" y="870" font-size="9" fill="#64748B" text-anchor="middle">prev = 物流地址</text>
-
-  <!-- link arrows between chips (same dataID, dashed blue) -->
-  <line x1="310" y1="857" x2="446" y2="857" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
-  <text x="378" y="850" font-size="8" fill="#2563EB" text-anchor="middle">同一 dataID</text>
-  <line x1="650" y1="857" x2="786" y2="857" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
-  <line x1="990" y1="857" x2="1126" y2="857" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
-
-  <!-- ===== Part B: regulator (gray / read-only) ===== -->
-  <rect x="560" y="958" width="320" height="58" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
-  <text x="720" y="982" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">监管方（只读）</text>
-  <text x="720" y="1000" font-size="9" fill="#64748B" text-anchor="middle">遍历 dataID 还原完整流转路径</text>
-  <!-- regulator query arrow (on-chain read, dashed gray) -->
-  <line x1="720" y1="958" x2="720" y2="908" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
-  <text x="730" y="936" font-size="9" fill="#64748B">只读查询</text>
-
-  <!-- ===== Part B: first-mile caveat callout ===== -->
-  <rect x="920" y="958" width="560" height="58" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="934" y="982" font-size="11" font-weight="700" fill="#334155">⚠ 溯源局限：无法保证源头真实</text>
-  <text x="934" y="1000" font-size="9" fill="#64748B">链上仅证明“上链后未被篡改”，“第一公里”源头仍需线下核验。</text>
-
-  <!-- ===== Legend ===== -->
-  <line x1="40" y1="1040" x2="1560" y2="1040" stroke="#E2E8F0" stroke-width="1"/>
-  <g font-size="11" fill="#475569">
-    <rect x="60" y="1056" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <text x="84" y="1063" dominant-baseline="middle">绿 · 设备 / 参与方（环节）</text>
-
-    <rect x="290" y="1056" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="314" y="1063" dominant-baseline="middle">蓝 · DID 合约 / 链上事件</text>
-
-    <rect x="540" y="1056" width="18" height="13" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-    <text x="564" y="1063" dominant-baseline="middle">灰 · 验证方 / 监管方</text>
-
-    <line x1="760" y1="1063" x2="794" y2="1063" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4"/>
-    <text x="802" y="1063" dominant-baseline="middle">链上操作（虚线）</text>
-
-    <line x1="990" y1="1063" x2="1024" y2="1063" stroke="#10B981" stroke-width="2"/>
-    <text x="1032" y="1063" dominant-baseline="middle">链下操作（实线）</text>
-  </g>
-
-  <!-- ===== Caption ===== -->
-  <text x="800" y="1103" font-size="10" fill="#94A3B8" text-anchor="middle">图13-2 设备DID注册与供应链溯源流程。上半部分展示去中心化身份的最小生命周期，下半部分展示多环节如何以同一数据ID在链上累积可审计事件。</text>
+    <!-- ===== 说明 ===== -->
+    <text x="900" y="852" fill="#94A3B8" font-size="10" text-anchor="middle">图13-4 展示数据从传感器采样到链下存储和链上存证，最终验证方通过两侧数据比对确认完整性的典型流程。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">pyramid</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">三角金字塔：顶部为&#x27;可信任的物联网系统行为&#x27;，三个角分别对应三个维度。</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自左向右：传感器→边缘节点（聚合+哈希）→分支至链下存储（IPFS/Arweave）与链上存证（区块链）→合并到验证方比对。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

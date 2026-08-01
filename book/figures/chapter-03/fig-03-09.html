@@ -17,137 +17,167 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图3-9 物模型驱动设备互操作的示意图</title>
-  <desc id="desc">读者应理解三角测量定位原理示意中的主链路、责任边界和工程取舍。</desc>
+  <desc id="desc">读者应理解物模型的价值核心在于能力抽象：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
+  <style>
+    text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; }
+  </style>
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/></marker>
+    <marker id="bp-arrow-thick" markerWidth="14" markerHeight="10" refX="12" refY="5" orient="auto"><polygon points="0 0, 14 5, 0 10" fill="#2563EB"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-9 物模型驱动设备互操作的示意图</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解三角测量定位原理示意中的主链路、责任边界和工程取舍。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解物模型的价值核心在于能力抽象：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。</text>
+  <rect x="1600" y="28" width="156" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1678" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="architecture">
-  <!-- 网格 -->
-  <g stroke="#E2E8F0" stroke-width="0.5">
-    <line x1="80" y1="125" x2="80" y2="750" />
-    <line x1="180" y1="125" x2="180" y2="750" />
-    <line x1="280" y1="125" x2="280" y2="750" />
-    <line x1="380" y1="125" x2="380" y2="750" />
-    <line x1="480" y1="125" x2="480" y2="750" />
-    <line x1="580" y1="125" x2="580" y2="750" />
-    <line x1="680" y1="125" x2="680" y2="750" />
-    <line x1="780" y1="125" x2="780" y2="750" />
-    <line x1="880" y1="125" x2="880" y2="750" />
-    <line x1="980" y1="125" x2="980" y2="750" />
-    <line x1="1080" y1="125" x2="1080" y2="750" />
-    <line x1="1180" y1="125" x2="1180" y2="750" />
-    <line x1="1280" y1="125" x2="1280" y2="750" />
-    <line x1="1380" y1="125" x2="1380" y2="750" />
-    <line x1="1480" y1="125" x2="1480" y2="750" />
-    <line x1="1580" y1="125" x2="1580" y2="750" />
-    <line x1="1680" y1="125" x2="1680" y2="750" />
-    <line x1="80" y1="225" x2="1720" y2="225" />
-    <line x1="80" y1="325" x2="1720" y2="325" />
-    <line x1="80" y1="425" x2="1720" y2="425" />
-    <line x1="80" y1="525" x2="1720" y2="525" />
-    <line x1="80" y1="625" x2="1720" y2="625" />
-    <line x1="80" y1="725" x2="1720" y2="725" />
+
+  <!-- ============ 区域边界框（三层） ============ -->
+  <!-- 应用消费域 -->
+  <rect x="360" y="125" width="1080" height="160" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8,4"/>
+  <rect x="375" y="138" width="116" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="433" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">应用消费域</text>
+  <text x="505" y="155" font-size="12" fill="#64748B">· 消费标准化能力的边界</text>
+
+  <!-- 物模型抽象域 -->
+  <rect x="360" y="325" width="1080" height="225" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8,4"/>
+  <rect x="375" y="338" width="116" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="433" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">物模型抽象域</text>
+  <text x="505" y="355" font-size="12" fill="#64748B">· 将设备能力语义化，屏蔽底层差异</text>
+
+  <!-- 物理设备域 -->
+  <rect x="360" y="580" width="1080" height="205" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8,4"/>
+  <rect x="375" y="593" width="116" height="24" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="433" y="610" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">物理设备域</text>
+  <text x="505" y="610" font-size="12" fill="#64748B">· 异构设备与协议的存在边界</text>
+
+  <!-- ============ 应用层（顶部） ============ -->
+  <rect x="560" y="172" width="310" height="88" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+  <text x="715" y="205" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">能源管理应用</text>
+  <text x="715" y="230" text-anchor="middle" font-size="12" fill="#475569">统一消费物模型数据</text>
+
+  <rect x="1050" y="172" width="310" height="88" rx="12" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1205" y="205" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">楼宇自控应用</text>
+  <text x="1205" y="230" text-anchor="middle" font-size="12" fill="#475569">不关心底层设备厂商</text>
+
+  <!-- ============ 物模型抽象层（中部，虚线边框强调抽象） ============ -->
+  <rect x="520" y="385" width="250" height="115" rx="12" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
+  <rect x="530" y="392" width="78" height="24" rx="12" fill="#2563EB"/>
+  <text x="569" y="408" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF">属性汇聚</text>
+  <text x="645" y="428" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">属性 (Property)</text>
+  <text x="645" y="455" text-anchor="middle" font-size="12" fill="#475569">温度、湿度、功率</text>
+
+  <rect x="815" y="385" width="250" height="115" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="940" y="428" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">服务 (Action)</text>
+  <text x="940" y="455" text-anchor="middle" font-size="12" fill="#475569">校准、重启、设定阈值</text>
+
+  <rect x="1110" y="385" width="250" height="115" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1235" y="428" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">事件 (Event)</text>
+  <text x="1235" y="455" text-anchor="middle" font-size="12" fill="#475569">温度越界、设备离线</text>
+
+  <!-- ============ 设备层（底部，不同色相表示异构协议） ============ -->
+  <rect x="450" y="640" width="190" height="95" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="545" y="668" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">温度传感器</text>
+  <text x="545" y="691" text-anchor="middle" font-size="12" fill="#475569">(A公司 · JSON)</text>
+  <text x="545" y="711" text-anchor="middle" font-size="12" fill="#64748B">HTTP 上报</text>
+
+  <rect x="670" y="640" width="190" height="95" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+  <text x="765" y="668" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">温度传感器</text>
+  <text x="765" y="691" text-anchor="middle" font-size="12" fill="#475569">(B公司 · Modbus)</text>
+  <text x="765" y="711" text-anchor="middle" font-size="12" fill="#64748B">RTU 寄存器</text>
+
+  <rect x="890" y="640" width="190" height="95" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="985" y="668" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">振动监测仪</text>
+  <text x="985" y="691" text-anchor="middle" font-size="12" fill="#475569">(C公司 · MQTT)</text>
+  <text x="985" y="711" text-anchor="middle" font-size="12" fill="#64748B">Topic 订阅</text>
+
+  <rect x="1110" y="640" width="190" height="95" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1205" y="668" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">RFID 读写器</text>
+  <text x="1205" y="691" text-anchor="middle" font-size="12" fill="#475569">(D公司 · 二进制)</text>
+  <text x="1205" y="711" text-anchor="middle" font-size="12" fill="#64748B">Socket 报文</text>
+
+  <!-- ============ 连线：设备层 → 物模型层（能力映射） ============ -->
+  <line x1="545" y1="640" x2="575" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="538" y="560" width="44" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="560" y="576" text-anchor="middle" font-size="12" fill="#2563EB">温度</text>
+
+  <line x1="765" y1="640" x2="655" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="688" y="560" width="44" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="710" y="576" text-anchor="middle" font-size="12" fill="#2563EB">温度</text>
+
+  <line x1="985" y1="640" x2="720" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="817" y="560" width="70" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="852" y="576" text-anchor="middle" font-size="12" fill="#2563EB">振动频率</text>
+
+  <line x1="1205" y1="640" x2="955" y2="500" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1045" y="560" width="70" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="1080" y="576" text-anchor="middle" font-size="12" fill="#2563EB">读取标签</text>
+
+  <line x1="1205" y1="640" x2="1225" y2="500" stroke="#64748B" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow-dashed)"/>
+  <rect x="1173" y="560" width="84" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="1215" y="576" text-anchor="middle" font-size="12" fill="#64748B">标签碰撞</text>
+
+  <!-- ============ 连线：物模型层 → 应用层（统一输出） ============ -->
+  <!-- 温度属性汇聚后的统一输出（主链路粗箭头） -->
+  <line x1="645" y1="385" x2="700" y2="260" stroke="#2563EB" stroke-width="4" marker-end="url(#bp-arrow-thick)"/>
+  <rect x="610" y="312" width="126" height="22" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="673" y="327" text-anchor="middle" font-size="12" font-weight="600" fill="#2563EB">统一输出 · 标准属性值</text>
+
+  <!-- 属性 → 楼宇自控（标准属性值，肘形路由） -->
+  <polyline points="770,385 770,278 1080,278 1080,260" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="860" y="268" width="80" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="900" y="283" text-anchor="middle" font-size="12" fill="#2563EB">标准属性值</text>
+
+  <!-- 服务 → 能源管理（标准服务） -->
+  <line x1="905" y1="385" x2="745" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="792" y="312" width="64" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="824" y="327" text-anchor="middle" font-size="12" fill="#2563EB">标准服务</text>
+
+  <!-- 事件 → 楼宇自控（事件推送，虚线） -->
+  <line x1="1205" y1="385" x2="1130" y2="260" stroke="#64748B" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow-dashed)"/>
+  <rect x="1127" y="312" width="80" height="20" rx="4" fill="#FFFFFF" stroke="none"/>
+  <text x="1167" y="327" text-anchor="middle" font-size="12" fill="#64748B">事件推送</text>
+
+  <!-- ============ 右侧注释（callouts） ============ -->
+  <rect x="1500" y="330" width="240" height="100" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1515" y="355" font-size="12" font-weight="700" fill="#D97706">核心矛盾</text>
+  <text x="1515" y="378" font-size="12" fill="#475569">dev-ax4 与 dev-bx4 都代表</text>
+  <text x="1515" y="398" font-size="12" fill="#475569">温度属性，但因协议不同，</text>
+  <text x="1515" y="418" font-size="12" fill="#475569">应用层无法直接消费。</text>
+
+  <rect x="1500" y="445" width="240" height="105" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1515" y="470" font-size="12" font-weight="700" fill="#D97706">统一抽象</text>
+  <text x="1515" y="493" font-size="12" fill="#475569">物模型层将两条数据流在</text>
+  <text x="1515" y="513" font-size="12" fill="#475569">temperature 属性节点统一，</text>
+  <text x="1515" y="533" font-size="12" fill="#475569">应用层不再接触底层协议。</text>
+
   </g>
 
-  <!-- 坐标轴 -->
-  <g stroke="#64748B" stroke-width="1.5" fill="none">
-    <!-- x轴 -->
-    <line x1="400" y1="445" x2="1650" y2="445" />
-    <polygon points="1650,445 1640,440 1640,450" fill="#64748B" />
-    <!-- y轴 -->
-    <line x1="400" y1="445" x2="400" y2="150" />
-    <polygon points="400,150 395,160 405,160" fill="#64748B" />
-  </g>
+  <!-- ============ 底部图例与图注 ============ -->
+  <line x1="64" y1="795" x2="1736" y2="795" stroke="#E2E8F0"/>
+  <rect x="80" y="816" width="16" height="14" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="828" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">蓝色＝物模型抽象层元素，统一色调表示标准化接口</text>
+  <rect x="560" y="816" width="16" height="14" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+  <text x="584" y="828" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">青绿/紫/琥珀＝设备层元素，不同色相表示协议差异</text>
+  <line x1="1040" y1="823" x2="1068" y2="823" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1076" y="828" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">实线＝能力映射与服务调用 · 虚线＝事件推送</text>
+  <line x1="1430" y1="823" x2="1458" y2="823" stroke="#2563EB" stroke-width="4" marker-end="url(#bp-arrow-thick)"/>
+  <text x="1466" y="828" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">粗箭头＝温度属性汇聚后的统一输出</text>
 
-  <!-- 刻度标签 -->
-  <g fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">
-    <text x="400" y="465">0</text>
-    <text x="500" y="465">10</text>
-    <text x="600" y="465">20</text>
-    <text x="700" y="465">30</text>
-    <text x="800" y="465">40</text>
-    <text x="900" y="465">50</text>
-    <text x="1000" y="465">60</text>
-  </g>
-  <g fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="end">
-    <text x="385" y="449">0</text>
-    <text x="385" y="429">2</text>
-    <text x="385" y="409">4</text>
-    <text x="385" y="389">6</text>
-    <text x="385" y="369">8</text>
-    <text x="385" y="349">10</text>
-  </g>
-
-  <!-- 轴标签 -->
-  <g fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">
-    <text x="1700" y="455">X (m)</text>
-    <text x="390" y="140">Y (m)</text>
-  </g>
-
-  <!-- 三个虚线圆 -->
-  <g fill="rgba(249,115,22,0.08)" stroke="#F97316" stroke-width="1.5" stroke-dasharray="8,8">
-    <!-- A圆 -->
-    <circle cx="400" cy="445" r="305" />
-    <!-- B圆 -->
-    <circle cx="1000" cy="445" r="305" />
-    <!-- C圆 -->
-    <circle cx="700" cy="405" r="280" />
-  </g>
-
-  <!-- 圆半径标注 -->
-  <g fill="#F97316" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
-    <text x="105" y="370">r=30.5m</text>
-    <text x="1050" y="370">r=30.5m</text>
-    <text x="670" y="180">r=28.0m</text>
-  </g>
-
-  <!-- 三个基站节点 -->
-  <g fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5">
-    <circle cx="400" cy="445" r="8" />
-    <circle cx="1000" cy="445" r="8" />
-    <circle cx="700" cy="405" r="8" />
-  </g>
-  <g fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">
-    <text x="415" y="450">A (0,0)</text>
-    <text x="1015" y="450">B (60,0)</text>
-    <text x="715" y="410">C (30,4)</text>
-  </g>
-
-  <!-- 交叠区域三角形 -->
-  <polygon points="698,426 702,426 700,434" fill="rgba(0,0,0,0.25)" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
-
-  <!-- 理想交点P -->
-  <circle cx="700" cy="428" r="4" fill="#DC2626" />
-  <text x="705" y="432" fill="#DC2626" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">P</text>
-
-  <!-- 最小二乘点Q -->
-  <circle cx="704" cy="432" r="4" fill="#2563EB" />
-  <text x="709" y="436" fill="#2563EB" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">Q</text>
-
-  <!-- 从P到Q的偏移虚线 -->
-  <line x1="700" y1="428" x2="704" y2="432" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3" />
-</g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心能力；橙色=智能/风险路径</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-9 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
+  <text x="900" y="874" fill="#94A3B8" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-9 物模型作为中间抽象层，将异构设备的能力映射到标准的属性、服务和事件，使上层应用可统一消费数据。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
       <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">平面网格坐标图：三个圆以AP位置为圆心，半径不等且带有微小偏移；交叠区域用灰色半透明标记；目标点标注为X。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">垂直三层架构：顶部为应用层（两个应用节点），中部为物模型抽象层（属性、服务、事件三列），底部为设备层（四个不同协议/厂商的设备节点）。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

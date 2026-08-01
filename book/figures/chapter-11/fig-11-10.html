@@ -21,59 +21,60 @@
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-10 十字路口强化学习框架</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700" font-family="'PingFang SC','Microsoft YaHei',sans-serif">图11-10 十字路口强化学习框架</text>
+  <text x="82" y="70" fill="#64748B" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4" font-family="Arial, sans-serif">FLOWCHART</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart" transform="translate(0,0)">
   <!-- 环境域区域边界 -->
-  <rect x="120" y="140" width="500" height="580" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="140" y="165" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A">环境域</text>
+  <rect x="120" y="140" width="500" height="430" rx="14" fill="#F0F8FF" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="140" y="168" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A">环境域</text>
+  <text x="140" y="186" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#64748B">物理路口与信号灯执行边界</text>
 
   <!-- 智能决策域区域边界 -->
-  <rect x="660" y="140" width="900" height="580" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="680" y="165" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A">智能决策域</text>
+  <rect x="660" y="140" width="1020" height="430" rx="14" fill="#FFF8DC" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="680" y="168" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A">智能决策域</text>
+  <text x="680" y="186" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#64748B">模型训练与推理边界</text>
 
   <!-- 连线（先于卡片绘制） -->
-  <!-- 1. 环境 -> 状态构建 (蓝色实线) -->
-  <line x1="540" y1="215" x2="700" y2="215" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <!-- 1. 环境 -> 状态构建 状态S_t (蓝色实线，主链路) -->
+  <line x1="540" y1="220" x2="700" y2="215" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="590" y="205" width="70" height="20" rx="4" fill="white" opacity="0.95"/>
   <text x="625" y="218" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">状态S_t</text>
 
-  <!-- 2. 状态构建 -> 在线Q网络 (蓝色实线) -->
+  <!-- 2. 状态构建 -> 在线Q网络 (蓝色实线，主链路) -->
   <line x1="860" y1="250" x2="860" y2="280" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="810" y="255" width="100" height="20" rx="4" fill="white" opacity="0.95"/>
   <text x="860" y="268" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">输入当前状态</text>
 
-  <!-- 3. 在线Q网络 -> 信号灯执行器 (蓝色实线) -->
-  <path d="M 700 315 L 630 315 L 630 465 L 540 465" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <!-- 3. 在线Q网络 -> 信号灯执行器 动作a_t (蓝色实线，主链路) -->
+  <path d="M 700 315 L 630 315 L 630 475 L 540 475" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="590" y="375" width="70" height="20" rx="4" fill="white" opacity="0.95"/>
   <text x="625" y="388" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">动作a_t</text>
 
-  <!-- 4. 环境 -> 经验回放 (橙色虚线) -->
-  <path d="M540,220 L540,435 L700,435" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <!-- 4. 环境 -> 经验回放 奖励r_t (橙色虚线) -->
+  <path d="M 540 220 L 540 435 L 700 435" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-orange)"/>
   <rect x="610" y="420" width="70" height="20" rx="4" fill="white" opacity="0.95"/>
   <text x="645" y="433" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">奖励r_t</text>
 
   <!-- 5. 经验回放 -> 权重更新 (蓝色实线) -->
-  <line x1="1020" y1="440" x2="1160" y2="440" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <line x1="1020" y1="435" x2="1160" y2="435" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="1050" y="425" width="100" height="20" rx="4" fill="white" opacity="0.95"/>
   <text x="1100" y="438" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">随机采样小批量</text>
 
-  <!-- 6. 在线Q网络 -> 目标Q网络 (蓝色虚线) -->
-  <line x1="1020" y1="315" x2="1100" y2="315" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
-  <rect x="1040" y="300" width="70" height="20" rx="4" fill="white" opacity="0.95"/>
-  <text x="1075" y="313" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">每C步参数复制</text>
+  <!-- 6. 在线Q网络 -> 目标Q网络 每C步参数复制 (蓝色虚线) -->
+  <line x1="1020" y1="315" x2="1100" y2="315" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1035" y="300" width="90" height="20" rx="4" fill="white" opacity="0.95"/>
+  <text x="1080" y="313" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">每C步参数复制</text>
 
-  <!-- 组件卡片 -->
   <!-- 环境域组件 -->
   <!-- 十字路口环境 -->
   <rect x="160" y="180" width="380" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
@@ -81,16 +82,16 @@
   <text x="350" y="228" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">路网、车流、排队</text>
 
   <!-- 车流生成 (菱形) -->
-  <polygon points="250,320 350,270 450,320 350,370" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="350" y="316" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">车流生成</text>
-  <text x="350" y="334" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">到达模型</text>
+  <polygon points="250,325 350,272 450,325 350,378" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="350" y="321" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">车流生成</text>
+  <text x="350" y="339" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">到达模型</text>
 
   <!-- 信号灯执行器 -->
-  <rect x="160" y="430" width="380" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="350" y="458" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">信号灯执行器</text>
-  <text x="350" y="476" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">相位切换与计时</text>
+  <rect x="160" y="440" width="380" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="350" y="468" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">信号灯执行器</text>
+  <text x="350" y="486" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">相位切换与计时</text>
 
-  <!-- 智能域组件（左列） -->
+  <!-- 智能决策域组件（左列） -->
   <!-- 状态构建 (AI) -->
   <rect x="700" y="180" width="320" height="70" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="860" y="208" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">状态构建</text>
@@ -101,30 +102,64 @@
   <text x="860" y="308" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">在线Q网络</text>
   <text x="860" y="326" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">全连接层，输出Q值</text>
 
-  <!-- 经验回放缓冲区 (Data) -->
-  <rect x="700" y="400" width="320" height="70" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="860" y="428" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">经验回放缓冲区</text>
-  <text x="860" y="446" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">(S, a, r, S')四元组</text>
+  <!-- 经验回放缓冲区 (数据库) -->
+  <rect x="700" y="402" width="320" height="68" rx="6" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <ellipse cx="860" cy="402" rx="160" ry="9" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="860" y="430" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">经验回放缓冲区</text>
+  <text x="860" y="448" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">(S, a, r, S')四元组</text>
 
-  <!-- 智能域组件（右列） -->
+  <!-- 智能决策域组件（右列） -->
   <!-- 目标Q网络 (AI) -->
   <rect x="1100" y="280" width="320" height="70" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="1260" y="308" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">目标Q网络</text>
   <text x="1260" y="326" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">定期软更新参数</text>
 
-  <!-- 权重更新 (菱形, AI) -->
-  <polygon points="1160,440 1260,390 1360,440 1260,490" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1260" y="436" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">权重更新</text>
-  <text x="1260" y="454" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#475569" text-anchor="middle">采样小批量，计算TD误差</text>
+  <!-- 权重更新 (菱形) -->
+  <polygon points="1160,435 1260,385 1360,435 1260,485" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1260" y="431" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">权重更新</text>
+  <text x="1260" y="449" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#475569" text-anchor="middle">采样小批量，计算TD误差</text>
+
+  <!-- 底部要点注释 -->
+  <g data-callouts="true">
+    <rect x="70" y="615" width="395" height="120" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <circle cx="96" cy="641" r="13" fill="#2563EB"/>
+    <text x="96" y="646" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="Arial, sans-serif">1</text>
+    <text x="122" y="637" fill="#0F172A" font-size="13" font-weight="600" font-family="'PingFang SC','Microsoft YaHei',sans-serif">状态 S_t</text>
+    <text x="86" y="666" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">排队长度、相位剩余时间、时段编码，</text>
+    <text x="86" y="684" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">是动作决策的全部依据。</text>
+
+    <rect x="485" y="615" width="395" height="120" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <circle cx="511" cy="641" r="13" fill="#0F766E"/>
+    <text x="511" y="646" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="Arial, sans-serif">2</text>
+    <text x="537" y="637" fill="#0F172A" font-size="13" font-weight="600" font-family="'PingFang SC','Microsoft YaHei',sans-serif">经验回放</text>
+    <text x="501" y="666" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">切断时间相关性，使在线 Q 网络</text>
+    <text x="501" y="684" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">训练更稳定。</text>
+
+    <rect x="900" y="615" width="395" height="120" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <circle cx="926" cy="641" r="13" fill="#D97706"/>
+    <text x="926" y="646" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="Arial, sans-serif">3</text>
+    <text x="952" y="637" fill="#0F172A" font-size="13" font-weight="600" font-family="'PingFang SC','Microsoft YaHei',sans-serif">目标 Q 网络</text>
+    <text x="916" y="666" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">为 TD 误差计算提供固定目标，</text>
+    <text x="916" y="684" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">避免训练震荡。</text>
+
+    <rect x="1315" y="615" width="395" height="120" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+    <circle cx="1341" cy="641" r="13" fill="#F97316"/>
+    <text x="1341" y="646" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="Arial, sans-serif">4</text>
+    <text x="1367" y="637" fill="#0F172A" font-size="13" font-weight="600" font-family="'PingFang SC','Microsoft YaHei',sans-serif">奖励 r_t</text>
+    <text x="1331" y="666" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">直接惩罚排队长度，是控制目标</text>
+    <text x="1331" y="684" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif">的量化表达。</text>
+  </g>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线箭头：状态与动作的主交互链路</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色虚线箭头：奖励反馈与经验回放</text>
-  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色节点：环境域组件</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-8 十字路口强化学习框架图。展示了RL智能体通过状态观测、动作执行、奖励反馈及经验回放训练DQN网络的闭环过程。</text>
+  <rect x="480" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="504" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色虚线箭头：奖励反馈与经验回放</text>
+  <rect x="900" y="797" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="924" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色节点：环境域组件</text>
+  <rect x="1300" y="797" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1324" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色节点：智能决策域组件</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-10 十字路口强化学习框架图。展示了RL智能体通过状态观测、动作执行、奖励反馈及经验回放训练DQN网络的闭环过程。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

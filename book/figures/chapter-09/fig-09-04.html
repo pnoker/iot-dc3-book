@@ -17,96 +17,126 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图9-4 CoAP消息格式与选项示意</title>
-  <desc id="desc">理解会话持久化、心跳超时判定以及重连策略如何配合恢复会话。</desc>
+  <desc id="desc">展示CoAP消息的紧凑二进制格式，与HTTP冗长的文本头部形成对比，直观解释CoAP如何实现轻量级传输。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="#2563EB"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图9-4 CoAP消息格式与选项示意</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">理解会话持久化、心跳超时判定以及重连策略如何配合恢复会话。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">图9-4 CoAP消息格式与选项示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">展示CoAP消息的紧凑二进制格式，与HTTP冗长的文本头部形成对比，直观解释CoAP如何实现轻量级传输。</text>
+  <rect x="1596" y="28" width="140" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1666" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4" font-family="Arial, 'PingFang SC', sans-serif">ARCHITECTURE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="sequence">
-  <!-- life lines -->
-  <line x1="250" y1="190" x2="250" y2="730" stroke="#94A3B8" stroke-dasharray="6,4" stroke-width="1.5"/>
-  <line x1="900" y1="190" x2="900" y2="730" stroke="#94A3B8" stroke-dasharray="6,4" stroke-width="1.5"/>
-  <line x1="1500" y1="190" x2="1500" y2="730" stroke="#94A3B8" stroke-dasharray="6,4" stroke-width="1.5"/>
-  <!-- participants -->
-  <rect x="200" y="130" width="100" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="250" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="#0F172A">Client</text>
-  <text x="250" y="168" text-anchor="middle" font-size="10" fill="#64748B">(sensor01)</text>
-  <rect x="850" y="130" width="100" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="900" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="#0F172A">Broker</text>
-  <text x="900" y="168" text-anchor="middle" font-size="10" fill="#64748B">MQTT Server</text>
-  <rect x="1450" y="130" width="100" height="60" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1500" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="#0F172A">Subscriber</text>
-  <text x="1500" y="168" text-anchor="middle" font-size="10" fill="#64748B">遗嘱订阅者</text>
-  <!-- messages -->
-  <!-- 1: CONNECT -->
-  <line x1="250" y1="210" x2="900" y2="210" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="205" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">CONNECT (CS=0, KA=60)</text>
-  <!-- 2: CONNACK -->
-  <line x1="900" y1="245" x2="250" y2="245" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="240" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">CONNACK (SP=false)</text>
-  <!-- 3: SUBSCRIBE -->
-  <line x1="250" y1="280" x2="900" y2="280" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="275" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">SUBSCRIBE (temp/room1, QoS1)</text>
-  <!-- 4: SUBACK -->
-  <line x1="900" y1="315" x2="250" y2="315" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="310" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">SUBACK</text>
-  <!-- 5: PUBLISH -->
-  <line x1="250" y1="350" x2="900" y2="350" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="345" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">PUBLISH (25.3°C, QoS1)</text>
-  <!-- 6: PUBACK -->
-  <line x1="900" y1="385" x2="250" y2="385" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="380" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">PUBACK</text>
-  <!-- 7: PINGREQ (self) -->
-  <path d="M 250,420 L 280,420 L 280,435 L 250,435" fill="none" stroke="#64748B" stroke-dasharray="4,3" stroke-width="1.5" marker-end="url(#bp-arrow)"/>
-  <text x="265" y="415" text-anchor="start" font-size="10" fill="#64748B">PINGREQ (60s)</text>
-  <!-- 8: PINGRESP -->
-  <line x1="900" y1="455" x2="250" y2="455" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="450" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">PINGRESP</text>
-  <!-- 9: 网络中断注释 -->
-  <rect x="470" y="480" width="210" height="24" rx="4" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
-  <text x="575" y="497" text-anchor="middle" font-size="11" fill="#64748B">网络中断，双方启动超时定时器</text>
-  <!-- 10: Broker超时判定 (self) -->
-  <path d="M 900,525 L 930,525 L 930,540 L 900,540" fill="none" stroke="#64748B" stroke-dasharray="4,3" stroke-width="1.5" marker-end="url(#bp-arrow)"/>
-  <text x="915" y="520" text-anchor="start" font-size="10" fill="#64748B">超时判定 (90s)</text>
-  <!-- 11: Will Message (Broker->Subscriber) -->
-  <line x1="900" y1="560" x2="1500" y2="560" stroke="#64748B" stroke-dasharray="6,4" stroke-width="1.5" marker-end="url(#bp-arrow)"/>
-  <text x="1200" y="555" text-anchor="middle" font-size="11" fill="#64748B">PUBLISH (Will Message)</text>
-  <!-- 12: Client重连策略 (self) -->
-  <path d="M 250,595 L 280,595 L 280,610 L 250,610" fill="none" stroke="#64748B" stroke-dasharray="4,3" stroke-width="1.5" marker-end="url(#bp-arrow)"/>
-  <text x="265" y="590" text-anchor="start" font-size="10" fill="#64748B">指数退避 (1s,2s,4s)</text>
-  <!-- 13: CONNECT (Reconnect) -->
-  <line x1="250" y1="630" x2="900" y2="630" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="625" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="600">CONNECT (Reconnect, CS=0)</text>
-  <!-- 14: CONNACK (SessionPresent=true) -->
-  <line x1="900" y1="665" x2="250" y2="665" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="660" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="500">CONNACK (SP=true)</text>
-  <!-- 15: 离线缓存消息 -->
-  <line x1="900" y1="700" x2="250" y2="700" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="575" y="695" text-anchor="middle" font-size="11" fill="#0F172A" font-weight="600">离线缓存消息 (QoS1/2)</text>
+  <g data-layout="comparison">
+
+  <!-- ============ 上方：HTTP 请求头部（文本格式） ============ -->
+  <rect x="180" y="150" width="1440" height="250" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="210" y="186" fill="#0F172A" font-size="18" font-weight="600" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">HTTP 请求头部</text>
+  <text x="210" y="208" fill="#64748B" font-size="12" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">文本格式 · 通常数百字节</text>
+  <rect x="1400" y="162" width="200" height="30" rx="15" fill="#F1F5F9" stroke="#94A3B8"/>
+  <text x="1500" y="182" fill="#475569" font-size="13" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">约 300+ 字节</text>
+  <rect x="210" y="225" width="1380" height="170" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="240" y="256" fill="#0F172A" font-size="14" font-weight="600" font-family="Menlo, Consolas, SFMono-Regular, monospace">GET /temperature HTTP/1.1</text>
+  <text x="240" y="282" fill="#0F172A" font-size="14" font-family="Menlo, Consolas, SFMono-Regular, monospace">Host: 192.168.1.10</text>
+  <text x="240" y="308" fill="#0F172A" font-size="14" font-family="Menlo, Consolas, SFMono-Regular, monospace">Accept: text/plain</text>
+  <text x="240" y="334" fill="#0F172A" font-size="14" font-family="Menlo, Consolas, SFMono-Regular, monospace">Content-Type: text/plain</text>
+  <text x="240" y="360" fill="#0F172A" font-size="14" font-family="Menlo, Consolas, SFMono-Regular, monospace">Content-Length: 8</text>
+  <line x1="240" y1="373" x2="1560" y2="373" stroke="#CBD5E1" stroke-dasharray="4,3"/>
+  <text x="240" y="392" fill="#16A34A" font-size="14" font-weight="600" font-family="Menlo, Consolas, SFMono-Regular, monospace">25.3</text>
+
+  <!-- 对比连线：等效语义，体积显著更小 -->
+  <line x1="760" y1="402" x2="880" y2="486" stroke="#2563EB" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="598" y="428" width="240" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="718" y="449" fill="#2563EB" font-size="14" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">等效语义，体积显著更小</text>
+
+  <!-- ============ 下方：CoAP 二进制布局 ============ -->
+  <rect x="180" y="490" width="1440" height="250" rx="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="210" y="526" fill="#0F172A" font-size="18" font-weight="600" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">CoAP 二进制布局</text>
+  <text x="210" y="548" fill="#64748B" font-size="12" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">CON GET 请求 · 固定头 4 字节 + Token + Options + Payload（RFC 7252）</text>
+  <rect x="1400" y="502" width="200" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB"/>
+  <text x="1500" y="522" fill="#2563EB" font-size="13" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">≈ 4 + 可变字节</text>
+
+  <!-- 固定头括号标注 -->
+  <line x1="210" y1="586" x2="780" y2="586" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="495" y="578" fill="#2563EB" font-size="12" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">固定头 · 4 字节</text>
+
+  <!-- 分段色块 -->
+  <g font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">
+    <!-- Ver -->
+    <rect x="210" y="596" width="70" height="48" fill="#2563EB"/>
+    <text x="245" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Ver</text>
+    <text x="245" y="636" font-size="9.5" fill="#E0E7FF" text-anchor="middle">2b · 01</text>
+    <!-- T -->
+    <rect x="280" y="596" width="70" height="48" fill="#2563EB"/>
+    <text x="315" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">T</text>
+    <text x="315" y="636" font-size="9.5" fill="#E0E7FF" text-anchor="middle">2b · CON</text>
+    <!-- TKL -->
+    <rect x="350" y="596" width="70" height="48" fill="#2563EB"/>
+    <text x="385" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">TKL</text>
+    <text x="385" y="636" font-size="9.5" fill="#E0E7FF" text-anchor="middle">4b · 0-8</text>
+    <!-- Code -->
+    <rect x="420" y="596" width="180" height="48" fill="#2563EB"/>
+    <text x="510" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Code</text>
+    <text x="510" y="636" font-size="9.5" fill="#E0E7FF" text-anchor="middle">8b · GET = 0.01</text>
+    <!-- Message ID -->
+    <rect x="600" y="596" width="180" height="48" fill="#2563EB"/>
+    <text x="690" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Message ID</text>
+    <text x="690" y="636" font-size="9.5" fill="#E0E7FF" text-anchor="middle">16b · 随机</text>
+    <!-- Token -->
+    <rect x="780" y="596" width="150" height="48" fill="#16A34A"/>
+    <text x="855" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Token</text>
+    <text x="855" y="636" font-size="9.5" fill="#DCFCE7" text-anchor="middle">可变 0-8B</text>
+    <!-- Options -->
+    <rect x="930" y="596" width="300" height="48" fill="#F97316"/>
+    <text x="1080" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Options</text>
+    <text x="1080" y="636" font-size="9.5" fill="#FFEDD5" text-anchor="middle">Uri-Path 等</text>
+    <!-- 0xFF -->
+    <rect x="1230" y="596" width="70" height="48" fill="#64748B"/>
+    <text x="1265" y="618" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">0xFF</text>
+    <text x="1265" y="636" font-size="9.5" fill="#E2E8F0" text-anchor="middle">1B 标记</text>
+    <!-- Payload -->
+    <rect x="1300" y="596" width="230" height="48" fill="#E5E7EB" stroke="#94A3B8"/>
+    <text x="1415" y="618" font-size="12" font-weight="600" fill="#0F172A" text-anchor="middle">Payload</text>
+    <text x="1415" y="636" font-size="9.5" fill="#475569" text-anchor="middle">实际数据</text>
+  </g>
+
+  <!-- 字段注释（callouts） -->
+  <rect x="210" y="672" width="300" height="50" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <circle cx="232" cy="697" r="5" fill="#2563EB"/>
+  <text x="246" y="701" font-size="12" font-weight="500" fill="#0F172A" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">Ver 版本号，固定为 01</text>
+
+  <rect x="520" y="672" width="300" height="50" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <circle cx="542" cy="697" r="5" fill="#2563EB"/>
+  <text x="556" y="701" font-size="12" font-weight="500" fill="#0F172A" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">T 消息类型 CON=0 / NON=1</text>
+
+  <rect x="830" y="672" width="330" height="50" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <circle cx="852" cy="697" r="5" fill="#2563EB"/>
+  <text x="866" y="701" font-size="12" font-weight="500" fill="#0F172A" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">Code 请求方法 GET=0.01</text>
+
+  <rect x="1170" y="672" width="360" height="50" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <circle cx="1192" cy="697" r="5" fill="#2563EB"/>
+  <text x="1206" y="701" font-size="12" font-weight="500" fill="#0F172A" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">Message ID 去重与匹配</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色：客户端；蓝色：Broker；灰色：第三方订阅者</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：同步请求/响应；虚线箭头：异步广播或内部自消息</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图9-4 MQTT会话连接与心跳交互示意。展示Client（sensor01）与Broker之间从连接建立、心跳维持、网络断线、遗嘱执行到指数退避重连并恢复会话的完整过程。Keep Alive设为60秒，Broker以1.5倍超时判定离线（约90秒）。重连后Broker推送断线</text>
-  <text x="900" y="870" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">期间缓存的QoS 1/2消息。</text>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#2563EB"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色 = 固定头/元数据</text>
+  <rect x="560" y="797" width="16" height="12" rx="2" fill="#16A34A"/>
+  <text x="584" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色 = Token/上下文关联</text>
+  <rect x="1040" y="797" width="16" height="12" rx="2" fill="#F97316"/>
+  <text x="1064" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色 = Options/路由与内容协商</text>
+  <rect x="1420" y="797" width="16" height="12" rx="2" fill="#E5E7EB" stroke="#94A3B8"/>
+  <text x="1444" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">浅灰 = Payload/实际数据</text>
+  <text x="900" y="845" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图9-4 CoAP消息格式与HTTP文本头部的体积对比：等效的 GET 请求中，HTTP 文本头部通常数百字节，而 CoAP 固定头仅 4 字节。</text>
+  <text x="900" y="862" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">CoAP 固定头字段 Ver/T/TKL/Code/MID 共 32 位，后接可变 Token、Options 与 Payload，紧凑设计对受限网络意义重大。（字段定义参考 RFC 7252）</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下时间轴，左侧Client生命线，右侧Broker生命线，底部示意重连恢复。</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">上下两个并行条块：上方HTTP文本头部，下方CoAP二进制分段布局，以带标签的虚线箭头强调体积差异。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

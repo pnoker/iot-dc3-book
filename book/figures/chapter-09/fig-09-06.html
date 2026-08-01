@@ -17,195 +17,218 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图9-6 MCP协议交互序列图</title>
-  <desc id="desc">AI 控制灯光场景下的 MCP JSON-RPC 2.0 消息序列：①初始化（initialize 能力协商 + initialized 通知）；②运行（tools/list 目录、tools/call setBrightness 经 MQTT 下发灯设备并回传结果）；③sampling（Server 反向发 sampling/createMessage 借用 Host 的 LLM）。顶部四参与者生命线垂直，消息自上而下编号。</desc>
+  <desc id="desc">AI Agent 通过 MCP 与 IoT 平台及设备的典型交互流程：① 会话建立（session init + 能力协商）；② 工具发现（tools/list，MCP Server 按身份/租户聚合工具目录）；③ 工具调用与设备执行（tools/call 经鉴权白名单后 REST 调用 IoT 平台后端，按原链路经 MQTT/CoAP 下发物理设备）；④ 结果回传（遥测上报 → 回调 → 返回结果 → tools/call 响应）。参与者：AI Agent、MCP Server、IoT平台后端、设备协议适配层、物理设备。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="82.182" y="24.000" width="1035.636" height="712.000" viewBox="0 0 1600.000 1100.000" preserveAspectRatio="xMidYMid meet">
-
-  
+  <svg x="0" y="0" width="1200" height="760" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0,10 3.5,0 7" fill="#2563EB"/>
     </marker>
     <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#10B981"/>
+      <polygon points="0 0,10 3.5,0 7" fill="#16A34A"/>
     </marker>
     <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/>
+      <polygon points="0 0,10 3.5,0 7" fill="#F97316"/>
+    </marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#0F766E"/>
     </marker>
   </defs>
 
   <!-- canvas -->
-  <rect x="0" y="0" width="1600" height="1100" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="900" fill="#F8FAFC"/>
 
   <!-- ===== 标题区 ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">图9-6 MCP协议交互序列图</text>
-  <text x="84" y="70" font-size="12" fill="#64748B">AI 控制灯光场景下的 JSON-RPC 2.0 消息序列 · initialize / tools / sampling</text>
-  <rect x="1462" y="26" width="108" height="30" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="84" y="70" font-size="12" fill="#64748B">AI Agent 通过 MCP 与 IoT 平台及设备的典型交互：会话建立 · 工具发现 · 鉴权聚合 · 工具调用 · 状态反馈</text>
+  <rect x="1462" y="26" width="108" height="30" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1516" y="46" font-size="13" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="2">SEQUENCE</text>
-  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0"/>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
 
-  <!-- ===== 三段相位带 ===== -->
-  <rect x="40" y="195" width="1520" height="175" rx="8" fill="#2563EB" fill-opacity="0.05"/>
-  <rect x="40" y="385" width="1520" height="385" rx="8" fill="#10B981" fill-opacity="0.05"/>
-  <rect x="40" y="785" width="1520" height="220" rx="8" fill="#F59E0B" fill-opacity="0.07"/>
+  <!-- ===== 参与者域带（纵向） ===== -->
+  <rect x="40" y="118" width="310" height="722" rx="8" fill="#F97316" fill-opacity="0.04"/>
+  <rect x="350" y="118" width="780" height="722" rx="8" fill="#2563EB" fill-opacity="0.04"/>
+  <rect x="1130" y="118" width="630" height="722" rx="8" fill="#0F766E" fill-opacity="0.04"/>
+
+  <text x="195" y="130" font-size="11" font-weight="700" fill="#F97316" text-anchor="middle">AI 应用域</text>
+  <text x="740" y="130" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">IoT 平台域</text>
+  <text x="1445" y="130" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">设备通信域</text>
+
+  <!-- ===== 四段相位带 ===== -->
+  <rect x="40" y="197" width="1720" height="88" rx="8" fill="#2563EB" fill-opacity="0.05"/>
+  <rect x="40" y="300" width="1720" height="140" rx="8" fill="#16A34A" fill-opacity="0.05"/>
+  <rect x="40" y="455" width="1720" height="210" rx="8" fill="#F97316" fill-opacity="0.06"/>
+  <rect x="40" y="680" width="1720" height="138" rx="8" fill="#0F766E" fill-opacity="0.05"/>
 
   <!-- 相位标签卡 -->
-  <rect x="50" y="207" width="128" height="44" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="114" y="226" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">① 初始化</text>
-  <text x="114" y="243" font-size="9.5" fill="#475569" text-anchor="middle">能力协商 initialize</text>
+  <rect x="50" y="209" width="128" height="40" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="114" y="226" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">① 会话建立</text>
+  <text x="114" y="242" font-size="9.5" fill="#475569" text-anchor="middle">能力协商 session</text>
 
-  <rect x="50" y="397" width="128" height="44" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-  <text x="114" y="416" font-size="13" font-weight="700" fill="#10B981" text-anchor="middle">② 运行</text>
-  <text x="114" y="433" font-size="9.5" fill="#475569" text-anchor="middle">工具调用 tools</text>
+  <rect x="50" y="312" width="128" height="40" rx="6" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="114" y="329" font-size="13" font-weight="700" fill="#16A34A" text-anchor="middle">② 工具发现</text>
+  <text x="114" y="345" font-size="9.5" fill="#475569" text-anchor="middle">tools/list</text>
 
-  <rect x="50" y="797" width="128" height="44" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-  <text x="114" y="816" font-size="13" font-weight="700" fill="#F59E0B" text-anchor="middle">③ sampling</text>
-  <text x="114" y="833" font-size="9.5" fill="#475569" text-anchor="middle">反向借用 LLM</text>
+  <rect x="50" y="467" width="128" height="40" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+  <text x="114" y="484" font-size="13" font-weight="700" fill="#F97316" text-anchor="middle">③ 工具调用</text>
+  <text x="114" y="500" font-size="9.5" fill="#475569" text-anchor="middle">tools/call · 设备执行</text>
 
-  <!-- ===== 参与者头（四列） ===== -->
-  <!-- AI Agent（橙·AI 域） -->
-  <rect x="120" y="130" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="200" y="156" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">AI Agent</text>
-  <text x="200" y="174" font-size="10" fill="#64748B" text-anchor="middle">Host 内 LLM</text>
+  <rect x="50" y="692" width="128" height="40" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="114" y="709" font-size="13" font-weight="700" fill="#0F766E" text-anchor="middle">④ 结果回传</text>
+  <text x="114" y="725" font-size="9.5" fill="#475569" text-anchor="middle">响应 · 遥测上报</text>
 
-  <!-- MCP Client（蓝·平台） -->
-  <rect x="480" y="130" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="560" y="156" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Client</text>
-  <text x="560" y="174" font-size="10" fill="#64748B" text-anchor="middle">JSON-RPC 桥接</text>
+  <!-- ===== 参与者头（五列） ===== -->
+  <!-- AI Agent（橙·AI 应用域） -->
+  <rect x="110" y="136" width="170" height="54" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="195" y="162" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">AI Agent</text>
+  <text x="195" y="180" font-size="10" fill="#64748B" text-anchor="middle">Claude Desktop 等</text>
 
-  <!-- Smart Light MCP Server（绿·边缘） -->
-  <rect x="920" y="130" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="1000" y="154" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Smart Light MCP Server</text>
-  <text x="1000" y="174" font-size="10" fill="#64748B" text-anchor="middle">工具暴露方</text>
+  <!-- MCP Server（蓝·IoT 平台域） -->
+  <rect x="475" y="136" width="170" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="560" y="162" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Server</text>
+  <text x="560" y="180" font-size="10" fill="#64748B" text-anchor="middle">会话管理 · 鉴权路由</text>
 
-  <!-- 灯设备 MQTT（绿·边缘设备） -->
-  <rect x="1310" y="130" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="1390" y="156" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">灯设备</text>
-  <text x="1390" y="174" font-size="10" fill="#64748B" text-anchor="middle">MQTT 总线</text>
+  <!-- IoT 平台后端（蓝·IoT 平台域） -->
+  <rect x="835" y="136" width="170" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="920" y="162" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">IoT 平台后端</text>
+  <text x="920" y="180" font-size="10" fill="#64748B" text-anchor="middle">设备管理 · 数据服务</text>
+
+  <!-- 设备协议适配层（青·设备通信域） -->
+  <rect x="1235" y="136" width="170" height="54" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="1320" y="162" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">协议适配层</text>
+  <text x="1320" y="180" font-size="10" fill="#64748B" text-anchor="middle">MQTT / CoAP 网关</text>
+
+  <!-- 物理设备（青·设备通信域） -->
+  <rect x="1515" y="136" width="170" height="54" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="1600" y="162" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">物理设备</text>
+  <text x="1600" y="180" font-size="10" fill="#64748B" text-anchor="middle">传感器 / 执行器</text>
 
   <!-- 生命线 -->
-  <line x1="200" y1="184" x2="200" y2="1005" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="560" y1="184" x2="560" y2="1005" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="1000" y1="184" x2="1000" y2="1005" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="1390" y1="184" x2="1390" y2="1005" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="195" y1="190" x2="195" y2="838" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="560" y1="190" x2="560" y2="838" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="920" y1="190" x2="920" y2="838" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="1320" y1="190" x2="1320" y2="838" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="1600" y1="190" x2="1600" y2="838" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 4"/>
 
-  <!-- 激活条（谁在忙） -->
-  <rect x="994" y="585" width="12" height="165" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-width="0.8"/>
-  <rect x="1384" y="640" width="12" height="55" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-width="0.8"/>
-  <rect x="194" y="880" width="12" height="55" fill="#F59E0B" fill-opacity="0.20" stroke="#F59E0B" stroke-width="0.8"/>
+  <!-- ===================== ① 会话建立（蓝） ===================== -->
+  <!-- M1 session init -->
+  <circle cx="195" cy="222" r="9" fill="#2563EB"/>
+  <text x="195" y="226" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <line x1="204" y1="222" x2="551" y2="222" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="377" y="213" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">session init（能力协商）</text>
 
-  <!-- ===================== ① 初始化（蓝） ===================== -->
-  <!-- M1 initialize -->
-  <circle cx="575" cy="230" r="9" fill="#2563EB"/>
-  <text x="575" y="234" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-  <line x1="562" y1="230" x2="994" y2="230" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="778" y="221" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">initialize · id=1 · {protocolVersion, capabilities}</text>
+  <!-- M2 session 回执 -->
+  <circle cx="560" cy="266" r="9" fill="#2563EB"/>
+  <text x="560" y="270" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <line x1="551" y1="266" x2="204" y2="266" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="377" y="257" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">返回 session ID · 版本与能力</text>
 
-  <!-- M2 result 回 serverInfo + capabilities -->
-  <circle cx="985" cy="295" r="9" fill="#2563EB"/>
-  <text x="985" y="299" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-  <line x1="998" y1="295" x2="566" y2="295" stroke="#2563EB" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
-  <text x="782" y="286" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">result · id=1 · serverInfo + capabilities{tools, resources}</text>
+  <!-- ===================== ② 工具发现（绿） ===================== -->
+  <!-- M3 tools/list -->
+  <circle cx="195" cy="326" r="9" fill="#16A34A"/>
+  <text x="195" y="330" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <line x1="204" y1="326" x2="551" y2="326" stroke="#16A34A" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="377" y="317" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">tools/list</text>
 
-  <!-- M3 initialized 通知 -->
-  <circle cx="575" cy="350" r="9" fill="#2563EB"/>
-  <text x="575" y="354" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-  <line x1="562" y1="350" x2="994" y2="350" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="778" y="341" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">notifications/initialized（协商完成，进入就绪）</text>
+  <!-- M4 MCP 内部聚合（橙强调） -->
+  <circle cx="420" cy="375" r="9" fill="#F97316"/>
+  <text x="420" y="379" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <rect x="430" y="360" width="300" height="30" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="580" y="379" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">聚合工具目录（鉴权 + 租户裁剪）</text>
 
-  <!-- ===================== ② 运行（绿） ===================== -->
-  <!-- M4 tools/list -->
-  <circle cx="575" cy="420" r="9" fill="#10B981"/>
-  <text x="575" y="424" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-  <line x1="562" y1="420" x2="994" y2="420" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="778" y="411" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">tools/list · id=2</text>
+  <!-- M5 工具列表 -->
+  <circle cx="560" cy="416" r="9" fill="#16A34A"/>
+  <text x="560" y="420" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+  <line x1="551" y1="416" x2="204" y2="416" stroke="#16A34A" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="377" y="407" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">工具列表（含 JSON Schema）</text>
 
-  <!-- M5 result 工具目录 -->
-  <circle cx="985" cy="475" r="9" fill="#10B981"/>
-  <text x="985" y="479" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
-  <line x1="998" y1="475" x2="566" y2="475" stroke="#10B981" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
-  <text x="782" y="466" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">result · id=2 · [setBrightness, setColor, toggle]</text>
+  <!-- ===================== ③ 工具调用与设备执行（橙） ===================== -->
+  <!-- M6 tools/call -->
+  <circle cx="195" cy="482" r="9" fill="#F97316"/>
+  <text x="195" y="486" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+  <line x1="204" y1="482" x2="551" y2="482" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="377" y="473" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">tools/call（工具 + 参数）</text>
 
-  <!-- M6 模型决策 Agent → Client -->
-  <circle cx="215" cy="530" r="9" fill="#10B981"/>
-  <text x="215" y="534" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
-  <line x1="202" y1="530" x2="558" y2="530" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="380" y="521" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">模型决策 · 选择调用 setBrightness(75)</text>
+  <!-- M7 MCP 内部鉴权（橙强调） -->
+  <circle cx="420" cy="531" r="9" fill="#F97316"/>
+  <text x="420" y="535" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
+  <rect x="430" y="516" width="300" height="30" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="580" y="535" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">鉴权 · 白名单校验 · 风险分级</text>
 
-  <!-- M7 tools/call setBrightness -->
-  <circle cx="575" cy="585" r="9" fill="#10B981"/>
-  <text x="575" y="589" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
-  <line x1="562" y1="585" x2="994" y2="585" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="778" y="576" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">tools/call · setBrightness(brightness=75) · id=3</text>
+  <!-- M8 REST 调用 IoT 后端 -->
+  <circle cx="560" cy="580" r="9" fill="#F97316"/>
+  <text x="560" y="584" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">8</text>
+  <line x1="551" y1="580" x2="911" y2="580" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="740" y="571" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">REST 调用（设备服务 / 数据服务）</text>
 
-  <!-- M8 MQTT 下发 Server → 灯设备 -->
-  <circle cx="1015" cy="640" r="9" fill="#10B981"/>
-  <text x="1015" y="644" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">8</text>
-  <line x1="1002" y1="640" x2="1384" y2="640" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="1193" y="631" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT publish · cmnd/light/brightness 75</text>
+  <!-- M9 按原链路下发 -->
+  <circle cx="920" cy="626" r="9" fill="#F97316"/>
+  <text x="920" y="630" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">9</text>
+  <line x1="911" y1="626" x2="1311" y2="626" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="1120" y="617" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">按原链路下发 · MQTT Publish / CoAP POST</text>
 
-  <!-- M9 MQTT 状态回传 -->
-  <circle cx="1375" cy="695" r="9" fill="#10B981"/>
-  <text x="1375" y="699" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">9</text>
-  <line x1="1384" y1="695" x2="1006" y2="695" stroke="#10B981" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
-  <text x="1195" y="686" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT stat · brightness=75 OK</text>
+  <!-- M10 执行操作 -->
+  <circle cx="1320" cy="660" r="9" fill="#F97316"/>
+  <text x="1320" y="664" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">10</text>
+  <line x1="1311" y1="660" x2="1591" y2="660" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="1460" y="651" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">执行操作</text>
 
-  <!-- M10 result 返回 Client -->
-  <circle cx="985" cy="750" r="9" fill="#10B981"/>
-  <text x="985" y="754" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">10</text>
-  <line x1="998" y1="750" x2="566" y2="750" stroke="#10B981" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-green)"/>
-  <text x="782" y="741" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">result · id=3 · {success, brightness:75}</text>
+  <!-- ===================== ④ 结果回传（青） ===================== -->
+  <!-- M11 响应/遥测 -->
+  <circle cx="1600" cy="703" r="9" fill="#0F766E"/>
+  <text x="1600" y="707" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">11</text>
+  <line x1="1591" y1="703" x2="1311" y2="703" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="1460" y="694" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">响应 / 遥测上报</text>
 
-  <!-- ===================== ③ sampling（橙·虚线·反向） ===================== -->
-  <!-- M11 sampling/createMessage Server → Client -->
-  <circle cx="985" cy="830" r="9" fill="#F59E0B"/>
-  <text x="985" y="834" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">11</text>
-  <line x1="998" y1="830" x2="566" y2="830" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
-  <text x="782" y="821" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">sampling/createMessage · id=4（反向借用 Host LLM）</text>
+  <!-- M12 回调结果 -->
+  <circle cx="1320" cy="742" r="9" fill="#0F766E"/>
+  <text x="1320" y="746" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">12</text>
+  <line x1="1311" y1="742" x2="911" y2="742" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="1120" y="733" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">回调结果</text>
 
-  <!-- M12 转交 LLM Client → Agent -->
-  <circle cx="545" cy="885" r="9" fill="#F59E0B"/>
-  <text x="545" y="889" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">12</text>
-  <line x1="558" y1="885" x2="206" y2="885" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
-  <text x="382" y="876" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">转交 Host LLM 推理</text>
+  <!-- M13 返回结果 -->
+  <circle cx="920" cy="780" r="9" fill="#0F766E"/>
+  <text x="920" y="784" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">13</text>
+  <line x1="911" y1="780" x2="551" y2="780" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="740" y="771" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">返回结果（状态、数据）</text>
 
-  <!-- M13 LLM 结果回传 Agent → Client -->
-  <circle cx="215" cy="935" r="9" fill="#F59E0B"/>
-  <text x="215" y="939" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">13</text>
-  <line x1="202" y1="935" x2="558" y2="935" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
-  <text x="380" y="926" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">LLM 推理结果回传</text>
-
-  <!-- M14 result 返回 Server -->
-  <circle cx="575" cy="985" r="9" fill="#F59E0B"/>
-  <text x="575" y="989" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">14</text>
-  <line x1="562" y1="985" x2="994" y2="985" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
-  <text x="778" y="976" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">result · id=4 · {role:assistant, content}</text>
+  <!-- M14 tools/call 响应 -->
+  <circle cx="560" cy="810" r="9" fill="#0F766E"/>
+  <text x="560" y="814" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">14</text>
+  <line x1="551" y1="810" x2="204" y2="810" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="377" y="801" font-size="11" font-weight="600" fill="#0F172A" text-anchor="middle">tools/call 响应（操作结果）</text>
 
   <!-- ===== 图例 ===== -->
-  <line x1="40" y1="1025" x2="1560" y2="1025" stroke="#E2E8F0"/>
-  <text x="50" y="1050" font-size="11" font-weight="600" fill="#64748B">图例</text>
+  <line x1="40" y1="842" x2="1760" y2="842" stroke="#E2E8F0"/>
+  <text x="50" y="866" font-size="11" font-weight="600" fill="#64748B">图例</text>
 
-  <line x1="108" y1="1046" x2="148" y2="1046" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="156" y="1050" font-size="11" fill="#475569">① 初始化（initialize / initialized）</text>
+  <line x1="96" y1="862" x2="136" y2="862" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="144" y="866" font-size="11" fill="#475569">① 会话建立（session init）</text>
 
-  <line x1="438" y1="1046" x2="478" y2="1046" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="486" y="1050" font-size="11" fill="#475569">② 运行（tools/list · tools/call · MQTT · result）</text>
+  <line x1="376" y1="862" x2="416" y2="862" stroke="#16A34A" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="424" y="866" font-size="11" fill="#475569">② 工具发现（tools/list）</text>
 
-  <line x1="888" y1="1046" x2="928" y2="1046" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-orange)"/>
-  <text x="936" y="1050" font-size="11" fill="#475569">③ sampling 反向借用 LLM</text>
+  <line x1="646" y1="862" x2="686" y2="862" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <text x="694" y="866" font-size="11" fill="#475569">③ 工具调用 · 设备执行</text>
 
-  <line x1="1262" y1="1046" x2="1302" y2="1046" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah-blue)"/>
-  <text x="1310" y="1050" font-size="11" fill="#475569">虚线 = 响应 / 回传</text>
+  <line x1="876" y1="862" x2="916" y2="862" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="924" y="866" font-size="11" fill="#475569">④ 结果回传</text>
+
+  <rect x="1090" y="854" width="30" height="16" rx="4" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="1128" y="866" font-size="11" fill="#475569">MCP Server 鉴权 / 聚合</text>
+
+  <line x1="1340" y1="862" x2="1380" y2="862" stroke="#64748B" stroke-width="1.6"/>
+  <text x="1388" y="866" font-size="11" fill="#475569">实线 = 同步调用（请求/响应）</text>
 
   <!-- ===== caption ===== -->
-  <text x="800" y="1085" font-size="10" fill="#94A3B8" text-anchor="middle">图9-5 MCP 三阶段生命周期：初始化能力协商 → 运行期 tools/call 经 MQTT 下发灯设备 → sampling 反向借用 Host LLM；所有消息均为标准 JSON-RPC 2.0 结构。</text>
+  <text x="900" y="892" font-size="10.5" fill="#94A3B8" text-anchor="middle">图9-6 MCP协议交互序列示意：AI Agent 经 MCP Server 鉴权与工具路由，通过 IoT 平台后端安全链路访问设备服务，最终回传操作结果。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
       <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下时间线，左侧参与者：AI Agent, MCP Server, IoT平台服务, 设备协议适配层, 物理设备。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自上而下时间线，参与者：AI Agent, MCP Server, IoT平台后端, 设备协议适配层, 物理设备。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

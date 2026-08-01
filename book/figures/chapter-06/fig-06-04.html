@@ -7,6 +7,7 @@
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    svg text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -17,86 +18,121 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图6-4 单体到微服务演进阶段图</title>
-  <desc id="desc">读者应理解单体到微服务演进阶段图中的主链路、责任边界和工程取舍。</desc>
+  <desc id="desc">展示物联网项目从单体原型到多服务演进的典型路径，标注各阶段关键特征与风险。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#94A3B8"/></marker>
+    <marker id="bp-arrow-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0, 11 4, 0 8" fill="#1565C0"/></marker>
+    <marker id="bp-arrow-sm" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#475569"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图6-4 单体到微服务演进阶段图</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解单体到微服务演进阶段图中的主链路、责任边界和工程取舍。</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">展示物联网项目从单体原型到多服务演进的典型路径，标注各阶段关键特征与风险。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LIFECYCLE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="lifecycle">
-  <!-- Time indicator arrow -->
-  <line x1="80" y1="420" x2="110" y2="420" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <text x="85" y="410" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" fill="#0F172A">时间</text>
 
-  <!-- Arrow 1: Stage1 -> Stage2 -->
-  <line x1="440" y1="420" x2="540" y2="420" stroke="#1565C0" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="435" y="405" width="110" height="20" rx="3" fill="#FFFFFF" stroke="none"/>
-  <text x="490" y="420" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">单一变更影响全局</text>
+    <!-- ============ 顶部风险标签（浅红底色 #FFCDD2） ============ -->
+    <rect x="240" y="224" width="100" height="28" rx="6" fill="#FFCDD2" stroke="#DC2626" stroke-width="1"/>
+    <text x="290" y="243" text-anchor="middle" fill="#DC2626" font-size="12" font-weight="600">部署效率低</text>
+    <rect x="640" y="224" width="100" height="28" rx="6" fill="#FFCDD2" stroke="#DC2626" stroke-width="1"/>
+    <text x="690" y="243" text-anchor="middle" fill="#DC2626" font-size="12" font-weight="600">单点故障</text>
+    <rect x="1040" y="224" width="100" height="28" rx="6" fill="#FFCDD2" stroke="#DC2626" stroke-width="1"/>
+    <text x="1090" y="243" text-anchor="middle" fill="#DC2626" font-size="12" font-weight="600">数据一致性</text>
+    <rect x="1434" y="224" width="112" height="28" rx="6" fill="#FFCDD2" stroke="#DC2626" stroke-width="1"/>
+    <text x="1490" y="243" text-anchor="middle" fill="#DC2626" font-size="12" font-weight="600">分布式事务成本</text>
 
-  <!-- Arrow 2: Stage2 -> Stage3 -->
-  <line x1="860" y1="420" x2="960" y2="420" stroke="#1565C0" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="865" y="405" width="90" height="20" rx="3" fill="#FFFFFF" stroke="none"/>
-  <text x="910" y="420" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">功能耦合加剧</text>
+    <!-- ============ 阶段间演进箭头（深蓝粗箭头 + 动机标注） ============ -->
+    <!-- 箭头1：阶段一 -> 阶段二 -->
+    <line x1="430" y1="410" x2="561" y2="410" stroke="#1565C0" stroke-width="4" marker-end="url(#bp-arrow-blue)"/>
+    <rect x="434" y="386" width="116" height="22" rx="11" fill="#FFFFFF"/>
+    <text x="492" y="402" text-anchor="middle" fill="#0F172A" font-size="12" font-weight="600">单一变更影响全局</text>
+    <!-- 箭头2：阶段二 -> 阶段三 -->
+    <line x1="819" y1="410" x2="930" y2="410" stroke="#1565C0" stroke-width="4" marker-end="url(#bp-arrow-blue)"/>
+    <rect x="838" y="386" width="92" height="22" rx="11" fill="#FFFFFF"/>
+    <text x="884" y="402" text-anchor="middle" fill="#0F172A" font-size="12" font-weight="600">功能耦合加剧</text>
+    <!-- 箭头3：阶段三 -> 阶段四 -->
+    <line x1="1230" y1="410" x2="1352" y2="410" stroke="#1565C0" stroke-width="4" marker-end="url(#bp-arrow-blue)"/>
+    <rect x="1244" y="386" width="92" height="22" rx="11" fill="#FFFFFF"/>
+    <text x="1290" y="402" text-anchor="middle" fill="#0F172A" font-size="12" font-weight="600">团队分工需求</text>
 
-  <!-- Arrow 3: Stage3 -> Stage4 -->
-  <line x1="1300" y1="420" x2="1380" y2="420" stroke="#1565C0" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="1295" y="405" width="90" height="20" rx="3" fill="#FFFFFF" stroke="none"/>
-  <text x="1340" y="420" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#0F172A" text-anchor="middle">团队分工需求</text>
+    <!-- ============ 阶段一：单体原型（浅灰矩形） ============ -->
+    <rect x="150" y="260" width="280" height="300" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+    <rect x="250" y="276" width="80" height="26" rx="13" fill="#2563EB"/>
+    <text x="290" y="293" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">阶段一</text>
+    <text x="290" y="336" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="700">单体原型</text>
+    <text x="290" y="378" text-anchor="middle" fill="#334155" font-size="14">模块化包结构</text>
+    <text x="290" y="402" text-anchor="middle" fill="#334155" font-size="14">快速验证</text>
+    <line x1="174" y1="470" x2="406" y2="470" stroke="#E2E8F0"/>
+    <text x="290" y="505" text-anchor="middle" fill="#64748B" font-size="13">团队 &lt;3人</text>
 
-  <!-- Stage 1: Monolith Prototype -->
-  <rect x="120" y="350" width="320" height="140" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="280" y="395" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">模块化包结构</text>
-  <text x="280" y="415" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">快速验证</text>
-  <text x="280" y="505" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#64748B" text-anchor="middle">团队 &lt;3人</text>
-  <!-- Risk tag -->
-  <rect x="240" y="326" width="80" height="24" rx="4" fill="#FEF2F2" stroke="#DC2626" stroke-width="1"/>
-  <text x="280" y="342" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#DC2626" text-anchor="middle">部署效率低</text>
+    <!-- ============ 阶段二：核心模块剥离（梯形） ============ -->
+    <polygon points="572,260 808,260 830,560 550,560" fill="#E2ECF9" stroke="#7BA9E8" stroke-width="1.5"/>
+    <rect x="650" y="276" width="80" height="26" rx="13" fill="#2563EB"/>
+    <text x="690" y="293" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">阶段二</text>
+    <text x="690" y="336" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="700">核心模块剥离</text>
+    <text x="690" y="378" text-anchor="middle" fill="#334155" font-size="14">数据库隔离</text>
+    <text x="690" y="402" text-anchor="middle" fill="#334155" font-size="14">接口契约、容器化</text>
+    <line x1="574" y1="470" x2="806" y2="470" stroke="#CFDCF0"/>
+    <text x="690" y="505" text-anchor="middle" fill="#64748B" font-size="13">团队 3-5人</text>
 
-  <!-- Stage 2: Core Module Extraction (trapezoid) -->
-  <polygon points="560,350 840,350 860,490 540,490" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="700" y="395" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">数据库隔离、</text>
-  <text x="700" y="415" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">接口契约、容器化</text>
-  <text x="700" y="505" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#64748B" text-anchor="middle">团队3-5人</text>
-  <!-- Risk tag -->
-  <rect x="660" y="326" width="80" height="24" rx="4" fill="#FEF2F2" stroke="#DC2626" stroke-width="1"/>
-  <text x="700" y="342" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#DC2626" text-anchor="middle">单点故障</text>
+    <!-- ============ 阶段三：事件驱动改造（圆角矩形 + 消息管道） ============ -->
+    <rect x="930" y="260" width="300" height="300" rx="14" fill="#BFDBFE" stroke="#3B82F6" stroke-width="1.5"/>
+    <rect x="1050" y="276" width="80" height="26" rx="13" fill="#2563EB"/>
+    <text x="1090" y="293" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">阶段三</text>
+    <text x="1090" y="336" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="700">事件驱动改造</text>
+    <!-- 消息管道：MQTT Broker -> 消息队列 -> 消费端扩容 -->
+    <rect x="946" y="372" width="84" height="38" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="988" y="395" text-anchor="middle" fill="#1E3A8A" font-size="11" font-weight="600">MQTT Broker</text>
+    <line x1="1032" y1="391" x2="1044" y2="391" stroke="#475569" stroke-width="1.5" marker-end="url(#bp-arrow-sm)"/>
+    <rect x="1046" y="372" width="84" height="38" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="1088" y="395" text-anchor="middle" fill="#1E3A8A" font-size="12" font-weight="600">消息队列</text>
+    <line x1="1132" y1="391" x2="1144" y2="391" stroke="#475569" stroke-width="1.5" marker-end="url(#bp-arrow-sm)"/>
+    <rect x="1146" y="372" width="84" height="38" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="1188" y="395" text-anchor="middle" fill="#1E3A8A" font-size="12" font-weight="600">消费端扩容</text>
+    <line x1="954" y1="470" x2="1206" y2="470" stroke="#AFCCF6"/>
+    <text x="1090" y="505" text-anchor="middle" fill="#64748B" font-size="13">团队 5-8人</text>
 
-  <!-- Stage 3: Event-Driven Transformation -->
-  <rect x="960" y="350" width="320" height="140" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="1120" y="395" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">MQTT Broker -&gt; 消息队列 -&gt;</text>
-  <text x="1120" y="415" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">消费端扩容</text>
-  <text x="1120" y="505" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#64748B" text-anchor="middle">团队5-8人</text>
-  <!-- Risk tag -->
-  <rect x="1080" y="326" width="80" height="24" rx="4" fill="#FEF2F2" stroke="#DC2626" stroke-width="1"/>
-  <text x="1120" y="342" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#DC2626" text-anchor="middle">数据一致性</text>
+    <!-- ============ 阶段四：持续演进（虚线矩形，最深蓝） ============ -->
+    <rect x="1330" y="260" width="300" height="300" rx="12" fill="#93C5FD" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,5"/>
+    <rect x="1450" y="276" width="80" height="26" rx="13" fill="#2563EB"/>
+    <text x="1490" y="293" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">阶段四</text>
+    <text x="1490" y="336" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="700">持续演进</text>
+    <text x="1490" y="378" text-anchor="middle" fill="#334155" font-size="14">按场景拆分</text>
+    <text x="1490" y="402" text-anchor="middle" fill="#334155" font-size="14">聚合服务整合</text>
+    <line x1="1354" y1="470" x2="1606" y2="470" stroke="#B8D4F8"/>
+    <text x="1490" y="505" text-anchor="middle" fill="#64748B" font-size="13">团队 8-15人</text>
 
-  <!-- Stage 4: Continuous Evolution (dashed) -->
-  <rect x="1380" y="350" width="320" height="140" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <text x="1540" y="395" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">按场景拆分、</text>
-  <text x="1540" y="415" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">聚合服务整合</text>
-  <text x="1540" y="505" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#64748B" text-anchor="middle">团队8-15人</text>
-  <!-- Risk tag -->
-  <rect x="1500" y="326" width="80" height="24" rx="4" fill="#FEF2F2" stroke="#DC2626" stroke-width="1"/>
-  <text x="1540" y="342" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#DC2626" text-anchor="middle">分布式事务成本</text>
-</g>
+    <!-- ============ 水平时间轴（起点标记 + 里程碑 + 终点'持续演进'） ============ -->
+    <text x="134" y="615" text-anchor="end" fill="#475569" font-size="13" font-weight="600">时间</text>
+    <circle cx="150" cy="620" r="4" fill="#94A3B8"/>
+    <line x1="150" y1="620" x2="1680" y2="620" stroke="#94A3B8" stroke-width="2" marker-end="url(#bp-arrow)"/>
+    <text x="1696" y="615" text-anchor="start" fill="#475569" font-size="13" font-weight="600">持续演进</text>
+    <!-- 里程碑节点 -->
+    <circle cx="290" cy="620" r="4" fill="#2563EB"/>
+    <text x="290" y="642" text-anchor="middle" fill="#475569" font-size="12">模块化验证原型</text>
+    <circle cx="690" cy="620" r="4" fill="#2563EB"/>
+    <text x="690" y="642" text-anchor="middle" fill="#475569" font-size="12">核心模块独立部署</text>
+    <circle cx="1090" cy="620" r="4" fill="#2563EB"/>
+    <text x="1090" y="642" text-anchor="middle" fill="#475569" font-size="12">事件驱动弹性扩容</text>
+    <circle cx="1490" cy="620" r="4" fill="#2563EB"/>
+    <text x="1490" y="642" text-anchor="middle" fill="#475569" font-size="12">按场景持续演进</text>
+  </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝=核心平台与主链路</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿=设备、边缘与接入</text>
-  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙=AI，紫=数据，红=安全</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图6-1 展示从单体原型到微服务持续演进的四个典型阶段。</text>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFCDD2" stroke="#DC2626" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">浅红底色 = 阶段关键风险</text>
+  <rect x="500" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#1565C0" stroke-width="2"/>
+  <text x="524" y="808" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">深蓝箭头 = 演进方向与动机</text>
+  <rect x="930" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="954" y="808" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">虚线边框 = 持续演进阶段</text>
+  <rect x="1320" y="797" width="8" height="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+  <rect x="1328" y="797" width="8" height="12" fill="#93C5FD" stroke="#2563EB" stroke-width="1"/>
+  <text x="1348" y="808" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">浅灰→深蓝 = 架构演进趋势</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="12" font-weight="600" text-anchor="middle">图6-4 展示从单体原型到微服务持续演进的四个典型阶段。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

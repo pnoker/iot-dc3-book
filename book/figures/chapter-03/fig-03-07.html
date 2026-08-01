@@ -17,138 +17,117 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图3-7 TinyML模型训练与部署全流程</title>
-  <desc id="desc">读者应理解TinyML模型训练与部署全流程中的主链路、责任边界和工程取舍。</desc>
+  <desc id="desc">从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/></marker>
+    <marker id="bp-arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图3-7 TinyML模型训练与部署全流程</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解TinyML模型训练与部署全流程中的主链路、责任边界和工程取舍。</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart">
-  <!-- 阶段框背景 -->
-  <rect x="80" y="150" width="375" height="380" rx="10" fill="white" stroke="#2563EB" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <rect x="495" y="150" width="375" height="380" rx="10" fill="white" stroke="#7C3AED" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <rect x="910" y="150" width="375" height="380" rx="10" fill="white" stroke="#F97316" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <rect x="1325" y="150" width="375" height="380" rx="10" fill="white" stroke="#16A34A" stroke-dasharray="8,4" stroke-width="1.5"/>
-  
-  <!-- 阶段框标题 -->
-  <text x="267.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段1：数据准备</text>
-  <text x="682.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段2：云端训练</text>
-  <text x="1097.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段3：模型优化</text>
-  <text x="1512.5" y="178" text-anchor="middle" font-size="18" font-weight="bold" fill="#0F172A">阶段4：端侧部署</text>
-  
-  <!-- 内部节点：阶段1 -->
-  <rect x="167.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="267.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">数据采集</text>
-  <text x="267.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">传感器</text>
-  
-  <rect x="167.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="267.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">数据标注</text>
-  <text x="267.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">预处理</text>
-  
-  <rect x="167.5" y="360" width="200" height="60" rx="8" fill="white" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="267.5" y="386" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">标注数据集</text>
-  <text x="267.5" y="408" text-anchor="middle" font-size="11" fill="#64748B">训练/验证/测试</text>
-  
-  <!-- 内部节点：阶段2 -->
-  <rect x="582.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="682.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型构建</text>
-  <text x="682.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">轻量级</text>
-  
-  <rect x="582.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="682.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型训练</text>
-  <text x="682.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">云端</text>
-  
-  <rect x="582.5" y="360" width="200" height="60" rx="8" fill="white" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="682.5" y="386" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">float32模型</text>
-  <text x="682.5" y="408" text-anchor="middle" font-size="11" fill="#64748B">全精度</text>
-  
-  <!-- 内部节点：阶段3 -->
-  <rect x="997.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1097.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型量化</text>
-  <text x="1097.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">float32→int8</text>
-  
-  <rect x="997.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1097.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型剪枝</text>
-  <text x="1097.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">稀疏化</text>
-  
-  <!-- 判定菱形 -->
-  <path d="M 1047.5,400 L 1097.5,365 L 1147.5,400 L 1097.5,435 Z" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
-  <text x="1097.5" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">精度验证</text>
-  
-  <!-- 内部节点：阶段4 -->
-  <rect x="1412.5" y="200" width="200" height="60" rx="8" fill="white" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="1512.5" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">模型编译</text>
-  <text x="1512.5" y="248" text-anchor="middle" font-size="11" fill="#64748B">C代码</text>
-  
-  <rect x="1412.5" y="280" width="200" height="60" rx="8" fill="white" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="1512.5" y="306" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">固件烧录</text>
-  <text x="1512.5" y="328" text-anchor="middle" font-size="11" fill="#64748B">MCU</text>
-  
-  <rect x="1412.5" y="360" width="200" height="60" rx="8" fill="white" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="1512.5" y="386" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">本地推理</text>
-  <text x="1512.5" y="408" text-anchor="middle" font-size="11" fill="#64748B">传感器节点</text>
-  
-  <!-- 内部连线 -->
-  <line x1="267.5" y1="260" x2="267.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="267.5" y1="340" x2="267.5" y2="360" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="682.5" y1="260" x2="682.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="682.5" y1="340" x2="682.5" y2="360" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="1097.5" y1="260" x2="1097.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="1097.5" y1="340" x2="1097.5" y2="365" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="1512.5" y1="260" x2="1512.5" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <line x1="1512.5" y1="340" x2="1512.5" y2="360" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  
-  <!-- 阶段间主箭头 -->
-  <!-- 阶段1->2 -->
-  <path d="M 367.5 390 L 475 390 L 475 230 L 582.5 230" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
-  <!-- 阶段2->3 -->
-  <path d="M 782.5 390 L 890 390 L 890 230 L 997.5 230" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
-  <!-- 阶段3->4（精度通过） -->
-  <path d="M 1147.5 400 L 1305 400 L 1305 230 L 1412.5 230" fill="none" stroke="#16A34A" stroke-width="3" marker-end="url(#bp-arrow-primary)"/>
-  
-  <!-- 回退路径 -->
-  <path d="M 1047.5,400 L 850,400 L 850,280 L 782.5,280" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  
+
+  <!-- 区域带 -->
+  <rect x="110" y="170" width="1010" height="480" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="135" y="202" fill="#0F172A" font-size="15" font-weight="700">模型开发域</text>
+  <text x="135" y="224" fill="#64748B" font-size="12">训练与调优（云端 / 工作站）</text>
+
+  <rect x="1150" y="170" width="540" height="480" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1175" y="202" fill="#0F172A" font-size="15" font-weight="700">端侧运行域</text>
+  <text x="1175" y="224" fill="#64748B" font-size="12">MCU 推理执行</text>
+
+  <!-- 阶段1：数据准备 -->
+  <rect x="160" y="250" width="270" height="120" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="295" y="306" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">数据准备</text>
+  <text x="295" y="338" text-anchor="middle" font-size="14" fill="#475569">采集、标注、切分</text>
+
+  <!-- 阶段2：云端训练 -->
+  <rect x="520" y="250" width="270" height="120" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+  <text x="655" y="306" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">云端训练</text>
+  <text x="655" y="338" text-anchor="middle" font-size="14" fill="#475569">轻量模型训练</text>
+
+  <!-- 阶段3：模型优化 -->
+  <rect x="880" y="250" width="270" height="120" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+  <text x="1015" y="306" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">模型优化</text>
+  <text x="1015" y="338" text-anchor="middle" font-size="14" fill="#475569">量化 + 剪枝</text>
+
+  <!-- 阶段3判定：精度验收（菱形） -->
+  <path d="M 1015,435 L 1110,495 L 1015,555 L 920,495 Z" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/>
+  <text x="1015" y="497" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">精度验收</text>
+  <text x="1015" y="524" text-anchor="middle" font-size="13" fill="#92400E">损失可接受？</text>
+
+  <!-- 阶段4：端侧部署 -->
+  <rect x="1270" y="250" width="300" height="120" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
+  <text x="1420" y="306" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">端侧部署</text>
+  <text x="1420" y="338" text-anchor="middle" font-size="14" fill="#475569">编译 → 烧录 → 运行</text>
+
+  <!-- 阶段4内部：编译步骤 -->
+  <rect x="1270" y="450" width="300" height="120" rx="12" fill="#F8FAFC" stroke="#475569" stroke-width="2"/>
+  <text x="1420" y="506" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">编译步骤</text>
+  <text x="1420" y="538" text-anchor="middle" font-size="14" fill="#475569">固件转换与集成</text>
+
+  <!-- 正向主流程（粗实线） -->
+  <line x1="430" y1="310" x2="520" y2="310" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-blue)"/>
+  <line x1="790" y1="310" x2="880" y2="310" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-blue)"/>
+  <line x1="1015" y1="370" x2="1015" y2="435" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-blue)"/>
+
+  <!-- 验收通过 → 端侧部署（绿色粗实线） -->
+  <path d="M 1110,495 L 1220,495 L 1220,310 L 1270,310" fill="none" stroke="#16A34A" stroke-width="3" marker-end="url(#bp-arrow-green)"/>
+
+  <!-- 回退调优 → 云端训练（红色虚线） -->
+  <path d="M 920,495 L 720,495 L 720,370" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow-red)"/>
+
+  <!-- 端侧部署 → 编译步骤（内部步骤，中性实线） -->
+  <line x1="1420" y1="370" x2="1420" y2="450" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)"/>
+
   <!-- 箭头标签 -->
-  <!-- 阶段1->2标签 -->
-  <rect x="440" y="295" width="70" height="20" rx="4" fill="white" stroke="none"/>
-  <text x="475" y="309" text-anchor="middle" font-size="11" fill="#2563EB">正向数据流</text>
-  
-  <!-- 阶段2->3标签 -->
-  <rect x="855" y="295" width="70" height="20" rx="4" fill="white" stroke="none"/>
-  <text x="890" y="309" text-anchor="middle" font-size="11" fill="#2563EB">正向数据流</text>
-  
-  <!-- 阶段3->4标签 -->
-  <rect x="1270" y="310" width="70" height="20" rx="4" fill="white" stroke="none"/>
-  <text x="1305" y="324" text-anchor="middle" font-size="11" fill="#16A34A">精度达标</text>
-  
-  <!-- 回退标签 -->
-  <rect x="860" y="385" width="80" height="20" rx="4" fill="white" stroke="none"/>
-  <text x="900" y="399" text-anchor="middle" font-size="11" fill="#DC2626">精度损失>2%</text>
+  <rect x="435" y="291" width="80" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="475" y="304" text-anchor="middle" font-size="12" fill="#2563EB">训练数据</text>
+
+  <rect x="795" y="291" width="80" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="835" y="304" text-anchor="middle" font-size="12" fill="#2563EB">全精度模型</text>
+
+  <rect x="1031" y="393" width="56" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1059" y="406" text-anchor="middle" font-size="12" fill="#2563EB">验证</text>
+
+  <rect x="1180" y="481" width="80" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1220" y="494" text-anchor="middle" font-size="12" fill="#16A34A">验收通过</text>
+
+  <rect x="736" y="462" width="80" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="776" y="475" text-anchor="middle" font-size="12" fill="#DC2626">回退调优</text>
+
+  <rect x="1438" y="401" width="80" height="18" rx="3" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1478" y="414" text-anchor="middle" font-size="12" fill="#475569">内部步骤</text>
+
+  <!-- 工程要点说明 -->
+  <rect x="110" y="672" width="1560" height="96" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1"/>
+  <rect x="110" y="672" width="5" height="96" rx="2" fill="#F97316"/>
+  <text x="135" y="700" font-size="14" font-weight="700" fill="#0F172A">工程要点</text>
+  <text x="135" y="724" font-size="12.5" fill="#475569">精度验收为菱形判定节点，验收依据是业务定义的可接受偏差阈值（如准确率、误触率）；通过则进入端侧部署。</text>
+  <text x="135" y="748" font-size="12.5" fill="#475569">虚线为回退路径：量化 + 剪枝后精度不达标时返回云端训练调优；QAT 在训练阶段模拟量化，往往能提升精度。</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：数据准备；紫色：云端训练；橙色：模型优化；绿色：端侧部署</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">粗实线箭头：正向数据流；虚线箭头：回退迭代路径</text>
-  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">菱形：判定节点，表示精度验证</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-12 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。</text>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：数据准备；青色：云端训练</text>
+  <rect x="480" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="504" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色：模型优化；绿色：端侧部署</text>
+  <rect x="880" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="904" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">粗实线：正向流程；虚线：回退迭代；菱形：精度验收</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-7 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
       <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左到右横向四阶段，正向流程用粗实线箭头，回退流程用虚线箭头。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从左到右横向四阶段，正向流程用粗实线箭头，回退流程用虚线箭头。模型开发域（数据准备→云端训练→模型优化→精度验收）与端侧运行域（端侧部署→编译步骤）分域展示。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

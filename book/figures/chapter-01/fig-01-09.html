@@ -17,88 +17,154 @@
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图1-9 物联网价值迁移路径</title>
-  <desc id="desc">读者应理解平台市场并非一家独大，差异化定位决定了不同场景下的选型优先级。</desc>
+  <desc id="desc">展示物联网价值重心从连接层向智能决策层迁移的路径，以及每层对应的典型产品形态和商业模式。读者应看到价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <linearGradient id="valueGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="50%" stop-color="#0F766E"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图1-9 物联网价值迁移路径</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解平台市场并非一家独大，差异化定位决定了不同场景下的选型优先级。</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">展示物联网价值重心从连接层向智能决策层迁移的路径，以及每层对应的典型产品形态和商业模式。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart">
-  <!-- X-axis -->
-  <line x1="200" y1="700" x2="1400" y2="700" stroke="#64748b" stroke-width="2" />
-  <polygon points="1390,695 1400,700 1390,705" fill="#64748b" />
-  <!-- Y-axis -->
-  <line x1="200" y1="700" x2="200" y2="200" stroke="#64748b" stroke-width="2" />
-  <polygon points="195,210 200,200 205,210" fill="#64748b" />
 
-  <!-- X-axis ticks and labels -->
-  <line x1="350" y1="695" x2="350" y2="705" stroke="#64748b" stroke-width="2" />
-  <text x="350" y="720" fill="#0F172A" font-size="14" text-anchor="middle">有限</text>
-  <line x1="700" y1="695" x2="700" y2="705" stroke="#64748b" stroke-width="2" />
-  <text x="700" y="720" fill="#0F172A" font-size="14" text-anchor="middle">中等</text>
-  <line x1="1050" y1="695" x2="1050" y2="705" stroke="#64748b" stroke-width="2" />
-  <text x="1050" y="720" fill="#0F172A" font-size="14" text-anchor="middle">完整</text>
+    <!-- ===== value regions (background bands) ===== -->
+    <rect x="100" y="150" width="490" height="610" rx="16" fill="#F1F5F9" fill-opacity="0.5" stroke="#E2E8F0" stroke-dasharray="6 5"/>
+    <rect x="640" y="150" width="520" height="610" rx="16" fill="#EFF6FF" fill-opacity="0.45" stroke="#BFDBFE" stroke-dasharray="6 5"/>
+    <rect x="1210" y="150" width="490" height="610" rx="16" fill="#FFF7ED" fill-opacity="0.5" stroke="#FED7AA" stroke-dasharray="6 5"/>
 
-  <!-- Y-axis ticks and labels -->
-  <line x1="195" y1="620" x2="205" y2="620" stroke="#64748b" stroke-width="2" />
-  <text x="185" y="625" fill="#0F172A" font-size="14" text-anchor="end">弱</text>
-  <line x1="195" y1="470" x2="205" y2="470" stroke="#64748b" stroke-width="2" />
-  <text x="185" y="475" fill="#0F172A" font-size="14" text-anchor="end">中等</text>
-  <line x1="195" y1="320" x2="205" y2="320" stroke="#64748b" stroke-width="2" />
-  <text x="185" y="325" fill="#0F172A" font-size="14" text-anchor="end">强</text>
+    <!-- region pills + desc -->
+    <rect x="135" y="160" width="150" height="30" rx="15" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="210" y="179" fill="#475569" font-size="13" font-weight="700" text-anchor="middle">低价值区</text>
+    <text x="345" y="208" fill="#64748B" font-size="12" text-anchor="middle">连接已商品化 · 利润薄</text>
 
-  <!-- Axis labels -->
-  <text x="800" y="750" fill="#0F172A" font-size="16" font-weight="bold" text-anchor="middle">生态完整性</text>
-  <text x="130" y="450" fill="#0F172A" font-size="16" font-weight="bold" text-anchor="middle" transform="rotate(-90,130,450)">运营商支持力度</text>
+    <rect x="690" y="160" width="150" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="765" y="179" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">中价值区</text>
+    <text x="900" y="208" fill="#64748B" font-size="12" text-anchor="middle">巨头主导 · 独立厂商空间有限</text>
 
-  <!-- Quadrant dividing lines (dashed) -->
-  <line x1="650" y1="700" x2="650" y2="300" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4" />
-  <line x1="200" y1="450" x2="1250" y2="450" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4" />
+    <rect x="1260" y="160" width="150" height="30" rx="15" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="1335" y="179" fill="#F97316" font-size="13" font-weight="700" text-anchor="middle">高价值区</text>
+    <text x="1455" y="208" fill="#64748B" font-size="12" text-anchor="middle">数据 + AI 驱动 · 利润率最高</text>
 
-  <!-- Region labels -->
-  <text x="1200" y="320" fill="#2563EB" font-size="16" font-weight="bold" text-anchor="middle">主导区</text>
-  <text x="300" y="660" fill="#D97706" font-size="16" font-weight="bold" text-anchor="middle">细分区</text>
+    <!-- ===== value migration gradient bar ===== -->
+    <text x="100" y="216" fill="#64748B" font-size="11">价值重心迁移</text>
+    <rect x="100" y="222" width="1600" height="6" rx="3" fill="url(#valueGrad)"/>
+    <polygon points="1688,216 1702,225 1688,234" fill="#F97316"/>
 
-  <!-- Bubble: Platform A (生态高, 支持中等) -->
-  <circle cx="1050" cy="470" r="45" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" opacity="0.9" />
-  <text x="1050" y="460" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">平台A</text>
-  <text x="1050" y="480" fill="#475569" font-size="11" text-anchor="middle">云原生厂商</text>
+    <!-- ===== main layer cards ===== -->
+    <!-- 连接层 -->
+    <g data-node="connectivity_layer">
+      <rect x="205" y="260" width="280" height="170" rx="16" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+      <circle cx="231" cy="300" r="6" fill="#2563EB"/>
+      <text x="247" y="307" fill="#0F172A" font-size="20" font-weight="700">连接层</text>
+      <text x="455" y="301" fill="#94A3B8" font-size="9" text-anchor="end" letter-spacing="1.2">CONNECTIVITY</text>
+      <text x="225" y="345" fill="#475569" font-size="12">通信模组 · SIM · 连接管理</text>
+      <line x1="220" y1="358" x2="470" y2="358" stroke="#E2E8F0"/>
+      <rect x="225" y="382" width="84" height="26" rx="13" fill="#F1F5F9" stroke="#CBD5E1"/>
+      <text x="267" y="399" fill="#475569" font-size="12" text-anchor="middle">低毛利</text>
+      <rect x="325" y="386" width="145" height="10" rx="5" fill="#F1F5F9"/>
+      <rect x="325" y="386" width="44" height="10" rx="5" fill="#2563EB"/>
+      <text x="225" y="424" fill="#94A3B8" font-size="10">连接已商品化 · 利润薄</text>
+    </g>
 
-  <!-- Bubble: Platform B (生态中, 支持强) -->
-  <circle cx="700" cy="320" r="50" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" opacity="0.9" />
-  <text x="700" y="310" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">平台B</text>
-  <text x="700" y="330" fill="#475569" font-size="11" text-anchor="middle">运营商平台</text>
+    <!-- 平台层 -->
+    <g data-node="platform_layer">
+      <rect x="760" y="260" width="280" height="170" rx="16" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+      <circle cx="786" cy="300" r="6" fill="#2563EB"/>
+      <text x="802" y="307" fill="#0F172A" font-size="20" font-weight="700">平台层</text>
+      <text x="1010" y="301" fill="#94A3B8" font-size="9" text-anchor="end" letter-spacing="1.2">PLATFORM</text>
+      <text x="780" y="345" fill="#475569" font-size="12">设备管理 · 规则引擎</text>
+      <line x1="775" y1="358" x2="1025" y2="358" stroke="#E2E8F0"/>
+      <rect x="780" y="382" width="100" height="26" rx="13" fill="#EFF6FF" stroke="#2563EB"/>
+      <text x="830" y="399" fill="#2563EB" font-size="12" text-anchor="middle">中等毛利</text>
+      <rect x="890" y="386" width="145" height="10" rx="5" fill="#EFF6FF"/>
+      <rect x="890" y="386" width="87" height="10" rx="5" fill="#2563EB"/>
+      <text x="780" y="424" fill="#94A3B8" font-size="10">巨头主导 · 独立厂商空间有限</text>
+    </g>
 
-  <!-- Bubble: Platform C (生态中, 支持中等) -->
-  <circle cx="700" cy="470" r="35" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" opacity="0.9" />
-  <text x="700" y="465" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">平台C</text>
-  <text x="700" y="482" fill="#475569" font-size="11" text-anchor="middle">开源或行业平台</text>
+    <!-- 智能层 -->
+    <g data-node="intelligence_layer">
+      <rect x="1315" y="260" width="280" height="170" rx="16" fill="#FFF7ED" stroke="#F97316" stroke-width="3"/>
+      <circle cx="1341" cy="300" r="6" fill="#F97316"/>
+      <text x="1357" y="307" fill="#0F172A" font-size="20" font-weight="700">智能层</text>
+      <text x="1565" y="301" fill="#94A3B8" font-size="9" text-anchor="end" letter-spacing="1.2">INTELLIGENCE</text>
+      <text x="1335" y="345" fill="#475569" font-size="12">数据分析 · AI 决策</text>
+      <line x1="1330" y1="358" x2="1580" y2="358" stroke="#FED7AA"/>
+      <rect x="1335" y="382" width="84" height="26" rx="13" fill="#F97316" stroke="#F97316"/>
+      <text x="1377" y="399" fill="#FFFFFF" font-size="12" text-anchor="middle">高毛利</text>
+      <rect x="1429" y="386" width="145" height="10" rx="5" fill="#FED7AA"/>
+      <rect x="1429" y="386" width="145" height="10" rx="5" fill="#F97316"/>
+      <text x="1335" y="424" fill="#94A3B8" font-size="10">数据 + AI 驱动 · 增长最快</text>
+    </g>
 
-  <!-- Bubble: Platform D (生态低, 支持弱) -->
-  <circle cx="350" cy="620" r="25" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" opacity="0.9" />
-  <text x="350" y="618" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">平台D</text>
-</g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=云原生平台；青绿色=运营商平台；灰色=开源或垂直方案</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">气泡大小示意市场影响力（非真实数据）</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图1-5 示意展示2020年前后物联网平台市场在生态完整性与运营商支持力度两个维度的差异化定位。气泡位置与大小仅为教学示意，不代表真实市场份额。</text>
+    <!-- ===== value flow arrows (width = relative value share) ===== -->
+    <text x="622" y="328" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">价值汇聚</text>
+    <line x1="485" y1="345" x2="735" y2="345" stroke="#2563EB" stroke-width="6"/>
+    <polygon points="735,337 760,345 735,353" fill="#2563EB"/>
+
+    <text x="1177" y="318" fill="#F97316" font-size="13" font-weight="700" text-anchor="middle">数据驱动</text>
+    <line x1="1040" y1="345" x2="1290" y2="345" stroke="#F97316" stroke-width="13"/>
+    <polygon points="1290,332 1315,345 1290,358" fill="#F97316"/>
+
+    <!-- ===== business model hexagons ===== -->
+    <g data-node="connectivity_business">
+      <polygon points="215,650 252,600 438,600 475,650 438,700 252,700" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <text x="345" y="638" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">按连接计费</text>
+      <text x="345" y="662" fill="#475569" font-size="11" text-anchor="middle">低毛利 · 订阅式</text>
+    </g>
+    <g data-node="platform_business">
+      <polygon points="770,650 807,600 993,600 1030,650 993,700 807,700" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <text x="900" y="638" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">按设备/消息计费</text>
+      <text x="900" y="662" fill="#475569" font-size="11" text-anchor="middle">中等毛利 · 竞争激烈</text>
+    </g>
+    <g data-node="intelligence_business">
+      <polygon points="1325,650 1362,600 1548,600 1585,650 1548,700 1362,700" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <text x="1455" y="638" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">按决策/效果计费</text>
+      <text x="1455" y="662" fill="#475569" font-size="11" text-anchor="middle">高毛利 · 增长最快</text>
+    </g>
+
+    <!-- ===== dashed mapping arrows: layer -> business ===== -->
+    <line x1="345" y1="430" x2="345" y2="586" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <polygon points="339,584 345,600 351,584" fill="#94A3B8"/>
+    <text x="362" y="515" fill="#64748B" font-size="11">对应</text>
+    <line x1="900" y1="430" x2="900" y2="586" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <polygon points="894,584 900,600 906,584" fill="#94A3B8"/>
+    <text x="917" y="515" fill="#64748B" font-size="11">对应</text>
+    <line x1="1455" y1="430" x2="1455" y2="586" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <polygon points="1449,584 1455,600 1461,584" fill="#94A3B8"/>
+    <text x="1472" y="515" fill="#64748B" font-size="11">对应</text>
+
+    <!-- ===== callout ===== -->
+    <text x="900" y="740" fill="#64748B" font-size="11" text-anchor="middle">箭头越粗代表价值占比越大；智能层利润率远高于连接层，是产业竞相迁移的根本原因。</text>
+
+    <!-- ===== legend ===== -->
+    <line x1="64" y1="770" x2="1736" y2="770" stroke="#E2E8F0"/>
+    <rect x="80" y="790" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="104" y="802" fill="#475569" font-size="11">蓝框 = 连接/平台服务</text>
+    <rect x="300" y="790" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+    <text x="324" y="802" fill="#475569" font-size="11">橙框 = AI/智能</text>
+    <line x1="500" y1="796" x2="528" y2="796" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="6 4"/>
+    <text x="538" y="802" fill="#475569" font-size="11">虚线 = 商业模式映射</text>
+    <line x1="700" y1="796" x2="726" y2="796" stroke="#2563EB" stroke-width="6"/>
+    <text x="736" y="802" fill="#475569" font-size="11">实线 = 价值流向 · 越粗占比越大</text>
+
+    <!-- ===== caption ===== -->
+    <text x="900" y="845" fill="#94A3B8" font-size="10" text-anchor="middle">图1-9 物联网产业价值重心从连接层向平台层、最终向智能决策层迁移的路径。</text>
+  </g>
   </svg>
 </svg>
     <section class="meta" style="display:none">
       <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">二维气泡图：横轴为生态完整性（低→高），纵轴为运营商支持力度（弱→强），气泡大小示意市场影响力（示意数据，不反映真实份额）。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">水平流向：连接层→平台层→智能层三个主节点从左到右排列，实线箭头递增示意价值占比，下方六边形标签以虚线映射各层商业模式。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>
