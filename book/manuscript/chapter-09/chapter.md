@@ -31,9 +31,9 @@ LwM2M（Lightweight Machine-To-Machine，轻量级 M2M 协议）的定位更特�
 下面的分层图展示了从感知层到应用层的主要协议位置。底层是感知层的传感器与执行器；向上是无线接入技术（Wi-Fi、BLE（Bluetooth Low Energy，低功耗蓝牙）、Zigbee、LoRa、NB-IoT（Narrowband IoT，窄带物联网）、5G）；再往上是传输层（TCP/UDP）；最顶层是应用层协议。在应用层内部，MQTT 归入发布/订阅类，CoAP 和 HTTP 归入请求/响应类，LwM2M 作为 CoAP 上层的一个特殊分支。
 
 ```book-figure
-id: "fig-9-1"
+id: "fig-09-01"
 type: "layered"
-title: "图9-1 物联网协议栈与分类图"
+title: "图9-1 图9-1 物联网协议栈与分类图"
 purpose: "展示四层参考架构与应用层协议在其中的位置，以及应用层协议按通信模型的分类。"
 audience_takeaway: "读者应理解物联网协议栈层间关系，以及应用层协议因通信模型不同而分为发布/订阅和请求/响应两大类。"
 visual_focus: "从感知层向上经无线接入、传输层到应用层的主链路；在应用层内部用左右两列区分发布/订阅与请求/响应两种模型。"
@@ -298,9 +298,9 @@ Keep Alive的取值取决于业务场景与功耗约束。电池供电设备通�
 大多数MQTT客户端库（如Eclipse Paho）内置自动重连选项。工程经验表明，指数退避配合随机抖动在实现复杂度、耗电控制和规模协调之间取得了合理平衡。极少数需要毫秒级恢复的场景，如实时产线控制，才考虑用固定间隔甚至预建立备用连接。
 
 ```book-figure
-id: "fig-09-04"
+id: "fig-09-02"
 type: "sequence"
-title: "图9-4 MQTT会话连接与心跳交互示意"
+title: "图9-2 图9-2 MQTT会话连接与心跳交互示意"
 purpose: "展示客户端与Broker之间会话建立、心跳保活、断线检测、遗嘱执行、重连与会话恢复的完整流程。"
 audience_takeaway: "理解会话持久化、心跳超时判定以及重连策略如何配合恢复已缓存的消息。"
 visual_focus: "从Client重连到Broker推送离线缓存消息的主链路。"
@@ -408,7 +408,7 @@ legend:
   - "青绿色：客户端；蓝色：Broker；灰色：外部订阅者"
   - "实线箭头：网络消息；虚线箭头：内部事件或超时自触发"
   - "绿色箭头：恢复会话后的缓存消息推送路径"
-caption: "图9-4 MQTT会话连接与心跳交互示意。Client（sensor01）向Broker发起持久会话连接，完成订阅并与Broker维持60秒间隔的心跳。网络中断后Broker在90秒（1.5倍KA）超时后判定Client离线，执行遗嘱消息。Client通过指数退避策略重连，Broker识别出相同ClientID并恢复会话，随后推送断开期间缓存的消息。"
+caption: "图9-2 MQTT会话连接与心跳交互示意。Client（sensor01）向Broker发起持久会话连接，完成订阅并与Broker维持60秒间隔的心跳。网络中断后Broker在90秒（1.5倍KA）超时后判定Client离线，执行遗嘱消息。Client通过指数退避策略重连，Broker识别出相同ClientID并恢复会话，随后推送断开期间缓存的消息。"
 visual_constraints:
   - "最多5个主节点，节点标签用短英文。"
   - "超时和遗嘱广播用虚线。"
@@ -563,9 +563,9 @@ client.loop_forever()
 这个示意案例展示了MQTT在轻量级物联场景中的完整工作流：设备通过长连接定期发布数据，平台通过通配符订阅统一接收，告警靠QoS 2保证送达，设备掉线靠遗嘱消息及时感知。没有复杂的再平衡、分片或事务——这正是MQTT的原始意图：在有限带宽和算力下，把该做的事做可靠。
 
 ```book-figure
-id: "fig-9-5"
+id: "fig-09-03"
 type: "sequence"
-title: "图9-5 MQTT智能家居监控系统交互序列"
+title: "图9-3 图9-3 MQTT智能家居监控系统交互序列"
 purpose: "展示MQTT在智能家居温湿度监控场景中的完整交互时序，包括连接建立、数据发布、告警触发以及断连后遗嘱消息的发布流程。"
 audience_takeaway: "读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。"
 visual_focus: "设备到Broker到订阅端的数据发布链路（蓝色虚线），以及断连后Broker发布的遗嘱消息（红色虚线）。"
@@ -686,7 +686,7 @@ visual_constraints:
   - "图例放在图底部，不遮挡分组边界。"
   - "断连后的遗嘱发布用红色虚线强调。"
   - "时间轴自上而下，标注Phase I/II/III分隔线。"
-caption: "图9-5 展示了一个完整的MQTT智能家居监控交互序列。序列分三个阶段：Phase I连接建立与遗嘱设置，Phase II正常运行与告警触发，Phase III断连处理与遗嘱发布。重点突出QoS 1的周期数据、QoS 2的告警消息以及断连后的遗嘱消息三者的时序与角色差异。"
+caption: "图9-3 展示了一个完整的MQTT智能家居监控交互序列。序列分三个阶段：Phase I连接建立与遗嘱设置，Phase II正常运行与告警触发，Phase III断连处理与遗嘱发布。重点突出QoS 1的周期数据、QoS 2的告警消息以及断连后的遗嘱消息三者的时序与角色差异。"
 render_notes: "HTML/SVG渲染，水平泳道布局。传感器在左，Broker在左中，云订阅在右中，手机App在右。时间轴自上而下。每条消息的箭头颜色和线型符合图例（CONNECT/ACK实线灰色，周期数据蓝色虚线，告警橙色虚线，遗嘱红色虚线）。图底部有图例说明。"
 ```
 
@@ -769,9 +769,9 @@ int main(void) {
 在实际工程项目中，CoAP还支持块传输（Blockwise Transfer）用于拆分大于UDP MTU（通常约1280字节）的负载，以及DTLS（Datagram Transport Layer Security，数据报传输层安全）/CoAPS（端口5684）用于加密传输。不过，对于一个只需上报几个整数的温度传感器，最简的NON请求已经足够——这也是CoAP在典型应用场景下功耗经常低于MQTT的根本原因。
 
 ```book-figure
-id: fig-9-3
+id: "fig-09-04"
 type: architecture
-title: 图9-3 CoAP消息格式与选项示意
+title: 图9-4 图9-4 CoAP消息格式与选项示意
 purpose: 展示CoAP消息的紧凑二进制格式，与HTTP冗长的文本头部形成对比，直观解释CoAP如何实现轻量级传输。
 audience_takeaway: 读者应理解等效的GET请求，HTTP的文本头部大小通常远超CoAP的二进制头部，由此理解CoAP在受限网络中的核心优势。
 visual_focus: 上半部分展示HTTP请求头部示例（文本格式），下半部分展示CoAP CON GET请求的二进制分段布局（Ver/T/TKL/Code/Message ID/Token/Options/Payload）。用连线和标注突出二者完成相同语义时的大小差异。
@@ -810,7 +810,7 @@ callouts:
   - "CoAP头部各字段：Ver（2b）、T（2b）、TKL（4b）、Code（8b）、Message ID（16b）。"
 legend:
   - "蓝色=固定头/元数据；绿色=Token/上下文关联；橙色=Options/路由与内容协商；浅灰=Payload/实际数据。"
-caption: "图9-3 CoAP消息格式与HTTP文本头部的体积对比，突出CoAP的紧凑二进制设计对受限设备的价值。"
+caption: "图9-4 CoAP消息格式与HTTP文本头部的体积对比，突出CoAP的紧凑二进制设计对受限设备的价值。"
 visual_constraints:
   - "节点标签和subtitle简练，解释性文字放入callouts。"
   - "图例放置在底部，不应遮挡主体区域。"
@@ -1027,9 +1027,9 @@ HTTP（HyperText Transfer Protocol，超文本传输协议）是互联网最通�
 下图展示了BLE协议栈从射频到应用层的主链路，以及Notification与Indication在执行路径上的关键分支。
 
 ```book-figure
-id: "fig-9-10"
+id: "fig-09-05"
 type: "layered"
-title: "图9-10 BLE GATT协议栈与服务-特征层次"
+title: "图9-5 BLE GATT协议栈与服务-特征层次"
 purpose: "展示BLE协议栈从PHY到GATT Profile的层次关系，以及Service-Characteristic-Descriptor嵌套结构。左下方叠加Notification与Indication的路径分支。"
 audience_takeaway: "读者应看到GATT Profile是属性数据库的访问模型，Characteristic是数据点，Descriptor控制订阅行为。Notification无确认、功耗低但可能丢包；Indication有ACK、高可靠但功耗大。"
 visual_focus: "从PHY/Link Layer向上到GATT Profile的主链路。从CCCD分叉成两条水平路径：实线Notification与虚线Indication。"
@@ -1160,7 +1160,7 @@ legend:
   - "橙色：应用层模型"
   - "实线箭头：主执行路径"
   - "虚线箭头：配置或可选路径"
-caption: "图9-10 BLE GATT协议栈层次及Service-Characteristic-Descriptor嵌套结构，右半部分展示Notification与Indication的执行路径分叉。"
+caption: "图9-5 BLE GATT协议栈层次及Service-Characteristic-Descriptor嵌套结构，右半部分展示Notification与Indication的执行路径分叉。"
 visual_constraints:
   - "最多9个主节点，标签简短，解释放入callouts。"
   - "图例位于图底部，不遮挡边界。"
@@ -1203,12 +1203,12 @@ IoT DC3 的 MCP 实现将 AI 与外部系统的交互抽象为一个两端会话
 
 IoT DC3 的 MCP 网关使用 JSON-RPC 2.0 交换消息（资料：[S6]）。客户端和服务端通过能力协商完成初始化，声明支持的协议版本和能力列表。服务端通过 `tools/list` 返回可用工具列表，客户端通过 `tools/call` 触发工具执行。整个交互是有状态的——每次调用携带一个 request ID，响应与请求在 session 内关联，支持超时和错误处理。通信走基于 Token 的安全认证（该项目采用 OAuth 2.1 机制，详见 [S6]），结合工具白名单与风险分级，确保每次调用都在既定安全策略下进行。
 
-图9-5 展示了 MCP 协议在 IoT 场景中一次典型的交互序列，涵盖资源发现、工具调用和状态反馈。
+图9-6 展示了 MCP 协议在 IoT 场景中一次典型的交互序列，涵盖资源发现、工具调用和状态反馈。
 
 ```book-figure
-id: "fig-09-05"
+id: "fig-09-06"
 type: "sequence"
-title: "图9-5 MCP协议交互序列图"
+title: "图9-6 图9-6 MCP协议交互序列图"
 purpose: "展示AI Agent通过MCP与IoT平台及设备的典型交互流程：资源发现、工具调用、状态反馈。"
 audience_takeaway: "读者应理解MCP作为AI与IoT平台之间的互操作层，不直接操作设备，而是通过平台封装的安全上下文调用后端服务。"
 visual_focus: "从AI Agent发起会话到MCP Server鉴权、工具发现、调用后端设备服务、写入MQTT/CoAP，最终返回结果给AI Agent的完整时间线。"
@@ -1349,7 +1349,7 @@ callouts:
 legend:
   - "实线箭头 = 同步调用（请求/响应）。"
   - "虚线箭头在本文中未出现，保持图例统一。"
-caption: "图9-5 MCP协议交互序列示意：AI Agent通过MCP Server与IoT平台及设备进行有状态、安全可控的工具调用。"
+caption: "图9-6 MCP协议交互序列示意：AI Agent通过MCP Server与IoT平台及设备进行有状态、安全可控的工具调用。"
 visual_constraints:
   - "参与者不超过6个，每条消息带简短标签。"
   - "突出显示 MCP Server 的鉴权和聚合，用橙色强调。"
@@ -1721,9 +1721,9 @@ if __name__ == "__main__":
 通用协议适配网关可抽象为三层，每层解决协议栈中的一个问题维度。
 
 ```book-figure
-id: "fig-9-6"
+id: "fig-09-07"
 type: "layered"
-title: "图9-6 协议适配网关分层架构"
+title: "图9-7 图9-7 协议适配网关分层架构"
 purpose: "展示协议适配网关的通用三层架构，解释每层的职能和消息流转路径。"
 audience_takeaway: "读者应理解协议适配网关不是简单的协议转换器，而是具有分层职责边界：适配层负责协议特有收发，路由与转换层做语义映射，统一接口层屏蔽差异。"
 visual_focus: "路由与转换层作为核心决策节点，连接上下层；适配层用模块化框强调可扩展性。"
@@ -1832,7 +1832,7 @@ callouts:
 legend:
   - "实线=消息流；虚线=配置/控制信号"
   - "蓝色=适配层；绿色=路由与转换层；橙色=统一接口层"
-caption: "图9-6 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。"
+caption: "图9-7 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。"
 render_notes: "HTML/SVG 渲染，C4 Container 图风格。三层垂直堆叠，每层用浅灰色背景区域包裹，模块框居中文字 12px，图例右下角圆点标记。"
 visual_constraints:
   - "最多 7 个主节点，适配层用四个卡片表示"
@@ -1942,9 +1942,9 @@ W3C 的 SSN/SOSA 标准框架在学术和开源社区得到一定程度的采用
 对于开放标准与新兴工业联盟的互动，一个长期悬而未决的问题是：谁来决定字段的语义归属？不同标准组织维护的本体之间如何仲裁冲突？在缺乏公认治理框架的情况下，工程上可采用“渐进式共识”策略——先对高频字段（温度、湿度、开关状态）强制统一，低频字段允许厂商扩展前缀命名空间，待行业实践成熟再逐批合入核心本体。治理成本始终是语义层标准化的最大阻力，这也是为什么多数平台目前仍停留在结构层映射阶段。
 
 ```book-figure
-id: "fig-09-12"
+id: "fig-09-08"
 type: "timeline"
-title: "图9-12 物联网标准化演进时间线"
+title: "图9-8 图9-8 物联网标准化演进时间线"
 purpose: "展示物联网标准化从垂直协议独立演进，到水平平台收敛，再到语义互操作和AI交互接口扩展的四个关键阶段（节点均为示意性引用，不代表官方标准化路径）。"
 audience_takeaway: "标准化的趋势是语义统一和AI交互接口预留，这决定了平台架构演进的长期方向。"
 visual_focus: "从早期阶段到深水区再到MCP的阶段推进，用箭头标注每一个关键阶段的核心成果。"
@@ -2030,7 +2030,7 @@ callouts:
   - "MCP在设计思路上融合了已有成果，但并非取代它们，而是作为AI交互的补充层。"
 legend:
   - "蓝色节点=核心标准化节点；虚线箭头=补充关系或设计参考关系；实线箭头=主要演进路线。"
-caption: "图9-12 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和AI交互接口的四个阶段。MCP在工程实践中融合了oneM2M和WoT的设计思路，而不是另起炉灶。"
+caption: "图9-8 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和AI交互接口的四个阶段。MCP在工程实践中融合了oneM2M和WoT的设计思路，而不是另起炉灶。"
 visual_constraints:
   - "最多6个节点，标签短，解释放入callouts。"
   - "MCP用橙色强调，代表AI交互层。"

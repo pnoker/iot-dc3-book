@@ -114,9 +114,9 @@ MQTT Broker 与平台内部消息队列解决的问题不同：前者服务设�
 ```
 
 ```book-figure
-id: fig-14-01
+id: "fig-14-01"
 type: architecture
-title: 图14-1 物联网平台分层架构
+title: 图14-1 图14-1 物联网平台分层架构
 purpose: 展示设备层、边缘层、平台层、应用层之间的层次关系和数据流主链路，强调各层的职责边界和异步解耦模式。
 audience_takeaway: 读者应理解物联网平台分层架构中的主链路、责任边界、以及协议驱动与消息队列带来的解耦效果。
 visual_focus: 从设备层通过MQTT/CoAP接入边缘接入层的协议驱动，再经消息队列进入平台层的主数据链路；强调异步边界。
@@ -511,9 +511,9 @@ IoT DC3 当前没有 Nacos 或其他独立服务注册中心。Gateway 路由和
 当前消息中间件只有 RabbitMQ。Data 把点位命令与自定义命令投递到按 Driver 服务名绑定的队列；Driver 消费后执行协议操作，并把结果回执、位号值、状态和事件发送回来。项目当前没有 Kafka Broker 或 Kafka 客户端。
 
 ```book-figure
-id: fig-14-02
+id: "fig-14-02"
 type: architecture
-title: 图14-2 IoT DC3 系统分层架构
+title: 图14-2 图14-2 IoT DC3 系统分层架构
 purpose: 展示 IoT DC3 的四层职责及 REST、gRPC、RabbitMQ 三类真实通信边界。
 audience_takeaway: 当前服务寻址依赖固定服务名、容器 DNS 和环境变量；RabbitMQ 是唯一消息总线。
 visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver。
@@ -627,9 +627,9 @@ Driver 启动后，`DriverRegisterService` 通过 gRPC 调用 Manager 的 `drive
 - [ ] 数据库写入慢查询（示例参数）：监控 `data_point_value` 表的 `track_io_timing`，设置 PostgreSQL `log_min_duration_statement = 200ms`，实际参数应按现场负载校准。
 
 ```book-figure
-id: fig-14-03
+id: "fig-14-03"
 type: dataflow
-title: 图14-3 设备接入与数据流
+title: 图14-3 图14-3 设备接入与数据流
 purpose: 展示设备、Driver、RabbitMQ、Data、PostgreSQL 与北向查询之间的真实上下行链路。
 audience_takeaway: RabbitMQ 同时解耦上行位号值和下行命令，Data 负责持久化、最新值与告警处理。
 visual_focus: 上行 Device→Driver→RabbitMQ→Data→Caffeine/PostgreSQL；下行 Client→Gateway→Data→RabbitMQ→Driver→Device，并有结果回执返回 Data。
@@ -807,9 +807,9 @@ IoT DC3 当前 Agentic Center 已实现模型配置、会话管理、Spring AI `
 模型类型、窗口长度和阈值必须由数据验证。LSTM、窗口 32、阈值 0.85 都只能作为假设示例，不能写成 IoT DC3 默认配置。Spring AI Tools 适合编排查询、解释和受控执行，不等于承担高频流式推理；MCP 也只负责把授权的 Tools 暴露给外部 Agent，不负责训练和部署模型。
 
 ```book-figure
-id: fig-14-04
+id: "fig-14-04"
 type: flowchart
-title: 图14-4 预测性维护扩展示例
+title: 图14-4 图14-4 预测性维护扩展示例
 purpose: 展示一个平台外训练和推理、结果作为衍生位号回写 Data 的可选方案；明确不是当前 Compose 默认能力。
 audience_takeaway: AI 模型是外部扩展，平台通过标准 Data API、衍生位号和现有规则链路承接结果。
 visual_focus: Data 历史数据→外部训练→受控推理服务→授权任务→衍生位号写回 Data→规则与通知。
@@ -883,9 +883,9 @@ services:
 性能测试应分别观察 Driver 采集/锁等待、RabbitMQ 队列积压与未确认消息、Data 消费和批量保存、PostgreSQL 写入与查询延迟。不能用一份虚构的 MongoDB、TDengine 或 Kafka 调优报告替代实际测量。
 
 ```book-figure
-id: fig-14-05
+id: "fig-14-05"
 type: architecture
-title: 图14-5 IoT DC3 容器化部署架构
+title: 图14-5 图14-5 IoT DC3 容器化部署架构
 purpose: 展示 PostgreSQL、RabbitMQ、Gateway、四中心和协议 Driver 的当前 Compose 拓扑。
 audience_takeaway: 服务通过 dc3net 固定服务名和环境变量寻址，Driver 经 RabbitMQ 与 Data 异步通信。
 visual_focus: PostgreSQL/RabbitMQ→平台服务→协议 Driver 与现场设备。
@@ -1170,9 +1170,9 @@ AGI（Artificial General Intelligence，通用人工智能）这个标签在GPT-
 下面的架构演进图概括了从传统IoT到AGI时代的层次变化，核心差异在于智能层从“规则引擎+固定模型”升级为“Agent编排层+动态模型调度”，且安全护栏层独立于智能层工作。
 
 ```book-figure
-id: fig-14-04
+id: "fig-14-06"
 type: architecture
-title: 图14-4 AGI时代物联网架构演进
+title: 图14-6 图14-6 AGI时代物联网架构演进
 audience_takeaway: "读者应理解AGI时代智能层由规则+固定模型升级为Agent编排与动态模型调度,自动决策须经独立安全护栏层校验后才可下发。"
 purpose: 展示从传统IoT平台到AGI时代平台的核心层次变化：智能层升级为Agent编排+动态模型调度，安全护栏层独立并旁路所有自动决策。
 visual_focus: 从起点到终点的主链路。
@@ -1222,7 +1222,7 @@ callouts:
 legend:
 - 青绿色=设备与边缘；蓝色=接入与平台基础服务；橙色=AI与Agent能力；红色=安全与管控；灰色=外部应用与UI。
 - 实线箭头=同步调用/强依赖；虚线箭头=异步事件/可选路由。
-caption: 图14-4 AGI时代物联网架构演进。右半部分突出了独立的Agent编排层、动态模型调度网关以及旁路所有自动决策的安全护栏层，这是从传统规则+固定模型向自治系统演变的关键结构变化。
+caption: 图14-6 AGI时代物联网架构演进。右半部分突出了独立的Agent编排层、动态模型调度网关以及旁路所有自动决策的安全护栏层，这是从传统规则+固定模型向自治系统演变的关键结构变化。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。

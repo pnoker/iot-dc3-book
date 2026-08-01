@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图11-7 LSTM交通流预测模型架构图</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图11-7 LSTM交通流预测模型架构图</title>
+  <desc id="desc">读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图11-7 LSTM交通流预测模型架构图</title>
+  <desc id="desc">读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-7 LSTM交通流预测模型架构图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解LSTM交通流预测模型架构图中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 虚线框：特征提取阶段 -->
+  <rect x="620" y="290" width="740" height="280" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="640" y="320" fill="#D97706" font-size="14" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">特征提取阶段</text>
+
+  <!-- 输入数据块 -->
+  <rect x="280" y="380" width="280" height="130" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="420" y="415" fill="#0F172A" font-size="16" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">输入数据</text>
+  <text x="420" y="435" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(batch_size, 96, 3)</text>
+  <text x="300" y="465" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif">● 流量值（标准化）</text>
+  <text x="300" y="482" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif">● 时刻编码 [0,1]</text>
+  <text x="300" y="499" fill="#475569" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif">● 星期特征（one-hot）</text>
+
+  <!-- LSTM层 -->
+  <rect x="640" y="310" width="360" height="240" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="820" y="350" fill="#0F172A" font-size="18" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">LSTM层</text>
+  <text x="820" y="375" fill="#475569" font-size="13" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">64个LSTM单元</text>
+
+  <!-- LSTM内部门控标注区 -->
+  <rect x="680" y="470" width="220" height="60" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+  <text x="700" y="488" fill="#0F172A" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">遗忘门: σ, *</text>
+  <text x="700" y="505" fill="#0F172A" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">输入门: σ, tanh, *</text>
+  <text x="700" y="522" fill="#0F172A" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">输出门: σ, tanh</text>
+
+  <!-- Dropout层 -->
+  <rect x="1080" y="310" width="260" height="80" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1210" y="345" fill="#0F172A" font-size="16" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">Dropout(0.2)</text>
+  <text x="1210" y="365" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(batch_size, 64)</text>
+
+  <!-- 全连接层 -->
+  <rect x="1080" y="430" width="260" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1210" y="465" fill="#0F172A" font-size="16" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600" text-anchor="middle">Dense(6)</text>
+  <text x="1210" y="485" fill="#475569" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">激活函数: 线性</text>
+
+  <!-- 箭头与标注 -->
+  <line x1="560" y1="445" x2="635" y2="445" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="575" y="430" width="60" height="18" fill="white" rx="3"/>
+  <text x="605" y="443" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(96,3)</text>
+
+  <line x1="1000" y1="330" x2="1075" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1020" y="315" width="40" height="18" fill="white" rx="3"/>
+  <text x="1040" y="328" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(64)</text>
+
+  <line x1="1000" y1="480" x2="900" y2="480" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#bp-arrow)"/>
+
+  <line x1="1210" y1="390" x2="1210" y2="425" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1195" y="400" width="30" height="18" fill="white" rx="3"/>
+  <text x="1210" y="413" fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">(6)</text>
+
+  <line x1="1340" y1="470" x2="1380" y2="470" stroke="#F97316" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1390" y="475" fill="#F97316" font-size="14" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">预测输出</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">圆形+车辆符号=流量值</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">时钟符号=时刻编码</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">日历符号=星期编码</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-7 展示LSTM模型处理交通流量序列的层次结构，从多通道输入经LSTM特征提取后输出未来6步预测。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">layered</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从左至右水平流向，共四个主要模块。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

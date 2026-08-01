@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图4-2 统一接入层的逻辑定位与内部能力分层</title>
+  <desc id="desc">读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图4-2 统一接入层的逻辑定位与内部能力分层</title>
+  <desc id="desc">读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-2 统一接入层的逻辑定位与内部能力分层</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered"><line x1="560" y1="650" x2="1240" y2="650" stroke="#94A3B8" stroke-width="1.5"/><line x1="560" y1="540" x2="1240" y2="540" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/><line x1="560" y1="420" x2="1240" y2="420" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/><line x1="560" y1="290" x2="1240" y2="290" stroke="#94A3B8" stroke-width="1.5"/><rect x="580" y="660" width="640" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="900" y="692" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">异构设备与协议</text><text x="900" y="714" fill="#64748B" font-size="12" text-anchor="middle">Modbus/MQTT/LoRaWAN/BLE/NB-IoT</text><rect x="580" y="560" width="640" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="900" y="592" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">协议转换与适配</text><text x="900" y="614" fill="#64748B" font-size="12" text-anchor="middle">连接管理·报文解析·格式归一</text><rect x="580" y="440" width="640" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="900" y="472" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">统一设备模型</text><text x="900" y="494" fill="#64748B" font-size="12" text-anchor="middle">位号→属性/事件/服务映射</text><rect x="580" y="320" width="640" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="900" y="352" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">安全与认证</text><text x="900" y="374" fill="#64748B" font-size="12" text-anchor="middle">身份校验·TLS终结·密钥协商</text><rect x="580" y="180" width="640" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="900" y="212" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">应用层业务服务</text><text x="900" y="234" fill="#64748B" font-size="12" text-anchor="middle">告警·分析·可视化</text><line x1="900" y1="662" x2="900" y2="638" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="642" width="90" height="20" rx="3" fill="white"/><text x="910" y="656" fill="#0F172A" font-size="12" text-anchor="start">原始报文</text></g><line x1="900" y1="562" x2="900" y2="518" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="532" width="100" height="20" rx="3" fill="white"/><text x="910" y="546" fill="#0F172A" font-size="12" text-anchor="start">结构化键值</text></g><line x1="900" y1="442" x2="900" y2="398" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="412" width="100" height="20" rx="3" fill="white"/><text x="910" y="426" fill="#0F172A" font-size="12" text-anchor="start">物模型实例</text></g><line x1="900" y1="322" x2="900" y2="258" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/><g><rect x="905" y="282" width="110" height="20" rx="3" fill="white"/><text x="910" y="296" fill="#0F172A" font-size="12" text-anchor="start">可信属性/事件</text></g></g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">底层：浅绿色，表示物理世界</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">中层：浅灰色，内部的三个子层用浅蓝、浅青、浅橙区分，分别对应协议</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">顶层：浅蓝色，表示数字世界业务服务</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-2 统一接入层的逻辑定位与内部能力分层，明确了从异构协议到标准化业务事件的三层加工路径。</text>
+  </svg>
+</svg>

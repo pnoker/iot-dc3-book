@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>协议碎片化→统一接入层→Driver SDK 架构映射</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">协议碎片化→统一接入层→Driver SDK 架构映射</title>
+  <desc id="desc">读者应理解协议碎片化→统一接入层→Driver SDK 架构映射中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">协议碎片化→统一接入层→Driver SDK 架构映射</title>
+  <desc id="desc">读者应理解协议碎片化→统一接入层→Driver SDK 架构映射中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">协议碎片化→统一接入层→Driver SDK 架构映射</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解协议碎片化→统一接入层→Driver SDK 架构映射中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 设备层 (y=620..720) -->
+  <g id="device-layer">
+    <!-- NB-IoT 水表 -->
+    <rect x="610" y="620" width="100" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="660" y="650" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">NB-IoT 水表</text>
+    <text x="660" y="668" fill="#64748B" font-size="11" text-anchor="middle">NB-IoT</text>
+    <!-- LoRa 传感器 -->
+    <rect x="730" y="620" width="100" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="780" y="650" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">LoRa 传感器</text>
+    <text x="780" y="668" fill="#64748B" font-size="11" text-anchor="middle">LoRa</text>
+    <!-- BLE 信标 -->
+    <rect x="850" y="620" width="100" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="900" y="650" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">BLE 信标</text>
+    <text x="900" y="668" fill="#64748B" font-size="11" text-anchor="middle">BLE</text>
+    <!-- Zigbee 灯控 -->
+    <rect x="970" y="620" width="100" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="1020" y="650" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">Zigbee 灯控</text>
+    <text x="1020" y="668" fill="#64748B" font-size="11" text-anchor="middle">Zigbee</text>
+    <!-- Wi-Fi 摄像头 -->
+    <rect x="1090" y="620" width="100" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="1140" y="650" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">Wi-Fi 摄像头</text>
+    <text x="1140" y="668" fill="#64748B" font-size="11" text-anchor="middle">Wi-Fi</text>
+  </g>
+
+  <!-- 驱动层 (y=470..600) -->
+  <g id="driver-layer">
+    <!-- NB-IoT Driver -->
+    <rect x="610" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="660" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">NB-IoT Driver</text>
+    <!-- 接口虚线框 -->
+    <rect x="618" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="660" y="542" fill="#64748B" font-size="10" text-anchor="middle">connect/disconnect</text>
+    <text x="660" y="556" fill="#64748B" font-size="10" text-anchor="middle">send/receive/parse</text>
+    
+    <!-- LoRa Driver -->
+    <rect x="730" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="780" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">LoRa Driver</text>
+    <rect x="738" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="780" y="542" fill="#64748B" font-size="10" text-anchor="middle">connect/disconnect</text>
+    <text x="780" y="556" fill="#64748B" font-size="10" text-anchor="middle">send/receive/parse</text>
+    
+    <!-- BLE Driver -->
+    <rect x="850" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="900" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">BLE Driver</text>
+    <rect x="858" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="900" y="542" fill="#64748B" font-size="10" text-anchor="middle">connect/disconnect</text>
+    <text x="900" y="556" fill="#64748B" font-size="10" text-anchor="middle">send/receive/parse</text>
+    
+    <!-- Zigbee Driver -->
+    <rect x="970" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1020" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">Zigbee Driver</text>
+    <rect x="978" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="1020" y="542" fill="#64748B" font-size="10" text-anchor="middle">connect/disconnect</text>
+    <text x="1020" y="556" fill="#64748B" font-size="10" text-anchor="middle">send/receive/parse</text>
+    
+    <!-- Wi-Fi Driver -->
+    <rect x="1090" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1140" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">Wi-Fi Driver</text>
+    <rect x="1098" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="1140" y="542" fill="#64748B" font-size="10" text-anchor="middle">connect/disconnect</text>
+    <text x="1140" y="556" fill="#64748B" font-size="10" text-anchor="middle">send/receive/parse</text>
+  </g>
+
+  <!-- 统一接入层 (y=280..450) -->
+  <g id="unified-layer">
+    <rect x="410" y="280" width="980" height="150" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="900" y="305" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">统一接入层</text>
+    <!-- 模块小方块 -->
+    <rect x="440" y="320" width="150" height="50" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="515" y="346" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">设备注册管理</text>
+    <rect x="620" y="320" width="150" height="50" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="695" y="346" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">会话管理</text>
+    <rect x="800" y="320" width="150" height="50" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="875" y="346" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">消息路由</text>
+    <rect x="980" y="320" width="150" height="50" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1055" y="346" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">协议转换</text>
+    <rect x="1160" y="320" width="150" height="50" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1235" y="346" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">物模型标准化</text>
+    <!-- 设备影子接口标注 -->
+    <text x="900" y="400" fill="#64748B" font-size="12" text-anchor="middle" font-style="italic">暴露统一设备影子接口 (Device Shadow)</text>
+  </g>
+
+  <!-- 业务应用层 (y=145..260) -->
+  <g id="app-layer">
+    <rect x="530" y="150" width="740" height="100" rx="12" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="900" y="175" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">业务应用层</text>
+    <!-- 模块 -->
+    <rect x="560" y="190" width="130" height="45" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="625" y="215" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">数据存储</text>
+    <rect x="720" y="190" width="130" height="45" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="785" y="215" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">规则引擎</text>
+    <rect x="880" y="190" width="130" height="45" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="945" y="215" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">告警服务</text>
+    <rect x="1040" y="190" width="130" height="45" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1105" y="215" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">可视化仪表盘</text>
+  </g>
+
+  <!-- 连线：设备->驱动（蓝色实线） -->
+  <g stroke="#2563EB" stroke-width="2" fill="none" marker-end="url(#bp-arrow-primary)">
+    <line x1="660" y1="620" x2="660" y2="580"/>
+    <line x1="780" y1="620" x2="780" y2="580"/>
+    <line x1="900" y1="620" x2="900" y2="580"/>
+    <line x1="1020" y1="620" x2="1020" y2="580"/>
+    <line x1="1140" y1="620" x2="1140" y2="580"/>
+  </g>
+
+  <!-- 连线：驱动->统一接入层（蓝色实线，聚合） -->
+  <g stroke="#2563EB" stroke-width="2" fill="none" marker-end="url(#bp-arrow-primary)">
+    <line x1="660" y1="490" x2="660" y2="430"/>
+    <line x1="780" y1="490" x2="780" y2="430"/>
+    <line x1="900" y1="490" x2="900" y2="430"/>
+    <line x1="1020" y1="490" x2="1020" y2="430"/>
+    <line x1="1140" y1="490" x2="1140" y2="430"/>
+  </g>
+
+  <!-- 连线：统一接入层->业务层（蓝色实线，从模块顶部） -->
+  <g stroke="#2563EB" stroke-width="2" fill="none" marker-end="url(#bp-arrow-primary)">
+    <line x1="515" y1="280" x2="625" y2="235"/>
+    <line x1="695" y1="280" x2="785" y2="235"/>
+    <line x1="875" y1="280" x2="945" y2="235"/>
+    <line x1="1055" y1="280" x2="1105" y2="235"/>
+  </g>
+
+  <!-- 连线：业务层->统一接入层（红色虚线，指令下发） -->
+  <g stroke="#DC2626" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#bp-arrow)">
+    <line x1="625" y1="190" x2="515" y2="320"/>
+    <line x1="785" y1="190" x2="695" y2="320"/>
+    <line x1="945" y1="190" x2="875" y2="320"/>
+    <line x1="1105" y1="190" x2="1055" y2="320"/>
+  </g>
+
+  <!-- 层标注（右侧） -->
+  <g fill="#0F172A" font-size="12" font-weight="600">
+    <text x="1240" y="660" fill="#0F766E">设备层</text>
+    <text x="1240" y="535" fill="#2563EB">驱动层</text>
+    <text x="1240" y="355" fill="#F97316">统一接入层</text>
+    <text x="1240" y="200" fill="#7C3AED">业务应用层</text>
+  </g>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线箭头：数据上报方向</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">红色虚线箭头：指令下发方向</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">灰色虚线框：Driver SDK 接口标准</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-26 协议碎片化→统一接入层→Driver SDK 架构映射。四层水平布局，展示从设备到应用的解耦路径。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">水平分层（四层）：自下而上为设备层、驱动层、统一接入层、业务应用层。每层之间用带箭头的竖线连接，表示数据流转和指令转发。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

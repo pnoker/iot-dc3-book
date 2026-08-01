@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">平台层工程检查矩阵</title>
+  <desc id="desc">读者应理解平台层工程检查矩阵中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">平台层工程检查矩阵</title>
+  <desc id="desc">读者应理解平台层工程检查矩阵中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">平台层工程检查矩阵</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解平台层工程检查矩阵中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">MATRIX</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="matrix">
+  <!-- 左上角 -->
+  <rect x="120" y="145" width="120" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- 列标题行 -->
+  <rect x="240" y="145" width="320" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="560" y="145" width="320" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="880" y="145" width="320" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="1200" y="145" width="320" height="100" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- 行标题列各行 -->
+  <rect x="120" y="245" width="120" height="100" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="120" y="345" width="120" height="100" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="120" y="445" width="120" height="100" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="120" y="545" width="120" height="100" rx="6" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="120" y="645" width="120" height="100" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <!-- 数据单元格 -->
+  <!-- 行1 -->
+  <rect x="240" y="245" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="560" y="245" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="880" y="245" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="1200" y="245" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- 行2 -->
+  <rect x="240" y="345" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="560" y="345" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="880" y="345" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="1200" y="345" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- 行3 -->
+  <rect x="240" y="445" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="560" y="445" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="880" y="445" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="1200" y="445" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- 行4 -->
+  <rect x="240" y="545" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="560" y="545" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="880" y="545" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="1200" y="545" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- 行5 -->
+  <rect x="240" y="645" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="560" y="645" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="880" y="645" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="1200" y="645" width="320" height="100" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  
+  <!-- 文本与图标 -->
+  <!-- 左上角 -->
+  <text x="180" y="210" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">检查项</text>
+  <!-- 列标题 -->
+  <text x="400" y="210" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">功能完整性</text>
+  <text x="720" y="210" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">容错与高可用</text>
+  <text x="1040" y="210" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">容量与性能边界</text>
+  <text x="1360" y="210" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">安全性/合规</text>
+  <!-- 行标题 -->
+  <text x="180" y="310" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">设备接入</text>
+  <text x="180" y="410" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">消息队列</text>
+  <text x="180" y="510" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">时序数据库</text>
+  <text x="180" y="610" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">规则引擎</text>
+  <text x="180" y="710" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle">API网关</text>
+
+  <!-- 行1: 设备接入 -->
+  <!-- 功能完整性 - 绿色✓ -->
+  <circle cx="270" cy="295" r="12" fill="#22C55E"/>
+  <text x="270" y="299" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="300" y="301" fill="#0F172A" font-size="12">协议一致性测试</text>
+  <!-- 容错与高可用 - 黄色△ -->
+  <circle cx="590" cy="295" r="12" fill="#EAB308"/>
+  <text x="590" y="299" fill="black" font-size="14" font-weight="bold" text-anchor="middle">△</text>
+  <text x="620" y="301" fill="#0F172A" font-size="12">连接保活机制验证</text>
+  <!-- 容量与性能边界 - 绿色✓ -->
+  <circle cx="910" cy="295" r="12" fill="#22C55E"/>
+  <text x="910" y="299" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="940" y="301" fill="#0F172A" font-size="12">并发连接数≥10k</text>
+  <!-- 安全性/合规 - 红色✗ -->
+  <circle cx="1230" cy="295" r="12" fill="#DC2626"/>
+  <text x="1230" y="299" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✗</text>
+  <text x="1260" y="301" fill="#0F172A" font-size="12">设备身份认证</text>
+
+  <!-- 行2: 消息队列 -->
+  <!-- 功能完整性 - 黄色△ -->
+  <circle cx="270" cy="395" r="12" fill="#EAB308"/>
+  <text x="270" y="399" fill="black" font-size="14" font-weight="bold" text-anchor="middle">△</text>
+  <text x="300" y="401" fill="#0F172A" font-size="12">消息可靠性投递</text>
+  <!-- 容错与高可用 - 红色✗ -->
+  <circle cx="590" cy="395" r="12" fill="#DC2626"/>
+  <text x="590" y="399" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✗</text>
+  <text x="620" y="401" fill="#0F172A" font-size="12">acks=all，复制因子≥2</text>
+  <!-- 容量与性能边界 - 绿色✓ -->
+  <circle cx="910" cy="395" r="12" fill="#22C55E"/>
+  <text x="910" y="399" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="940" y="401" fill="#0F172A" font-size="12">吞吐量峰值≥100k/s</text>
+  <!-- 安全性/合规 - 黄色△ -->
+  <circle cx="1230" cy="395" r="12" fill="#EAB308"/>
+  <text x="1230" y="399" fill="black" font-size="14" font-weight="bold" text-anchor="middle">△</text>
+  <text x="1260" y="401" fill="#0F172A" font-size="12">消息加密传输</text>
+
+  <!-- 行3: 时序数据库 -->
+  <!-- 功能完整性 - 绿色✓ -->
+  <circle cx="270" cy="495" r="12" fill="#22C55E"/>
+  <text x="270" y="499" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="300" y="501" fill="#0F172A" font-size="12">数据写入一致性</text>
+  <!-- 容错与高可用 - 黄色△ -->
+  <circle cx="590" cy="495" r="12" fill="#EAB308"/>
+  <text x="590" y="499" fill="black" font-size="14" font-weight="bold" text-anchor="middle">△</text>
+  <text x="620" y="501" fill="#0F172A" font-size="12">主从自动切换</text>
+  <!-- 容量与性能边界 - 绿色✓ -->
+  <circle cx="910" cy="495" r="12" fill="#22C55E"/>
+  <text x="910" y="499" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="940" y="501" fill="#0F172A" font-size="12">批量大小≥500 points</text>
+  <!-- 安全性/合规 - 红色✗ -->
+  <circle cx="1230" cy="495" r="12" fill="#DC2626"/>
+  <text x="1230" y="499" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✗</text>
+  <text x="1260" y="501" fill="#0F172A" font-size="12">访问控制审计</text>
+
+  <!-- 行4: 规则引擎 -->
+  <!-- 功能完整性 - 绿色✓ -->
+  <circle cx="270" cy="595" r="12" fill="#22C55E"/>
+  <text x="270" y="599" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="300" y="601" fill="#0F172A" font-size="12">规则链执行正确</text>
+  <!-- 容错与高可用 - 红色✗ -->
+  <circle cx="590" cy="595" r="12" fill="#DC2626"/>
+  <text x="590" y="599" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✗</text>
+  <text x="620" y="601" fill="#0F172A" font-size="12">规则引擎集群</text>
+  <!-- 容量与性能边界 - 黄色△ -->
+  <circle cx="910" cy="595" r="12" fill="#EAB308"/>
+  <text x="910" y="599" fill="black" font-size="14" font-weight="bold" text-anchor="middle">△</text>
+  <text x="940" y="601" fill="#0F172A" font-size="12">规则匹配延迟&lt;50ms</text>
+  <!-- 安全性/合规 - 绿色✓ -->
+  <circle cx="1230" cy="595" r="12" fill="#22C55E"/>
+  <text x="1230" y="599" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="1260" y="601" fill="#0F172A" font-size="12">规则权限隔离</text>
+
+  <!-- 行5: API网关 -->
+  <!-- 功能完整性 - 黄色△ -->
+  <circle cx="270" cy="695" r="12" fill="#EAB308"/>
+  <text x="270" y="699" fill="black" font-size="14" font-weight="bold" text-anchor="middle">△</text>
+  <text x="300" y="701" fill="#0F172A" font-size="12">接口版本管理</text>
+  <!-- 容错与高可用 - 绿色✓ -->
+  <circle cx="590" cy="695" r="12" fill="#22C55E"/>
+  <text x="590" y="699" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="620" y="701" fill="#0F172A" font-size="12">限流熔断机制</text>
+  <!-- 容量与性能边界 - 红色✗ -->
+  <circle cx="910" cy="695" r="12" fill="#DC2626"/>
+  <text x="910" y="699" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✗</text>
+  <text x="940" y="701" fill="#0F172A" font-size="12">QPS≥50k</text>
+  <!-- 安全性/合规 - 红色✗ -->
+  <circle cx="1230" cy="695" r="12" fill="#DC2626"/>
+  <text x="1230" y="699" fill="white" font-size="14" font-weight="bold" text-anchor="middle">✗</text>
+  <text x="1260" y="701" fill="#0F172A" font-size="12">API密钥与OAuth</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心平台/主链路</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图5-9 平台层工程检查矩阵。这些检查项来自多个企业级物联网项目设计阶段的复盘，帮助设计者在五个维度上快速定位风险点。</text>
+  </svg>
+</svg>

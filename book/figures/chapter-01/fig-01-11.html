@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>传统物联网端-云架构与AIoT边-端-云协同架构对比</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">传统物联网端-云架构与AIoT边-端-云协同架构对比</title>
+  <desc id="desc">读者应理解传统物联网端-云架构与AIoT边-端-云协同架构对比中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">传统物联网端-云架构与AIoT边-端-云协同架构对比</title>
+  <desc id="desc">读者应理解传统物联网端-云架构与AIoT边-端-云协同架构对比中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">传统物联网端-云架构与AIoT边-端-云协同架构对比</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解传统物联网端-云架构与AIoT边-端-云协同架构对比中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture">
+  <!-- 左侧传统架构区域虚线框 -->
+  <rect x="220" y="160" width="360" height="400" rx="10" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="230" y="185" fill="#64748B" font-size="13" font-weight="600">传统架构</text>
+
+  <!-- 右侧AIoT新架构区域虚线框 -->
+  <rect x="1020" y="140" width="360" height="540" rx="10" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1030" y="165" fill="#64748B" font-size="13" font-weight="600">AIoT边-端-云协同架构</text>
+
+  <!-- 左侧组件 -->
+  <!-- 感知层 -->
+  <rect x="280" y="200" width="240" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="400" y="240" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">端侧设备</text>
+  <text x="400" y="265" fill="#475569" font-size="13" text-anchor="middle">传感器/执行器</text>
+
+  <!-- 云平台层 -->
+  <rect x="280" y="420" width="240" height="100" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="400" y="460" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">云服务器</text>
+  <text x="400" y="485" fill="#475569" font-size="13" text-anchor="middle">存储、应用、规则引擎</text>
+
+  <!-- 右侧组件 -->
+  <!-- 端侧设备 -->
+  <rect x="1080" y="180" width="240" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1200" y="220" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">端侧设备</text>
+  <text x="1200" y="245" fill="#475569" font-size="13" text-anchor="middle">采集、执行、唤醒</text>
+
+  <!-- 边缘网关 -->
+  <rect x="1080" y="360" width="240" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1200" y="400" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">边缘网关</text>
+  <text x="1200" y="425" fill="#475569" font-size="13" text-anchor="middle">蒸馏模型推理、实时决策</text>
+
+  <!-- 云服务器 -->
+  <rect x="1080" y="540" width="240" height="100" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1200" y="580" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">云服务器</text>
+  <text x="1200" y="605" fill="#475569" font-size="13" text-anchor="middle">大模型训练、复杂推理、知识更新</text>
+
+  <!-- 左侧连线 -->
+  <!-- 数据上传 (感知层->云平台) -->
+  <line x1="380" y1="302" x2="380" y2="418" stroke="#2563EB" stroke-width="2"/>
+  <rect x="340" y="345" width="60" height="18" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="370" y="358" fill="#2563EB" font-size="11" text-anchor="middle">数据上传</text>
+
+  <!-- 指令下发 (云平台->感知层) -->
+  <line x1="420" y1="418" x2="420" y2="302" stroke="#0F766E" stroke-width="2"/>
+  <rect x="430" y="345" width="60" height="18" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="460" y="358" fill="#0F766E" font-size="11" text-anchor="middle">指令下发</text>
+
+  <!-- 右侧连线 -->
+  <!-- 端侧->边缘侧: 数据上传 -->
+  <line x1="1100" y1="282" x2="1100" y2="358" stroke="#2563EB" stroke-width="2"/>
+  <rect x="1060" y="305" width="60" height="18" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="1090" y="318" fill="#2563EB" font-size="11" text-anchor="middle">数据上传</text>
+
+  <!-- 边缘侧->端侧: 指令下发 -->
+  <line x1="1140" y1="358" x2="1140" y2="282" stroke="#0F766E" stroke-width="2"/>
+  <rect x="1150" y="305" width="60" height="18" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="1180" y="318" fill="#0F766E" font-size="11" text-anchor="middle">指令下发</text>
+
+  <!-- 边缘侧->云侧: 数据上传 -->
+  <line x1="1100" y1="462" x2="1100" y2="538" stroke="#2563EB" stroke-width="2"/>
+  <rect x="1060" y="485" width="60" height="18" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="1090" y="498" fill="#2563EB" font-size="11" text-anchor="middle">数据上传</text>
+
+  <!-- 云侧->边缘侧: 模型更新 -->
+  <line x1="1140" y1="538" x2="1140" y2="462" stroke="#F97316" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="1150" y="485" width="80" height="18" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="1190" y="498" fill="#F97316" font-size="11" text-anchor="middle">模型/知识更新</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">端侧设备: 感知、执行、状态上报</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">边缘侧节点: 实时推理、本地决策、控制闭环</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">云端服务: 大模型、知识库、管理和训练</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图1-6 传统物联网端-云架构与AIoT边-端-云协同架构对比。左侧传统架构为两层，数据流和控制流直接往返于端云之间。右侧AIoT新架构引入边缘侧作为实时推理和决策枢纽，端侧与云侧通过边缘侧间接交互，云侧主要负责模型训练与知识更新，并定期将更新下推至边缘侧。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">架构布局，强调边界、组件职责和主链路。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

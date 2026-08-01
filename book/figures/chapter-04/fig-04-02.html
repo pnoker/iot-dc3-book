@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图4-2 LoRaWAN网络架构示意</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图4-2 LoRaWAN网络架构示意</title>
+  <desc id="desc">读者应理解LoRaWAN网络架构示意中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图4-2 LoRaWAN网络架构示意</title>
+  <desc id="desc">读者应理解LoRaWAN网络架构示意中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-2 LoRaWAN网络架构示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解LoRaWAN网络架构示意中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">TOPOLOGY</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="topology">
+  <!-- 区域边界虚线框 -->
+  <rect x="720" y="130" width="360" height="100" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4" />
+  <text x="730" y="150" fill="#64748B" font-size="12" font-weight="500">业务应用域</text>
+  <rect x="720" y="270" width="360" height="100" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4" />
+  <text x="730" y="290" fill="#64748B" font-size="12" font-weight="500">平台服务域</text>
+  <rect x="550" y="410" width="700" height="220" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4" />
+  <text x="560" y="430" fill="#64748B" font-size="12" font-weight="500">设备与边缘域</text>
+  
+  <!-- 连线（先于节点） -->
+  <!-- 上行：终端 -> 网关，终点在网关底部上方5px -->
+  <line x1="630" y1="560" x2="690" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <line x1="870" y1="560" x2="900" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <line x1="1110" y1="560" x2="1110" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <line x1="990" y1="560" x2="900" y2="495" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  
+  <!-- 下行：网关 -> 终端，终点在终端底部下方5px -->
+  <line x1="690" y1="505" x2="630" y2="625" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)" />
+  <line x1="900" y1="505" x2="870" y2="625" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)" />
+  <line x1="1110" y1="505" x2="1110" y2="625" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)" />
+  <line x1="900" y1="505" x2="990" y2="625" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)" />
+  
+  <!-- 网关 -> 网络服务器（上行） -->
+  <line x1="690" y1="420" x2="810" y2="355" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <line x1="900" y1="420" x2="900" y2="355" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <line x1="1110" y1="420" x2="990" y2="355" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  
+  <!-- 网络服务器 -> 应用服务器（双向） -->
+  <line x1="900" y1="280" x2="900" y2="215" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <line x1="900" y1="225" x2="900" y2="285" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)" />
+  
+  <!-- 节点 -->
+  <!-- 应用服务器 -->
+  <rect x="780" y="140" width="240" height="80" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="900" y="180" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">应用服务器</text>
+  <text x="900" y="200" fill="#64748B" font-size="11" text-anchor="middle">业务逻辑与API</text>
+  
+  <!-- 网络服务器 -->
+  <rect x="780" y="280" width="240" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="900" y="320" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">网络服务器</text>
+  <text x="900" y="340" fill="#64748B" font-size="11" text-anchor="middle">去重、校验、调度</text>
+  
+  <!-- 网关层 -->
+  <rect x="600" y="420" width="160" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="680" y="460" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">网关1</text>
+  <text x="680" y="480" fill="#64748B" font-size="11" text-anchor="middle">LoRa转IP</text>
+  
+  <rect x="810" y="420" width="160" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="890" y="460" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">网关2</text>
+  <text x="890" y="480" fill="#64748B" font-size="11" text-anchor="middle">LoRa转IP</text>
+  
+  <rect x="1020" y="420" width="160" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1100" y="460" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">网关3</text>
+  <text x="1100" y="480" fill="#64748B" font-size="11" text-anchor="middle">LoRa转IP</text>
+  
+  <!-- 终端层 -->
+  <circle cx="630" cy="590" r="30" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="630" y="595" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">终端1</text>
+  
+  <circle cx="870" cy="590" r="30" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="870" y="595" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">终端2</text>
+  
+  <circle cx="1110" cy="590" r="30" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1110" y="595" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">终端3</text>
+  
+  <circle cx="990" cy="590" r="30" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="990" y="595" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">终端4</text>
+  
+  <!-- 连线标签 -->
+  <rect x="645" y="520" width="40" height="20" rx="4" fill="white" stroke="#64748B" stroke-width="0.5"/>
+  <text x="665" y="534" fill="#64748B" font-size="10" text-anchor="middle">LoRa</text>
+  
+  <rect x="795" y="380" width="30" height="20" rx="4" fill="white" stroke="#64748B" stroke-width="0.5"/>
+  <text x="810" y="394" fill="#64748B" font-size="10" text-anchor="middle">IP</text>
+  
+  <rect x="875" y="245" width="50" height="20" rx="4" fill="white" stroke="#64748B" stroke-width="0.5"/>
+  <text x="900" y="259" fill="#64748B" font-size="10" text-anchor="middle">API/MQTT</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">终端：绿色（圆形）</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">网关：蓝色（矩形）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">网络服务器：橙色（矩形）</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-2 LoRaWAN网络架构示意。终端通过LoRa射频连接网关，网关透明转发至网络服务器，应用服务器通过API与NS交互。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">topology</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">从上到下分为四层——应用服务器层、网络服务器层、网关层、终端节点层。每层用水平矩形框表示，层级间用箭头表示数据流方向（上行用实线，下行用虚线）。网关层包含多个网关矩形，终端层包含多个终端圆形。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

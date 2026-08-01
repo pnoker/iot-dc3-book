@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">协议选择对比表</title>
+  <desc id="desc">读者应理解协议选择对比表中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">协议选择对比表</title>
+  <desc id="desc">读者应理解协议选择对比表中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">协议选择对比表</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解协议选择对比表中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">MATRIX</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="matrix">
+  <!-- 表头行 -->
+  <rect x="160" y="160" width="180" height="50" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <rect x="348" y="160" width="250" height="50" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="606" y="160" width="250" height="50" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="864" y="160" width="250" height="50" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="1122" y="160" width="250" height="50" rx="6" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <rect x="1380" y="160" width="250" height="50" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+
+  <text x="250" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">对比维度</text>
+  <text x="473" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">MQTT</text>
+  <text x="731" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">CoAP</text>
+  <text x="989" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">LwM2M</text>
+  <text x="1247" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">HTTP</text>
+  <text x="1505" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">BLE (GATT)</text>
+
+  <!-- 第1行：传输层 -->
+  <rect x="160" y="220" width="180" height="90" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="250" y="265" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">传输层</text>
+  <rect x="348" y="220" width="250" height="90" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="473" y="265" fill="#0F172A" font-size="13" text-anchor="middle">TCP</text>
+  <rect x="606" y="220" width="250" height="90" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="731" y="265" fill="#0F172A" font-size="13" text-anchor="middle">UDP</text>
+  <rect x="864" y="220" width="250" height="90" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="989" y="265" fill="#0F172A" font-size="13" text-anchor="middle">CoAP/UDP+DTLS</text>
+  <rect x="1122" y="220" width="250" height="90" rx="6" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1247" y="265" fill="#0F172A" font-size="13" text-anchor="middle">TCP</text>
+  <rect x="1380" y="220" width="250" height="90" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1505" y="265" fill="#0F172A" font-size="13" text-anchor="middle">BLE 链路层</text>
+
+  <!-- 第2行：QoS能力 -->
+  <rect x="160" y="310" width="180" height="90" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="250" y="355" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">QoS 能力</text>
+  <rect x="348" y="310" width="250" height="90" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="473" y="355" fill="#0F172A" font-size="13" text-anchor="middle">QoS 0/1/2</text>
+  <rect x="606" y="310" width="250" height="90" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="731" y="355" fill="#0F172A" font-size="13" text-anchor="middle">CON/NON (0/1)</text>
+  <rect x="864" y="310" width="250" height="90" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="989" y="355" fill="#0F172A" font-size="13" text-anchor="middle">同 CoAP</text>
+  <rect x="1122" y="310" width="250" height="90" rx="6" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1247" y="355" fill="#0F172A" font-size="13" text-anchor="middle">TCP 重传隐含</text>
+  <rect x="1380" y="310" width="250" height="90" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1505" y="355" fill="#0F172A" font-size="13" text-anchor="middle">无标准QoS</text>
+
+  <!-- 第3行：延时特征 -->
+  <rect x="160" y="400" width="180" height="90" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="250" y="445" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">延时特征</text>
+  <rect x="348" y="400" width="250" height="90" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="473" y="445" fill="#0F172A" font-size="13" text-anchor="middle">中等</text>
+  <rect x="606" y="400" width="250" height="90" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="731" y="445" fill="#0F172A" font-size="13" text-anchor="middle">低</text>
+  <rect x="864" y="400" width="250" height="90" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="989" y="445" fill="#0F172A" font-size="13" text-anchor="middle">低</text>
+  <rect x="1122" y="400" width="250" height="90" rx="6" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1247" y="445" fill="#0F172A" font-size="13" text-anchor="middle">高</text>
+  <rect x="1380" y="400" width="250" height="90" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1505" y="445" fill="#0F172A" font-size="13" text-anchor="middle">低</text>
+
+  <!-- 第4行：功耗水平 -->
+  <rect x="160" y="490" width="180" height="90" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="250" y="535" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">功耗水平</text>
+  <rect x="348" y="490" width="250" height="90" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="473" y="525" fill="#64748B" font-size="11" text-anchor="middle">中等</text>
+  <rect x="463" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="475" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="606" y="490" width="250" height="90" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="731" y="525" fill="#64748B" font-size="11" text-anchor="middle">低</text>
+  <rect x="721" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="733" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="864" y="490" width="250" height="90" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="989" y="525" fill="#64748B" font-size="11" text-anchor="middle">低</text>
+  <rect x="979" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="991" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="1122" y="490" width="250" height="90" rx="6" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1247" y="525" fill="#64748B" font-size="11" text-anchor="middle">高</text>
+  <rect x="1231" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="1243" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="1255" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+  <rect x="1380" y="490" width="250" height="90" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1505" y="525" fill="#64748B" font-size="11" text-anchor="middle">极低</text>
+  <rect x="1501" y="533" width="8" height="16" rx="2" fill="none" stroke="#64748B" stroke-width="1"/>
+
+  <!-- 第5行：典型场景 -->
+  <rect x="160" y="580" width="180" height="90" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="250" y="625" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">典型场景</text>
+  <rect x="348" y="580" width="250" height="90" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="473" y="615" fill="#0F172A" font-size="11" text-anchor="middle">智能家居、车联网</text>
+  <text x="473" y="635" fill="#0F172A" font-size="11" text-anchor="middle">工业监控</text>
+  <rect x="606" y="580" width="250" height="90" rx="6" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="731" y="615" fill="#0F172A" font-size="11" text-anchor="middle">传感器上报、低功耗终端</text>
+  <text x="731" y="635" fill="#0F172A" font-size="11" text-anchor="middle">农田监控</text>
+  <rect x="864" y="580" width="250" height="90" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="989" y="615" fill="#0F172A" font-size="11" text-anchor="middle">NB-IoT模组、智能表计</text>
+  <text x="989" y="635" fill="#0F172A" font-size="11" text-anchor="middle">远程设备管理</text>
+  <rect x="1122" y="580" width="250" height="90" rx="6" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1247" y="615" fill="#0F172A" font-size="11" text-anchor="middle">第三方API取数、网关上行</text>
+  <text x="1247" y="635" fill="#0F172A" font-size="11" text-anchor="middle">配置管理</text>
+  <rect x="1380" y="580" width="250" height="90" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1505" y="615" fill="#0F172A" font-size="11" text-anchor="middle">穿戴设备、Beacon</text>
+  <text x="1505" y="635" fill="#0F172A" font-size="11" text-anchor="middle">室内定位</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">每列的功耗栏用1-3格电池图标示意相对等级（1格=极低，3格=高</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">表9-1 主流物联网应用层协议多维对比</text>
+  </svg>
+</svg>

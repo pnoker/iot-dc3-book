@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>微服务可观测性分层架构</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">微服务可观测性分层架构</title>
+  <desc id="desc">读者应理解微服务可观测性分层架构中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">微服务可观测性分层架构</title>
+  <desc id="desc">读者应理解微服务可观测性分层架构中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">微服务可观测性分层架构</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解微服务可观测性分层架构中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="layered"><rect x="80" y="130" width="270" height="440" rx="14" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4"/><text x="90" y="150" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A">平台服务域</text><rect x="400" y="130" width="300" height="440" rx="14" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4"/><text x="410" y="150" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A">数据资产域</text><rect x="800" y="130" width="270" height="440" rx="14" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4"/><text x="810" y="150" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A">治理与安全域</text><path d="M 320 195 H 440 V 185 H 450" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/><rect x="370" y="180" width="50" height="16" rx="2" fill="white" stroke="none"/><text x="395" y="192" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="10" fill="#0F172A" text-anchor="middle">拉取metrics</text><path d="M 320 345 H 440 V 235 H 450" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/><rect x="370" y="290" width="50" height="16" rx="2" fill="white" stroke="none"/><text x="395" y="302" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="10" fill="#0F172A" text-anchor="middle">拉取metrics</text><path d="M 320 495 H 440 V 285 H 450" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/><rect x="370" y="390" width="50" height="16" rx="2" fill="white" stroke="none"/><text x="395" y="402" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="10" fill="#0F172A" text-anchor="middle">拉取metrics</text><path d="M 670 215 H 850" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/><rect x="740" y="200" width="60" height="16" rx="2" fill="white" stroke="none"/><text x="770" y="212" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="10" fill="#0F172A" text-anchor="middle">聚合数据供给</text><path d="M 670 285 H 750 V 385 H 850" fill="none" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/><rect x="700" y="335" width="60" height="16" rx="2" fill="white" stroke="none"/><text x="730" y="347" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="10" fill="#0F172A" text-anchor="middle">告警规则触发</text><rect x="120" y="160" width="200" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="220" y="185" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Service A</text><text x="220" y="205" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">Prometheus端点 / 健康</text><rect x="120" y="310" width="200" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="220" y="335" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Service B</text><text x="220" y="355" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">Prometheus端点 / 健康</text><rect x="120" y="460" width="200" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="220" y="485" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Device Driver</text><text x="220" y="505" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">自定义HealthIndicator</text><rect x="450" y="160" width="220" height="150" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="560" y="195" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Prometheus</text><text x="560" y="215" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">Pull模式拉取metrics</text><text x="560" y="235" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">告警规则评估</text><rect x="450" y="360" width="220" height="70" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="560" y="385" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Elasticsearch</text><text x="560" y="405" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">存储聚合日志</text><rect x="850" y="160" width="200" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="950" y="185" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Grafana</text><text x="950" y="205" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">可视化指标面板</text><rect x="850" y="360" width="200" height="70" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/><text x="950" y="385" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Alertmanager</text><text x="950" y="405" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">告警通知分发</text></g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">红色下层：微服务组件（指标提供方）</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色中间层：基础设施（采集与存储）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">灰色上层：终端展示（仪表盘与告警）</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">从代码规范到告警通知的完整监控链路</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">layered</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">三层从左到右堆叠，每层包含对应组件框</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

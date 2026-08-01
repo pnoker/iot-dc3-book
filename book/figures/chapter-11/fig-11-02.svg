@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="34.400" width="1152.000" height="691.200" viewBox="0 0 1800.000 1080.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1080" fill="#FFFFFF"/>
+
+  <!-- ===== Title ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="84" y="46" font-size="22" font-weight="700" fill="#0F172A">图11-2 城市物联网分层架构</text>
+  <text x="84" y="70" font-size="12" fill="#64748B">城市物联网四层模型 · 车-路-云横向协同 · 标准 / 安全全栈贯穿</text>
+  <rect x="1580" y="28" width="180" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1670" y="46" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1">LAYERED ARCHITECTURE</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
+
+  <!-- ===== Left vertical bar: 标准与安全 ===== -->
+  <rect x="70" y="155" width="75" height="755" rx="10" fill="#FFFFFF" stroke="#E11D48" stroke-width="2" stroke-dasharray="6 4"/>
+  <path d="M107.5,176 L121,182.5 L121,199 Q121,209.5 107.5,214.5 Q94,209.5 94,199 L94,182.5 Z" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.8"/>
+  <text x="107.5" y="202" font-size="11" font-weight="700" fill="#E11D48" text-anchor="middle">安</text>
+  <text x="107.5" y="360" font-size="16" font-weight="700" fill="#E11D48" text-anchor="middle" transform="rotate(-90,107.5,360)">标准与安全</text>
+  <text x="107.5" y="545" font-size="10" fill="#475569" text-anchor="middle" transform="rotate(-90,107.5,545)">ISO / IEC / 3GPP</text>
+  <text x="107.5" y="735" font-size="10" fill="#475569" text-anchor="middle" transform="rotate(-90,107.5,735)">第8章 安全体系</text>
+
+  <!-- ===== Layer: 应用层 (orange, top) y=158 ===== -->
+  <rect x="170" y="158" width="1330" height="170" rx="10" fill="#F59E0B" fill-opacity="0.06"/>
+  <rect x="180" y="183" width="140" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="250" y="228" font-size="18" font-weight="700" fill="#F59E0B" text-anchor="middle">应用层</text>
+  <text x="250" y="250" font-size="10" fill="#64748B" text-anchor="middle">Application</text>
+  <text x="250" y="274" font-size="9" fill="#94A3B8" text-anchor="middle">场景服务</text>
+  <!-- cards -->
+  <rect x="350" y="183" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="370" y="220" font-size="15" font-weight="700" fill="#0F172A">智慧交通</text>
+  <text x="370" y="241" font-size="10" fill="#64748B">Smart Traffic</text>
+  <text x="370" y="270" font-size="9" fill="#94A3B8">信号优化 · 路径诱导 · 应急调度</text>
+  <rect x="645" y="183" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="665" y="220" font-size="15" font-weight="700" fill="#0F172A">智慧环境</text>
+  <text x="665" y="241" font-size="10" fill="#64748B">Environment</text>
+  <text x="665" y="270" font-size="9" fill="#94A3B8">空气水质 · 噪声 · 气象监测</text>
+  <rect x="940" y="183" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="960" y="220" font-size="15" font-weight="700" fill="#0F172A">智慧安防</text>
+  <text x="960" y="241" font-size="10" fill="#64748B">Public Safety</text>
+  <text x="960" y="270" font-size="9" fill="#94A3B8">视频巡查 · 事件告警 · 指挥</text>
+  <rect x="1235" y="183" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1255" y="220" font-size="15" font-weight="700" fill="#0F172A">智慧能耗</text>
+  <text x="1255" y="241" font-size="10" fill="#64748B">Energy</text>
+  <text x="1255" y="270" font-size="9" fill="#94A3B8">楼宇照明 · 电网负荷 · 调度</text>
+
+  <!-- up arrows: 应用<-平台 -->
+  <line x1="560" y1="346" x2="560" y2="332" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="860" y1="346" x2="860" y2="332" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1160" y1="346" x2="1160" y2="332" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== Layer: 平台层 (purple) y=350 ===== -->
+  <rect x="170" y="350" width="1330" height="170" rx="10" fill="#7C3AED" fill-opacity="0.06"/>
+  <rect x="180" y="375" width="140" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="250" y="420" font-size="18" font-weight="700" fill="#7C3AED" text-anchor="middle">平台层</text>
+  <text x="250" y="442" font-size="10" fill="#64748B" text-anchor="middle">Platform</text>
+  <text x="250" y="466" font-size="9" fill="#94A3B8" text-anchor="middle">数据 · 模型 · 能力</text>
+  <rect x="350" y="375" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="370" y="412" font-size="15" font-weight="700" fill="#0F172A">数据中台</text>
+  <text x="370" y="433" font-size="10" fill="#64748B">Data Hub</text>
+  <text x="370" y="462" font-size="9" fill="#94A3B8">接入 · 清洗 · 融合 · 治理</text>
+  <rect x="645" y="375" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="665" y="412" font-size="15" font-weight="700" fill="#0F172A">AI 模型服务</text>
+  <text x="665" y="433" font-size="10" fill="#64748B">AI Serving</text>
+  <text x="665" y="462" font-size="9" fill="#94A3B8">训练 · 推理 · 模型仓库</text>
+  <rect x="940" y="375" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="960" y="412" font-size="15" font-weight="700" fill="#0F172A">设备管理</text>
+  <text x="960" y="433" font-size="10" fill="#64748B">Device Twin</text>
+  <text x="960" y="462" font-size="9" fill="#94A3B8">影子 · 拓扑 · 生命周期</text>
+  <rect x="1235" y="375" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="1255" y="412" font-size="15" font-weight="700" fill="#0F172A">开放 API</text>
+  <text x="1255" y="433" font-size="10" fill="#64748B">Open API</text>
+  <text x="1255" y="462" font-size="9" fill="#94A3B8">认证 · 计费 · 网关路由</text>
+
+  <!-- up arrows: 平台<-网络 -->
+  <line x1="560" y1="538" x2="560" y2="524" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="860" y1="538" x2="860" y2="524" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1160" y1="538" x2="1160" y2="524" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== Layer: 网络层 (blue) y=542 ===== -->
+  <rect x="170" y="542" width="1330" height="170" rx="10" fill="#2563EB" fill-opacity="0.06"/>
+  <rect x="180" y="567" width="140" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="250" y="612" font-size="18" font-weight="700" fill="#2563EB" text-anchor="middle">网络层</text>
+  <text x="250" y="634" font-size="10" fill="#64748B" text-anchor="middle">Network</text>
+  <text x="250" y="658" font-size="9" fill="#94A3B8" text-anchor="middle">连接 · 传输 · 边缘</text>
+  <rect x="350" y="567" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="370" y="604" font-size="15" font-weight="700" fill="#0F172A">5G / NB-IoT</text>
+  <text x="370" y="625" font-size="10" fill="#64748B">Cellular</text>
+  <text x="370" y="654" font-size="9" fill="#94A3B8">蜂窝接入 · 网络切片</text>
+  <rect x="645" y="567" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="665" y="604" font-size="15" font-weight="700" fill="#0F172A">C-V2X</text>
+  <text x="665" y="625" font-size="10" fill="#64748B">V2X (Uu / PC5)</text>
+  <text x="665" y="654" font-size="9" fill="#94A3B8">车路直连 · 低时延通信</text>
+  <rect x="940" y="567" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="960" y="604" font-size="15" font-weight="700" fill="#0F172A">边缘网关</text>
+  <text x="960" y="625" font-size="10" fill="#64748B">Edge Gateway</text>
+  <text x="960" y="654" font-size="9" fill="#94A3B8">协议转换 · 本地计算</text>
+  <rect x="1235" y="567" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1255" y="604" font-size="15" font-weight="700" fill="#0F172A">骨干专网</text>
+  <text x="1255" y="625" font-size="10" fill="#64748B">Backbone</text>
+  <text x="1255" y="654" font-size="9" fill="#94A3B8">SDN · MPLS · 专线</text>
+
+  <!-- up arrows: 网络<-感知 -->
+  <line x1="560" y1="730" x2="560" y2="716" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="860" y1="730" x2="860" y2="716" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1160" y1="730" x2="1160" y2="716" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== Layer: 感知层 (green, bottom) y=734 ===== -->
+  <rect x="170" y="734" width="1330" height="170" rx="10" fill="#10B981" fill-opacity="0.06"/>
+  <rect x="180" y="759" width="140" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="250" y="804" font-size="18" font-weight="700" fill="#10B981" text-anchor="middle">感知层</text>
+  <text x="250" y="826" font-size="10" fill="#64748B" text-anchor="middle">Perception</text>
+  <text x="250" y="850" font-size="9" fill="#94A3B8" text-anchor="middle">采集 · 标识</text>
+  <rect x="350" y="759" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="370" y="796" font-size="15" font-weight="700" fill="#0F172A">视频摄像头</text>
+  <text x="370" y="817" font-size="10" fill="#64748B">Camera</text>
+  <text x="370" y="846" font-size="9" fill="#94A3B8">视觉 · 车牌 · 事件识别</text>
+  <rect x="645" y="759" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="665" y="796" font-size="15" font-weight="700" fill="#0F172A">雷达</text>
+  <text x="665" y="817" font-size="10" fill="#64748B">mmWave / LiDAR</text>
+  <text x="665" y="846" font-size="9" fill="#94A3B8">测距 · 测速 · 成像</text>
+  <rect x="940" y="759" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="960" y="796" font-size="15" font-weight="700" fill="#0F172A">环境传感器</text>
+  <text x="960" y="817" font-size="10" fill="#64748B">Sensor</text>
+  <text x="960" y="846" font-size="9" fill="#94A3B8">温湿 · 气体 · 颗粒物</text>
+  <rect x="1235" y="759" width="254" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1255" y="796" font-size="15" font-weight="700" fill="#0F172A">RFID · RSU</text>
+  <text x="1255" y="817" font-size="10" fill="#64748B">Identity / Roadside</text>
+  <text x="1255" y="846" font-size="9" fill="#94A3B8">标识 · 路侧信标</text>
+
+  <!-- ===== Right column: 车-路-云协同 ===== -->
+  <rect x="1525" y="160" width="230" height="750" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="1640" y="190" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">车-路-云协同</text>
+  <text x="1640" y="208" font-size="9" fill="#64748B" text-anchor="middle">Vehicle-Road-Cloud</text>
+  <!-- bidirectional spine -->
+  <line x1="1575" y1="240" x2="1575" y2="885" stroke="#2563EB" stroke-width="2.5" marker-start="url(#ah-blue)" marker-end="url(#ah-blue)"/>
+  <!-- 云 -->
+  <circle cx="1575" cy="315" r="26" fill="#FFFFFF" stroke="#D97706" stroke-width="2.5"/>
+  <text x="1575" y="322" font-size="17" font-weight="700" fill="#D97706" text-anchor="middle">云</text>
+  <text x="1612" y="309" font-size="11" font-weight="700" fill="#0F172A">云端协同</text>
+  <text x="1612" y="326" font-size="9" fill="#64748B">全局调度 · 大数据</text>
+  <!-- 路 -->
+  <circle cx="1575" cy="560" r="26" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="1575" y="567" font-size="17" font-weight="700" fill="#2563EB" text-anchor="middle">路</text>
+  <text x="1612" y="554" font-size="11" font-weight="700" fill="#0F172A">路侧协同</text>
+  <text x="1612" y="571" font-size="9" fill="#64748B">RSU · 边缘计算</text>
+  <!-- 车 -->
+  <circle cx="1575" cy="805" r="26" fill="#FFFFFF" stroke="#10B981" stroke-width="2.5"/>
+  <text x="1575" y="812" font-size="17" font-weight="700" fill="#10B981" text-anchor="middle">车</text>
+  <text x="1612" y="799" font-size="11" font-weight="700" fill="#0F172A">车载协同</text>
+  <text x="1612" y="816" font-size="9" fill="#64748B">OBU · 实时感知</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="935" x2="1760" y2="935" stroke="#E2E8F0"/>
+  <!-- row 1 -->
+  <rect x="90" y="955" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="116" y="965" font-size="11" fill="#475569">感知层 Perception</text>
+  <rect x="400" y="955" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="426" y="965" font-size="11" fill="#475569">网络层 Network</text>
+  <rect x="710" y="955" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="736" y="965" font-size="11" fill="#475569">平台层 Platform</text>
+  <rect x="1020" y="955" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1046" y="965" font-size="11" fill="#475569">应用层 Application</text>
+  <rect x="1330" y="955" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+  <text x="1356" y="965" font-size="11" fill="#475569">标准 / 安全（全栈）</text>
+  <!-- row 2 -->
+  <rect x="90" y="987" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="116" y="997" font-size="11" fill="#475569">云协同（车-路-云）</text>
+  <line x1="395" y1="993" x2="427" y2="993" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="436" y="997" font-size="11" fill="#475569">数据上行主链路</text>
+  <line x1="705" y1="993" x2="737" y2="993" stroke="#64748B" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="746" y="997" font-size="11" fill="#475569">控制下发 / 异步回传</text>
+  <text x="1050" y="997" font-size="11" fill="#64748B">纵向解耦 · 横向贯穿全栈</text>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="1048" font-size="10" fill="#94A3B8" text-anchor="middle">图11-2 城市物联网分层架构：感知→网络→平台→应用纵向解耦，车-路-云协同横向贯穿，ISO/IEC/3GPP 标准与第8章安全体系覆盖全栈；交通、环境、安防、能耗等场景共享同一骨架。</text>
+  </svg>
+</svg>

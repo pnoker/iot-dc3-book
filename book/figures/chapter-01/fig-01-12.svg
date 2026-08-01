@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">AIoT数据闭环流程</title>
+  <desc id="desc">读者应理解AIoT数据闭环流程中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">AIoT数据闭环流程</title>
+  <desc id="desc">读者应理解AIoT数据闭环流程中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">AIoT数据闭环流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解AIoT数据闭环流程中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <!-- Region: platform_domain -->
+  <rect x="230" y="300" width="1360" height="280" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4" />
+  <text x="245" y="325" font-size="13" fill="#64748B" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">平台服务域</text>
+
+  <!-- Connections (drawn first to be behind cards) -->
+  <!-- 1->2 -->
+  <line x1="545" y1="400" x2="595" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="548" y="382" width="44" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5" />
+  <text x="570" y="396" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">数据流</text>
+
+  <!-- 2->3 -->
+  <line x1="875" y1="400" x2="925" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="878" y="382" width="44" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5" />
+  <text x="900" y="396" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">推理结果</text>
+
+  <!-- 3->4 -->
+  <line x1="1205" y1="400" x2="1255" y2="400" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="1208" y="382" width="44" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5" />
+  <text x="1230" y="396" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">控制指令</text>
+
+  <!-- 4->1 feedback -->
+  <path d="M 1395 465 L 1395 530 L 405 530 L 405 465" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="870" y="510" width="60" height="20" rx="4" fill="white" stroke="#E2E8F0" stroke-width="0.5" />
+  <text x="900" y="524" font-size="11" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">闭环反馈</text>
+
+  <!-- Cards -->
+  <!-- 感知 -->
+  <rect x="265" y="335" width="280" height="130" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+  <text x="405" y="378" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">感知</text>
+  <text x="405" y="402" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">数据采集</text>
+
+  <!-- 学习 -->
+  <rect x="595" y="335" width="280" height="130" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="735" y="378" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">学习</text>
+  <text x="735" y="402" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">模型训练</text>
+
+  <!-- 决策 -->
+  <rect x="925" y="335" width="280" height="130" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" />
+  <text x="1065" y="378" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">决策</text>
+  <text x="1065" y="402" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">分析预测</text>
+
+  <!-- 执行 -->
+  <rect x="1255" y="335" width="280" height="130" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+  <text x="1395" y="378" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">执行</text>
+  <text x="1395" y="402" font-size="12" fill="#475569" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif">动作控制</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">核心环节</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">数据流向（含反馈）</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图1-5-1 AIoT数据闭环流程——感知、学习、决策、执行形成持续自我优化的循环，区别于传统IoT的单向数据管道。</text>
+  </svg>
+</svg>

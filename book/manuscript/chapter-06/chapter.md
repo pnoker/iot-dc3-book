@@ -170,9 +170,9 @@ public class MqttConfig {
 - **版本控制**：在 API 路径中嵌入版本号 `/api/v1/` 或通过请求头 `Accept-Version` 实现，保证向后兼容。
 
 ```book-figure
-id: fig-6-3
+id: "fig-06-01"
 type: dataflow
-title: 图6-3 物联网REST API端点设计示例（示意）
+title: 图6-1 图6-1 物联网REST API端点设计示例（示意）
 audience_takeaway: "读者应理解API以带v1前缀的资源型端点组织，上报与指令下发走写路径(经接入层校验、去重、队列)，历史查询走读路径并按时间窗参数化。"
 purpose: 展示物联网后端常见API端点布局，体现读写分离、版本控制、资源型端点设计。
 visual_focus: 从device到终点的主链路。
@@ -320,7 +320,7 @@ legend:
 - 内部服务逻辑
 - 请求/数据流方向
 - 对应GET/POST/PUT/DELETE HTTP方法
-caption: 图6-3 物联网REST API端点设计示例（示意）
+caption: 图6-1 物联网REST API端点设计示例（示意）
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -329,7 +329,7 @@ render_notes: 整体采用横向泳道布局：左侧外部实体（椭圆形状
   Security和全局异常处理器实现。本图为示意性设计，非具体项目截图。
 ```
 
-图 6-3 展示了一个物联网后端常见的 CRUD 加点对点命令的端点布局。关键点在于：设备上报数据用 POST，但控制指令也用 POST——前者是数据处理，后者是指令下发，语义不同，资源路径也不同。命令端点 `/api/v1/devices/{id}/command` 的响应通常是异步的，返回 `202 Accepted` 表示指令已入队，后续由 MQTT 通道推送到目标设备。
+图6-1 展示了一个物联网后端常见的 CRUD 加点对点命令的端点布局。关键点在于：设备上报数据用 POST，但控制指令也用 POST——前者是数据处理，后者是指令下发，语义不同，资源路径也不同。命令端点 `/api/v1/devices/{id}/command` 的响应通常是异步的，返回 `202 Accepted` 表示指令已入队，后续由 MQTT 通道推送到目标设备。
 
 Java 生态中，Spring Boot 搭配 Spring HATEOAS 可以方便地构建符合 REST 成熟度模型 Level 3 的 API，即在响应中包含链接信息（例如 `_links.self`、`_links.next`），帮助客户端自动发现后续操作。不过在实际物联网项目中，大多数团队止步于 Level 2（资源 + HTTP 动词），原因在于设备端和第三方系统的开发者对超媒体导航模式并不熟悉，保持简单反而更可靠。
 
@@ -385,12 +385,12 @@ gRPC是Google开源的高性能RPC框架，基于HTTP/2和Protocol Buffers（Pro
 
 #### 协议分层架构
 
-下图展示了一个标准物联网平台中三种协议的部署位置。每一层选择当前场景的“最佳”协议，形成多层互补结构。
+图6-2展示了一个标准物联网平台中三种协议的部署位置。每一层选择当前场景的“最佳”协议，形成多层互补结构。
 
 ```book-figure
-id: fig-6-1
+id: "fig-06-02"
 type: architecture
-title: 图6-1 物联网平台协议分层架构
+title: 图6-2 图6-2 物联网平台协议分层架构
 purpose: 展示MQTT、REST、gRPC在典型平台中的部署层次与交互主链路。
 audience_takeaway: 读者应理解设备、平台、北向三个层次的责任边界，以及各层次应选择的“最佳”协议。
 visual_focus: 从设备层经网关/边缘层到平台服务层再到北向应用层的主链路；不同协议用不同线型区分。
@@ -481,7 +481,7 @@ callouts:
 legend:
 - "蓝色=核心通信路径；青色=设备与边缘节点。"
 - "实线箭头=主要通信链路；虚线箭头=辅助或可选的通信路径。"
-caption: "图6-1 展示MQTT、REST、gRPC在物联网平台各层次中的部署位置与交互关系。"
+caption: "图6-2 展示MQTT、REST、gRPC在物联网平台各层次中的部署位置与交互关系。"
 visual_constraints:
 - "最多7个节点，节点标签短，解释放入callouts。"
 - "图例放在底部，不遮挡主体结构。"
@@ -546,9 +546,9 @@ render_notes: "HTML/SVG渲染，浅色背景，四层布局，不同协议用不
 图6-3展示了按DDD限界上下文拆分后的智能楼宇微服务架构。每个领域对数据存储的需求也不相同：设备管理使用关系型数据库，数据采集使用时序数据库，告警引擎使用内存数据库快速判定，能源分析使用数据仓库做聚合查询。
 
 ```book-figure
-id: fig-06-03
+id: "fig-06-03"
 type: architecture
-title: 图6-3 智能楼宇物联网系统微服务参考架构（示意）
+title: 图6-3 图6-3 智能楼宇物联网系统微服务参考架构（示意）
 audience_takeaway: "读者应理解楼宇中MQTT/Modbus/BACnet三类异种协议统一由边缘网关的协议驱动接入，微服务按领域边界拆分且各自独立存储，数据流与控制流分离传递。"
 purpose: 展示按DDD限界上下文拆分的智能楼宇微服务分层架构，以及数据流与控制流的分离路径。
 visual_focus: 从起点到对应的协议驱动层服务，实线箭头的主链路。
@@ -642,9 +642,9 @@ render_notes: HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。
 **阶段四：持续演进**。项目规模从几栋楼扩展到几十栋，团队按业务场景拆分出用户管理服务、设备注册服务、历史数据归档服务等。同时将功能关联性强的模块（如设备注册与设备影子）保留为聚合服务，避免引入不必要的分布式事务。演进没有固定终点，是随业务成长持续调整的结构性决策。换一个项目可能需要完全不同的拆分边界，但由单体到微服务的路径本身在行业内是常见的做法。值得注意的是，物联网场景的设备数量增长往往呈现跳跃式阶梯（新增一个园区、上线一批设备），而非互联网场景的平滑增长，因此拆分窗口更窄，对过早与过晚的判断更加敏感。
 
 ```book-figure
-id: fig-06-01
+id: "fig-06-04"
 type: lifecycle
-title: 图6-1 单体到微服务演进阶段图
+title: 图6-4 图6-4 单体到微服务演进阶段图
 audience_takeaway: "读者应理解微服务演进由团队规模与协作摩擦驱动，每前进一步都要用新架构问题(单点故障、数据一致性、分布式事务成本)换取部署与分工的收益。"
 purpose: 展示物联网项目从单体原型到多服务演进的典型路径，标注各阶段关键特征与风险。
 visual_focus: 从阶段节点间用粗箭头到箭头上方标注演进动机：第一支箭 '…的主链路。
@@ -686,7 +686,7 @@ callouts:
 - 阶段节点间用粗箭头连接，箭头上方标注演进动机：第一支箭 '单一变更影响全局'，中间箭 '功能耦合加剧'，右侧箭 '…
 legend:
 - '时间轴从左至右；虚线矩形代表第四阶段为持续状态；每个阶段顶部标注的关键风险用浅红色底色 #FFCDD2；箭头颜色为深蓝 #1565C0。'
-caption: 图6-1 展示从单体原型到微服务持续演进的四个典型阶段。
+caption: 图6-4 展示从单体原型到微服务持续演进的四个典型阶段。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -872,9 +872,9 @@ spec:
 2. **边缘部署轻量级容器环境**：资源受限且确有集群调度需求时可评估 k3s；单节点或少量 Driver 也可以使用更简单的容器运行方式。
 
 ```book-figure
-id: fig-6-6
+id: "fig-06-05"
 type: layered
-title: 图6-6 物联网微服务容器部署的端-边-云分层架构
+title: 图6-5 图6-5 物联网微服务容器部署的端-边-云分层架构
 audience_takeaway: "读者应理解边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。"
 purpose: 展示从端设备、边缘节点到云端的数据流与控制流，以及各层使用的容器编排工具
 visual_focus: 从云端层到端设备层的主链路。
@@ -935,7 +935,7 @@ callouts:
 legend:
 - 蓝色=核心平台中心服务；青绿色=边缘计算与设备接入；灰色=端设备与现场总线
 - 实线箭头=同步调用或强依赖；虚线箭头=异步消息或可选同步
-caption: 图6-6 展示物联网微服务从端设备到边缘节点再到云端的容器部署分层架构。边缘层运行 k3s 轻量集群处理协议适配和本地缓存，云端运行完整 K8s 集群承载中心服务。
+caption: 图6-5 展示物联网微服务从端设备到边缘节点再到云端的容器部署分层架构。边缘层运行 k3s 轻量集群处理协议适配和本地缓存，云端运行完整 K8s 集群承载中心服务。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -1000,9 +1000,9 @@ IoT DC3 当前 Compose 基础设施只有 PostgreSQL 与 RabbitMQ。PostgreSQL �
 4. Driver 经 RabbitMQ 异步向 Data 上报位号值、状态、事件和命令回执。
 
 ```book-figure
-id: fig-6-03
+id: "fig-06-06"
 type: architecture
-title: 图6-3 IoT DC3 模块关系与数据流分层图
+title: 图6-6 图6-6 IoT DC3 模块关系与数据流分层图
 purpose: 展示 Gateway、四个中心、协议 Driver、RabbitMQ 与 PostgreSQL 的真实模块边界和通信方向。
 audience_takeaway: 读者应理解北向统一路由、Driver 与 Manager 的 gRPC 管理调用，以及 Data 与 Driver 之间的 RabbitMQ 异步命令和数据流。
 visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver 三条主链路。
@@ -1127,7 +1127,7 @@ callouts:
 legend:
 - 实线表示同步 REST/gRPC；虚线表示 RabbitMQ 异步消息。
 - 蓝色表示平台服务；绿色表示 Driver；紫色表示消息；灰色表示存储。
-caption: 图6-3 IoT DC3 模块关系与数据流：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 和 Driver 之间异步流转。
+caption: 图6-6 IoT DC3 模块关系与数据流：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 和 Driver 之间异步流转。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts。
 - 图例放在底部，不遮挡主体结构。
@@ -1219,9 +1219,9 @@ public void pointCommandReceive(
 当前代码依赖、环境变量和 Compose 模板都围绕 RabbitMQ，未包含 Kafka Broker、Kafka 客户端或 Spring Cloud Stream Kafka Binder。Kafka 可作为其他日志回放或超大吞吐数据管道的通用选项，但不是 IoT DC3 当前实现，也不应被写成既定扩展路线。
 
 ```book-figure
-id: fig-6-04
+id: "fig-06-07"
 type: architecture
-title: 图6-4 IoT DC3 服务间通信架构图
+title: 图6-7 图6-7 IoT DC3 服务间通信架构图
 purpose: 展示同步管理调用与 RabbitMQ 异步命令、数据流的真实分工。
 audience_takeaway: Gateway 与 gRPC 负责管理和元数据调用；点位命令、自定义命令、执行回执、位号值和状态事件统一经 RabbitMQ 流转。
 visual_focus: Gateway→四中心与 Driver→Manager 为同步实线，Data↔RabbitMQ↔Driver 为异步虚线。
@@ -1242,7 +1242,7 @@ callouts:
 - 当前实现不包含 Kafka 或独立服务注册中心。
 legend:
 - 实线表示同步 REST/gRPC 管理调用；虚线表示 RabbitMQ 异步消息。
-caption: 图6-4 IoT DC3 服务间通信架构：Gateway 与 gRPC 承担同步管理调用，命令、回执和上行数据经 RabbitMQ 异步流转。
+caption: 图6-7 IoT DC3 服务间通信架构：Gateway 与 gRPC 承担同步管理调用，命令、回执和上行数据经 RabbitMQ 异步流转。
 render_notes: SVG 分层绘制，RabbitMQ 作为唯一消息总线突出显示；禁止绘制 Kafka、Nacos 或 Data 到 Driver 的同步命令直连。
 ```
 
@@ -1331,9 +1331,9 @@ public class DeviceDriverHealthIndicator implements HealthIndicator {
 以下是用分层架构图形式总结的监控体系设计，每种类型的指标对应不同的采集与存储路径。
 
 ```book-figure
-id: fig-6-4
+id: "fig-06-08"
 type: layered
-title: 微服务可观测性分层架构
+title: 图6-8 微服务可观测性分层架构
 audience_takeaway: "读者应理解可观测性中服务主动暴露端点、Prometheus以pull模式拉取指标、日志与指标分通道存储(ES/Prometheus)，健康状态并入业务指标统一告警。"
 purpose: 展示从代码规范到告警通知的完整监控链路，说明各层组件及数据流
 visual_focus: 从进入下一判断到进入下一判断的主链路。
@@ -1448,10 +1448,10 @@ AIoT 系统的可观测性不能只回答“进程是否活着”，而要能沿
 
 **三者之间的相互制约**：语言选型影响协议实现的复杂度（Python 的 GIL 在高并发 gRPC 流下可能成为瓶颈，而 Java 的 Netty 更适合实现服务端流）；协议选型直接影响架构边界（不同协议需要不同的接入点，这些接入点必须由 API 网关统一管理）；架构选型决定了各协议层能否独立扩缩容（设备接入层按设备数量水平扩展，数据服务层按消息量扩展，微服务架构使这成为可能）。三个维度不是孤立决策，而是一个互相影响的系统工程。  
 
-```book-figure  
-id: fig-6-5  
+```book-figure
+id: "fig-06-09"
 type: architecture  
-title: 图6-5 物联网系统关键决策三元组  
+title: 图6-9 图6-9 物联网系统关键决策三元组  
 purpose: 展示语言、协议、架构三个决策维度在原型阶段与生产阶段的典型差异和迁移路径。  
 audience_takeaway: 读者应理解物联网系统决策不是孤立选择，而是三个维度互相影响的系统工程。  
 visual_focus: 从“语言→协议→架构”的递进影响链路，以及每个维度内迁移路径上的关键工程动作。  
@@ -1510,7 +1510,7 @@ legend:
 - 浅蓝底色=原型阶段选项，深蓝底色=生产阶段升级选项。  
 - 橙色箭头=迁移路径，标注最短工程动作。  
 - 左侧代码文件图标=语言列，中间网络信号图标=协议列，右侧服务器集群图标=架构列。  
-caption: 图6-5 从原型到生产的三元决策矩阵。每一列展示了在语言、协议、架构层面，原型阶段和生产阶段分别采用的最佳选项，以及两者之间的最短迁移路径。图中元素来源于本章各节讨论（6.1 语言实践、6.2 协议实践、6.3 架构实践）。  
+caption: 图6-9 从原型到生产的三元决策矩阵。每一列展示了在语言、协议、架构层面，原型阶段和生产阶段分别采用的最佳选项，以及两者之间的最短迁移路径。图中元素来源于本章各节讨论（6.1 语言实践、6.2 协议实践、6.3 架构实践）。  
 visual_constraints:  
 - 最多 9 个主节点（每列 3 个，含阶段和动作）。  
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。  

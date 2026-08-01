@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="79.200" width="1152.000" height="601.600" viewBox="0 0 1800.000 940.000" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1800" height="940" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- ===== Title area ===== -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图12-02 智能灌溉决策流程（阈值 + 天气预报前馈）</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">从土壤湿度与降水预报到阀门动作的决策链路</text>
+  <rect x="1644" y="26" width="108" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1698" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">FLOWCHART</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== Region boundary boxes ===== -->
+  <rect x="60" y="150" width="1080" height="640" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="80" y="180" font-size="13" font-weight="700" fill="#2563EB">决策核心</text>
+  <text x="80" y="198" font-size="10" fill="#64748B">阈值判定 + 天气前馈</text>
+
+  <rect x="1180" y="150" width="560" height="640" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="1200" y="180" font-size="13" font-weight="700" fill="#10B981">执行动作</text>
+  <text x="1200" y="198" font-size="10" fill="#64748B">阀门与告警</text>
+
+  <!-- ===== Components ===== -->
+  <!-- in1: input data (purple / data domain) -->
+  <rect x="100" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="200" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">土壤湿度 / 降水概率</text>
+  <text x="200" y="474" font-size="10" fill="#64748B" text-anchor="middle">传感器 + 天气 API</text>
+  <text x="200" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">数据输入</text>
+
+  <!-- d1: decision (blue, primary) -->
+  <polygon points="440,400 540,470 440,540 340,470" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="440" y="466" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">湿度 &lt; 下限？</text>
+  <text x="440" y="484" font-size="9" fill="#64748B" text-anchor="middle">阈值判定</text>
+
+  <!-- d2: decision (blue, primary) -->
+  <polygon points="740,400 840,470 740,540 640,470" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="740" y="466" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">降水概率 ≥ 阈值？</text>
+  <text x="740" y="484" font-size="9" fill="#64748B" text-anchor="middle">天气前馈</text>
+
+  <!-- calc: process (blue) -->
+  <rect x="920" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1020" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">计算灌溉量</text>
+  <text x="1020" y="474" font-size="10" fill="#64748B" text-anchor="middle">FAO-56 水分平衡</text>
+  <text x="1020" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">需水量估算</text>
+
+  <!-- a_delay: action (amber / defer) -->
+  <rect x="1360" y="222" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="1460" y="252" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">推迟灌溉</text>
+  <text x="1460" y="274" font-size="10" fill="#64748B" text-anchor="middle">记录依据</text>
+  <text x="1460" y="294" font-size="9" fill="#94A3B8" text-anchor="middle">等待降水</text>
+
+  <!-- a_open: action (green / device) -->
+  <rect x="1360" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="1460" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">开阀轮灌</text>
+  <text x="1460" y="474" font-size="10" fill="#64748B" text-anchor="middle">电磁阀 · 分区</text>
+  <text x="1460" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">执行动作</text>
+
+  <!-- a_close: action (red / alarm) -->
+  <rect x="1360" y="622" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <text x="1460" y="652" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">关阀 / 排涝告警</text>
+  <text x="1460" y="674" font-size="10" fill="#64748B" text-anchor="middle">防涝保护</text>
+  <text x="1460" y="694" font-size="9" fill="#94A3B8" text-anchor="middle">高危动作</text>
+
+  <!-- ===== Arrows ===== -->
+  <!-- in1 -> d1 : main chain blue -->
+  <line x1="300" y1="470" x2="332" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="316" y="460" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">读数</text>
+
+  <!-- d1 -> d2 : main chain blue -->
+  <line x1="540" y1="470" x2="632" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="586" y="460" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">是</text>
+
+  <!-- d2 -> calc : main chain blue -->
+  <line x1="840" y1="470" x2="912" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="876" y="458" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">否（无雨）</text>
+
+  <!-- calc -> a_open : green (toward device) -->
+  <line x1="1120" y1="470" x2="1352" y2="470" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="1236" y="460" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">开阀</text>
+
+  <!-- d2 -> a_delay : amber branch (up then right) -->
+  <polyline points="740,400 740,270 1352,270" fill="none" stroke="#D97706" stroke-width="2" marker-end="url(#ah-amber)"/>
+  <text x="1046" y="260" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">是（有雨）· 推迟</text>
+
+  <!-- d1 -> a_close : red branch (down then right) -->
+  <polyline points="440,540 440,670 1352,670" fill="none" stroke="#E11D48" stroke-width="2" marker-end="url(#ah-red)"/>
+  <text x="896" y="660" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">过高 + 强降水</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="815" x2="1760" y2="815" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <rect x="60" y="838" width="22" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="90" y="846" dominant-baseline="middle">方框 · 处理步骤</text>
+
+    <polygon points="282,836 298,845 282,854 266,845" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="308" y="846" dominant-baseline="middle">菱形 · 判定分支</text>
+
+    <line x1="470" y1="845" x2="500" y2="845" stroke="#2563EB" stroke-width="2"/>
+    <text x="508" y="846" dominant-baseline="middle">蓝 · 决策主链路</text>
+
+    <rect x="690" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="714" y="846" dominant-baseline="middle">绿 · 开阀动作</text>
+
+    <rect x="880" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+    <text x="904" y="846" dominant-baseline="middle">琥珀 · 推迟灌溉</text>
+
+    <rect x="1080" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
+    <text x="1104" y="846" dominant-baseline="middle">红 · 关阀告警</text>
+
+    <rect x="1260" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1284" y="846" dominant-baseline="middle">紫 · 数据输入</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="903" font-size="10" fill="#94A3B8" text-anchor="middle">图12-02 智能灌溉在阈值控制之上叠加天气预报前馈，形成预判式混合控制。</text>
+  </svg>
+</svg>

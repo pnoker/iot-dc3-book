@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图9-5 MQTT智能家居监控系统交互序列</title>
+  <desc id="desc">读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图9-5 MQTT智能家居监控系统交互序列</title>
+  <desc id="desc">读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图9-5 MQTT智能家居监控系统交互序列</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="sequence">
+  <!-- 参与者 -->
+  <rect x="200" y="130" width="180" height="60" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="290" y="160" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">传感器设备</text>
+  <text x="290" y="178" fill="#64748B" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">MQTT Client</text>
+
+  <rect x="500" y="130" width="180" height="60" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="590" y="160" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">MQTT Broker</text>
+  <text x="590" y="178" fill="#64748B" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">消息路由</text>
+
+  <rect x="800" y="130" width="180" height="60" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="890" y="160" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">云平台订阅端</text>
+  <text x="890" y="178" fill="#64748B" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">MQTT Client</text>
+
+  <rect x="1100" y="130" width="180" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1190" y="160" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">手机App</text>
+  <text x="1190" y="178" fill="#64748B" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">告警接收</text>
+
+  <!-- 生命线 -->
+  <line x1="290" y1="190" x2="290" y2="720" stroke="#E2E8F0" stroke-dasharray="4,4" stroke-width="1"/>
+  <line x1="590" y1="190" x2="590" y2="720" stroke="#E2E8F0" stroke-dasharray="4,4" stroke-width="1"/>
+  <line x1="890" y1="190" x2="890" y2="720" stroke="#E2E8F0" stroke-dasharray="4,4" stroke-width="1"/>
+  <line x1="1190" y1="190" x2="1190" y2="720" stroke="#E2E8F0" stroke-dasharray="4,4" stroke-width="1"/>
+
+  <!-- 网络故障节点 -->
+  <rect x="400" y="570" width="120" height="40" rx="6" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="460" y="595" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">网络故障</text>
+
+  <!-- 阶段分隔线 -->
+  <!-- Phase I -->
+  <line x1="150" y1="290" x2="1350" y2="290" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1"/>
+  <text x="160" y="285" fill="#0F172A" font-size="13" font-weight="600" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">Phase I 连接建立</text>
+  <!-- Phase II -->
+  <line x1="150" y1="550" x2="1350" y2="550" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1"/>
+  <text x="160" y="545" fill="#0F172A" font-size="13" font-weight="600" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">Phase II 正常运行与告警触发</text>
+  <!-- Phase III -->
+  <line x1="150" y1="670" x2="1350" y2="670" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1"/>
+  <text x="160" y="665" fill="#0F172A" font-size="13" font-weight="600" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">Phase III 断连处理</text>
+
+  <!-- 消息连线及标签 -->
+  <!-- 1. CONNECT -->
+  <line x1="290" y1="220" x2="590" y2="220" stroke="#64748B" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="380" y="208" width="100" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="430" y="222" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">CONNECT (含遗嘱)</text>
+
+  <!-- 2. CONNACK -->
+  <line x1="590" y1="260" x2="290" y2="260" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="380" y="248" width="80" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="420" y="262" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">CONNACK</text>
+
+  <!-- 3. PUBLISH 温度 -->
+  <line x1="290" y1="320" x2="590" y2="320" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="350" y="308" width="140" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="420" y="322" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">PUBLISH 温度 (qos=1)</text>
+
+  <!-- 4. 分发温度 -->
+  <line x1="590" y1="360" x2="890" y2="360" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="680" y="348" width="100" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="730" y="362" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">分发温度</text>
+
+  <!-- 5. PUBLISH 湿度 -->
+  <line x1="290" y1="400" x2="590" y2="400" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="350" y="388" width="140" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="420" y="402" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">PUBLISH 湿度 (qos=1)</text>
+
+  <!-- 6. 分发湿度 -->
+  <line x1="590" y1="440" x2="890" y2="440" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="680" y="428" width="100" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="730" y="442" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">分发湿度</text>
+
+  <!-- 7. PUBLISH 告警 -->
+  <line x1="890" y1="480" x2="590" y2="480" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="680" y="468" width="130" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="745" y="482" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">PUBLISH 告警 (qos=2)</text>
+
+  <!-- 8. 分发告警 -->
+  <line x1="590" y1="520" x2="1190" y2="520" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="800" y="508" width="100" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="850" y="522" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">分发告警</text>
+
+  <!-- 9. TCP中断 -->
+  <line x1="290" y1="590" x2="400" y2="590" stroke="#64748B" stroke-width="1.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="290" y="578" width="90" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="335" y="592" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">TCP中断</text>
+
+  <!-- 10. 心跳超时 -->
+  <line x1="520" y1="590" x2="590" y2="590" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="520" y="578" width="70" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="555" y="592" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">心跳超时</text>
+
+  <!-- 11. PUBLISH 遗嘱 -->
+  <line x1="590" y1="630" x2="890" y2="630" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <rect x="660" y="618" width="150" height="20" rx="4" fill="white" fill-opacity="0.9"/>
+  <text x="735" y="632" fill="#0F172A" font-size="11" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">PUBLISH 遗嘱 (retain=true)</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：连接建立（CONNECT/CONNACK）和确认</text>
+  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色虚线箭头：正常数据PUBLISH消息</text>
+  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色虚线箭头：告警PUBLISH消息</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图9-5 展示了一个完整的MQTT智能家居监控交互序列。序列分三个阶段：Phase I连接建立与遗嘱设置，Phase II正常运行与告警触发，Phase III断连处理与遗嘱发布。重点突出QoS 1的周期数据、QoS 2的告警消息以及断连后的遗嘱消息三者的时序与角色差异。</text>
+  </svg>
+</svg>

@@ -15,9 +15,9 @@ IoT DC3 平台的设计抓住了这条主线。AI 的所有动作最终都走平
 AIoT 的成熟大致经历了三个阶段，每个阶段的技术特征和智能化程度有明显差异。下面用示意图展示作者整理的演进脉络。
 
 ```book-figure
-id: fig-07-01
+id: "fig-07-01"
 type: timeline
-title: 图7-1 AIoT 演进阶段示意
+title: 图7-1 图7-1 AIoT 演进阶段示意
 purpose: 展示 AIoT 从连接到自主决策的跃迁，突出每个阶段的核心特征与智能化水平。
 audience_takeaway: AIoT 不是一蹴而就的技术堆叠，而是逐步将智能注入数据管道的系统工程。
 visual_focus: 从“连接采集”到“自主决策”的主链路，以及“智能化程度曲线”的提升趋势。
@@ -226,9 +226,9 @@ Agent 完成多步任务的核心机制是 **ReAct**（Reasoning + Acting，推�
 这个循环赋予了 Agent 容错和自适应能力。例如第一步调用查询工具返回空值，Agent 不会卡住，而会在思考阶段判断“可能需要调整查询参数”，然后再次尝试。
 
 ```book-figure
-id: "fig-7-3"
+id: "fig-07-02"
 type: "architecture"
-title: "图7-3 ReAct 循环在物联网 Agent 中的工作示意"
+title: "图7-2 图7-2 ReAct 循环在物联网 Agent 中的工作示意"
 purpose: "展示 Agent 如何通过思考-行动-观察的循环完成多步运维任务。"
 audience_takeaway: "读者应理解 ReAct 循环中思考、行动、观察三个环节的交替逻辑，以及完成判断与结果输出之间的关系。"
 visual_focus: "从用户输入到结果输出的主链路，重点突出循环回退路径。"
@@ -348,7 +348,7 @@ legend:
   - "黄色：数据观测节点"
   - "菱形：判断决策"
   - "实线箭头：主路径；虚线箭头：循环回退"
-caption: "图7-3  ReAct 循环在物联网 Agent 中的工作示意，展示自然语言指令如何通过推理-行动-观察循环完成多步任务。"
+caption: "图7-2  ReAct 循环在物联网 Agent 中的工作示意，展示自然语言指令如何通过推理-行动-观察循环完成多步任务。"
 visual_constraints:
   - "节点标签使用短名词，解释性文字放入 callouts 或正文。"
   - "图例放在底部，不遮挡主体结构。"
@@ -472,9 +472,9 @@ RAG 解决的是模型“知不知道”的问题，Tool-Calling 解决的是模
 没有 RAG，模型不认识 `0xE3` 这个故障码，也无从知道 SOP 里写了什么；没有 Tool-Calling，模型只能给出“建议重启”这样的文本建议，操作员还得手动跳转多个界面才能执行。两者结合之后，大语言模型才真正从“能说的顾问”变成“能动手值班员”。
 
 ```book-figure
-id: fig-7-4
+id: "fig-07-03"
 type: dataflow
-title: 图7-4 RAG + Tool-Calling 联合工作流
+title: 图7-3 图7-3 RAG + Tool-Calling 联合工作流
 audience_takeaway: "读者应理解 RAG 检索 SOP 步骤灌入模型，Tool-Calling 据此落成关泵指令，二者在泳道中职责分离。"
 purpose: 展示一个运维任务从用户发起到 LLM 推理、RAG 检索、Tool-Calling 执行直至设备响应的完整数据流向和职责划分。
 visual_focus: 从操作员到终点的主链路。
@@ -620,7 +620,7 @@ legend:
 - 蓝色实线箭头：RAG 检索路径（知识获取）
 - 绿色虚线箭头：工具调用路径（操作执行）
 - '水平虚线：泳道分隔线，颜色 #cccccc，描边宽度 1px'
-caption: 图7-4 RAG + Tool-Calling 联合工作流图。操作员发起任务后，LLM 首先通过 RAG 检索设备 SOP 文档，获取操作步骤；随后按步骤依次调用 Tool-Calling 执行具体设备操作，直至任务完成。
+caption: 图7-3 RAG + Tool-Calling 联合工作流图。操作员发起任务后，LLM 首先通过 RAG 检索设备 SOP 文档，获取操作步骤；随后按步骤依次调用 Tool-Calling 执行具体设备操作，直至任务完成。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -672,9 +672,9 @@ REST 仍是平台真实业务 API，MCP 在其上提供面向模型的 Tool 目�
 **从 MCP 到 A2A：智能体之间的互操作（前瞻）。** MCP 解决的是“智能体如何调用工具”，而 A2A（Agent-to-Agent，2025 年多家厂商联合提出）解决“智能体之间如何发现彼此、分配任务、交接执行”——业界常把两者比作“MCP 给智能体一双手，A2A 让智能体之间有同事”。A2A 通过 Agent Card 描述能力并支持任务委派，预计 2027 年起在跨系统、跨组织的多智能体场景逐步规模化。对物联网的意义在于：当平台把设备能力以 MCP 暴露给外部智能体后，不同智能体（设备巡检的、能源调度的、排产的）之间还需要 A2A 来协调分工——这正是“Internet of Agents”的雏形。完整的 AI Native 平台应同时规划 MCP（工具层）与 A2A（编排层）两层互操作；IoT DC3 当前实现的是 MCP 工具层，A2A 编排属于平台演进方向（详见第 14 章展望）。
 
 ```book-figure
-id: fig-7-04
+id: "fig-07-04"
 type: architecture
-title: 图7-4 MCP 在物联网平台中的架构示意
+title: 图7-4 图7-4 MCP 在物联网平台中的架构示意
 purpose: 展示外部 AI Agent 通过 IoT DC3 MCP Tools 端点发现和调用平台 REST 能力的真实路径。
 audience_takeaway: 当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。
 visual_focus: Agent→Gateway /mcp→Auth 校验与工具白名单→OpenAPI Tool 目录→REST 后端。
@@ -955,9 +955,9 @@ public void demoFunctionCalling() {
 **避免“误操作”的自然语言陷阱。** 用户说“把所有设备都关掉”可能是个玩笑，模型却可能真的发起批量操作。工程实践中，对批量、高危操作应增加一道硬约束——要么要求用户二次确认（高风险确认模式），要么在工具描述中加入警告语句引导模型在批量操作前反问。
 
 ```book-figure
-id: fig-7-4-function-calling-flow
+id: "fig-07-05"
 type: sequence
-title: 图7-4 Function Calling 交互流程：从自然语言到设备操作
+title: 图7-5 图7-5 Function Calling 交互流程：从自然语言到设备操作
 audience_takeaway: "读者应理解 LLM 全程不执行设备操作，只输出 JSON 函数调用请求，实际调用与结果回填都由 ChatClient 中转。"
 purpose: 展示 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例，说明操作员、ChatClient、LLM、LightTool 之间的消息交换顺序。
 visual_focus: 从操作员到终点的主链路。
@@ -1101,7 +1101,7 @@ legend:
 - 实线箭头：同步请求/调用
 - 虚线箭头：同步返回/响应
 - 左上方参与者为操作员，左中心为ChatClient，中心为LLM，右侧为LightTool Bean
-caption: 图7-4 展示了 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例。操作员的自然语言请求首先到达 ChatClient，ChatClient 将消息连同 LightTool 的工具描述发送给
+caption: 图7-5 展示了 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例。操作员的自然语言请求首先到达 ChatClient，ChatClient 将消息连同 LightTool 的工具描述发送给
   LLM。LLM 推理后返回 JSON 格式的函数调用请求，ChatClient 解析并调用对应的 @Tool 方法，将执行结果回填给 LLM 后，LLM 生成最终的自然语言回复返回给操作员。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
@@ -1188,13 +1188,13 @@ Agentic Center 的工具体系采用“查询为主、控制受限”的分级�
 工具调用的关键原则是：租户与用户身份来自已认证请求上下文，Tool 只通过 Facade 访问平台能力，不直接操作设备或绕过租户边界。Point 写入也不是 Tool 直接下发：`PointValueTool` 先创建待确认 Action，用户确认后才由 `ActionService` 调用 `PointCommandFacade` 提交写命令。
 
 ```book-figure
-id: fig-7-07
+id: "fig-07-06"
 type: layered
-title: 图7-7 Agentic Center 四层架构
+title: 图7-6 图7-6 Agentic Center 四层架构
 audience_takeaway: "读者应理解 Tool 经 Facade/gRPC 复用能力而非 Feign 旁路，会话与数据存于 PostgreSQL，不设命令服务。"
 purpose: 展示 Agentic Center 如何叠加在 IoT DC3 既有平台能力之上，并标明真实通信与存储边界。
 layout: 自上而下四层：用户交互层；AI Agent 层；平台服务层；数据与设备层。Agentic 到平台服务标注 Facade/gRPC，Data 与 Driver 之间标注 RabbitMQ。
-caption: 图7-7 Agentic Center 四层架构：Tool 通过 Facade/gRPC 复用平台能力，会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转。
+caption: 图7-6 Agentic Center 四层架构：Tool 通过 Facade/gRPC 复用平台能力，会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转。
 render_notes: 四层堆叠卡片。禁止绘制 Feign、MongoDB 或独立 Command Service；右侧标注“Tool 不绕过租户与权限边界”。
 ```
 
@@ -1324,13 +1324,13 @@ public AgenticToolResult<PointCommandResult> writePointValue(
 如果未来实现 Skills，应在现有 Tool 之上增加显式编排层，并继续复用租户、权限和 Action 确认；如果未来实现 CLI，应只负责参数解析、认证与输出展示，通过现有 HTTP 或 MCP Tools 调用服务端能力，避免复制业务逻辑。
 
 ```book-figure
-id: fig-7-09
+id: "fig-07-07"
 type: architecture
-title: 图7-9 Agentic Center 当前能力与知识对齐边界
+title: 图7-7 图7-7 Agentic Center 当前能力与知识对齐边界
 audience_takeaway: "读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。"
 purpose: 区分当前已实现的 Tools、Web/HTTP 与 MCP Tools 端点，以及仅用于知识对齐的 Skills 和 CLI 概念。
 layout: 左侧“当前已实现”区域包含 Agentic @Tool、Web/HTTP 对话和 MCP Tools；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧用虚线关系箭头连接。
-caption: 图7-9 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为实现边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。
+caption: 图7-7 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为实现边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。
 render_notes: 左侧绿色实线框标“当前已实现”，右侧灰蓝虚线框标“知识对齐（非现有功能）”；禁止使用三层金字塔或未来路线措辞暗示三者均已上线。
 ```
 
@@ -1442,9 +1442,9 @@ public ChatClient selectModel(ChatRequest request) {
 私有化不是全有或全无的选择。用对方法，可以在数据主权、响应速度和模型能力之间找到自己的平衡点。
 
 ```book-figure
-id: "fig-07-13"
+id: "fig-07-08"
 type: "architecture"
-title: "图7-13 私有化与混合部署架构"
+title: "图7-8 图7-8 私有化与混合部署架构"
 purpose: "展示私有化部署、公有云部署和混合路由三种模式之间的推理路径和边界。"
 audience_takeaway: "读者应理解私有化部署不是全量替代公有云，而是根据数据敏感度和任务复杂度分层选择推理后端。"
 visual_focus: "从 Agentic Center 出发的两条分支路径：通向本地推理引擎的绿色数据安全路径，和通向云端推理引擎的橙色复杂任务路径。"
@@ -1519,7 +1519,7 @@ legend:
   - "蓝色=Agentic Center 核心；青绿色=本地推理组件；橙色=云端服务。"
   - "实线=数据安全路径；虚线=跨网络路径。"
   - "企业内部网络边界用虚线表示。"
-caption: "图7-13 展示私有化部署中 Agentic Center 与本地/云端推理引擎之间的路由关系。"
+caption: "图7-8 展示私有化部署中 Agentic Center 与本地/云端推理引擎之间的路由关系。"
 visual_constraints:
   - "最多 4 个主节点，避免过多细节。"
   - "路由决策节点用菱形突出。"
@@ -1670,9 +1670,9 @@ ChatMemory 只能回答模型看过哪些消息，不能证明外部动作是否
 下图概括了三个阶段在自主程度、人工介入点、风险控制方式上的差异，以及操作员信任度的递进关系。
 
 ```book-figure
-id: fig-7-5-3-1
+id: "fig-07-09"
 type: architecture
-title: IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线
+title: 图7-9 IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线
 audience_takeaway: "读者应理解自主程度逐阶段升高，但人工确认点从未消失——从每步确认转为关键节点确认，高风险白名单始终不可绕过。"
 purpose: 展示从 Copilot 到 Agent 的三阶段演进路径，说明自主程度、人工介入、风险控制和信任度的递进关系
 visual_focus: 从时间顺序：第一阶段到#1565c0 结束，使用 lin…的主链路。
@@ -1773,7 +1773,7 @@ legend:
 - 渐变矩形：信任度随时间累积
 - '5-3-1: IoT DC3 Agentic Center 三阶段演进路线示意。自主程度逐步提升，但人工确认点从未消失，只是从“每步确认”转变为“关键节点确认”。'
 - SVG 实现，水平时间轴宽 800px，高 300px
-caption: '图 7-5-3-1: IoT DC3 Agentic Center 三阶段演进路线示意。自主程度逐步提升，但人工确认点从未消失，只是从“每步确认”转变为“关键节点确认”。'
+caption: '图7-9-1: IoT DC3 Agentic Center 三阶段演进路线示意。自主程度逐步提升，但人工确认点从未消失，只是从“每步确认”转变为“关键节点确认”。'
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。

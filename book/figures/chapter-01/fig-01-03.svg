@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">出版级插图</title>
+  <desc id="desc">统一横向画布，适配书籍正文排版。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="72.593" y="24.000" width="1054.815" height="712.000" viewBox="0 0 1600.000 1080.000" preserveAspectRatio="xMidYMid meet">
+<defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="1600" height="1080" fill="#FFFFFF"/>
+
+  <!-- ===== title area ===== -->
+  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+  <text x="84" y="48" font-size="22" font-weight="700" fill="#0F172A">图1-2 物联网四层参考架构</text>
+  <text x="84" y="72" font-size="12" fill="#64748B">感知 / 网络 / 平台 / 应用 四层参考架构——数据上行、指令下行，安全贯穿全栈</text>
+  <rect x="1450" y="30" width="120" height="30" rx="15" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1510" y="49" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="2">LAYERED</text>
+  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== security vertical strip (spans whole stack) ===== -->
+  <rect x="80" y="150" width="120" height="820" rx="12" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-width="2" stroke-dasharray="8 4"/>
+  <text x="140" y="180" font-size="16" font-weight="700" fill="#E11D48" text-anchor="middle">安全</text>
+  <text x="140" y="199" font-size="9" font-weight="600" fill="#E11D48" text-anchor="middle" letter-spacing="1.5">SECURITY</text>
+  <!-- security domains aligned with each layer center -->
+  <text x="140" y="224" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">应用安全</text>
+  <text x="140" y="240" font-size="8.5" fill="#94A3B8" text-anchor="middle">Application</text>
+  <text x="140" y="444" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">数据安全</text>
+  <text x="140" y="460" font-size="8.5" fill="#94A3B8" text-anchor="middle">Data</text>
+  <text x="140" y="664" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">通信安全</text>
+  <text x="140" y="680" font-size="8.5" fill="#94A3B8" text-anchor="middle">Network</text>
+  <text x="140" y="884" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">设备安全</text>
+  <text x="140" y="900" font-size="8.5" fill="#94A3B8" text-anchor="middle">Device</text>
+
+  <!-- ===== Layer 4: Application (purple, top) ===== -->
+  <rect x="240" y="150" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="265" y="202" font-size="20" font-weight="700" fill="#7C3AED">应用层</text>
+  <text x="265" y="224" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">APPLICATION</text>
+  <text x="265" y="248" font-size="11" fill="#475569">业务呈现与决策</text>
+  <text x="265" y="268" font-size="9" fill="#94A3B8">第 4 层 · 顶层</text>
+  <line x1="445" y1="165" x2="445" y2="295" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- cards -->
+  <g>
+    <rect x="470" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <circle cx="486" cy="202" r="5" fill="#7C3AED"/>
+    <text x="500" y="207" font-size="15" font-weight="700" fill="#0F172A">城市大脑</text>
+    <text x="486" y="234" font-size="11" fill="#475569">态势感知 · 指挥调度</text>
+    <text x="486" y="254" font-size="9" fill="#94A3B8">City Brain</text>
+  </g>
+  <g>
+    <rect x="735" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <circle cx="751" cy="202" r="5" fill="#7C3AED"/>
+    <text x="765" y="207" font-size="15" font-weight="700" fill="#0F172A">工业监控</text>
+    <text x="751" y="234" font-size="11" fill="#475569">生产流程 · 远程控制</text>
+    <text x="751" y="254" font-size="9" fill="#94A3B8">Industrial SCADA</text>
+  </g>
+  <g>
+    <rect x="1000" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <circle cx="1016" cy="202" r="5" fill="#7C3AED"/>
+    <text x="1030" y="207" font-size="15" font-weight="700" fill="#0F172A">智慧农业</text>
+    <text x="1016" y="234" font-size="11" fill="#475569">环境调控 · 自动灌溉</text>
+    <text x="1016" y="254" font-size="9" fill="#94A3B8">Smart Agriculture</text>
+  </g>
+  <g>
+    <rect x="1265" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <circle cx="1281" cy="202" r="5" fill="#7C3AED"/>
+    <text x="1295" y="207" font-size="15" font-weight="700" fill="#0F172A">移动门户</text>
+    <text x="1281" y="234" font-size="11" fill="#475569">数据可视 · 告警推送</text>
+    <text x="1281" y="254" font-size="9" fill="#94A3B8">Mobile Portal</text>
+  </g>
+
+  <!-- ===== flow gap 1 (application <-> platform) ===== -->
+  <line x1="620" y1="363" x2="620" y2="317" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="595" y="340" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="end" dominant-baseline="middle">数据上行</text>
+  <line x1="1140" y1="317" x2="1140" y2="363" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="1165" y="340" font-size="11" font-weight="600" fill="#2563EB" text-anchor="start" dominant-baseline="middle">指令下行</text>
+
+  <!-- ===== Layer 3: Platform (orange) ===== -->
+  <rect x="240" y="370" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <text x="265" y="422" font-size="20" font-weight="700" fill="#F59E0B">平台层</text>
+  <text x="265" y="444" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">PLATFORM</text>
+  <text x="265" y="468" font-size="11" fill="#475569">数据处理与服务</text>
+  <text x="265" y="488" font-size="9" fill="#94A3B8">第 3 层 · 中枢</text>
+  <line x1="445" y1="385" x2="445" y2="515" stroke="#E2E8F0" stroke-width="1"/>
+  <g>
+    <rect x="470" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+    <circle cx="486" cy="422" r="5" fill="#F59E0B"/>
+    <text x="500" y="427" font-size="15" font-weight="700" fill="#0F172A">设备管理</text>
+    <text x="486" y="454" font-size="11" fill="#475569">注册 · 影子 · OTA</text>
+    <text x="486" y="474" font-size="9" fill="#94A3B8">Device Management</text>
+  </g>
+  <g>
+    <rect x="735" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+    <circle cx="751" cy="422" r="5" fill="#F59E0B"/>
+    <text x="765" y="427" font-size="15" font-weight="700" fill="#0F172A">数据中台</text>
+    <text x="751" y="454" font-size="11" fill="#475569">清洗 · 存储 · 建模</text>
+    <text x="751" y="474" font-size="9" fill="#94A3B8">Data Platform</text>
+  </g>
+  <g>
+    <rect x="1000" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+    <circle cx="1016" cy="422" r="5" fill="#F59E0B"/>
+    <text x="1030" y="427" font-size="15" font-weight="700" fill="#0F172A">AI 分析</text>
+    <text x="1016" y="454" font-size="11" fill="#475569">预测 · 识别 · 决策</text>
+    <text x="1016" y="474" font-size="9" fill="#94A3B8">AI Analytics</text>
+  </g>
+  <g>
+    <rect x="1265" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+    <circle cx="1281" cy="422" r="5" fill="#F59E0B"/>
+    <text x="1295" y="427" font-size="15" font-weight="700" fill="#0F172A">规则引擎</text>
+    <text x="1281" y="454" font-size="11" fill="#475569">联动 · 告警 · 编排</text>
+    <text x="1281" y="474" font-size="9" fill="#94A3B8">Rules Engine</text>
+  </g>
+
+  <!-- ===== flow gap 2 (platform <-> network) ===== -->
+  <line x1="620" y1="583" x2="620" y2="537" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="595" y="560" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="end" dominant-baseline="middle">数据上行</text>
+  <line x1="1140" y1="537" x2="1140" y2="583" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="1165" y="560" font-size="11" font-weight="600" fill="#2563EB" text-anchor="start" dominant-baseline="middle">指令下行</text>
+
+  <!-- ===== Layer 2: Network (blue) ===== -->
+  <rect x="240" y="590" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="265" y="642" font-size="20" font-weight="700" fill="#2563EB">网络层</text>
+  <text x="265" y="664" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">NETWORK</text>
+  <text x="265" y="688" font-size="11" fill="#475569">连接与可靠传输</text>
+  <text x="265" y="708" font-size="9" fill="#94A3B8">第 2 层 · 承载</text>
+  <line x1="445" y1="605" x2="445" y2="735" stroke="#E2E8F0" stroke-width="1"/>
+  <g>
+    <rect x="470" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="486" cy="642" r="5" fill="#2563EB"/>
+    <text x="500" y="647" font-size="15" font-weight="700" fill="#0F172A">蜂窝网络</text>
+    <text x="486" y="674" font-size="11" fill="#475569">4G · 5G · NB-IoT</text>
+    <text x="486" y="694" font-size="9" fill="#94A3B8">Cellular</text>
+  </g>
+  <g>
+    <rect x="735" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="751" cy="642" r="5" fill="#2563EB"/>
+    <text x="765" y="647" font-size="15" font-weight="700" fill="#0F172A">短距通信</text>
+    <text x="751" y="674" font-size="11" fill="#475569">Wi-Fi · 蓝牙 · Zigbee</text>
+    <text x="751" y="694" font-size="9" fill="#94A3B8">Short-range</text>
+  </g>
+  <g>
+    <rect x="1000" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="1016" cy="642" r="5" fill="#2563EB"/>
+    <text x="1030" y="647" font-size="15" font-weight="700" fill="#0F172A">接入网关</text>
+    <text x="1016" y="674" font-size="11" fill="#475569">协议转换 · 汇聚</text>
+    <text x="1016" y="694" font-size="9" fill="#94A3B8">Gateway</text>
+  </g>
+  <g>
+    <rect x="1265" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="1281" cy="642" r="5" fill="#2563EB"/>
+    <text x="1295" y="647" font-size="15" font-weight="700" fill="#0F172A">边缘节点</text>
+    <text x="1281" y="674" font-size="11" fill="#475569">本地处理 · 缓存</text>
+    <text x="1281" y="694" font-size="9" fill="#94A3B8">Edge Node</text>
+  </g>
+
+  <!-- ===== flow gap 3 (network <-> perception) ===== -->
+  <line x1="620" y1="803" x2="620" y2="757" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="595" y="780" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="end" dominant-baseline="middle">数据上行</text>
+  <line x1="1140" y1="757" x2="1140" y2="803" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="1165" y="780" font-size="11" font-weight="600" fill="#2563EB" text-anchor="start" dominant-baseline="middle">指令下行</text>
+
+  <!-- ===== Layer 1: Perception (green, bottom) ===== -->
+  <rect x="240" y="810" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="265" y="862" font-size="20" font-weight="700" fill="#10B981">感知层</text>
+  <text x="265" y="884" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">PERCEPTION</text>
+  <text x="265" y="908" font-size="11" fill="#475569">数据采集与物理执行</text>
+  <text x="265" y="928" font-size="9" fill="#94A3B8">第 1 层 · 基座</text>
+  <line x1="445" y1="825" x2="445" y2="955" stroke="#E2E8F0" stroke-width="1"/>
+  <g>
+    <rect x="470" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="486" cy="862" r="5" fill="#10B981"/>
+    <text x="500" y="867" font-size="15" font-weight="700" fill="#0F172A">传感器</text>
+    <text x="486" y="894" font-size="11" fill="#475569">温湿 · 压力 · 气体</text>
+    <text x="486" y="914" font-size="9" fill="#94A3B8">Sensor</text>
+  </g>
+  <g>
+    <rect x="735" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="751" cy="862" r="5" fill="#10B981"/>
+    <text x="765" y="867" font-size="15" font-weight="700" fill="#0F172A">视觉采集</text>
+    <text x="751" y="894" font-size="11" fill="#475569">摄像头 · 雷达 · LiDAR</text>
+    <text x="751" y="914" font-size="9" fill="#94A3B8">Vision</text>
+  </g>
+  <g>
+    <rect x="1000" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="1016" cy="862" r="5" fill="#10B981"/>
+    <text x="1030" y="867" font-size="15" font-weight="700" fill="#0F172A">识别设备</text>
+    <text x="1016" y="894" font-size="11" fill="#475569">电子标签 · 条码</text>
+    <text x="1016" y="914" font-size="9" fill="#94A3B8">RFID</text>
+  </g>
+  <g>
+    <rect x="1265" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="1281" cy="862" r="5" fill="#10B981"/>
+    <text x="1295" y="867" font-size="15" font-weight="700" fill="#0F172A">执行器</text>
+    <text x="1281" y="894" font-size="11" fill="#475569">电机 · 阀门 · 开关</text>
+    <text x="1281" y="914" font-size="9" fill="#94A3B8">Actuator</text>
+  </g>
+
+  <!-- ===== legend ===== -->
+  <line x1="40" y1="995" x2="1560" y2="995" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="80" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+  <text x="104" y="1024" font-size="11" fill="#475569">感知层</text>
+  <rect x="210" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="234" y="1024" font-size="11" fill="#475569">网络层</text>
+  <rect x="340" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="364" y="1024" font-size="11" fill="#475569">平台层</text>
+  <rect x="470" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="494" y="1024" font-size="11" fill="#475569">应用层</text>
+  <rect x="620" y="1010" width="16" height="12" rx="2" fill="#E11D48" fill-opacity="0.1" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <text x="644" y="1024" font-size="11" fill="#475569">安全贯穿</text>
+  <line x1="830" y1="1021" x2="854" y2="1021" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
+  <text x="862" y="1024" font-size="11" fill="#475569">数据上行</text>
+  <line x1="1010" y1="1021" x2="1034" y2="1021" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+  <text x="1042" y="1024" font-size="11" fill="#475569">指令下行</text>
+
+  <!-- ===== caption ===== -->
+  <text x="800" y="1060" font-size="10" fill="#94A3B8" text-anchor="middle">图1-2 四层参考架构：数据从感知层上行至应用层，指令反向下行形成闭环，安全贯穿所有层。</text>
+  </svg>
+</svg>

@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图12-4 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+                <!-- 背景网格 (极淡) -->
+                <defs>
+                    <style>
+                        text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+                        .region-boundary { fill: #FFFFFF; fill-opacity: 0.72; stroke: #93C5FD; stroke-width: 1.5; stroke-dasharray: 8 6; }
+                        .region-label { fill: #2563EB; font-size: 14px; font-weight: 700; }
+                        .radar-grid-circle { fill: none; stroke: #CBD5E1; stroke-width: 1; stroke-dasharray: 4 4; }
+                        .radar-grid-circle-solid { fill: none; stroke: #94A3B8; stroke-width: 1.2; }
+                        .radar-axis { stroke: #CBD5E1; stroke-width: 1; }
+                        .radar-axis-label { fill: #0F172A; font-size: 14px; font-weight: 700; text-anchor: middle; }
+                        .dimension-badge { fill: #64748B; font-size: 10px; text-anchor: middle; }
+                        .radar-tick-label { fill: #64748B; font-size: 10px; }
+                        .radar-polygon-lora { fill: #F97316; fill-opacity: 0.16; stroke: #F97316; stroke-width: 2.5; }
+                        .radar-polygon-nbiot { fill: #2563EB; fill-opacity: 0.14; stroke: #2563EB; stroke-width: 2.5; }
+                        .radar-polygon-sigfox { fill: #0F766E; fill-opacity: 0.14; stroke: #0F766E; stroke-width: 2.5; }
+                        .radar-point { filter: url(#shadow); }
+                        .legend-item { fill: #0F172A; font-size: 13px; }
+                        .callout-text { fill: #475569; font-size: 13px; font-weight: 600; }
+                    </style>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.6" />
+                    </pattern>
+                    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.04" />
+                    </filter>
+                </defs>
+                <rect x="0" y="0" width="1200" height="760" fill="#F8FAFC" />
+                <rect x="0" y="0" width="1200" height="760" fill="url(#grid)" />
+
+                <!-- 平台服务域 区域边界 -->
+                <rect x="130" y="44" width="740" height="668" class="region-boundary" />
+                <text x="148" y="68" class="region-label">▎平台服务域 ｜ 核心服务能力边界</text>
+
+                <!-- ============================================================ -->
+                <!-- 雷达图中心 (cx, cy) = (490, 400)  半径 R = 260               -->
+                <!-- 六轴从12点顺时针: 覆盖0°, 速率60°, 功耗120°, 成本180°,       -->
+                <!-- 生态240°, 穿透300°                                           -->
+                <!-- ============================================================ -->
+
+                <g transform="translate(0, 0)">
+                    <!-- 中心点 -->
+                    <circle cx="490" cy="400" r="3" fill="#64748B" />
+
+                    <!-- 同心圆网格 (刻度1-5) -->
+                    <!-- 半径 = (i/5)*260 -->
+                    <circle cx="490" cy="400" r="52" class="radar-grid-circle" />
+                    <circle cx="490" cy="400" r="104" class="radar-grid-circle" />
+                    <circle cx="490" cy="400" r="156" class="radar-grid-circle" />
+                    <circle cx="490" cy="400" r="208" class="radar-grid-circle" />
+                    <circle cx="490" cy="400" r="260" class="radar-grid-circle-solid" />
+
+                    <!-- 轴线和轴标签 -->
+                    <!-- 工具函数: 角度从12点顺时针, 弧度 = (deg-90)*PI/180 -->
+                    <!-- 轴终点坐标 (半径260): x = cx + 260*sin(deg), y = cy - 260*cos(deg) -->
+
+                    <!-- 覆盖 0° -->
+                    <line x1="490" y1="400" x2="490" y2="140" class="radar-axis" />
+                    <text x="490" y="118" class="radar-axis-label">覆盖</text>
+                    <text x="490" y="134" class="dimension-badge">(4/4/4)</text>
+
+                    <!-- 速率 60° -->
+                    <!-- sin60=0.8660, cos60=0.5 -->
+                    <!-- x=490+260*0.866=715.2, y=400-260*0.5=270 -->
+                    <line x1="490" y1="400" x2="715.2" y2="270" class="radar-axis" />
+                    <text x="730" y="252" class="radar-axis-label">速率</text>
+                    <text x="730" y="268" class="dimension-badge">(3/4/1)</text>
+
+                    <!-- 功耗 120° -->
+                    <!-- sin120=0.8660, cos120=-0.5 -->
+                    <!-- x=490+260*0.866=715.2, y=400-260*(-0.5)=530 -->
+                    <line x1="490" y1="400" x2="715.2" y2="530" class="radar-axis" />
+                    <text x="730" y="546" class="radar-axis-label">功耗</text>
+                    <text x="730" y="562" class="dimension-badge">(3/2/4)</text>
+
+                    <!-- 成本 180° -->
+                    <!-- sin180=0, cos180=-1 -->
+                    <!-- x=490, y=400-260*(-1)=660 -->
+                    <line x1="490" y1="400" x2="490" y2="660" class="radar-axis" />
+                    <text x="490" y="678" class="radar-axis-label">成本</text>
+                    <text x="490" y="694" class="dimension-badge">(4/3/4)</text>
+
+                    <!-- 生态 240° -->
+                    <!-- sin240=-0.8660, cos240=-0.5 -->
+                    <!-- x=490+260*(-0.866)=264.8, y=400-260*(-0.5)=530 -->
+                    <line x1="490" y1="400" x2="264.8" y2="530" class="radar-axis" />
+                    <text x="248" y="546" class="radar-axis-label">生态</text>
+                    <text x="248" y="562" class="dimension-badge">(5/2/1)</text>
+
+                    <!-- 穿透 300° -->
+                    <!-- sin300=-0.8660, cos300=0.5 -->
+                    <!-- x=490+260*(-0.866)=264.8, y=400-260*0.5=270 -->
+                    <line x1="490" y1="400" x2="264.8" y2="270" class="radar-axis" />
+                    <text x="248" y="252" class="radar-axis-label">穿透</text>
+                    <text x="248" y="268" class="dimension-badge">(4/3/4)</text>
+
+                    <!-- 刻度标签 (在覆盖轴上标注1-5) -->
+                    <text x="498" y="362" class="radar-tick-label">1</text>
+                    <text x="498" y="310" class="radar-tick-label">2</text>
+                    <text x="498" y="258" class="radar-tick-label">3</text>
+                    <text x="498" y="206" class="radar-tick-label">4</text>
+                    <text x="498" y="154" class="radar-tick-label">5</text>
+
+                    <!-- ============================================================ -->
+                    <!-- 数据多边形                                                       -->
+                    <!-- 坐标预先计算:                                                  -->
+                    <!-- LoRa:  覆盖(490,192) 速率(615.1,322) 功耗(615.1,478)          -->
+                    <!--        成本(490,608) 生态(264.8,530) 穿透(299.9,322)          -->
+                    <!-- NB-IoT: 覆盖(490,192) 速率(660.1,296) 功耗(570.1,452)         -->
+                    <!--         成本(490,556) 生态(389.9,452) 穿透(344.9,322)         -->
+                    <!-- Sigfox: 覆盖(490,192) 速率(525.0,374) 功耗(660.1,504)         -->
+                    <!--         成本(490,608) 生态(435.0,426) 穿透(299.9,322)         -->
+                    <!-- ============================================================ -->
+
+                    <!-- LoRa 多边形 -->
+                    <polygon class="radar-polygon-lora" points="490,192 615.1,322 615.1,478 490,608 264.8,530 299.9,322" />
+
+                    <!-- NB-IoT 多边形 -->
+                    <polygon class="radar-polygon-nbiot" points="490,192 660.1,296 570.1,452 490,556 389.9,452 344.9,322" />
+
+                    <!-- Sigfox 多边形 -->
+                    <polygon class="radar-polygon-sigfox" points="490,192 525.0,374 660.1,504 490,608 435.0,426 299.9,322" />
+
+                    <!-- ============================================================ -->
+                    <!-- 数据点 (带 hover <title>)                                     -->
+                    <!-- ============================================================ -->
+
+                    <!-- LoRa 数据点 -->
+                    <circle cx="490" cy="192" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>LoRa · 覆盖：4/5</title>
+                    </circle>
+                    <circle cx="615.1" cy="322" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>LoRa · 速率：3/5</title>
+                    </circle>
+                    <circle cx="615.1" cy="478" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>LoRa · 功耗：3/5</title>
+                    </circle>
+                    <circle cx="490" cy="608" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>LoRa · 成本：4/5</title>
+                    </circle>
+                    <circle cx="264.8" cy="530" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>LoRa · 生态：5/5</title>
+                    </circle>
+                    <circle cx="299.9" cy="322" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>LoRa · 穿透：4/5</title>
+                    </circle>
+
+                    <!-- NB-IoT 数据点 -->
+                    <circle cx="490" cy="192" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>NB-IoT · 覆盖：4/5</title>
+                    </circle>
+                    <circle cx="660.1" cy="296" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>NB-IoT · 速率：4/5</title>
+                    </circle>
+                    <circle cx="570.1" cy="452" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>NB-IoT · 功耗：2/5</title>
+                    </circle>
+                    <circle cx="490" cy="556" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>NB-IoT · 成本：3/5</title>
+                    </circle>
+                    <circle cx="389.9" cy="452" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>NB-IoT · 生态：2/5</title>
+                    </circle>
+                    <circle cx="344.9" cy="322" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>NB-IoT · 穿透：3/5</title>
+                    </circle>
+
+                    <!-- Sigfox 数据点 -->
+                    <circle cx="490" cy="192" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>Sigfox · 覆盖：4/5</title>
+                    </circle>
+                    <circle cx="525.0" cy="374" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>Sigfox · 速率：1/5</title>
+                    </circle>
+                    <circle cx="660.1" cy="504" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>Sigfox · 功耗：4/5</title>
+                    </circle>
+                    <circle cx="490" cy="608" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>Sigfox · 成本：4/5</title>
+                    </circle>
+                    <circle cx="435.0" cy="426" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>Sigfox · 生态：1/5</title>
+                    </circle>
+                    <circle cx="299.9" cy="322" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
+                        <title>Sigfox · 穿透：4/5</title>
+                    </circle>
+
+                    <!-- ============================================================ -->
+                    <!-- 图例 (右上角, x=880, y=100 区域)                             -->
+                    <!-- ============================================================ -->
+                    <g transform="translate(870, 90)">
+                        <rect x="0" y="0" width="270" height="148" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2" filter="url(#shadow)" />
+                        <text x="16" y="26" font-size="14" font-weight="700" fill="#0F172A">技术对比图例</text>
+
+                        <!-- LoRa -->
+                        <rect x="16" y="40" width="18" height="18" rx="4" fill="#F97316" opacity="0.7" />
+                        <rect x="16" y="40" width="18" height="18" rx="4" fill="none" stroke="#F97316" stroke-width="2" />
+                        <text x="44" y="53" class="legend-item">LoRa / LoRaWAN</text>
+                        <text x="220" y="53" font-size="12" fill="#64748B" text-anchor="end">橙色</text>
+
+                        <!-- NB-IoT -->
+                        <rect x="16" y="68" width="18" height="18" rx="4" fill="#2563EB" opacity="0.6" />
+                        <rect x="16" y="68" width="18" height="18" rx="4" fill="none" stroke="#2563EB" stroke-width="2" />
+                        <text x="44" y="81" class="legend-item">NB-IoT</text>
+                        <text x="220" y="81" font-size="12" fill="#64748B" text-anchor="end">蓝色</text>
+
+                        <!-- Sigfox -->
+                        <rect x="16" y="96" width="18" height="18" rx="4" fill="#0F766E" opacity="0.6" />
+                        <rect x="16" y="96" width="18" height="18" rx="4" fill="none" stroke="#0F766E" stroke-width="2" />
+                        <text x="44" y="109" class="legend-item">Sigfox</text>
+                        <text x="220" y="109" font-size="12" fill="#64748B" text-anchor="end">绿色</text>
+
+                        <!-- 说明 -->
+                        <text x="16" y="134" font-size="11" fill="#64748B">各维度评分 1（弱）→ 5（强）</text>
+                    </g>
+
+                    <!-- ============================================================ -->
+                    <!-- 中心说明 / callout                                            -->
+                    <!-- ============================================================ -->
+                    <text x="490" y="400" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#94A3B8" font-style="italic">Hover 数据点查看评分</text>
+
+                    <!-- 底部 callout -->
+                    <text x="490" y="730" text-anchor="middle" class="callout-text">三个系列在同一份刻度坐标上对比，便于目视识别优势短板</text>
+                </g>
+            </svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">matrix</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">六轴雷达图，同心圆刻度 1–5（1=最弱，5=最强）</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>

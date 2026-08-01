@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图13-6 供应链核心痛点与区块链价值点映射</title>
+  <desc id="desc">读者应理解供应链核心痛点与区块链价值点映射中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图13-6 供应链核心痛点与区块链价值点映射</title>
+  <desc id="desc">读者应理解供应链核心痛点与区块链价值点映射中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图13-6 供应链核心痛点与区块链价值点映射</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解供应链核心痛点与区块链价值点映射中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">MATRIX</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="matrix">
+  <!-- 背景网格 -->
+  <rect x="80" y="125" width="1640" height="625" fill="#F8FAFC" rx="8"/>
+  <path d="M 80 125 L 1720 125 M 80 165 L 1720 165 M 80 205 L 1720 205 M 80 245 L 1720 245 M 80 285 L 1720 285 M 80 325 L 1720 325 M 80 365 L 1720 365 M 80 405 L 1720 405 M 80 445 L 1720 445 M 80 485 L 1720 485 M 80 525 L 1720 525 M 80 565 L 1720 565 M 80 605 L 1720 605 M 80 645 L 1720 645 M 80 685 L 1720 685 M 80 725 L 1720 725" stroke="#E2E8F0" stroke-width="0.5" fill="none"/>
+  <path d="M 80 125 L 80 750 M 120 125 L 120 750 M 160 125 L 160 750 M 200 125 L 200 750 M 240 125 L 240 750 M 280 125 L 280 750 M 320 125 L 320 750 M 360 125 L 360 750 M 400 125 L 400 750 M 440 125 L 440 750 M 480 125 L 480 750 M 520 125 L 520 750 M 560 125 L 560 750 M 600 125 L 600 750 M 640 125 L 640 750 M 680 125 L 680 750 M 720 125 L 720 750 M 760 125 L 760 750 M 800 125 L 800 750 M 840 125 L 840 750 M 880 125 L 880 750 M 920 125 L 920 750 M 960 125 L 960 750 M 1000 125 L 1000 750 M 1040 125 L 1040 750 M 1080 125 L 1080 750 M 1120 125 L 1120 750 M 1160 125 L 1160 750 M 1200 125 L 1200 750 M 1240 125 L 1240 750 M 1280 125 L 1280 750 M 1320 125 L 1320 750 M 1360 125 L 1360 750 M 1400 125 L 1400 750 M 1440 125 L 1440 750 M 1480 125 L 1480 750 M 1520 125 L 1520 750 M 1560 125 L 1560 750 M 1600 125 L 1600 750 M 1640 125 L 1640 750 M 1680 125 L 1680 750 M 1720 125 L 1720 750" stroke="#E2E8F0" stroke-width="0.5" fill="none"/>
+
+  <!-- 连线（先绘，确保箭头在盒子下方） -->
+  <!-- 第一对：信息孤岛→分布式账本，最粗 -->
+  <line x1="420" y1="200" x2="1320" y2="200" stroke="#64748B" stroke-width="4" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <!-- 第二对 -->
+  <line x1="420" y1="320" x2="1320" y2="320" stroke="#64748B" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <!-- 第三对 -->
+  <line x1="420" y1="440" x2="1320" y2="440" stroke="#64748B" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+  <!-- 第四对 -->
+  <line x1="420" y1="560" x2="1320" y2="560" stroke="#64748B" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow)"/>
+
+  <!-- 左侧痛点节点（橙色系） -->
+  <!-- 信息孤岛 -->
+  <rect x="120" y="160" width="300" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="270" y="186" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">信息孤岛</text>
+  <text x="270" y="206" fill="#475569" font-size="12" text-anchor="middle">数据不共享</text>
+
+  <!-- 伪造与假冒 -->
+  <rect x="120" y="280" width="300" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="270" y="306" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">伪造与假冒</text>
+  <!-- 无副标题 -->
+
+  <!-- 溯源与召回困难 -->
+  <rect x="120" y="400" width="300" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="270" y="426" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">溯源与召回困难</text>
+
+  <!-- 合规审计成本高 -->
+  <rect x="120" y="520" width="300" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="270" y="546" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">合规审计成本高</text>
+
+  <!-- 右侧价值节点（蓝色系） -->
+  <!-- 分布式账本 -->
+  <rect x="1320" y="160" width="300" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1470" y="186" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">分布式账本</text>
+  <text x="1470" y="206" fill="#475569" font-size="12" text-anchor="middle">多方数据共享</text>
+
+  <!-- 时间戳+数字签名 -->
+  <rect x="1320" y="280" width="300" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1470" y="306" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">时间戳+数字签名</text>
+  <text x="1470" y="326" fill="#475569" font-size="12" text-anchor="middle">数据不可篡改</text>
+
+  <!-- 全链路事件日志 -->
+  <rect x="1320" y="400" width="300" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1470" y="426" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">全链路事件日志</text>
+  <text x="1470" y="446" fill="#475569" font-size="12" text-anchor="middle">可追踪</text>
+
+  <!-- 智能合约 -->
+  <rect x="1320" y="520" width="300" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1470" y="546" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">智能合约</text>
+  <text x="1470" y="566" fill="#475569" font-size="12" text-anchor="middle">自动化审计</text>
+
+  <!-- 映射说明（每对下方） -->
+  <text x="870" y="250" fill="#64748B" font-size="12" text-anchor="middle">打破信息孤岛，实现共享</text>
+  <text x="870" y="370" fill="#64748B" font-size="12" text-anchor="middle">防伪验证，不可篡改</text>
+  <text x="870" y="490" fill="#64748B" font-size="12" text-anchor="middle">全链路追踪，召回精准</text>
+  <text x="870" y="610" fill="#64748B" font-size="12" text-anchor="middle">自动化审计，降低成本</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">左侧橙色图标/文字代表痛点，右侧蓝色图标/文字代表区块链价值点</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图13-6 供应链协同中‘信任’是核心障碍。区块链通过去中心化共享和不可篡改记录提供解耦方案。</text>
+  </svg>
+</svg>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图2-10 规则引擎数据流：温度超标触发报警与自动控制</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图2-10 规则引擎数据流：温度超标触发报警与自动控制</title>
+  <desc id="desc">展示从设备上报温度值，经规则引擎判断，最终触发告警和命令下发的完整流程。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-alert" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="bp-arrow-command" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- 标题区 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700" font-family="'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif">图2-10 规则引擎数据流：温度超标触发报警与自动控制</text>
+  <text x="82" y="70" fill="#64748B" font-size="12" font-family="'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif">展示从设备上报温度值，经规则引擎判断，最终触发告警和命令下发的完整流程。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+
+  <g font-family="'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif">
+
+  <!-- 节点1: 温度传感器 (edge) -->
+  <rect x="80" y="400" width="240" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="200" y="445" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">温度传感器</text>
+  <text x="200" y="470" font-size="12" fill="#475569" text-anchor="middle">现场设备</text>
+
+  <!-- 节点2: Gateway中心 (primary) -->
+  <rect x="400" y="400" width="240" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="520" y="445" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">Gateway中心</text>
+  <text x="520" y="470" font-size="12" fill="#475569" text-anchor="middle">协议接入</text>
+
+  <!-- 节点3: Data中心 (data) -->
+  <rect x="720" y="400" width="240" height="100" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="840" y="445" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">Data中心</text>
+  <text x="840" y="470" font-size="12" fill="#475569" text-anchor="middle">存储与转发</text>
+
+  <!-- 节点4: 规则引擎菱形 (decision) -->
+  <polygon points="1230,330 1390,450 1230,570 1070,450" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/>
+  <text x="1230" y="442" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle">Manager规则引擎</text>
+  <text x="1230" y="465" font-size="12" fill="#475569" text-anchor="middle">ECA判断</text>
+
+  <!-- 节点5: 告警通知 (security) -->
+  <rect x="1500" y="250" width="240" height="100" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1620" y="295" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">告警通知</text>
+  <text x="1620" y="320" font-size="12" fill="#475569" text-anchor="middle">邮件/短信/微信</text>
+
+  <!-- 节点6: 下发命令 (ai, 高风险) -->
+  <rect x="1500" y="580" width="240" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+  <text x="1620" y="625" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle">下发命令</text>
+  <text x="1620" y="650" font-size="12" fill="#475569" text-anchor="middle">风扇调速</text>
+
+  <!-- 连接1: sensor → gateway (数据流, 实线蓝) -->
+  <line x1="320" y1="450" x2="392" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="356" y="442" fill="#475569" font-size="11" text-anchor="middle">数据流</text>
+
+  <!-- 连接2: gateway → data (数据流, 实线蓝) -->
+  <line x1="640" y1="450" x2="712" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="676" y="442" fill="#475569" font-size="11" text-anchor="middle">数据流</text>
+
+  <!-- 连接3: data → rule_engine (数据流, 实线蓝) -->
+  <line x1="960" y1="450" x2="1062" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1011" y="442" fill="#475569" font-size="11" text-anchor="middle">数据流</text>
+
+  <!-- 连接4: rule_engine → alert (告警流, 虚线红) -->
+  <path d="M 1310 390 L 1450 390 L 1450 300 L 1492 300" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow-alert)"/>
+  <text x="1440" y="350" fill="#DC2626" font-size="11" text-anchor="end">条件为真（黄/红）</text>
+
+  <!-- 连接5: rule_engine → command (高风险命令, 实线橙加粗) -->
+  <path d="M 1310 510 L 1450 510 L 1450 630 L 1492 630" fill="none" stroke="#F97316" stroke-width="2.5" marker-end="url(#bp-arrow-command)"/>
+  <text x="1440" y="575" fill="#F97316" font-size="11" text-anchor="end">条件为真（红牌）</text>
+
+  <!-- 连接6: command → data (命令转发回流, 实线蓝) -->
+  <path d="M 1620 680 L 1620 740 L 840 740 L 840 508" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1230" y="732" fill="#475569" font-size="11" text-anchor="middle">命令转发</text>
+
+  </g>
+
+  <!-- 图例区 -->
+  <line x1="64" y1="780" x2="1736" y2="780" stroke="#E2E8F0"/>
+
+  <line x1="80" y1="808" x2="112" y2="808" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="122" y="812" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">实线箭头：数据流或命令流</text>
+
+  <line x1="340" y1="808" x2="372" y2="808" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow-alert)"/>
+  <text x="382" y="812" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">虚线箭头：告警流</text>
+
+  <polygon points="560,800 578,808 560,816 542,808" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="588" y="812" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">菱形：决策节点（黄色背景）</text>
+
+  <rect x="860" y="802" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="884" y="812" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">蓝色节点：核心服务</text>
+
+  <rect x="1090" y="802" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1114" y="812" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">橙色节点：高风险动作</text>
+
+  <!-- 图注 -->
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图2-10 展示规则引擎从事件输入到告警/命令输出的数据流。</text>
+</svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">水平从左到右主链路：温度传感器→Gateway中心→Data中心→Manager规则引擎菱形，菱形分叉上路告警通知、下路下发命令，命令经Data中心回流。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>
