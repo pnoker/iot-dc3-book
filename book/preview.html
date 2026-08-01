@@ -212,7 +212,7 @@ function openLightbox(el){
 function closeLb(){document.getElementById('lightbox').classList.remove('open')}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
 function copyName(ev,fid){
-  ev.stopPropagation();
+  if(ev){ev.stopPropagation();ev.preventDefault();}
   const d=data.find(x=>x.fid===fid);
   const txt=d?d.fid+' '+d.title:fid;
   const done=()=>showToast('已复制: '+txt);
