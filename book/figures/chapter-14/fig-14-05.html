@@ -20,8 +20,8 @@
   <desc id="desc">三列分组：左列为 PostgreSQL、Compose DNS、运行时配置和 RabbitMQ，中列为鉴权、管理、数据和 Agentic 中心，右列为可下沉边缘的南向驱动。Web 对外暴露 8080/8443 并转发到内部 8000 端口的 Gateway；驱动通过 RabbitMQ 与 Data 双向通信，并在 Compose 网络内访问 Manager；底部标注真实数据卷与运行时配置注入。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="44.000" width="1152.000" height="672.000" viewBox="0 0 1800.000 1050.000" preserveAspectRatio="xMidYMid meet">
-<title>图14-5 IoT DC3 容器化部署架构</title>
-  <desc>三列分组：左列为 PostgreSQL、Compose DNS、运行时配置和 RabbitMQ，中列为鉴权、管理、数据和 Agentic 中心，右列为可下沉边缘的南向驱动。Web 对外暴露 8080/8443 并转发到内部 8000 端口的 Gateway；驱动通过 RabbitMQ 与 Data 双向通信，并在 Compose 网络内访问 Manager；底部标注真实数据卷与运行时配置注入。</desc>
+
+  
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
     <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
@@ -36,7 +36,7 @@
 
   <!-- ===== Title area ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="38" font-size="22" font-weight="700" fill="#0F172A" dominant-baseline="middle">图14-5  IoT DC3 容器化部署架构</text>
+  <text x="84" y="38" font-size="22" font-weight="700" fill="#0F172A" dominant-baseline="middle">图14-5 IoT DC3 容器化部署架构</text>
   <text x="84" y="64" font-size="12" fill="#64748B" dominant-baseline="middle">开发到生产的容器化拓扑：Web 入口 · Gateway · 四个中心服务 · 基础设施 · 南向驱动（边云分离）</text>
   <rect x="1620" y="26" width="140" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
   <text x="1690" y="40" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" dominant-baseline="middle" letter-spacing="1.5">ARCHITECTURE</text>

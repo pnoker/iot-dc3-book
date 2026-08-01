@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-4 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
+  <title>图12-4 智慧果园综合监测系统架构（示意）</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -15,235 +15,193 @@
 </head>
 <body>
   <main class="page">
-    <svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
-                <!-- 背景网格 (极淡) -->
-                <defs>
-                    <style>
-                        text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-                        .region-boundary { fill: #FFFFFF; fill-opacity: 0.72; stroke: #93C5FD; stroke-width: 1.5; stroke-dasharray: 8 6; }
-                        .region-label { fill: #2563EB; font-size: 14px; font-weight: 700; }
-                        .radar-grid-circle { fill: none; stroke: #CBD5E1; stroke-width: 1; stroke-dasharray: 4 4; }
-                        .radar-grid-circle-solid { fill: none; stroke: #94A3B8; stroke-width: 1.2; }
-                        .radar-axis { stroke: #CBD5E1; stroke-width: 1; }
-                        .radar-axis-label { fill: #0F172A; font-size: 14px; font-weight: 700; text-anchor: middle; }
-                        .dimension-badge { fill: #64748B; font-size: 10px; text-anchor: middle; }
-                        .radar-tick-label { fill: #64748B; font-size: 10px; }
-                        .radar-polygon-lora { fill: #F97316; fill-opacity: 0.16; stroke: #F97316; stroke-width: 2.5; }
-                        .radar-polygon-nbiot { fill: #2563EB; fill-opacity: 0.14; stroke: #2563EB; stroke-width: 2.5; }
-                        .radar-polygon-sigfox { fill: #0F766E; fill-opacity: 0.14; stroke: #0F766E; stroke-width: 2.5; }
-                        .radar-point { filter: url(#shadow); }
-                        .legend-item { fill: #0F172A; font-size: 13px; }
-                        .callout-text { fill: #475569; font-size: 13px; font-weight: 600; }
-                    </style>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.6" />
-                    </pattern>
-                    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
-                        <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.04" />
-                    </filter>
-                </defs>
-                <rect x="0" y="0" width="1200" height="760" fill="#F8FAFC" />
-                <rect x="0" y="0" width="1200" height="760" fill="url(#grid)" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图12-4 智慧果园综合监测系统架构（示意）</title>
+  <desc id="desc">展示10公顷苹果园监测系统中感知层、通信层、边缘处理层和云平台层之间的接口划分与主数据流路径。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-                <!-- 平台服务域 区域边界 -->
-                <rect x="130" y="44" width="740" height="668" class="region-boundary" />
-                <text x="148" y="68" class="region-label">▎平台服务域 ｜ 核心服务能力边界</text>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="a-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+    <marker id="a-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="a-org" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图12-4 智慧果园综合监测系统架构（示意）</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。</text>
+  <rect x="1606" y="28" width="150" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1681" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
 
-                <!-- ============================================================ -->
-                <!-- 雷达图中心 (cx, cy) = (490, 400)  半径 R = 260               -->
-                <!-- 六轴从12点顺时针: 覆盖0°, 速率60°, 功耗120°, 成本180°,       -->
-                <!-- 生态240°, 穿透300°                                           -->
-                <!-- ============================================================ -->
+  <g data-layout="architecture">
 
-                <g transform="translate(0, 0)">
-                    <!-- 中心点 -->
-                    <circle cx="490" cy="400" r="3" fill="#64748B" />
+  <!-- ============ ① 云端平台与应用层 ============ -->
+  <rect x="140" y="120" width="1520" height="180" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="160" y="145" fill="#2563EB" font-size="15" font-weight="700">云端平台与应用层</text>
+  <text x="160" y="166" fill="#64748B" font-size="12">云服务平台域 · 数据汇聚 / 决策 / 存储 / 服务</text>
 
-                    <!-- 同心圆网格 (刻度1-5) -->
-                    <!-- 半径 = (i/5)*260 -->
-                    <circle cx="490" cy="400" r="52" class="radar-grid-circle" />
-                    <circle cx="490" cy="400" r="104" class="radar-grid-circle" />
-                    <circle cx="490" cy="400" r="156" class="radar-grid-circle" />
-                    <circle cx="490" cy="400" r="208" class="radar-grid-circle" />
-                    <circle cx="490" cy="400" r="260" class="radar-grid-circle-solid" />
+  <rect x="200" y="170" width="400" height="108" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <circle cx="230" cy="224" r="6.5" fill="none" stroke="#2563EB" stroke-width="1.8"/>
+  <circle cx="230" cy="224" r="2" fill="#2563EB"/>
+  <line x1="230" y1="212" x2="230" y2="216" stroke="#2563EB" stroke-width="1.6"/>
+  <line x1="230" y1="232" x2="230" y2="236" stroke="#2563EB" stroke-width="1.6"/>
+  <line x1="218" y1="224" x2="222" y2="224" stroke="#2563EB" stroke-width="1.6"/>
+  <line x1="238" y1="224" x2="242" y2="224" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="250" y="204" fill="#0F172A" font-size="16" font-weight="700">云规则引擎</text>
+  <text x="250" y="226" fill="#475569" font-size="12">灌溉决策 · 告警</text>
+  <rect x="250" y="244" width="84" height="22" rx="11" fill="#DBEAFE" stroke="#2563EB"/><text x="292" y="259" fill="#2563EB" font-size="11" text-anchor="middle">灌溉决策</text>
+  <rect x="344" y="244" width="84" height="22" rx="11" fill="#FEF2F2" stroke="#DC2626"/><text x="386" y="259" fill="#DC2626" font-size="11" text-anchor="middle">异常告警</text>
 
-                    <!-- 轴线和轴标签 -->
-                    <!-- 工具函数: 角度从12点顺时针, 弧度 = (deg-90)*PI/180 -->
-                    <!-- 轴终点坐标 (半径260): x = cx + 260*sin(deg), y = cy - 260*cos(deg) -->
+  <rect x="640" y="170" width="320" height="108" rx="8" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.2"/>
+  <rect x="662" y="216" width="16" height="12" rx="2" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="666" y1="216" x2="666" y2="212" stroke="#2563EB" stroke-width="1.5"/>
+  <circle cx="666" cy="210" r="1.5" fill="#2563EB"/>
+  <circle cx="669" cy="222" r="1.5" fill="#2563EB"/>
+  <text x="690" y="204" fill="#0F172A" font-size="16" font-weight="700">设备管理</text>
+  <text x="690" y="226" fill="#475569" font-size="12">接入 · 状态 · 配置</text>
 
-                    <!-- 覆盖 0° -->
-                    <line x1="490" y1="400" x2="490" y2="140" class="radar-axis" />
-                    <text x="490" y="118" class="radar-axis-label">覆盖</text>
-                    <text x="490" y="134" class="dimension-badge">(4/4/4)</text>
+  <rect x="1000" y="170" width="320" height="108" rx="8" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.2"/>
+  <rect x="1024" y="220" width="4" height="12" fill="#2563EB"/>
+  <rect x="1032" y="224" width="4" height="8" fill="#2563EB"/>
+  <rect x="1040" y="216" width="4" height="16" fill="#2563EB"/>
+  <line x1="1021" y1="234" x2="1047" y2="234" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1050" y="204" fill="#0F172A" font-size="16" font-weight="700">可视化看板</text>
+  <text x="1050" y="226" fill="#475569" font-size="12">实时数据 · 大屏展示</text>
 
-                    <!-- 速率 60° -->
-                    <!-- sin60=0.8660, cos60=0.5 -->
-                    <!-- x=490+260*0.866=715.2, y=400-260*0.5=270 -->
-                    <line x1="490" y1="400" x2="715.2" y2="270" class="radar-axis" />
-                    <text x="730" y="252" class="radar-axis-label">速率</text>
-                    <text x="730" y="268" class="dimension-badge">(3/4/1)</text>
+  <!-- 要点① 下行链路 -->
+  <rect x="1400" y="150" width="260" height="130" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <rect x="1400" y="150" width="4" height="130" fill="#2563EB"/>
+  <text x="1416" y="176" fill="#2563EB" font-size="12" font-weight="700">要点① 下行链路</text>
+  <text x="1416" y="200" fill="#475569" font-size="12">灌溉指令下行延迟可达秒级到分钟级，</text>
+  <text x="1416" y="218" fill="#475569" font-size="12">但对灌溉场景完全适用。</text>
 
-                    <!-- 功耗 120° -->
-                    <!-- sin120=0.8660, cos120=-0.5 -->
-                    <!-- x=490+260*0.866=715.2, y=400-260*(-0.5)=530 -->
-                    <line x1="490" y1="400" x2="715.2" y2="530" class="radar-axis" />
-                    <text x="730" y="546" class="radar-axis-label">功耗</text>
-                    <text x="730" y="562" class="dimension-badge">(3/2/4)</text>
+  <!-- ============ ② 混合通信层 ============ -->
+  <rect x="140" y="340" width="1520" height="140" rx="10" fill="#F1F5F9" stroke="#64748B" stroke-width="1.5"/>
+  <text x="160" y="365" fill="#475569" font-size="15" font-weight="700">混合通信层</text>
+  <text x="160" y="386" fill="#64748B" font-size="12">混合通信域 · 双通道收发 / 协议适配</text>
 
-                    <!-- 成本 180° -->
-                    <!-- sin180=0, cos180=-1 -->
-                    <!-- x=490, y=400-260*(-1)=660 -->
-                    <line x1="490" y1="400" x2="490" y2="660" class="radar-axis" />
-                    <text x="490" y="678" class="radar-axis-label">成本</text>
-                    <text x="490" y="694" class="dimension-badge">(4/3/4)</text>
+  <rect x="200" y="380" width="440" height="66" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="222" y="403" width="16" height="16" rx="3" fill="#2563EB" opacity="0.12" stroke="#2563EB" stroke-width="1.5"/>
+  <path d="M 226 399 A 6 6 0 0 1 234 399" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+  <path d="M 224 393 A 10 10 0 0 1 236 393" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="250" y="412" fill="#0F172A" font-size="16" font-weight="700">LoRaWAN 网关</text>
+  <text x="250" y="433" fill="#475569" font-size="12">8通道 · 以太网 / 4G 回传</text>
 
-                    <!-- 生态 240° -->
-                    <!-- sin240=-0.8660, cos240=-0.5 -->
-                    <!-- x=490+260*(-0.866)=264.8, y=400-260*(-0.5)=530 -->
-                    <line x1="490" y1="400" x2="264.8" y2="530" class="radar-axis" />
-                    <text x="248" y="546" class="radar-axis-label">生态</text>
-                    <text x="248" y="562" class="dimension-badge">(5/2/1)</text>
+  <rect x="900" y="380" width="400" height="66" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <line x1="930" y1="414" x2="930" y2="402" stroke="#64748B" stroke-width="2"/>
+  <path d="M 918 400 A 12 12 0 0 0 942 400" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+  <path d="M 910 392 A 20 20 0 0 0 950 392" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+  <line x1="922" y1="414" x2="938" y2="414" stroke="#64748B" stroke-width="2"/>
+  <text x="950" y="412" fill="#0F172A" font-size="16" font-weight="700">4G Cat-1 基站</text>
+  <text x="950" y="433" fill="#475569" font-size="12">运营商网络</text>
 
-                    <!-- 穿透 300° -->
-                    <!-- sin300=-0.8660, cos300=0.5 -->
-                    <!-- x=490+260*(-0.866)=264.8, y=400-260*0.5=270 -->
-                    <line x1="490" y1="400" x2="264.8" y2="270" class="radar-axis" />
-                    <text x="248" y="252" class="radar-axis-label">穿透</text>
-                    <text x="248" y="268" class="dimension-badge">(4/3/4)</text>
+  <!-- 要点② 双通道互补 -->
+  <rect x="1400" y="370" width="260" height="110" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <rect x="1400" y="370" width="4" height="110" fill="#0F766E"/>
+  <text x="1416" y="396" fill="#0F766E" font-size="12" font-weight="700">要点② 双通道互补</text>
+  <text x="1416" y="418" fill="#475569" font-size="12">LoRaWAN 与 4G 各自承载不同量级</text>
+  <text x="1416" y="436" fill="#475569" font-size="12">和频次的数据，不存在“谁替代</text>
+  <text x="1416" y="454" fill="#475569" font-size="12">谁”的问题。</text>
 
-                    <!-- 刻度标签 (在覆盖轴上标注1-5) -->
-                    <text x="498" y="362" class="radar-tick-label">1</text>
-                    <text x="498" y="310" class="radar-tick-label">2</text>
-                    <text x="498" y="258" class="radar-tick-label">3</text>
-                    <text x="498" y="206" class="radar-tick-label">4</text>
-                    <text x="498" y="154" class="radar-tick-label">5</text>
+  <!-- ============ ③ 边缘处理层（图像链路专用薄层） ============ -->
+  <rect x="820" y="510" width="540" height="50" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1090" y="540" fill="#EA580C" font-size="14" font-weight="700" text-anchor="middle">边缘处理层 · 图像节点本地推理（EfficientNet-Lite）→ 异常 / 无异常</text>
 
-                    <!-- ============================================================ -->
-                    <!-- 数据多边形                                                       -->
-                    <!-- 坐标预先计算:                                                  -->
-                    <!-- LoRa:  覆盖(490,192) 速率(615.1,322) 功耗(615.1,478)          -->
-                    <!--        成本(490,608) 生态(264.8,530) 穿透(299.9,322)          -->
-                    <!-- NB-IoT: 覆盖(490,192) 速率(660.1,296) 功耗(570.1,452)         -->
-                    <!--         成本(490,556) 生态(389.9,452) 穿透(344.9,322)         -->
-                    <!-- Sigfox: 覆盖(490,192) 速率(525.0,374) 功耗(660.1,504)         -->
-                    <!--         成本(490,608) 生态(435.0,426) 穿透(299.9,322)         -->
-                    <!-- ============================================================ -->
+  <!-- ============ ④ 田间感知层 ============ -->
+  <rect x="140" y="585" width="1520" height="140" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="160" y="610" fill="#0F766E" font-size="15" font-weight="700">田间感知层</text>
+  <text x="160" y="631" fill="#64748B" font-size="12">田间感知域 · 异构传感与数据源</text>
 
-                    <!-- LoRa 多边形 -->
-                    <polygon class="radar-polygon-lora" points="490,192 615.1,322 615.1,478 490,608 264.8,530 299.9,322" />
+  <rect x="160" y="622" width="300" height="84" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="176" y="656" width="16" height="16" rx="3" fill="#0F766E" opacity="0.12" stroke="#0F766E" stroke-width="1.5"/>
+  <line x1="184" y1="656" x2="184" y2="649" stroke="#0F766E" stroke-width="1.5"/>
+  <circle cx="184" cy="647" r="2" fill="#0F766E"/>
+  <text x="205" y="656" fill="#0F172A" font-size="15" font-weight="700">土壤传感器节点</text>
+  <text x="205" y="678" fill="#475569" font-size="12">LoRaWAN · 20个</text>
+  <text x="205" y="694" fill="#64748B" font-size="11">三合一 · 温湿度 / 电导率</text>
 
-                    <!-- NB-IoT 多边形 -->
-                    <polygon class="radar-polygon-nbiot" points="490,192 660.1,296 570.1,452 490,556 389.9,452 344.9,322" />
+  <rect x="500" y="622" width="240" height="84" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+  <circle cx="524" cy="663" r="6" fill="none" stroke="#0F766E" stroke-width="1.5"/>
+  <line x1="524" y1="653" x2="524" y2="649" stroke="#0F766E" stroke-width="1.5"/>
+  <line x1="524" y1="673" x2="524" y2="677" stroke="#0F766E" stroke-width="1.5"/>
+  <line x1="514" y1="663" x2="510" y2="663" stroke="#0F766E" stroke-width="1.5"/>
+  <line x1="534" y1="663" x2="538" y2="663" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="544" y="656" fill="#0F172A" font-size="15" font-weight="700">气象站</text>
+  <text x="544" y="678" fill="#475569" font-size="12">LoRaWAN · 1个</text>
+  <text x="544" y="694" fill="#64748B" font-size="11">风速 / 雨量 / 光照</text>
 
-                    <!-- Sigfox 多边形 -->
-                    <polygon class="radar-polygon-sigfox" points="490,192 525.0,374 660.1,504 490,608 435.0,426 299.9,322" />
+  <rect x="780" y="622" width="320" height="84" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+  <rect x="796" y="656" width="20" height="14" rx="3" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+  <circle cx="806" cy="663" r="4" fill="none" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="824" y="656" fill="#0F172A" font-size="15" font-weight="700">图像采集节点</text>
+  <text x="824" y="678" fill="#475569" font-size="12">内置边缘AI推理 · 5个</text>
+  <rect x="824" y="684" width="136" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/>
+  <text x="892" y="698" fill="#2563EB" font-size="12" text-anchor="middle">EfficientNet-Lite</text>
 
-                    <!-- ============================================================ -->
-                    <!-- 数据点 (带 hover <title>)                                     -->
-                    <!-- ============================================================ -->
+  <rect x="1140" y="622" width="240" height="84" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <circle cx="1164" cy="663" r="7" fill="none" stroke="#D97706" stroke-width="1.5"/>
+  <line x1="1164" y1="656" x2="1164" y2="650" stroke="#D97706" stroke-width="1.5"/>
+  <line x1="1156" y1="663" x2="1172" y2="663" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1184" y="656" fill="#0F172A" font-size="15" font-weight="700">电磁阀节点</text>
+  <text x="1184" y="678" fill="#475569" font-size="12">LoRaWAN · 5个</text>
+  <text x="1184" y="694" fill="#64748B" font-size="11">灌溉执行</text>
 
-                    <!-- LoRa 数据点 -->
-                    <circle cx="490" cy="192" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>LoRa · 覆盖：4/5</title>
-                    </circle>
-                    <circle cx="615.1" cy="322" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>LoRa · 速率：3/5</title>
-                    </circle>
-                    <circle cx="615.1" cy="478" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>LoRa · 功耗：3/5</title>
-                    </circle>
-                    <circle cx="490" cy="608" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>LoRa · 成本：4/5</title>
-                    </circle>
-                    <circle cx="264.8" cy="530" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>LoRa · 生态：5/5</title>
-                    </circle>
-                    <circle cx="299.9" cy="322" r="7" fill="#F97316" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>LoRa · 穿透：4/5</title>
-                    </circle>
+  <!-- 要点③ 边缘推理 -->
+  <rect x="1400" y="600" width="260" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <rect x="1400" y="600" width="4" height="118" fill="#F97316"/>
+  <text x="1416" y="626" fill="#F97316" font-size="12" font-weight="700">要点③ 边缘推理</text>
+  <text x="1416" y="648" fill="#475569" font-size="12">图像节点的边缘AI推理是减少流量</text>
+  <text x="1416" y="666" fill="#475569" font-size="12">消耗的关键，是边缘计算在农业中</text>
+  <text x="1416" y="684" fill="#475569" font-size="12">最典型的应用之一。</text>
 
-                    <!-- NB-IoT 数据点 -->
-                    <circle cx="490" cy="192" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>NB-IoT · 覆盖：4/5</title>
-                    </circle>
-                    <circle cx="660.1" cy="296" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>NB-IoT · 速率：4/5</title>
-                    </circle>
-                    <circle cx="570.1" cy="452" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>NB-IoT · 功耗：2/5</title>
-                    </circle>
-                    <circle cx="490" cy="556" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>NB-IoT · 成本：3/5</title>
-                    </circle>
-                    <circle cx="389.9" cy="452" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>NB-IoT · 生态：2/5</title>
-                    </circle>
-                    <circle cx="344.9" cy="322" r="7" fill="#2563EB" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>NB-IoT · 穿透：3/5</title>
-                    </circle>
+  <!-- ============ 数据流（上行实线 / 下行虚线） ============ -->
+  <!-- 土壤传感器 → LoRaWAN 网关 -->
+  <polyline points="320,622 320,490 390,490 390,446" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#a-teal)"/>
+  <text x="330" y="500" fill="#0F766E" font-size="12">定时上报 · 200B</text>
 
-                    <!-- Sigfox 数据点 -->
-                    <circle cx="490" cy="192" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>Sigfox · 覆盖：4/5</title>
-                    </circle>
-                    <circle cx="525.0" cy="374" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>Sigfox · 速率：1/5</title>
-                    </circle>
-                    <circle cx="660.1" cy="504" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>Sigfox · 功耗：4/5</title>
-                    </circle>
-                    <circle cx="490" cy="608" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>Sigfox · 成本：4/5</title>
-                    </circle>
-                    <circle cx="435.0" cy="426" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>Sigfox · 生态：1/5</title>
-                    </circle>
-                    <circle cx="299.9" cy="322" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2" class="radar-point">
-                        <title>Sigfox · 穿透：4/5</title>
-                    </circle>
+  <!-- 气象站 → LoRaWAN 网关 -->
+  <polyline points="620,622 620,490 450,490 450,446" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#a-teal)"/>
+  <text x="630" y="500" fill="#0F766E" font-size="12">定时上报 · 200B</text>
 
-                    <!-- ============================================================ -->
-                    <!-- 图例 (右上角, x=880, y=100 区域)                             -->
-                    <!-- ============================================================ -->
-                    <g transform="translate(870, 90)">
-                        <rect x="0" y="0" width="270" height="148" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2" filter="url(#shadow)" />
-                        <text x="16" y="26" font-size="14" font-weight="700" fill="#0F172A">技术对比图例</text>
+  <!-- 图像节点 →（边缘推理）→ 4G 基站 -->
+  <line x1="940" y1="622" x2="940" y2="446" stroke="#2563EB" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="950" y="478" fill="#2563EB" font-size="12">异常图像 · 200-300KB</text>
 
-                        <!-- LoRa -->
-                        <rect x="16" y="40" width="18" height="18" rx="4" fill="#F97316" opacity="0.7" />
-                        <rect x="16" y="40" width="18" height="18" rx="4" fill="none" stroke="#F97316" stroke-width="2" />
-                        <text x="44" y="53" class="legend-item">LoRa / LoRaWAN</text>
-                        <text x="220" y="53" font-size="12" fill="#64748B" text-anchor="end">橙色</text>
+  <!-- 4G 基站 → 云规则引擎 -->
+  <polyline points="1100,380 1100,290 420,290 420,278" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="1050" y="312" fill="#2563EB" font-size="12">回传</text>
 
-                        <!-- NB-IoT -->
-                        <rect x="16" y="68" width="18" height="18" rx="4" fill="#2563EB" opacity="0.6" />
-                        <rect x="16" y="68" width="18" height="18" rx="4" fill="none" stroke="#2563EB" stroke-width="2" />
-                        <text x="44" y="81" class="legend-item">NB-IoT</text>
-                        <text x="220" y="81" font-size="12" fill="#64748B" text-anchor="end">蓝色</text>
+  <!-- LoRaWAN 网关 → 云规则引擎 -->
+  <polyline points="360,380 360,290 350,290 350,278" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#a-teal)"/>
+  <text x="370" y="320" fill="#0F766E" font-size="12">环境数据汇聚</text>
 
-                        <!-- Sigfox -->
-                        <rect x="16" y="96" width="18" height="18" rx="4" fill="#0F766E" opacity="0.6" />
-                        <rect x="16" y="96" width="18" height="18" rx="4" fill="none" stroke="#0F766E" stroke-width="2" />
-                        <text x="44" y="109" class="legend-item">Sigfox</text>
-                        <text x="220" y="109" font-size="12" fill="#64748B" text-anchor="end">绿色</text>
+  <!-- 云规则引擎 →（下行）→ LoRaWAN 网关 -->
+  <line x1="240" y1="278" x2="240" y2="380" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#a-org)"/>
+  <text x="250" y="330" fill="#F97316" font-size="12">下行：电磁阀指令</text>
 
-                        <!-- 说明 -->
-                        <text x="16" y="134" font-size="11" fill="#64748B">各维度评分 1（弱）→ 5（强）</text>
-                    </g>
+  <!-- LoRaWAN 网关 →（下行）→ 电磁阀节点 -->
+  <polyline points="500,446 500,570 1260,570 1260,622" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#a-org)"/>
+  <text x="900" y="562" fill="#F97316" font-size="12">开关控制</text>
 
-                    <!-- ============================================================ -->
-                    <!-- 中心说明 / callout                                            -->
-                    <!-- ============================================================ -->
-                    <text x="490" y="400" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#94A3B8" font-style="italic">Hover 数据点查看评分</text>
-
-                    <!-- 底部 callout -->
-                    <text x="490" y="730" text-anchor="middle" class="callout-text">三个系列在同一份刻度坐标上对比，便于目视识别优势短板</text>
-                </g>
-            </svg>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#0F766E"/>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿=田间感知设备及数据源</text>
+  <rect x="480" y="797" width="16" height="12" rx="2" fill="#2563EB"/>
+  <text x="504" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝=网关 · 云平台 · 通信基础设施</text>
+  <line x1="860" y1="803" x2="896" y2="803" stroke="#0F766E" stroke-width="2" marker-end="url(#a-teal)"/>
+  <text x="908" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线=数据上行</text>
+  <line x1="1120" y1="803" x2="1156" y2="803" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#a-org)"/>
+  <text x="1168" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线=下行控制</text>
+  <text x="900" y="852" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图12-4 智慧果园混合组网完整数据路径：土壤与气象数据经 LoRaWAN 周期上报；图像数据在边缘完成推理后经 4G 回传；灌溉指令由云端规则引擎经 LoRaWAN 下行通道执行。</text>
+  </svg>
+</svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">matrix</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">六轴雷达图，同心圆刻度 1–5（1=最弱，5=最强）</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自下而上四层：田间感知层→混合通信层→边缘处理层→云端平台与应用层；LoRaWAN 与 4G 双通道数据路径分离</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">LoRaWAN 数据路径青绿色、4G 路径蓝色、下行指令橙色虚线；边缘层突出图像节点本地 EfficientNet-Lite 推理</div></div>
     </section>
   </main>
 </body>

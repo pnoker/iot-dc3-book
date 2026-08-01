@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图11-5 火灾应急响应事件流转时序（假设场景）</title>
+  <title>图11-7 城市物联网消息队列与数据流处理架构</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -15,87 +15,173 @@
 </head>
 <body>
   <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图11-5 火灾应急响应事件流转时序（假设场景）</title>
-  <desc id="desc">读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。</desc>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc" style="font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif">
+  <title id="title">图11-7 城市物联网消息队列与数据流处理架构</title>
+  <desc id="desc">读者应理解高频传感流走Kafka/Flink实时聚合入时序库，控制指令走RocketMQ事务管道，两类通道隔离避免互扰。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
-<title id="title">图11-5 火灾应急响应事件流转时序（假设场景）</title>
-  <desc id="desc">读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。</desc>
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+    <marker id="bp-arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/></marker>
+    <marker id="bp-arrow-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
+
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-5 火灾应急响应事件流转时序（假设场景）</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-7 城市物联网消息队列与数据流处理架构</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解高频传感流走Kafka/Flink实时聚合入时序库，控制指令走RocketMQ事务管道，两类通道隔离避免互扰。</text>
+  <rect x="1516" y="28" width="220" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1626" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="sequence">
-  <!-- 区域边界 -->
-  <rect x="140" y="120" width="440" height="550" rx="14" fill="none" stroke="#E2E8F0" stroke-dasharray="8,4" />
-  <text x="155" y="138" fill="#64748B" font-size="14" font-weight="600">设备与边缘域</text>
-  <rect x="620" y="120" width="700" height="550" rx="14" fill="none" stroke="#E2E8F0" stroke-dasharray="8,4" />
-  <text x="635" y="138" fill="#64748B" font-size="14" font-weight="600">云端协同域</text>
 
-  <!-- 生命线 -->
-  <line x1="260" y1="195" x2="260" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="440" y1="195" x2="440" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="780" y1="195" x2="780" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="1000" y1="195" x2="1000" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="1200" y1="195" x2="1200" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
+  <g data-layout="architecture">
 
-  <!-- 参与者卡片 -->
-  <rect x="200" y="135" width="120" height="60" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
-  <text x="260" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">烟雾传感器</text>
+    <!-- ============ 四层背景带（虚线边界·嵌入式背景框） ============ -->
+    <rect x="140" y="112" width="1620" height="150" rx="14" fill="#F0FDFA" stroke="#5EEAD4" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect x="140" y="280" width="1620" height="150" rx="14" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect x="140" y="448" width="1620" height="150" rx="14" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect x="140" y="616" width="1620" height="150" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="8,4"/>
 
-  <rect x="360" y="135" width="160" height="60" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
-  <text x="440" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">边缘计算节点</text>
-  <text x="440" y="180" fill="#475569" font-size="12" text-anchor="middle">本地规则引擎</text>
+    <!-- 层标签与职责 -->
+    <text x="165" y="134" fill="#0F766E" font-size="15" font-weight="700">设备与边缘域</text>
+    <text x="165" y="152" fill="#475569" font-size="12">现场数据生产者</text>
+    <text x="165" y="302" fill="#2563EB" font-size="15" font-weight="700">消息队列域</text>
+    <text x="165" y="320" fill="#475569" font-size="12">缓冲与分发枢纽</text>
+    <text x="165" y="470" fill="#F97316" font-size="15" font-weight="700">流处理域</text>
+    <text x="165" y="488" fill="#475569" font-size="12">实时清洗与聚合</text>
+    <text x="165" y="638" fill="#475569" font-size="15" font-weight="700">存储与服务域</text>
+    <text x="165" y="656" fill="#475569" font-size="12">持久化与智能决策</text>
 
-  <rect x="700" y="135" width="160" height="60" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
-  <text x="780" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">云端协同层</text>
-  <text x="780" y="180" fill="#475569" font-size="12" text-anchor="middle">事件路由</text>
+    <!-- ============ 设备层节点（青绿色） ============ -->
+    <rect x="370" y="166" width="220" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="480" y="193" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">智能路灯</text>
+    <text x="480" y="212" fill="#475569" font-size="12" text-anchor="middle">照明/环境检测</text>
 
-  <rect x="940" y="135" width="120" height="60" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5" />
-  <text x="1000" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">消防系统</text>
+    <rect x="610" y="166" width="220" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="720" y="193" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">路口RSU</text>
+    <text x="720" y="212" fill="#475569" font-size="12" text-anchor="middle">信号灯/车流</text>
 
-  <rect x="1140" y="135" width="120" height="60" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5" />
-  <text x="1200" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">交通系统</text>
+    <rect x="850" y="166" width="220" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="960" y="193" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">网联汽车</text>
+    <text x="960" y="212" fill="#475569" font-size="12" text-anchor="middle">GPS/状态</text>
 
-  <!-- 消息箭头 -->
-  <line x1="260" y1="230" x2="440" y2="230" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="315" y="218" width="70" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="350" y="232" fill="#0F172A" font-size="12" text-anchor="middle">上报警值</text>
+    <rect x="1090" y="166" width="220" height="70" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="1200" y="193" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">环境传感器</text>
+    <text x="1200" y="212" fill="#475569" font-size="12" text-anchor="middle">空气/噪音</text>
 
-  <line x1="440" y1="300" x2="780" y2="300" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="555" y="288" width="110" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="610" y="302" fill="#0F172A" font-size="12" text-anchor="middle">推送事件摘要</text>
+    <!-- ============ 消息队列层节点（蓝色·总线形态） ============ -->
+    <rect x="580" y="310" width="280" height="70" rx="35" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="720" y="337" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Kafka traffic_raw_msg</text>
+    <text x="720" y="356" fill="#475569" font-size="12" text-anchor="middle">高吞吐时序管道</text>
 
-  <line x1="780" y1="370" x2="1000" y2="370" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="850" y="358" width="80" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="890" y="372" fill="#0F172A" font-size="12" text-anchor="middle">派单指令</text>
+    <rect x="1000" y="310" width="280" height="70" rx="35" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1140" y="337" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Kafka env_sensor_raw</text>
+    <text x="1140" y="356" fill="#475569" font-size="12" text-anchor="middle">传感器状态管道</text>
 
-  <line x1="780" y1="440" x2="1200" y2="440" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="940" y="428" width="100" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="990" y="442" fill="#0F172A" font-size="12" text-anchor="middle">信号控制指令</text>
+    <rect x="1360" y="310" width="280" height="70" rx="35" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1500" y="337" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">RocketMQ control_cmd</text>
+    <text x="1500" y="356" fill="#475569" font-size="12" text-anchor="middle">事务性控制指令</text>
 
-  <!-- 自调用：边缘节点判定事件类型 -->
-  <path d="M440,250 L470,250 L470,270 L440,270" fill="none" stroke="#0F766E" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" stroke-dasharray="4,2" />
-  <text x="480" y="265" fill="#0F172A" font-size="11">判定事件类型</text>
-</g>
+    <!-- ============ 流处理层节点（Flink=橙色 / Spark=蓝色） ============ -->
+    <rect x="580" y="480" width="280" height="70" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="720" y="507" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">Flink交通流聚合</text>
+    <text x="720" y="526" fill="#475569" font-size="12" text-anchor="middle">5min窗口车流量</text>
+
+    <rect x="1000" y="480" width="280" height="70" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="1140" y="507" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">Flink环境异常检测</text>
+    <text x="1140" y="526" fill="#475569" font-size="12" text-anchor="middle">实时阈值/模型</text>
+
+    <rect x="1360" y="480" width="280" height="70" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1500" y="507" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">Spark能耗统计</text>
+    <text x="1500" y="526" fill="#475569" font-size="12" text-anchor="middle">微批次调光优化</text>
+
+    <!-- ============ 存储与服务层节点（Redis/TSDB=灰色·AI=橙色） ============ -->
+    <rect x="580" y="630" width="280" height="70" rx="10" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
+    <text x="720" y="657" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">Redis缓存</text>
+    <text x="720" y="676" fill="#475569" font-size="12" text-anchor="middle">路口状态/配置</text>
+
+    <rect x="1000" y="630" width="280" height="70" rx="10" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
+    <text x="1140" y="657" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">时序数据库</text>
+    <text x="1140" y="676" fill="#475569" font-size="12" text-anchor="middle">历史轨迹/趋势</text>
+
+    <rect x="1360" y="630" width="280" height="70" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="1500" y="657" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">AI推理微服务</text>
+    <text x="1500" y="676" fill="#475569" font-size="12" text-anchor="middle">预测/推荐</text>
+
+    <!-- ============ 设备层 → 消息队列层（青绿色实线，箭头颜色与源节点一致） ============ -->
+    <line x1="480" y1="236" x2="720" y2="310" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow-teal)"/>
+    <line x1="720" y1="236" x2="720" y2="310" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow-teal)"/>
+    <line x1="960" y1="236" x2="720" y2="310" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow-teal)"/>
+    <line x1="1200" y1="236" x2="1140" y2="310" stroke="#0F766E" stroke-width="2" marker-end="url(#bp-arrow-teal)"/>
+
+    <!-- 设备→队列 箭头标签 -->
+    <rect x="566" y="258" width="68" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="600" y="272" fill="#0F172A" font-size="12" text-anchor="middle">照明/环境</text>
+    <rect x="686" y="258" width="68" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="720" y="272" fill="#0F172A" font-size="12" text-anchor="middle">车流/相位</text>
+    <rect x="814" y="258" width="52" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="840" y="272" fill="#0F172A" font-size="12" text-anchor="middle">GPS/状态</text>
+    <rect x="1136" y="258" width="68" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="1170" y="272" fill="#0F172A" font-size="12" text-anchor="middle">空气/噪音</text>
+
+    <!-- ============ 消息队列层 → 流处理层（蓝色实线·消费） ============ -->
+    <line x1="720" y1="380" x2="720" y2="480" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+    <line x1="1140" y1="380" x2="1140" y2="480" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+    <rect x="702" y="421" width="36" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="720" y="435" fill="#0F172A" font-size="12" text-anchor="middle">消费</text>
+    <rect x="1122" y="421" width="36" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="1140" y="435" fill="#0F172A" font-size="12" text-anchor="middle">消费</text>
+
+    <!-- ============ 可选消费干路（蓝色虚线·单流多消费：Kafka traffic → Spark / AI） ============ -->
+    <path d="M 860,380 L 860,404 L 1720,404 L 1720,645" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6,4"/>
+    <path d="M 1720,515 L 1640,515" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#bp-arrow-dashed)"/>
+    <path d="M 1720,645 L 1640,645" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#bp-arrow-dashed)"/>
+    <rect x="1250" y="387" width="60" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="1280" y="400" fill="#0F172A" font-size="12" text-anchor="middle">可选消费</text>
+
+    <!-- ============ 流处理层 → 存储与服务层（橙色实线） ============ -->
+    <line x1="720" y1="550" x2="720" y2="630" stroke="#F97316" stroke-width="2" marker-end="url(#bp-arrow-orange)"/>
+    <line x1="860" y1="550" x2="1000" y2="630" stroke="#F97316" stroke-width="2" marker-end="url(#bp-arrow-orange)"/>
+    <line x1="1140" y1="550" x2="1140" y2="630" stroke="#F97316" stroke-width="2" marker-end="url(#bp-arrow-orange)"/>
+    <rect x="702" y="583" width="36" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="720" y="597" fill="#0F172A" font-size="12" text-anchor="middle">写入</text>
+    <rect x="912" y="572" width="36" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="930" y="586" fill="#0F172A" font-size="12" text-anchor="middle">归档</text>
+    <rect x="1110" y="583" width="60" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="1140" y="597" fill="#0F172A" font-size="12" text-anchor="middle">报警写入</text>
+
+    <!-- ============ RocketMQ → AI推理微服务（蓝色实线·控制指令，绕行右缘避开Spark） ============ -->
+    <path d="M 1500,380 L 1500,392 L 1740,392 L 1740,685 L 1640,685" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+    <rect x="1660" y="374" width="60" height="17" rx="3" fill="#FFFFFF" fill-opacity="0.92"/>
+    <text x="1690" y="388" fill="#0F172A" font-size="12" text-anchor="middle">控制指令</text>
+
+  </g>
+
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">矩形=参与者；实线箭头=同步消息</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-5 自动化链路的关键在于边缘节点完成本地判定（第2步），云端协同层完成自动事件路由（第4步），两地均无人工转接环节。</text>
+  <!-- 图例（位于所有边界框之外） -->
+  <rect x="80" y="795" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="12" font-weight="600">蓝色=平台层组件</text>
+  <rect x="300" y="795" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+  <text x="324" y="808" fill="#64748B" font-size="12" font-weight="600">青绿色=设备与边缘</text>
+  <rect x="540" y="795" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+  <text x="564" y="808" fill="#64748B" font-size="12" font-weight="600">橙色=AI/流处理</text>
+  <rect x="760" y="795" width="16" height="12" rx="2" fill="#F1F5F9" stroke="#475569" stroke-width="2"/>
+  <text x="784" y="808" fill="#64748B" font-size="12" font-weight="600">灰色=数据存储</text>
+  <line x1="980" y1="801" x2="1038" y2="801" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1050" y="808" fill="#64748B" font-size="12" font-weight="600">实线箭头=主要数据流</text>
+  <line x1="1240" y1="801" x2="1298" y2="801" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow-dashed)"/>
+  <text x="1310" y="808" fill="#64748B" font-size="12" font-weight="600">虚线箭头=可选/归档路径</text>
+
+  <text x="900" y="855" fill="#94A3B8" font-size="12" font-weight="600" text-anchor="middle">图11-7 展示设备层、消息队列、流处理层与存储服务层之间的数据流动：设备上报到Kafka，Flink消费后聚合写入Redis/时序DB；Kafka traffic 同时被 Spark 与 AI 可选消费，体现单流多消费；控制指令经 RocketMQ 事务管道直达 AI 推理微服务，两条通道隔离互不干扰。</text>
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">参与者横向排列，时间轴从上到下。主参与者在顶部，生命线向下延伸。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">自上而下四层：设备层→消息队列层→流处理层→存储与服务层。Kafka/RocketMQ 作为缓冲分发枢纽，Flink/Spark 实时精炼，Redis/时序库/推理服务消费。主链路为设备→Kafka traffic→Flink→Redis/TSDB；控制指令走 RocketMQ→AI 推理，与传感流通道隔离。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产。蓝色=平台层、青绿色=设备/边缘、橙色=AI/流处理、灰色=数据存储；实线=主要数据流、虚线=可选/归档路径。右缘虚线干路表达 Kafka traffic 的单流多消费（Spark 可选消费、AI 可选消费）。</div></div>
     </section>
   </main>
 </body>

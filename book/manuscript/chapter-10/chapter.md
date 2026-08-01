@@ -23,7 +23,7 @@
 ```book-figure
 id: "fig-10-01"
 type: "timeline"
-title: "图10-1 图10-1 工业4.0发展阶段时间线"
+title: "图10-1 工业4.0发展阶段时间线"
 purpose: "标注前三次工业革命与工业4.0的关键特征和交汇时间点，帮助读者建立工业演进的历史脉络。"
 audience_takeaway: "读者应理解工业4.0不是突然出现的概念，而是在前三次工业革命（机械化、电气化、自动化）基础上的范式跃迁。"
 visual_focus: "四个节点从左到右依次排列，工业4.0节点用不同颜色或样式突出显示。"
@@ -112,7 +112,7 @@ render_notes: "HTML/SVG渲染，浅色背景，时间轴箭头深色，节点圆
 ```book-figure
 id: "fig-10-02"
 type: "matrix"
-title: "图10-2 图10-2 工业4.0与传统制造的核心特征对比"
+title: "图10-2 工业4.0与传统制造的核心特征对比"
 purpose: "通过六个维度的并列对比，直观展示传统制造与工业4.0在不同层面的根本差异，帮助读者建立辨别标准。"
 audience_takeaway: "读者应能明确区分传统制造（经验驱动、事后记录、刚性产线）与工业4.0（数据驱动、实时生产要素、柔性产线）的本质差异。"
 visual_focus: "第一行‘驱动要素’和第四行‘系统架构’是区分两种模式的根本标尺，应予以视觉强调。"
@@ -698,7 +698,7 @@ OPC UA地址空间是一个对象模型的树形结构，根节点是Objects，�
 ```book-figure
 id: "fig-10-05"
 type: topology
-title: 图10-5 图10-5 OPC UA地址空间树状结构
+title: 图10-5 OPC UA地址空间树状结构
 audience_takeaway: "读者应理解OPC UA以三种引用类型区分层次:Organizes组织设备、HasComponent含变量/方法、HasProperty挂元数据。"
 purpose: 展示OPC UA服务端以对象模型组织的节点树结构，说明变量节点、对象节点和方法节点的层次关系。
 visual_focus: 从根节点到方法节点的主链路。
@@ -1084,7 +1084,7 @@ df = df[~df.index.duplicated(keep='first')]
 ```book-figure
 id: "fig-10-06"
 type: flowchart
-title: 图10-6 图10-6 原始数据与清洗后数据对比
+title: 图10-6 原始数据与清洗后数据对比
 audience_takeaway: "读者应理解清洗须先判异常成因:通信中断的缺失段用前向填充,电磁干扰的毛刺替换为平滑值,两类异常处理手段不同。"
 purpose: 展示清洗前后温度序列的变化，说明缺失填充和毛刺过滤的效果。
 visual_focus: 从原始数据到清洗后数据的主链路。
@@ -1369,7 +1369,7 @@ render_notes: HTML/SVG渲染，浅色背景，三段式布局。训练阶段使�
 ```book-figure
 id: "fig-10-08"
 type: flowchart
-title: 图10-8 图10-8 预测性维护闭环数据流（示意）
+title: 图10-8 预测性维护闭环数据流（示意）
 purpose: 展示从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式和决策点。
 audience_takeaway: 读者应理解闭环中每层的职责边界与数据形态变化，工单生成不是终点而是反馈起点。
 visual_focus: 从左到右的主链路（采集→特征提取→健康评估→决策→执行），以及从执行返回采集的虚线反馈回路。
@@ -1582,7 +1582,7 @@ IoT DC3 采用微服务架构，围绕“连接、存储、规则、智能”四
 ```book-figure
 id: "fig-10-09"
 type: architecture
-title: 图10-9 图10-9 IoT DC3平台微服务架构
+title: 图10-9 IoT DC3平台微服务架构
 audience_takeaway: "读者应理解规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。"
 purpose: 展示IoT DC3核心模块（设备中心、数据中心、规则引擎、智能中心）之间的职责边界和数据闭环路径。
 visual_focus: 主链路从设备驱动经数据中心到规则引擎和智能中心，规则引擎与智能中心之间用虚线表示“快判转深析”的可选路径。
@@ -1804,7 +1804,7 @@ POST /api/v1/device/save
 ```book-figure
 id: "fig-10-10"
 type: dataflow
-title: 图10-10 图10-10 IoT DC3设备接入与数据采集数据流
+title: 图10-10 IoT DC3设备接入与数据采集数据流
 audience_takeaway: "读者应理解原始位号到展示曲线需三层改造:驱动归一为语义PointValue、数据中心对齐时间戳与单位、时序库按设备+位号分区。"
 purpose: 展示从设备注册、驱动绑定到实时上报和存储的端到端流程。
 visual_focus: 从设备驱动绑定到Grafana大屏的主链路。
@@ -1996,7 +1996,7 @@ ORDER BY time ASC;
 ```book-figure
 id: "fig-10-11"
 type: "flowchart"
-title: "图10-11 图10-11 规则引擎告警触发与预测性维护工单闭环流程"
+title: "图10-11 规则引擎告警触发与预测性维护工单闭环流程"
 source_note: "来源：本书示例流程图，不承载真实阈值或统计数据。"
 purpose: "展示从设备温度数据流入到AI推理、工单创建、通知发出，以及工单状态回环的完整链路。"
 audience_takeaway: "读者应看到规则引擎在事件触发环节的可靠性价值，以及如何通过工单状态回环形成闭环控制，而非单向告警。"
@@ -2154,7 +2154,7 @@ render_notes: "采用从左至右流程图布局，节点使用圆角矩形，�
 ```book-figure
 id: "fig-10-12"
 type: layered
-title: 图10-12 图10-12 本章知识体系图谱
+title: 图10-12 本章知识体系图谱
 audience_takeaway: "读者应理解本章四层知识逐级递进且每层落在IoT DC3具体模块上,分析决策经平台层下发设备,形成带返回线的闭环。"
 purpose: 展示工业物联网与智能制造四层知识体系的结构化映射：从概念驱动到平台落地。
 visual_focus: 从感知层通过驱动模块向上到平台层，实线箭头的主链路。

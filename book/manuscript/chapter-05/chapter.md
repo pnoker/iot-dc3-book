@@ -25,7 +25,7 @@
 ```book-figure
 id: "fig-05-01"
 type: layered
-title: 图5-1 图5-1 物联网平台分层架构示意
+title: 图5-1 物联网平台分层架构示意
 purpose: 展示从感知层到应用层的标准四层模型，并明确平台层在这一模型中的桥梁位置
 audience_takeaway: 读者应理解物联网的四层职责边界，以及数据流和控制流的方向差异。
 visual_focus: 数据流的绿色箭头从感知层向上贯穿至应用层，控制流的蓝色箭头反向；平台层内部组件顺序关系用水平箭头表示。
@@ -230,7 +230,7 @@ client_sub.loop_forever()
 ```book-figure
 id: "fig-05-02"
 type: flowchart
-title: 图5-2 图5-2 设备认证与数据加密流程
+title: 图5-2 设备认证与数据加密流程
 audience_takeaway: "读者应理解证书与Token两条认证路径并存：TLS 1.3握手1RTT完成，DTLS多1次往返做重传保护，Token需配合refresh与短有效期防泄漏。"
 purpose: 展示物联网设备接入平台时证书/Token认证与TLS/DTLS加密传输的完整路径。
 visual_focus: 从设备发起连接到平台完成加密通道建立的主链路；TLS 1.3握手优化和Token刷新机制作为关键支线。
@@ -449,7 +449,7 @@ Kafka支持广播和集群两种订阅隔离模式：同一Topic的多个消费�
 ```book-figure
 id: "fig-05-03"
 type: "dataflow"
-title: "图5-3 图5-3 消息队列缓冲削峰示意"
+title: "图5-3 消息队列缓冲削峰示意"
 audience_takeaway: "读者应理解洪峰时队列水位升高而下游不直接承压，消费者按自身能力拉取削峰，多个消费者组可独立消费同一Topic满足不同时效。"
 purpose: "说明消息队列在设备洪峰到来时如何暂存消息，防止后端处理系统过载。"
 visual_focus: "从设备群到时间轴的主链路。"
@@ -700,7 +700,7 @@ for message in consumer:
 ```book-figure
 id: "fig-05-04"
 type: "architecture"
-title: "图5-4 图5-4 边缘-云协同典型架构"
+title: "图5-4 边缘-云协同典型架构"
 purpose: "展示从设备边缘到云端的三层边缘节点、两种协同模式以及边缘计算框架的放置位置。"
 audience_takeaway: "读者应理解设备边缘、网关边缘、区域边缘的边界以及规则下发和聚合上报两条数据主链路。"
 visual_focus: "从设备层向上经网关边缘、区域边缘到云端的两条数据流（规则下发用虚线、聚合上报用实线）；规则引擎和AI推理框用橙色强调。"
@@ -945,7 +945,7 @@ if __name__ == "__main__":
 ```book-figure
 id: "fig-05-05"
 type: "framework"
-title: "图5-5 图5-5 云边协同三大挑战的关联与权衡三角架"
+title: "图5-5 云边协同三大挑战的关联与权衡三角架"
 audience_takeaway: "读者应理解数据一致性、安全性、运维三挑战互相牵制：强加密拖慢同步、放宽一致性引入漏洞、强化安全加重运维，工程须取平衡点。"
 purpose: "展示云边协同架构中数据一致性、安全性和运维三个核心挑战之间的相互约束关系，以及各层面的应对策略。"
 layout: "一个大等边三角形，三个顶点分别标注“数据一致性”、“安全性”、“运维”。三角形内部划分出三个楔形区域，分别对应每个顶点主导的应对策略集。三角形中心标注“工程权衡区”。"
@@ -1065,7 +1065,7 @@ weather,location=us-west,sensor_id=5678 temperature=78,humidity=68 1700000060000
 ```book-figure
 id: "fig-05-06"
 type: dataflow
-title: 图5-6 图5-6 降采样数据流程与数据量对比（假设场景）
+title: 图5-6 降采样数据流程与数据量对比（假设场景）
 purpose: 展示原始高精度数据经过三级降采样后数据量显著减少，说明分层策略的压缩效果。
 audience_takeaway: 读者应理解降采样通过分层聚合将数据量逐步压缩，不同层服务于不同时效性需求。
 visual_focus: 从原始数据桶到天聚合桶的主链路，突出数据量呈量级缩减。
@@ -1301,7 +1301,7 @@ print(f"检测到 {len(anomalies)} 个异常点（包含模拟注入的20个）"
 ```book-figure
 id: "fig-05-07"
 type: "matrix"
-title: "图5-7 图5-7 异常检测性能对比示意：规则 vs 机器学习"
+title: "图5-7 异常检测性能对比示意：规则 vs 机器学习"
 purpose: "对比基于规则和基于机器学习的异常检测方法在准确率、召回率、误报率、维护成本上的定性差异。"
 audience_takeaway: "机器学习在召回率和自适应方面占优，规则在低误报率（针对已知故障）和解释性上更强；混合策略结合两者优势。"
 visual_focus: "四象限矩阵，横轴为'适应性'（低→高），纵轴为'可解释性'（高→低）；左上象限为规则，右下象限为机器学习。"
@@ -1619,7 +1619,7 @@ Lambda架构曾尝试兼顾两种模式：一条实时流提供低延迟结果�
 ```book-figure
 id: "fig-05-09"
 type: dataflow
-title: 图5-9 图5-9 Kappa架构示意图
+title: 图5-9 Kappa架构示意图
 audience_takeaway: "读者应理解Kappa用单一流管道同时覆盖实时与历史：消息总线持久化原始流，历史分析靠Time Travel回放而非另建批管道，省去Lambda双管道维护。"
 purpose: 展示Kappa架构如何通过单一流处理管道兼容实时与历史分析
 visual_focus: 从数据源到结果输出：持续输出的主链路。
@@ -2160,7 +2160,7 @@ render_notes: 'HTML/SVG渲染时，表格每个单元格内容不超过15个中�
 ```book-figure
 id: "fig-05-12"
 type: architecture
-title: 图5-12 图5-12 平台层延伸阅读工具链全景图
+title: 图5-12 平台层延伸阅读工具链全景图
 audience_takeaway: "读者应理解开源工具沿数据上报→消费落库→查询告警的数据流链条分层，且边缘与容器编排层以虚框横跨消息与时序两层。"
 purpose: 展示本节推荐的开源工具在物联网平台层中各层级的分布
 visual_focus: 从设备接入到可视化与监控的主链路。

@@ -92,7 +92,7 @@
 ```book-figure
 id: "fig-12-01"
 type: topology
-title: 图12-1 图12-1 环境传感网络部署拓扑示意
+title: 图12-1 环境传感网络部署拓扑示意
 audience_takeaway: "读者应理解终端节点与云端不直连——大量LoRa传感器先星型汇聚到单一网关,再由网关经4G/有线回传上云,网关承担隔离与汇聚中继角色。"
 purpose: 显示农业环境传感网络的星型拓扑结构，涵盖终端节点、网关与云平台之间的通信关系。
 visual_focus: 从顶层（云平台层）到底层（终端节点层）的主链路。
@@ -289,7 +289,7 @@ void loop() {
 ```book-figure
 id: "fig-12-02"
 type: "flowchart"
-title: "图12-2 图12-2 作物病害识别CNN处理流程（架构示意）"
+title: "图12-2 作物病害识别CNN处理流程（架构示意）"
 purpose: "展示一张作物叶片图像从输入到输出病害分类概率的完整CNN推理流程。"
 audience_takeaway: "读者应理解CNN推理的主链路——从输入图像经多次卷积池化、展平到全连接分类，以及各层的数据尺寸变化。"
 visual_focus: "从输入图像经过三个卷积池化模块流向展平层，再经全连接层到输出概率条，实线箭头方向清晰。"
@@ -672,7 +672,7 @@ def irrigation_decision(moisture, rain_prob_12h):
 ```book-figure
 id: "fig-12-03"
 type: matrix
-title: 图12-3 图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图
+title: 图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图
 audience_takeaway: "读者应理解三项技术功耗与速率反向取舍——NB-IoT速率最高(4)而功耗最差(2),Sigfox功耗最优(4)但速率最低(1),LoRa生态最开放(5)居中平衡。"
 purpose: 在同一坐标系下展示三项技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六个维度的相对强弱，辅助选型决策
 visual_focus: 从LoRa到Sigfox的主链路。
@@ -836,7 +836,7 @@ render_notes: HTML/SVG 渲染，浅色背景，半透明网格，图例位于右
 ```book-figure
 id: "fig-12-04"
 type: architecture
-title: "图12-4 图12-4 智慧果园综合监测系统架构（示意）"
+title: "图12-4 智慧果园综合监测系统架构（示意）"
 purpose: "展示10公顷苹果园监测系统中感知层、通信层、边缘处理层和云平台层之间的接口划分与主数据流路径。"
 audience_takeaway: "读者应理解混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。"
 visual_focus: "两类数据流的分离路径：LoRaWAN服务于土壤和气象节点，4G服务于图像节点；以及云平台下行控制电磁阀的链路。"

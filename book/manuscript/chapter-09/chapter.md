@@ -33,7 +33,7 @@ LwM2M（Lightweight Machine-To-Machine，轻量级 M2M 协议）的定位更特�
 ```book-figure
 id: "fig-09-01"
 type: "layered"
-title: "图9-1 图9-1 物联网协议栈与分类图"
+title: "图9-1 物联网协议栈与分类图"
 purpose: "展示四层参考架构与应用层协议在其中的位置，以及应用层协议按通信模型的分类。"
 audience_takeaway: "读者应理解物联网协议栈层间关系，以及应用层协议因通信模型不同而分为发布/订阅和请求/响应两大类。"
 visual_focus: "从感知层向上经无线接入、传输层到应用层的主链路；在应用层内部用左右两列区分发布/订阅与请求/响应两种模型。"
@@ -300,7 +300,7 @@ Keep Alive的取值取决于业务场景与功耗约束。电池供电设备通�
 ```book-figure
 id: "fig-09-02"
 type: "sequence"
-title: "图9-2 图9-2 MQTT会话连接与心跳交互示意"
+title: "图9-2 MQTT会话连接与心跳交互示意"
 purpose: "展示客户端与Broker之间会话建立、心跳保活、断线检测、遗嘱执行、重连与会话恢复的完整流程。"
 audience_takeaway: "理解会话持久化、心跳超时判定以及重连策略如何配合恢复已缓存的消息。"
 visual_focus: "从Client重连到Broker推送离线缓存消息的主链路。"
@@ -565,7 +565,7 @@ client.loop_forever()
 ```book-figure
 id: "fig-09-03"
 type: "sequence"
-title: "图9-3 图9-3 MQTT智能家居监控系统交互序列"
+title: "图9-3 MQTT智能家居监控系统交互序列"
 purpose: "展示MQTT在智能家居温湿度监控场景中的完整交互时序，包括连接建立、数据发布、告警触发以及断连后遗嘱消息的发布流程。"
 audience_takeaway: "读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。"
 visual_focus: "设备到Broker到订阅端的数据发布链路（蓝色虚线），以及断连后Broker发布的遗嘱消息（红色虚线）。"
@@ -771,7 +771,7 @@ int main(void) {
 ```book-figure
 id: "fig-09-04"
 type: architecture
-title: 图9-4 图9-4 CoAP消息格式与选项示意
+title: 图9-4 CoAP消息格式与选项示意
 purpose: 展示CoAP消息的紧凑二进制格式，与HTTP冗长的文本头部形成对比，直观解释CoAP如何实现轻量级传输。
 audience_takeaway: 读者应理解等效的GET请求，HTTP的文本头部大小通常远超CoAP的二进制头部，由此理解CoAP在受限网络中的核心优势。
 visual_focus: 上半部分展示HTTP请求头部示例（文本格式），下半部分展示CoAP CON GET请求的二进制分段布局（Ver/T/TKL/Code/Message ID/Token/Options/Payload）。用连线和标注突出二者完成相同语义时的大小差异。
@@ -1208,7 +1208,7 @@ IoT DC3 的 MCP 网关使用 JSON-RPC 2.0 交换消息（资料：[S6]）。客�
 ```book-figure
 id: "fig-09-06"
 type: "sequence"
-title: "图9-6 图9-6 MCP协议交互序列图"
+title: "图9-6 MCP协议交互序列图"
 purpose: "展示AI Agent通过MCP与IoT平台及设备的典型交互流程：资源发现、工具调用、状态反馈。"
 audience_takeaway: "读者应理解MCP作为AI与IoT平台之间的互操作层，不直接操作设备，而是通过平台封装的安全上下文调用后端服务。"
 visual_focus: "从AI Agent发起会话到MCP Server鉴权、工具发现、调用后端设备服务、写入MQTT/CoAP，最终返回结果给AI Agent的完整时间线。"
@@ -1723,7 +1723,7 @@ if __name__ == "__main__":
 ```book-figure
 id: "fig-09-07"
 type: "layered"
-title: "图9-7 图9-7 协议适配网关分层架构"
+title: "图9-7 协议适配网关分层架构"
 purpose: "展示协议适配网关的通用三层架构，解释每层的职能和消息流转路径。"
 audience_takeaway: "读者应理解协议适配网关不是简单的协议转换器，而是具有分层职责边界：适配层负责协议特有收发，路由与转换层做语义映射，统一接口层屏蔽差异。"
 visual_focus: "路由与转换层作为核心决策节点，连接上下层；适配层用模块化框强调可扩展性。"
@@ -1944,7 +1944,7 @@ W3C 的 SSN/SOSA 标准框架在学术和开源社区得到一定程度的采用
 ```book-figure
 id: "fig-09-08"
 type: "timeline"
-title: "图9-8 图9-8 物联网标准化演进时间线"
+title: "图9-8 物联网标准化演进时间线"
 purpose: "展示物联网标准化从垂直协议独立演进，到水平平台收敛，再到语义互操作和AI交互接口扩展的四个关键阶段（节点均为示意性引用，不代表官方标准化路径）。"
 audience_takeaway: "标准化的趋势是语义统一和AI交互接口预留，这决定了平台架构演进的长期方向。"
 visual_focus: "从早期阶段到深水区再到MCP的阶段推进，用箭头标注每一个关键阶段的核心成果。"

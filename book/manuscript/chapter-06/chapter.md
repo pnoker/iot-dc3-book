@@ -172,7 +172,7 @@ public class MqttConfig {
 ```book-figure
 id: "fig-06-01"
 type: dataflow
-title: 图6-1 图6-1 物联网REST API端点设计示例（示意）
+title: 图6-1 物联网REST API端点设计示例（示意）
 audience_takeaway: "读者应理解API以带v1前缀的资源型端点组织，上报与指令下发走写路径(经接入层校验、去重、队列)，历史查询走读路径并按时间窗参数化。"
 purpose: 展示物联网后端常见API端点布局，体现读写分离、版本控制、资源型端点设计。
 visual_focus: 从device到终点的主链路。
@@ -390,7 +390,7 @@ gRPC是Google开源的高性能RPC框架，基于HTTP/2和Protocol Buffers（Pro
 ```book-figure
 id: "fig-06-02"
 type: architecture
-title: 图6-2 图6-2 物联网平台协议分层架构
+title: 图6-2 物联网平台协议分层架构
 purpose: 展示MQTT、REST、gRPC在典型平台中的部署层次与交互主链路。
 audience_takeaway: 读者应理解设备、平台、北向三个层次的责任边界，以及各层次应选择的“最佳”协议。
 visual_focus: 从设备层经网关/边缘层到平台服务层再到北向应用层的主链路；不同协议用不同线型区分。
@@ -548,7 +548,7 @@ render_notes: "HTML/SVG渲染，浅色背景，四层布局，不同协议用不
 ```book-figure
 id: "fig-06-03"
 type: architecture
-title: 图6-3 图6-3 智能楼宇物联网系统微服务参考架构（示意）
+title: 图6-3 智能楼宇物联网系统微服务参考架构（示意）
 audience_takeaway: "读者应理解楼宇中MQTT/Modbus/BACnet三类异种协议统一由边缘网关的协议驱动接入，微服务按领域边界拆分且各自独立存储，数据流与控制流分离传递。"
 purpose: 展示按DDD限界上下文拆分的智能楼宇微服务分层架构，以及数据流与控制流的分离路径。
 visual_focus: 从起点到对应的协议驱动层服务，实线箭头的主链路。
@@ -644,7 +644,7 @@ render_notes: HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。
 ```book-figure
 id: "fig-06-04"
 type: lifecycle
-title: 图6-4 图6-4 单体到微服务演进阶段图
+title: 图6-4 单体到微服务演进阶段图
 audience_takeaway: "读者应理解微服务演进由团队规模与协作摩擦驱动，每前进一步都要用新架构问题(单点故障、数据一致性、分布式事务成本)换取部署与分工的收益。"
 purpose: 展示物联网项目从单体原型到多服务演进的典型路径，标注各阶段关键特征与风险。
 visual_focus: 从阶段节点间用粗箭头到箭头上方标注演进动机：第一支箭 '…的主链路。
@@ -874,7 +874,7 @@ spec:
 ```book-figure
 id: "fig-06-05"
 type: layered
-title: 图6-5 图6-5 物联网微服务容器部署的端-边-云分层架构
+title: 图6-5 物联网微服务容器部署的端-边-云分层架构
 audience_takeaway: "读者应理解边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。"
 purpose: 展示从端设备、边缘节点到云端的数据流与控制流，以及各层使用的容器编排工具
 visual_focus: 从云端层到端设备层的主链路。
@@ -1002,7 +1002,7 @@ IoT DC3 当前 Compose 基础设施只有 PostgreSQL 与 RabbitMQ。PostgreSQL �
 ```book-figure
 id: "fig-06-06"
 type: architecture
-title: 图6-6 图6-6 IoT DC3 模块关系与数据流分层图
+title: 图6-6 IoT DC3 模块关系与数据流分层图
 purpose: 展示 Gateway、四个中心、协议 Driver、RabbitMQ 与 PostgreSQL 的真实模块边界和通信方向。
 audience_takeaway: 读者应理解北向统一路由、Driver 与 Manager 的 gRPC 管理调用，以及 Data 与 Driver 之间的 RabbitMQ 异步命令和数据流。
 visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver 三条主链路。
@@ -1221,7 +1221,7 @@ public void pointCommandReceive(
 ```book-figure
 id: "fig-06-07"
 type: architecture
-title: 图6-7 图6-7 IoT DC3 服务间通信架构图
+title: 图6-7 IoT DC3 服务间通信架构图
 purpose: 展示同步管理调用与 RabbitMQ 异步命令、数据流的真实分工。
 audience_takeaway: Gateway 与 gRPC 负责管理和元数据调用；点位命令、自定义命令、执行回执、位号值和状态事件统一经 RabbitMQ 流转。
 visual_focus: Gateway→四中心与 Driver→Manager 为同步实线，Data↔RabbitMQ↔Driver 为异步虚线。
@@ -1451,7 +1451,7 @@ AIoT 系统的可观测性不能只回答“进程是否活着”，而要能沿
 ```book-figure
 id: "fig-06-09"
 type: architecture  
-title: 图6-9 图6-9 物联网系统关键决策三元组  
+title: 图6-9 物联网系统关键决策三元组  
 purpose: 展示语言、协议、架构三个决策维度在原型阶段与生产阶段的典型差异和迁移路径。  
 audience_takeaway: 读者应理解物联网系统决策不是孤立选择，而是三个维度互相影响的系统工程。  
 visual_focus: 从“语言→协议→架构”的递进影响链路，以及每个维度内迁移路径上的关键工程动作。  

@@ -79,7 +79,7 @@ V2X的通信模式按交互对象分为四类：
 ```book-figure
 id: "fig-11-01"
 type: flowchart
-title: 图11-1 图11-1 V2X通信技术选型决策路径图
+title: 图11-1 V2X通信技术选型决策路径图
 audience_takeaway: "读者应理解时延是首要维度:碰撞预警百毫秒级用DSRC,毫秒级编队须NR-V2X,稀疏覆盖靠Mode 4直连兜底。"
 purpose: 展示从业务时延需求、基础设施覆盖、演进预期和后装兼容性四个维度出发，选择DSRC、LTE-V2X或NR-V2X的决策路径。
 visual_focus: 从node到node的主链路。
@@ -307,7 +307,7 @@ RSU与路口信号机之间的数据交互是智慧交通中最基础也最有�
 ```book-figure
 id: "fig-11-02"
 type: sequence
-title: 图11-2 图11-2 RSU与OBU通信流程
+title: 图11-2 RSU与OBU通信流程
 audience_takeaway: "读者应理解RSU是路侧枢纽:信号机灯色经串口轮询编码SPAT,雷达目标经以太网编码RSI,OBU融合CAN数据供ADAS。"
 purpose: 展示信号机、RSU、雷达、OBU、车载HMI以及ADAS域控制器之间的消息交互顺序和时序关系
 visual_focus: 从信号机到终点的主链路。
@@ -496,7 +496,7 @@ RSU与OBU的部署，本质上是把路侧基础设施的“固定物理世界�
 ```book-figure
 id: "fig-11-03"
 type: architecture
-title: 图11-3 图11-3 智能路灯杆功能图（假设场景）
+title: 图11-3 智能路灯杆功能图（假设场景）
 purpose: 展示单根智能路灯杆上挂载的五类模块、边缘计算盒的位置及数据流动方向，帮助读者理解不同传感器在带宽、安全、实时性上的差异如何决定数据是否本地处理或上传云端。
 audience_takeaway: 读者应理解边缘计算盒的关键作用——视频等高频数据本地消失，低频和控制数据上传，这是城市级物联网带宽与管理成本的工程折中。
 visual_focus: 数据从环境传感器组、摄像头、照明、充电桩流向边缘计算盒，再经MQTT上传云端IoT Hub的主链路。摄像头到边缘盒的虚线标注“本地推理”。
@@ -689,7 +689,7 @@ edge_node:
 ```book-figure
 id: "fig-11-04"
 type: architecture
-title: 图11-4 图11-4 城市应急响应物联网架构
+title: 图11-4 城市应急响应物联网架构
 purpose: 展示城市应急响应系统从感知到指挥的四层结构及各层之间的数据流与指令流关系。
 audience_takeaway: 读者应理解应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。
 visual_focus: 从感知层经处理层到协同层的主链路，强调边缘节点本地判定和协同层事件分发。
@@ -1174,7 +1174,7 @@ Kafka与Flink的集成尤为紧密。Flink将Kafka消费者封装为自己的Sou
 ```book-figure
 id: "fig-11-07"
 type: "architecture"
-title: "图11-7 图11-7 城市物联网消息队列与数据流处理架构"
+title: "图11-7 城市物联网消息队列与数据流处理架构"
 audience_takeaway: "读者应理解高频传感流走Kafka/Flink实时聚合入时序库,控制指令走RocketMQ事务管道,两类通道隔离避免互扰。"
 purpose: "展示从设备层到最终数据消费的完整消息流转路径，突出消息队列作为缓冲和分发枢纽，以及流处理引擎如何实现数据精炼。"
 visual_focus: "从设备层经Kafka/RocketMQ到达Flink/Spark流处理层的主链路，以及可选归档路径。"
@@ -1456,7 +1456,7 @@ stream.process:
 ```book-figure
 id: "fig-11-08"
 type: "architecture"
-title: "图11-8 图11-8 云边协同分层架构示意"
+title: "图11-8 云边协同分层架构示意"
 purpose: "展示智慧交通场景中从设备层到云端层的四层数据处理与模型协同部署关系，重点说明不同层级承担的职责和数据处理流。"
 audience_takeaway: "读者应理解云边协同不是简单地把计算下放，而是按延迟、数据量和算力三个维度进行任务卸载；每层有其清晰的职责边界。"
 visual_focus: "从设备层到云端层的数据流路径用蓝色粗箭头强调；云端向边缘下发模型和策略的路径用橙色虚线箭头表示；RSU层和汇聚边缘层用青绿色/蓝色强调其边缘计算角色。"
@@ -1592,7 +1592,7 @@ render_notes: "HTML/SVG渲染，浅色背景，圆角矩形，四层分明，箭
 ```book-figure
 id: "fig-11-09"
 type: layered
-title: 图11-9 图11-9 LSTM交通流预测模型架构图
+title: 图11-9 LSTM交通流预测模型架构图
 audience_takeaway: "读者应理解输入96步×3通道(流量/时刻/星期)经LSTM压缩为64维,Dropout防过拟合,Dense(6)输出未来6步。"
 purpose: 直观展示短时交通流预测中单层LSTM网络从输入到输出各阶段的数据变换流程，帮助理解维度和特征在不同层之间的变化。
 visual_focus: 从数据流方向：从左至右，全局标注前向…到(64)→(64)→(6)的主链路。
@@ -1951,7 +1951,7 @@ while True:
 ```book-figure
 id: "fig-11-11"
 type: "timeline"
-title: "图11-11 图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）"
+title: "图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）"
 source_note: "来源：本书假设场景，曲线仅用于说明控制策略差异。"
 purpose: "示意性对比传统定时照明与 DQN 调光策略在 24 小时内的功率曲线，说明低流量时段的节能空间。"
 audience_takeaway: "读者应看到深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。"
@@ -2044,7 +2044,7 @@ render_notes: "HTML/SVG 渲染，浅色背景，坐标轴带网格线，图例�
 ```book-figure
 id: "fig-11-12"
 type: flowchart
-title: 图11-12 图11-12 智慧交通系统集成部署工程检查流程
+title: 图11-12 智慧交通系统集成部署工程检查流程
 audience_takeaway: "读者应理解四泳道检查须串行递进:先验设备制式与接口兼容,再验网关压测与QoS,继而PKI证书与签名,最后总线与灾备就绪方可上线。"
 purpose: 展示四个检查域在部署流程中的依赖关系与先后顺序，帮助工程师规划执行步骤和风险节点
 visual_focus: 从泳道4两个决策节点顺序通过后到达终点部署上线的主链路。

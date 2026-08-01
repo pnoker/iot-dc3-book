@@ -17,7 +17,7 @@ AIoT 的成熟大致经历了三个阶段，每个阶段的技术特征和智能
 ```book-figure
 id: "fig-07-01"
 type: timeline
-title: 图7-1 图7-1 AIoT 演进阶段示意
+title: 图7-1 AIoT 演进阶段示意
 purpose: 展示 AIoT 从连接到自主决策的跃迁，突出每个阶段的核心特征与智能化水平。
 audience_takeaway: AIoT 不是一蹴而就的技术堆叠，而是逐步将智能注入数据管道的系统工程。
 visual_focus: 从“连接采集”到“自主决策”的主链路，以及“智能化程度曲线”的提升趋势。
@@ -228,7 +228,7 @@ Agent 完成多步任务的核心机制是 **ReAct**（Reasoning + Acting，推�
 ```book-figure
 id: "fig-07-02"
 type: "architecture"
-title: "图7-2 图7-2 ReAct 循环在物联网 Agent 中的工作示意"
+title: "图7-2 ReAct 循环在物联网 Agent 中的工作示意"
 purpose: "展示 Agent 如何通过思考-行动-观察的循环完成多步运维任务。"
 audience_takeaway: "读者应理解 ReAct 循环中思考、行动、观察三个环节的交替逻辑，以及完成判断与结果输出之间的关系。"
 visual_focus: "从用户输入到结果输出的主链路，重点突出循环回退路径。"
@@ -474,7 +474,7 @@ RAG 解决的是模型“知不知道”的问题，Tool-Calling 解决的是模
 ```book-figure
 id: "fig-07-03"
 type: dataflow
-title: 图7-3 图7-3 RAG + Tool-Calling 联合工作流
+title: 图7-3 RAG + Tool-Calling 联合工作流
 audience_takeaway: "读者应理解 RAG 检索 SOP 步骤灌入模型，Tool-Calling 据此落成关泵指令，二者在泳道中职责分离。"
 purpose: 展示一个运维任务从用户发起到 LLM 推理、RAG 检索、Tool-Calling 执行直至设备响应的完整数据流向和职责划分。
 visual_focus: 从操作员到终点的主链路。
@@ -674,7 +674,7 @@ REST 仍是平台真实业务 API，MCP 在其上提供面向模型的 Tool 目�
 ```book-figure
 id: "fig-07-04"
 type: architecture
-title: 图7-4 图7-4 MCP 在物联网平台中的架构示意
+title: 图7-4 MCP 在物联网平台中的架构示意
 purpose: 展示外部 AI Agent 通过 IoT DC3 MCP Tools 端点发现和调用平台 REST 能力的真实路径。
 audience_takeaway: 当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。
 visual_focus: Agent→Gateway /mcp→Auth 校验与工具白名单→OpenAPI Tool 目录→REST 后端。
@@ -957,7 +957,7 @@ public void demoFunctionCalling() {
 ```book-figure
 id: "fig-07-05"
 type: sequence
-title: 图7-5 图7-5 Function Calling 交互流程：从自然语言到设备操作
+title: 图7-5 Function Calling 交互流程：从自然语言到设备操作
 audience_takeaway: "读者应理解 LLM 全程不执行设备操作，只输出 JSON 函数调用请求，实际调用与结果回填都由 ChatClient 中转。"
 purpose: 展示 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例，说明操作员、ChatClient、LLM、LightTool 之间的消息交换顺序。
 visual_focus: 从操作员到终点的主链路。
@@ -1190,7 +1190,7 @@ Agentic Center 的工具体系采用“查询为主、控制受限”的分级�
 ```book-figure
 id: "fig-07-06"
 type: layered
-title: 图7-6 图7-6 Agentic Center 四层架构
+title: 图7-6 Agentic Center 四层架构
 audience_takeaway: "读者应理解 Tool 经 Facade/gRPC 复用能力而非 Feign 旁路，会话与数据存于 PostgreSQL，不设命令服务。"
 purpose: 展示 Agentic Center 如何叠加在 IoT DC3 既有平台能力之上，并标明真实通信与存储边界。
 layout: 自上而下四层：用户交互层；AI Agent 层；平台服务层；数据与设备层。Agentic 到平台服务标注 Facade/gRPC，Data 与 Driver 之间标注 RabbitMQ。
@@ -1326,7 +1326,7 @@ public AgenticToolResult<PointCommandResult> writePointValue(
 ```book-figure
 id: "fig-07-07"
 type: architecture
-title: 图7-7 图7-7 Agentic Center 当前能力与知识对齐边界
+title: 图7-7 Agentic Center 当前能力与知识对齐边界
 audience_takeaway: "读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。"
 purpose: 区分当前已实现的 Tools、Web/HTTP 与 MCP Tools 端点，以及仅用于知识对齐的 Skills 和 CLI 概念。
 layout: 左侧“当前已实现”区域包含 Agentic @Tool、Web/HTTP 对话和 MCP Tools；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧用虚线关系箭头连接。
@@ -1444,7 +1444,7 @@ public ChatClient selectModel(ChatRequest request) {
 ```book-figure
 id: "fig-07-08"
 type: "architecture"
-title: "图7-8 图7-8 私有化与混合部署架构"
+title: "图7-8 私有化与混合部署架构"
 purpose: "展示私有化部署、公有云部署和混合路由三种模式之间的推理路径和边界。"
 audience_takeaway: "读者应理解私有化部署不是全量替代公有云，而是根据数据敏感度和任务复杂度分层选择推理后端。"
 visual_focus: "从 Agentic Center 出发的两条分支路径：通向本地推理引擎的绿色数据安全路径，和通向云端推理引擎的橙色复杂任务路径。"

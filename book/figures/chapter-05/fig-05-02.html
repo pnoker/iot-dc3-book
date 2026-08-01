@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-3 设备认证与数据加密流程</title>
+  <title>图5-2 设备认证与数据加密流程</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -16,106 +16,130 @@
 <body>
   <main class="page">
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图5-3 设备认证与数据加密流程</title>
-  <desc id="desc">读者应理解设备认证与数据加密流程中的主链路、责任边界和工程取舍。</desc>
+  <title id="title">图5-2 设备认证与数据加密流程</title>
+  <desc id="desc">读者应理解证书与Token两条认证路径并存：TLS 1.3握手1RTT完成，DTLS多1次往返做重传保护，Token需配合refresh与短有效期防泄漏。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
-<title id="title">图5-3 设备认证与数据加密流程</title>
-  <desc id="desc">读者应理解设备认证与数据加密流程中的主链路、责任边界和工程取舍。</desc>
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图5-3 设备认证与数据加密流程</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解设备认证与数据加密流程中的主链路、责任边界和工程取舍。</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图5-2 设备认证与数据加密流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解证书与Token两条认证路径并存：TLS 1.3握手1RTT完成，DTLS多1次往返做重传保护，Token需配合refresh与短有效期防泄漏。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart">
-  <!-- 泳道区域 -->
-  <rect x="120" y="160" width="460" height="500" rx="14" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <text x="140" y="185" fill="#64748B" font-size="14" font-weight="600">设备侧</text>
-  
-  <rect x="620" y="160" width="460" height="500" rx="14" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <text x="640" y="185" fill="#64748B" font-size="14" font-weight="600">网络</text>
-  
-  <rect x="1120" y="160" width="460" height="500" rx="14" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <text x="1140" y="185" fill="#64748B" font-size="14" font-weight="600">平台侧</text>
 
-  <!-- 连接线 -->
-  <path d="M450,260 L750,260" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <g>
-    <rect x="460" y="240" width="280" height="20" fill="white" rx="4"/>
-    <text x="600" y="254" fill="#0F172A" font-size="12" text-anchor="middle">1. ClientHello / Token请求</text>
-  </g>
+  <!-- ===== 三个泳道（左→右：设备侧 / 网络 / 平台侧），泳道间隔 12px ===== -->
+  <rect x="100" y="112" width="508" height="588" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.2" />
+  <rect x="620" y="112" width="508" height="588" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" />
+  <rect x="1140" y="112" width="508" height="588" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.2" />
 
-  <path d="M950,260 L1180,260" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <g>
-    <rect x="990" y="240" width="150" height="20" fill="white" rx="4"/>
-    <text x="1065" y="254" fill="#0F172A" font-size="12" text-anchor="middle">2. 转发握手消息</text>
-  </g>
+  <!-- 泳道标题 -->
+  <circle cx="128" cy="136" r="5" fill="#0F766E"/>
+  <text x="142" y="142" fill="#0F766E" font-size="15" font-weight="700">设备侧</text>
+  <text x="124" y="164" fill="#64748B" font-size="12">设备发起连接，携带证书或Token</text>
+  <circle cx="648" cy="136" r="5" fill="#475569"/>
+  <text x="662" y="142" fill="#475569" font-size="15" font-weight="700">网络</text>
+  <text x="644" y="164" fill="#64748B" font-size="12">TLS/DTLS握手，协商加密密钥</text>
+  <circle cx="1168" cy="136" r="5" fill="#2563EB"/>
+  <text x="1182" y="142" fill="#2563EB" font-size="15" font-weight="700">平台侧</text>
+  <text x="1164" y="164" fill="#64748B" font-size="12">验证证书链或Token签名，建立加密通道</text>
 
-  <path d="M1180,280 L950,280" fill="none" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  <g>
-    <rect x="965" y="280" width="200" height="20" fill="white" rx="4"/>
-    <text x="1065" y="294" fill="#0F172A" font-size="12" text-anchor="middle">3. 握手完成 / Token签发</text>
-  </g>
+  <!-- ===== ① 设备 → TLS/DTLS握手（ClientHello / Token请求）===== -->
+  <line x1="528" y1="205" x2="735" y2="205" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <text x="630" y="196" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">① ClientHello / Token请求</text>
+  <text x="630" y="225" fill="#64748B" font-size="12" text-anchor="middle">TLS 1.3 / DTLS</text>
 
-  <path d="M750,280 L450,280" fill="none" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  <g>
-    <rect x="515" y="280" width="170" height="20" fill="white" rx="4"/>
-    <text x="600" y="294" fill="#0F172A" font-size="12" text-anchor="middle">4. 加密通道建立通知</text>
-  </g>
+  <!-- ===== ② TLS/DTLS握手 → 认证服务（转发握手消息）===== -->
+  <line x1="1013" y1="205" x2="1220" y2="205" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <text x="1116" y="196" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">② 转发握手消息</text>
 
-  <path d="M350,300 L350,440 L680,440" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <g>
-    <rect x="415" y="430" width="200" height="20" fill="white" rx="4"/>
-    <text x="515" y="444" fill="#0F172A" font-size="12" text-anchor="middle">5. 加密数据流 (DTLS)</text>
-  </g>
+  <!-- ===== ③ 认证服务 → TLS/DTLS握手（握手完成 / Token签发，虚线返回）===== -->
+  <polyline points="1394,280 1394,298 874,298 874,283" fill="none" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-teal)" />
+  <text x="1130" y="290" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">③ 握手完成 / Token签发</text>
 
-  <path d="M880,440 L1180,440" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <g>
-    <rect x="965" y="430" width="130" height="20" fill="white" rx="4"/>
-    <text x="1030" y="444" fill="#0F172A" font-size="12" text-anchor="middle">6. 解密后的数据</text>
-  </g>
+  <!-- ===== ④ TLS/DTLS握手 → 设备（加密通道建立通知，虚线返回）===== -->
+  <polyline points="874,280 874,320 460,320 460,283" fill="none" stroke="#0F766E" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-teal)" />
+  <text x="650" y="312" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">④ 加密通道建立通知</text>
 
-  <!-- 组件 -->
-  <rect x="250" y="220" width="200" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="350" y="246" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">设备</text>
-  <text x="350" y="264" fill="#475569" font-size="11" text-anchor="middle">发起连接</text>
+  <!-- ===== ⑤ 设备 → 加密通道（加密数据流）===== -->
+  <polyline points="320,280 320,360 874,360 874,368" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)" />
+  <text x="597" y="352" fill="#475569" font-size="12" font-weight="600" text-anchor="middle">加密数据流 · TLS 1.3</text>
 
-  <polygon points="750,260 850,210 950,260 850,310" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5"/>
-  <text x="850" y="252" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">TLS/DTLS握手</text>
-  <text x="850" y="270" fill="#475569" font-size="11" text-anchor="middle">协商加密密钥</text>
+  <!-- ===== ⑥ 加密通道 → 后端业务（解密后的数据）===== -->
+  <line x1="1044" y1="450" x2="1220" y2="450" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)" />
+  <text x="1132" y="442" fill="#475569" font-size="12" font-weight="600" text-anchor="middle">解密后的数据</text>
 
-  <rect x="1180" y="220" width="180" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="1270" y="246" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">认证服务</text>
-  <text x="1270" y="264" fill="#475569" font-size="11" text-anchor="middle">验证身份</text>
+  <!-- ===== 节点：设备（card）===== -->
+  <rect x="180" y="180" width="348" height="100" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5" />
+  <text x="354" y="212" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">设备</text>
+  <text x="354" y="236" fill="#64748B" font-size="12" text-anchor="middle">发起连接</text>
+  <rect x="270" y="252" width="58" height="20" rx="10" fill="#CCFBF1" stroke="#0F766E"/><text x="299" y="266" fill="#0F766E" font-size="11" text-anchor="middle">X.509</text>
+  <rect x="336" y="252" width="58" height="20" rx="10" fill="#CCFBF1" stroke="#0F766E"/><text x="365" y="266" fill="#0F766E" font-size="11" text-anchor="middle">Token</text>
 
-  <path d="M680,390 h200 v80 a40,40 0 0,1 -40,40 h-120 a40,40 0 0,1 -40,-40 z" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="780" y="435" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">加密通道</text>
-  <text x="780" y="455" fill="#475569" font-size="11" text-anchor="middle">数据流加密传输</text>
+  <!-- ===== 节点：TLS/DTLS握手（decision 六边形）===== -->
+  <polygon points="704,230 807,180 941,180 1044,230 941,280 807,280" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5" />
+  <text x="874" y="226" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">TLS/DTLS握手</text>
+  <text x="874" y="250" fill="#64748B" font-size="12" text-anchor="middle">协商加密密钥</text>
 
-  <rect x="1180" y="400" width="180" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="1270" y="426" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">后端业务</text>
-  <text x="1270" y="444" fill="#475569" font-size="11" text-anchor="middle">处理解密后数据</text>
+  <!-- ===== 节点：认证服务（card）===== -->
+  <rect x="1220" y="180" width="348" height="100" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="1394" y="212" fill="#2563EB" font-size="15" font-weight="700" text-anchor="middle">认证服务</text>
+  <text x="1394" y="236" fill="#64748B" font-size="12" text-anchor="middle">验证身份</text>
+
+  <!-- ===== 节点：加密通道（database 圆柱）===== -->
+  <path d="M704,385 V485 A170,28 0 0 0 1044,485 V385" fill="none" stroke="#64748B" stroke-width="1.5" />
+  <ellipse cx="874" cy="385" rx="170" ry="28" fill="#E2E8F0" stroke="#64748B" stroke-width="1.5" />
+  <text x="874" y="432" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">加密通道</text>
+  <text x="874" y="456" fill="#64748B" font-size="12" text-anchor="middle">数据流加密传输</text>
+
+  <!-- ===== 节点：后端业务（card）===== -->
+  <rect x="1220" y="395" width="348" height="110" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="1394" y="440" fill="#2563EB" font-size="15" font-weight="700" text-anchor="middle">后端业务</text>
+  <text x="1394" y="464" fill="#64748B" font-size="12" text-anchor="middle">处理解密后数据</text>
+
+  <!-- ===== 泳道内说明 callouts ===== -->
+  <rect x="116" y="540" width="476" height="110" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.2" />
+  <text x="136" y="566" fill="#475569" font-size="12">携带 X.509 证书或设备密钥，</text>
+  <text x="136" y="586" fill="#475569" font-size="12">发起连接请求。</text>
+
+  <rect x="636" y="540" width="476" height="110" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" />
+  <text x="656" y="566" fill="#475569" font-size="12">TLS 1.3 握手 1RTT 完成密钥协商，</text>
+  <text x="656" y="586" fill="#475569" font-size="12">DTLS 多 1 次往返做重传保护。</text>
+
+  <rect x="1156" y="540" width="476" height="110" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2" />
+  <text x="1176" y="566" fill="#475569" font-size="12">验证证书链或 Token 签名，</text>
+  <text x="1176" y="586" fill="#475569" font-size="12">通过后建立加密通道。</text>
+
+  <!-- ===== Token 方案警示条 ===== -->
+  <rect x="100" y="712" width="1548" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.2" />
+  <rect x="124" y="718" width="90" height="22" rx="11" fill="#FDE68A" stroke="#D97706"/><text x="169" y="733" fill="#B45309" font-size="11" text-anchor="middle">Token 方案</text>
+  <text x="232" y="734" fill="#92400E" font-size="12">平台签发 JWT，设备侧安全存储，需配合 refresh token 与短有效期，降低令牌泄露风险。</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色=设备侧；灰色=网络传输层；蓝色=平台核心服务</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头=请求/数据流；虚线箭头=握手完成/Token返回</text>
-  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">主链路从设备出发，经过TLS握手到达平台认证服务，后建立加密通道</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图5-3 设备认证与数据加密的主要流程，涵盖证书/Token方式与TLS/DTLS加密层。</text>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色=设备侧</text>
+  <rect x="300" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="324" y="808" fill="#64748B" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">灰色=网络传输层</text>
+  <rect x="520" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="544" y="808" fill="#64748B" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=平台核心服务</text>
+  <line x1="760" y1="800" x2="790" y2="800" stroke="#2563EB" stroke-width="2.5" />
+  <text x="800" y="808" fill="#64748B" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线=请求/数据流</text>
+  <line x1="1000" y1="800" x2="1030" y2="800" stroke="#0F766E" stroke-width="2.5" stroke-dasharray="5,3" />
+  <text x="1040" y="808" fill="#64748B" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线=握手完成/Token返回</text>
+  <text x="900" y="852" fill="#94A3B8" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图5-2 设备认证与数据加密的主要流程，涵盖证书/Token方式与TLS/DTLS加密层。主链路从设备出发，经过TLS握手到达平台认证服务，后建立加密通道；Token需配合refresh与短有效期防泄漏。</text>
   </svg>
 </svg>
     <section class="meta">
       <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左到右泳道图，设备侧、网络、平台侧三个泳道。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">左→右三泳道（设备侧/网络/平台侧），泳道间隔 12px；握手消息带序号 ①-④，箭头标注协议类型 TLS 1.3/DTLS。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">浅色背景 + 圆角矩形；实线=请求/数据流、虚线=握手完成/Token返回；Token 方案以警示条单独呈现。</div></div>
     </section>
   </main>
 </body>

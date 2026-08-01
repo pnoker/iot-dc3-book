@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图11-5 火灾应急响应事件流转时序（假设场景）</title>
+  <title>图11-12 智慧交通系统集成部署工程检查流程</title>
   <style>
     body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
@@ -15,87 +15,168 @@
 </head>
 <body>
   <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图11-5 火灾应急响应事件流转时序（假设场景）</title>
-  <desc id="desc">读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。</desc>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc" style="font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif">
+  <title id="title">图11-12 智慧交通系统集成部署工程检查流程</title>
+  <desc id="desc">读者应理解四泳道检查须串行递进：先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
-<title id="title">图11-5 火灾应急响应事件流转时序（假设场景）</title>
-  <desc id="desc">读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。</desc>
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/></marker>
+    <marker id="bp-arrow-danger" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-5 火灾应急响应事件流转时序（假设场景）</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。</text>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图11-12 智慧交通系统集成部署工程检查流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解四泳道检查须串行递进：先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="sequence">
-  <!-- 区域边界 -->
-  <rect x="140" y="120" width="440" height="550" rx="14" fill="none" stroke="#E2E8F0" stroke-dasharray="8,4" />
-  <text x="155" y="138" fill="#64748B" font-size="14" font-weight="600">设备与边缘域</text>
-  <rect x="620" y="120" width="700" height="550" rx="14" fill="none" stroke="#E2E8F0" stroke-dasharray="8,4" />
-  <text x="635" y="138" fill="#64748B" font-size="14" font-weight="600">云端协同域</text>
+  <g data-layout="flowchart">
 
-  <!-- 生命线 -->
-  <line x1="260" y1="195" x2="260" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="440" y1="195" x2="440" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="780" y1="195" x2="780" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="1000" y1="195" x2="1000" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
-  <line x1="1200" y1="195" x2="1200" y2="650" stroke="#64748B" stroke-width="1" stroke-dasharray="4,4" />
+  <!-- ============ 四条横向泳道带 ============ -->
+  <!-- 泳道1：设备与协议兼容性检查 -->
+  <rect x="150" y="115" width="1600" height="145" rx="14" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+  <rect x="168" y="133" width="150" height="109" rx="10" fill="#FFFFFF" fill-opacity="0.72" stroke="#E2E8F0"/>
+  <text x="243" y="155" fill="#1D4ED8" font-size="15" font-weight="700" text-anchor="middle">泳道 1</text>
+  <text x="243" y="181" fill="#334155" font-size="12" text-anchor="middle">设备与协议兼容性检查</text>
 
-  <!-- 参与者卡片 -->
-  <rect x="200" y="135" width="120" height="60" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
-  <text x="260" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">烟雾传感器</text>
+  <!-- 泳道2：通信与一致性检查 -->
+  <rect x="150" y="285" width="1600" height="145" rx="14" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5"/>
+  <rect x="168" y="303" width="150" height="109" rx="10" fill="#FFFFFF" fill-opacity="0.72" stroke="#E2E8F0"/>
+  <text x="243" y="325" fill="#0F766E" font-size="15" font-weight="700" text-anchor="middle">泳道 2</text>
+  <text x="243" y="351" fill="#334155" font-size="12" text-anchor="middle">通信与一致性检查</text>
 
-  <rect x="360" y="135" width="160" height="60" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
-  <text x="440" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">边缘计算节点</text>
-  <text x="440" y="180" fill="#475569" font-size="12" text-anchor="middle">本地规则引擎</text>
+  <!-- 泳道3：数据安全与认证检查 -->
+  <rect x="150" y="455" width="1600" height="145" rx="14" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+  <rect x="168" y="473" width="150" height="109" rx="10" fill="#FFFFFF" fill-opacity="0.72" stroke="#E2E8F0"/>
+  <text x="243" y="495" fill="#C2410C" font-size="15" font-weight="700" text-anchor="middle">泳道 3</text>
+  <text x="243" y="521" fill="#334155" font-size="12" text-anchor="middle">数据安全与认证检查</text>
 
-  <rect x="700" y="135" width="160" height="60" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
-  <text x="780" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">云端协同层</text>
-  <text x="780" y="180" fill="#475569" font-size="12" text-anchor="middle">事件路由</text>
+  <!-- 泳道4：跨部门协同与灾备检查 -->
+  <rect x="150" y="625" width="1600" height="145" rx="14" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+  <rect x="168" y="643" width="150" height="109" rx="10" fill="#FFFFFF" fill-opacity="0.72" stroke="#E2E8F0"/>
+  <text x="243" y="665" fill="#6D28D9" font-size="15" font-weight="700" text-anchor="middle">泳道 4</text>
+  <text x="243" y="691" fill="#334155" font-size="12" text-anchor="middle">跨部门协同与灾备检查</text>
 
-  <rect x="940" y="135" width="120" height="60" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5" />
-  <text x="1000" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">消防系统</text>
+  <!-- ============ 泳道1：设备与协议兼容性检查 ============ -->
+  <!-- 起点：工程检查启动 -->
+  <rect x="335" y="164" width="150" height="47" rx="23.5" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="410" y="192" fill="#1D4ED8" font-size="14" font-weight="700" text-anchor="middle">工程检查启动</text>
+  <line x1="485" y1="187.5" x2="545" y2="187.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
 
-  <rect x="1140" y="135" width="120" height="60" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5" />
-  <text x="1200" y="163" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">交通系统</text>
+  <!-- 决策 1：OBU/RSU通信制式一致？ -->
+  <polygon points="640,161.5 735,187.5 640,213.5 545,187.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="640" y="192.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">OBU/RSU通信制式一致？</text>
+  <path d="M 640,213.5 C 640,231.5 654,237.5 670,231.5 C 684,225.5 680,211.5 664,206.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="696" y="227.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="735" y1="187.5" x2="845" y2="187.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="790" y="179.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">是</text>
 
-  <!-- 消息箭头 -->
-  <line x1="260" y1="230" x2="440" y2="230" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="315" y="218" width="70" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="350" y="232" fill="#0F172A" font-size="12" text-anchor="middle">上报警值</text>
+  <!-- 决策 2：RSU/信号机接口一致？ -->
+  <polygon points="940,161.5 1035,187.5 940,213.5 845,187.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="940" y="192.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">RSU/信号机接口一致？</text>
+  <path d="M 940,213.5 C 940,231.5 954,237.5 970,231.5 C 984,225.5 980,211.5 964,206.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="996" y="227.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="1035" y1="187.5" x2="1145" y2="187.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="1090" y="179.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">是</text>
 
-  <line x1="440" y1="300" x2="780" y2="300" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="555" y="288" width="110" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="610" y="302" fill="#0F172A" font-size="12" text-anchor="middle">推送事件摘要</text>
+  <!-- 决策 3：感知数据与物模型兼容？ -->
+  <polygon points="1240,161.5 1335,187.5 1240,213.5 1145,187.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1240" y="192.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">感知数据与物模型兼容？</text>
+  <path d="M 1240,213.5 C 1240,231.5 1254,237.5 1270,231.5 C 1284,225.5 1280,211.5 1264,206.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="1296" y="227.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
 
-  <line x1="780" y1="370" x2="1000" y2="370" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="850" y="358" width="80" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="890" y="372" fill="#0F172A" font-size="12" text-anchor="middle">派单指令</text>
+  <!-- 泳道1 → 泳道2 流程线 -->
+  <path d="M 1335,187.5 L 1420,187.5 L 1420,272.5 L 640,272.5 L 640,331.5" fill="none" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="1030" y="266" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">进入泳道2</text>
 
-  <line x1="780" y1="440" x2="1200" y2="440" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <rect x="940" y="428" width="100" height="20" rx="3" fill="white" fill-opacity="0.9" />
-  <text x="990" y="442" fill="#0F172A" font-size="12" text-anchor="middle">信号控制指令</text>
+  <!-- ============ 泳道2：通信与一致性检查 ============ -->
+  <!-- 决策 4：跨协议网关压测通过？ -->
+  <polygon points="640,331.5 735,357.5 640,383.5 545,357.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="640" y="362.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">跨协议网关压测通过？</text>
+  <path d="M 640,383.5 C 640,401.5 654,407.5 670,401.5 C 684,395.5 680,381.5 664,376.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="696" y="397.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="735" y1="357.5" x2="845" y2="357.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="790" y="349.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">是</text>
 
-  <!-- 自调用：边缘节点判定事件类型 -->
-  <path d="M440,250 L470,250 L470,270 L440,270" fill="none" stroke="#0F766E" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" stroke-dasharray="4,2" />
-  <text x="480" y="265" fill="#0F172A" font-size="11">判定事件类型</text>
+  <!-- 决策 5：加密与认证启用？ -->
+  <polygon points="940,331.5 1035,357.5 940,383.5 845,357.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="940" y="362.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">加密与认证启用？</text>
+  <path d="M 940,383.5 C 940,401.5 954,407.5 970,401.5 C 984,395.5 980,381.5 964,376.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="996" y="397.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="1035" y1="357.5" x2="1145" y2="357.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="1090" y="349.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">是</text>
+
+  <!-- 决策 6：QoS等级配置正确？ -->
+  <polygon points="1240,331.5 1335,357.5 1240,383.5 1145,357.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1240" y="362.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">QoS等级配置正确？</text>
+  <path d="M 1240,383.5 C 1240,401.5 1254,407.5 1270,401.5 C 1284,395.5 1280,381.5 1264,376.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="1296" y="397.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+
+  <!-- 泳道2 → 泳道3 流程线 -->
+  <path d="M 1335,357.5 L 1420,357.5 L 1420,442.5 L 640,442.5 L 640,501.5" fill="none" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="1030" y="436" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">进入泳道3</text>
+
+  <!-- ============ 泳道3：数据安全与认证检查 ============ -->
+  <!-- 决策 7：PKI与数字证书部署完成？ -->
+  <polygon points="640,501.5 735,527.5 640,553.5 545,527.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="640" y="532.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">PKI与数字证书部署完成？</text>
+  <path d="M 640,553.5 C 640,571.5 654,577.5 670,571.5 C 684,565.5 680,551.5 664,546.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="696" y="567.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="735" y1="527.5" x2="845" y2="527.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="790" y="519.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">是</text>
+
+  <!-- 决策 8：数据签名验证正常？ -->
+  <polygon points="940,501.5 1035,527.5 940,553.5 845,527.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="940" y="532.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">数据签名验证正常？</text>
+  <path d="M 940,553.5 C 940,571.5 954,577.5 970,571.5 C 984,565.5 980,551.5 964,546.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="996" y="567.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+
+  <!-- 泳道3 → 泳道4 流程线 -->
+  <path d="M 1035,527.5 L 1420,527.5 L 1420,612.5 L 640,612.5 L 640,671.5" fill="none" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="1030" y="606" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">进入泳道4</text>
+
+  <!-- ============ 泳道4：跨部门协同与灾备检查 ============ -->
+  <!-- 决策 9：统一数据总线就绪？ -->
+  <polygon points="640,671.5 735,697.5 640,723.5 545,697.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="640" y="702.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">统一数据总线就绪？</text>
+  <path d="M 640,723.5 C 640,741.5 654,747.5 670,741.5 C 684,735.5 680,721.5 664,716.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="696" y="737.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="735" y1="697.5" x2="845" y2="697.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="790" y="689.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">是</text>
+
+  <!-- 决策 10：灾备与降级策略已验证？ -->
+  <polygon points="940,671.5 1035,697.5 940,723.5 845,697.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="940" y="702.5" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">灾备与降级策略已验证？</text>
+  <path d="M 940,723.5 C 940,741.5 954,747.5 970,741.5 C 984,735.5 980,721.5 964,716.5" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bp-arrow-danger)"/>
+  <text x="996" y="737.5" fill="#DC2626" font-size="11" font-weight="600">否·修正</text>
+  <line x1="1035" y1="697.5" x2="1140" y2="697.5" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)"/>
+  <text x="1088" y="689.5" fill="#16A34A" font-size="12" font-weight="600" text-anchor="middle">通过·上线</text>
+
+  <!-- 终点：部署上线 -->
+  <rect x="1140" y="675" width="200" height="45" rx="22" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1240" y="694" fill="#1D4ED8" font-size="15" font-weight="700" text-anchor="middle">部署上线</text>
+  <text x="1240" y="712" fill="#475569" font-size="11" text-anchor="middle">全部检查通过</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">矩形=参与者；实线箭头=同步消息</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-5 自动化链路的关键在于边缘节点完成本地判定（第2步），云端协同层完成自动事件路由（第4步），两地均无人工转接环节。</text>
+  <polygon points="90,795 100,803 90,811 80,803" fill="#16A34A"/>
+  <text x="108" y="808" fill="#64748B" font-size="10" font-weight="600">绿色菱形·实线箭头：检查通过 → 进入下一项 / 下一泳道</text>
+  <line x1="420" y1="803" x2="438" y2="803" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="446" y="808" fill="#64748B" font-size="10" font-weight="600">红色虚线回环：未通过 → 返回本节点修正</text>
+  <rect x="800" y="797" width="16" height="12" rx="3" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="824" y="808" fill="#64748B" font-size="10" font-weight="600">蓝色圆角矩形：启动 / 部署上线（终态）</text>
+  <rect x="1190" y="797" width="16" height="12" rx="3" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+  <text x="1214" y="808" fill="#64748B" font-size="10" font-weight="600">浅色泳道带：四个检查域串行递进</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-weight="600" text-anchor="middle">图11-12 智慧交通系统集成部署工程检查流程：四条泳道须串行递进——先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线；任一检查未通过即返回本节点修正。</text>
   </svg>
 </svg>
     <section class="meta">
-      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">参与者横向排列，时间轴从上到下。主参与者在顶部，生命线向下延伸。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">四条横向泳道自上而下排布（设备协议→通信→安全认证→协同灾备），各泳道内决策节点自左向右串行；泳道间以绿色流程线连接，未通过分支以红色虚线回环返回本节点修正。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产。决策菱形=检查项（通过=绿色实线箭头，未通过=红色虚线回环）；蓝色圆角矩形=启动/终态节点；图例位于图下方。</div></div>
     </section>
   </main>
 </body>
