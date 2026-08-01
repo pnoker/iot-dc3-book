@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图8-2 TLS 1.3与EDHOC握手流程对比</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-2 TLS 1.3与EDHOC握手流程对比</title>
+  <desc id="desc">读者应理解TLS 1.3与EDHOC握手流程对比中的主链路、责任边界和工程取舍。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图8-2 TLS 1.3与EDHOC握手流程对比</title>
+  <desc id="desc">读者应理解TLS 1.3与EDHOC握手流程对比中的主链路、责任边界和工程取舍。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-2 TLS 1.3与EDHOC握手流程对比</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解TLS 1.3与EDHOC握手流程对比中的主链路、责任边界和工程取舍。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="sequence">
+  <!-- 左标题 -->
+  <text x="460" y="125" fill="#0F172A" font-size="18" font-weight="bold" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">TLS 1.3握手流程</text>
+  <!-- 右标题 -->
+  <text x="1300" y="125" fill="#0F172A" font-size="18" font-weight="bold" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">EDHOC握手流程</text>
+
+  <!-- 左侧参与者头部 -->
+  <!-- IoT设备 (客户端) -->
+  <rect x="100" y="140" width="160" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="180" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT设备 (客户端)</text>
+  <!-- 证书机构 (CA) -->
+  <rect x="380" y="140" width="160" height="50" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="460" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">证书机构 (CA)</text>
+  <!-- IoT平台 (服务端) -->
+  <rect x="660" y="140" width="160" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="740" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT平台 (服务端)</text>
+
+  <!-- 右侧参与者头部 -->
+  <rect x="900" y="140" width="200" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1000" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT设备 (客户端)</text>
+  <rect x="1500" y="140" width="200" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1600" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT平台 (服务端)</text>
+
+  <!-- 垂直线（生命线） -->
+  <line x1="180" y1="190" x2="180" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
+  <line x1="460" y1="190" x2="460" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
+  <line x1="740" y1="190" x2="740" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
+  <line x1="1000" y1="190" x2="1000" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
+  <line x1="1600" y1="190" x2="1600" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
+
+  <!-- TLS消息1: ClientHello -->
+  <g>
+    <line x1="180" y1="220" x2="740" y2="220" stroke="#2563EB" stroke-width="2"/>
+    <polygon points="740,220 732,216 732,224" fill="#2563EB"/>
+    <rect x="400" y="200" width="120" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="460" y="214" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">ClientHello</text>
+  </g>
+
+  <!-- TLS消息2: ServerHello+证书+参数 -->
+  <g>
+    <line x1="740" y1="280" x2="180" y2="280" stroke="#2563EB" stroke-width="2"/>
+    <polygon points="180,280 188,276 188,284" fill="#2563EB"/>
+    <rect x="360" y="260" width="200" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="460" y="274" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">ServerHello+证书+参数</text>
+  </g>
+
+  <!-- TLS消息3: 证书链验证(OCSP) 虚线 -->
+  <g>
+    <line x1="740" y1="340" x2="460" y2="340" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3"/>
+    <polygon points="460,340 468,336 468,344" fill="#2563EB"/>
+    <rect x="525" y="320" width="150" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="600" y="334" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">证书链验证(OCSP)</text>
+  </g>
+
+  <!-- TLS消息4: Client证书+Finished -->
+  <g>
+    <line x1="180" y1="400" x2="740" y2="400" stroke="#2563EB" stroke-width="2"/>
+    <polygon points="740,400 732,396 732,404" fill="#2563EB"/>
+    <rect x="370" y="380" width="180" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="460" y="394" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">Client证书+Finished</text>
+  </g>
+
+  <!-- TLS消息5: Server Finished -->
+  <g>
+    <line x1="740" y1="460" x2="180" y2="460" stroke="#2563EB" stroke-width="2"/>
+    <polygon points="180,460 188,456 188,464" fill="#2563EB"/>
+    <rect x="390" y="440" width="140" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="460" y="454" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">Server Finished</text>
+  </g>
+
+  <!-- EDHOC消息1: M1 -->
+  <g>
+    <line x1="1000" y1="220" x2="1600" y2="220" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3"/>
+    <polygon points="1600,220 1592,216 1592,224" fill="#F97316"/>
+    <rect x="1190" y="200" width="220" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="1300" y="214" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">M1 (临时公钥+身份选项)</text>
+  </g>
+
+  <!-- EDHOC消息2: M2 -->
+  <g>
+    <line x1="1600" y1="280" x2="1000" y2="280" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3"/>
+    <polygon points="1000,280 1008,276 1008,284" fill="#F97316"/>
+    <rect x="1200" y="260" width="200" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="1300" y="274" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">M2 (公钥+凭证+签名)</text>
+  </g>
+
+  <!-- EDHOC消息3: M3 -->
+  <g>
+    <line x1="1000" y1="340" x2="1600" y2="340" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3"/>
+    <polygon points="1600,340 1592,336 1592,344" fill="#F97316"/>
+    <rect x="1200" y="320" width="200" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
+    <text x="1300" y="334" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">M3 (公钥+签名确认)</text>
+  </g>
+
+  <!-- 底部会话密钥生成完成（绿色双线） -->
+  <g>
+    <line x1="100" y1="520" x2="1700" y2="520" stroke="#0F766E" stroke-width="2"/>
+    <line x1="100" y1="526" x2="1700" y2="526" stroke="#0F766E" stroke-width="2"/>
+    <text x="900" y="535" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">会话密钥生成完成</text>
+  </g>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线箭头：TLS 1.3消息</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-2 展示TLS 1.3双向认证与EDHOC轻量认证的握手流程对比。TLS需要两次往返且传输证书，EDHOC仅需3条消息，体积更小。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">两段并列序列图，左侧TLS 1.3流程，右侧EDHOC流程。时间轴从上到下。</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>
