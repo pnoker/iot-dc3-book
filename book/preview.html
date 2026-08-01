@@ -223,13 +223,28 @@ function copyName(ev,fid){
   if(ev){ev.stopPropagation();ev.preventDefault();}
   const d=data.find(x=>x.fid===fid);
   const txt=d?d.fid+' '+d.title:fid;
-  const inp=document.getElementById('copyText');
-  inp.value=txt;
-  document.getElementById('copyModal').classList.add('open');
-  inp.focus();inp.select();inp.setSelectionRange(0,txt.length);
+  const ta=document.createElement('textarea');
+  ta.value=txt;
+  ta.style.position='fixed';
+  ta.style.left='-9999px';
+  ta.style.top='0';
+  ta.setAttribute('readonly','');
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0,txt.length);
   let ok=false;
   try{ok=document.execCommand('copy');}catch(e){}
-  document.getElementById('copyHint').textContent=(ok?'✅ 已自动复制(可直接粘贴): ':'⚠ 自动复制受限,文本已全选,请按 Ctrl+C / ⌘C 复制: ')+txt;
+  document.body.removeChild(ta);
+  if(ok){
+    showToast('✅ 已复制: '+txt);
+  }else{
+    const inp=document.getElementById('copyText');
+    inp.value=txt;
+    document.getElementById('copyModal').classList.add('open');
+    inp.focus();inp.select();inp.setSelectionRange(0,txt.length);
+    document.getElementById('copyHint').textContent='⚠ 自动复制被浏览器拦截(文件协议限制),文本已全选,请按 Ctrl+C / ⌘C: '+txt;
+  }
 }
 function closeCopyModal(){document.getElementById('copyModal').classList.remove('open');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCopyModal();});
