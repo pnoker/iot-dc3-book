@@ -178,7 +178,7 @@
   <text x="900" y="855" fill="#94A3B8" font-size="12" font-weight="600" text-anchor="middle">图11-7 展示设备层、消息队列、流处理层与存储服务层之间的数据流动：设备上报到Kafka，Flink消费后聚合写入Redis/时序DB；Kafka traffic 同时被 Spark 与 AI 可选消费，体现单流多消费；控制指令经 RocketMQ 事务管道直达 AI 推理微服务，两条通道隔离互不干扰。</text>
   </svg>
 </svg>
-    <section class="meta">
+    <section class="meta" style="display:none">
       <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
       <div class="card"><div class="label">布局说明</div><div class="value">自上而下四层：设备层→消息队列层→流处理层→存储与服务层。Kafka/RocketMQ 作为缓冲分发枢纽，Flink/Spark 实时精炼，Redis/时序库/推理服务消费。主链路为设备→Kafka traffic→Flink→Redis/TSDB；控制指令走 RocketMQ→AI 推理，与传感流通道隔离。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产。蓝色=平台层、青绿色=设备/边缘、橙色=AI/流处理、灰色=数据存储；实线=主要数据流、虚线=可选/归档路径。右缘虚线干路表达 Kafka traffic 的单流多消费（Spark 可选消费、AI 可选消费）。</div></div>
