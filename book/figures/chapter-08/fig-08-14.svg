@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-14 后门攻击流程图</title>
+  <desc id="desc">从攻击者视角展示数据投毒后门攻击的操作步骤与数据流向。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title id="title">图8-14 后门攻击流程图</title>
+  <desc id="desc">从攻击者视角展示数据投毒后门攻击的操作步骤与数据流向。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-danger" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="bp-arrow-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-14 后门攻击流程图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">从攻击者视角展示数据投毒后门攻击的操作步骤与数据流向。</text>
+  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+
+  <g data-layout="flowchart">
+  <!-- 分支标题 -->
+  <text x="375" y="138" fill="#0F766E" font-size="15" font-weight="700" text-anchor="middle">正常训练流程</text>
+  <text x="1030" y="138" fill="#DC2626" font-size="15" font-weight="700" text-anchor="middle">攻击者注入流程</text>
+
+  <!-- 正常训练流程分支（蓝） -->
+  <rect x="250" y="155" width="250" height="70" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="375" y="183" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">原始训练集</text>
+  <text x="375" y="205" fill="#475569" font-size="12" text-anchor="middle">(正常样本)</text>
+  <!-- 正常路径汇入混合训练 -->
+  <polyline points="500,185 500,330 700,330" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+
+  <!-- 攻击者注入流程分支（红） -->
+  <rect x="690" y="155" width="180" height="70" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+  <text x="780" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">触发器设计</text>
+  <line x1="870" y1="190" x2="930" y2="190" stroke="#DC2626" stroke-width="2" marker-end="url(#bp-arrow-danger)" />
+  <rect x="930" y="155" width="200" height="70" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+  <text x="1030" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">毒化样本生成</text>
+  <line x1="1130" y1="190" x2="1190" y2="190" stroke="#DC2626" stroke-width="2" marker-end="url(#bp-arrow-danger)" />
+  <rect x="1190" y="155" width="180" height="70" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+  <text x="1280" y="190" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">标签篡改</text>
+  <!-- 毒化样本经虚线注入混合训练 -->
+  <polyline points="1280,220 1280,290 1105,290" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-danger)" />
+  <!-- 触发器隐蔽性说明 -->
+  <text x="1030" y="258" fill="#F97316" font-size="12" font-weight="600" text-anchor="middle">触发器:小面积不显眼图案,大小/位置可调,增强隐蔽性</text>
+
+  <!-- 混合训练汇合节点 -->
+  <rect x="700" y="290" width="400" height="80" rx="10" fill="#EFF6FF" stroke="#0F766E" stroke-width="2" />
+  <text x="900" y="328" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">混合训练</text>
+  <text x="900" y="352" fill="#475569" font-size="12" text-anchor="middle">(正常样本 + 毒化样本)</text>
+
+  <!-- 模型导出 -->
+  <line x1="900" y1="370" x2="900" y2="425" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <rect x="760" y="425" width="280" height="70" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
+  <text x="900" y="455" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">模型导出</text>
+  <text x="900" y="477" fill="#475569" font-size="12" text-anchor="middle">(经 OTA 分发至边缘设备)</text>
+
+  <!-- 推理阶段菱形判断 -->
+  <line x1="900" y1="495" x2="900" y2="530" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
+  <polygon points="900,530 1030,600 900,670 770,600" fill="#FFFFFF" stroke="#475569" stroke-width="2" />
+  <text x="900" y="616" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">输入是否含</text>
+  <text x="900" y="640" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">Trigger?</text>
+
+  <!-- 是 → 后门结果（红） -->
+  <line x1="1030" y1="600" x2="1160" y2="600" stroke="#DC2626" stroke-width="2" marker-end="url(#bp-arrow-danger)" />
+  <text x="1095" y="588" fill="#DC2626" font-size="13" font-weight="600" text-anchor="middle">是(含Trigger)</text>
+  <rect x="1160" y="560" width="280" height="80" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" />
+  <text x="1300" y="600" fill="#DC2626" font-size="15" font-weight="700" text-anchor="middle">后门结果</text>
+  <text x="1300" y="622" fill="#7F1D1D" font-size="12" text-anchor="middle">输出攻击者预设答案</text>
+
+  <!-- 否 → 正常结果（绿） -->
+  <line x1="900" y1="670" x2="900" y2="705" stroke="#16A34A" stroke-width="2" marker-end="url(#bp-arrow-success)" />
+  <text x="912" y="692" fill="#16A34A" font-size="13" font-weight="600" text-anchor="start">否(无Trigger)</text>
+  <rect x="760" y="705" width="280" height="70" rx="10" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" />
+  <text x="900" y="735" fill="#16A34A" font-size="15" font-weight="700" text-anchor="middle">正常结果</text>
+  <text x="900" y="757" fill="#166534" font-size="12" text-anchor="middle">按模型正常判断</text>
+</g>
+  <line x1="64" y1="785" x2="1736" y2="785" stroke="#E2E8F0"/>
+  <rect x="80" y="800" width="16" height="12" rx="2" fill="#DCFCE7" stroke="#16A34A" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="10" font-weight="600" text-anchor="start">否→正常结果</text>
+  <rect x="250" y="800" width="16" height="12" rx="2" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+  <text x="274" y="808" fill="#64748B" font-size="10" font-weight="600" text-anchor="start">是→后门结果</text>
+  <line x1="410" y1="806" x2="470" y2="806" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="478" y="808" fill="#64748B" font-size="10" font-weight="600" text-anchor="start">虚线=攻击者注入路径</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-14 后门攻击的关键是触发器设计与毒化样本注入:模型经 OTA 分发到边缘设备后,后门一旦植入清理成本极高,且少量毒化样本常规测试集难以检出。</text>
+  </svg>

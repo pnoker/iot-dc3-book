@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图8-17 物联网安全开发活动与阶段对应关系</title>
+  <style>
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-17 物联网安全开发活动与阶段对应关系</title>
+  <desc id="desc">以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<title>图8-17 物联网安全开发活动与阶段对应关系</title>
+  <desc>以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。</desc>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#94A3B8"/></marker>
+    <marker id="bp-arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="bp-arrow-accent" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- ===== 顶部标题区 ===== -->
+  <circle cx="90" cy="58" r="8" fill="#2563EB"/>
+  <text x="110" y="70" fill="#0F172A" font-size="26" font-weight="700">图8-17 物联网安全开发活动与阶段对应关系</text>
+  <text x="110" y="102" fill="#64748B" font-size="13">本图以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。</text>
+  <rect x="1560" y="42" width="170" height="30" rx="15" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="1645" y="63" fill="#64748B" font-size="12" text-anchor="middle" letter-spacing="1.5">LIFECYCLE</text>
+  <line x1="90" y1="140" x2="1710" y2="140" stroke="#E2E8F0"/>
+
+  <!-- ===== 主线：五阶段 + 门禁 ===== -->
+  <g data-layout="lifecycle">
+    <!-- 阶段间推进箭头（主线 y=255） -->
+    <line x1="270" y1="255" x2="285" y2="255" stroke="#94A3B8" stroke-width="2.5"/>
+    <line x1="345" y1="255" x2="360" y2="255" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#bp-arrow)"/>
+    <line x1="540" y1="255" x2="555" y2="255" stroke="#94A3B8" stroke-width="2.5"/>
+    <line x1="615" y1="255" x2="630" y2="255" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#bp-arrow)"/>
+    <line x1="810" y1="255" x2="825" y2="255" stroke="#94A3B8" stroke-width="2.5"/>
+    <line x1="885" y1="255" x2="900" y2="255" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#bp-arrow)"/>
+    <line x1="1080" y1="255" x2="1095" y2="255" stroke="#94A3B8" stroke-width="2.5"/>
+    <line x1="1155" y1="255" x2="1170" y2="255" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#bp-arrow)"/>
+    <line x1="1350" y1="255" x2="1365" y2="255" stroke="#94A3B8" stroke-width="2.5"/>
+    <line x1="1425" y1="255" x2="1470" y2="255" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#bp-arrow)"/>
+    <text x="1485" y="262" fill="#64748B" font-size="11">持续监测</text>
+
+    <!-- 门禁：通过 标签 -->
+    <text x="352" y="245" fill="#16A34A" font-size="11" text-anchor="middle">通过</text>
+    <text x="622" y="245" fill="#16A34A" font-size="11" text-anchor="middle">通过</text>
+    <text x="892" y="245" fill="#16A34A" font-size="11" text-anchor="middle">通过</text>
+    <text x="1162" y="245" fill="#16A34A" font-size="11" text-anchor="middle">通过</text>
+
+    <!-- 五阶段 -->
+    <rect x="90"  y="229" width="180" height="52" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="180" y="262" fill="#0F172A" font-size="18" font-weight="600" text-anchor="middle">需求与设计</text>
+    <rect x="360" y="229" width="180" height="52" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="450" y="262" fill="#0F172A" font-size="18" font-weight="600" text-anchor="middle">开发</text>
+    <rect x="630" y="229" width="180" height="52" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="720" y="262" fill="#0F172A" font-size="18" font-weight="600" text-anchor="middle">测试</text>
+    <rect x="900" y="229" width="180" height="52" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="990" y="262" fill="#0F172A" font-size="18" font-weight="600" text-anchor="middle">部署</text>
+    <rect x="1170" y="229" width="180" height="52" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1260" y="262" fill="#0F172A" font-size="18" font-weight="600" text-anchor="middle">运维</text>
+
+    <!-- 门禁菱形 -->
+    <polygon points="315,225 345,255 315,285 285,255" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+    <text x="315" y="260" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">设计评审</text>
+    <polygon points="585,225 615,255 585,285 555,255" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+    <text x="585" y="260" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">构建门禁</text>
+    <polygon points="855,225 885,255 855,285 825,255" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+    <text x="855" y="260" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">安全验证</text>
+    <polygon points="1125,225 1155,255 1125,285 1095,255" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+    <text x="1125" y="260" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">合规基线</text>
+    <polygon points="1395,225 1425,255 1395,285 1365,255" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+    <text x="1395" y="260" fill="#0F172A" font-size="12" font-weight="600" text-anchor="middle">安全监测</text>
+
+    <!-- 门禁判定条件 -->
+    <text x="315"  y="315" fill="#475569" font-size="12" text-anchor="middle">条件：威胁模型与安全需求被采纳</text>
+    <text x="585"  y="315" fill="#475569" font-size="12" text-anchor="middle">条件：SAST无高危漏洞</text>
+    <text x="855"  y="315" fill="#475569" font-size="12" text-anchor="middle">条件：测试结果通过阈值</text>
+    <text x="1125" y="315" fill="#475569" font-size="12" text-anchor="middle">条件：日志与监控正常</text>
+    <text x="1395" y="315" fill="#475569" font-size="12" text-anchor="middle">条件：安全事件超出阈值</text>
+
+    <!-- ===== 安全活动 ===== -->
+    <!-- 需求与设计 -->
+    <rect x="95"  y="342" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="180" y="370" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">威胁建模 (STRIDE)</text>
+    <rect x="95"  y="416" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="180" y="444" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">输出安全需求</text>
+    <!-- 开发 -->
+    <rect x="365" y="342" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="450" y="370" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">代码安全审查</text>
+    <rect x="365" y="416" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="450" y="444" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">静态分析 (SAST)</text>
+    <!-- 测试 -->
+    <rect x="635" y="342" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="720" y="370" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">动态分析 (DAST)</text>
+    <rect x="635" y="416" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="720" y="444" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">渗透测试</text>
+    <!-- 部署 -->
+    <rect x="905" y="342" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="990" y="370" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">依赖漏洞扫描</text>
+    <rect x="905" y="416" width="170" height="50" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="990" y="444" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">最小化攻击面</text>
+    <!-- 运维（由反馈闭环派生，虚线示意） -->
+    <rect x="1175" y="342" width="170" height="50" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,4"/>
+    <text x="1260" y="370" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">安全监测与告警</text>
+
+    <!-- 阶段 → 活动 下箭头 -->
+    <line x1="180" y1="281" x2="180" y2="342" stroke="#94A3B8" stroke-width="2" marker-end="url(#bp-arrow)"/>
+    <line x1="450" y1="281" x2="450" y2="342" stroke="#94A3B8" stroke-width="2" marker-end="url(#bp-arrow)"/>
+    <line x1="720" y1="281" x2="720" y2="342" stroke="#94A3B8" stroke-width="2" marker-end="url(#bp-arrow)"/>
+    <line x1="990" y1="281" x2="990" y2="342" stroke="#94A3B8" stroke-width="2" marker-end="url(#bp-arrow)"/>
+    <line x1="1260" y1="281" x2="1260" y2="342" stroke="#94A3B8" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
+
+    <!-- 活动 → 活动 下箭头（实线=必须；虚线=可选） -->
+    <line x1="180" y1="392" x2="180" y2="416" stroke="#94A3B8" stroke-width="2" marker-end="url(#bp-arrow)"/>
+    <line x1="450" y1="392" x2="450" y2="416" stroke="#94A3B8" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
+    <text x="545" y="407" fill="#94A3B8" font-size="11">（可选）</text>
+    <line x1="720" y1="392" x2="720" y2="416" stroke="#94A3B8" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
+    <text x="815" y="407" fill="#94A3B8" font-size="11">（可选）</text>
+    <line x1="990" y1="392" x2="990" y2="416" stroke="#94A3B8" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
+    <text x="1085" y="407" fill="#94A3B8" font-size="11">（可选）</text>
+
+    <!-- 回退重做（门禁不合格 → 上阶段重做，红色虚线回环） -->
+    <path d="M315,225 C315,195 180,195 180,228" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-red)"/>
+    <text x="247" y="190" fill="#DC2626" font-size="11" text-anchor="middle">回退</text>
+    <path d="M585,225 C585,195 450,195 450,228" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-red)"/>
+    <text x="517" y="190" fill="#DC2626" font-size="11" text-anchor="middle">回退</text>
+    <path d="M855,225 C855,195 720,195 720,228" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-red)"/>
+    <text x="787" y="190" fill="#DC2626" font-size="11" text-anchor="middle">回退</text>
+    <path d="M1125,225 C1125,195 990,195 990,228" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-red)"/>
+    <text x="1057" y="190" fill="#DC2626" font-size="11" text-anchor="middle">回退</text>
+
+    <!-- 安全反馈闭环（运维 → 需求，橙色长虚线） -->
+    <polyline points="1395,285 1395,665 90,665 90,281" fill="none" stroke="#F97316" stroke-width="2.5" stroke-dasharray="7,4" marker-end="url(#bp-arrow-accent)"/>
+    <text x="760" y="652" fill="#F97316" font-size="12" text-anchor="middle">安全事件触发迭代</text>
+  </g>
+
+  <!-- ===== 图例 ===== -->
+  <rect x="90"  y="710" width="34" height="18" rx="3" fill="#EFF6FF" stroke="#2563EB"/>
+  <text x="132" y="724" fill="#475569" font-size="12">开发阶段</text>
+  <rect x="260" y="710" width="34" height="18" rx="3" fill="#F0FDF4" stroke="#16A34A"/>
+  <text x="302" y="724" fill="#475569" font-size="12">安全活动</text>
+  <polygon points="430,719 440,709 450,719 440,729" fill="#FFFBEB" stroke="#D97706"/>
+  <text x="460" y="724" fill="#475569" font-size="12">质量门禁</text>
+  <line x1="590" y1="719" x2="622" y2="719" stroke="#94A3B8" stroke-width="2" stroke-dasharray="5,4"/>
+  <text x="630" y="724" fill="#475569" font-size="12">可选路径</text>
+  <line x1="730" y1="719" x2="762" y2="719" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="770" y="724" fill="#475569" font-size="12">回退重做</text>
+  <line x1="870" y1="719" x2="902" y2="719" stroke="#F97316" stroke-width="2" stroke-dasharray="7,4"/>
+  <text x="910" y="724" fill="#475569" font-size="12">安全反馈</text>
+
+  <!-- ===== 备注 ===== -->
+  <text x="100" y="760" fill="#475569" font-size="12">注1：评审由人工审查；门禁由自动化工具在 CI/CD 流水线中强制执行。</text>
+  <text x="100" y="786" fill="#475569" font-size="12">注2：运维阶段收集的安全事件可能揭示新威胁，反馈至需求阶段更新威胁模型，形成持续改进闭环。</text>
+
+  <line x1="90" y1="820" x2="1710" y2="820" stroke="#E2E8F0"/>
+  <text x="900" y="852" fill="#94A3B8" font-size="12" text-anchor="middle">图8-17 以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。</text>
+  </svg>
+</svg>
+    <section class="meta">
+      <div class="card"><div class="label">图表类型</div><div class="value">lifecycle</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">五阶段SDLC时间线，阶段下挂安全活动，阶段间设质量门禁，不合格回退上阶段</div></div>
+      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
+    </section>
+  </main>
+</body>
+</html>
