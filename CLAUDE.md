@@ -83,7 +83,7 @@ output/万物智联.pdf  (中间文件自动清理)
   - `style.yaml` 图表规格与视觉参考（机器校验字段 + 外部制图配色）
 - `book/assets/` — 静态资源（`cover.html` 封面、`logo.svg` 封面 logo）
 - `book/assets/images/chapter-XX/` — 渲染图片（`{figure_id}.png`，构建按此查找；文件名与手稿 `figure_id` 一致；命名统一规则）
-- `book/assets/figures-src/chapter-XX/` — 制图源（`{figure_id}.html`，可编辑源文件，与渲染图分离）
+- `book/figures/chapter-XX/` — 制图源（`{figure_id}.html`，可编辑源文件，与渲染图分离）
 - `book/manuscript/` — 14 章手稿（chapter-01~14/chapter.md，可拆分为 `X.Y.Z.md` 节文件）
 
 ## Environment

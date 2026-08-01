@@ -38,7 +38,8 @@ book-builder/
 │   ├── config/           # 5 个 YAML 配置
 │   ├── assets/           # cover.html + logo.svg
 │   ├── manuscript/       # 14 章手稿 (chapter-01~14/chapter.md)
-│   └── assets/           # 静态资源 (images/ 渲染图PNG, figures-src/ 制图源HTML)
+│   ├── figures/          # 制图源 HTML (chapter-XX/{figure_id}.html)
+│   └── assets/           # 静态资源 (images/ 渲染图PNG, cover.html, logo.svg)
 └── output/               # 层级 MD + 书名.md/.pdf/—样稿.pdf + cover.png + figures/
 ```
 
