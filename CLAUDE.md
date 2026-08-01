@@ -42,7 +42,7 @@ book/config/*.yaml → src/book_builder/config.py (AppConfig)
                         ↓
 book/manuscript/chapter-XX/chapter.md → src/book_builder/manuscript.py
                         ↓
-book/figures/chapter-XX/{figure_id}.png → src/book_builder/figures.py (FigureAsset[])
+book/assets/images/chapter-XX/{figure_id}.png → src/book_builder/figures.py (FigureAsset[])
                         ↓
 src/book_builder/markdown.py → output/{00-封面.md ... 08-附录.md, book.md, book_clean.md}
 src/book_builder/pdf.py      → generate_pdf_output() → pandoc → Chrome headless → book.pdf
@@ -52,7 +52,7 @@ src/book_builder/pdf.py      → generate_pdf_output() → pandoc → Chrome hea
 
 - **`src/book_builder/config.py`** — 极简 Pydantic 配置模型（`extra="ignore"`）。从 `book/config/` 下 5 个 YAML 加载：`book/parts/style/author/output`；校验书籍署名与作者简介姓名一致。
 - **`src/book_builder/manuscript.py`** — `load_manuscript(parts)` 遍历 parts 中的章节，优先读 `chapter.md`，不存在或为空则从 `X.Y.Z.md` 节文件按编号排序拼接。
-- **`src/book_builder/figures.py`** — 扫描章节 markdown 中的 `book-figure` YAML 块，按 `figure_id` 在 `book/figures/chapter-XX/` 找同名 PNG 匹配资产，复制到 `output/figures/`。未匹配的不阻断构建，原 `book-figure` 块保留。`replace_book_figures_with_images()` 将代码块替换为图片引用（层级文件用 `../` 前缀，book.md 用直接路径）。
+- **`src/book_builder/figures.py`** — 扫描章节 markdown 中的 `book-figure` YAML 块，按 `figure_id` 在 `book/assets/images/chapter-XX/` 找同名 PNG 匹配资产，复制到 `output/figures/`。未匹配的不阻断构建，原 `book-figure` 块保留。`replace_book_figures_with_images()` 将代码块替换为图片引用（层级文件用 `../` 前缀，book.md 用直接路径）。
 - **`src/book_builder/markdown_assets.py`** — `book-figure` 代码块解析与 YAML payload 规范化，供 figures.py 复用。
 - **`src/book_builder/markdown.py`** — `generate_markdown_output()` 用 Jinja2 模板组装层级化分章 MD + 单文件 `book.md` + 封面图（`cover.png`）。
 - **`src/book_builder/pdf.py`** — `generate_pdf_output()` 通过 pandoc → Chrome headless 生成 PDF，封面单独渲染并用 pypdf 合并，中间文件自动清理；`generate_cover_image()` 把封面 HTML 渲染为 PNG。
@@ -82,8 +82,9 @@ output/万物智联.pdf  (中间文件自动清理)
   - `parts.yaml` 篇章结构（篇 `name`/`prefix`，章 `id`/`title`）
   - `style.yaml` 图表规格与视觉参考（机器校验字段 + 外部制图配色）
 - `book/assets/` — 静态资源（`cover.html` 封面、`logo.svg` 封面 logo）
+- `book/assets/images/chapter-XX/` — 渲染图片（`{figure_id}.png`，构建按此查找；文件名与手稿 `figure_id` 一致；命名统一规则）
+- `book/assets/figures-src/chapter-XX/` — 制图源（`{figure_id}.html`，可编辑源文件，与渲染图分离）
 - `book/manuscript/` — 14 章手稿（chapter-01~14/chapter.md，可拆分为 `X.Y.Z.md` 节文件）
-- `book/figures/chapter-XX/` — 图表资产（`{figure_id}.html`/`.svg`/`.png`，文件名与手稿 `figure_id` 一致；命名统一规则）
 
 ## Environment
 

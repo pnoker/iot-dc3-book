@@ -38,7 +38,7 @@ book-builder/
 │   ├── config/           # 5 个 YAML 配置
 │   ├── assets/           # cover.html + logo.svg
 │   ├── manuscript/       # 14 章手稿 (chapter-01~14/chapter.md)
-│   └── figures/          # 图表资产 (chapter-XX/{figure_id}.{html,svg,png})
+│   └── assets/           # 静态资源 (images/ 渲染图PNG, figures-src/ 制图源HTML)
 └── output/               # 层级 MD + 书名.md/.pdf/—样稿.pdf + cover.png + figures/
 ```
 
@@ -54,7 +54,7 @@ book-builder/
 - 修改手稿前先阅读 `book/WRITING_GUIDE.md`；它是人工写作和 Agent 辅助写作共用的规范
 - 每章一个 `book/manuscript/chapter-XX/` 目录，写 `chapter.md` 作为完整章内容；不存在时可拆分为 `X.Y.Z.md` 节文件，工具按编号排序拼接
 - 图表用 ` ```book-figure` YAML 块描述规格，build 时自动替换为 PNG 图片；字段、类型和配色以 `book/config/style.yaml` 为准，`legend` 选填
-- 图表按 `figure_id` 在 `book/figures/chapter-XX/` 找同名 PNG（`{figure_id}.png`）；未匹配的原块保留
+- 图表按 `figure_id` 在 `book/assets/images/chapter-XX/` 找同名 PNG（`{figure_id}.png`）；未匹配的原块保留
 - `book/config/parts.yaml` 定义篇章结构（篇 `name`/`prefix`，章 `id`/`title`），新增章节需同步更新
 - `book/config/book.yaml` 是封面、Pandoc metadata 和输出文件名的书籍元数据来源
 - CLI 未传 `--output` 时使用 `book/config/output.yaml` 的 `dir`，显式参数优先
