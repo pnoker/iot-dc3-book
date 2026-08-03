@@ -88,13 +88,16 @@ def generate_pdf_output(
         if completed.returncode != 0:
             raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
-        # 按 <h1> 拆分 HTML，每段独立 Chrome 渲染（章节名页眉 + 页码页脚）
-        section_pdfs = _render_sections_with_chrome(
-            html_path, chrome, pdf_path.parent, metadata,
-        )
-        _concat_pdfs(section_pdfs, body_pdf)
+        # Chrome headless: html → pdf（单次渲染，保证全书页码连续，无页眉页脚）
+        chrome_cmd = [
+            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+            f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
+        ]
+        completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
+        if completed.returncode != 0:
+            raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
 
-        # 从 HTML 解析标题位置（用于书签）
+        # 从 HTML 解析标题位置（用于书签 + 页眉章节映射）
         html_headings = _parse_html_headings(html_path, body_pdf)
 
         if divider_ids:
@@ -118,7 +121,7 @@ def generate_pdf_output(
             else:
                 logger.warning("封面 PDF 渲染失败，继续输出正文: %s", cover_done.stderr.strip())
 
-        _merge_pdf_pages(
+        special_pages = _merge_pdf_pages(
             pdf_path,
             body_pdf,
             divider_ids,
@@ -129,12 +132,11 @@ def generate_pdf_output(
             pdf_path,
             html_headings,
             cover_offset=1 if rendered_cover else 0,
+            special_pages=special_pages,
         )
     finally:
         for tmp in (pandoc_input, html_path, body_pdf, cover_pdf, divider_html, divider_pdf):
             tmp.unlink(missing_ok=True)
-        for sf in sorted(pdf_path.parent.glob(".section_*")):
-            sf.unlink(missing_ok=True)
         if cover_path and cover_path != cover_template:
             cover_path.unlink(missing_ok=True)
 
@@ -208,13 +210,19 @@ def _merge_pdf_pages(
     divider_ids: list[str],
     divider_pdf: Path | None,
     cover_pdf: Path | None,
-) -> None:
+) -> set[int]:
+    """合并封面 + 正文 + 扉页，返回合并后 PDF 中扉页/封面页的索引集合（这些页不加页眉页脚）。"""
     from pypdf import PdfReader, PdfWriter
 
     writer = PdfWriter()
+    special_pages: set[int] = set()  # 封面 + 扉页页索引
+    out_idx = 0
+
     if cover_pdf is not None:
         for page in PdfReader(str(cover_pdf)).pages:
             writer.add_page(page)
+            special_pages.add(out_idx)
+            out_idx += 1
 
     divider_pages: dict[str, Any] = {}
     if divider_ids:
@@ -233,11 +241,14 @@ def _merge_pdf_pages(
         matches = _DIVIDER_MARKER_RE.findall(text)
         if not matches:
             writer.add_page(page)
+            out_idx += 1
             continue
         if len(matches) != 1 or matches[0] not in divider_pages:
             raise RuntimeError(f"无法识别篇章扉页占位标记: {matches}")
         divider_id = matches[0]
         writer.add_page(divider_pages[divider_id])
+        special_pages.add(out_idx)
+        out_idx += 1
         replaced.add(divider_id)
 
     missing = set(divider_ids) - replaced
@@ -245,6 +256,7 @@ def _merge_pdf_pages(
         raise RuntimeError(f"篇章扉页占位页未找到: {sorted(missing)}")
     with open(output_path, "wb") as stream:
         writer.write(stream)
+    return special_pages
 
 
 def _parse_html_headings(html_path: Path, body_pdf: Path) -> list[tuple[int, str, int]]:
@@ -299,103 +311,25 @@ def _parse_html_headings(html_path: Path, body_pdf: Path) -> list[tuple[int, str
     return result
 
 
-def _render_sections_with_chrome(
-    html_path: Path,
-    chrome: str,
-    output_dir: Path,
-    metadata: dict[str, Any] | None,
-) -> list[Path]:
-    """按 <h1> 拆分 pandoc HTML，每段独立 Chrome 渲染（章节名页眉 + 页码页脚）。"""
-    html = html_path.read_text(encoding="utf-8")
-    head_m = re.search(r"<head[^>]*>(.*?)</head>", html, re.DOTALL)
-    head = f"<head>{head_m.group(1)}</head>" if head_m else "<head><meta charset='utf-8'></head>"
-    body_m = re.search(r"<body[^>]*>(.*?)</body>", html, re.DOTALL)
-    body = body_m.group(1) if body_m else html
-    book_title = (metadata or {}).get("title", "")
-
-    h1_positions = list(re.finditer(r"<h1[^>]*>.*?</h1>", body, re.DOTALL))
-    if not h1_positions:
-        return []
-
-    sections: list[tuple[str, str]] = []
-    for i, m in enumerate(h1_positions):
-        start = m.start()
-        end = h1_positions[i + 1].start() if i + 1 < len(h1_positions) else len(body)
-        title_raw = re.sub(r"<[^>]+>", "", m.group(0)).strip()
-        title_raw = re.sub(r"\s+", " ", title_raw)
-        if any(title_raw.startswith(h) for h in ("关于作者", "序", "导读", "目录")):
-            header_title = book_title
-        elif title_raw.startswith("附录"):
-            header_title = "附录"
-        elif "章" in title_raw:
-            header_title = title_raw
-        else:
-            header_title = book_title
-        sections.append((header_title, body[start:end]))
-
-    pdfs: list[Path] = []
-    for idx, (header_title, section_body) in enumerate(sections):
-        section_html = (
-            f"<!doctype html><html>{head}<body>{section_body}</body></html>"
-        )
-        tmp_html = output_dir / f".section_{idx:03d}.html"
-        tmp_pdf = output_dir / f".section_{idx:03d}.pdf"
-        tmp_html.write_text(section_html, encoding="utf-8")
-
-        hdr = (
-            f'<div style="font-family:PingFang SC,Microsoft YaHei,sans-serif;'
-            f'font-size:7pt;color:#999;text-align:center;'
-            f'border-bottom:0.4pt solid #ccc;padding-bottom:3pt;'
-            f'margin:0 1.2cm">{_esc(header_title)}</div>'
-        )
-        ftr = (
-            f'<div style="font-family:Helvetica,sans-serif;'
-            f'font-size:8pt;color:#999;text-align:center;'
-            f'border-top:0.4pt solid #ccc;padding-top:3pt;'
-            f'margin:0 1.2cm">'
-            f'— <span class="pageNumber"></span> —</div>'
-        )
-        chrome_cmd = [
-            chrome, "--headless", "--disable-gpu",
-            "--margin-top=2cm", "--margin-bottom=1.5cm",
-            f"--print-to-pdf={tmp_pdf}",
-            f"--header-template={hdr}",
-            f"--footer-template={ftr}",
-            tmp_html.resolve().as_uri(),
-        ]
-        done = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
-        if done.returncode != 0 or not tmp_pdf.exists():
-            logger.warning("分段渲染失败 [%s]: %s", header_title, done.stderr[:120])
-        else:
-            pdfs.append(tmp_pdf)
-        tmp_html.unlink(missing_ok=True)
-
-    logger.info("分章渲染: %d 段", len(pdfs))
-    return pdfs
-
-
-def _esc(text: str) -> str:
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-
-def _concat_pdfs(pdf_paths: list[Path], output: Path) -> None:
-    from pypdf import PdfReader, PdfWriter
-    writer = PdfWriter()
-    for path in pdf_paths:
-        for page in PdfReader(str(path)).pages:
-            writer.add_page(page)
-    with open(output, "wb") as f:
-        writer.write(f)
-
-
 def _add_outlines_and_page_numbers(
     pdf_path: Path,
     html_headings: list[tuple[int, str, int]],
     cover_offset: int = 0,
+    special_pages: set[int] | None = None,
 ) -> None:
-    """添加三层书签（页眉页脚由 Chrome 模板渲染）。"""
+    """用 reportlab 叠加层绘制页眉（章节名）+ 页脚（连续页码）+ 分格线，并写入三层书签。
+
+    封面和篇章扉页（special_pages）不加页眉页脚，但仍占页码序列。
+    """
     from pypdf import PdfReader, PdfWriter
 
+    reader = PdfReader(str(pdf_path))
+    total = len(reader.pages)
+    if total < 2:
+        return
+    special = special_pages or set()
+
+    # 过滤书名和分部标题，构建 (最终页码, 标题, 层级)
     heading_pages: list[tuple[int, str, int]] = []
     for lv, title, body_page in html_headings:
         if title == "从工业软件到 AI 智能体":
@@ -405,42 +339,135 @@ def _add_outlines_and_page_numbers(
         ):
             continue
         heading_pages.append((body_page + cover_offset, title, lv))
-
     if not heading_pages:
         return
-
     heading_pages.sort(key=lambda x: x[0])
-    seen: set[tuple[str, int]] = set()
-    unique: list[tuple[int, str, int]] = []
-    for p, t, lv in sorted(heading_pages, key=lambda x: x[0]):
-        key = (t, lv)
-        if key not in seen:
-            seen.add(key)
-            unique.append((p, t, lv))
 
-    reader = PdfReader(str(pdf_path))
-    total = len(reader.pages)
-    writer = PdfWriter()
-    for page in reader.pages:
-        writer.add_page(page)
+    # 每页对应的章节名（从上一条 H1 继承）
+    page_chapter = _build_page_chapter_map(heading_pages, total)
 
-    stack: list[tuple[object, int]] = []
-    for page_num, title, level in unique:
-        page_num = min(page_num, total - 1)
-        if title == "目录":
-            while stack:
+    # 生成 reportlab 叠加层并合并
+    overlay_pdf = pdf_path.with_name(".header_footer.pdf")
+    try:
+        _draw_header_footer_overlay(
+            overlay_pdf, total, page_chapter, cover_offset, special,
+            page_size=(float(reader.pages[0].mediabox.width),
+                       float(reader.pages[0].mediabox.height)),
+        )
+        overlay_reader = PdfReader(str(overlay_pdf))
+        writer = PdfWriter()
+        for i, page in enumerate(reader.pages):
+            if i < len(overlay_reader.pages):
+                page.merge_page(overlay_reader.pages[i])
+            writer.add_page(page)
+
+        # 三层书签
+        seen: set[tuple[str, int]] = set()
+        unique: list[tuple[int, str, int]] = []
+        for p, t, lv in heading_pages:
+            key = (t, lv)
+            if key not in seen:
+                seen.add(key)
+                unique.append((p, t, lv))
+
+        stack: list[tuple[object, int]] = []
+        for page_num, title, level in unique:
+            page_num = min(page_num, total - 1)
+            if title == "目录":
+                while stack:
+                    stack.pop()
+            while stack and stack[-1][1] >= level:
                 stack.pop()
-        while stack and stack[-1][1] >= level:
-            stack.pop()
-        parent = stack[-1][0] if stack else None
-        item = writer.add_outline_item(title, page_num, parent=parent)
-        if title != "目录":
-            stack.append((item, level))
+            parent = stack[-1][0] if stack else None
+            item = writer.add_outline_item(title, page_num, parent=parent)
+            if title != "目录":
+                stack.append((item, level))
 
-    with open(pdf_path, "wb") as f:
-        writer.write(f)
+        with open(pdf_path, "wb") as f:
+            writer.write(f)
+    finally:
+        overlay_pdf.unlink(missing_ok=True)
 
-    logger.info("PDF 书签: %d 条, %d 页", len(unique), total)
+    logger.info("PDF 书签 + 页眉页脚: %d 条, %d 页", len(unique), total)
+
+
+def _build_page_chapter_map(
+    heading_pages: list[tuple[int, str, int]],
+    total: int,
+) -> dict[int, str]:
+    """为每页分配页眉章节名（H1 → 章名，前置页 → 空，附录 → 附录）。"""
+    front = {"关于作者", "序", "导读", "目录"}
+    page_h1: dict[int, str] = {}
+    for page_num, title, level in heading_pages:
+        if level != 1:
+            continue
+        if title in front:
+            page_h1[page_num] = ""  # 前置页不显示章节名页眉
+        else:
+            page_h1[page_num] = title
+    # 向后填充
+    page_chapter: dict[int, str] = {}
+    current = ""
+    for i in range(total):
+        if i in page_h1:
+            current = page_h1[i]
+        page_chapter[i] = current
+    return page_chapter
+
+
+def _draw_header_footer_overlay(
+    overlay_path: Path,
+    total: int,
+    page_chapter: dict[int, str],
+    cover_offset: int,
+    special_pages: set[int],
+    page_size: tuple[float, float],
+) -> None:
+    """用 reportlab 生成透明叠加层：页眉章节名 + 页脚页码 + 上下分格线。
+
+    封面和篇章扉页（special_pages）留白（有自己的设计），但页码序列连续。
+    """
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+    from reportlab.pdfgen import canvas
+
+    cn_font = "STSong-Light"
+    pdfmetrics.registerFont(UnicodeCIDFont(cn_font))
+
+    w, h = page_size
+    margin_x = 56.7  # 2cm
+    gray = (0.55, 0.55, 0.55)
+    line_gray = (0.8, 0.8, 0.8)
+
+    c = canvas.Canvas(str(overlay_path), pagesize=(w, h))
+    for i in range(total):
+        # 封面和扉页留白（页码序列仍连续递增）
+        if i >= cover_offset and i not in special_pages:
+            page_no = i - cover_offset + 1  # 正文页码从 1 开始
+            chapter = page_chapter.get(i, "")
+
+            # ── 页眉 ──
+            header_y = h - 48
+            if chapter:
+                c.setFont(cn_font, 8)
+                c.setFillColorRGB(*gray)
+                c.drawCentredString(w / 2, header_y, chapter)
+                # 页眉分格线（仅当有章节名时绘制）
+                c.setStrokeColorRGB(*line_gray)
+                c.setLineWidth(0.5)
+                c.line(margin_x, header_y - 6, w - margin_x, header_y - 6)
+
+            # ── 页脚 ──
+            footer_y = 40
+            c.setStrokeColorRGB(*line_gray)
+            c.setLineWidth(0.5)
+            c.line(margin_x, footer_y + 10, w - margin_x, footer_y + 10)
+            c.setFont("Helvetica", 8)
+            c.setFillColorRGB(*gray)
+            c.drawCentredString(w / 2, footer_y, f"— {page_no} —")
+
+        c.showPage()
+    c.save()
 
 
 def generate_cover_image(
