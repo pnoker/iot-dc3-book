@@ -88,16 +88,13 @@ def generate_pdf_output(
         if completed.returncode != 0:
             raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
-        # Chrome headless: html → pdf（单次渲染，无页眉页脚）
-        chrome_cmd = [
-            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-            f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
-        ]
-        completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
-        if completed.returncode != 0:
-            raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
+        # 按 <h1> 拆分 HTML，每段独立 Chrome 渲染（章节名页眉 + 页码页脚）
+        section_pdfs = _render_sections_with_chrome(
+            html_path, chrome, pdf_path.parent, metadata,
+        )
+        _concat_pdfs(section_pdfs, body_pdf)
 
-        # 从 HTML 解析标题位置（用于书签 + 页眉章映射）
+        # 从 HTML 解析标题位置（用于书签）
         html_headings = _parse_html_headings(html_path, body_pdf)
 
         if divider_ids:
@@ -136,6 +133,8 @@ def generate_pdf_output(
     finally:
         for tmp in (pandoc_input, html_path, body_pdf, cover_pdf, divider_html, divider_pdf):
             tmp.unlink(missing_ok=True)
+        for sf in sorted(pdf_path.parent.glob(".section_*")):
+            sf.unlink(missing_ok=True)
         if cover_path and cover_path != cover_template:
             cover_path.unlink(missing_ok=True)
 
@@ -300,21 +299,103 @@ def _parse_html_headings(html_path: Path, body_pdf: Path) -> list[tuple[int, str
     return result
 
 
+def _render_sections_with_chrome(
+    html_path: Path,
+    chrome: str,
+    output_dir: Path,
+    metadata: dict[str, Any] | None,
+) -> list[Path]:
+    """按 <h1> 拆分 pandoc HTML，每段独立 Chrome 渲染（章节名页眉 + 页码页脚）。"""
+    html = html_path.read_text(encoding="utf-8")
+    head_m = re.search(r"<head[^>]*>(.*?)</head>", html, re.DOTALL)
+    head = f"<head>{head_m.group(1)}</head>" if head_m else "<head><meta charset='utf-8'></head>"
+    body_m = re.search(r"<body[^>]*>(.*?)</body>", html, re.DOTALL)
+    body = body_m.group(1) if body_m else html
+    book_title = (metadata or {}).get("title", "")
+
+    h1_positions = list(re.finditer(r"<h1[^>]*>.*?</h1>", body, re.DOTALL))
+    if not h1_positions:
+        return []
+
+    sections: list[tuple[str, str]] = []
+    for i, m in enumerate(h1_positions):
+        start = m.start()
+        end = h1_positions[i + 1].start() if i + 1 < len(h1_positions) else len(body)
+        title_raw = re.sub(r"<[^>]+>", "", m.group(0)).strip()
+        title_raw = re.sub(r"\s+", " ", title_raw)
+        if any(title_raw.startswith(h) for h in ("关于作者", "序", "导读", "目录")):
+            header_title = book_title
+        elif title_raw.startswith("附录"):
+            header_title = "附录"
+        elif "章" in title_raw:
+            header_title = title_raw
+        else:
+            header_title = book_title
+        sections.append((header_title, body[start:end]))
+
+    pdfs: list[Path] = []
+    for idx, (header_title, section_body) in enumerate(sections):
+        section_html = (
+            f"<!doctype html><html>{head}<body>{section_body}</body></html>"
+        )
+        tmp_html = output_dir / f".section_{idx:03d}.html"
+        tmp_pdf = output_dir / f".section_{idx:03d}.pdf"
+        tmp_html.write_text(section_html, encoding="utf-8")
+
+        hdr = (
+            f'<div style="font-family:PingFang SC,Microsoft YaHei,sans-serif;'
+            f'font-size:7pt;color:#999;text-align:center;'
+            f'border-bottom:0.4pt solid #ccc;padding-bottom:3pt;'
+            f'margin:0 1.2cm">{_esc(header_title)}</div>'
+        )
+        ftr = (
+            f'<div style="font-family:Helvetica,sans-serif;'
+            f'font-size:8pt;color:#999;text-align:center;'
+            f'border-top:0.4pt solid #ccc;padding-top:3pt;'
+            f'margin:0 1.2cm">'
+            f'— <span class="pageNumber"></span> —</div>'
+        )
+        chrome_cmd = [
+            chrome, "--headless", "--disable-gpu",
+            "--margin-top=2cm", "--margin-bottom=1.5cm",
+            f"--print-to-pdf={tmp_pdf}",
+            f"--header-template={hdr}",
+            f"--footer-template={ftr}",
+            tmp_html.resolve().as_uri(),
+        ]
+        done = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
+        if done.returncode != 0 or not tmp_pdf.exists():
+            logger.warning("分段渲染失败 [%s]: %s", header_title, done.stderr[:120])
+        else:
+            pdfs.append(tmp_pdf)
+        tmp_html.unlink(missing_ok=True)
+
+    logger.info("分章渲染: %d 段", len(pdfs))
+    return pdfs
+
+
+def _esc(text: str) -> str:
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _concat_pdfs(pdf_paths: list[Path], output: Path) -> None:
+    from pypdf import PdfReader, PdfWriter
+    writer = PdfWriter()
+    for path in pdf_paths:
+        for page in PdfReader(str(path)).pages:
+            writer.add_page(page)
+    with open(output, "wb") as f:
+        writer.write(f)
+
+
 def _add_outlines_and_page_numbers(
     pdf_path: Path,
     html_headings: list[tuple[int, str, int]],
     cover_offset: int = 0,
 ) -> None:
-    """单次写入：复制页面 + 页码标注 + 三层书签。
-
-    html_headings: [(level, title, body_page), ...] 来自 _parse_html_headings
-    """
+    """添加三层书签（页眉页脚由 Chrome 模板渲染）。"""
     from pypdf import PdfReader, PdfWriter
 
-    reader = PdfReader(str(pdf_path))
-    total = len(reader.pages)
-
-    # 构建书签 + 页眉章映射
     heading_pages: list[tuple[int, str, int]] = []
     for lv, title, body_page in html_headings:
         if title == "从工业软件到 AI 智能体":
@@ -329,22 +410,6 @@ def _add_outlines_and_page_numbers(
         return
 
     heading_pages.sort(key=lambda x: x[0])
-
-    # 页眉章名：从上一条 H1 继承章节名
-    page_chapter: dict[int, str] = {}
-    current_chapter = ""
-    for page_num, title, level in heading_pages:
-        if level == 1:
-            current_chapter = title
-        page_chapter[page_num] = current_chapter
-    last = ""
-    for i in range(total):
-        if i in page_chapter:
-            last = page_chapter[i]
-        elif last:
-            page_chapter[i] = last
-
-    # 去重书签
     seen: set[tuple[str, int]] = set()
     unique: list[tuple[int, str, int]] = []
     for p, t, lv in sorted(heading_pages, key=lambda x: x[0]):
@@ -353,36 +418,15 @@ def _add_outlines_and_page_numbers(
             seen.add(key)
             unique.append((p, t, lv))
 
-    # 写 PDF：页面 + 页眉页脚 FreeText + 书签
+    reader = PdfReader(str(pdf_path))
+    total = len(reader.pages)
     writer = PdfWriter()
-    for i, page in enumerate(reader.pages):
+    for page in reader.pages:
         writer.add_page(page)
-        if i < cover_offset:
-            continue
 
-        # 页脚页码（右下角）
-        writer.add_annotation(page_number=i, annotation=_build_page_annot(
-            str(i + 1), rect=(525, 18, 558, 32), align=2,
-        ))
-        # 页眉章节名（居中，用 PingFang SC 渲染中文）
-        ch = page_chapter.get(i, "")
-        if ch:
-            writer.add_annotation(page_number=i, annotation=_build_page_annot(
-                ch[:40], rect=(170, 814, 426, 828), font_size=7, align=1,
-                font_name="PingFang SC",
-            ))
-        # 页眉分格线（正文上方，y=805）
-        writer.add_annotation(page_number=i, annotation=_build_rule_line(
-            72, 805.5, 523, 805.5,
-        ))
-        # 页脚分格线（正文下方，y=38）
-        writer.add_annotation(page_number=i, annotation=_build_rule_line(
-            72, 38.5, 523, 38.5,
-        ))
-
-    # 书签层级
     stack: list[tuple[object, int]] = []
     for page_num, title, level in unique:
+        page_num = min(page_num, total - 1)
         if title == "目录":
             while stack:
                 stack.pop()
@@ -396,60 +440,7 @@ def _add_outlines_and_page_numbers(
     with open(pdf_path, "wb") as f:
         writer.write(f)
 
-    logger.info("PDF 书签 + 页眉页脚: %d 条, %d 页", len(unique), total)
-
-
-def _build_page_annot(
-    text: str,
-    rect: tuple[float, float, float, float],
-    font_size: int = 8,
-    align: int = 0,
-    font_name: str = "/HeBo",
-) -> dict[str, object]:
-    """构建 FreeText 注释（无边框），用于页眉/页脚。align: 0=L 1=C 2=R"""
-    from pypdf.generic import (
-        ArrayObject, FloatObject, NameObject, NumberObject, TextStringObject,
-    )
-    return {
-        NameObject("/Type"): NameObject("/Annot"),
-        NameObject("/Subtype"): NameObject("/FreeText"),
-        NameObject("/Contents"): TextStringObject(text),
-        NameObject("/DA"): TextStringObject(f"{font_name} {font_size} Tf 0.45 g"),
-        NameObject("/Rect"): ArrayObject(
-            [FloatObject(rect[0]), FloatObject(rect[1]),
-             FloatObject(rect[2]), FloatObject(rect[3])]),
-        NameObject("/F"): NumberObject(4),
-        NameObject("/Border"): ArrayObject(
-            [NumberObject(0), NumberObject(0), NumberObject(0)]),
-        NameObject("/Q"): NumberObject(align),
-    }
-
-
-def _build_rule_line(x1: float, y1: float, x2: float, y2: float) -> dict[str, object]:
-    """构建极细横线 Line 注释（0.5pt 灰色），用于页眉/页脚分格线。"""
-    from pypdf.generic import (
-        ArrayObject, FloatObject, NameObject, NumberObject,
-    )
-    return {
-        NameObject("/Type"): NameObject("/Annot"),
-        NameObject("/Subtype"): NameObject("/Line"),
-        NameObject("/L"): ArrayObject([
-            FloatObject(x1), FloatObject(y1),
-            FloatObject(x2), FloatObject(y2),
-        ]),
-        NameObject("/BS"): {
-            NameObject("/W"): NumberObject(0.5),
-            NameObject("/S"): NameObject("/S"),
-        },
-        NameObject("/C"): ArrayObject([
-            FloatObject(0.75), FloatObject(0.75), FloatObject(0.75),
-        ]),
-        NameObject("/F"): NumberObject(4),
-        NameObject("/Rect"): ArrayObject([
-            FloatObject(x1), FloatObject(y1 - 2),
-            FloatObject(x2), FloatObject(y2 + 2),
-        ]),
-    }
+    logger.info("PDF 书签: %d 条, %d 页", len(unique), total)
 
 
 def generate_cover_image(
