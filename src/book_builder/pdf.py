@@ -371,6 +371,14 @@ def _add_outlines_and_page_numbers(
                 ch[:40], rect=(170, 814, 426, 828), font_size=7, align=1,
                 font_name="PingFang SC",
             ))
+        # 页眉分格线（正文上方，y=805）
+        writer.add_annotation(page_number=i, annotation=_build_rule_line(
+            72, 805.5, 523, 805.5,
+        ))
+        # 页脚分格线（正文下方，y=38）
+        writer.add_annotation(page_number=i, annotation=_build_rule_line(
+            72, 38.5, 523, 38.5,
+        ))
 
     # 书签层级
     stack: list[tuple[object, int]] = []
@@ -414,6 +422,33 @@ def _build_page_annot(
         NameObject("/Border"): ArrayObject(
             [NumberObject(0), NumberObject(0), NumberObject(0)]),
         NameObject("/Q"): NumberObject(align),
+    }
+
+
+def _build_rule_line(x1: float, y1: float, x2: float, y2: float) -> dict[str, object]:
+    """构建极细横线 Line 注释（0.5pt 灰色），用于页眉/页脚分格线。"""
+    from pypdf.generic import (
+        ArrayObject, FloatObject, NameObject, NumberObject,
+    )
+    return {
+        NameObject("/Type"): NameObject("/Annot"),
+        NameObject("/Subtype"): NameObject("/Line"),
+        NameObject("/L"): ArrayObject([
+            FloatObject(x1), FloatObject(y1),
+            FloatObject(x2), FloatObject(y2),
+        ]),
+        NameObject("/BS"): {
+            NameObject("/W"): NumberObject(0.5),
+            NameObject("/S"): NameObject("/S"),
+        },
+        NameObject("/C"): ArrayObject([
+            FloatObject(0.75), FloatObject(0.75), FloatObject(0.75),
+        ]),
+        NameObject("/F"): NumberObject(4),
+        NameObject("/Rect"): ArrayObject([
+            FloatObject(x1), FloatObject(y1 - 2),
+            FloatObject(x2), FloatObject(y2 + 2),
+        ]),
     }
 
 
