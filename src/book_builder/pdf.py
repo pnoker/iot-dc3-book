@@ -62,7 +62,7 @@ def generate_pdf_output(
     )
     has_cover = bool(cover_path and cover_path.exists())
 
-    # pandoc 输入：去图片属性 + 去封面 cover.png 引用（封面单独渲染）
+    # pandoc 输入：去图片属性 + 去封面引用
     text = markdown_path.read_text(encoding="utf-8")
     body_text = re.sub(r"(!\[[^\]]*\]\([^)]*\))\s*\{[^}]*\}", r"\1", text)
     divider_ids = list(dict.fromkeys(_DIVIDER_MARKER_RE.findall(body_text)))
@@ -88,31 +88,16 @@ def generate_pdf_output(
         if completed.returncode != 0:
             raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
-        # Chrome headless: html → pdf（带页眉页脚）
-        book_title = (metadata or {}).get("title", "")
-        header_html = _chrome_header_footer_template(
-            f'<div class="header"><span class="title"></span></div>',
-        )
-        footer_html = _chrome_header_footer_template(
-            '<div class="footer">— <span class="pageNumber"></span> —</div>',
-        )
+        # Chrome headless: html → pdf（单次渲染，无页眉页脚）
         chrome_cmd = [
-            chrome, "--headless", "--disable-gpu",
-            f"--print-to-pdf={body_pdf}",
-            f"--header-template={header_html}",
-            f"--footer-template={footer_html}",
+            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+            f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
         ]
-        if book_title:
-            chrome_cmd.insert(3, f"--title={book_title}")
-        # margin: top 1.5cm for header, bottom 1.2cm for footer
-        chrome_cmd.insert(3, "--margin-top=1.8cm")
-        chrome_cmd.insert(3, "--margin-bottom=1.5cm")
-        chrome_cmd.append(html_path.resolve().as_uri())
         completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
         if completed.returncode != 0:
             raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
 
-        # 从 HTML 解析所有 <h1>-<h3> 元素，按字符比例估算页码
+        # 从 HTML 解析标题位置（用于书签 + 页眉章映射）
         html_headings = _parse_html_headings(html_path, body_pdf)
 
         if divider_ids:
@@ -329,9 +314,8 @@ def _add_outlines_and_page_numbers(
     reader = PdfReader(str(pdf_path))
     total = len(reader.pages)
 
-    # 调整页码（加封面偏移）
+    # 构建书签 + 页眉章映射
     heading_pages: list[tuple[int, str, int]] = []
-    # 仅过滤分部标题和书籍名，其余全部保留走自然嵌套
     for lv, title, body_page in html_headings:
         if title == "从工业软件到 AI 智能体":
             continue
@@ -346,7 +330,21 @@ def _add_outlines_and_page_numbers(
 
     heading_pages.sort(key=lambda x: x[0])
 
-    # 去重并排序
+    # 页眉章名：从上一条 H1 继承章节名
+    page_chapter: dict[int, str] = {}
+    current_chapter = ""
+    for page_num, title, level in heading_pages:
+        if level == 1:
+            current_chapter = title
+        page_chapter[page_num] = current_chapter
+    last = ""
+    for i in range(total):
+        if i in page_chapter:
+            last = page_chapter[i]
+        elif last:
+            page_chapter[i] = last
+
+    # 去重书签
     seen: set[tuple[str, int]] = set()
     unique: list[tuple[int, str, int]] = []
     for p, t, lv in sorted(heading_pages, key=lambda x: x[0]):
@@ -355,16 +353,29 @@ def _add_outlines_and_page_numbers(
             seen.add(key)
             unique.append((p, t, lv))
 
-    # 复制页面 + 书签（页码由 Chrome header/footer 模板处理）
+    # 写 PDF：页面 + 页眉页脚 FreeText + 书签
     writer = PdfWriter()
-    for page in reader.pages:
+    for i, page in enumerate(reader.pages):
         writer.add_page(page)
+        if i < cover_offset:
+            continue
 
-    # 统一嵌套处理，"目录"之后不入栈（避免章节被误嵌套到目录下）
+        # 页脚页码（右下角）
+        writer.add_annotation(page_number=i, annotation=_build_page_annot(
+            str(i + 1), rect=(525, 18, 558, 32), align=2,
+        ))
+        # 页眉章节名（居中，用 PingFang SC 渲染中文）
+        ch = page_chapter.get(i, "")
+        if ch:
+            writer.add_annotation(page_number=i, annotation=_build_page_annot(
+                ch[:40], rect=(170, 814, 426, 828), font_size=7, align=1,
+                font_name="PingFang SC",
+            ))
+
+    # 书签层级
     stack: list[tuple[object, int]] = []
     for page_num, title, level in unique:
         if title == "目录":
-            # "目录" 之后清空栈，确保章节从顶层重新开始
             while stack:
                 stack.pop()
         while stack and stack[-1][1] >= level:
@@ -377,26 +388,33 @@ def _add_outlines_and_page_numbers(
     with open(pdf_path, "wb") as f:
         writer.write(f)
 
-    logger.info("PDF 书签: %d 条, %d 页", len(unique), total)
+    logger.info("PDF 书签 + 页眉页脚: %d 条, %d 页", len(unique), total)
 
 
-def _chrome_header_footer_template(body: str) -> str:
-    """构建 Chrome headless 的 --header-template / --footer-template 字符串。"""
-    css = (
-        "margin:0;padding:0 1.2cm;width:100%;"
-        "font-family:'PingFang SC','Microsoft YaHei',sans-serif;"
-        "font-size:8pt;color:#888;"
+def _build_page_annot(
+    text: str,
+    rect: tuple[float, float, float, float],
+    font_size: int = 8,
+    align: int = 0,
+    font_name: str = "/HeBo",
+) -> dict[str, object]:
+    """构建 FreeText 注释（无边框），用于页眉/页脚。align: 0=L 1=C 2=R"""
+    from pypdf.generic import (
+        ArrayObject, FloatObject, NameObject, NumberObject, TextStringObject,
     )
-    return (
-        f'<div style="{css}">'
-        f'<style>'
-        f'.header{{text-align:center;border-bottom:0.5pt solid #ccc;padding-bottom:4pt;}}'
-        f'.footer{{text-align:center;border-top:0.5pt solid #ccc;padding-top:4pt;}}'
-        f'.title{{}}'
-        f'</style>'
-        f'{body}'
-        f'</div>'
-    )
+    return {
+        NameObject("/Type"): NameObject("/Annot"),
+        NameObject("/Subtype"): NameObject("/FreeText"),
+        NameObject("/Contents"): TextStringObject(text),
+        NameObject("/DA"): TextStringObject(f"{font_name} {font_size} Tf 0.45 g"),
+        NameObject("/Rect"): ArrayObject(
+            [FloatObject(rect[0]), FloatObject(rect[1]),
+             FloatObject(rect[2]), FloatObject(rect[3])]),
+        NameObject("/F"): NumberObject(4),
+        NameObject("/Border"): ArrayObject(
+            [NumberObject(0), NumberObject(0), NumberObject(0)]),
+        NameObject("/Q"): NumberObject(align),
+    }
 
 
 def generate_cover_image(
