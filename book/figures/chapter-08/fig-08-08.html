@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图8-8 物联网微隔离架构示意图</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; }
+    body { background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +16,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图8-8 物联网微隔离架构示意图</title>
   <desc id="desc">读者应理解微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。</desc>
@@ -48,15 +50,12 @@
   <line x1="880" y1="485" x2="880" y2="435" stroke="#0F766E" stroke-width="2.5" stroke-dasharray="7,4" marker-end="url(#bp-arrow-teal)" />
   <!-- r1→r2 物理设备层→接入网关层：设备接入（实线蓝） -->
   <line x1="700" y1="640" x2="700" y2="590" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)" />
-  <!-- r4→r1 全局策略编排层→物理设备层：应急隔离，策略直达设备（虚线青绿） -->
-  <polyline points="1480,227 1582,227 1582,692 1481,692" fill="none" stroke="#0F766E" stroke-width="2.5" stroke-dasharray="7,4" marker-end="url(#bp-arrow-teal)" />
 
   <!-- 连线标注 -->
   <text x="714" y="310" fill="#2563EB" font-size="12" font-weight="600">策略下发</text>
   <text x="714" y="465" fill="#2563EB" font-size="12" font-weight="600">规则下发</text>
   <text x="894" y="465" fill="#0F766E" font-size="12" font-weight="600">状态上报</text>
   <text x="714" y="620" fill="#2563EB" font-size="12" font-weight="600">设备接入</text>
-  <text x="1596" y="460" fill="#0F766E" font-size="13" font-weight="600" transform="rotate(90,1596,460)">应急隔离</text>
 
   <!-- 全局策略编排层（layer4） -->
   <rect x="420" y="175" width="1060" height="105" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5" />
@@ -66,14 +65,14 @@
   <!-- 微分段控制层（layer3，核心决策点） -->
   <rect x="420" y="330" width="1060" height="105" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" />
   <text x="950" y="356" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">微分段控制层</text>
-  <text x="950" y="378" fill="#475569" font-size="12" text-anchor="middle">SDN 微分段控制器 · 逐设备下发隔离规则</text>
+  <text x="950" y="378" fill="#475569" font-size="12" text-anchor="middle">SDN 微分段控制器 · 生成逐设备隔离规则</text>
   <rect x="1358" y="340" width="108" height="24" rx="12" fill="#FFF7ED" stroke="#F97316"/>
   <text x="1412" y="357" fill="#F97316" font-size="11" font-weight="600" text-anchor="middle">核心决策点</text>
 
   <!-- 接入网关层（layer2） -->
   <rect x="420" y="485" width="1060" height="105" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
   <text x="950" y="511" fill="#0F172A" font-size="16" font-weight="600" text-anchor="middle">接入网关层</text>
-  <text x="950" y="533" fill="#475569" font-size="12" text-anchor="middle">聚合接入 · 身份认证 · 流量转发</text>
+  <text x="950" y="533" fill="#475569" font-size="12" text-anchor="middle">策略执行点 · 身份认证 · 流量阻断与转发</text>
 
   <!-- 物理设备层（layer1，主链路起点，一对多被隔离对象） -->
   <rect x="420" y="640" width="1060" height="105" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
@@ -95,7 +94,7 @@
   <text x="118" y="826" fill="#64748B" font-size="10.5" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">策略或配置数据的流向（实线）</text>
   <line x1="80" y1="846" x2="108" y2="846" stroke="#0F766E" stroke-width="2.5" stroke-dasharray="7,4" marker-end="url(#bp-arrow-teal)" />
   <text x="118" y="850" fill="#64748B" font-size="10.5" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">控制咨询或动态调整的流向（虚线）</text>
-  <text x="900" y="878" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-8 物联网微隔离架构示意图：四层模型从设备到策略编排依次递进，微分段控制层是核心决策点；策略直达设备的应急隔离动态调整，阻断被攻陷设备在同一网络内的横向移动。</text>
+  <text x="900" y="878" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-8 编排层只向微分段控制器下发策略，控制器再由网关等执行点实施隔离；编排不直达设备。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

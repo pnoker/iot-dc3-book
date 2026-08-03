@@ -15,7 +15,7 @@
 </head>
 <body>
   <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+    <svg data-figure-root="fig-10-08" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图10-8 预测性维护闭环数据流（示意）</title>
   <desc id="desc">展示从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式与决策点；执行结果沿虚线反馈回路回写设备档案，形成持续改进的闭环。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
@@ -29,109 +29,109 @@
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图10-8 预测性维护闭环数据流（示意）</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式与决策点；工单生成不是终点，而是反馈起点。</text>
+  <text x="82" y="70" fill="#64748B" font-size="13">从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式与决策点；工单生成不是终点，而是反馈起点。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+  <text x="1690" y="44" fill="#64748B" font-size="13" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart">
   <!-- ===== 域（Region）泳道 ===== -->
   <!-- 设备与边缘域 -->
   <rect x="70" y="120" width="330" height="620" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8,5"/>
   <text x="235" y="150" fill="#0F766E" font-size="16" font-weight="700" text-anchor="middle">设备与边缘域</text>
-  <text x="235" y="172" fill="#64748B" font-size="12" text-anchor="middle">现场异构资源边界</text>
+  <text x="235" y="172" fill="#64748B" font-size="13" text-anchor="middle">现场异构资源边界</text>
   <!-- 平台服务域（特征提取） -->
   <rect x="400" y="120" width="400" height="620" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,5"/>
   <text x="600" y="150" fill="#2563EB" font-size="16" font-weight="700" text-anchor="middle">平台服务域</text>
-  <text x="600" y="172" fill="#64748B" font-size="12" text-anchor="middle">核心服务能力边界</text>
+  <text x="600" y="172" fill="#64748B" font-size="13" text-anchor="middle">核心服务能力边界</text>
   <!-- 智能决策域 -->
   <rect x="800" y="120" width="600" height="620" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" stroke-dasharray="8,5"/>
   <text x="1100" y="150" fill="#F97316" font-size="16" font-weight="700" text-anchor="middle">智能决策域</text>
-  <text x="1100" y="172" fill="#64748B" font-size="12" text-anchor="middle">模型 · 规则 · Agent</text>
+  <text x="1100" y="172" fill="#64748B" font-size="13" text-anchor="middle">模型 · 规则 · Agent</text>
   <!-- 平台服务域（执行） -->
   <rect x="1400" y="120" width="330" height="620" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,5"/>
   <text x="1565" y="150" fill="#2563EB" font-size="16" font-weight="700" text-anchor="middle">平台服务域</text>
-  <text x="1565" y="172" fill="#64748B" font-size="12" text-anchor="middle">核心服务能力边界</text>
+  <text x="1565" y="172" fill="#64748B" font-size="13" text-anchor="middle">核心服务能力边界</text>
 
   <!-- ===== ① 采集层（边缘域） ===== -->
   <rect x="110" y="270" width="230" height="190" rx="10" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
   <rect x="128" y="296" width="4" height="18" fill="#0F766E"/>
   <text x="142" y="312" fill="#0F172A" font-size="17" font-weight="700">采集层</text>
-  <rect x="262" y="286" width="64" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="294" y="300" fill="#0F766E" font-size="11" text-anchor="middle">边缘域</text>
+  <rect x="262" y="286" width="64" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="294" y="300" fill="#0F766E" font-size="13" text-anchor="middle">边缘域</text>
   <text x="142" y="332" fill="#64748B" font-size="12.5">位号值流</text>
   <line x1="130" y1="344" x2="320" y2="344" stroke="#E2E8F0"/>
   <text x="142" y="368" fill="#475569" font-size="13">PLC / 振动传感器</text>
   <text x="142" y="390" fill="#475569" font-size="13">信号 → 位号值流</text>
   <text x="142" y="412" fill="#64748B" font-size="12.5">输出格式</text>
-  <rect x="152" y="424" width="146" height="26" rx="13" fill="#ECFDF5" stroke="#0F766E"/><text x="225" y="442" fill="#0F766E" font-size="12" font-weight="700" text-anchor="middle">PointValue</text>
+  <rect x="152" y="424" width="146" height="26" rx="13" fill="#ECFDF5" stroke="#0F766E"/><text x="225" y="442" fill="#0F766E" font-size="13" font-weight="700" text-anchor="middle">PointValue</text>
 
   <!-- ===== ② 特征提取层（平台域） ===== -->
   <rect x="435" y="270" width="280" height="190" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
   <rect x="453" y="296" width="4" height="18" fill="#2563EB"/>
   <text x="467" y="312" fill="#0F172A" font-size="17" font-weight="700">特征提取层</text>
-  <rect x="613" y="286" width="64" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="645" y="300" fill="#2563EB" font-size="11" text-anchor="middle">平台域</text>
+  <rect x="613" y="286" width="64" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="645" y="300" fill="#2563EB" font-size="13" text-anchor="middle">平台域</text>
   <text x="467" y="332" fill="#64748B" font-size="12.5">时域 / 频域特征</text>
   <line x1="455" y1="344" x2="695" y2="344" stroke="#E2E8F0"/>
   <text x="467" y="368" fill="#475569" font-size="13">时域：RMS · 峰值 · 峭度</text>
   <text x="467" y="390" fill="#475569" font-size="13">频域：FFT 包络谱</text>
   <text x="467" y="412" fill="#64748B" font-size="12.5">输出格式</text>
-  <rect x="490" y="424" width="170" height="26" rx="13" fill="#EFF6FF" stroke="#2563EB"/><text x="575" y="442" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">FeatureVector</text>
+  <rect x="490" y="424" width="170" height="26" rx="13" fill="#EFF6FF" stroke="#2563EB"/><text x="575" y="442" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">FeatureVector</text>
 
   <!-- ===== ③ 健康评估层（智能域） ===== -->
   <rect x="820" y="270" width="230" height="190" rx="10" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
   <rect x="838" y="296" width="4" height="18" fill="#F97316"/>
   <text x="852" y="312" fill="#0F172A" font-size="17" font-weight="700">健康评估层</text>
-  <rect x="972" y="286" width="64" height="20" rx="10" fill="#FFF7ED" stroke="#F97316"/><text x="1004" y="300" fill="#F97316" font-size="11" text-anchor="middle">智能域</text>
+  <rect x="972" y="286" width="64" height="20" rx="10" fill="#FFF7ED" stroke="#F97316"/><text x="1004" y="300" fill="#F97316" font-size="13" text-anchor="middle">智能域</text>
   <text x="852" y="332" fill="#64748B" font-size="12.5">HI + RUL 概率</text>
   <line x1="840" y1="344" x2="1030" y2="344" stroke="#E2E8F0"/>
   <text x="852" y="368" fill="#475569" font-size="13">健康指数 HI</text>
   <text x="852" y="390" fill="#475569" font-size="13">RUL 预测（天 / 小时）</text>
   <text x="852" y="412" fill="#64748B" font-size="12.5">含置信区间 · 输出格式</text>
-  <rect x="880" y="424" width="110" height="26" rx="13" fill="#FFF7ED" stroke="#F97316"/><text x="935" y="442" fill="#F97316" font-size="12" font-weight="700" text-anchor="middle">HI + RUL</text>
+  <rect x="880" y="424" width="110" height="26" rx="13" fill="#FFF7ED" stroke="#F97316"/><text x="935" y="442" fill="#F97316" font-size="13" font-weight="700" text-anchor="middle">HI + RUL</text>
 
   <!-- ===== ④ 决策层（智能域 · 菱形） ===== -->
   <path d="M 1120,365 L 1230,270 L 1340,365 L 1230,460 Z" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="1230" y="336" fill="#0F172A" font-size="17" font-weight="700" text-anchor="middle">决策层</text>
   <text x="1230" y="360" fill="#475569" font-size="12.5" text-anchor="middle">规则引擎</text>
-  <text x="1230" y="382" fill="#475569" font-size="12" text-anchor="middle">人工确认（可选）</text>
-  <text x="1230" y="404" fill="#F97316" font-size="12" font-weight="700" text-anchor="middle">→ 维护建议</text>
+  <text x="1230" y="382" fill="#475569" font-size="13" text-anchor="middle">人工确认（可选）</text>
+  <text x="1230" y="404" fill="#F97316" font-size="13" font-weight="700" text-anchor="middle">→ 维护建议</text>
 
   <!-- ===== ⑤ 执行层（平台域） ===== -->
   <rect x="1450" y="270" width="250" height="190" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
   <rect x="1468" y="296" width="4" height="18" fill="#2563EB"/>
   <text x="1482" y="312" fill="#0F172A" font-size="17" font-weight="700">执行层</text>
-  <rect x="1628" y="286" width="64" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="1660" y="300" fill="#2563EB" font-size="11" text-anchor="middle">平台域</text>
+  <rect x="1628" y="286" width="64" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="1660" y="300" fill="#2563EB" font-size="13" text-anchor="middle">平台域</text>
   <text x="1482" y="332" fill="#64748B" font-size="12.5">工单 API → MES</text>
   <line x1="1470" y1="344" x2="1680" y2="344" stroke="#E2E8F0"/>
   <text x="1482" y="368" fill="#475569" font-size="13">工单系统 API</text>
   <text x="1482" y="390" fill="#475569" font-size="13">→ MES / ERP → 排程变更</text>
   <text x="1482" y="412" fill="#475569" font-size="13">→ 现场执行 → 回执</text>
-  <rect x="1530" y="424" width="90" height="26" rx="13" fill="#EFF6FF" stroke="#2563EB"/><text x="1575" y="442" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">工单回执</text>
+  <rect x="1530" y="424" width="90" height="26" rx="13" fill="#EFF6FF" stroke="#2563EB"/><text x="1575" y="442" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">工单回执</text>
 
   <!-- ===== 主链路：实线箭头（确定性数据流） ===== -->
   <line x1="340" y1="365" x2="435" y2="365" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="387" y="350" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">PointValue</text>
+  <text x="387" y="350" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">PointValue</text>
   <line x1="715" y1="365" x2="820" y2="365" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="767" y="350" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">FeatureVector</text>
+  <text x="767" y="350" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">FeatureVector</text>
   <line x1="1050" y1="365" x2="1120" y2="365" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="1085" y="350" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">HI + RUL</text>
+  <text x="1085" y="350" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">HI + RUL</text>
   <line x1="1340" y1="365" x2="1450" y2="365" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <text x="1395" y="350" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">MaintenanceOrder</text>
+  <text x="1395" y="350" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">MaintenanceOrder</text>
 
   <!-- ===== 反馈回路卡片（边缘域） ===== -->
   <rect x="110" y="575" width="240" height="125" rx="10" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
   <rect x="128" y="601" width="4" height="18" fill="#0F766E"/>
   <text x="142" y="617" fill="#0F172A" font-size="17" font-weight="700">反馈回路</text>
-  <rect x="274" y="591" width="64" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="306" y="605" fill="#0F766E" font-size="11" text-anchor="middle">边缘域</text>
+  <rect x="274" y="591" width="64" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="306" y="605" fill="#0F766E" font-size="13" text-anchor="middle">边缘域</text>
   <text x="142" y="637" fill="#64748B" font-size="12.5">结果回写</text>
   <line x1="130" y1="649" x2="330" y2="649" stroke="#E2E8F0"/>
   <text x="142" y="672" fill="#475569" font-size="12.5">执行结果回写设备档案</text>
-  <text x="142" y="692" fill="#475569" font-size="12">（已完成 / 未完成 / 备件缺货）</text>
+  <text x="142" y="692" fill="#475569" font-size="13">（已完成 / 未完成 / 备件缺货）</text>
 
   <!-- ===== 反馈回路：虚线加粗箭头 ===== -->
   <path d="M 1710,460 L 1710,730 L 230,730 L 230,700" fill="none" stroke="#0F766E" stroke-width="3" stroke-dasharray="10,6" marker-end="url(#bp-arrow-teal)"/>
-  <text x="900" y="748" fill="#0F766E" font-size="12" font-weight="700" text-anchor="middle">结果回执</text>
+  <text x="900" y="748" fill="#0F766E" font-size="13" font-weight="700" text-anchor="middle">结果回执</text>
   <path d="M 230,575 L 230,460" fill="none" stroke="#0F766E" stroke-width="3" stroke-dasharray="10,6" marker-end="url(#bp-arrow-teal)"/>
-  <text x="245" y="520" fill="#0F766E" font-size="12" font-weight="700">回写设备档案</text>
+  <text x="245" y="520" fill="#0F766E" font-size="13" font-weight="700">回写设备档案</text>
 
   <!-- ===== 底部注释卡：流式批处理（关系1） ===== -->
   <rect x="435" y="575" width="325" height="125" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
@@ -142,7 +142,7 @@
 
   <!-- ===== 调用框 1：人工确认接口（可选项） ===== -->
   <rect x="820" y="575" width="530" height="125" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
-  <circle cx="846" cy="599" r="9" fill="#D97706"/><text x="846" y="604" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">!</text>
+  <circle cx="846" cy="599" r="9" fill="#D97706"/><text x="846" y="604" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle">!</text>
   <text x="866" y="604" fill="#92400E" font-size="13.5" font-weight="700">人工确认接口（可选）</text>
   <line x1="844" y1="616" x2="1330" y2="616" stroke="#FDE68A"/>
   <text x="844" y="642" fill="#475569" font-size="12.5">当 HI 或 RUL 处于临界区时，先通知工程师</text>
@@ -151,7 +151,7 @@
 
   <!-- ===== 调用框 2：反馈回路的价值 ===== -->
   <rect x="1450" y="575" width="250" height="125" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
-  <circle cx="1476" cy="599" r="9" fill="#D97706"/><text x="1476" y="604" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">!</text>
+  <circle cx="1476" cy="599" r="9" fill="#D97706"/><text x="1476" y="604" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle">!</text>
   <text x="1496" y="604" fill="#92400E" font-size="13.5" font-weight="700">反馈回路的价值</text>
   <line x1="1474" y1="616" x2="1680" y2="616" stroke="#FDE68A"/>
   <text x="1474" y="642" fill="#475569" font-size="12.5">执行结果用于校准 HI 阈值</text>
@@ -160,13 +160,13 @@
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="788" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
-  <text x="104" y="801" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">青绿=设备与边缘域</text>
+  <text x="104" y="801" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">青绿=设备与边缘域</text>
   <rect x="252" y="788" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="276" y="801" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">蓝=平台服务域</text>
+  <text x="276" y="801" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">蓝=平台服务域</text>
   <rect x="424" y="788" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-  <text x="448" y="801" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">橙=智能决策域</text>
-  <text x="80" y="822" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">实线箭头=确定性数据流 · 虚线加粗箭头=反馈回路</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="12" font-weight="600" text-anchor="middle">图10-8 预测性维护闭环的典型数据流（示意）：从原始振动信号到维护工单生成，经过五层转换，每层都有明确的输入输出格式和系统边界。图中阈值和窗口为示例，需根据具体设备校准。</text>
+  <text x="448" y="801" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">橙=智能决策域</text>
+  <text x="80" y="822" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">实线箭头=确定性数据流 · 虚线加粗箭头=反馈回路</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">图10-8 预测性维护闭环的典型数据流（示意）：从原始振动信号到维护工单生成，经过五层转换，每层都有明确的输入输出格式和系统边界。图中阈值和窗口为示例，需根据具体设备校准。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

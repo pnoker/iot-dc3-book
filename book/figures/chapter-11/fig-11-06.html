@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图11-6 城市物联网百万级接入系统架构图</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    * export contract: 1200px logical width; static, offline, no script *
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +16,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图11-6 城市物联网百万级接入系统架构图</title>
   <desc id="desc">读者应理解城市物联网百万级接入系统架构图中的主链路、责任边界和工程取舍。</desc>
@@ -43,15 +45,15 @@
   <text x="1210" y="185" fill="#0F172A" font-size="14" font-weight="600">数据资产与业务应用域</text>
 
   <!-- 连线（先于卡片） -->
-  <!-- 1. 负载均衡器 -> MQTT -->
-  <line x1="1110" y1="210" x2="680" y2="290" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="850" y="232" width="90" height="20" rx="4" fill="white" opacity="0.9"/>
-  <text x="895" y="245" fill="#0F172A" font-size="11" text-anchor="middle">连接分配（IP哈希）</text>
+  <!-- 1. 负载均衡器 -> MQTT：连线限定在卡片间隙 -->
+  <line x1="895" y1="240" x2="895" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="920" y="240" width="130" height="20" rx="4" fill="white" opacity="0.95"/>
+  <text x="985" y="253" fill="#0F172A" font-size="11" text-anchor="middle">连接分配（IP哈希）</text>
 
-  <!-- 2. MQTT -> 消息队列 -->
-  <line x1="1110" y1="290" x2="680" y2="370" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="850" y="312" width="80" height="20" rx="4" fill="white" opacity="0.9"/>
-  <text x="890" y="325" fill="#0F172A" font-size="11" text-anchor="middle">消息发布</text>
+  <!-- 2. MQTT -> Kafka：连线限定在卡片间隙 -->
+  <line x1="895" y1="320" x2="895" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="920" y="320" width="80" height="20" rx="4" fill="white" opacity="0.95"/>
+  <text x="960" y="333" fill="#0F172A" font-size="11" text-anchor="middle">消息发布</text>
 
   <!-- 3. 消息队列 -> 流处理引擎（垂直） -->
   <line x1="895" y1="400" x2="895" y2="420" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
@@ -97,8 +99,8 @@
 
   <!-- 消息队列 -->
   <rect x="680" y="340" width="430" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="895" y="368" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">消息队列</text>
-  <text x="895" y="386" fill="#64748B" font-size="11" text-anchor="middle">(Kafka)</text>
+  <text x="895" y="368" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">Kafka 消息队列</text>
+  <text x="895" y="386" fill="#64748B" font-size="11" text-anchor="middle">持久化消息总线</text>
 
   <!-- 流处理引擎 -->
   <rect x="680" y="420" width="430" height="60" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
@@ -117,13 +119,13 @@
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：数据流</text>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头：数据流</text>
   <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：控制流</text>
+  <text x="659" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：控制流</text>
   <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">圆形节点：终端设备</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-6 城市物联网百万级接入系统架构图</text>
-  <text x="900" y="870" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">设备侧发送心跳和订阅恢复指令。</text>
+  <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">圆形节点：终端设备</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-6 城市物联网百万级接入系统架构图</text>
+  <text x="900" y="870" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">设备侧发送心跳和订阅恢复指令。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

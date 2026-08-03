@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图7-6 Agentic Center 四层架构</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; }
+    body { background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +16,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图7-6 Agentic Center 四层架构</title>
   <desc id="desc">Agentic Center 通过 Spring AI Tool、Facade/gRPC 与平台中心协作；会话和平台数据存于 PostgreSQL，设备命令、位号值、状态和回执通过 Data、RabbitMQ 与协议 Driver 流转。</desc>
@@ -59,19 +61,19 @@
   <!-- L1 -->
   <rect x="76" y="165" width="144" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <text x="148" y="187" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">用户交互层</text>
-  <text x="148" y="204" font-size="9" fill="#64748B" text-anchor="middle">User Interaction</text>
+  <text x="148" y="204" font-size="11" fill="#64748B" text-anchor="middle">User Interaction</text>
   <!-- L2 -->
   <rect x="76" y="355" width="144" height="50" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
   <text x="148" y="377" font-size="13" font-weight="700" fill="#F59E0B" text-anchor="middle">AI Agent 层</text>
-  <text x="148" y="394" font-size="9" fill="#64748B" text-anchor="middle">dc3-center-agentic</text>
+  <text x="148" y="394" font-size="11" fill="#64748B" text-anchor="middle">dc3-center-agentic</text>
   <!-- L3 -->
   <rect x="76" y="575" width="144" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <text x="148" y="597" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">平台服务层</text>
-  <text x="148" y="614" font-size="9" fill="#64748B" text-anchor="middle">Platform Services</text>
+  <text x="148" y="614" font-size="11" fill="#64748B" text-anchor="middle">Platform Services</text>
   <!-- L4 -->
   <rect x="76" y="795" width="144" height="50" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
   <text x="148" y="817" font-size="13" font-weight="700" fill="#10B981" text-anchor="middle">数据设备层</text>
-  <text x="148" y="834" font-size="9" fill="#64748B" text-anchor="middle">Data / Device</text>
+  <text x="148" y="834" font-size="11" fill="#64748B" text-anchor="middle">Data / Device</text>
 
   <!-- L2 "新增" badge -->
   <rect x="1400" y="300" width="56" height="22" rx="11" fill="#F59E0B"/>
@@ -81,73 +83,73 @@
   <g>
     <rect x="240" y="155" width="370" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <text x="258" y="185" font-size="15" font-weight="700" fill="#0F172A">Web 对话窗口</text>
-    <text x="258" y="205" font-size="10" fill="#475569">Chat UI · 浏览器端</text>
-    <text x="258" y="223" font-size="9" fill="#64748B">自然语言交互入口</text>
+    <text x="258" y="205" font-size="11" fill="#475569">Chat UI · 浏览器端</text>
+    <text x="258" y="223" font-size="11" fill="#64748B">自然语言交互入口</text>
   </g>
   <g>
     <rect x="665" y="155" width="370" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <text x="683" y="185" font-size="15" font-weight="700" fill="#0F172A">外部客户端</text>
-    <text x="683" y="205" font-size="10" fill="#475569">REST API · OpenAPI</text>
-    <text x="683" y="223" font-size="9" fill="#64748B">第三方系统接入</text>
+    <text x="683" y="205" font-size="11" fill="#475569">REST API · OpenAPI</text>
+    <text x="683" y="223" font-size="11" fill="#64748B">第三方系统接入</text>
   </g>
   <g>
     <rect x="1090" y="155" width="370" height="80" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <text x="1108" y="185" font-size="15" font-weight="700" fill="#0F172A">管理控制台</text>
-    <text x="1108" y="205" font-size="10" fill="#475569">Admin Console</text>
-    <text x="1108" y="223" font-size="9" fill="#64748B">配置与运维管理</text>
+    <text x="1108" y="205" font-size="11" fill="#475569">Admin Console</text>
+    <text x="1108" y="223" font-size="11" fill="#64748B">配置与运维管理</text>
   </g>
 
   <!-- ============ L2 COMPONENT CARDS (orange, emphasized) ============ -->
   <g>
     <rect x="240" y="325" width="270" height="110" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
     <text x="256" y="355" font-size="15" font-weight="700" fill="#0F172A">ChatClient</text>
-    <text x="256" y="380" font-size="10" fill="#475569">Spring AI 对话入口</text>
-    <text x="256" y="400" font-size="9" fill="#64748B">构造模型请求 / 接收推理结果</text>
-    <text x="256" y="418" font-size="9" fill="#F59E0B">Advisor · Tool Call</text>
+    <text x="256" y="380" font-size="11" fill="#475569">Spring AI 对话入口</text>
+    <text x="256" y="400" font-size="11" fill="#64748B">构造模型请求 / 接收推理结果</text>
+    <text x="256" y="418" font-size="11" fill="#F59E0B">Advisor · Tool Call</text>
   </g>
   <g>
     <rect x="556" y="325" width="270" height="110" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
     <text x="572" y="355" font-size="15" font-weight="700" fill="#0F172A">@Tool 工具注册</text>
-    <text x="572" y="380" font-size="10" fill="#475569">Function Calling</text>
-    <text x="572" y="400" font-size="9" fill="#64748B">8 类 Tool 显式注册</text>
-    <text x="572" y="418" font-size="9" fill="#64748B">MethodToolCallbackProvider</text>
+    <text x="572" y="380" font-size="11" fill="#475569">Function Calling</text>
+    <text x="572" y="400" font-size="11" fill="#64748B">8 类 Tool 显式注册</text>
+    <text x="572" y="418" font-size="11" fill="#64748B">MethodToolCallbackProvider</text>
   </g>
   <g>
     <rect x="872" y="325" width="270" height="110" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
     <text x="888" y="355" font-size="15" font-weight="700" fill="#0F172A">会话管理</text>
-    <text x="888" y="380" font-size="10" fill="#475569">Session / Memory</text>
-    <text x="888" y="400" font-size="9" fill="#64748B">MessageWindowChatMemory</text>
-    <text x="888" y="418" font-size="9" fill="#64748B">Session / Message / Action</text>
+    <text x="888" y="380" font-size="11" fill="#475569">Session / Memory</text>
+    <text x="888" y="400" font-size="11" fill="#64748B">MessageWindowChatMemory</text>
+    <text x="888" y="418" font-size="11" fill="#64748B">Session / Message / Action</text>
   </g>
   <g>
     <rect x="1188" y="325" width="270" height="110" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
     <text x="1204" y="355" font-size="15" font-weight="700" fill="#0F172A">模型路由</text>
-    <text x="1204" y="380" font-size="10" fill="#475569">Model Routing</text>
-    <text x="1204" y="400" font-size="9" fill="#64748B">按请求模型选择 Provider</text>
-    <text x="1204" y="418" font-size="9" fill="#64748B">ChatClientFactory · 模型 API</text>
+    <text x="1204" y="380" font-size="11" fill="#475569">Model Routing</text>
+    <text x="1204" y="400" font-size="11" fill="#64748B">按请求模型选择 Provider</text>
+    <text x="1204" y="418" font-size="11" fill="#64748B">ChatClientFactory · 模型 API</text>
   </g>
 
   <!-- ============ L3 COMPONENT CARDS (blue / auth=red) ============ -->
   <g>
     <rect x="240" y="545" width="370" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <text x="258" y="575" font-size="15" font-weight="700" fill="#0F172A">dc3-center-manager</text>
-    <text x="258" y="600" font-size="10" fill="#475569">设备元数据服务</text>
-    <text x="258" y="620" font-size="9" fill="#64748B">设备 / 模型 / 点位管理</text>
-    <text x="258" y="638" font-size="9" fill="#64748B">Facade/gRPC 复用管理能力</text>
+    <text x="258" y="600" font-size="11" fill="#475569">设备元数据服务</text>
+    <text x="258" y="620" font-size="11" fill="#64748B">设备 / 模型 / 点位管理</text>
+    <text x="258" y="638" font-size="11" fill="#64748B">Facade/gRPC 复用管理能力</text>
   </g>
   <g>
     <rect x="665" y="545" width="370" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
     <text x="683" y="575" font-size="15" font-weight="700" fill="#0F172A">dc3-center-data</text>
-    <text x="683" y="600" font-size="10" fill="#475569">位号实时值服务</text>
-    <text x="683" y="620" font-size="9" fill="#64748B">读写设备位号数据</text>
-    <text x="683" y="638" font-size="9" fill="#64748B">Facade/gRPC · RabbitMQ</text>
+    <text x="683" y="600" font-size="11" fill="#475569">位号实时值服务</text>
+    <text x="683" y="620" font-size="11" fill="#64748B">读写设备位号数据</text>
+    <text x="683" y="638" font-size="11" fill="#64748B">Facade/gRPC · RabbitMQ</text>
   </g>
   <g>
     <rect x="1090" y="545" width="370" height="110" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
     <text x="1108" y="575" font-size="15" font-weight="700" fill="#0F172A">dc3-center-auth</text>
-    <text x="1108" y="600" font-size="10" fill="#475569">RBAC 鉴权服务</text>
-    <text x="1108" y="620" font-size="9" fill="#64748B">用户 / 租户 / 权限上下文</text>
-    <text x="1108" y="638" font-size="9" fill="#E11D48">已认证主体进入 ToolContext</text>
+    <text x="1108" y="600" font-size="11" fill="#475569">RBAC 鉴权服务</text>
+    <text x="1108" y="620" font-size="11" fill="#64748B">用户 / 租户 / 权限上下文</text>
+    <text x="1108" y="638" font-size="11" fill="#E11D48">已认证主体进入 ToolContext</text>
   </g>
 
   <!-- ============ L4 COMPONENT CARDS (green, with icons) ============ -->
@@ -157,8 +159,8 @@
     <path d="M 260,798 L 260,842 A 25,8 0 0 0 310,842 L 310,798 Z" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
     <ellipse cx="285" cy="798" rx="25" ry="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
     <text x="326" y="800" font-size="15" font-weight="700" fill="#0F172A">PostgreSQL</text>
-    <text x="326" y="822" font-size="10" fill="#475569">平台与 Agentic 持久化</text>
-    <text x="326" y="842" font-size="9" fill="#64748B">元数据 / 历史值 / 会话 / Action</text>
+    <text x="326" y="822" font-size="11" fill="#475569">平台与 Agentic 持久化</text>
+    <text x="326" y="842" font-size="11" fill="#64748B">元数据 / 历史值 / 会话 / Action</text>
   </g>
   <!-- RabbitMQ -->
   <g>
@@ -166,8 +168,8 @@
     <path d="M 685,798 L 685,842 A 25,8 0 0 0 735,842 L 735,798 Z" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
     <ellipse cx="710" cy="798" rx="25" ry="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
     <text x="751" y="800" font-size="15" font-weight="700" fill="#0F172A">RabbitMQ</text>
-    <text x="751" y="822" font-size="10" fill="#475569">Data ↔ Driver 异步消息</text>
-    <text x="751" y="842" font-size="9" fill="#64748B">命令 / 位号值 / 状态 / 回执</text>
+    <text x="751" y="822" font-size="11" fill="#475569">Data ↔ Driver 异步消息</text>
+    <text x="751" y="842" font-size="11" fill="#64748B">命令 / 位号值 / 状态 / 回执</text>
   </g>
   <!-- 物理设备 device icon -->
   <g>
@@ -179,8 +181,8 @@
     <rect x="1131" y="832" width="8" height="5" rx="1" fill="#10B981" opacity="0.6"/>
     <rect x="1144" y="832" width="8" height="5" rx="1" fill="#10B981" opacity="0.6"/>
     <text x="1176" y="800" font-size="15" font-weight="700" fill="#0F172A">协议 Driver 与设备</text>
-    <text x="1176" y="822" font-size="10" fill="#475569">Driver · PLC · Modbus · OPC UA</text>
-    <text x="1176" y="842" font-size="9" font-weight="700" fill="#E11D48">AI 只见平台归一化语义</text>
+    <text x="1176" y="822" font-size="11" fill="#475569">Driver · PLC · Modbus · OPC UA</text>
+    <text x="1176" y="842" font-size="11" font-weight="700" fill="#E11D48">AI 只见平台归一化语义</text>
   </g>
 
   <!-- ============ INTER-LAYER ARROWS ============ -->
@@ -203,7 +205,7 @@
   <text x="850" y="715" font-size="11" fill="#475569" text-anchor="middle">PostgreSQL / RabbitMQ</text>
   <!-- side note: auth does not reach devices -->
   <line x1="1275" y1="692" x2="1275" y2="725" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4 4"/>
-  <text x="1290" y="714" font-size="9" fill="#94A3B8">无数据库 / 设备旁路</text>
+  <text x="1290" y="714" font-size="11" fill="#94A3B8">无数据库 / 设备旁路</text>
 
   <!-- ============ RIGHT AUTH COLUMN (RBAC 贯穿 + callout) ============ -->
   <!-- top tag -->
@@ -244,7 +246,7 @@
   <text x="1528" y="950" font-size="11" fill="#475569">安全 / RBAC</text>
 
   <!-- ============ CAPTION ============ -->
-  <text x="900" y="990" font-size="10" fill="#94A3B8" text-anchor="middle">图7-7 Agentic Tool 经 Facade/gRPC 复用平台能力；会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转，写入另经 Action 确认。</text>
+  <text x="900" y="990" font-size="11" fill="#94A3B8" text-anchor="middle">图7-6 Agentic Tool 经 Facade/gRPC 复用平台能力；会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转，写入另经 Action 确认。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

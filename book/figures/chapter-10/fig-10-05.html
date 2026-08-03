@@ -15,9 +15,9 @@
 </head>
 <body>
   <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+    <svg data-figure-root="fig-10-05" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图10-5 OPC UA地址空间树状结构</title>
-  <desc id="desc">读者应理解OPC UA以三种引用类型区分层次：Organizes组织设备、HasComponent含变量/方法、HasProperty挂元数据。</desc>
+  <desc id="desc">OPC UA以Organizes组织设备、以HasComponent包含变量和方法；NodeId、DataType、Description属于变量节点属性，仅EngineeringUnits等附加属性通过HasProperty引用。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
@@ -30,7 +30,7 @@
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图10-5 OPC UA地址空间树状结构</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解OPC UA以三种引用类型区分层次：Organizes组织设备、HasComponent含变量/方法、HasProperty挂元数据。</text>
+  <text x="82" y="70" fill="#64748B" font-size="13">NodeId、DataType、Description 是 Variable Attributes；仅 EngineeringUnits 等附加属性使用 HasProperty</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">TOPOLOGY</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
@@ -94,42 +94,32 @@
   <text x="1020" y="492" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">复位</text>
   <text x="1020" y="514" fill="#B45309" font-size="11" font-weight="600" text-anchor="middle">方法节点 · 可远程调用</text>
 
-  <!-- ========== HasProperty 引用：变量 → 元数据（虚线） ========== -->
-  <line x1="340" y1="532" x2="230" y2="615" stroke="#94A3B8" stroke-width="1.8" stroke-dasharray="6,3" marker-end="url(#bp-arrow-line)" />
-  <line x1="340" y1="532" x2="410" y2="615" stroke="#94A3B8" stroke-width="1.8" stroke-dasharray="6,3" marker-end="url(#bp-arrow-line)" />
-  <line x1="340" y1="532" x2="590" y2="615" stroke="#94A3B8" stroke-width="1.8" stroke-dasharray="6,3" marker-end="url(#bp-arrow-line)" />
-  <line x1="340" y1="532" x2="780" y2="615" stroke="#94A3B8" stroke-width="1.8" stroke-dasharray="6,3" marker-end="url(#bp-arrow-line)" />
-  <rect x="470" y="572" width="150" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" />
-  <text x="545" y="588" fill="#64748B" font-size="11" font-weight="600" text-anchor="middle">HasProperty 挂载</text>
-
-  <!-- ========== 元数据叶子节点 ========== -->
-  <rect x="150" y="615" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" />
-  <text x="230" y="640" fill="#475569" font-size="13" font-weight="600" text-anchor="middle">NodeId</text>
-  <text x="230" y="658" fill="#64748B" font-size="11" text-anchor="middle">ns=2;i=1234</text>
-  <rect x="330" y="615" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" />
-  <text x="410" y="640" fill="#475569" font-size="13" font-weight="600" text-anchor="middle">数据类型</text>
-  <text x="410" y="658" fill="#64748B" font-size="11" text-anchor="middle">Double</text>
-  <rect x="510" y="615" width="160" height="54" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" />
-  <text x="590" y="640" fill="#475569" font-size="13" font-weight="600" text-anchor="middle">单位</text>
-  <text x="590" y="658" fill="#64748B" font-size="11" text-anchor="middle">°C</text>
-  <rect x="690" y="615" width="180" height="54" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2" />
-  <text x="780" y="640" fill="#475569" font-size="13" font-weight="600" text-anchor="middle">欧标描述</text>
-  <text x="780" y="658" fill="#64748B" font-size="11" text-anchor="middle">温度测量值</text>
+  <!-- ========== Variable Attributes 与 Property ========== -->
+  <line x1="340" y1="532" x2="340" y2="586" stroke="#475569" stroke-width="1.8" marker-end="url(#bp-arrow)" />
+  <rect x="150" y="586" width="380" height="86" rx="8" fill="#F8FAFC" stroke="#475569" stroke-width="1.5" />
+  <text x="340" y="610" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Variable Attributes</text>
+  <text x="340" y="635" fill="#475569" font-size="13" text-anchor="middle">NodeId: ns=2;i=1234　·　DataType: Double</text>
+  <text x="340" y="658" fill="#475569" font-size="13" text-anchor="middle">Description: 温度测量值</text>
+  <line x1="440" y1="532" x2="650" y2="586" stroke="#94A3B8" stroke-width="1.8" stroke-dasharray="6,3" marker-end="url(#bp-arrow-line)" />
+  <rect x="570" y="586" width="300" height="86" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" />
+  <text x="720" y="610" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">Property Node</text>
+  <text x="720" y="635" fill="#475569" font-size="13" text-anchor="middle">EngineeringUnits: °C</text>
+  <text x="720" y="658" fill="#64748B" font-size="12" text-anchor="middle">HasProperty 引用附加属性</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色框=对象节点</text>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色框=对象节点</text>
   <rect x="260" y="797" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
-  <text x="284" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色框=变量节点</text>
+  <text x="284" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">绿色框=变量节点</text>
   <rect x="440" y="797" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-  <text x="464" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色框=方法节点</text>
+  <text x="464" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色框=方法节点</text>
   <line x1="640" y1="803" x2="672" y2="803" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)"/>
-  <text x="682" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线=HasComponent</text>
+  <text x="682" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线=HasComponent</text>
   <line x1="860" y1="803" x2="892" y2="803" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#bp-arrow-line)"/>
-  <text x="902" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线=HasProperty</text>
+  <text x="902" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线=HasProperty</text>
   <line x1="1080" y1="803" x2="1112" y2="803" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="1122" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线=Organizes</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图10-5 OPC UA地址空间以树状节点组织：根节点 Objects 以 Organizes 引用组织设备对象，设备以 HasComponent 包含变量/方法节点，变量通过 HasProperty 挂接 NodeId、数据类型、单位、欧标描述等元数据，客户端连入后可直接遍历发现设备的数据结构。</text>
+  <text x="1122" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线=Organizes</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过 HasProperty 关联的附加属性必须区分。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

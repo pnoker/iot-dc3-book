@@ -15,7 +15,7 @@
 </head>
 <body>
   <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+    <svg data-figure-root="fig-10-10" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图10-10 IoT DC3设备接入与数据采集数据流</title>
   <desc id="desc">从设备接入、驱动绑定到实时上报与存储的端到端流程：Modbus TCP 位号值 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏展示。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
@@ -30,7 +30,7 @@
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图10-10 IoT DC3设备接入与数据采集数据流</text>
   <text x="82" y="70" fill="#64748B" font-size="12">SMT产线设备经 Modbus TCP 上报位号值 → Modbus驱动归一为 PointValue → 数据中心对齐写入 TimescaleDB → Grafana 大屏实时展示。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">DATAFLOW</text>
+  <text x="1690" y="44" fill="#64748B" font-size="13" text-anchor="middle" letter-spacing="1.4">DATAFLOW</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="dataflow">
   <!-- ===== 域（Region）泳道 ===== -->
@@ -47,29 +47,29 @@
   <rect x="95" y="250" width="310" height="310" rx="10" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
   <rect x="113" y="276" width="4" height="18" fill="#0F766E"/>
   <text x="127" y="292" fill="#0F172A" font-size="17" font-weight="700">SMT产线设备</text>
-  <rect x="299" y="276" width="90" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="344" y="290" fill="#0F766E" font-size="11" text-anchor="middle">边缘域</text>
+  <rect x="299" y="276" width="90" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="344" y="290" fill="#0F766E" font-size="13" text-anchor="middle">边缘域</text>
   <text x="127" y="314" fill="#64748B" font-size="12.5">回流焊炉 · 贴片机 · 锡膏印刷机</text>
   <line x1="115" y1="326" x2="385" y2="326" stroke="#E2E8F0"/>
   <rect x="120" y="340" width="8" height="8" rx="2" fill="#0F766E"/>
   <text x="134" y="349" fill="#475569" font-size="13">回流焊炉</text>
-  <text x="378" y="349" fill="#64748B" font-size="11.5" text-anchor="end">温度 · 链速</text>
+  <text x="378" y="349" fill="#64748B" font-size="13" text-anchor="end">温度 · 链速</text>
   <rect x="120" y="370" width="8" height="8" rx="2" fill="#0F766E"/>
   <text x="134" y="379" fill="#475569" font-size="13">贴片机</text>
-  <text x="378" y="379" fill="#64748B" font-size="11.5" text-anchor="end">吸嘴 · 贴装精度</text>
+  <text x="378" y="379" fill="#64748B" font-size="13" text-anchor="end">吸嘴 · 贴装精度</text>
   <rect x="120" y="400" width="8" height="8" rx="2" fill="#0F766E"/>
   <text x="134" y="409" fill="#475569" font-size="13">锡膏印刷机</text>
-  <text x="378" y="409" fill="#64748B" font-size="11.5" text-anchor="end">锡膏厚度 · 偏移</text>
+  <text x="378" y="409" fill="#64748B" font-size="13" text-anchor="end">锡膏厚度 · 偏移</text>
   <rect x="130" y="482" width="240" height="30" rx="15" fill="#ECFDF5" stroke="#0F766E"/><text x="250" y="502" fill="#0F766E" font-size="12" font-weight="700" text-anchor="middle">Modbus TCP 输出位号值</text>
 
   <!-- ===== ② 驱动服务层（数据资产域） ===== -->
   <rect x="470" y="250" width="290" height="310" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
   <rect x="488" y="276" width="4" height="18" fill="#2563EB"/>
   <text x="502" y="292" fill="#0F172A" font-size="17" font-weight="700">Modbus驱动</text>
-  <rect x="670" y="276" width="90" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="715" y="290" fill="#2563EB" font-size="11" text-anchor="middle">数据资产域</text>
+  <rect x="670" y="276" width="90" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="715" y="290" fill="#2563EB" font-size="13" text-anchor="middle">数据资产域</text>
   <text x="502" y="314" fill="#64748B" font-size="12.5">dc3-driver-modbus-tcp</text>
   <line x1="488" y1="326" x2="740" y2="326" stroke="#E2E8F0"/>
   <text x="502" y="349" fill="#475569" font-size="13">轮询设备寄存器</text>
-  <text x="740" y="349" fill="#64748B" font-size="11.5" text-anchor="end">2s 周期可配置</text>
+  <text x="740" y="349" fill="#64748B" font-size="13" text-anchor="end">2s 周期可配置</text>
   <text x="502" y="379" fill="#475569" font-size="13">归一为语义 PointValue</text>
   <text x="502" y="409" fill="#475569" font-size="13">批量读 · 整段连续地址</text>
   <rect x="500" y="482" width="230" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB"/><text x="615" y="502" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">PointValue 流</text>
@@ -78,7 +78,7 @@
   <rect x="830" y="250" width="290" height="310" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
   <rect x="848" y="276" width="4" height="18" fill="#2563EB"/>
   <text x="862" y="292" fill="#0F172A" font-size="17" font-weight="700">数据中心</text>
-  <rect x="1030" y="276" width="90" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="1075" y="290" fill="#2563EB" font-size="11" text-anchor="middle">数据资产域</text>
+  <rect x="1030" y="276" width="90" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="1075" y="290" fill="#2563EB" font-size="13" text-anchor="middle">数据资产域</text>
   <text x="862" y="314" fill="#64748B" font-size="12.5">清洗 · 对齐 · 写入</text>
   <line x1="848" y1="326" x2="1100" y2="326" stroke="#E2E8F0"/>
   <text x="862" y="349" fill="#475569" font-size="13">接收 PointValue 流</text>
@@ -100,7 +100,7 @@
   <rect x="1530" y="250" width="200" height="310" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
   <circle cx="1548" cy="285" r="5" fill="#16A34A"/>
   <text x="1565" y="292" fill="#0F172A" font-size="17" font-weight="700">Grafana大屏</text>
-  <rect x="1646" y="276" width="72" height="20" rx="10" fill="#FFFFFF" stroke="#94A3B8"/><text x="1682" y="290" fill="#64748B" font-size="11" text-anchor="middle">可视化</text>
+  <rect x="1646" y="276" width="72" height="20" rx="10" fill="#FFFFFF" stroke="#94A3B8"/><text x="1682" y="290" fill="#64748B" font-size="13" text-anchor="middle">可视化</text>
   <text x="1565" y="314" fill="#64748B" font-size="12.5">实时监控面板</text>
   <line x1="1548" y1="326" x2="1712" y2="326" stroke="#E2E8F0"/>
   <text x="1565" y="349" fill="#475569" font-size="13">按设备聚合</text>
@@ -110,20 +110,20 @@
 
   <!-- ===== 主链路：实线箭头（数据流） ===== -->
   <line x1="405" y1="405" x2="470" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="408" y="382" width="58" height="18" rx="4" fill="#FFFFFF"/><text x="437" y="395" fill="#0F172A" font-size="11" text-anchor="middle">Modbus TCP</text>
-  <text x="437" y="425" fill="#64748B" font-size="11" text-anchor="middle">2s 轮询</text>
+  <rect x="408" y="382" width="58" height="18" rx="4" fill="#FFFFFF"/><text x="437" y="395" fill="#0F172A" font-size="13" text-anchor="middle">Modbus TCP</text>
+  <text x="437" y="425" fill="#64748B" font-size="13" text-anchor="middle">2s 轮询</text>
 
   <line x1="760" y1="405" x2="830" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="767" y="382" width="56" height="18" rx="4" fill="#FFFFFF"/><text x="795" y="395" fill="#0F172A" font-size="11" text-anchor="middle">PointValue流</text>
-  <text x="795" y="425" fill="#64748B" font-size="11" text-anchor="middle">带语义</text>
+  <rect x="767" y="382" width="56" height="18" rx="4" fill="#FFFFFF"/><text x="795" y="395" fill="#0F172A" font-size="13" text-anchor="middle">PointValue流</text>
+  <text x="795" y="425" fill="#64748B" font-size="13" text-anchor="middle">带语义</text>
 
   <line x1="1120" y1="405" x2="1200" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="1138" y="382" width="44" height="18" rx="4" fill="#FFFFFF"/><text x="1160" y="395" fill="#0F172A" font-size="11" text-anchor="middle">写入</text>
-  <text x="1160" y="425" fill="#64748B" font-size="11" text-anchor="middle">清洗后</text>
+  <rect x="1138" y="382" width="44" height="18" rx="4" fill="#FFFFFF"/><text x="1160" y="395" fill="#0F172A" font-size="13" text-anchor="middle">写入</text>
+  <text x="1160" y="425" fill="#64748B" font-size="13" text-anchor="middle">清洗后</text>
 
   <line x1="1450" y1="405" x2="1530" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
-  <rect x="1462" y="382" width="56" height="18" rx="4" fill="#FFFFFF"/><text x="1490" y="395" fill="#0F172A" font-size="11" text-anchor="middle">SQL查询</text>
-  <text x="1490" y="425" fill="#64748B" font-size="11" text-anchor="middle">PostgreSQL</text>
+  <rect x="1462" y="382" width="56" height="18" rx="4" fill="#FFFFFF"/><text x="1490" y="395" fill="#0F172A" font-size="13" text-anchor="middle">SQL查询</text>
+  <text x="1490" y="425" fill="#64748B" font-size="13" text-anchor="middle">PostgreSQL</text>
 
   <!-- ===== 底部注释卡 ===== -->
   <!-- 接入准备（边缘域） -->

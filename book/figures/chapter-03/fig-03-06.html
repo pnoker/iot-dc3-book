@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图3-6 三角测量定位原理示意</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +14,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图3-6 三角测量定位原理示意</title>
   <desc id="desc">读者应理解三角测量定位原理示意中的主链路、责任边界和工程取舍。</desc>
@@ -33,121 +33,63 @@
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
   <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="architecture">
-  <!-- 网格 -->
-  <g stroke="#E2E8F0" stroke-width="0.5">
-    <line x1="80" y1="125" x2="80" y2="750" />
-    <line x1="180" y1="125" x2="180" y2="750" />
-    <line x1="280" y1="125" x2="280" y2="750" />
-    <line x1="380" y1="125" x2="380" y2="750" />
-    <line x1="480" y1="125" x2="480" y2="750" />
-    <line x1="580" y1="125" x2="580" y2="750" />
-    <line x1="680" y1="125" x2="680" y2="750" />
-    <line x1="780" y1="125" x2="780" y2="750" />
-    <line x1="880" y1="125" x2="880" y2="750" />
-    <line x1="980" y1="125" x2="980" y2="750" />
-    <line x1="1080" y1="125" x2="1080" y2="750" />
-    <line x1="1180" y1="125" x2="1180" y2="750" />
-    <line x1="1280" y1="125" x2="1280" y2="750" />
-    <line x1="1380" y1="125" x2="1380" y2="750" />
-    <line x1="1480" y1="125" x2="1480" y2="750" />
-    <line x1="1580" y1="125" x2="1580" y2="750" />
-    <line x1="1680" y1="125" x2="1680" y2="750" />
-    <line x1="80" y1="225" x2="1720" y2="225" />
-    <line x1="80" y1="325" x2="1720" y2="325" />
-    <line x1="80" y1="425" x2="1720" y2="425" />
-    <line x1="80" y1="525" x2="1720" y2="525" />
-    <line x1="80" y1="625" x2="1720" y2="625" />
-    <line x1="80" y1="725" x2="1720" y2="725" />
+  <g data-layout="architecture" transform="translate(250 65) scale(.76)">
+  <!-- 同一坐标系：1 m = 8 px；参考点 A(0,0)、B(60,0)、C(30,50)，真实目标 T(30,20) -->
+  <g stroke="#E2E8F0" stroke-width="0.7">
+    <path d="M450 160V650 M530 160V650 M610 160V650 M690 160V650 M770 160V650 M850 160V650 M930 160V650"/>
+    <path d="M400 200H980 M400 280H980 M400 360H980 M400 440H980 M400 520H980 M400 600H980"/>
   </g>
-
-  <!-- 坐标轴 -->
   <g stroke="#64748B" stroke-width="1.5" fill="none">
-    <!-- x轴 -->
-    <line x1="400" y1="445" x2="1650" y2="445" />
-    <polygon points="1650,445 1640,440 1640,450" fill="#64748B" />
-    <!-- y轴 -->
-    <line x1="400" y1="445" x2="400" y2="150" />
-    <polygon points="400,150 395,160 405,160" fill="#64748B" />
+    <path d="M410 600H1000" marker-end="url(#bp-arrow)"/>
+    <path d="M450 650V135" marker-end="url(#bp-arrow)"/>
+  </g>
+  <g fill="#64748B" font-size="12" text-anchor="middle">
+    <text x="450" y="622">0</text><text x="530" y="622">10</text><text x="610" y="622">20</text><text x="690" y="622">30</text><text x="770" y="622">40</text><text x="850" y="622">50</text><text x="930" y="622">60</text>
+    <text x="1018" y="605">X (m)</text>
+  </g>
+  <g fill="#64748B" font-size="12" text-anchor="end">
+    <text x="438" y="604">0</text><text x="438" y="524">10</text><text x="438" y="444">20</text><text x="438" y="364">30</text><text x="438" y="284">40</text><text x="438" y="204">50</text><text x="440" y="140">Y (m)</text>
   </g>
 
-  <!-- 刻度标签 -->
-  <g fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">
-    <text x="400" y="465">0</text>
-    <text x="500" y="465">10</text>
-    <text x="600" y="465">20</text>
-    <text x="700" y="465">30</text>
-    <text x="800" y="465">40</text>
-    <text x="900" y="465">50</text>
-    <text x="1000" y="465">60</text>
+  <!-- 三次测距均指向同一目标；测量半径 d1=36.0 m、d2=37.0 m、d3=29.0 m -->
+  <g fill="rgba(249,115,22,0.07)" stroke="#F97316" stroke-width="2" stroke-dasharray="8,8">
+    <circle cx="450" cy="600" r="288"/>
+    <circle cx="930" cy="600" r="296"/>
+    <circle cx="690" cy="200" r="232"/>
   </g>
-  <g fill="#64748B" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="end">
-    <text x="385" y="449">0</text>
-    <text x="385" y="429">2</text>
-    <text x="385" y="409">4</text>
-    <text x="385" y="389">6</text>
-    <text x="385" y="369">8</text>
-    <text x="385" y="349">10</text>
+  <g stroke="#F97316" stroke-width="1.5" stroke-dasharray="5,4" fill="none">
+    <line x1="450" y1="600" x2="685" y2="433"/>
+    <line x1="930" y1="600" x2="685" y2="433"/>
+    <line x1="690" y1="200" x2="685" y2="433"/>
+  </g>
+  <g fill="#F97316" font-size="12" font-weight="600">
+    <text x="535" y="515">d1 = 36.0 m</text><text x="785" y="515">d2 = 37.0 m</text><text x="705" y="320">d3 = 29.0 m</text>
   </g>
 
-  <!-- 轴标签 -->
-  <g fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">
-    <text x="1700" y="455">X (m)</text>
-    <text x="390" y="140">Y (m)</text>
+  <!-- 参考点 -->
+  <g fill="#EFF6FF" stroke="#2563EB" stroke-width="2">
+    <circle cx="450" cy="600" r="9"/><circle cx="930" cy="600" r="9"/><circle cx="690" cy="200" r="9"/>
+  </g>
+  <g fill="#0F172A" font-size="13" font-weight="600">
+    <text x="465" y="596">A (0, 0)</text><text x="945" y="596">B (60, 0)</text><text x="705" y="196">C (30, 50)</text>
   </g>
 
-  <!-- 三个虚线圆 -->
-  <g fill="rgba(249,115,22,0.08)" stroke="#F97316" stroke-width="1.5" stroke-dasharray="8,8">
-    <!-- A圆 -->
-    <circle cx="400" cy="445" r="305" />
-    <!-- B圆 -->
-    <circle cx="1000" cy="445" r="305" />
-    <!-- C圆 -->
-    <circle cx="700" cy="405" r="280" />
-  </g>
-
-  <!-- 圆半径标注 -->
-  <g fill="#F97316" font-size="10" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
-    <text x="105" y="370">r=30.5m</text>
-    <text x="1050" y="370">r=30.5m</text>
-    <text x="670" y="180">r=28.0m</text>
-  </g>
-
-  <!-- 三个基站节点 -->
-  <g fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5">
-    <circle cx="400" cy="445" r="8" />
-    <circle cx="1000" cy="445" r="8" />
-    <circle cx="700" cy="405" r="8" />
-  </g>
-  <g fill="#0F172A" font-size="12" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">
-    <text x="415" y="450">A (0,0)</text>
-    <text x="1015" y="450">B (60,0)</text>
-    <text x="715" y="410">C (30,4)</text>
-  </g>
-
-  <!-- 交叠区域三角形 -->
-  <polygon points="698,426 702,426 700,434" fill="rgba(0,0,0,0.25)" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
-
-  <!-- 理想交点P -->
-  <circle cx="700" cy="428" r="4" fill="#DC2626" />
-  <text x="705" y="432" fill="#DC2626" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">P</text>
-
-  <!-- 最小二乘点Q -->
-  <circle cx="704" cy="432" r="4" fill="#2563EB" />
-  <text x="709" y="436" fill="#2563EB" font-size="11" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="600">Q</text>
-
-  <!-- 从P到Q的偏移虚线 -->
-  <line x1="700" y1="428" x2="704" y2="432" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3" />
+  <!-- 三圆的共同近交叠区与最小二乘估计 Q≈(29.4,20.9) -->
+  <ellipse cx="685" cy="433" rx="18" ry="14" fill="rgba(100,116,139,0.28)" stroke="#64748B" stroke-width="1"/>
+  <circle cx="685" cy="433" r="6" fill="#2563EB"/>
+  <path d="M690 440l8 8m0-8l-8 8" stroke="#DC2626" stroke-width="2"/>
+  <text x="708" y="428" fill="#2563EB" font-size="12" font-weight="700">Q 最小二乘估计 (29.4, 20.9)</text>
+  <text x="708" y="450" fill="#DC2626" font-size="12" font-weight="600">T 真实目标 (30, 20)</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心能力；橙色=智能/风险路径</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-9 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心能力；橙色=智能/风险路径</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-6 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
       <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">平面网格坐标图：三个圆以AP位置为圆心，半径不等且带有微小偏移；交叠区域用灰色半透明标记；目标点标注为X。</div></div>
+      <div class="card"><div class="label">布局说明</div><div class="value">平面网格坐标图整体等比缩小并上收；三个测距圆完整显示在页脚分隔线之上，交叠区域标出估计点与真实目标。</div></div>
       <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
     </section>
   </main>

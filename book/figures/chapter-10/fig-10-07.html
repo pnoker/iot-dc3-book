@@ -15,9 +15,9 @@
 </head>
 <body>
   <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+    <svg data-figure-root="fig-10-07" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图10-7 AI模型部署架构（从训练到边缘推理）</title>
-  <desc id="desc">读者应理解AI模型部署架构（从训练到边缘推理）中的主链路、责任边界和工程取舍。</desc>
+  <desc id="desc">模型仓库中的同一版本可供 REST 与专用推理服务加载；边缘仅运行裁剪模型并上报结果，需避免与平台推理产生重复工单。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
@@ -29,9 +29,9 @@
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图10-7 AI模型部署架构（从训练到边缘推理）</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解AI模型部署架构（从训练到边缘推理）中的主链路、责任边界和工程取舍。</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">模型仓库中的同一版本可供 REST 与专用推理服务加载；边缘仅运行裁剪模型并上报结果，需避免与平台推理产生重复工单。</text>
   <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <text x="1690" y="44" fill="#64748B" font-size="13" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="architecture">
   <!-- 区域边界 -->
@@ -51,78 +51,78 @@
   <!-- dev_env -> model_registry -->
   <path d="M 350 230 H 370" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="340" y="210" width="40" height="18" rx="4" fill="white"/>
-  <text x="360" y="223" fill="#0F172A" font-size="11" text-anchor="middle">导出</text>
+  <text x="360" y="223" fill="#0F172A" font-size="13" text-anchor="middle">导出</text>
 
   <!-- model_registry -> inference_rest -->
   <path d="M 550 230 H 600 V 210 H 660" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="565" y="195" width="40" height="18" rx="4" fill="white"/>
-  <text x="585" y="208" fill="#0F172A" font-size="11" text-anchor="middle">加载</text>
+  <text x="585" y="208" fill="#0F172A" font-size="13" text-anchor="middle">加载</text>
 
   <!-- model_registry -> inference_dedicated -->
   <path d="M 550 230 H 600 V 320 H 660" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <rect x="565" y="285" width="40" height="18" rx="4" fill="white"/>
-  <text x="585" y="298" fill="#0F172A" font-size="11" text-anchor="middle">加载</text>
+  <text x="585" y="298" fill="#0F172A" font-size="13" text-anchor="middle">加载</text>
 
   <!-- iotdc3_data -> inference_dedicated -->
   <path d="M 1160 210 H 1100 V 320 H 980" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
   <rect x="1090" y="250" width="80" height="18" rx="4" fill="white"/>
-  <text x="1130" y="263" fill="#0F172A" font-size="11" text-anchor="middle">上下文输入</text>
+  <text x="1130" y="263" fill="#0F172A" font-size="13" text-anchor="middle">上下文输入</text>
 
   <!-- inference_dedicated -> rule_engine -->
   <path d="M 980 320 H 1160" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
   <rect x="1040" y="305" width="60" height="18" rx="4" fill="white"/>
-  <text x="1070" y="318" fill="#0F172A" font-size="11" text-anchor="middle">预测结果</text>
+  <text x="1070" y="318" fill="#0F172A" font-size="13" text-anchor="middle">预测结果</text>
 
   <!-- edge_inference -> iotdc3_data -->
   <path d="M 1480 560 H 1570 V 210 H 1480" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
   <rect x="1500" y="370" width="70" height="18" rx="4" fill="white"/>
-  <text x="1535" y="383" fill="#0F172A" font-size="11" text-anchor="middle">上报结果</text>
+  <text x="1535" y="383" fill="#0F172A" font-size="13" text-anchor="middle">上报结果</text>
 
   <!-- inference_rest -> rule_engine -->
   <path d="M 980 210 H 1100 V 320 H 1160" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#bp-arrow)"/>
   <rect x="1050" y="250" width="40" height="18" rx="4" fill="white"/>
-  <text x="1070" y="263" fill="#0F172A" font-size="11" text-anchor="middle">结果</text>
+  <text x="1070" y="263" fill="#0F172A" font-size="13" text-anchor="middle">结果</text>
 
   <!-- 节点卡片 -->
   <!-- dev_env -->
   <rect x="170" y="190" width="180" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="260" y="216" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">建模与导出</text>
-  <text x="260" y="234" fill="#475569" font-size="11" text-anchor="middle">Jupyter / MLflow</text>
+  <text x="260" y="234" fill="#475569" font-size="13" text-anchor="middle">Jupyter / MLflow</text>
 
   <!-- model_registry -->
-  <rect x="370" y="190" width="180" height="80" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="370" y="190" width="180" height="80" rx="10" fill="#F8FAFC" stroke="#475569" stroke-width="1.5"/>
   <text x="460" y="216" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">模型仓库</text>
-  <text x="460" y="234" fill="#475569" font-size="11" text-anchor="middle">ONNX / PMML</text>
+  <text x="460" y="234" fill="#475569" font-size="13" text-anchor="middle">ONNX / PMML</text>
 
   <!-- inference_rest -->
   <rect x="660" y="170" width="320" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="820" y="196" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">REST端点</text>
-  <text x="820" y="214" fill="#475569" font-size="11" text-anchor="middle">Flask / FastAPI</text>
+  <text x="820" y="214" fill="#475569" font-size="13" text-anchor="middle">Flask / FastAPI</text>
 
   <!-- inference_dedicated -->
   <rect x="660" y="280" width="320" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="820" y="306" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">专用推理</text>
-  <text x="820" y="324" fill="#475569" font-size="11" text-anchor="middle">TF Serving / Triton</text>
+  <text x="820" y="324" fill="#475569" font-size="13" text-anchor="middle">TF Serving / Triton</text>
 
   <!-- iotdc3_data -->
-  <rect x="1160" y="170" width="320" height="80" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="1160" y="170" width="320" height="80" rx="10" fill="#F8FAFC" stroke="#475569" stroke-width="1.5"/>
   <text x="1320" y="196" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">IoT DC3数据</text>
-  <text x="1320" y="214" fill="#475569" font-size="11" text-anchor="middle">时序 / 状态</text>
+  <text x="1320" y="214" fill="#475569" font-size="13" text-anchor="middle">时序 / 状态</text>
 
   <!-- rule_engine -->
   <rect x="1160" y="280" width="320" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
   <text x="1320" y="306" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">规则引擎</text>
-  <text x="1320" y="324" fill="#475569" font-size="11" text-anchor="middle">告警 / 工单</text>
+  <text x="1320" y="324" fill="#475569" font-size="13" text-anchor="middle">告警 / 工单</text>
 
   <!-- edge_inference -->
   <rect x="1160" y="520" width="320" height="80" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
   <text x="1320" y="546" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">边缘推理</text>
-  <text x="1320" y="564" fill="#475569" font-size="11" text-anchor="middle">裁剪模型</text>
-</g>
+  <text x="1320" y="564" fill="#475569" font-size="13" text-anchor="middle">裁剪模型</text>
+<rect x="180" y="670" width="650" height="58" rx="10" fill="#FFF7ED" stroke="#F97316"/><text x="205" y="695" fill="#C2410C" font-size="12" font-weight="700">一份模型，多种服务形态</text><text x="205" y="716" fill="#475569" font-size="13">模型仓库统一版本，REST 与专用推理服务按部署需要分别加载。</text><rect x="880" y="670" width="700" height="58" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="905" y="695" fill="#0F766E" font-size="12" font-weight="700">边缘与平台去重</text><text x="905" y="716" fill="#475569" font-size="13">同一设备、同一窗口只允许一个工单决策源，边缘仅上报结果。</text></g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=IoT DC3平台服务层</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图10-10 AI模型部署架构：从训练环境到工业物联网平台的完整链路，涉及模型导出、推理服务化和与IoT DC3的集成。</text>
+  <text x="104" y="808" fill="#64748B" font-size="13" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">蓝=平台服务　青绿=边缘推理　橙=模型与推理　灰=模型仓库</text><text x="80" y="832" fill="#475569" font-size="13" font-weight="600">实线=模型制品流　虚线=实时上下文或推理结果</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="13" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图10-7 AI模型部署架构：模型由训练环境导出并进入版本仓库，平台推理服务消费实时上下文，边缘节点仅上报本地推理结果，最终由规则引擎统一触发告警或工单。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

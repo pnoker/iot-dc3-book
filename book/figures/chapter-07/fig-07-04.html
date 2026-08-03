@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图7-4 MCP 在物联网平台中的架构示意</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; }
+    body { background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +16,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图7-4 MCP 在物联网平台中的架构示意</title>
   <desc id="desc">当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。</desc>
@@ -47,7 +49,7 @@
 
   <!-- Agent → MCP 主链路 -->
   <line x1="670" y1="232" x2="670" y2="283" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="680" y="263" font-size="10" fill="#64748B">JSON-RPC</text>
+  <text x="680" y="263" font-size="11" fill="#64748B">JSON-RPC</text>
 
   <!-- ===== Layer 2: MCP 端点（蓝） ===== -->
   <rect x="120" y="285" width="1100" height="190" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
@@ -63,15 +65,15 @@
   <!-- 三阶段握手 chips -->
   <rect x="150" y="352" width="320" height="46" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
   <text x="310" y="373" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">① initialize</text>
-  <text x="310" y="389" font-size="10" fill="#64748B" text-anchor="middle">能力握手 · 协议协商</text>
+  <text x="310" y="389" font-size="11" fill="#64748B" text-anchor="middle">能力握手 · 协议协商</text>
 
   <rect x="500" y="352" width="320" height="46" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
   <text x="660" y="373" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">② tools/list</text>
-  <text x="660" y="389" font-size="10" fill="#64748B" text-anchor="middle">发现当前调用者可见 Tools</text>
+  <text x="660" y="389" font-size="11" fill="#64748B" text-anchor="middle">发现当前调用者可见 Tools</text>
 
   <rect x="850" y="352" width="320" height="46" rx="6" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
   <text x="1010" y="373" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">③ tools/call</text>
-  <text x="1010" y="389" font-size="10" fill="#64748B" text-anchor="middle">工具调用 · 参数校验</text>
+  <text x="1010" y="389" font-size="11" fill="#64748B" text-anchor="middle">工具调用 · 参数校验</text>
 
   <!-- 当前 capability 边界 -->
   <rect x="330" y="412" width="680" height="38" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5 3"/>
@@ -97,9 +99,9 @@
 
   <!-- MCP ↔ 鉴权中心 -->
   <line x1="1222" y1="340" x2="1338" y2="340" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
-  <text x="1280" y="332" font-size="10" fill="#64748B" text-anchor="middle">① 校验 token</text>
+  <text x="1280" y="332" font-size="11" fill="#64748B" text-anchor="middle">① 校验 token</text>
   <line x1="1338" y1="415" x2="1222" y2="415" stroke="#64748B" stroke-width="1.6" marker-end="url(#ah-gray)"/>
-  <text x="1280" y="432" font-size="10" fill="#64748B" text-anchor="middle">② 上下文 + scope</text>
+  <text x="1280" y="432" font-size="11" fill="#64748B" text-anchor="middle">② 上下文 + scope</text>
 
   <!-- ===== Layer 3: 后端服务层（边界 + 三服务） ===== -->
   <rect x="100" y="534" width="1140" height="215" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
@@ -117,7 +119,7 @@
   <!-- 服务 1: Manager API（绿） -->
   <rect x="120" y="548" width="340" height="185" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
   <text x="140" y="580" font-size="15" font-weight="700" fill="#0F172A">Manager API</text>
-  <text x="140" y="599" font-size="10" fill="#10B981">静态 OpenAPI · 管理域</text>
+  <text x="140" y="599" font-size="11" fill="#10B981">静态 OpenAPI · 管理域</text>
   <line x1="136" y1="610" x2="444" y2="610" stroke="#E2E8F0"/>
   <circle cx="142" cy="634" r="2.5" fill="#10B981"/>
   <text x="152" y="638" font-size="12" fill="#334155">Device · Driver</text>
@@ -131,7 +133,7 @@
   <!-- 服务 2: 数据服务层（蓝） -->
   <rect x="500" y="548" width="340" height="185" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
   <text x="520" y="580" font-size="15" font-weight="700" fill="#0F172A">Data API</text>
-  <text x="520" y="599" font-size="10" fill="#2563EB">静态 OpenAPI · 数据域</text>
+  <text x="520" y="599" font-size="11" fill="#2563EB">静态 OpenAPI · 数据域</text>
   <line x1="516" y1="610" x2="824" y2="610" stroke="#E2E8F0"/>
   <circle cx="522" cy="634" r="2.5" fill="#2563EB"/>
   <text x="532" y="638" font-size="12" fill="#334155">最新值 · 历史值</text>
@@ -145,7 +147,7 @@
   <!-- 服务 3: 其他平台 API（绿） -->
   <rect x="880" y="548" width="340" height="185" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
   <text x="900" y="580" font-size="15" font-weight="700" fill="#0F172A">其他平台 API</text>
-  <text x="900" y="599" font-size="10" fill="#10B981">静态 OpenAPI · 按规格汇聚</text>
+  <text x="900" y="599" font-size="11" fill="#10B981">静态 OpenAPI · 按规格汇聚</text>
   <line x1="896" y1="610" x2="1204" y2="610" stroke="#E2E8F0"/>
   <circle cx="902" cy="634" r="2.5" fill="#10B981"/>
   <text x="912" y="638" font-size="12" fill="#334155">Auth · Tenant · User</text>
@@ -174,8 +176,8 @@
   <text x="1232" y="809" font-size="10.5" fill="#64748B">Auth · 白名单 · 高风险确认</text>
 
   <!-- ===== caption ===== -->
-  <text x="900" y="855" font-size="10" fill="#94A3B8" text-anchor="middle">图7-4 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，</text>
-  <text x="900" y="871" font-size="10" fill="#94A3B8" text-anchor="middle">工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。</text>
+  <text x="900" y="855" font-size="11" fill="#94A3B8" text-anchor="middle">图7-4 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，</text>
+  <text x="900" y="871" font-size="11" fill="#94A3B8" text-anchor="middle">工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

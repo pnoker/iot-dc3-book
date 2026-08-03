@@ -5,146 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图8-2 物联网纵深防御多层模型</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; }
+    body { color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
+    .figure { width: 1200px; height: 680px; background: #F8FAFC; }
+    svg { display: block; }
   </style>
 </head>
 <body>
-  <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<main class="figure" data-figure-root>
+<svg width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
   <title id="title">图8-2 物联网纵深防御多层模型</title>
-  <desc id="desc">读者应理解TLS 1.3与EDHOC握手流程对比中的主链路、责任边界和工程取舍。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
-
-  
+  <desc id="desc">七层防御逐层拦截攻击；单层能力不足时，相邻层用补偿控制降低剩余风险。</desc>
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#E2E8F0" stroke-width="0.5"/></pattern>
+    <marker id="attack" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+    <marker id="defend" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="comp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
   </defs>
-  <rect width="1800" height="900" fill="#FFFFFF"/>
-  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-2 物联网纵深防御多层模型</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解TLS 1.3与EDHOC握手流程对比中的主链路、责任边界和工程取舍。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">SEQUENCE</text>
-  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="sequence">
-  <!-- 左标题 -->
-  <text x="460" y="125" fill="#0F172A" font-size="18" font-weight="bold" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">TLS 1.3握手流程</text>
-  <!-- 右标题 -->
-  <text x="1300" y="125" fill="#0F172A" font-size="18" font-weight="bold" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">EDHOC握手流程</text>
+  <rect width="1200" height="680" fill="#F8FAFC"/><rect x="28" y="104" width="1144" height="500" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/><rect x="29" y="105" width="1142" height="498" fill="url(#grid)"/>
+  <circle cx="42" cy="42" r="6" fill="#2563EB"/><text x="58" y="49" font-size="24" font-weight="700">图8-2 物联网纵深防御多层模型</text>
+  <text x="58" y="76" fill="#475569" font-size="13">补偿控制只能降低部分剩余风险，不能替代硬件 Root of Trust 等基础安全能力。</text>
+  <rect x="1038" y="30" width="122" height="28" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/><text x="1099" y="49" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">LAYERED</text>
 
-  <!-- 左侧参与者头部 -->
-  <!-- IoT设备 (客户端) -->
-  <rect x="100" y="140" width="160" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="180" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT设备 (客户端)</text>
-  <!-- 证书机构 (CA) -->
-  <rect x="380" y="140" width="160" height="50" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
-  <text x="460" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">证书机构 (CA)</text>
-  <!-- IoT平台 (服务端) -->
-  <rect x="660" y="140" width="160" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="740" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT平台 (服务端)</text>
+  <text x="118" y="128" fill="#DC2626" font-size="12" font-weight="700" text-anchor="middle">攻击逐层突破</text>
+  <line x1="118" y1="550" x2="118" y2="157" stroke="#DC2626" stroke-width="3" marker-end="url(#attack)"/>
+  <text x="1082" y="128" fill="#0F766E" font-size="12" font-weight="700" text-anchor="middle">逐层检测与阻断</text>
+  <line x1="1082" y1="157" x2="1082" y2="550" stroke="#0F766E" stroke-width="3" marker-end="url(#defend)"/>
 
-  <!-- 右侧参与者头部 -->
-  <rect x="900" y="140" width="200" height="50" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="1000" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT设备 (客户端)</text>
-  <rect x="1500" y="140" width="200" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="1600" y="170" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">IoT平台 (服务端)</text>
-
-  <!-- 垂直线（生命线） -->
-  <line x1="180" y1="190" x2="180" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
-  <line x1="460" y1="190" x2="460" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
-  <line x1="740" y1="190" x2="740" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
-  <line x1="1000" y1="190" x2="1000" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
-  <line x1="1600" y1="190" x2="1600" y2="600" stroke="#94A3B8" stroke-width="1.5"/>
-
-  <!-- TLS消息1: ClientHello -->
-  <g>
-    <line x1="180" y1="220" x2="740" y2="220" stroke="#2563EB" stroke-width="2"/>
-    <polygon points="740,220 732,216 732,224" fill="#2563EB"/>
-    <rect x="400" y="200" width="120" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="460" y="214" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">ClientHello</text>
+  <g font-size="12">
+    <rect x="190" y="145" width="820" height="48" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="212" y="166" font-size="15" font-weight="700">Layer 7 · 应用与 AI 安全</text><text x="212" y="184" fill="#475569">输入隔离 · Tool 白名单 · 参数校验 · 人工确认</text>
+    <rect x="190" y="202" width="820" height="48" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="212" y="223" font-size="15" font-weight="700">Layer 6 · 数据安全</text><text x="212" y="241" fill="#475569">静态加密 · 字段脱敏 · 密钥生命周期</text>
+    <rect x="190" y="259" width="820" height="48" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="212" y="280" font-size="15" font-weight="700">Layer 5 · 平台安全</text><text x="212" y="298" fill="#475569">租户隔离 · 速率限制 · 审计日志</text>
+    <rect x="190" y="316" width="820" height="48" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/><text x="212" y="337" font-size="15" font-weight="700">Layer 4 · 身份与访问控制</text><text x="212" y="355" fill="#475569">JWT / OAuth 2.0 · RBAC · fail-closed</text>
+    <rect x="190" y="373" width="820" height="48" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="212" y="394" font-size="15" font-weight="700">Layer 3 · 通信安全</text><text x="212" y="412" fill="#475569">TLS / DTLS · 双向认证 · 防重放</text>
+    <rect x="190" y="430" width="820" height="48" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><text x="212" y="451" font-size="15" font-weight="700">Layer 2 · 设备固件安全</text><text x="212" y="469" fill="#475569">Secure Boot · OTA 验签 · 回滚保护</text>
+    <rect x="190" y="487" width="820" height="48" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="212" y="508" font-size="15" font-weight="700">Layer 1 · 物理安全</text><text x="212" y="526" fill="#475569">SE / TEE · 防拆 · JTAG 锁定</text>
   </g>
 
-  <!-- TLS消息2: ServerHello+证书+参数 -->
-  <g>
-    <line x1="740" y1="280" x2="180" y2="280" stroke="#2563EB" stroke-width="2"/>
-    <polygon points="180,280 188,276 188,284" fill="#2563EB"/>
-    <rect x="360" y="260" width="200" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="460" y="274" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">ServerHello+证书+参数</text>
-  </g>
+  <path d="M850 462 C1035 462 1035 397 850 397" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#comp)"/>
+  <rect x="810" y="414" width="284" height="41" rx="6" fill="#FFFFFF" stroke="#94A3B8"/><text x="952" y="430" font-size="11" font-weight="700" text-anchor="middle">补偿控制仅降低部分风险</text><text x="952" y="446" fill="#475569" font-size="11" text-anchor="middle">不能替代缺失的硬件 Root of Trust</text>
 
-  <!-- TLS消息3: 证书链验证(OCSP) 虚线 -->
-  <g>
-    <line x1="740" y1="340" x2="460" y2="340" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3"/>
-    <polygon points="460,340 468,336 468,344" fill="#2563EB"/>
-    <rect x="525" y="320" width="150" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="600" y="334" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">证书链验证(OCSP)</text>
-  </g>
-
-  <!-- TLS消息4: Client证书+Finished -->
-  <g>
-    <line x1="180" y1="400" x2="740" y2="400" stroke="#2563EB" stroke-width="2"/>
-    <polygon points="740,400 732,396 732,404" fill="#2563EB"/>
-    <rect x="370" y="380" width="180" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="460" y="394" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">Client证书+Finished</text>
-  </g>
-
-  <!-- TLS消息5: Server Finished -->
-  <g>
-    <line x1="740" y1="460" x2="180" y2="460" stroke="#2563EB" stroke-width="2"/>
-    <polygon points="180,460 188,456 188,464" fill="#2563EB"/>
-    <rect x="390" y="440" width="140" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="460" y="454" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">Server Finished</text>
-  </g>
-
-  <!-- EDHOC消息1: M1 -->
-  <g>
-    <line x1="1000" y1="220" x2="1600" y2="220" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3"/>
-    <polygon points="1600,220 1592,216 1592,224" fill="#F97316"/>
-    <rect x="1190" y="200" width="220" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="1300" y="214" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">M1 (临时公钥+身份选项)</text>
-  </g>
-
-  <!-- EDHOC消息2: M2 -->
-  <g>
-    <line x1="1600" y1="280" x2="1000" y2="280" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3"/>
-    <polygon points="1000,280 1008,276 1008,284" fill="#F97316"/>
-    <rect x="1200" y="260" width="200" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="1300" y="274" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">M2 (公钥+凭证+签名)</text>
-  </g>
-
-  <!-- EDHOC消息3: M3 -->
-  <g>
-    <line x1="1000" y1="340" x2="1600" y2="340" stroke="#F97316" stroke-width="2" stroke-dasharray="6,3"/>
-    <polygon points="1600,340 1592,336 1592,344" fill="#F97316"/>
-    <rect x="1200" y="320" width="200" height="20" rx="3" fill="white" stroke="#E2E8F0" stroke-width="0.5"/>
-    <text x="1300" y="334" fill="#0F172A" font-size="12" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">M3 (公钥+签名确认)</text>
-  </g>
-
-  <!-- 底部会话密钥生成完成（绿色双线） -->
-  <g>
-    <line x1="100" y1="520" x2="1700" y2="520" stroke="#0F766E" stroke-width="2"/>
-    <line x1="100" y1="526" x2="1700" y2="526" stroke="#0F766E" stroke-width="2"/>
-    <text x="900" y="535" fill="#0F172A" font-size="14" font-weight="bold" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif">会话密钥生成完成</text>
-  </g>
-</g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线箭头：TLS 1.3消息</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-2 展示TLS 1.3双向认证与EDHOC轻量认证的握手流程对比。TLS需要两次往返且传输证书，EDHOC仅需3条消息，体积更小。</text>
-  </svg>
+  <line x1="40" y1="620" x2="1160" y2="620" stroke="#E2E8F0"/>
+  <line x1="126" y1="642" x2="158" y2="642" stroke="#DC2626" stroke-width="3" marker-end="url(#attack)"/><text x="170" y="646" fill="#475569" font-size="11">攻击路径</text>
+  <line x1="300" y1="642" x2="332" y2="642" stroke="#0F766E" stroke-width="3" marker-end="url(#defend)"/><text x="344" y="646" fill="#475569" font-size="11">检测与阻断</text>
+  <line x1="500" y1="642" x2="532" y2="642" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5"/><text x="544" y="646" fill="#475569" font-size="11">补偿控制</text>
+  <text x="600" y="670" fill="#64748B" font-size="11" text-anchor="middle">图8-2 单层防御失守后仍由相邻层承接；补偿控制用于降低风险，不等于替代缺失的基础安全能力。</text>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">sequence</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">两段并列序列图，左侧TLS 1.3流程，右侧EDHOC流程。时间轴从上到下。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
-  </main>
+</main>
 </body>
 </html>

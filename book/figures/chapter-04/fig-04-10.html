@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图4-10 IoT DC3整体架构及驱动层位置</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +14,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图4-10 IoT DC3整体架构及驱动层位置</title>
   <desc id="desc">读者应理解驱动层用独立JVM进程+Driver SDK、经MQ与核心服务解耦,新增驱动只需横向加框,故障不中断平台。</desc>
@@ -121,13 +121,13 @@
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <line x1="80" y1="803" x2="94" y2="803" stroke="#2563EB" stroke-width="2"/>
   <polygon points="94,799.5 102,803 94,806.5" fill="#2563EB"/>
-  <text x="110" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头代表数据流（上行/下行）</text>
+  <text x="110" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头代表数据流（上行/下行）</text>
   <line x1="635" y1="803" x2="651" y2="803" stroke="#475569" stroke-width="2" stroke-dasharray="4,3"/>
   <polygon points="651,799.5 659,803 651,806.5" fill="#475569"/>
-  <text x="667" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头代表通过消息队列进行的异步解耦通信</text>
+  <text x="667" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头代表通过消息队列进行的异步解耦通信</text>
   <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFF8E7" stroke="#e8a000" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">黄色背景的层代表驱动层，是整张图的焦点</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-10 IoT DC3整体架构及驱动层位置。驱动层进程彼此独立、互不依赖，通过消息队列与平台核心服务解耦，实现驱动故障时平台主体不中断。开发者新增驱动仅需在驱动层横向增加一个方框，平台其余层无需变化。</text>
+  <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">黄色背景的层代表驱动层，是整张图的焦点</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-10 IoT DC3整体架构及驱动层位置。驱动层进程彼此独立、互不依赖，通过消息队列与平台核心服务解耦，实现驱动故障时平台主体不中断。开发者新增驱动仅需在驱动层横向增加一个方框，平台其余层无需变化。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

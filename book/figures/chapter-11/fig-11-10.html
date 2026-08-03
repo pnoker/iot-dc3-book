@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图11-10 十字路口强化学习框架</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    * export contract: 1200px logical width; static, offline, no script *
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +16,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图11-10 十字路口强化学习框架</title>
   <desc id="desc">读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。</desc>
@@ -117,7 +119,7 @@
   <!-- 权重更新 (菱形) -->
   <polygon points="1160,435 1260,385 1360,435 1260,485" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="1260" y="431" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">权重更新</text>
-  <text x="1260" y="449" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#475569" text-anchor="middle">采样小批量，计算TD误差</text>
+  <text x="1260" y="449" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#475569" text-anchor="middle">采样小批量，计算TD误差</text>
 
   <!-- 底部要点注释 -->
   <g data-callouts="true">
@@ -152,14 +154,14 @@
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线箭头：状态与动作的主交互链路</text>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线箭头：状态与动作的主交互链路</text>
   <rect x="480" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="504" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色虚线箭头：奖励反馈与经验回放</text>
+  <text x="504" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色虚线箭头：奖励反馈与经验回放</text>
   <rect x="900" y="797" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="924" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色节点：环境域组件</text>
+  <text x="924" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色节点：环境域组件</text>
   <rect x="1300" y="797" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1324" y="808" fill="#64748B" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色节点：智能决策域组件</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-10 十字路口强化学习框架图。展示了RL智能体通过状态观测、动作执行、奖励反馈及经验回放训练DQN网络的闭环过程。</text>
+  <text x="1324" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色节点：智能决策域组件</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图11-10 十字路口强化学习框架图。展示了RL智能体通过状态观测、动作执行、奖励反馈及经验回放训练DQN网络的闭环过程。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">

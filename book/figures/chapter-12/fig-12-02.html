@@ -1,153 +1,17 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-2 作物病害识别CNN处理流程（架构示意）</title>
-  <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图12-2 作物病害识别CNN处理流程（架构示意）</title>
-  <desc id="desc">读者应理解CNN推理的主链路——从输入图像经多次卷积池化、展平到全连接分类，以及各层的数据尺寸变化。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="79.200" width="1152.000" height="601.600" viewBox="0 0 1800.000 940.000" preserveAspectRatio="xMidYMid meet">
-<rect x="0" y="0" width="1800" height="940" fill="#FFFFFF"/>
-
-  <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-  </defs>
-
-  <!-- ===== Title area ===== -->
-  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="22" font-weight="700" fill="#0F172A">图12-2 作物病害识别CNN处理流程（架构示意）</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">从土壤湿度与降水预报到阀门动作的决策链路</text>
-  <rect x="1644" y="26" width="108" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1698" y="44" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="1.5">FLOWCHART</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-
-  <!-- ===== Region boundary boxes ===== -->
-  <rect x="60" y="150" width="1080" height="640" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="80" y="180" font-size="13" font-weight="700" fill="#2563EB">决策核心</text>
-  <text x="80" y="198" font-size="10" fill="#64748B">阈值判定 + 天气前馈</text>
-
-  <rect x="1180" y="150" width="560" height="640" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="1200" y="180" font-size="13" font-weight="700" fill="#10B981">执行动作</text>
-  <text x="1200" y="198" font-size="10" fill="#64748B">阀门与告警</text>
-
-  <!-- ===== Components ===== -->
-  <!-- in1: input data (purple / data domain) -->
-  <rect x="100" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="200" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">土壤湿度 / 降水概率</text>
-  <text x="200" y="474" font-size="10" fill="#64748B" text-anchor="middle">传感器 + 天气 API</text>
-  <text x="200" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">数据输入</text>
-
-  <!-- d1: decision (blue, primary) -->
-  <polygon points="440,400 540,470 440,540 340,470" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="440" y="466" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">湿度 &lt; 下限？</text>
-  <text x="440" y="484" font-size="9" fill="#64748B" text-anchor="middle">阈值判定</text>
-
-  <!-- d2: decision (blue, primary) -->
-  <polygon points="740,400 840,470 740,540 640,470" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="740" y="466" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">降水概率 ≥ 阈值？</text>
-  <text x="740" y="484" font-size="9" fill="#64748B" text-anchor="middle">天气前馈</text>
-
-  <!-- calc: process (blue) -->
-  <rect x="920" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="1020" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">计算灌溉量</text>
-  <text x="1020" y="474" font-size="10" fill="#64748B" text-anchor="middle">FAO-56 水分平衡</text>
-  <text x="1020" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">需水量估算</text>
-
-  <!-- a_delay: action (amber / defer) -->
-  <rect x="1360" y="222" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
-  <text x="1460" y="252" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">推迟灌溉</text>
-  <text x="1460" y="274" font-size="10" fill="#64748B" text-anchor="middle">记录依据</text>
-  <text x="1460" y="294" font-size="9" fill="#94A3B8" text-anchor="middle">等待降水</text>
-
-  <!-- a_open: action (green / device) -->
-  <rect x="1360" y="422" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="1460" y="452" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">开阀轮灌</text>
-  <text x="1460" y="474" font-size="10" fill="#64748B" text-anchor="middle">电磁阀 · 分区</text>
-  <text x="1460" y="494" font-size="9" fill="#94A3B8" text-anchor="middle">执行动作</text>
-
-  <!-- a_close: action (red / alarm) -->
-  <rect x="1360" y="622" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
-  <text x="1460" y="652" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">关阀 / 排涝告警</text>
-  <text x="1460" y="674" font-size="10" fill="#64748B" text-anchor="middle">防涝保护</text>
-  <text x="1460" y="694" font-size="9" fill="#94A3B8" text-anchor="middle">高危动作</text>
-
-  <!-- ===== Arrows ===== -->
-  <!-- in1 -> d1 : main chain blue -->
-  <line x1="300" y1="470" x2="332" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="316" y="460" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">读数</text>
-
-  <!-- d1 -> d2 : main chain blue -->
-  <line x1="540" y1="470" x2="632" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="586" y="460" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">是</text>
-
-  <!-- d2 -> calc : main chain blue -->
-  <line x1="840" y1="470" x2="912" y2="470" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="876" y="458" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">否（无雨）</text>
-
-  <!-- calc -> a_open : green (toward device) -->
-  <line x1="1120" y1="470" x2="1352" y2="470" stroke="#10B981" stroke-width="2" marker-end="url(#ah-green)"/>
-  <text x="1236" y="460" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">开阀</text>
-
-  <!-- d2 -> a_delay : amber branch (up then right) -->
-  <polyline points="740,400 740,270 1352,270" fill="none" stroke="#D97706" stroke-width="2" marker-end="url(#ah-amber)"/>
-  <text x="1046" y="260" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">是（有雨）· 推迟</text>
-
-  <!-- d1 -> a_close : red branch (down then right) -->
-  <polyline points="440,540 440,670 1352,670" fill="none" stroke="#E11D48" stroke-width="2" marker-end="url(#ah-red)"/>
-  <text x="896" y="660" font-size="11" font-weight="600" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">过高 + 强降水</text>
-
-  <!-- ===== Legend ===== -->
-  <line x1="40" y1="815" x2="1760" y2="815" stroke="#E2E8F0" stroke-width="1"/>
-  <g font-size="11" fill="#475569">
-    <rect x="60" y="838" width="22" height="14" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="90" y="846" dominant-baseline="middle">方框 · 处理步骤</text>
-
-    <polygon points="282,836 298,845 282,854 266,845" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="308" y="846" dominant-baseline="middle">菱形 · 判定分支</text>
-
-    <line x1="470" y1="845" x2="500" y2="845" stroke="#2563EB" stroke-width="2"/>
-    <text x="508" y="846" dominant-baseline="middle">蓝 · 决策主链路</text>
-
-    <rect x="690" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <text x="714" y="846" dominant-baseline="middle">绿 · 开阀动作</text>
-
-    <rect x="880" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-    <text x="904" y="846" dominant-baseline="middle">琥珀 · 推迟灌溉</text>
-
-    <rect x="1080" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.5"/>
-    <text x="1104" y="846" dominant-baseline="middle">红 · 关阀告警</text>
-
-    <rect x="1260" y="838" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <text x="1284" y="846" dominant-baseline="middle">紫 · 数据输入</text>
-  </g>
-
-  <!-- ===== Caption ===== -->
-  <text x="900" y="903" font-size="10" fill="#94A3B8" text-anchor="middle">图12-02 智能灌溉在阈值控制之上叠加天气预报前馈，形成预判式混合控制。</text>
-  </svg>
-</svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左至右七个方框，依次为输入图像、三个卷积池化模块、展平层、全连接层、输出概率条。框间带箭头实线连接，框下方标注特征图尺寸变化。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
-  </main>
-</body>
-</html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图12-2 作物病害识别CNN处理流程（架构示意）</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}.figure{width:1200px;height:760px;overflow:hidden}svg{display:block}text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}</style></head>
+<body><main class="figure" data-figure-root><svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<title id="title">图12-2 作物病害识别CNN处理流程（架构示意）</title><desc id="desc">叶片图像依次经过三次卷积池化、展平和全连接层，输出各病害类别概率。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5 0 7Z" fill="#2563EB"/></marker></defs>
+<rect width="1200" height="760" fill="#F8FAFC"/><circle cx="42" cy="38" r="6" fill="#2563EB"/><text x="60" y="45" font-size="24" font-weight="700" fill="#0F172A">图12-2 作物病害识别CNN处理流程（架构示意）</text><text x="60" y="70" font-size="13" fill="#475569">卷积提取层次特征，池化逐级降采样，全连接层输出病害概率</text><rect x="1048" y="26" width="112" height="28" rx="6" fill="#FFF" stroke="#CBD5E1"/><text x="1104" y="45" text-anchor="middle" font-size="11" fill="#475569">FLOWCHART</text><line x1="40" y1="94" x2="1160" y2="94" stroke="#E2E8F0"/>
+<g fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#a)"><line x1="184" y1="340" x2="218" y2="340"/><line x1="362" y1="340" x2="396" y2="340"/><line x1="540" y1="340" x2="574" y2="340"/><line x1="718" y1="340" x2="752" y2="340"/><line x1="866" y1="340" x2="900" y2="340"/><line x1="1014" y1="340" x2="1048" y2="340"/></g>
+<g text-anchor="middle" fill="#0F172A"><g><rect x="42" y="255" width="142" height="170" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><rect x="72" y="280" width="82" height="70" rx="4" fill="#FFF" stroke="#0F766E"/><path d="M80 335Q105 290 145 338" fill="#DCFCE7" stroke="#0F766E"/><text x="113" y="380" font-size="15" font-weight="700">叶片图像</text><text x="113" y="403" font-size="11" fill="#475569">224×224×3 RGB</text></g>
+<g><rect x="220" y="235" width="142" height="210" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="291" y="275" font-size="15" font-weight="700">卷积 + 池化 ①</text><text x="291" y="305" font-size="11" fill="#475569">Conv2D + ReLU</text><text x="291" y="326" font-size="11" fill="#475569">MaxPool2D</text><rect x="250" y="350" width="82" height="50" fill="#DBEAFE" stroke="#2563EB"/><text x="291" y="424" font-size="11" fill="#475569">16×112×112</text></g>
+<g><rect x="398" y="245" width="142" height="190" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="469" y="282" font-size="15" font-weight="700">卷积 + 池化 ②</text><text x="469" y="312" font-size="11" fill="#475569">Conv2D + ReLU</text><text x="469" y="333" font-size="11" fill="#475569">MaxPool2D</text><rect x="443" y="355" width="52" height="35" fill="#BFDBFE" stroke="#2563EB"/><text x="469" y="414" font-size="11" fill="#475569">32×56×56</text></g>
+<g><rect x="576" y="255" width="142" height="170" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="647" y="289" font-size="15" font-weight="700">卷积 + 池化 ③</text><text x="647" y="319" font-size="11" fill="#475569">Conv2D + ReLU</text><text x="647" y="340" font-size="11" fill="#475569">MaxPool2D</text><rect x="629" y="360" width="36" height="24" fill="#93C5FD" stroke="#2563EB"/><text x="647" y="405" font-size="11" fill="#475569">64×28×28</text></g>
+<g><rect x="754" y="275" width="112" height="130" rx="8" fill="#FFF" stroke="#7C3AED" stroke-width="2"/><text x="810" y="326" font-size="15" font-weight="700">Flatten</text><text x="810" y="354" font-size="11" fill="#475569">展平为一维</text><text x="810" y="378" font-size="11" fill="#475569">50,176</text></g>
+<g><rect x="902" y="275" width="112" height="130" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><text x="958" y="319" font-size="15" font-weight="700">Dense</text><text x="958" y="347" font-size="11" fill="#475569">128 神经元</text><text x="958" y="371" font-size="11" fill="#475569">ReLU</text></g>
+<g><rect x="1050" y="220" width="110" height="240" rx="8" fill="#FFF" stroke="#0F766E" stroke-width="2"/><text x="1105" y="250" font-size="15" font-weight="700">病害概率</text><text x="1105" y="273" font-size="11" fill="#475569">Softmax · C类</text><g font-size="10" text-anchor="start"><text x="1062" y="310">健康 0.01</text><rect x="1062" y="319" width="4" height="9" fill="#0F766E"/><text x="1062" y="350">白粉病 0.88</text><rect x="1062" y="359" width="76" height="9" fill="#2563EB"/><text x="1062" y="390">锈病 0.05</text><rect x="1062" y="399" width="8" height="9" fill="#F97316"/><text x="1062" y="430">叶斑病 0.06</text><rect x="1062" y="439" width="10" height="9" fill="#D97706"/></g></g></g>
+<rect x="215" y="185" width="508" height="290" rx="10" fill="none" stroke="#2563EB" stroke-dasharray="7 5"/><text x="235" y="210" font-size="12" font-weight="700" fill="#2563EB">三级特征提取：边缘 → 纹理 → 形状</text>
+<line x1="40" y1="535" x2="1160" y2="535" stroke="#E2E8F0"/><g text-anchor="middle"><text x="113" y="575" font-size="12" font-weight="700" fill="#0F766E">输入</text><text x="469" y="575" font-size="12" font-weight="700" fill="#2563EB">特征提取与降采样</text><text x="884" y="575" font-size="12" font-weight="700" fill="#7C3AED">分类决策</text><text x="1105" y="575" font-size="12" font-weight="700" fill="#0F766E">概率输出</text></g><text x="600" y="625" text-anchor="middle" font-size="13" fill="#475569">空间分辨率逐级降低，通道数逐级增加；C = 病害类别数 + 健康类别。</text>
+<text x="600" y="716" text-anchor="middle" font-size="11" fill="#64748B">图12-2 叶片图像经三次卷积池化提取层次特征，展平后由全连接层输出健康及各病害类别概率。</text>
+</svg></main></body></html>

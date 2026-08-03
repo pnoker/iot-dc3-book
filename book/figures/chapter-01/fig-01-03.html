@@ -2,247 +2,123 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>图1-3 移动互联网应用生态示意</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
+    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
+    main.figure{width:1200px;height:840px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
+    svg{display:block}text{letter-spacing:0}
   </style>
 </head>
 <body>
-  <main class="page">
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图1-3 移动互联网应用生态示意</title>
-  <desc id="desc">读者应理解移动互联网以用户为唯一中心,应用模块围绕用户辐射,且通过社交内嵌支付等交叉连接实现功能聚合而非各自孤立。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="72.593" y="24.000" width="1054.815" height="712.000" viewBox="0 0 1600.000 1080.000" preserveAspectRatio="xMidYMid meet">
-<defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+<main class="figure" data-figure-root>
+<svg width="1200" height="840" viewBox="0 0 1200 840" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
+  <title id="ft">图1-3 移动互联网应用生态示意</title>
+  <desc id="fd">用户位于中心，即时通信、社交媒体、移动支付、地图出行和短视频五类应用围绕用户辐射，应用之间通过支付、分享与位置能力交叉连接，底部平台能力共同支撑应用生态。</desc>
+  <defs>
+    <marker id="solid-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5L0 7Z" fill="#2563EB"/></marker>
+    <marker id="dash-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5L0 7Z" fill="#0F766E"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#E2E8F0" stroke-width="0.5"/></pattern>
   </defs>
+  <rect width="1200" height="840" fill="#F8FAFC"/>
+  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
+  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-3 移动互联网应用生态示意</text>
+  <text x="66" y="73" font-size="12" fill="#475569">以用户为唯一中心，应用围绕用户辐射并通过功能内嵌形成交叉生态</text>
+  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
+  <rect x="24" y="104" width="1152" height="632" rx="8" fill="#FFFFFF"/>
+  <rect x="24" y="104" width="1152" height="632" rx="8" fill="url(#grid)"/>
 
-  <!-- canvas -->
-  <rect x="0" y="0" width="1600" height="1080" fill="#FFFFFF"/>
+  <!-- 连线层：先绘制，后续节点覆盖端点与交叉区域 -->
+  <g fill="none">
+    <path d="M600 376C470 330 360 252 252 206" stroke="#2563EB" stroke-width="2.2" marker-end="url(#solid-arrow)"/>
+    <path d="M600 376C558 292 544 220 550 178" stroke="#2563EB" stroke-width="2.2" marker-end="url(#solid-arrow)"/>
+    <path d="M600 376C686 314 796 252 908 206" stroke="#2563EB" stroke-width="2.2" marker-end="url(#solid-arrow)"/>
+    <path d="M600 376C740 394 856 418 952 456" stroke="#2563EB" stroke-width="2.2" marker-end="url(#solid-arrow)"/>
+    <path d="M600 376C504 434 404 482 306 510" stroke="#2563EB" stroke-width="2.2" marker-end="url(#solid-arrow)"/>
 
-  <!-- ===== title area ===== -->
-  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
-  <text x="84" y="48" font-size="22" font-weight="700" fill="#0F172A">图1-3 移动互联网应用生态示意</text>
-  <text x="84" y="72" font-size="12" fill="#64748B">感知 / 网络 / 平台 / 应用 四层参考架构——数据上行、指令下行，安全贯穿全栈</text>
-  <rect x="1450" y="30" width="120" height="30" rx="15" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="1510" y="49" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="2">LAYERED</text>
-  <line x1="40" y1="103" x2="1560" y2="103" stroke="#E2E8F0" stroke-width="1"/>
-
-  <!-- ===== security vertical strip (spans whole stack) ===== -->
-  <rect x="80" y="150" width="120" height="820" rx="12" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-width="2" stroke-dasharray="8 4"/>
-  <text x="140" y="180" font-size="16" font-weight="700" fill="#E11D48" text-anchor="middle">安全</text>
-  <text x="140" y="199" font-size="9" font-weight="600" fill="#E11D48" text-anchor="middle" letter-spacing="1.5">SECURITY</text>
-  <!-- security domains aligned with each layer center -->
-  <text x="140" y="224" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">应用安全</text>
-  <text x="140" y="240" font-size="8.5" fill="#94A3B8" text-anchor="middle">Application</text>
-  <text x="140" y="444" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">数据安全</text>
-  <text x="140" y="460" font-size="8.5" fill="#94A3B8" text-anchor="middle">Data</text>
-  <text x="140" y="664" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">通信安全</text>
-  <text x="140" y="680" font-size="8.5" fill="#94A3B8" text-anchor="middle">Network</text>
-  <text x="140" y="884" font-size="13" font-weight="700" fill="#E11D48" text-anchor="middle">设备安全</text>
-  <text x="140" y="900" font-size="8.5" fill="#94A3B8" text-anchor="middle">Device</text>
-
-  <!-- ===== Layer 4: Application (purple, top) ===== -->
-  <rect x="240" y="150" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="265" y="202" font-size="20" font-weight="700" fill="#7C3AED">应用层</text>
-  <text x="265" y="224" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">APPLICATION</text>
-  <text x="265" y="248" font-size="11" fill="#475569">业务呈现与决策</text>
-  <text x="265" y="268" font-size="9" fill="#94A3B8">第 4 层 · 顶层</text>
-  <line x1="445" y1="165" x2="445" y2="295" stroke="#E2E8F0" stroke-width="1"/>
-  <!-- cards -->
-  <g>
-    <rect x="470" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <circle cx="486" cy="202" r="5" fill="#7C3AED"/>
-    <text x="500" y="207" font-size="15" font-weight="700" fill="#0F172A">城市大脑</text>
-    <text x="486" y="234" font-size="11" fill="#475569">态势感知 · 指挥调度</text>
-    <text x="486" y="254" font-size="9" fill="#94A3B8">City Brain</text>
-  </g>
-  <g>
-    <rect x="735" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <circle cx="751" cy="202" r="5" fill="#7C3AED"/>
-    <text x="765" y="207" font-size="15" font-weight="700" fill="#0F172A">工业监控</text>
-    <text x="751" y="234" font-size="11" fill="#475569">生产流程 · 远程控制</text>
-    <text x="751" y="254" font-size="9" fill="#94A3B8">Industrial SCADA</text>
-  </g>
-  <g>
-    <rect x="1000" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <circle cx="1016" cy="202" r="5" fill="#7C3AED"/>
-    <text x="1030" y="207" font-size="15" font-weight="700" fill="#0F172A">智慧农业</text>
-    <text x="1016" y="234" font-size="11" fill="#475569">环境调控 · 自动灌溉</text>
-    <text x="1016" y="254" font-size="9" fill="#94A3B8">Smart Agriculture</text>
-  </g>
-  <g>
-    <rect x="1265" y="170" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <circle cx="1281" cy="202" r="5" fill="#7C3AED"/>
-    <text x="1295" y="207" font-size="15" font-weight="700" fill="#0F172A">移动门户</text>
-    <text x="1281" y="234" font-size="11" fill="#475569">数据可视 · 告警推送</text>
-    <text x="1281" y="254" font-size="9" fill="#94A3B8">Mobile Portal</text>
+    <path d="M660 178C760 146 846 152 908 184" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="7 6" marker-end="url(#dash-arrow)"/>
+    <path d="M416 500C500 470 570 420 626 330C650 292 660 252 642 218" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="7 6" marker-end="url(#dash-arrow)"/>
+    <path d="M992 414C1010 332 1000 274 966 248" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="7 6" marker-end="url(#dash-arrow)"/>
+    <path d="M660 206C750 250 812 328 882 414" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="7 6" marker-end="url(#dash-arrow)"/>
   </g>
 
-  <!-- ===== flow gap 1 (application <-> platform) ===== -->
-  <line x1="620" y1="363" x2="620" y2="317" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
-  <text x="595" y="340" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="end" dominant-baseline="middle">数据上行</text>
-  <line x1="1140" y1="317" x2="1140" y2="363" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-  <text x="1165" y="340" font-size="11" font-weight="600" fill="#2563EB" text-anchor="start" dominant-baseline="middle">指令下行</text>
-
-  <!-- ===== Layer 3: Platform (orange) ===== -->
-  <rect x="240" y="370" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
-  <text x="265" y="422" font-size="20" font-weight="700" fill="#F59E0B">平台层</text>
-  <text x="265" y="444" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">PLATFORM</text>
-  <text x="265" y="468" font-size="11" fill="#475569">数据处理与服务</text>
-  <text x="265" y="488" font-size="9" fill="#94A3B8">第 3 层 · 中枢</text>
-  <line x1="445" y1="385" x2="445" y2="515" stroke="#E2E8F0" stroke-width="1"/>
-  <g>
-    <rect x="470" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-    <circle cx="486" cy="422" r="5" fill="#F59E0B"/>
-    <text x="500" y="427" font-size="15" font-weight="700" fill="#0F172A">设备管理</text>
-    <text x="486" y="454" font-size="11" fill="#475569">注册 · 影子 · OTA</text>
-    <text x="486" y="474" font-size="9" fill="#94A3B8">Device Management</text>
-  </g>
-  <g>
-    <rect x="735" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-    <circle cx="751" cy="422" r="5" fill="#F59E0B"/>
-    <text x="765" y="427" font-size="15" font-weight="700" fill="#0F172A">数据中台</text>
-    <text x="751" y="454" font-size="11" fill="#475569">清洗 · 存储 · 建模</text>
-    <text x="751" y="474" font-size="9" fill="#94A3B8">Data Platform</text>
-  </g>
-  <g>
-    <rect x="1000" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-    <circle cx="1016" cy="422" r="5" fill="#F59E0B"/>
-    <text x="1030" y="427" font-size="15" font-weight="700" fill="#0F172A">AI 分析</text>
-    <text x="1016" y="454" font-size="11" fill="#475569">预测 · 识别 · 决策</text>
-    <text x="1016" y="474" font-size="9" fill="#94A3B8">AI Analytics</text>
-  </g>
-  <g>
-    <rect x="1265" y="390" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-    <circle cx="1281" cy="422" r="5" fill="#F59E0B"/>
-    <text x="1295" y="427" font-size="15" font-weight="700" fill="#0F172A">规则引擎</text>
-    <text x="1281" y="454" font-size="11" fill="#475569">联动 · 告警 · 编排</text>
-    <text x="1281" y="474" font-size="9" fill="#94A3B8">Rules Engine</text>
+  <!-- 连线标签 -->
+  <g font-size="11" font-weight="700">
+    <rect x="349" y="278" width="82" height="22" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/><text x="390" y="293" text-anchor="middle" fill="#2563EB">聊天 / 红包</text>
+    <rect x="520" y="248" width="82" height="22" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/><text x="561" y="263" text-anchor="middle" fill="#2563EB">分享 / 点赞</text>
+    <rect x="749" y="280" width="102" height="22" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/><text x="800" y="295" text-anchor="middle" fill="#2563EB">扫码支付 / 转账</text>
+    <rect x="777" y="386" width="82" height="22" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/><text x="818" y="401" text-anchor="middle" fill="#2563EB">导航 / 约车</text>
+    <rect x="411" y="441" width="82" height="22" rx="4" fill="#FFFFFF" stroke="#BFDBFE"/><text x="452" y="456" text-anchor="middle" fill="#2563EB">拍摄 / 发布</text>
+    <rect x="742" y="139" width="76" height="22" rx="4" fill="#FFFFFF" stroke="#99F6E4"/><text x="780" y="154" text-anchor="middle" fill="#0F766E">内嵌支付</text>
+    <rect x="400" y="388" width="100" height="22" rx="4" fill="#FFFFFF" stroke="#99F6E4"/><text x="450" y="403" text-anchor="middle" fill="#0F766E">分享至社交</text>
+    <rect x="968" y="314" width="100" height="22" rx="4" fill="#FFFFFF" stroke="#99F6E4"/><text x="1018" y="329" text-anchor="middle" fill="#0F766E">调用支付</text>
+    <rect x="722" y="326" width="86" height="22" rx="4" fill="#FFFFFF" stroke="#99F6E4"/><text x="765" y="341" text-anchor="middle" fill="#0F766E">位置分享</text>
   </g>
 
-  <!-- ===== flow gap 2 (platform <-> network) ===== -->
-  <line x1="620" y1="583" x2="620" y2="537" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
-  <text x="595" y="560" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="end" dominant-baseline="middle">数据上行</text>
-  <line x1="1140" y1="537" x2="1140" y2="583" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-  <text x="1165" y="560" font-size="11" font-weight="600" fill="#2563EB" text-anchor="start" dominant-baseline="middle">指令下行</text>
-
-  <!-- ===== Layer 2: Network (blue) ===== -->
-  <rect x="240" y="590" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="265" y="642" font-size="20" font-weight="700" fill="#2563EB">网络层</text>
-  <text x="265" y="664" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">NETWORK</text>
-  <text x="265" y="688" font-size="11" fill="#475569">连接与可靠传输</text>
-  <text x="265" y="708" font-size="9" fill="#94A3B8">第 2 层 · 承载</text>
-  <line x1="445" y1="605" x2="445" y2="735" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- 中心用户节点 -->
   <g>
-    <rect x="470" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <circle cx="486" cy="642" r="5" fill="#2563EB"/>
-    <text x="500" y="647" font-size="15" font-weight="700" fill="#0F172A">蜂窝网络</text>
-    <text x="486" y="674" font-size="11" fill="#475569">4G · 5G · NB-IoT</text>
-    <text x="486" y="694" font-size="9" fill="#94A3B8">Cellular</text>
-  </g>
-  <g>
-    <rect x="735" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <circle cx="751" cy="642" r="5" fill="#2563EB"/>
-    <text x="765" y="647" font-size="15" font-weight="700" fill="#0F172A">短距通信</text>
-    <text x="751" y="674" font-size="11" fill="#475569">Wi-Fi · 蓝牙 · Zigbee</text>
-    <text x="751" y="694" font-size="9" fill="#94A3B8">Short-range</text>
-  </g>
-  <g>
-    <rect x="1000" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <circle cx="1016" cy="642" r="5" fill="#2563EB"/>
-    <text x="1030" y="647" font-size="15" font-weight="700" fill="#0F172A">接入网关</text>
-    <text x="1016" y="674" font-size="11" fill="#475569">协议转换 · 汇聚</text>
-    <text x="1016" y="694" font-size="9" fill="#94A3B8">Gateway</text>
-  </g>
-  <g>
-    <rect x="1265" y="610" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <circle cx="1281" cy="642" r="5" fill="#2563EB"/>
-    <text x="1295" y="647" font-size="15" font-weight="700" fill="#0F172A">边缘节点</text>
-    <text x="1281" y="674" font-size="11" fill="#475569">本地处理 · 缓存</text>
-    <text x="1281" y="694" font-size="9" fill="#94A3B8">Edge Node</text>
+    <circle cx="600" cy="376" r="91" fill="#FFFFFF" stroke="#D97706" stroke-width="3"/>
+    <circle cx="600" cy="376" r="78" fill="#FFFBEB" stroke="#FDE68A"/>
+    <circle cx="600" cy="337" r="20" fill="#D97706"/>
+    <path d="M563 391c0-22 16-35 37-35s37 13 37 35v8h-74Z" fill="#D97706"/>
+    <text x="600" y="424" font-size="21" font-weight="700" text-anchor="middle" fill="#0F172A">用户</text>
+    <text x="600" y="446" font-size="11" text-anchor="middle" fill="#475569">内容生产者 · 服务消费者</text>
   </g>
 
-  <!-- ===== flow gap 3 (network <-> perception) ===== -->
-  <line x1="620" y1="803" x2="620" y2="757" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
-  <text x="595" y="780" font-size="11" font-weight="600" fill="#F59E0B" text-anchor="end" dominant-baseline="middle">数据上行</text>
-  <line x1="1140" y1="757" x2="1140" y2="803" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-  <text x="1165" y="780" font-size="11" font-weight="600" fill="#2563EB" text-anchor="start" dominant-baseline="middle">指令下行</text>
+  <!-- 五类应用节点 -->
+  <g>
+    <rect x="76" y="148" width="264" height="116" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="76" y="148" width="8" height="116" rx="4" fill="#2563EB"/>
+    <circle cx="112" cy="180" r="17" fill="#EFF6FF"/><path d="M102 173h20v13h-11l-6 5v-5h-3Z" fill="none" stroke="#2563EB" stroke-width="2"/>
+    <text x="140" y="185" font-size="16" font-weight="700" fill="#0F172A">即时通信</text>
+    <text x="100" y="216" font-size="11" fill="#475569">单聊 / 群聊</text><text x="188" y="216" font-size="11" fill="#475569">语音视频</text>
+    <text x="100" y="241" font-size="11" fill="#475569">红包转账</text><text x="188" y="241" font-size="11" fill="#475569">消息触达</text>
 
-  <!-- ===== Layer 1: Perception (green, bottom) ===== -->
-  <rect x="240" y="810" width="1280" height="160" rx="12" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <text x="265" y="862" font-size="20" font-weight="700" fill="#10B981">感知层</text>
-  <text x="265" y="884" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1.5">PERCEPTION</text>
-  <text x="265" y="908" font-size="11" fill="#475569">数据采集与物理执行</text>
-  <text x="265" y="928" font-size="9" fill="#94A3B8">第 1 层 · 基座</text>
-  <line x1="445" y1="825" x2="445" y2="955" stroke="#E2E8F0" stroke-width="1"/>
-  <g>
-    <rect x="470" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <circle cx="486" cy="862" r="5" fill="#10B981"/>
-    <text x="500" y="867" font-size="15" font-weight="700" fill="#0F172A">传感器</text>
-    <text x="486" y="894" font-size="11" fill="#475569">温湿 · 压力 · 气体</text>
-    <text x="486" y="914" font-size="9" fill="#94A3B8">Sensor</text>
-  </g>
-  <g>
-    <rect x="735" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <circle cx="751" cy="862" r="5" fill="#10B981"/>
-    <text x="765" y="867" font-size="15" font-weight="700" fill="#0F172A">视觉采集</text>
-    <text x="751" y="894" font-size="11" fill="#475569">摄像头 · 雷达 · LiDAR</text>
-    <text x="751" y="914" font-size="9" fill="#94A3B8">Vision</text>
-  </g>
-  <g>
-    <rect x="1000" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <circle cx="1016" cy="862" r="5" fill="#10B981"/>
-    <text x="1030" y="867" font-size="15" font-weight="700" fill="#0F172A">识别设备</text>
-    <text x="1016" y="894" font-size="11" fill="#475569">电子标签 · 条码</text>
-    <text x="1016" y="914" font-size="9" fill="#94A3B8">RFID</text>
-  </g>
-  <g>
-    <rect x="1265" y="830" width="230" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <circle cx="1281" cy="862" r="5" fill="#10B981"/>
-    <text x="1295" y="867" font-size="15" font-weight="700" fill="#0F172A">执行器</text>
-    <text x="1281" y="894" font-size="11" fill="#475569">电机 · 阀门 · 开关</text>
-    <text x="1281" y="914" font-size="9" fill="#94A3B8">Actuator</text>
+    <rect x="440" y="120" width="220" height="116" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <rect x="440" y="120" width="8" height="116" rx="4" fill="#0F766E"/>
+    <circle cx="476" cy="152" r="17" fill="#ECFDF5"/><circle cx="476" cy="152" r="5" fill="none" stroke="#0F766E" stroke-width="2"/><circle cx="465" cy="160" r="3" fill="#0F766E"/><circle cx="487" cy="160" r="3" fill="#0F766E"/>
+    <text x="504" y="157" font-size="16" font-weight="700" fill="#0F172A">社交媒体</text>
+    <text x="464" y="188" font-size="11" fill="#475569">动态分享</text><text x="548" y="188" font-size="11" fill="#475569">点赞评论</text>
+    <text x="464" y="213" font-size="11" fill="#475569">兴趣关注</text><text x="548" y="213" font-size="11" fill="#475569">位置签到</text>
+
+    <rect x="860" y="148" width="264" height="116" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+    <rect x="1116" y="148" width="8" height="116" rx="4" fill="#F97316"/>
+    <circle cx="896" cy="180" r="17" fill="#FFF7ED"/><rect x="885" y="172" width="22" height="16" rx="2" fill="none" stroke="#F97316" stroke-width="2"/><line x1="885" y1="178" x2="907" y2="178" stroke="#F97316" stroke-width="2"/>
+    <text x="924" y="185" font-size="16" font-weight="700" fill="#0F172A">移动支付</text>
+    <text x="884" y="216" font-size="11" fill="#475569">扫码支付</text><text x="972" y="216" font-size="11" fill="#475569">好友转账</text>
+    <text x="884" y="241" font-size="11" fill="#475569">数字钱包</text><text x="972" y="241" font-size="11" fill="#475569">AA / 红包</text>
+
+    <rect x="860" y="414" width="264" height="116" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+    <rect x="1116" y="414" width="8" height="116" rx="4" fill="#D97706"/>
+    <circle cx="896" cy="446" r="17" fill="#FFFBEB"/><path d="M896 434c7 0 11 5 11 11 0 8-11 17-11 17s-11-9-11-17c0-6 4-11 11-11Z" fill="none" stroke="#D97706" stroke-width="2"/><circle cx="896" cy="445" r="3" fill="#D97706"/>
+    <text x="924" y="451" font-size="16" font-weight="700" fill="#0F172A">地图 / 出行</text>
+    <text x="884" y="482" font-size="11" fill="#475569">地图导航</text><text x="972" y="482" font-size="11" fill="#475569">实时路况</text>
+    <text x="884" y="507" font-size="11" fill="#475569">网约车</text><text x="972" y="507" font-size="11" fill="#475569">位置共享</text>
+
+    <rect x="164" y="468" width="252" height="116" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="2"/>
+    <rect x="164" y="468" width="8" height="116" rx="4" fill="#DC2626"/>
+    <circle cx="200" cy="500" r="17" fill="#FEF2F2"/><rect x="190" y="492" width="20" height="16" rx="2" fill="none" stroke="#DC2626" stroke-width="2"/><path d="M198 496l7 4-7 4Z" fill="#DC2626"/>
+    <text x="228" y="505" font-size="16" font-weight="700" fill="#0F172A">短视频</text>
+    <text x="188" y="536" font-size="11" fill="#475569">拍摄剪辑</text><text x="276" y="536" font-size="11" fill="#475569">内容发布</text>
+    <text x="188" y="561" font-size="11" fill="#475569">推荐消费</text><text x="276" y="561" font-size="11" fill="#475569">互动分享</text>
   </g>
 
-  <!-- ===== legend ===== -->
-  <line x1="40" y1="995" x2="1560" y2="995" stroke="#E2E8F0" stroke-width="1"/>
-  <rect x="80" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-  <text x="104" y="1024" font-size="11" fill="#475569">感知层</text>
-  <rect x="210" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="234" y="1024" font-size="11" fill="#475569">网络层</text>
-  <rect x="340" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F59E0B" stroke-width="1.5"/>
-  <text x="364" y="1024" font-size="11" fill="#475569">平台层</text>
-  <rect x="470" y="1010" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="494" y="1024" font-size="11" fill="#475569">应用层</text>
-  <rect x="620" y="1010" width="16" height="12" rx="2" fill="#E11D48" fill-opacity="0.1" stroke="#E11D48" stroke-width="1.5" stroke-dasharray="4 2"/>
-  <text x="644" y="1024" font-size="11" fill="#475569">安全贯穿</text>
-  <line x1="830" y1="1021" x2="854" y2="1021" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#ah-orange)"/>
-  <text x="862" y="1024" font-size="11" fill="#475569">数据上行</text>
-  <line x1="1010" y1="1021" x2="1034" y2="1021" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
-  <text x="1042" y="1024" font-size="11" fill="#475569">指令下行</text>
+  <!-- 平台能力带 -->
+  <g>
+    <rect x="52" y="618" width="1096" height="94" rx="8" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="76" y="645" font-size="12" font-weight="700" fill="#334155">共享平台能力</text>
+    <line x1="192" y1="632" x2="192" y2="698" stroke="#CBD5E1"/>
+    <circle cx="240" cy="665" r="7" fill="#2563EB"/><text x="256" y="670" font-size="13" font-weight="700" fill="#0F172A">账号身份</text><text x="256" y="690" font-size="11" fill="#475569">登录 · 关系链</text>
+    <circle cx="446" cy="665" r="7" fill="#0F766E"/><text x="462" y="670" font-size="13" font-weight="700" fill="#0F172A">位置服务</text><text x="462" y="690" font-size="11" fill="#475569">定位 · LBS</text>
+    <circle cx="662" cy="665" r="7" fill="#F97316"/><text x="678" y="670" font-size="13" font-weight="700" fill="#0F172A">支付基础设施</text><text x="678" y="690" font-size="11" fill="#475569">钱包 · 清结算</text>
+    <circle cx="894" cy="665" r="7" fill="#D97706"/><text x="910" y="670" font-size="13" font-weight="700" fill="#0F172A">推送与内容分发</text><text x="910" y="690" font-size="11" fill="#475569">通知 · 推荐</text>
+  </g>
 
-  <!-- ===== caption ===== -->
-  <text x="800" y="1060" font-size="10" fill="#94A3B8" text-anchor="middle">图1-2 四层参考架构：数据从感知层上行至应用层，指令反向下行形成闭环，安全贯穿所有层。</text>
-  </svg>
+  <line x1="32" y1="756" x2="1168" y2="756" stroke="#CBD5E1"/>
+  <line x1="412" y1="786" x2="454" y2="786" stroke="#2563EB" stroke-width="2"/><text x="464" y="790" font-size="11" fill="#475569">用户与应用的直接交互</text>
+  <line x1="656" y1="786" x2="698" y2="786" stroke="#0F766E" stroke-width="2" stroke-dasharray="7 6"/><text x="708" y="790" font-size="11" fill="#475569">应用间功能聚合</text>
+  <text x="600" y="819" font-size="11" text-anchor="middle" fill="#475569">图1-3 五类应用围绕用户连接，并通过支付、分享与位置能力形成相互嵌入的移动生态。</text>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">topology</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">星形拓扑布局。中心节点为用户，五个外围节点分别为即时通信、社交媒体、移动支付、地图/出行和短视频应用模块。各外围模块之间存在虚线连接（如社交平台内嵌支付功能）。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
-  </main>
+</main>
 </body>
 </html>

@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图8-14 后门攻击流程图</title>
   <style>
-    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; }
+    body { background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
     .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
     .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
@@ -14,7 +16,7 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图8-14 后门攻击流程图</title>
   <desc id="desc">从攻击者视角展示数据投毒后门攻击的操作步骤与数据流向。</desc>
@@ -95,12 +97,12 @@
 </g>
   <line x1="64" y1="785" x2="1736" y2="785" stroke="#E2E8F0"/>
   <rect x="80" y="800" width="16" height="12" rx="2" fill="#DCFCE7" stroke="#16A34A" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="10" font-weight="600" text-anchor="start">否→正常结果</text>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-weight="600" text-anchor="start">否→正常结果</text>
   <rect x="250" y="800" width="16" height="12" rx="2" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
-  <text x="274" y="808" fill="#64748B" font-size="10" font-weight="600" text-anchor="start">是→后门结果</text>
+  <text x="274" y="808" fill="#64748B" font-size="11" font-weight="600" text-anchor="start">是→后门结果</text>
   <line x1="410" y1="806" x2="470" y2="806" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,3"/>
-  <text x="478" y="808" fill="#64748B" font-size="10" font-weight="600" text-anchor="start">虚线=攻击者注入路径</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="10" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-14 后门攻击的关键是触发器设计与毒化样本注入:模型经 OTA 分发到边缘设备后,后门一旦植入清理成本极高,且少量毒化样本常规测试集难以检出。</text>
+  <text x="478" y="808" fill="#64748B" font-size="11" font-weight="600" text-anchor="start">虚线=攻击者注入路径</text>
+  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-14 后门攻击的关键是触发器设计与毒化样本注入:模型经 OTA 分发到边缘设备后,后门一旦植入清理成本极高,且少量毒化样本常规测试集难以检出。</text>
   </svg>
 </svg>
     <section class="meta" style="display:none">
