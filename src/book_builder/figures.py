@@ -11,7 +11,6 @@ from typing import Any
 
 from book_builder.markdown_assets import (
     BookFigureBlock,
-    book_figure_string_list,
     iter_book_figure_blocks,
     normalize_book_figure_scalar,
     parse_book_figure_payload,
@@ -43,15 +42,8 @@ class FigureSpec:
     section_id: str
     occurrence: int
     figure_id: str
-    figure_type: str
     title: str
-    purpose: str
-    layout: str
-    elements: list[str]
-    relationships: list[str]
-    legend: list[str]
     caption: str
-    render_notes: str
     body_hash: str
 
 
@@ -59,19 +51,10 @@ class FigureSpec:
 class FigureAsset:
     """已匹配的图表资产。"""
     chapter_id: int
-    section_id: str
     occurrence: int
-    figure_id: str
-    figure_type: str
     title: str
     caption: str
-    svg_path: str
-    html_path: str
-    png_path: str
     markdown_path: str
-    body_hash: str
-    source: str = "filesystem"
-    quality_tier: str = "standard"
 
 
 @dataclass(frozen=True)
@@ -210,15 +193,8 @@ def _parse_figure_spec(
             section_id=section_id,
             occurrence=occurrence,
             figure_id=figure_id,
-            figure_type=figure_type,
             title=normalize_book_figure_scalar(payload.get("title") or figure_id),
-            purpose=normalize_book_figure_scalar(payload.get("purpose") or ""),
-            layout=normalize_book_figure_scalar(payload.get("layout") or ""),
-            elements=book_figure_string_list(payload.get("elements")),
-            relationships=book_figure_string_list(payload.get("relationships")),
-            legend=book_figure_string_list(payload.get("legend")),
             caption=normalize_book_figure_scalar(payload.get("caption") or ""),
-            render_notes=normalize_book_figure_scalar(payload.get("render_notes") or ""),
             body_hash=body_hash,
         ),
         "",
@@ -285,13 +261,11 @@ def collect_figure_assets(
         markdown_path = f"figures/chapter-{spec.chapter_id:02d}/{stem}.png"
 
         assets.append(FigureAsset(
-            chapter_id=spec.chapter_id, section_id=spec.section_id,
-            occurrence=spec.occurrence, figure_id=spec.figure_id,
-            figure_type=spec.figure_type, title=spec.title, caption=spec.caption,
-            svg_path="", html_path="",
-            png_path=str(target_png),
+            chapter_id=spec.chapter_id,
+            occurrence=spec.occurrence,
+            title=spec.title,
+            caption=spec.caption,
             markdown_path=markdown_path,
-            body_hash=spec.body_hash,
         ))
 
     if missing:
