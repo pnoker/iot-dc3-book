@@ -18,8 +18,7 @@
 <body>
   <main class="page" data-figure-root>
     <svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img">
-                <!-- 背景网格 (极淡) -->
-                <defs>
+<defs>
                     <style>
                         text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
                         .region-boundary { fill: #FFFFFF; fill-opacity: 0.72; stroke: #93C5FD; stroke-width: 1.5; stroke-dasharray: 8 6; }
@@ -37,16 +36,11 @@
                         .legend-item { fill: #0F172A; font-size: 13px; }
                         .callout-text { fill: #475569; font-size: 13px; font-weight: 600; }
                     </style>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.6" />
-                    </pattern>
                     <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
                         <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.04" />
                     </filter>
                 </defs>
                 <rect x="0" y="0" width="1200" height="760" fill="#F8FAFC" />
-                <rect x="0" y="0" width="1200" height="760" fill="url(#grid)" />
-
                 <!-- 正确图号与标题 -->
                 <circle cx="42" cy="38" r="6" fill="#2563EB" />
                 <text x="60" y="45" fill="#0F172A" font-size="24" font-weight="700">图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</text>

@@ -18,6 +18,7 @@ illustrations:
   canvas:
     logical_width: 1200
     export_width: 2400
+    decorative_grid: false
     compact_height: [420, 520]
     standard_height: [560, 680]
     complex_height: [720, 900]
