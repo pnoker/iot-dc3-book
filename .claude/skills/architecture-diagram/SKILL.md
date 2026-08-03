@@ -35,7 +35,7 @@ Create professional technical architecture diagrams as **self-contained HTML fil
 font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif;
 ```
 
-Font sizes: 标题 22–28px，组件名 13–15px，副标签 10–12px，注释 9–10px，图例 10–12px。中文字号不要过小，PNG 供 Word 印刷，文字不得重叠或糊成一团。
+以 1200px 逻辑画布为基准：标题 22–26px，组件名 14–16px，副标签 11–13px，注释与图例不小于 11px，图注不小于 10px。禁止负 `letter-spacing`。PNG 会以 2400px 宽导出供出版使用，文字不得重叠、裁切或依赖浏览器缩放才能辨认。
 
 ### Visual Elements
 
@@ -75,11 +75,21 @@ Font sizes: 标题 22–28px，组件名 13–15px，副标签 10–12px，注�
 
 **CRITICAL:** 图例放在**所有边界框之外**（区域边界、集群边界之下至少 20px），必要时扩大 viewBox 高度容纳图例。图例不遮挡主体。
 
+### Canvas And Density（画布与密度）
+
+所有图使用 **1200px 逻辑宽度**，高度由内容决定，不得机械套用固定 760px：
+
+- 紧凑横向图：420–520px；
+- 常规架构 / 对比图：560–680px；
+- 复杂时序 / 矩阵图：720–900px。
+
+主体有效宽度至少占画布的 80%。内容较少时优先横向铺满并降低高度，禁止把小图居中放在大画布中制造四周空白。页面根节点必须是唯一导出区域，标记为 `data-figure-root`，宽度 1200px、高度等于实际内容高度；`body` 不得添加导出区域之外的 margin 或 padding。
+
 ### Layout Structure
 
 1. **Header** — 图名（中文「图X-Y 标题」）+ 一句副标题说明核心结论
-2. **Main SVG diagram** — 放在浅色圆角卡片容器内
-3. **Info cards（可选）** — 图下方 2–3 张要点卡，承载 callouts / 关键说明
+2. **Main SVG diagram** — 横向铺满有效版心，按信息密度选择高度
+3. **Info cards（可选）** — 仅在主图无法清晰承载关键说明时使用，不为凑高度添加
 4. **Caption/Footer** — 出版级图注
 
 ### Layout 类型语义
@@ -105,8 +115,11 @@ Font sizes: 标题 22–28px，组件名 13–15px，副标签 10–12px，注�
 
 - 内联 CSS（不依赖外部样式表、不联网加载字体）
 - 内联 SVG（不引用外部图片）
-- **不需要 JavaScript**（无导出工具栏、无 CDN 脚本）—— PNG 由渲染管线用 headless 浏览器截图生成，HTML 自身保持纯静态
+- **不需要 JavaScript**（无导出工具栏、无 CDN 脚本）—— PNG 由 `book-builder figures` 使用 headless Chrome 统一生成，HTML 自身保持纯静态
+- 根导出区域使用 `data-figure-root`，逻辑宽度固定 1200px，高度按内容自适应；渲染管线输出严格 2400px 宽 PNG
 - 浅色背景，中文标签短小，解释性文字放 callouts/信息卡，禁止 `节点1/节点2/最右侧/container/service/user` 等占位词
 - 每张图只表达一个主结论，主链路高亮，边界/层级/时序/决策关系一眼可读
+- 灰度打印仍能依靠线型、边框和文字区分语义，禁止只靠颜色编码
+- 主体横向有效占比不低于 80%，无非必要渐变、阴影、大面积留白或裁切触边
 
 文件在任意现代浏览器直接打开即可正确渲染。
