@@ -9,6 +9,8 @@ from typing import Annotated
 import typer
 
 from book_builder.config import load_config
+from book_builder.figure_audit import audit_figure_html
+from book_builder.figure_renderer import render_figure_directory
 from book_builder.figures import collect_figure_assets
 from book_builder.log import get_logger, setup_logging
 from book_builder.manuscript import load_manuscript
@@ -67,6 +69,38 @@ def build(
     )
     logger.info("✅ 构建完成: %s", result["output_dir"])
     logger.info("   book.md: %s", result["book_markdown"])
+
+
+@app.command()
+def figures(
+    source_dir: Annotated[str, typer.Option("--source", help="HTML 插图源目录")] = "book/figures",
+    output_dir: Annotated[str, typer.Option("--output", help="PNG 输出目录")] = "book/assets/images",
+    width: Annotated[int, typer.Option("--width", help="PNG 统一像素宽度")] = 2400,
+    chapter: Annotated[int | None, typer.Option("--chapter", help="仅导出指定章节")] = None,
+    figure_id: Annotated[str | None, typer.Option("--figure-id", help="仅导出指定 figure_id")] = None,
+    chrome_bin: Annotated[str | None, typer.Option("--chrome", help="Chrome/Edge 可执行文件路径")] = None,
+    log_level: Annotated[str, typer.Option("--log-level", help="日志级别")] = "INFO",
+) -> None:
+    """将 self-contained HTML 插图批量导出为出版用 PNG。"""
+    setup_logging(level=log_level)
+    audit_issues = audit_figure_html(source_dir, chapter=chapter, figure_id=figure_id)
+    if audit_issues:
+        for issue in audit_issues:
+            typer.echo(f"错误: {issue.source}: {issue.reason}", err=True)
+        raise typer.Exit(1)
+    try:
+        results = render_figure_directory(
+            source_dir,
+            output_dir,
+            export_width=width,
+            chapter=chapter,
+            figure_id=figure_id,
+            chrome_bin=chrome_bin,
+        )
+    except (FileNotFoundError, RuntimeError, ValueError) as exc:
+        typer.echo(f"错误: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    logger.info("✅ 插图导出完成: %d 张，统一宽度 %dpx", len(results), width)
 
 
 @app.command()

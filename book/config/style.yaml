@@ -15,6 +15,19 @@ illustrations:
     success: "#16A34A"
     warning: "#D97706"
     danger: "#DC2626"
+  canvas:
+    logical_width: 1200
+    export_width: 2400
+    compact_height: [420, 520]
+    standard_height: [560, 680]
+    complex_height: [720, 900]
+    min_content_width_ratio: 0.8
+  typography:
+    title: [22, 26]
+    component: [14, 16]
+    secondary: [11, 13]
+    annotation_min: 11
+    caption_min: 10
   allowed_types:
     - "architecture"
     - "sequence"
