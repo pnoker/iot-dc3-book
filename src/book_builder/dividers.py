@@ -104,7 +104,7 @@ def _build_specs(
                 "kind": "part",
                 "theme": theme,
                 "number": f"{part_index:02d}",
-                "label": part.prefix,
+                "label": f"第{part.prefix}篇",
                 "english_label": f"PART {part_index:02d}",
                 "title": part.name,
                 "title_main": part.name,
