@@ -9,9 +9,9 @@ profile:
   project: "IoT DC3"
   project_url: "https://gitee.com/pnoker/iot-dc3"
   project_description: |
-    IoT DC3 是一个开源的分布式工业物联网平台，基于 Spring Boot 4 与 Spring Cloud 2025 构建，
+    IoT DC3 是一个开源的分布式工业物联网平台，基于 Spring Boot 与 Spring Cloud 构建，
     聚焦多协议设备接入、数据采集、权限隔离与 AI 运维。
-    内置 Modbus、OPC UA、MQTT、CoAP、BLE 等协议驱动，并在 Spring AI 2.0 之上实现 Agentic Center，
+    内置 Modbus、OPC UA、MQTT、CoAP、BLE 等协议驱动，并集成 Spring AI 实现 Agentic Center，
     让大模型在受控工具下参与设备查询、告警分析与可视化。
     项目自 2016 年启动，从最初的协议解析库逐步演进为覆盖设备接入、数据采集与 AI 运维的完整平台。
   expertise:
