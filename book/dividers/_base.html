@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1240, initial-scale=1">
+  <link rel="stylesheet" href="divider.css">
+  <title>{{ label }} {{ title }}</title>
+</head>
+<body>
+  <main class="page {{ kind }}-page theme-{{ theme }}" data-figure-root>
+    <div class="glow glow-a" aria-hidden="true"></div>
+    <div class="glow glow-b" aria-hidden="true"></div>
+    <div class="glow glow-c" aria-hidden="true"></div>
+    <div class="frame" aria-hidden="true"></div>
+    <section class="copy">
+      <p class="eyebrow">{{ english_label }}</p>
+      <p class="ordinal" aria-hidden="true">{{ number }}</p>
+      <p class="section-label">{{ label }}{% if kind == "part" %}、{% endif %}</p>
+      <h1>
+        {% if title_sub %}
+        <span>{{ title_main }}：</span>
+        <span class="title-sub">{{ title_sub }}</span>
+        {% else %}
+        <span>{{ title }}</span>
+        {% endif %}
+      </h1>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="overview">{{ description }}</p>
+    </section>
+    <section class="visual" aria-hidden="true">
+      {% block illustration %}{% endblock %}
+    </section>
+    <svg class="family-network" viewBox="0 0 360 260" aria-hidden="true">
+      <path class="network-line" d="M24 206L102 132l72 42 70-112 92 54"/>
+      <path class="network-line" d="M102 132l28-92 114 22 38 144" opacity="0.55"/>
+      <path class="network-dash" d="M24 206l150-32 108 32M130 40l44 134 162-58"/>
+      <circle class="network-node" cx="24" cy="206" r="8" fill="#2563EB"/>
+      <circle class="network-node" cx="102" cy="132" r="10" fill="#06B6D4"/>
+      <circle class="network-node" cx="130" cy="40" r="7" fill="#2563EB"/>
+      <circle class="network-node" cx="174" cy="174" r="9" fill="#10B981"/>
+      <circle class="network-node" cx="244" cy="62" r="8" fill="#0891B2"/>
+      <circle class="network-node" cx="282" cy="206" r="7" fill="#F59E0B"/>
+      <circle class="network-node" cx="336" cy="116" r="8" fill="#10B981"/>
+    </svg>
+    <footer class="footer">
+      <span>FROM INDUSTRIAL SOFTWARE TO AI AGENTS</span>
+      <span>IoT DC3</span>
+    </footer>
+  </main>
+</body>
+</html>

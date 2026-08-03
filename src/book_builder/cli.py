@@ -9,6 +9,7 @@ from typing import Annotated
 import typer
 
 from book_builder.config import load_config
+from book_builder.dividers import render_divider_assets
 from book_builder.figure_audit import audit_figure_html
 from book_builder.figure_renderer import render_figure_directory
 from book_builder.figures import collect_figure_assets
@@ -146,6 +147,12 @@ def pdf(
         raise typer.Exit(1)
 
     resolved_css = css_file or str(Path(__file__).resolve().parent / "pdf_style.css")
+    divider_assets = render_divider_assets(
+        cfg.parts,
+        Path(config_dir).parent / "dividers",
+        out / "dividers",
+        chrome_bin=chrome_bin,
+    )
 
     pdf_path = generate_pdf_output(
         book_md,
@@ -155,6 +162,7 @@ def pdf(
         pandoc_bin=cfg.output.pandoc_bin,
         cover_html=cover_html if cover_html.exists() else None,
         metadata=cfg.book.model_dump(),
+        divider_images=divider_assets,
     )
     if pdf_path:
         logger.info("✅ PDF 导出完成: %s", pdf_path)
@@ -205,6 +213,13 @@ def sample(
     )
 
     resolved_css = css_file or str(Path(__file__).resolve().parent / "pdf_style.css")
+    divider_assets = render_divider_assets(
+        cfg.parts,
+        Path(config_dir).parent / "dividers",
+        out / "dividers",
+        until_chapter=until_chapter,
+        chrome_bin=chrome_bin,
+    )
     try:
         pdf_path = generate_pdf_output(
             sample_md,
@@ -213,6 +228,8 @@ def sample(
             chrome_bin=chrome_bin,
             pandoc_bin=cfg.output.pandoc_bin,
             cover_html=cover_html if cover_html.exists() else None,
+            metadata=cfg.book.model_dump(),
+            divider_images=divider_assets,
         )
     finally:
         sample_md.unlink(missing_ok=True)

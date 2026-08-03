@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,8 @@ from book_builder.log import get_logger
 from book_builder.pdf import generate_cover_image
 
 logger = get_logger("markdown")
+
+_LEADING_H1_RE = re.compile(r"\A\s*#\s+[^\n]+\n*")
 
 
 @lru_cache(maxsize=1)
@@ -56,26 +59,36 @@ def assemble_book_markdown(
         sections.append(_render(env, "reading_guide.md.j2", preface=preface, parts=parts))
     sections.append(_render(env, "toc.md.j2", parts=parts))
 
-    for part in parts:
+    for part_index, part in enumerate(parts, start=1):
         part_chapters = [
             c for c in part.chapters
             if until_chapter is None or c.id <= until_chapter
         ]
         if not part_chapters:
             continue
-        sections.append(f"# {part.prefix}、{part.name}\n")
+        sections.append(_render_divider_placeholder(f"part-{part_index:02d}"))
         for chapter in part_chapters:
             content = chapters.get(chapter.id)
             if content is None:
                 continue
-            sections.append(replace_book_figures_with_images(
+            chapter_markdown = replace_book_figures_with_images(
                 content, chapter.id, assets, marker=figure_marker,
-            ))
+            )
+            sections.append(_render_divider_placeholder(f"chapter-{chapter.id:02d}"))
+            sections.append(_LEADING_H1_RE.sub("", chapter_markdown, count=1))
 
     if until_chapter is None:
         sections.append(_render(env, "appendix.md.j2"))
 
     return _join_markdown_parts(sections)
+
+
+def _render_divider_placeholder(divider_id: str) -> str:
+    return (
+        '<section class="divider-placeholder">'
+        f'<p>[BOOK_DIVIDER:{divider_id}]</p>'
+        "</section>"
+    )
 
 
 def generate_markdown_output(

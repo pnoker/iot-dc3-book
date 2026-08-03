@@ -23,15 +23,17 @@ class BookConfig(BaseModel):
 
 
 class ChapterConfig(BaseModel):
-    """篇章中的章节 — 只保留 id 和 title，其余 agent 字段已移除。"""
+    """篇章中的章节。"""
     id: int
     title: str
+    description: str
 
 
 class PartConfig(BaseModel):
     """篇章结构。"""
     name: str
     prefix: str
+    description: str
     chapters: list[ChapterConfig]
 
 

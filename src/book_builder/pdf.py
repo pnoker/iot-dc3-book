@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from html import escape
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,8 @@ from jinja2 import Environment, select_autoescape
 from book_builder.log import get_logger
 
 logger = get_logger("pdf")
+
+_DIVIDER_MARKER_RE = re.compile(r"BOOK_DIVIDER:([a-z]+-\d{2})")
 
 
 def generate_pdf_output(
@@ -26,6 +29,7 @@ def generate_pdf_output(
     pandoc_bin: str = "pandoc",
     cover_html: str | Path | None = None,
     metadata: dict[str, Any] | None = None,
+    divider_images: dict[str, str | Path] | None = None,
 ) -> str | None:
     """从 book.md 生成 PDF：pandoc 转 HTML → Chrome headless 转 PDF，封面单独渲染合并。
 
@@ -48,6 +52,8 @@ def generate_pdf_output(
     html_path = pdf_path.with_suffix(".html")
     body_pdf = pdf_path.with_name(".book_body.pdf")
     cover_pdf = pdf_path.with_name(".book_cover.pdf")
+    divider_html = pdf_path.with_name(".book_dividers.html")
+    divider_pdf = pdf_path.with_name(".book_dividers.pdf")
     cover_template = Path(cover_html) if cover_html else None
     cover_path = (
         _render_cover_html(cover_template, metadata)
@@ -59,6 +65,8 @@ def generate_pdf_output(
     # pandoc 输入：去图片属性 + 去封面 cover.png 引用（封面单独渲染）
     text = markdown_path.read_text(encoding="utf-8")
     body_text = re.sub(r"(!\[[^\]]*\]\([^)]*\))\s*\{[^}]*\}", r"\1", text)
+    divider_ids = list(dict.fromkeys(_DIVIDER_MARKER_RE.findall(body_text)))
+    divider_paths = _resolve_divider_paths(divider_ids, divider_images)
     if has_cover:
         body_text = re.sub(r"^\s*!\[[^\]]*\]\(cover\.png\)\s*\n", "", body_text, count=1)
     pandoc_input = pdf_path.with_name(".book_body.md")
@@ -69,7 +77,7 @@ def generate_pdf_output(
         # pandoc: markdown → html
         cmd = [
             resolved_pandoc, str(pandoc_input), "-o", str(html_path),
-            "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks",
+            "--standalone", "--from", "markdown+pipe_tables+fenced_code_blocks+raw_html",
         ]
         for key, value in _pandoc_metadata(metadata).items():
             cmd += ["--metadata", f"{key}={value}"]
@@ -89,40 +97,147 @@ def generate_pdf_output(
         if completed.returncode != 0:
             raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
 
-        # 合并封面
+        if divider_ids:
+            _render_divider_pdf(
+                chrome,
+                divider_ids,
+                divider_paths,
+                divider_html,
+                divider_pdf,
+            )
+
+        rendered_cover: Path | None = None
         if has_cover:
             cover_cmd = [
                 chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
                 f"--print-to-pdf={cover_pdf}", cover_path.resolve().as_uri(),
             ]
             cover_done = subprocess.run(cover_cmd, check=False, capture_output=True, text=True)
-            if cover_done.returncode == 0 and cover_pdf.exists() and body_pdf.exists():
-                try:
-                    from pypdf import PdfReader, PdfWriter
-                    writer = PdfWriter()
-                    for page in PdfReader(str(cover_pdf)).pages:
-                        writer.add_page(page)
-                    for page in PdfReader(str(body_pdf)).pages:
-                        writer.add_page(page)
-                    with open(pdf_path, "wb") as f:
-                        writer.write(f)
-                except Exception as exc:
-                    logger.warning("封面 PDF 合并失败，输出仅正文 PDF: %s", exc)
-                    body_pdf.replace(pdf_path)
+            if cover_done.returncode == 0 and cover_pdf.exists():
+                rendered_cover = cover_pdf
             else:
-                logger.warning("封面 PDF 渲染失败，输出仅正文 PDF: %s", cover_done.stderr.strip())
-                body_pdf.replace(pdf_path)
-        else:
-            body_pdf.replace(pdf_path)
+                logger.warning("封面 PDF 渲染失败，继续输出正文: %s", cover_done.stderr.strip())
+
+        _merge_pdf_pages(
+            pdf_path,
+            body_pdf,
+            divider_ids,
+            divider_pdf if divider_ids else None,
+            rendered_cover,
+        )
     finally:
-        # 清理所有中间文件，只保留 book.pdf
-        for tmp in (pandoc_input, html_path, body_pdf, cover_pdf):
+        for tmp in (pandoc_input, html_path, body_pdf, cover_pdf, divider_html, divider_pdf):
             tmp.unlink(missing_ok=True)
         if cover_path and cover_path != cover_template:
             cover_path.unlink(missing_ok=True)
 
     logger.info("PDF 输出完成: %s", pdf_path)
     return str(pdf_path)
+
+
+def _resolve_divider_paths(
+    divider_ids: list[str],
+    divider_images: dict[str, str | Path] | None,
+) -> dict[str, Path]:
+    if not divider_ids:
+        return {}
+    if divider_images is None:
+        raise RuntimeError("Markdown 包含篇章扉页，但未提供扉页 PNG。")
+    paths: dict[str, Path] = {}
+    for divider_id in divider_ids:
+        image = divider_images.get(divider_id)
+        if image is None:
+            raise RuntimeError(f"缺少篇章扉页 PNG: {divider_id}")
+        path = Path(image)
+        if not path.exists():
+            raise FileNotFoundError(f"篇章扉页 PNG 不存在: {path}")
+        paths[divider_id] = path
+    return paths
+
+
+def _render_divider_pdf(
+    chrome: str,
+    divider_ids: list[str],
+    divider_paths: dict[str, Path],
+    html_path: Path,
+    pdf_path: Path,
+) -> None:
+    pages = "\n".join(
+        '<section class="page"><img src="'
+        f'{escape(divider_paths[divider_id].resolve().as_uri(), quote=True)}'
+        '" alt=""></section>'
+        for divider_id in divider_ids
+    )
+    html_path.write_text(
+        """<!doctype html>
+<html><head><meta charset="utf-8"><style>
+@page { size: A4; margin: 0; }
+html, body { margin: 0; padding: 0; }
+.page { width: 210mm; height: 297mm; margin: 0; overflow: hidden; break-after: page; page-break-after: always; }
+.page:last-child { break-after: auto; page-break-after: auto; }
+img { display: block; width: 210mm; height: 297mm; margin: 0; object-fit: fill; }
+</style></head><body>"""
+        + pages
+        + "</body></html>",
+        encoding="utf-8",
+    )
+    command = [
+        chrome,
+        "--headless",
+        "--disable-gpu",
+        "--allow-file-access-from-files",
+        "--no-pdf-header-footer",
+        f"--print-to-pdf={pdf_path}",
+        html_path.resolve().as_uri(),
+    ]
+    completed = subprocess.run(command, check=False, capture_output=True, text=True)
+    if completed.returncode != 0 or not pdf_path.exists():
+        raise RuntimeError(f"篇章扉页 PDF 生成失败: {completed.stderr.strip()}")
+
+
+def _merge_pdf_pages(
+    output_path: Path,
+    body_pdf: Path,
+    divider_ids: list[str],
+    divider_pdf: Path | None,
+    cover_pdf: Path | None,
+) -> None:
+    from pypdf import PdfReader, PdfWriter
+
+    writer = PdfWriter()
+    if cover_pdf is not None:
+        for page in PdfReader(str(cover_pdf)).pages:
+            writer.add_page(page)
+
+    divider_pages: dict[str, Any] = {}
+    if divider_ids:
+        if divider_pdf is None:
+            raise RuntimeError("缺少篇章扉页 PDF。")
+        rendered_pages = PdfReader(str(divider_pdf)).pages
+        if len(rendered_pages) != len(divider_ids):
+            raise RuntimeError(
+                f"篇章扉页页数异常: 预期 {len(divider_ids)}，实际 {len(rendered_pages)}"
+            )
+        divider_pages = dict(zip(divider_ids, rendered_pages, strict=True))
+
+    replaced: set[str] = set()
+    for page in PdfReader(str(body_pdf)).pages:
+        text = page.extract_text() or ""
+        matches = _DIVIDER_MARKER_RE.findall(text)
+        if not matches:
+            writer.add_page(page)
+            continue
+        if len(matches) != 1 or matches[0] not in divider_pages:
+            raise RuntimeError(f"无法识别篇章扉页占位标记: {matches}")
+        divider_id = matches[0]
+        writer.add_page(divider_pages[divider_id])
+        replaced.add(divider_id)
+
+    missing = set(divider_ids) - replaced
+    if missing:
+        raise RuntimeError(f"篇章扉页占位页未找到: {sorted(missing)}")
+    with open(output_path, "wb") as stream:
+        writer.write(stream)
 
 
 def generate_cover_image(
