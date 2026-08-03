@@ -97,6 +97,9 @@ def generate_pdf_output(
         if completed.returncode != 0:
             raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
 
+        # 从 HTML 解析所有 <h1>-<h3> 元素，按字符比例估算页码
+        html_headings = _parse_html_headings(html_path, body_pdf)
+
         if divider_ids:
             _render_divider_pdf(
                 chrome,
@@ -125,7 +128,11 @@ def generate_pdf_output(
             divider_pdf if divider_ids else None,
             rendered_cover,
         )
-        _add_pdf_outlines(pdf_path, markdown_file)
+        _add_outlines_and_page_numbers(
+            pdf_path,
+            html_headings,
+            cover_offset=1 if rendered_cover else 0,
+        )
     finally:
         for tmp in (pandoc_input, html_path, body_pdf, cover_pdf, divider_html, divider_pdf):
             tmp.unlink(missing_ok=True)
@@ -241,87 +248,88 @@ def _merge_pdf_pages(
         writer.write(stream)
 
 
-def _add_pdf_outlines(pdf_path: Path, markdown_file: str | Path | None = None) -> None:
-    """从 Markdown 解析标题层级（跳过代码块），按内容分布估算页码，生成 PDF 书签大纲。"""
+def _parse_html_headings(html_path: Path, body_pdf: Path) -> list[tuple[int, str, int]]:
+    """从 pandoc HTML 提取所有 <h1>/<h2>/<h3> 并按字符比例估算页码。
+
+    返回: [(level, title, page_number), ...] 保持 HTML 中的出现顺序。
+    """
+    import html as html_mod
+    from pypdf import PdfReader
+
+    html_text = html_path.read_text(encoding="utf-8")
+    for tag in ("head", "style", "script", "nav"):
+        html_text = re.sub(rf"<{tag}[^>]*>.*?</{tag}>", "", html_text, flags=re.DOTALL)
+
+    body_m = re.search(r"<body[^>]*>(.*?)</body>", html_text, re.DOTALL)
+    body_html = body_m.group(1) if body_m else html_text
+
+    # 提取所有标题元素（pandoc 会对长标题折行，需空白归一）
+    heading_re = re.compile(r"<(h[123])[^>]*>(.+?)</\1>", re.DOTALL)
+    html_headings: list[tuple[int, int, str]] = []
+    for m in heading_re.finditer(body_html):
+        level = int(m.group(1)[1])
+        raw = html_mod.unescape(re.sub(r"<[^>]+>", "", m.group(2)))
+        text = re.sub(r"\s+", " ", raw).strip()
+        if text:
+            html_headings.append((m.start(), level, text))
+
+    if not html_headings:
+        return []
+
+    # 正文纯文本（用于密度估算）
+    body_text = re.sub(r"<[^>]+>", "", body_html)
+    body_text = html_mod.unescape(body_text)
+    body_text = re.sub(r"\s+", "", body_text)
+    total_chars = len(body_text)
+    if total_chars < 100:
+        return []
+
+    body_pages = max(len(PdfReader(str(body_pdf)).pages), 2) if body_pdf.exists() else 200
+
+    result: list[tuple[int, str, int]] = []
+    for pos, lv, title in html_headings:
+        text_before = body_html[:pos]
+        text_before_clean = re.sub(r"<[^>]+>", "", text_before)
+        text_before_clean = html_mod.unescape(text_before_clean)
+        text_before_clean = re.sub(r"\s+", "", text_before_clean)
+        page = int(len(text_before_clean) / total_chars * body_pages)
+        page = max(0, min(page, body_pages - 1))
+        result.append((lv, title, page))
+
+    logger.info("HTML 标题解析: %d 条, %d body pages", len(result), body_pages)
+    return result
+
+
+def _add_outlines_and_page_numbers(
+    pdf_path: Path,
+    html_headings: list[tuple[int, str, int]],
+    cover_offset: int = 0,
+) -> None:
+    """单次写入：复制页面 + 页码标注 + 三层书签。
+
+    html_headings: [(level, title, body_page), ...] 来自 _parse_html_headings
+    """
     from pypdf import PdfReader, PdfWriter
 
-    md_path = Path(markdown_file) if markdown_file else None
-    headings: list[tuple[int, str]] = []  # (level, title)
-    if md_path and md_path.exists():
-        h_re = re.compile(r"^(#{1,3})\s+(.+)$")
-        in_fence = False
-        for line in md_path.read_text(encoding="utf-8").split("\n"):
-            stripped = line.lstrip()
-            if stripped.startswith("```") or stripped.startswith("~~~"):
-                in_fence = not in_fence
-                continue
-            if in_fence or stripped.startswith("book-figure"):
-                continue
-            m = h_re.match(line)
-            if m:
-                headings.append((len(m.group(1)), m.group(2).strip()))
-
     reader = PdfReader(str(pdf_path))
-    total_pages = len(reader.pages)
-    if not headings or total_pages < 2:
+    total = len(reader.pages)
+
+    # 调整页码（加封面偏移）
+    heading_pages: list[tuple[int, str, int]] = []
+    # 仅过滤分部标题和书籍名，其余全部保留走自然嵌套
+    for lv, title, body_page in html_headings:
+        if title == "从工业软件到 AI 智能体":
+            continue
+        if "·" in title and any(
+            title.startswith(p) for p in ("基础篇", "技术篇", "应用篇")
+        ):
+            continue
+        heading_pages.append((body_page + cover_offset, title, lv))
+
+    if not heading_pages:
         return
 
-    # 找到目录页（最后出现"目录"文本的页面）作为正文起点
-    toc_end_page = 0
-    for i, page in enumerate(reader.pages):
-        text = page.extract_text() or ""
-        if "目录" in text and any(
-            marker in text for marker in ("基础篇", "第1章", "物联网概述")
-        ):
-            toc_end_page = i
-
-    # 仅取正文标题（排除扉页和目录区）
-    front_h1_set = {"关于作者", "序", "导读", "目录"}
-    body_headings = [
-        (lv, t) for (lv, t) in headings
-        if not any(t.startswith(h) for h in front_h1_set)
-        and "·" not in t  # 排除目录中的篇名（如"基础篇 · ..."）
-        and not t.startswith("-")
-    ]
-    front_headings = [
-        (lv, t) for (lv, t) in headings
-        if any(t.startswith(h) for h in front_h1_set)
-    ]
-
-    # 估算正文页面数及每页容纳字符数
-    body_pages = max(total_pages - toc_end_page - 1, 1)
-    body_text = md_path.read_text(encoding="utf-8")
-    toc_pos = body_text.find("\n# 目录")
-    if toc_pos < 0:
-        toc_pos = body_text.find("\n# 目录".replace(" ", ""))
-    body_section = body_text[toc_pos:] if toc_pos >= 0 else body_text[10000:]
-    body_chars = len(body_section)
-    chars_per_page = body_chars / body_pages if body_pages > 0 else 3000
-
-    # 为正文标题估算页码
-    char_offset = 0
-    heading_pages: list[tuple[int, str, int]] = []
-    heading_positions: list[tuple[int, str, int]] = []
-
-    for lv, title in body_headings:
-        pos = body_section.find(title, char_offset)
-        if pos < 0:
-            char_offset += 100
-            continue
-        page = toc_end_page + 1 + int(pos / chars_per_page)
-        page = min(page, total_pages - 1)
-        heading_pages.append((page, title, lv))
-        heading_positions.append((pos, title, lv))
-        char_offset = pos + len(title)
-
-    # 前置标题放在前几页
-    for i, (lv, title) in enumerate(front_headings):
-        heading_pages.insert(i, (min(i + 1, toc_end_page), title, lv))
-
-    # 附录追加到末尾
-    appendix = next(((lv, t) for (lv, t) in headings if t.startswith("附录")), None)
-    if appendix:
-        heading_pages.append((total_pages - 1, appendix[1], appendix[0]))
+    heading_pages.sort(key=lambda x: x[0])
 
     # 去重并排序
     seen: set[tuple[str, int]] = set()
@@ -332,23 +340,58 @@ def _add_pdf_outlines(pdf_path: Path, markdown_file: str | Path | None = None) -
             seen.add(key)
             unique.append((p, t, lv))
 
-    # 写入带层级书签的 PDF
+    # 复制页面 + 页码 + 书签
     writer = PdfWriter()
-    for page in reader.pages:
+    for i, page in enumerate(reader.pages):
         writer.add_page(page)
+        if total > 1:
+            annot = _build_page_number_annot(str(i + 1))
+            writer.add_annotation(page_number=i, annotation=annot)
 
+    # 统一嵌套处理，"目录"之后不入栈（避免章节被误嵌套到目录下）
     stack: list[tuple[object, int]] = []
     for page_num, title, level in unique:
+        if title == "目录":
+            # "目录" 之后清空栈，确保章节从顶层重新开始
+            while stack:
+                stack.pop()
         while stack and stack[-1][1] >= level:
             stack.pop()
         parent = stack[-1][0] if stack else None
         item = writer.add_outline_item(title, page_num, parent=parent)
-        stack.append((item, level))
+        if title != "目录":
+            stack.append((item, level))
 
     with open(pdf_path, "wb") as f:
         writer.write(f)
 
-    logger.info("PDF 书签大纲已生成: %d 条", len(unique))
+    logger.info("页码 + 书签: %d 条, %d 页", len(unique), total)
+
+
+def _build_page_number_annot(text: str) -> dict[str, object]:
+    """构造底部居中页码 FreeText 注释。"""
+    from pypdf.generic import (
+        ArrayObject,
+        FloatObject,
+        NameObject,
+        NumberObject,
+        TextStringObject,
+    )
+    return {
+        NameObject("/Type"): NameObject("/Annot"),
+        NameObject("/Subtype"): NameObject("/FreeText"),
+        NameObject("/Contents"): TextStringObject(text),
+        NameObject("/DA"): TextStringObject("/Helv 8 Tf 0.5 g"),
+        NameObject("/Rect"): ArrayObject(
+            [FloatObject(280), FloatObject(15),
+             FloatObject(320), FloatObject(30)]
+        ),
+        NameObject("/F"): NumberObject(4),
+        NameObject("/Border"): ArrayObject(
+            [NumberObject(0), NumberObject(0), NumberObject(0)]
+        ),
+        NameObject("/Q"): NumberObject(1),
+    }
 
 
 def generate_cover_image(
