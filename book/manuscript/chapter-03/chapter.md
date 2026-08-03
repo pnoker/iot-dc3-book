@@ -34,6 +34,14 @@ audience_takeaway: 读者应理解感知层是物理世界与数字系统的桥�
 visual_focus: 感知层内部三大组件（传感器、RFID、定位模块）共同向上输出数据的主链路；平台层内部四等分展示关键服务能力。
 design_level: logical
 layout: 自下而上分层架构：物理世界→感知层→网络层→平台层→应用层。感知层内部三等分展示传感器、识别设备、定位模块。平台层内部四等分展示设备管理、物模型管理、数据存储、规则引擎。
+elements:
+  - 物理世界与感知层的传感器、识别设备、定位模块
+  - 网络层与平台层的设备管理、物模型、数据存储、规则引擎
+  - 应用层与控制指令
+relationships:
+  - 物理世界 → 传感器、识别设备、定位模块：产生物理量、身份码与空间坐标
+  - 感知层组件 → 网络层 → 平台层 → 应用层：位号值、身份和位置数据逐层上行
+  - 应用层 → 控制指令 → 物理世界：决策下发并驱动执行或复位
 regions:
   - id: physical_world
     label: 物理世界域
@@ -285,6 +293,13 @@ audience_takeaway: "模拟路径需要工程师逐级设计调理，数字路径
 visual_focus: "左栏模拟路径的模块串行连接，右栏数字路径直接跳转到MCU，形成鲜明对比。"
 design_level: "logical"
 layout: "水平三栏布局：左栏模拟路径，中栏数字路径，右栏为MCU"
+elements:
+  - 模拟传感器、仪表放大器、低通滤波器与 ADC
+  - 数字传感器与 I²C/SPI 总线
+  - MCU
+relationships:
+  - 模拟传感器 → 仪表放大器 → 低通滤波器 → ADC → MCU：微弱模拟信号经调理和量化后处理
+  - 数字传感器 → I²C/SPI → MCU：已校准数值通过总线直接读取
 regions:
   - id: "analog-region"
     label: "模拟信号链域"
@@ -581,9 +596,9 @@ RFID的工作频率由ISO/IEC 18000系列标准以及各国无线电管理机构
 id: "fig-03-03"
 type: "architecture"
 title: "图3-3 RFID系统工作示意图"
-purpose: "展示RFID系统核心部件——读写器、天线、标签之间的射频链路和数据流向。"
-audience_takeaway: "读者应理解RFID系统并非简单的一对一通信，天线是独立性能模块，读写器通过耦合能量与标签交换数据。"
-visual_focus: "读写器通过天线发射射频信号，被动标签从场中取能并反向散射回复信号，主动标签主动发射。"
+purpose: "展示RFID系统核心部件——上位机、读写器、天线、标签之间的数据、控制与射频链路。"
+audience_takeaway: "读者应理解上位机与读写器之间既有数据上报也有控制下发；天线是独立性能模块，读写器通过耦合能量与标签交换数据。"
+visual_focus: "上位机与读写器双向通信；读写器通过天线发射射频信号，被动标签从场中取能并反向散射回复信号，主动标签主动发射。"
 design_level: "logical"
 layout: "从左到右：上位机→读写器→天线→标签（三种类型并列表示）"
 elements:
@@ -736,6 +751,15 @@ audience_takeaway: 读者应理解RFID仓储方案由现场标签、固定式读
 visual_focus: 从RFID标签到WMS主链路的逐级数据流向；固定式读写器与手持终端作为并行的两种采集入口。
 design_level: physical
 layout: 自上而下三层：云端层（WMS）→ 边缘层（RFID中间件）→ 现场层（读写器与标签）。现场层按功能区分为入库区、出库区和货架区三个虚线框。
+elements:
+  - UHF RFID 标签
+  - 入库与出库固定式读写器、货架区手持终端
+  - RFID 中间件与仓库管理系统
+relationships:
+  - RFID 标签 → 固定式读写器、手持终端：通过射频完成批量或移动采集
+  - 固定式读写器 → RFID 中间件：经 RJ45 上报读取结果
+  - 手持终端 → RFID 中间件：经 Wi-Fi 上报盘点结果
+  - RFID 中间件 → WMS：过滤汇聚后通过 API 或事件更新库存台账
 regions:
   - id: field_zone
     label: 现场层
@@ -917,6 +941,14 @@ audience_takeaway: "读者应能通过此图快速判断：给定精度需求和
 visual_focus: "从粗精度（左）向精精度（右）的连续光谱排列，颜色区分技术族类（蓝=卫星，绿=Wi-Fi，橙=蓝牙，红=UWB，灰=地磁）。"
 design_level: "logical"
 layout: "水平光谱布局，横轴为对数刻度定位精度（0.1m到10m），各技术以水平矩形条表示，矩形宽度对应典型精度区间，左侧为室外域，右侧为室内域，背景色区分环境。"
+elements:
+  - GNSS 单频与 GNSS+RTK
+  - Wi-Fi 指纹、BLE 信标、UWB 与地磁指纹
+  - 室外、半室外和室内精度光谱
+relationships:
+  - GNSS 单频 → GNSS+RTK：通过差分与载波相位提升室外定位精度
+  - Wi-Fi 指纹 → BLE 信标 → UWB：室内方案沿精度轴逐级提高
+  - 定位技术 → 环境与精度区间：部署条件和典型误差共同限定选型位置
 components:
   - id: "gnss_single"
     label: "GNSS单频"
@@ -1034,7 +1066,15 @@ purpose: "说明三点定位的几何原理以及实际测量噪声导致的交�
 audience_takeaway: "读者应理解三点定位的几何原理以及实际测量噪声导致的交叠区域，引出最小二乘修正的必要性。"
 visual_focus: "三个参考节点（AP1、AP2、AP3）分别以测距为半径画圆；由于测距误差，三圆不交于一点，形成灰色交叠区域。"
 design_level: "logical"
-layout: "平面网格坐标图：三个圆以AP位置为圆心，半径不等且带有微小偏移；交叠区域用灰色半透明标记；目标点标注为X。"
+layout: "平面网格坐标图：参考点A(0,0)、B(60,0)、C(30,50)，真实目标T(30,20)；三次含误差测距半径分别为36.0m、37.0m、29.0m，三圆形成共同近交叠区，最小二乘估计Q约为(29.4,20.9)。"
+elements:
+  - AP1、AP2、AP3 三个参考节点
+  - 三条含误差的测距半径与圆形覆盖边界
+  - 待定位目标点和模糊交叠区域
+relationships:
+  - AP1、AP2、AP3 → 目标点：分别提供含测量误差的距离 d1、d2、d3
+  - 三个测距圆 → 模糊交叠区域：RSSI 或 ToA 误差使圆周无法精确交于一点
+  - 模糊交叠区域 → 目标坐标：最小二乘选择残差平方和最小的位置
 regions:
   - id: "triangulation_area"
     label: "三角测量定位区域"
@@ -1394,6 +1434,15 @@ audience_takeaway: "TinyML流程不是一个单向管道——模型优化环节
 visual_focus: "阶段3的精度判定节点（菱形），及其到阶段4的绿色分支与回退到阶段2的虚线分支。"
 design_level: "implementation"
 layout: "从左到右横向四阶段，正向流程用粗实线箭头，回退流程用虚线箭头。"
+elements:
+  - 数据准备与云端训练
+  - 模型优化与精度验收
+  - 模型转换/代码生成、固件编译与固件集成
+  - 烧录部署与端侧运行
+relationships:
+  - 数据准备 → 云端训练 → 模型优化 → 精度验收：形成并验证量化、剪枝后的模型
+  - 精度验收 → 模型转换/代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行：损失可接受时按构建、部署、运行顺序落地
+  - 精度验收 → 云端训练：损失不可接受时回退调优
 components:
   - id: "stage1_data"
     label: "数据准备"
@@ -1423,19 +1472,40 @@ components:
     group: "training_region"
     priority: "risk"
     shape: "decision"
-  - id: "stage4_deploy"
-    label: "端侧部署"
+  - id: "stage4_convert"
+    label: "模型转换/代码生成"
+    type: "process"
+    subtitle: "生成MCU推理代码"
+    group: "training_region"
+    priority: "primary"
+    shape: "card"
+  - id: "stage4_compile"
+    label: "固件编译"
+    type: "process"
+    subtitle: "链接模型与运行时"
+    group: "training_region"
+    priority: "primary"
+    shape: "card"
+  - id: "stage4_integrate"
+    label: "固件集成"
+    type: "process"
+    subtitle: "传感器、预处理与推理"
+    group: "training_region"
+    priority: "primary"
+    shape: "card"
+  - id: "stage4_flash"
+    label: "烧录部署"
     type: "edge"
-    subtitle: "编译→烧录→运行"
+    subtitle: "完整固件写入MCU"
     group: "deployment_region"
     priority: "primary"
     shape: "card"
-  - id: "stage4_inner"
-    label: "编译步骤"
-    type: "process"
-    subtitle: "固件转换与集成"
+  - id: "stage4_run"
+    label: "端侧运行"
+    type: "edge"
+    subtitle: "采集、推理、响应"
     group: "deployment_region"
-    priority: "normal"
+    priority: "primary"
     shape: "card"
 connections:
   - from: "stage1_data"
@@ -1454,7 +1524,7 @@ connections:
     style: "solid"
     direction: "request"
   - from: "stage3_check"
-    to: "stage4_deploy"
+    to: "stage4_convert"
     label: "验收通过"
     style: "solid"
     direction: "left-to-right"
@@ -1463,9 +1533,24 @@ connections:
     label: "回退调优"
     style: "dashed"
     direction: "request"
-  - from: "stage4_deploy"
-    to: "stage4_inner"
-    label: "内部步骤"
+  - from: "stage4_convert"
+    to: "stage4_compile"
+    label: "生成代码"
+    style: "solid"
+    direction: "left-to-right"
+  - from: "stage4_compile"
+    to: "stage4_integrate"
+    label: "构建固件"
+    style: "solid"
+    direction: "left-to-right"
+  - from: "stage4_integrate"
+    to: "stage4_flash"
+    label: "完整固件"
+    style: "solid"
+    direction: "left-to-right"
+  - from: "stage4_flash"
+    to: "stage4_run"
+    label: "启动"
     style: "solid"
     direction: "left-to-right"
 regions:
@@ -1558,6 +1643,14 @@ audience_takeaway: "振动传感器通过预测误差连续放大驱动状态切
 visual_focus: "从稳态经加速到上传的主转发路径，以及上传完复位回稳态的回环。"
 design_level: "logical"
 layout: "三个圆角矩形状态框横向排列，箭头标注转移条件，底部图例说明阈值含义。"
+elements:
+  - 稳态低功率状态
+  - 加速监听状态
+  - 原始波形上传状态
+relationships:
+  - 稳态低功率 → 加速监听：预测误差连续超过示意倍数阈值后提高采样频率
+  - 加速监听 → 数据上传：残差连续高于阈值后上传全速波形
+  - 数据上传 → 稳态低功率：上传完成后复位并恢复长间隔采样
 regions:
   - id: "sensor_domain"
     label: "设备侧感知域"
@@ -1711,6 +1804,14 @@ audience_takeaway: "读者应理解物模型的价值核心在于‘能力抽象
 visual_focus: "从dev-ax4（A公司温度传感器）和dev-bx4（B公司温度传感器）两条不同源的数据流，分别映射到物模型层中‘温度’属性节点，再汇聚为统一数据流到达应用层的这条主链路。"
 design_level: "logical"
 layout: "垂直三层架构：顶部为应用层（两个应用节点），中部为物模型抽象层（属性、服务、事件三列），底部为设备层（四个不同协议/厂商的设备节点）。"
+elements:
+  - 能源管理与楼宇自控应用
+  - 物模型的属性、服务与事件
+  - JSON、Modbus、MQTT、二进制协议设备
+relationships:
+  - 异构设备 → 物模型属性、服务、事件：将厂商协议映射为统一能力语义
+  - A、B 公司温度传感器 → 温度属性：不同数据源汇聚到同一标准属性
+  - 属性、服务、事件 → 上层应用：提供标准属性值、服务调用与事件推送
 regions:
   - id: "app_domain"
     label: "应用消费域"
@@ -1993,6 +2094,15 @@ audience_takeaway: 读者应理解物模型是一类设备的能力契约，多�
 visual_focus: 从物模型模板到告警服务的主链路。
 design_level: logical
 layout: 三层架构：顶部为“物模型模板”，中间为“设备实例层”，底部为“平台应用层”。
+elements:
+  - T-100 温度传感器物模型模板
+  - 设备 A 与设备 B 实例
+  - 时序数据存储、远程控制与告警服务
+relationships:
+  - T-100 模板 → 设备 A、设备 B：同一能力契约被多个实例复用
+  - 设备 A、设备 B → 数据存储：按模板上报属性值
+  - 远程控制 → 设备 A、设备 B：按模板下发动作
+  - 设备 A、设备 B → 告警服务：按模板推送事件
 regions:
   - id: "model_domain"
     label: "物模型域"

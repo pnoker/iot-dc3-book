@@ -35,6 +35,13 @@ audience_takeaway: 读者应理解物联网经典四层参考架构的主链路�
 visual_focus: 从底部感知层向上经网络层、平台层到应用层的数据流（实线箭头），以及反向的指令流（虚线箭头）；左侧安全贯穿所有层。
 design_level: logical
 layout: 垂直叠放，自下而上依次为感知层、网络层、平台层、应用层；左侧竖列为安全贯穿层。
+elements:
+  - 感知层、网络层、平台层、应用层四层主体
+  - 贯穿四层的安全能力
+relationships:
+  - 感知层 → 网络层 → 平台层 → 应用层：数据逐层上行
+  - 应用层 → 平台层 → 网络层 → 感知层：控制指令逐层下行
+  - 安全能力 → 各层：提供鉴权与审计约束
 components:
   - id: perception_layer
     label: 感知层
@@ -190,6 +197,14 @@ audience_takeaway: "读者应理解从数据采集到执行反馈的闭环如何
 visual_focus: "智能层（橙色）作为闭环中枢，负责推理、规划到执行的链路，通过平台层与物理世界交互。"
 design_level: "implementation"
 layout: "从左到右：左侧物理世界（传感器/执行器），中间平台层（数据存储、命令通道），右侧应用层内部（智能层与业务应用）。"
+elements:
+  - 传感器与执行器
+  - 时序数据、设备管理与命令通道
+  - 推理、规划、执行与业务应用
+relationships:
+  - 传感器 → 时序数据 → 推理 → 规划 → 执行：采集数据形成动作计划
+  - 执行 → 命令通道 → 执行器：受控下发设备指令
+  - 执行器 → 传感器：物理状态反馈开启下一轮推理
 regions:
   - id: "physical_domain"
     label: "物理世界"
@@ -377,6 +392,14 @@ audience_takeaway: "读者应看到智能层如何将单向数据流改为闭环
 visual_focus: "右侧五层架构中平台层与智能层之间的双向数据流箭头（向上读取数据、向下命令下发）为视觉高亮，用橙色实线强调；智能层与平台层之间的闭环用虚线包络。"
 design_level: "logical"
 layout: "左右并排双列分层图。左侧4层（感知、网络、平台、应用），右侧5层（感知、网络、平台、智能、应用）。各层用不同颜色标识：感知层（teal）、网络层（slate）、平台层（blue）、智能层（orange）、应用层（gray）。"
+elements:
+  - 经典四层架构列
+  - 含智能层的五层架构列
+relationships:
+  - 四层感知层 → 网络层 → 平台层 → 应用层：数据单向上传并展示
+  - 五层感知层 → 网络层 → 平台层 → 智能层：数据进入理解与决策环节
+  - 五层智能层 → 平台层 → 网络层 → 感知层：命令回写形成闭环
+  - 五层智能层 → 应用层：反馈决策结果
 regions:
   - id: "four_layer"
     label: "经典四层"
@@ -537,6 +560,13 @@ audience_takeaway: 读者应理解传统数据模式的单向线性链路与闭�
 visual_focus: 左栏为单向线性链，终点标记为“人”；右栏为闭环回路，回路箭头从“执行”返回“采集”，用深绿色加粗虚线强调。
 design_level: implementation
 layout: 并排双栏，左栏为传统模式，右栏为闭环模式。底部统一图例。
+elements:
+  - 传统模式的采集、存储、展示与人工操作
+  - 闭环模式的采集归一化、理解、决策与执行
+relationships:
+  - 传感器采集 → 网络传输与存储 → 大屏展示与告警 → 人工操作：传统链路止于人工响应
+  - 采集归一化 → 理解 → 决策 → 执行：自动生成并实施动作
+  - 执行 → 采集归一化：设备新状态回流形成持续闭环
 components:
   - id: sensor_collect
     label: 传感器采集
@@ -677,6 +707,15 @@ audience_takeaway: 读者应理解闭环模式下智能层的“理解”与“�
 visual_focus: 智能层内部的理解与决策子组件之间的顺序交互，以及从决策组件经指令调度器到空调设备的指令下行主链路。
 design_level: implementation
 layout: 垂直时间轴序列图，从左到右排列六个泳道：传感器/网关、时序数据库、智能层（内部虚线分隔理解与决策子组件）、指令调度器、空调设备。自上而下标注消息交互顺序。
+elements:
+  - 传感器与网关、时序数据库
+  - 理解子组件与决策子组件
+  - 指令调度器与空调设备
+relationships:
+  - 传感器与网关 → 时序数据库：持续上报 PointValue
+  - 时序数据库 ↔ 理解子组件：查询并返回历史位号值
+  - 理解子组件 → 决策子组件 → 指令调度器：状态摘要转化为动作序列
+  - 指令调度器 ↔ 空调设备：写入 Modbus 寄存器并接收回执
 components:
   - id: sensor_gw
     label: 传感器与网关
@@ -871,6 +910,14 @@ audience_takeaway: 读者应理解智能层内的三个环节形成闭环，且�
 visual_focus: 实线主链路：推理→规划→执行→数据中心→驱动服务；虚线闭环反馈用于验证执行效果。
 design_level: logical
 layout: 垂直分层：顶部为智能层（三个等宽模块：推理、规划、执行），中部为平台层（数据中心、管理中心），底部为设备接入层（驱动服务、现场设备）。模块间用箭头标注。
+elements:
+  - 推理、规划与执行模块
+  - 数据中心与管理中心
+  - 驱动服务与现场设备
+relationships:
+  - 数据中心与管理中心 → 推理 → 规划 → 执行：数据、模型和阈值驱动动作生成
+  - 执行 → 数据中心 → 驱动服务 → 现场设备：标准指令经协议转换落地
+  - 现场设备 → 数据中心 → 推理：遥测反馈用于验证执行效果
 components:
   - id: inf_module
     label: 推理
@@ -1073,6 +1120,14 @@ audience_takeaway: 读者应理解DC3五大中心的分工边界：Gateway收口
 visual_focus: 从Gateway中心接收外部请求，经Auth校验后分发给Manager（元数据查询）和Data（数据读写）的主调用链路；Agentic中心作为独立智能层通过内部API调度Data和Manager。
 design_level: logical
 layout: 自下而上分层布局：存储层（时序数据库）→ 数据层（Data中心）→ 基础服务层（Auth、Manager中心）→ 接入层（Gateway中心），AI层（Agentic中心）横向挂接在数据层和基础服务层之间。
+elements:
+  - Gateway、Auth、Manager、Data 与 Agentic 五大中心
+  - 消息队列与时序数据库
+relationships:
+  - Gateway → Auth：校验令牌与访问身份
+  - Gateway → Manager、Data、Agentic：路由元数据、数据与 AI 请求
+  - Agentic → Manager、Data：查询元数据并读取数据或提交命令
+  - Data → 消息队列、时序数据库：异步交换设备消息并持久化位号值
 components:
   - id: gateway_center
     label: Gateway 中心
@@ -1366,6 +1421,14 @@ audience_takeaway: "读者应理解认证逻辑集中在Auth中心，Gateway只�
 visual_focus: "用户→Gateway→Auth中心的两轮交互：第一轮换取JWT，第二轮验证令牌并转发业务请求；Auth中心为Gateway提供权限判定结果后再将请求发给Manager。"
 design_level: "logical"
 layout: "四列自上而下排列，参与者从左到右：用户、Gateway、Auth中心、Manager中心。消息按时间顺序从上到下标注步骤编号。"
+elements:
+  - 用户或浏览器
+  - Gateway、Auth 中心与 Manager 中心
+relationships:
+  - 用户 → Gateway → Auth 中心：提交凭证并请求登录
+  - Auth 中心 → Gateway → 用户：签发并返回 JWT
+  - 用户 → Gateway ↔ Auth 中心：携带 JWT 请求设备列表并完成令牌、权限和租户校验
+  - Gateway → Manager 中心 → Gateway → 用户：按认证上下文查询并返回设备列表
 components:
   - id: "user"
     label: "用户/浏览器"
@@ -1510,6 +1573,14 @@ audience_takeaway: "读者应理解设备状态的迁移条件，以及状态变
 visual_focus: "核心流转路径：未激活→在线→离线→在线（循环），以及任意状态→已注销的终结路径。"
 design_level: "logical"
 layout: "五个状态节点呈环形分布，顺时针方向流转，终结节点放在底部中央。"
+elements:
+  - 未激活、在线、离线、维护中四个可迁移状态
+  - 已注销终结状态
+relationships:
+  - 未激活 → 在线：首次上报后激活
+  - 在线 ↔ 离线：失联超阈值后离线，恢复上报后在线
+  - 在线 ↔ 维护中：运维干预进入，运维恢复退出
+  - 未激活、在线、离线、维护中 → 已注销：管理员永久移除设备
 components:
   - id: "state_inactive"
     label: "未激活"
@@ -1674,6 +1745,14 @@ audience_takeaway: "读者应理解规则引擎在数据闭环中的位置：不
 visual_focus: "规则引擎菱形节点作为分支点，向上走告警路径，向下走命令路径。"
 design_level: "logical"
 layout: "水平从左到右，数据流在上路，告警和命令流在下路分叉。"
+elements:
+  - 温度传感器、Gateway 与 Data 中心
+  - Manager 规则引擎
+  - 告警通知与风扇调速命令
+relationships:
+  - 温度传感器 → Gateway → Data 中心 → 规则引擎：温度事件进入 ECA 判断
+  - 规则引擎 → 告警通知：黄牌或红牌条件成立时发送通知
+  - 规则引擎 → 下发命令 → Data 中心：红牌条件成立时提交风扇调速命令
 components:
   - id: "sensor_device"
     label: "温度传感器"
@@ -1807,6 +1886,15 @@ audience_takeaway: "Data 中心是一个『一次接收、两处分发』的数�
 visual_focus: "从现场设备到消息队列的主链路，以及从消息队列分流到时序数据库和订阅方的分支路径。"
 design_level: "implementation"
 layout: "horizontal_left_to_right 从现场设备开始，经过驱动、Gateway、Data中心，到达消息队列，然后分流到时序数据库和订阅方。"
+elements:
+  - 现场设备与南向驱动
+  - Gateway、Data 中心与 RabbitMQ
+  - 时序数据库与实时订阅方
+relationships:
+  - 现场设备 → 驱动 → Gateway → Data 中心：原始信号归一为 PointValue 并完成路由
+  - Data 中心 → RabbitMQ：数据入队以削峰解耦
+  - RabbitMQ → 时序数据库：异步持久化
+  - RabbitMQ → 订阅方：实时分发给监控、Agentic 与告警服务
 regions:
   - id: "edge_domain"
     label: "设备与边缘域"
@@ -2195,6 +2283,16 @@ audience_takeaway: "读者应看到五个中心不是独立运行的，它们通
 visual_focus: "从现场设备经Gateway进入平台域，再经Data进入Agentic域的主链路；Agentic域的橙色节点视觉高亮。"
 design_level: "implementation"
 layout: "水平时序，参与者沿时间轴排列，交互线垂直下行。左侧加注阶段标签（注册/配置/上报/推理/控制）。"
+elements:
+  - 现场设备、运维人员与驱动服务
+  - Gateway、Auth、Manager 与 Data 中心
+  - Agentic 中心
+relationships:
+  - 现场设备 → Gateway ↔ Auth：注册、验证身份并取得 JWT
+  - 运维人员 → Manager → Data：配置并同步规则
+  - 现场设备 → Gateway → Data：上报 PointValue 并执行规则检查
+  - Data ↔ Agentic：触发推理、查询历史数据并提交控制指令
+  - Agentic → Data → 驱动服务 → 现场设备：命令经消息队列和 Modbus 链路执行
 components:
   - id: device_sensor
     label: "现场设备"
@@ -2411,6 +2509,15 @@ audience_takeaway: "读者应理解：规则引擎足以处理所有可穷举的
 visual_focus: "两个菱形判断节点的主决策链：从“规则能否穷尽？”到“需引入智能层”的红色路径，以及从“执行路径是否可编程？”到“需引入智能层”的红色路径。"
 design_level: "conceptual"
 layout: "自上而下的流程图，起始菱形节点“需要智能层？”引出两个并列菱形节点“规则能否穷尽？”和“执行路径是否可编程？”。每个菱形产生“是/否”分支，最终导向四个矩形结果节点，并汇聚到底部“按需接入智能层”节点。"
+elements:
+  - 智能层需求入口
+  - 规则穷尽性与执行路径可编程性判断
+  - 规则引擎、智能层与按需接入结果
+relationships:
+  - 需求入口 → 规则穷尽性、执行路径可编程性：从两个维度评估方案
+  - 判断结果为“是” → 规则引擎：固定且可编程逻辑采用确定性规则
+  - 判断结果为“否” → 智能层：上下文依赖或无法预定义时引入 AI
+  - 规则引擎或智能层 → 按需接入结果：汇总架构选择
 components:
   - id: "start_diamond"
     label: "需要智能层？"
@@ -2636,6 +2743,13 @@ audience_takeaway: "读者应明确三个台阶的前后依赖关系：必须通
 visual_focus: "从左到右的流向主链路，强调自检节点作为阶段跳转的阀门"
 design_level: "logical"
 layout: "水平三阶段流向图，带入口（学习起点）和出口（工程落地）"
+elements:
+  - 经典四层基础、智能层机制、工程落地三个学习台阶
+  - 每个台阶对应的自检节点
+relationships:
+  - 经典四层基础 → 端到端协议链路自检：验收基础数据路径
+  - 基础自检通过 → 智能层机制 → 规则与 AI 边界自检：进入并验收智能能力学习
+  - 边界自检通过 → 工程落地 → 全链路部署自检：完成系统切分与部署分析
 regions:
   - id: "stage1_domain"
     label: "第一阶段域"

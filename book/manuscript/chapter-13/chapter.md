@@ -369,9 +369,9 @@ DID方案带来的核心转变是信任源头的迁移：从信任中心化注�
 id: "fig-13-03"
 type: sequence
 title: 图13-3 设备DID注册与验证流程
-audience_takeaway: "读者应理解验证方离线即可核验身份：仅凭签名用ecrecover反推签名地址并与链上owner比对，私钥终生不出安全飞地。"
+audience_takeaway: "验证方生成一次性nonce，身份设备签名回复；验证方结合最新DID状态校验并消费nonce，防止重放。"
 purpose: 展示从设备出厂、注册到被另一设备验证的完整身份生命周期。
-visual_focus: 从设备1内部到设备2→设备1的主链路。
+visual_focus: 设备2生成nonce→设备1签名回复→查询最新DID状态→校验并消费nonce的主链路。
 design_level: implementation
 layout: 泳道从左至右依次为：设备1（身份主体）、智能合约（DeviceDIDRegistry，区块链上）、设备2（验证方）。
 elements:
@@ -380,13 +380,18 @@ elements:
 - 设备1→合约：发起 registerDevice(did, publicKeyHash) 交易，携带设备1以太坊账户签名。
 - '合约内部：验证签名，写入状态（owner, publicKeyHash, timestamp, isActive: true）。'
 - 合约→区块链：日志 DIDRegistered 写入区块。
-- 设备1→设备2：发送握手消息（包含DID + 随机挑战 + 对挑战的签名）。
-- 设备2→合约：静态调用 didDocs[didHash] 查询DID文档。
+- 设备2内部：生成并登记一次性nonce，作为本次握手的随机挑战。
+- 设备2→设备1：发送nonce挑战。
+- 设备1内部：使用安全飞地内私钥对nonce签名。
+- 设备1→设备2：回复DID与nonce签名。
+- 设备2→合约：静态调用 didDocs[didHash] 查询最新DID文档。
 - 合约→设备2：返回DID文档（owner, publicKeyHash, isActive）。
-- 设备2内部：调用 ecrecover 恢复签名地址，与owner比对；检查 isActive。
+- 设备2内部：校验nonce签名与isActive，并原子消费nonce；已使用、过期或未知nonce均拒绝。
 - 设备2→设备1：返回验证结果（通过/失败）。
 relationships:
-- 步骤3、5、7为链上操作（虚线箭头），其余为链下操作（实线箭头）。
+- 验证方先生成nonce并向设备1发起挑战，设备1只对该nonce签名回复。
+- 验证方收到签名后查询最新DID状态，再校验签名并消费nonce，防止旧签名被重放。
+- DID注册和状态查询使用虚线箭头，其余挑战、签名与结果通信使用实线箭头。
 regions:
 - id: edge_domain
   label: 设备与边缘域
@@ -512,11 +517,11 @@ connections:
   style: dashed
   direction: left-to-right
 callouts:
-- 步骤3、5、7为链上操作（虚线箭头），其余为链下操作（实线箭头）
+- DID注册和状态查询为链上操作（虚线箭头），挑战、签名回复与结果为链下操作（实线箭头）
 legend:
 - 实线箭头：链下通信，速度快，无gas消耗。
 - 虚线箭头：链上交易/查询，有gas成本和区块确认延迟。
-caption: 图13-3 展示设备从硬件密钥生成、DID注册到验证方自主验证的完整身份生命周期。链上操作以虚线区分。
+caption: 图13-3 展示设备从硬件密钥生成、DID注册到挑战验证的完整身份生命周期；验证方以一次性nonce发起挑战，收到签名后查询最新DID状态并消费nonce，从而阻断重放。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -1104,7 +1109,7 @@ render_notes: HTML/SVG渲染，浅色背景。四层自下而上堆叠，每层�
 id: "fig-13-08"
 type: architecture
 title: 图13-8 中心化 vs 去中心化物联网架构对比图
-audience_takeaway: "读者应理解两者差异在故障影响域：中心化单点失效即全网瘫痪，去中心化任一共识节点失效不影响全局，代价是数据流由汇聚变P2P。"
+audience_takeaway: "中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。"
 purpose: 直观对比两种架构在组件角色、通信模型、信任锚点和故障影响范围上的差异。
 visual_focus: 从左栏顶部到右栏标注的主链路。
 design_level: logical
@@ -1118,7 +1123,7 @@ relationships:
 - 左栏中，所有设备必须通过中心化平台进行认证和消息路由，数据流为汇聚型。
 - 右栏中设备通过与区块链节点交互完成身份注册和交易验证，设备间可直接或通过P2P中继通信。
 - 左栏单一故障点（中心平台）失效则全网不可用，标注红色虚线框
-- 右栏任意一个共识节点失效不影响全局运行，标注绿色高亮。
+- 右栏标注前提：故障未超容错阈值且 quorum 可达时，单个共识节点失效不影响全局运行。
 regions:
 - id: edge_domain
   label: 设备与边缘域

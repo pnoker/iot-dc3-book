@@ -34,11 +34,21 @@ LwM2M（Lightweight Machine-To-Machine，轻量级 M2M 协议）的定位更特�
 id: "fig-09-01"
 type: "layered"
 title: "图9-1 物联网协议栈与分类图"
-purpose: "展示四层参考架构与应用层协议在其中的位置，以及应用层协议按通信模型的分类。"
-audience_takeaway: "读者应理解物联网协议栈层间关系，以及应用层协议因通信模型不同而分为发布/订阅和请求/响应两大类。"
-visual_focus: "从感知层向上经无线接入、传输层到应用层的主链路；在应用层内部用左右两列区分发布/订阅与请求/响应两种模型。"
+purpose: "区分可直接承载IP的接入技术与通常需要IP适配或网关的接入技术，并展示它们汇入应用协议栈的路径。"
+audience_takeaway: "读者应理解Wi-Fi与蜂窝网络通常直接承载IP，而BLE、Zigbee、LoRa通常需经适配或网关进入IP网络。"
+visual_focus: "从感知层分出直接IP承载与需IP适配/网关两条路径，在网络层汇合后进入TCP/UDP与应用协议。"
 design_level: "logical"
-layout: "自下而上五层水平色块，层间箭头表示数据流向。"
+layout: "自下而上分层；无线接入层左右分为常用IP承载和需IP适配/网关两列，汇入统一网络层。"
+elements:
+  - 感知层与传感器、执行器
+  - 常用IP承载：Wi-Fi、蜂窝（NB-IoT、4G、5G）
+  - 需IP适配或网关：BLE、Zigbee、LoRa
+  - IP网络、TCP/UDP与应用层协议
+relationships:
+  - 感知层 → Wi-Fi/蜂窝 → IP网络：直接IP承载
+  - 感知层 → BLE/Zigbee/LoRa → IP适配或网关 → IP网络：适配后接入
+  - IP网络 → TCP → MQTT、HTTP；IP网络 → UDP → CoAP：逐层封装
+  - CoAP → LwM2M：为设备管理上层协议提供传输基础
 regions:
   - id: "stack_domain"
     label: "网络协议栈"
@@ -54,10 +64,24 @@ components:
     group: "stack_domain"
     priority: "primary"
     shape: "card"
-  - id: "radio"
-    label: "无线接入"
+  - id: "direct_ip_access"
+    label: "常用IP承载"
     type: "edge"
-    subtitle: "Wi-Fi、BLE、NB-IoT"
+    subtitle: "Wi-Fi、蜂窝（NB-IoT、4G、5G）"
+    group: "stack_domain"
+    priority: "normal"
+    shape: "card"
+  - id: "gateway_access"
+    label: "需IP适配/网关"
+    type: "edge"
+    subtitle: "BLE、Zigbee、LoRa"
+    group: "stack_domain"
+    priority: "normal"
+    shape: "card"
+  - id: "ip_adapter"
+    label: "IP适配或边缘网关"
+    type: "edge"
+    subtitle: "协议转换、组网与IP接入"
     group: "stack_domain"
     priority: "normal"
     shape: "card"
@@ -98,13 +122,28 @@ components:
     shape: "card"
 connections:
   - from: "perception"
-    to: "radio"
+    to: "direct_ip_access"
     label: "传感器数据"
     style: "solid"
     direction: "bottom-to-top"
-  - from: "radio"
+  - from: "perception"
+    to: "gateway_access"
+    label: "传感器数据"
+    style: "solid"
+    direction: "bottom-to-top"
+  - from: "direct_ip_access"
     to: "network"
-    label: "封装为 IP 分组"
+    label: "直接承载IP"
+    style: "solid"
+    direction: "bottom-to-top"
+  - from: "gateway_access"
+    to: "ip_adapter"
+    label: "协议适配"
+    style: "dashed"
+    direction: "bottom-to-top"
+  - from: "ip_adapter"
+    to: "network"
+    label: "接入IP网络"
     style: "solid"
     direction: "bottom-to-top"
   - from: "network"
@@ -136,7 +175,7 @@ legend:
   - "左侧蓝色系：发布/订阅模型"
   - "右侧橙色系：请求/响应模型"
   - "虚线边框：协议栈依赖关系"
-caption: "图9-1 应用层协议运行在 TCP/UDP 之上，与底层无线技术无关；LwM2M 作为 CoAP 上层协议，继承其传输特性。"
+caption: "图9-1 Wi-Fi与蜂窝常直接承载IP；BLE、Zigbee、LoRa通常经适配或网关接入IP网络。"
 visual_constraints:
   - "节点标签使用短名词短语，解释性文字放入 callouts。"
   - "图例放在底部，不遮挡主体结构。"
@@ -306,6 +345,15 @@ audience_takeaway: "理解会话持久化、心跳超时判定以及重连策略
 visual_focus: "从Client重连到Broker推送离线缓存消息的主链路。"
 design_level: "implementation"
 layout: "自上而下时间轴，左侧Client生命线，右侧Broker生命线，底部示意重连恢复。"
+elements:
+  - MQTT Client sensor01
+  - MQTT Broker
+  - 遗嘱消息订阅者
+relationships:
+  - Client → Broker：以持久会话参数连接、订阅、发布并发送心跳
+  - Broker → Client：确认连接、订阅、发布和心跳请求
+  - Broker → Subscriber：心跳超时后代发遗嘱消息
+  - Client → Broker → Client：以相同 Client ID 重连并恢复会话与缓存消息
 regions:
   - id: "client_domain"
     label: "客户端域"
@@ -571,6 +619,15 @@ audience_takeaway: "读者应理解MQTT设备、Broker、订阅端和手机App�
 visual_focus: "设备到Broker到订阅端的数据发布链路（蓝色虚线），以及断连后Broker发布的遗嘱消息（红色虚线）。"
 design_level: "detailed"
 layout: "水平泳道，时间轴自上而下，分三个Phase阶段。"
+elements:
+  - MQTT 传感器与 Broker
+  - 云订阅端与手机 App
+  - 网络故障事件
+relationships:
+  - 传感器 ↔ Broker：连接时注册遗嘱并完成 CONNACK
+  - 传感器 → Broker → 云订阅端：依次以 QoS 1 上报温度、分发温度、上报湿度、分发湿度
+  - 云订阅端 → Broker → 手机 App：以 QoS 2 发布并分发关键告警
+  - 网络故障 → Broker → 云订阅端：心跳超时后发布 retained 遗嘱消息
 components:
   - id: "sensor"
     label: "传感器"
@@ -783,6 +840,11 @@ elements:
   - "一条连线和标注：'等效语义，体积显著更小'。"
   - "CoAP字段注释，说明关键字段的功能：Ver（版本号，当前固定为01）、T（消息类型，CON=0/NON=1）、Code（请求方法如GET=0.01）、MID（消息ID用于去重与匹配）。"
   - "底图注和图例，说明颜色方案：固定头（蓝色）、Token（绿色）、Options（橙色）、Payload（浅灰）。"
+relationships:
+  - HTTP 请求头部 → CoAP 二进制布局：用等效 GET 语义对比报文体积
+  - CoAP 固定头 → Token → Options → Payload：按解析顺序组织固定与可变字段
+  - Token → 请求与响应：关联同一交互
+  - Message ID → 报文处理：用于去重与匹配
 regions: []
 components:
   - id: http_block
@@ -1035,6 +1097,15 @@ audience_takeaway: "读者应看到GATT Profile是属性数据库的访问模型
 visual_focus: "从PHY/Link Layer向上到GATT Profile的主链路。从CCCD分叉成两条水平路径：实线Notification与虚线Indication。"
 design_level: "logical"
 layout: "垂直分层。底部为PHY+Link，向上依次为L2CAP、Attribute Protocol（ATT）、GATT Profile。顶部右侧用嵌套方块展示Device→Service→Characteristic→Descriptor的包含关系。从CCCD向右引出两条水平路径。"
+elements:
+  - PHY、Link Layer、L2CAP、ATT 与 GATT Profile
+  - Device、Heart Rate Service、HRM Characteristic 与 CCCD
+  - Notification 与 Indication 推送路径
+relationships:
+  - PHY/Link Layer → L2CAP → ATT → GATT Profile：逐层承载、复用并组织属性访问
+  - Device → Service → Characteristic → Descriptor：由设备到订阅配置逐级包含
+  - CCCD → Notification：启用无确认、低开销推送
+  - CCCD → Indication：启用逐包确认的可靠推送
 components:
   - id: "phy_link"
     label: "PHY+Link"
@@ -1729,6 +1800,14 @@ audience_takeaway: "读者应理解协议适配网关不是简单的协议转换
 visual_focus: "路由与转换层作为核心决策节点，连接上下层；适配层用模块化框强调可扩展性。"
 design_level: "logical"
 layout: "垂直堆叠三层：适配层、路由与转换层、统一接口层。每层内包含多个模块框，模块间用箭头表示消息流。"
+elements:
+  - MQTT、CoAP、HTTP 与 LwM2M 适配器
+  - 转换引擎与消息路由器
+  - 统一 API 与标准化 Broker 入口
+relationships:
+  - 协议适配器 → 转换引擎：提交协议特有报文进行格式和语义映射
+  - 转换引擎 → 消息路由器 → 统一接口：输出路由后的标准化消息
+  - 统一接口 → 转换引擎 → 协议适配器：将配置与控制按映射规则下发
 regions:
   - id: "adapter_layer"
     label: "适配层"
@@ -1950,6 +2029,17 @@ audience_takeaway: "标准化的趋势是语义统一和AI交互接口预留，�
 visual_focus: "从早期阶段到深水区再到MCP的阶段推进，用箭头标注每一个关键阶段的核心成果。"
 design_level: "logical"
 layout: "水平时间线，从左至右分为四个阶段：早期、中间层、深水区、当前节点。每个阶段下方列出代表性标准组织/项目。"
+elements:
+  - 工业、消费与电信垂直标准群
+  - oneM2M 水平平台
+  - IETF CoRE 资源目录与 W3C WoT 能力描述
+  - MCP AI 交互接口扩展
+relationships:
+  - 垂直标准群 → oneM2M：通过水平资源抽象降低跨领域适配成本
+  - oneM2M → IETF CoRE、W3C WoT：从结构统一推进到资源与能力语义描述
+  - IETF CoRE、W3C WoT → MCP：为工具和资源发现提供设计参考
+  - oneM2M → MCP：以资源和订阅模型补充 AI 交互设计
+  - MCP → 既有设备协议：扩展 AI 调用接口而不替代设备通信栈
 regions:
   - id: "phase_early"
     label: "早期阶段"

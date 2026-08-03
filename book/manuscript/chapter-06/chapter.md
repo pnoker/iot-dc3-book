@@ -1335,19 +1335,20 @@ id: "fig-06-08"
 type: layered
 title: 图6-8 微服务可观测性分层架构
 audience_takeaway: "读者应理解可观测性中服务主动暴露端点、Prometheus以pull模式拉取指标、日志与指标分通道存储(ES/Prometheus)，健康状态并入业务指标统一告警。"
-purpose: 展示从代码规范到告警通知的完整监控链路，说明各层组件及数据流
-visual_focus: 从进入下一判断到进入下一判断的主链路。
+purpose: 展示指标、日志、告警与可视化查询的完整可观测链路。
+visual_focus: Prometheus拉取服务指标、日志经采集器进入ES、Prometheus发送告警到Alertmanager，以及Grafana查询两类存储。
 design_level: logical
-layout: 三层从左到右堆叠，每层包含对应组件框
+layout: 从左至右三层：服务暴露层、采集与存储层、展示与告警层。
 elements:
-- '上层（展示与告警）: 可视化指标面板与告警通知，支持钉钉/邮件/PagerDuty 等通道'
-- '中间层（采集与存储）: Prometheus pull 模式拉取 metrics，ES 存储聚合后的日志'
-- '下层（服务暴露）: 每个微服务暴露 Prometheus 端点和自定义健康端点'
+- '服务暴露层：微服务和Driver暴露指标端点，日志服务输出结构化日志。'
+- '采集与存储层：Prometheus拉取指标，日志采集器将日志写入Elasticsearch。'
+- '展示与告警层：Grafana查询Prometheus和Elasticsearch，Alertmanager接收Prometheus告警并通知外部通道。'
 relationships:
-- Service A 和 Service B 的 metrics 被 Prometheus 定期拉取
-- Prometheus 将聚合后的数据供给 Grafana 展示
-- Alertmanager 根据 Prometheus 告警规则发送通知到外部通道
-- Device Driver 的健康状态通过自定义 HealthIndicator 暴露为业务指标
+- Prometheus → 微服务与Driver：定期pull metrics
+- 日志服务 → 日志采集器 → Elasticsearch：采集、解析并建立日志索引
+- Prometheus → Alertmanager → 外部通知通道：规则告警与通知路由
+- Grafana → Prometheus：查询指标
+- Grafana → Elasticsearch：查询日志
 regions:
 - id: governance_domain
   label: 治理与安全域
@@ -1399,12 +1400,11 @@ legend:
 - 红色下层：微服务组件（指标提供方）
 - 绿色中间层：基础设施（采集与存储）
 - 灰色上层：终端展示（仪表盘与告警）
-caption: 从代码规范到告警通知的完整监控链路
+caption: 图6-8 Prometheus主动拉取服务指标并将告警发送给Alertmanager；日志经采集器进入Elasticsearch，Grafana分别查询Prometheus和Elasticsearch。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
-render_notes: 此架构假设 Prometheus 和 Elasticsearch 已部署在同一个集群内，Grafana 可直连两者数据源。；实际部署中日志通常走 Fluentd/Logstash 管道进入 ES。；健康端点 /actuator/health
-  返回详细键值对，供 Kubernetes 就绪探针使用。
+render_notes: 三列分层绘制；Prometheus到服务的pull箭头必须指向服务，日志链路必须经过采集器，Grafana分别连接Prometheus与Elasticsearch，Prometheus连接Alertmanager。
 ```
 
 #### 三支柱可观测性：从设备命令到最终状态

@@ -263,19 +263,20 @@ uRLLC和mMTC并非孤立运行。在5G核心网的**网络切片**能力下，�
 id: "fig-04-03"
 type: layered
 title: 图4-3 5G网络切片IoT应用示意
-audience_takeaway: "读者应理解同一张5G物理网经切片选择功能逻辑隔离出三类SLA业务,而NB-IoT/LTE-M只是mMTC切片的兼容子集。"
-purpose: 展示同一张5G物理网络通过切片技术同时承载uRLLC、eMBB、mMTC三类IoT业务，以及NB-IoT/LTE-M作为mMTC子集的继承关系。
-visual_focus: 从底层共享层到mMTC切片的主链路。
+audience_takeaway: "读者应理解同一张5G物理网经切片选择功能逻辑隔离出三类SLA业务；NB-IoT/LTE-M复用运营商蜂窝基础设施，作为既有蜂窝IoT接入单列，不是5G NR兼容模式。"
+purpose: 展示同一张5G物理网络通过切片技术同时承载uRLLC、eMBB、mMTC三类IoT业务，并将NB-IoT/LTE-M作为既有蜂窝IoT接入单独对照。
+visual_focus: 5G NR与切片的主链路，以及与NB-IoT/LTE-M接入路径的边界。
 design_level: logical
-layout: 自下而上分两层，底层为共享的5G NR无线接入层与5G核心网，顶层为三个逻辑隔离的垂直切片。
+layout: 左侧为5G NR无线接入、5G核心网与三个逻辑隔离切片；右侧单列NB-IoT/LTE-M既有蜂窝IoT接入，不嵌入mMTC切片。
 elements:
-- 底层共享层：5G NR无线接入（含NB-IoT/LTE-M兼容模式），5G核心网（包含网络切片选择功能、会话管理功能、用户面功能等切片选择与转发功能）。使用灰色横条表示。
+- 5G底层共享层：5G NR无线接入与5G核心网（网络切片选择、会话管理、用户面功能）。使用灰色横条表示。
 - uRLLC切片：左侧红色胶囊，内部标注终端（工业机器人、AGV）及性能标签（毫秒级时延）。
 - eMBB切片：中间蓝色胶囊，内部标注终端（AI摄像头、高清监控）及性能标签（Gbps级吞吐）。
-- mMTC切片：右侧绿色胶囊，内部标注终端（水表、温湿度传感器、井盖）及性能标签（极高连接密度）。底部额外标注“兼容NB-IoT/eMTC”。
+- mMTC切片：右侧绿色胶囊，内部标注终端（水表、温湿度传感器、井盖）及性能标签（极高连接密度）。
+- 既有蜂窝IoT接入：NB-IoT/LTE-M独立列在5G NR与切片体系之外。
 relationships:
 - 底层共享层水平承载三个切片，通过网络切片选择功能实现逻辑隔离。
-- mMTC切片底部与NB-IoT/eMTC兼容模式通过虚线相连，表明继承关系。
+- NB-IoT/LTE-M作为既有蜂窝IoT接入单独标注，与5G NR无线接入概念区分。
 - 三个切片使用虚线分隔，共享底层资源但逻辑隔离。
 regions:
 - id: application_domain
@@ -576,7 +577,7 @@ render_notes: 使用<svg>绘制极坐标雷达图，五轴间距72°，坐标轴
 id: "fig-04-05"
 type: layered
 title: 图4-5 多种协议设备的接入困境
-audience_takeaway: "读者应理解接入协议每增加一种,重复适配工作呈几何级数增长,新协议还需与既有协议在数据模型与指令集上桥接。"
+audience_takeaway: "读者应理解每增加一种接入协议，都需新增对应适配器，并在解析、模型映射与指令处理等跨层环节产生重复工作。"
 purpose: 展示在一个物联网网关或平台上，接入多种异构协议设备时各层所面临的复杂度和重复适配工作。
 visual_focus: 从设备到平台：统一数据模型转换（转换逻辑因…的主链路。
 design_level: logical
@@ -651,7 +652,7 @@ legend:
 - 设备图标代表一种协议族，适配器代表独立的协议转换逻辑。
 - 颜色编码：设备层浅灰，协议转换层淡蓝，平台层深灰。
 - 警告图标表示平台侧的重复开发风险。
-caption: 图4-5 多种协议设备的接入困境示意图。每增加一种协议，重复工作的范围不是线性增长，而是几何级数增长——新协议不仅需要自身适配，还需与已有协议在数据模型、指令集上做桥接。
+caption: 图4-5 多种协议设备的接入困境示意图。每增加一种协议，都要新增对应适配器，并在解析、模型映射与指令处理等跨层环节重复投入。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -1239,7 +1240,7 @@ elements:
 - 实现层：BluetoothGattAdapter，组合 BleScanner、BleGattConnection、GattCharacteristicResolver，使用青绿色矩形。
 - 实现层：LoRaWanAdapter，组合 LoraNetworkClient、DevAddrMapper、FPortDispatcher，使用青绿色矩形。
 relationships:
-- 接口层通过泛化关系（空心三角箭头）指向每个实现层类，表示实现关系。
+- 每个实现类通过UML实现关系（虚线+空心三角箭头）指向ProtocolAdapter接口。
 - 每个实现层类通过组合关系（实心菱形+箭头）指向其依赖的组件，组件为矩形。
 regions:
 - id: platform_domain

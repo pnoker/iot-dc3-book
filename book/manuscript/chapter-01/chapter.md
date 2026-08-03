@@ -153,7 +153,7 @@ PC互联网的通信基础是TCP/IP协议族。传输控制协议负责将数据
 
 但让普通人迈入互联网的关键是万维网（World Wide Web, WWW）。蒂姆·伯纳斯-李发明了三件套：超文本标记语言（HyperText Markup Language, HTML）用于定义页面内容与结构，超文本传输协议（HyperText Transfer Protocol, HTTP）用于浏览器请求-响应模式，统一资源定位符（Uniform Resource Locator, URL）用于唯一标识每个资源。用户从此可以在浏览器中输入一串字符，点击链接从一页跳到另一页，不再依赖命令行。
 
-图1-5上的架构图展示了PC互联网时代“用户—PC—万维网—信息”的连接链路，并用虚线标出了尚未联网的“物”设备区域。
+图1-2上的架构图展示了PC互联网时代“用户—PC—万维网—信息”的连接链路，并用虚线标出了尚未联网的“物”设备区域。
 
 ```book-figure
 id: "fig-01-02"
@@ -238,7 +238,7 @@ PC互联网完成了“信息触网”的使命——把内容从纸面搬上屏
 
 移动支付又把社交关系延伸到了交易场景。支付宝、微信支付、Apple Pay让手机变成了用户的数字钱包。扫一扫二维码就是一笔交易，发红包、AA付款、向朋友转账，都只是聊天界面里的一步操作。在这个生态里，每个用户同时是内容生产者、服务消费者和支付流转节点，形成了一个以人为中心的闭环网络。
 
-**图1-5：移动互联网应用生态示意**
+**图1-3：移动互联网应用生态示意**
 
 ```book-figure
 id: "fig-01-03"
@@ -653,7 +653,8 @@ elements:
   - "中间：RFID 读写器，包含射频收发模块与解码单元。"
   - "右侧：后台系统（数据库/ERP 系统），处理识别结果。"
 relationships:
-  - "标签通过射频信号与读写器通信（无源标签由读写器场区供电）。"
+  - "读写器通过射频场为无源标签供电并激活标签。"
+  - "标签通过射频信号向读写器回传 EPC 数据。"
   - "读写器将解码后的数据通过有线或无线网络发送至后台系统。"
 regions:
   - id: "rfid_edge"
@@ -688,9 +689,14 @@ components:
     priority: "normal"
     shape: "card"
 connections:
+  - from: "rfid_reader"
+    to: "rfid_tag"
+    label: "供电/激活"
+    style: "solid"
+    direction: "right-to-left"
   - from: "rfid_tag"
     to: "rfid_reader"
-    label: "射频信号（场区供电+数据回传）"
+    label: "标签数据"
     style: "solid"
     direction: "left-to-right"
   - from: "rfid_reader"

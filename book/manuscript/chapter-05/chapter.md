@@ -231,11 +231,11 @@ client_sub.loop_forever()
 id: "fig-05-02"
 type: flowchart
 title: 图5-2 设备认证与数据加密流程
-audience_takeaway: "读者应理解证书与Token两条认证路径并存：TLS 1.3握手1RTT完成，DTLS多1次往返做重传保护，Token需配合refresh与短有效期防泄漏。"
-purpose: 展示物联网设备接入平台时证书/Token认证与TLS/DTLS加密传输的完整路径。
-visual_focus: 从设备发起连接到平台完成加密通道建立的主链路；TLS 1.3握手优化和Token刷新机制作为关键支线。
+audience_takeaway: "读者应理解证书认证发生在TLS/mTLS握手内；Token路径必须先建立加密通道并完成通道内认证，再签发短期Token和refresh；混合模式按mTLS→Token→API执行。"
+purpose: 展示证书路径、Token路径与混合路径各自正确的认证和加密时序。
+visual_focus: 证书在握手内认证、Token在加密通道内认证后签发，以及mTLS→Token→API混合主链路。
 design_level: implementation
-layout: 从左到右泳道图，设备侧、网络、平台侧三个泳道。
+layout: 自上而下三条水平流程：证书路径、Token路径、混合路径。
 regions:
   - id: device_region
     label: 设备侧
@@ -318,22 +318,19 @@ elements:
   - "网络层：TLS 1.3握手在1RTT内完成，DTLS需额外1次往返。"
   - "平台侧：认证服务验证证书链或Token签名，通过后建立加密通道。"
 relationships:
-  - "设备 -> TLS/DTLS握手：ClientHello / Token请求"
-  - "TLS/DTLS握手 -> 平台认证服务：转发握手消息"
-  - "平台认证服务 -> TLS/DTLS握手：握手完成 / Token签发"
-  - "TLS/DTLS握手 -> 设备：加密通道建立通知"
-  - "设备 -> 加密通道：加密数据流"
-  - "加密通道 -> 后端业务：解密后的数据"
+  - "证书路径：设备证书与私钥 -> TLS/mTLS握手内验证 -> 加密会话与受保护API"
+  - "Token路径：设备凭据 -> TLS加密通道 -> 通道内认证 -> 短期Token与refresh -> 受保护API"
+  - "混合路径：mTLS设备认证 -> 短期Token -> 业务API"
 callouts:
-  - "设备侧：携带X.509证书或设备密钥发起连接请求。"
-  - "网络层：TLS 1.3握手在1RTT内完成密钥协商，DTLS需额外1次往返用于重传保护。"
-  - "平台侧：认证服务验证证书链或Token签名，通过后建立加密通道。"
-  - "Token方案：平台签发JWT，设备侧存储，需配合refresh token和短有效期。"
+  - "证书认证是TLS/mTLS握手的一部分，不是握手前后的独立认证请求。"
+  - "Token认证请求必须先由TLS加密通道保护。"
+  - "Token通过通道内认证后签发，并以短有效期和refresh机制限制泄漏影响。"
+  - "传输解密后的业务数据仍需访问控制与存储保护。"
 legend:
   - "青绿色=设备侧；灰色=网络传输层；蓝色=平台核心服务。"
   - "实线箭头=请求/数据流；虚线箭头=握手完成/Token返回。"
   - "主链路从设备出发，经过TLS握手到达平台认证服务，后建立加密通道。"
-caption: "图5-2 设备认证与数据加密的主要流程，涵盖证书/Token方式与TLS/DTLS加密层。"
+caption: "图5-2 证书在TLS/mTLS握手内完成认证；Token在加密通道内认证后签发，混合模式依次使用mTLS、短期Token和业务API。"
 visual_constraints:
   - "最多6个主节点，节点标签使用短名词短语，解释性文字放入callouts或正文。"
   - "图例放在底部，不遮挡主体结构。"

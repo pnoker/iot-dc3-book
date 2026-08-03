@@ -475,26 +475,29 @@ RAG 解决的是模型“知不知道”的问题，Tool-Calling 解决的是模
 id: "fig-07-03"
 type: dataflow
 title: 图7-3 RAG + Tool-Calling 联合工作流
-audience_takeaway: "读者应理解 RAG 检索 SOP 步骤灌入模型，Tool-Calling 据此落成关泵指令，二者在泳道中职责分离。"
-purpose: 展示一个运维任务从用户发起到 LLM 推理、RAG 检索、Tool-Calling 执行直至设备响应的完整数据流向和职责划分。
-visual_focus: 从操作员到终点的主链路。
+audience_takeaway: "读者应理解 RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；涉及写入时只创建待确认 Action，用户确认并通过平台校验后才执行。"
+purpose: 展示运维任务依次经过 RAG 检索、状态读取、待确认 Action 创建、用户确认和受控执行的完整数据流与职责边界。
+visual_focus: 从 RAG 证据与状态读取到待确认 Action、用户确认和控制器执行的主链路。
 design_level: implementation
 layout: 水平泳道布局，从上到下四条泳道：用户层、AI 推理层、知识检索层、设备执行层。
 elements:
 - '操作员（用户层）：提出自然语言任务，如“按标准流程重置3号泵”。填充色 #f0f4f8。'
 - 'LLM 推理引擎（AI 推理层）：接收任务，判断需要外部知识，触发 RAG 检索。填充色 #e8f5e9。'
 - '向量知识库（知识检索层）：存储设备 SOP、历史修复记录、参数模板，用 Embeddings 和 VectorStore 两个子节点表示。填充色 #fff3e0。'
-- 'Tool-Calling 执行器（设备执行层）：dc3-center-agentic 的 @Tool 方法，发送关泵指令。填充色 #fce4ec。'
-- '设备层（设备执行层）：接收指令，执行关泵操作后返回状态。填充色 #ffebee。'
+- '只读 Tool（设备执行层）：读取平台中的设备状态快照，不执行设备写入。填充色 #e8f5e9。'
+- '待确认 Action（平台边界）：保存目标、参数、证据和影响范围，创建时不执行。填充色 #fff3e0。'
+- '控制器与执行点（设备执行层）：仅在用户确认且鉴权、参数和策略校验通过后下发，并回读状态。填充色 #ffebee。'
 relationships:
 - 操作员 → LLM 推理引擎：发起任务（自然语言），实线箭头
-- LLM 推理引擎 → 向量知识库：检索 SOP 文档，实线箭头
-- 向量知识库 → LLM 推理引擎：返回 SOP 文档（步骤 A、B、C），实线箭头
-- LLM 推理引擎 → Tool-Calling 执行器：按 SOP 步骤 A，调用 CommandTool.stop(pump_id)，虚线箭头
-- Tool-Calling 执行器 → 设备层：下发关泵指令，虚线箭头
-- 设备层 → Tool-Calling 执行器：返回泵状态：已关闭，虚线箭头
-- Tool-Calling 执行器 → LLM 推理引擎：执行结果：泵已关闭，虚线箭头
-- LLM 推理引擎 → 操作员：生成自然语言回复，实线箭头
+- LLM 推理引擎 → 向量知识库：检索版本化 SOP 文档，实线箭头
+- 向量知识库 → LLM 推理引擎：返回 SOP 证据，实线箭头
+- LLM 推理引擎 → 只读 Tool：查询设备实时状态，实线箭头
+- 只读 Tool → LLM 推理引擎：返回状态快照，实线箭头
+- LLM 推理引擎 → 待确认 Action：写入目标、参数、证据与影响范围，不执行设备操作
+- 待确认 Action → 操作员：请求确认
+- 操作员 → 平台校验：确认后触发鉴权、参数校验与策略约束
+- 平台校验 → 控制器与执行点：全部通过后才下发设备操作
+- 控制器与执行点 → LLM 推理引擎：返回执行结果与审计记录
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -1194,6 +1197,16 @@ title: 图7-6 Agentic Center 四层架构
 audience_takeaway: "读者应理解 Tool 经 Facade/gRPC 复用能力而非 Feign 旁路，会话与数据存于 PostgreSQL，不设命令服务。"
 purpose: 展示 Agentic Center 如何叠加在 IoT DC3 既有平台能力之上，并标明真实通信与存储边界。
 layout: 自上而下四层：用户交互层；AI Agent 层；平台服务层；数据与设备层。Agentic 到平台服务标注 Facade/gRPC，Data 与 Driver 之间标注 RabbitMQ。
+elements:
+  - Web/HTTP 用户交互入口
+  - Agentic Center、ChatClient 与 Spring AI Tools
+  - Gateway、Manager、Data 中心
+  - PostgreSQL、RabbitMQ、Driver 与现场设备
+relationships:
+  - 用户交互入口 → Agentic Center：提交并接收对话请求
+  - Agentic Center → Spring AI Tools → 平台中心：通过 Facade/gRPC 复用受权业务能力
+  - Agentic Center、平台中心 → PostgreSQL：持久化会话与平台数据
+  - Data ↔ RabbitMQ ↔ Driver ↔ 现场设备：交换位号值、设备命令与回执
 caption: 图7-6 Agentic Center 四层架构：Tool 通过 Facade/gRPC 复用平台能力，会话与平台数据存于 PostgreSQL，设备命令和位号值经 Data、RabbitMQ 与 Driver 流转。
 render_notes: 四层堆叠卡片。禁止绘制 Feign、MongoDB 或独立 Command Service；右侧标注“Tool 不绕过租户与权限边界”。
 ```
@@ -1330,6 +1343,15 @@ title: 图7-7 Agentic Center 当前能力与知识对齐边界
 audience_takeaway: "读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。"
 purpose: 区分当前已实现的 Tools、Web/HTTP 与 MCP Tools 端点，以及仅用于知识对齐的 Skills 和 CLI 概念。
 layout: 左侧“当前已实现”区域包含 Agentic @Tool、Web/HTTP 对话和 MCP Tools；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧用虚线关系箭头连接。
+elements:
+  - Agentic @Tool、Web/HTTP 对话与 MCP Tools 端点
+  - Skills 编排概念与 CLI 客户端概念
+  - 当前已实现边界与知识对齐边界
+relationships:
+  - Web/HTTP 对话 → Agentic @Tool：当前通过对话触发服务内工具
+  - MCP 客户端 → MCP Tools 端点：当前通过协议发现和调用网关工具
+  - Skills 概念 → 已实现 Tools：可作为未来编排参照，但当前未落地
+  - CLI 概念 → Web/HTTP 或 MCP 入口：可作为未来客户端参照，但当前未实现
 caption: 图7-7 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为实现边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。
 render_notes: 左侧绿色实线框标“当前已实现”，右侧灰蓝虚线框标“知识对齐（非现有功能）”；禁止使用三层金字塔或未来路线措辞暗示三者均已上线。
 ```

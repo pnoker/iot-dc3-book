@@ -118,7 +118,7 @@ id: "fig-14-01"
 type: architecture
 title: 图14-1 物联网平台分层架构
 purpose: 展示设备层、边缘层、平台层、应用层之间的层次关系和数据流主链路，强调各层的职责边界和异步解耦模式。
-audience_takeaway: 读者应理解物联网平台分层架构中的主链路、责任边界、以及协议驱动与消息队列带来的解耦效果。
+audience_takeaway: RabbitMQ 并行分发给数据中心和智能中心；API Gateway 并行路由鉴权、设备管理和查询服务，平台组件不是串行流水线。
 visual_focus: 从设备层通过MQTT/CoAP接入边缘接入层的协议驱动，再经消息队列进入平台层的主数据链路；强调异步边界。
 design_level: logical
 layout: 自下而上四层：设备层（最底部）→ 边缘接入层 → 平台层 → 应用层（最顶部）。层间以水平虚线分隔，标识职责边界。平台层内部用不同颜色区分消息基础设施、数据中心、智能中心。
@@ -130,8 +130,8 @@ elements:
 relationships:
   - 设备层通过 MQTT、CoAP 或私有协议接入边缘接入层的协议驱动，实线箭头，标签：“协议接入”。
   - 边缘接入层将标准化后的位号值数据通过消息队列（RabbitMQ）异步推送到平台层的消息总线，虚线箭头，标签：“异步推送”。
-  - 平台层的消息总线将数据分发给数据中心的写入服务、智能中心的推理引擎，实线箭头，标签：“分发 & 消费”。
-  - 应用层通过 API 网关调用平台层的管理服务和数据查询服务，实线箭头，标签：“API 调用”。
+  - 平台层的消息总线并行分发给数据中心的写入服务和智能中心的推理引擎，分叉实线箭头，标签：“消息分发”。
+  - 应用层通过 API Gateway 并行调用鉴权服务、设备管理和数据查询服务，分叉实线箭头，标签：“API 路由”。
 regions:
   - id: edge_domain
     label: 设备与边缘域
@@ -631,7 +631,7 @@ id: "fig-14-03"
 type: dataflow
 title: 图14-3 设备接入与数据流
 purpose: 展示设备、Driver、RabbitMQ、Data、PostgreSQL 与北向查询之间的真实上下行链路。
-audience_takeaway: RabbitMQ 同时解耦上行位号值和下行命令，Data 负责持久化、最新值与告警处理。
+audience_takeaway: RabbitMQ 同时解耦上行位号值、下行命令和执行回执；Data 维护最新值、历史值、告警及按 commandId 关联的命令状态。
 visual_focus: 上行 Device→Driver→RabbitMQ→Data→Caffeine/PostgreSQL；下行 Client→Gateway→Data→RabbitMQ→Driver→Device，并有结果回执返回 Data。
 design_level: implementation
 layout: 上下两条水平泳道，上方上行数据，下方下行命令与回执。
@@ -646,7 +646,7 @@ relationships:
 - 设备→Driver→RabbitMQ→Data：异步上行位号值。
 - Data→Caffeine/PostgreSQL→告警规则：先保存再处理规则。
 - 客户端→Gateway→Data→RabbitMQ→Driver→设备：异步下行命令。
-- Driver→RabbitMQ→Data：执行结果回执。
+- 设备→Driver→RabbitMQ→Data：执行结果按 commandId 完整回执，Data 更新命令状态并供客户端查询或订阅。
 regions:
 - id: edge_domain
   label: 设备与边缘域
@@ -897,7 +897,8 @@ elements:
 - 南向：MQTT、Modbus、OPC UA 等按需启用的 Driver。
 - 配置：dc3net 固定服务名、环境变量、持久化卷。
 relationships:
-- Gateway→Auth/Manager/Data/Agentic：固定服务名路由。
+- 外部入口→Gateway：Web/Nginx将北向请求转发到统一入口。
+- Gateway→Auth/Manager/Data/Agentic：通过dc3net固定服务名分别路由到四中心。
 - Driver→Manager：gRPC 业务注册与元数据查询。
 - Data↔RabbitMQ↔Driver：命令、回执、位号值与状态。
 - 平台服务→PostgreSQL：按职责持久化。
@@ -1174,13 +1175,14 @@ id: "fig-14-06"
 type: architecture
 title: 图14-6 AGI时代物联网架构演进
 audience_takeaway: "读者应理解AGI时代智能层由规则+固定模型升级为Agent编排与动态模型调度,自动决策须经独立安全护栏层校验后才可下发。"
-purpose: 展示从传统IoT平台到AGI时代平台的核心层次变化：智能层升级为Agent编排+动态模型调度，安全护栏层独立并旁路所有自动决策。
-visual_focus: 从起点到终点的主链路。
+purpose: 展示从传统IoT平台到AGI时代平台的核心层次变化：智能层升级为Agent编排+动态模型调度，安全护栏串接在所有自动决策与平台执行之间。
+visual_focus: 设备→接入→平台→智能的上行数据主链，以及智能→安全护栏→平台的独立向下受控决策链。
 design_level: logical
-layout: 左右对比。左侧为传统IoT平台分层（设备层、接入层、平台层、应用层，智能层内嵌规则引擎与固定模型）。右侧为AGI时代平台分层（设备层、接入层、平台层、智能层、安全护栏层、应用层）。智能层细分为Agent编排层与模型调度网关；安全护栏层包含决策校验服务与人工接管接口。
+layout: 左右对比。两侧基础数据主链均按设备层→接入层→平台层→智能层向上排列。左侧智能层内嵌规则引擎与固定模型；右侧智能层细分为Agent编排层与模型调度网关，安全护栏作为独立管控节点承接受控决策，并沿另一条向下链路连接平台层。
 elements:
 - 左侧：设备层→接入层（MQTT/CoAP/Modbus）→平台层（认证、设备管理、数据中心）→智能层（规则引擎、预训练模型）→应用层。
-- 右侧：设备层→接入层（同左）→平台层（同左）→智能层（Agent编排层：多Agent调度、上下文管理、推理链追踪；模型调度网关：端/云模型路由、模型版本管理）→安全护栏层（决策校验服务、操作区间约束、人工接管接口）→应用层。
+- 右侧上行数据主链：设备层→接入层（同左）→平台层（同左）→智能层（Agent编排层：多Agent调度、上下文管理、推理链追踪；模型调度网关：端/云模型路由、模型版本管理）。
+- 右侧向下受控决策链：智能层→安全护栏（决策校验服务、操作区间约束、人工接管接口）→平台层执行；该链与基础数据主链分开绘制。
 - 两侧都用青绿色表示设备层，蓝色表示接入层和平台层，橙色表示智能层，红色表示安全护栏层，灰色表示应用层。
 relationships:
 - 传统IoT：平台层向智能层提供数据源，智能层通过规则和模型产生告警/控制指令返回至平台层。
@@ -1222,7 +1224,7 @@ callouts:
 legend:
 - 青绿色=设备与边缘；蓝色=接入与平台基础服务；橙色=AI与Agent能力；红色=安全与管控；灰色=外部应用与UI。
 - 实线箭头=同步调用/强依赖；虚线箭头=异步事件/可选路由。
-caption: 图14-6 AGI时代物联网架构演进。右半部分突出了独立的Agent编排层、动态模型调度网关以及旁路所有自动决策的安全护栏层，这是从传统规则+固定模型向自治系统演变的关键结构变化。
+caption: 图14-6 AGI时代物联网架构演进。基础数据沿设备、接入、平台、智能逐层向上；受控决策经独立安全护栏沿另一链路向下返回平台执行。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。

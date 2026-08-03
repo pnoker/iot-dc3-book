@@ -126,7 +126,7 @@ render_notes: HTML/SVG 渲染，浅色背景，四层垂直排列，左侧用纵
 id: "fig-08-02"
 type: layered
 title: 图8-2 物联网纵深防御多层模型
-audience_takeaway: "读者应理解单层防御失守可被相邻层补偿控制承接，如Layer2缺硬件信任根时由Layer3证书锁定与异常流量检测兜底。"
+audience_takeaway: "读者应理解补偿控制只能降低部分剩余风险；链路认证与监测不能替代设备缺失的硬件 Root of Trust。"
 purpose: 展示从物理安全到应用安全的多个防御面，以及补偿控制的跨层连接。
 visual_focus: 从补偿控制（灰色虚线）到终点的主链路。
 design_level: logical
@@ -142,7 +142,7 @@ elements:
 relationships:
 - 攻击路径（左侧红色箭头）从底向上穿过所有层
 - 防御阻断（右侧绿色箭头）从顶向下触发
-- 补偿控制（灰色虚线）连接不同层，例如Layer 2若缺乏硬件信任根，则Layer 3增加证书锁定与异常流量检测
+- 补偿控制（灰色虚线）连接不同层，用于降低部分剩余风险；即使 Layer 3 增加证书锁定与异常流量检测，也不能替代 Layer 2 缺失的硬件 Root of Trust
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -171,7 +171,7 @@ connections:
 callouts:
 - 攻击路径（左侧红色箭头）从底向上穿过所有层
 - 防御阻断（右侧绿色箭头）从顶向下触发
-- 补偿控制（灰色虚线）连接不同层，例如Layer 2若缺乏硬件信任根，则Layer 3增加证书锁定与异常流量检测
+- 补偿控制（灰色虚线）连接不同层，用于降低部分剩余风险；即使 Layer 3 增加证书锁定与异常流量检测，也不能替代 Layer 2 缺失的硬件 Root of Trust
 legend:
 - 蓝色矩形条：防御层，从上到下颜色由浅变深
 - 红色箭头：攻击者逐层突破路径
@@ -391,10 +391,12 @@ elements:
 - 左泳道：IoT Device (Client)
 - 右泳道：IoT Platform (Server)
 - 中间泳道（仅TLS）：Certificate Authority (CA)
-- TLS 1.3消息：ClientHello → ServerHello + 证书 + 参数 → Client证书 + Finished → Server Finished
+- TLS 1.3 消息：ClientHello + key_share → ServerHello + key_share → 服务端加密 handshake flight → 客户端加密 handshake flight
+- TLS 服务端 flight：EncryptedExtensions、可选 CertificateRequest、Certificate、CertificateVerify、Finished
+- TLS 客户端 flight：mTLS 时可选 Certificate 与 CertificateVerify，最后发送 Finished
 - EDHOC消息：M1 (临时公钥 + 身份选项) → M2 (公钥 + 凭证 + 签名) → M3 (公钥 + 签名确认)
 relationships:
-- TLS流程：从设备到平台发ClientHello，平台回复ServerHello与证书，然后设备发送客户端证书与Finished，平台回复Finished。虚线箭头表示证书链验证可选（如OCSP）。
+- TLS 流程：ClientHello 与 ServerHello 携带 key_share 且为明文；ServerHello 后导出握手流量密钥，服务端先发送加密 flight，客户端再发送加密 flight。mTLS 客户端证书可选，CertificateVerify 证明对应私钥持有。
 - EDHOC流程：M1从设备到平台，M2返回，M3设备确认。三消息后会话密钥生成。
 regions:
 - id: edge_domain
@@ -533,8 +535,8 @@ OTA（Over-the-Air）更新给攻击者打开了一扇新门。如果更新机�
 id: "fig-08-04"
 type: flowchart
 title: 图8-4 安全启动多层信任链流程
-audience_takeaway: "读者应理解信任链根植于不可篡改的BootROM（内含OTP公钥指纹），每一级只验证上一级签名，任一级失败即停机或回退恢复模式。"
-purpose: 展示从芯片上电到Linux内核启动的逐级验证过程，强调每一级都依赖上一级签名的信任关系。
+audience_takeaway: "读者应理解信任链根植于不可篡改的 BootROM（内含 OTP 公钥指纹），每一级验证下一级镜像，任一级失败即停机或回退恢复模式。"
+purpose: 展示从芯片上电到 Linux 内核启动的逐级验证过程，强调当前可信级验证下一级镜像后才移交执行。
 visual_focus: 从BootROM 验证 SBL 签名到通过则挂载，否则拒绝启动的主链路。
 design_level: implementation
 layout: 自上而下链式流程，起点：上电复位，终点：正常启动或拒绝启动。
@@ -864,22 +866,22 @@ TLS 1.3 把步骤 2 和 3 合并，且默认使用 ECDHE 密钥交换，提供�
 id: "fig-08-06"
 type: sequence
 title: 图8-6 TLS 1.3握手流程
-audience_takeaway: "读者应理解TLS握手仅ClientHello与ServerHello为明文，Finished起即用会话密钥加密，双向认证时客户端须额外出示证书。"
-purpose: 展示从ClientHello到应用数据全加密的四个主要步骤，包含双向认证示意。
+audience_takeaway: "读者应理解 ClientHello 与 ServerHello 通过 key_share 协商后，ServerHello 之后的握手消息即加密；服务端先发加密 flight，客户端再发加密 flight。"
+purpose: 展示 TLS 1.3 从明文 key_share 交换、握手流量密钥建立到双方加密 handshake flight 和应用数据的正确时序，包含可选 mTLS。
 visual_focus: 从客户端 → 服务端到客户端 ↔ 服务端的主链路。
 design_level: implementation
 layout: 纵向时序，参与者包括客户端（设备）和服务端（平台）。
 elements:
-- '客户端 → 服务端: ClientHello（支持版本、密码套件列表、client_random）'
-- '服务端 → 客户端: ServerHello（选定版本与套件、server_random）+ 服务端证书 + CertificateVerify'
-- '客户端 → 服务端: 客户端证书（双向认证时）+ 密钥协商参数（ECDHE共享秘密）'
-- '客户端 → 服务端: Finished（用导出会话密钥加密的验证消息）'
-- '服务端 → 客户端: Finished（用导出会话密钥加密的验证消息）'
-- '客户端 ↔ 服务端: 应用数据（全部用会话密钥加密）'
+- '客户端 → 服务端: ClientHello + key_share（明文，携带客户端临时公钥）'
+- '服务端 → 客户端: ServerHello + key_share（明文，携带服务端临时公钥）'
+- '服务端 → 客户端: 加密 handshake flight：EncryptedExtensions、可选 CertificateRequest、Certificate、CertificateVerify、Finished'
+- '客户端 → 服务端: 加密 handshake flight：mTLS 时可选 Certificate 与 CertificateVerify，最后发送 Finished'
+- '客户端 ↔ 服务端: 应用数据（使用应用流量密钥加密）'
 relationships:
-- ClientHello和ServerHello为明文交换
-- Finished及应用数据均为加密通道。
-- 双向认证时，客户端需额外发送客户端证书。
+- ClientHello 和 ServerHello 携带 key_share 且为明文交换
+- ServerHello 后双方导出握手流量密钥，后续握手消息均加密
+- 服务端先发送加密 handshake flight，客户端随后发送加密 handshake flight
+- mTLS 时客户端 Certificate 与 CertificateVerify 可选且成对出现；CertificateVerify 证明客户端持有证书对应私钥
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -1102,23 +1104,23 @@ OSCORE 是专门为受限设备和受限网络设计的应用层安全协议，�
 id: "fig-08-07"
 type: dataflow
 title: 图8-7 CoAP 的 OSCORE 安全处理流程示意
-audience_takeaway: "读者应理解OSCORE以“加密+MAC校验+序列号滑动窗口”一次打包完成机密性、完整性与防重放，序列号重复即拒绝并返回4.01。"
-purpose: 展示从受限设备发送 CoAP 请求到平台接收验证的全过程中，OSCORE 如何完成加密、完整性校验和防重放的一体化处理，并给出通过和拒绝两条收尾分支。
+audience_takeaway: "读者应理解 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 生成密文和认证标签；接收方通过重放窗口与 AEAD 验证解密后才接受消息。"
+purpose: 展示 OSCORE 从安全上下文、AEAD 加密认证、接收端重放预检查到 AEAD 验证解密和重放窗口提交的处理链，并说明失败处理。
 visual_focus: 从CoAP Client 生成原始请求到终点的主链路。
 design_level: implementation
 layout: 水平流向，从左至右依次排列：CoAP Client 方框、OSCORE 处理子模块、网络链路线、CoAP Server 方框、OSCORE 反处理子模块、通过分支和拒绝分支。
 elements:
 - 左端方框：CoAP Client（受限设备），内部文字提示‘发起请求，携带原始载荷’
-- OSCORE 处理子模块（位于 Client 框内）：输入来自左端，输出连接到网络链路；内部文字提示‘加密载荷 → 计算 HMAC-MAC → 打包 Kid、序列号’
-- 网络链路：一条水平箭线，上方标注‘CoAP 请求（/p/1.0/sensor/temp）’
-- 右端方框：CoAP Server（平台），输入来自网络链路
-- OSCORE 反处理子模块（位于 Server 框内）：输入来自网络链路；内部文字提示‘解密 → 校验 MAC → 检查序列号滑动窗口’
-- 通过分支：从反处理子模块右侧上方引出，指向文档图标；旁注‘完整性验证成功；序列号 seq=42 首次接收’
-- 拒绝分支：从反处理子模块右侧下方引出，指向错误图标；旁注‘序列号已存在 / MAC 校验失败’
+- 发送方安全上下文：Master Secret、Master Salt、Sender ID、Common IV 与 Sender Sequence Number
+- 发送处理：构造 nonce 与 AAD，使用 AEAD 生成密文和认证标签，并携带 OSCORE 选项中的标识信息
+- 接收方重放窗口：使用 Partial IV 预检查消息是否过旧或重复，AEAD 成功前不提交窗口更新
+- 接收处理：重建 nonce 与 AAD，完成 AEAD 认证验证与解密
+- 成功分支：恢复 CoAP 消息并提交重放窗口更新
+- 失败分支：重放或 AEAD 认证失败时丢弃；需要响应时按 RFC 8613 规定返回错误
 relationships:
-- CoAP Client 生成原始请求 → OSCORE 处理模块将请求加密、计算 MAC、打包密钥标识（Kid）和序列号 → 网络链路传递至 CoAP Server → OSCORE 反处理模块依次完成解密、MAC 校验、序列号窗口检查 →
-  如果 MAC 匹配且序列号首次出现，则恢复原始请求（通过）
-- 否则返回 4.01 Unauthorized（拒绝）。
+- 安全上下文 → 构造 nonce 与 AAD → AEAD 加密并生成认证标签 → 传输 OSCORE 消息
+- 接收方先做重放窗口预检查，再执行 AEAD 验证解密；仅在验证成功后提交重放窗口更新
+- 重放检查或 AEAD 验证失败 → 丢弃消息，或在规范要求响应的场景返回对应错误。
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -1152,8 +1154,7 @@ legend:
 - 水平粗箭头：网络数据传输（UDP，可加虚线表示）
 - 细箭头：数据流向
 - 条件分支：从反处理模块右侧出发的上下两条箭头分别指向文档图标和错误图标
-caption: OSCORE 处理模块先将 CoAP 请求载荷加密，再用 Client 与 Server 预共享的密钥计算基于 HMAC 的 MAC，然后将加密结果、密钥标识（Kid）和序列号打包为一条新的 CoAP 请求。Server 端解密并校验
-  MAC，同时检查序列号是否已在滑动窗口内。设备睡眠后重新上线，序列号从上次持久化的递增位点继续，无需重新握手。
+caption: 图8-7 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 一次生成密文和认证标签；接收方先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新。重放或认证失败时丢弃消息，并按规范处理需要返回的错误。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -1198,8 +1199,9 @@ relationships:
 - layer1 → layer2
 - layer2 → layer3
 - layer3 → layer2
-- layer4 → layer3
-- layer4 → layer1
+- layer4 → layer3：编排层向微分段控制器下发策略
+- layer3 → layer2：控制器向网关等策略执行点下发规则
+- layer2 → layer1：执行点实施流量隔离，编排层不直达设备
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -1957,7 +1959,7 @@ render_notes: HTML表格，表头加粗居中，第一列左对齐加底色。�
 id: "fig-08-13"
 type: architecture
 title: 图8-13 智能家居多租户系统架构
-audience_takeaway: "读者应理解混合隔离由网关解析tenant_id后分流，高价值租户B独占VPC、Pod池与MySQL实例，普通租户共享资源以摊薄成本。"
+audience_takeaway: "读者应理解网关按 tenant_id 分流：A 共享计算与数据，B 独享 VPC、Pod 与数据库，C 独享 Pod、共享数据库并使用独享 Redis 命名空间。"
 purpose: 展示混合隔离策略下不同租户在数据、计算、网络三个维度的隔离方式与资源分配
 visual_focus: 从起点到终点的主链路。
 design_level: logical
@@ -1971,10 +1973,10 @@ elements:
 relationships:
 - 箭头从三个租户图标统一指向API Gateway
 - Gateway根据解析到的tenant_id将请求分别路由到对应Pod池
-- B的流量同时指向独享Pod池和独享MySQL实例
-- A/C的流量指向共享Pod池和共享Schema
-- 虚线框表示共享资源，实线框表示独享资源
-- VPC-2用一个大实线框圈住B的所有资源，VPC-1用虚线框圈住A和C的资源
+- B 的流量指向独享 Pod 池、独享 MySQL/Redis 和独享 VPC
+- A 的流量指向共享 Pod 池、共享 Schema 和共享 Redis
+- C 的流量指向独享 Pod 组、共享数据库和独享 Redis 命名空间
+- 虚线框表示共享资源，实线框表示独享资源；C 使用 Kubernetes Namespace + NetworkPolicy 隔离
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -2077,7 +2079,7 @@ layout: "两个并行分支(正常训练流程/攻击者注入流程)在混合�
 elements:
   - "正常训练流程:原始训练集(正常样本)→混合训练。"
   - "攻击者注入流程:触发器设计→毒化样本生成→标签篡改→混合训练(虚线箭头)。"
-  - "推理阶段:菱形判断"输入是否含Trigger",否→正常结果(绿),是→后门结果(红)。"
+  - "推理阶段:菱形判断‘输入是否含 Trigger’,否→正常结果(绿),是→后门结果(红)。"
 relationships:
   - "正常样本与毒化样本混合训练模型→模型导出→推理阶段。"
   - "触发器设计大小位置可调,选择小面积不显眼图案增加隐蔽性。"
@@ -2360,6 +2362,10 @@ id: "fig-08-17"
 title: "图8-17 物联网安全开发活动与阶段对应关系"
 type: lifecycle
 title: 物联网安全开发活动与阶段对应关系
+purpose: 展示物联网安全活动如何嵌入需求、开发、测试、部署和运维阶段，并通过质量门禁阻止缺陷流入下一阶段。
+layout: 横向五阶段生命周期；安全活动位于对应阶段下方，阶段之间设置质量门禁，不合格路径回退到上一阶段。
+caption: 图8-17 安全不是上线前的一次检查，而是贯穿需求、开发、测试、部署与运维的持续工程活动；每个阶段的质量门禁负责阻止未达标产物继续流转。
+render_notes: 横向铺满五个阶段，开发阶段、安全活动和质量门禁通过边框、线型与文字标签共同区分，回退路径使用虚线并标明条件。
 description: 本图以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动，以及活动之间的串联关系。图中使用颜色区分“开发阶段”、“安全活动”和“质量门禁”，并用箭头表示流程推进方向。门禁处设置判定条件，不合格时回退至上阶段重做。
 elements:
   - type: timeline
@@ -2573,7 +2579,21 @@ html_rendering: |
 type: architecture
 id: "fig-08-18"
 title: "图8-18 物联网安全日志收集与分析架构"
-caption: 图8-18 物联网安全日志收集与分析架构
+purpose: 展示设备、网关与平台日志从统一采集到实时告警和离线取证的双路径分析架构。
+layout: 从左到右分为日志源、汇聚、实时与离线分析、告警输出四个区域，集中索引库为两条分析路径提供关联上下文。
+caption: 图8-18 设备、网关与平台日志先统一汇聚，再分别进入实时检测与离线归档；集中索引把实时告警和事后取证连接为同一条证据链。
+render_notes: 横向数据流铺满版心，实时路径使用实线、离线路径使用虚线，日志来源与分析职责通过分组边界和文字标签区分。
+elements:
+  - 端侧设备、边缘网关与平台服务
+  - 日志采集代理与消息队列
+  - 实时流处理引擎、集中索引库与离线数据湖
+  - 安全事件总线与通知通道
+relationships:
+  - 端侧设备、边缘网关、平台服务 → 消息队列：通过 syslog、MQTT 日志主题或标准日志库统一汇聚
+  - 日志采集代理 → 消息队列：以 Sidecar 方式采集并转发平台日志
+  - 消息队列 → 实时流处理引擎 → 安全事件总线 → 通知通道：实时检测并推送告警
+  - 消息队列 → 离线数据湖：归档原始日志供回溯取证
+  - 集中索引库 ↔ 实时流处理引擎、离线数据湖：提供可检索的关联上下文
 description: |
   该架构图展示从设备端到安全分析平台的日志流转路径。
 
@@ -2630,7 +2650,22 @@ description: |
 type: flowchart
 id: "fig-08-19"
 title: "图8-19 安全应急响应与恢复流程"
-caption: 图8-19 物联网安全事件应急响应流程图
+purpose: 展示物联网安全事件从准备、检测、遏制、取证和根除到恢复与复盘的完整闭环。
+layout: 自上而下按五个阶段推进；真实攻击判断形成误报归档与事件处置分支，复盘结果反馈到检测规则和预案。
+caption: 图8-19 安全事件只有在完成遏制、取证、根因消除和安全验证后才能恢复业务，复盘结论还需回写检测规则与应急预案。
+render_notes: 五个阶段采用浅色分区，判断使用菱形，主流程实线、误报和反馈路径虚线；恢复前的安全验证节点应突出显示。
+elements:
+  - 应急团队、预案与取证工具链
+  - 安全告警与真实攻击研判节点
+  - P0–P3 定级、遏制、取证与根因消除动作
+  - 安全验证、业务恢复、复盘报告与规则预案
+relationships:
+  - 建立团队与预案 → 准备工具链 → 接收安全告警：完成响应准备并进入检测
+  - 安全告警 → 真实攻击研判：确认事件真伪
+  - 研判为否 → 记录归档：终结误报流程
+  - 研判为是 → 定级 → 遏制 → 取证 → 根因消除：控制影响并清除攻击源
+  - 根因消除 → 清除残留 → 验证安全 → 恢复业务：验证通过后恢复运行
+  - 恢复业务 → 复盘 → 根因报告 → 更新检测规则与预案：把事件经验反馈到准备阶段
 description: |
   从安全告警触发到事后复盘的标准处理流程，分5个阶段呈现。
 
@@ -2732,7 +2767,7 @@ audience_takeaway: "读者应理解12条参考资料按六大主题域归档，�
 purpose: 帮助读者快速定位本书研究资料包中 12 条参考资料对应的安全主题域，理解各参考资料的主要覆盖范围。
 visual_focus: 从[S9]到终点的主链路。
 design_level: logical
-layout: two_column_vertical
+layout: 2×3 网格铺满主体区域，六个主题域等宽等高排列，每格直接展示资料编号与关系标签。
 elements:
 - 涵盖安全启动、密钥存储、设备身份认证
 - 涵盖TLS/DTLS握手、双向认证、防重放

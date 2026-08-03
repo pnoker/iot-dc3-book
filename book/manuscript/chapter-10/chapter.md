@@ -699,7 +699,7 @@ OPC UA地址空间是一个对象模型的树形结构，根节点是Objects，�
 id: "fig-10-05"
 type: topology
 title: 图10-5 OPC UA地址空间树状结构
-audience_takeaway: "读者应理解OPC UA以三种引用类型区分层次:Organizes组织设备、HasComponent含变量/方法、HasProperty挂元数据。"
+audience_takeaway: "读者应区分Variable Attributes与Property节点：NodeId、DataType、Description属于变量节点属性，仅EngineeringUnits等附加属性通过HasProperty引用。"
 purpose: 展示OPC UA服务端以对象模型组织的节点树结构，说明变量节点、对象节点和方法节点的层次关系。
 visual_focus: 从根节点到方法节点的主链路。
 design_level: logical
@@ -707,12 +707,12 @@ layout: 自上而下的树状图，根节点为Objects，下挂设备1、设备2
 elements:
 - 根节点：Objects，所有对象的容器。
 - 设备对象：如“电机1”，包含有温度、转速、状态等变量节点。
-- 变量节点：如“温度”，绑定了NodeId、数据类型、单位、欧标描述等元数据。
+- 变量节点：如“温度”，NodeId、DataType、Description属于Variable Attributes；EngineeringUnits等附加属性是Property节点。
 - 方法节点：如“复位”，可被客户端远程调用，返回结果。
 relationships:
 - 根节点以Organizes引用方式包含设备对象。
 - 设备对象以HasComponent引用方式包含变量节点和方法节点。
-- 变量节点通过HasProperty引用方式挂接元数据子节点。
+- 变量节点内建NodeId、DataType、Description等Attributes，并通过HasProperty引用EngineeringUnits等Property节点。
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -741,7 +741,7 @@ components:
 - id: c3
   label: 变量节点
   type: data
-  subtitle: 如‘温度’，绑定了NodeId、数据类型、单位、欧标描…
+  subtitle: 如‘温度’，内建NodeId、DataType、Description等Attributes
   group: data_domain
   priority: normal
   shape: database
@@ -765,16 +765,16 @@ connections:
   direction: left-to-right
 - from: c3
   to: c4
-  label: 变量节点通过HasProperty…
+  label: 变量与方法均由设备对象以HasComponent包含
   style: solid
   direction: left-to-right
 callouts:
 - 根节点以Organizes引用方式包含设备对象
 - 设备对象以HasComponent引用方式包含变量节点和方法节点
-- 变量节点通过HasProperty引用方式挂接元数据子节点
+- Variable Attributes直接属于变量节点；EngineeringUnits等Property节点通过HasProperty引用
 legend:
-- 蓝色框=对象节点；绿色框=变量节点；橙色框=方法节点；实线箭头=HasComponent；虚线箭头=HasProperty。
-caption: 图10-5 OPC UA地址空间以树状节点组织，客户端连入后可直接遍历发现设备的数据结构。
+- 蓝色框=对象节点；绿色框=变量节点；橙色框=方法节点；实线箭头=Organizes/HasComponent；虚线箭头=HasProperty。
+caption: 图10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过HasProperty关联的附加属性必须区分。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
@@ -2015,6 +2015,7 @@ relationships:
   - "条件满足 → 三个并行动作，实线箭头从条件判定分出三条。"
   - "创建工单 → 工单状态回环，实线箭头。"
   - "工单状态回环：工单未关闭且持续超限 → 升级动作，虚线箭头。"
+  - "升级动作 → 返回工单状态检查并继续订阅，直至工单关闭，虚线回环箭头。"
   - "工单状态回环：工单关闭 → 流程终止，实线箭头。"
 regions:
   - id: "event_detection"
