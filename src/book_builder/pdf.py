@@ -88,11 +88,26 @@ def generate_pdf_output(
         if completed.returncode != 0:
             raise RuntimeError(f"pandoc 生成 HTML 失败: {completed.stderr.strip()}")
 
-        # Chrome headless: html → pdf
+        # Chrome headless: html → pdf（带页眉页脚）
+        book_title = (metadata or {}).get("title", "")
+        header_html = _chrome_header_footer_template(
+            f'<div class="header"><span class="title"></span></div>',
+        )
+        footer_html = _chrome_header_footer_template(
+            '<div class="footer">— <span class="pageNumber"></span> —</div>',
+        )
         chrome_cmd = [
-            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-            f"--print-to-pdf={body_pdf}", html_path.resolve().as_uri(),
+            chrome, "--headless", "--disable-gpu",
+            f"--print-to-pdf={body_pdf}",
+            f"--header-template={header_html}",
+            f"--footer-template={footer_html}",
         ]
+        if book_title:
+            chrome_cmd.insert(3, f"--title={book_title}")
+        # margin: top 1.5cm for header, bottom 1.2cm for footer
+        chrome_cmd.insert(3, "--margin-top=1.8cm")
+        chrome_cmd.insert(3, "--margin-bottom=1.5cm")
+        chrome_cmd.append(html_path.resolve().as_uri())
         completed = subprocess.run(chrome_cmd, check=False, capture_output=True, text=True)
         if completed.returncode != 0:
             raise RuntimeError(f"Chrome 生成 PDF 失败: {completed.stderr.strip()}")
@@ -340,13 +355,10 @@ def _add_outlines_and_page_numbers(
             seen.add(key)
             unique.append((p, t, lv))
 
-    # 复制页面 + 页码 + 书签
+    # 复制页面 + 书签（页码由 Chrome header/footer 模板处理）
     writer = PdfWriter()
-    for i, page in enumerate(reader.pages):
+    for page in reader.pages:
         writer.add_page(page)
-        if total > 1:
-            annot = _build_page_number_annot(str(i + 1))
-            writer.add_annotation(page_number=i, annotation=annot)
 
     # 统一嵌套处理，"目录"之后不入栈（避免章节被误嵌套到目录下）
     stack: list[tuple[object, int]] = []
@@ -365,33 +377,26 @@ def _add_outlines_and_page_numbers(
     with open(pdf_path, "wb") as f:
         writer.write(f)
 
-    logger.info("页码 + 书签: %d 条, %d 页", len(unique), total)
+    logger.info("PDF 书签: %d 条, %d 页", len(unique), total)
 
 
-def _build_page_number_annot(text: str) -> dict[str, object]:
-    """构造底部居中页码 FreeText 注释。"""
-    from pypdf.generic import (
-        ArrayObject,
-        FloatObject,
-        NameObject,
-        NumberObject,
-        TextStringObject,
+def _chrome_header_footer_template(body: str) -> str:
+    """构建 Chrome headless 的 --header-template / --footer-template 字符串。"""
+    css = (
+        "margin:0;padding:0 1.2cm;width:100%;"
+        "font-family:'PingFang SC','Microsoft YaHei',sans-serif;"
+        "font-size:8pt;color:#888;"
     )
-    return {
-        NameObject("/Type"): NameObject("/Annot"),
-        NameObject("/Subtype"): NameObject("/FreeText"),
-        NameObject("/Contents"): TextStringObject(text),
-        NameObject("/DA"): TextStringObject("/Helv 8 Tf 0.5 g"),
-        NameObject("/Rect"): ArrayObject(
-            [FloatObject(280), FloatObject(15),
-             FloatObject(320), FloatObject(30)]
-        ),
-        NameObject("/F"): NumberObject(4),
-        NameObject("/Border"): ArrayObject(
-            [NumberObject(0), NumberObject(0), NumberObject(0)]
-        ),
-        NameObject("/Q"): NumberObject(1),
-    }
+    return (
+        f'<div style="{css}">'
+        f'<style>'
+        f'.header{{text-align:center;border-bottom:0.5pt solid #ccc;padding-bottom:4pt;}}'
+        f'.footer{{text-align:center;border-top:0.5pt solid #ccc;padding-top:4pt;}}'
+        f'.title{{}}'
+        f'</style>'
+        f'{body}'
+        f'</div>'
+    )
 
 
 def generate_cover_image(
