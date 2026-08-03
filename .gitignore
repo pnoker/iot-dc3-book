@@ -35,3 +35,8 @@ Thumbs.db
 
 # Codex
 .codex/
+
+# 审计快照与 worktree 产物
+audit/
+audit0/
+.claude/worktrees/
