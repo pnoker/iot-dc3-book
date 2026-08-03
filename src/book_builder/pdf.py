@@ -125,6 +125,7 @@ def generate_pdf_output(
             divider_pdf if divider_ids else None,
             rendered_cover,
         )
+        _add_pdf_outlines(pdf_path, markdown_file)
     finally:
         for tmp in (pandoc_input, html_path, body_pdf, cover_pdf, divider_html, divider_pdf):
             tmp.unlink(missing_ok=True)
@@ -238,6 +239,116 @@ def _merge_pdf_pages(
         raise RuntimeError(f"篇章扉页占位页未找到: {sorted(missing)}")
     with open(output_path, "wb") as stream:
         writer.write(stream)
+
+
+def _add_pdf_outlines(pdf_path: Path, markdown_file: str | Path | None = None) -> None:
+    """从 Markdown 解析标题层级（跳过代码块），按内容分布估算页码，生成 PDF 书签大纲。"""
+    from pypdf import PdfReader, PdfWriter
+
+    md_path = Path(markdown_file) if markdown_file else None
+    headings: list[tuple[int, str]] = []  # (level, title)
+    if md_path and md_path.exists():
+        h_re = re.compile(r"^(#{1,3})\s+(.+)$")
+        in_fence = False
+        for line in md_path.read_text(encoding="utf-8").split("\n"):
+            stripped = line.lstrip()
+            if stripped.startswith("```") or stripped.startswith("~~~"):
+                in_fence = not in_fence
+                continue
+            if in_fence or stripped.startswith("book-figure"):
+                continue
+            m = h_re.match(line)
+            if m:
+                headings.append((len(m.group(1)), m.group(2).strip()))
+
+    reader = PdfReader(str(pdf_path))
+    total_pages = len(reader.pages)
+    if not headings or total_pages < 2:
+        return
+
+    # 找到目录页（最后出现"目录"文本的页面）作为正文起点
+    toc_end_page = 0
+    for i, page in enumerate(reader.pages):
+        text = page.extract_text() or ""
+        if "目录" in text and any(
+            marker in text for marker in ("基础篇", "第1章", "物联网概述")
+        ):
+            toc_end_page = i
+
+    # 仅取正文标题（排除扉页和目录区）
+    front_h1_set = {"关于作者", "序", "导读", "目录"}
+    body_headings = [
+        (lv, t) for (lv, t) in headings
+        if not any(t.startswith(h) for h in front_h1_set)
+        and "·" not in t  # 排除目录中的篇名（如"基础篇 · ..."）
+        and not t.startswith("-")
+    ]
+    front_headings = [
+        (lv, t) for (lv, t) in headings
+        if any(t.startswith(h) for h in front_h1_set)
+    ]
+
+    # 估算正文页面数及每页容纳字符数
+    body_pages = max(total_pages - toc_end_page - 1, 1)
+    body_text = md_path.read_text(encoding="utf-8")
+    toc_pos = body_text.find("\n# 目录")
+    if toc_pos < 0:
+        toc_pos = body_text.find("\n# 目录".replace(" ", ""))
+    body_section = body_text[toc_pos:] if toc_pos >= 0 else body_text[10000:]
+    body_chars = len(body_section)
+    chars_per_page = body_chars / body_pages if body_pages > 0 else 3000
+
+    # 为正文标题估算页码
+    char_offset = 0
+    heading_pages: list[tuple[int, str, int]] = []
+    heading_positions: list[tuple[int, str, int]] = []
+
+    for lv, title in body_headings:
+        pos = body_section.find(title, char_offset)
+        if pos < 0:
+            char_offset += 100
+            continue
+        page = toc_end_page + 1 + int(pos / chars_per_page)
+        page = min(page, total_pages - 1)
+        heading_pages.append((page, title, lv))
+        heading_positions.append((pos, title, lv))
+        char_offset = pos + len(title)
+
+    # 前置标题放在前几页
+    for i, (lv, title) in enumerate(front_headings):
+        heading_pages.insert(i, (min(i + 1, toc_end_page), title, lv))
+
+    # 附录追加到末尾
+    appendix = next(((lv, t) for (lv, t) in headings if t.startswith("附录")), None)
+    if appendix:
+        heading_pages.append((total_pages - 1, appendix[1], appendix[0]))
+
+    # 去重并排序
+    seen: set[tuple[str, int]] = set()
+    unique: list[tuple[int, str, int]] = []
+    for p, t, lv in sorted(heading_pages, key=lambda x: x[0]):
+        key = (t, lv)
+        if key not in seen:
+            seen.add(key)
+            unique.append((p, t, lv))
+
+    # 写入带层级书签的 PDF
+    writer = PdfWriter()
+    for page in reader.pages:
+        writer.add_page(page)
+
+    stack: list[tuple[object, int]] = []
+    for page_num, title, level in unique:
+        while stack and stack[-1][1] >= level:
+            stack.pop()
+        parent = stack[-1][0] if stack else None
+        item = writer.add_outline_item(title, page_num, parent=parent)
+        stack.append((item, level))
+
+    with open(pdf_path, "wb") as f:
+        writer.write(f)
+
+    logger.info("PDF 书签大纲已生成: %d 条", len(unique))
 
 
 def generate_cover_image(

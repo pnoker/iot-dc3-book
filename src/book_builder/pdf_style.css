@@ -1,6 +1,6 @@
 @page { size: A4; margin: 2cm; }
 body { margin: 0; font-family: 'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif; font-size: 11pt; line-height: 1.75; color: #1a1a1a; }
-h1 { font-size: 20pt; color: #0F172A; border-bottom: 2px solid #2563EB; padding-bottom: 6px; page-break-before: always; margin-top: 0; }
+h1 { font-size: 20pt; color: #0F172A; border-bottom: 2px solid #2563EB; padding-bottom: 6px; margin-top: 0; }
 h1:first-of-type { page-break-before: avoid; }
 h2 { font-size: 15pt; color: #2563EB; margin-top: 1.4em; page-break-after: avoid; }
 h3 { font-size: 13pt; color: #0F172A; page-break-after: avoid; }

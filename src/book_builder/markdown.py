@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -16,7 +15,6 @@ from book_builder.pdf import generate_cover_image
 
 logger = get_logger("markdown")
 
-_LEADING_H1_RE = re.compile(r"\A\s*#\s+[^\n]+\n*")
 
 
 @lru_cache(maxsize=1)
@@ -75,7 +73,7 @@ def assemble_book_markdown(
                 content, chapter.id, assets, marker=figure_marker,
             )
             sections.append(_render_divider_placeholder(f"chapter-{chapter.id:02d}"))
-            sections.append(_LEADING_H1_RE.sub("", chapter_markdown, count=1))
+            sections.append(chapter_markdown)
 
     if until_chapter is None:
         sections.append(_render(env, "appendix.md.j2"))
