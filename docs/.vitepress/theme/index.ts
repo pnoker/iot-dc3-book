@@ -29,7 +29,7 @@ const theme: Theme = {
     const route = useRoute()
     const initZoom = () =>
       nextTick(() => {
-        mediumZoom('.vp-doc img:not(.no-zoom)', {
+        mediumZoom('.vp-doc img:not(.no-zoom), .hero-cover-image', {
           background: 'var(--vp-c-bg)',
           margin: 24,
         })

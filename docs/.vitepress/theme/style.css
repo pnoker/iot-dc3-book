@@ -939,6 +939,18 @@ body {
     border-right: 1px solid var(--vp-c-divider);
 }
 
+/* 左侧目录隐藏滚动条（保留滚动，视觉与右侧一致） */
+.VPSidebar,
+.VPSidebar .nav {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/旧 Edge */
+}
+
+.VPSidebar::-webkit-scrollbar,
+.VPSidebar .nav::-webkit-scrollbar {
+    display: none; /* Chrome/Edge/Safari */
+}
+
 .VPSidebarItem .item .text {
     line-height: 1.5;
 }
@@ -1101,6 +1113,7 @@ body {
     height: auto;
     margin: 0 auto;
     border-radius: 6px;
+    cursor: zoom-in;
     box-shadow:
         0 30px 60px rgba(16, 96, 161, 0.22),
         0 12px 28px rgba(0, 0, 0, 0.12);
