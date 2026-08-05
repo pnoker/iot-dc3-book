@@ -19,9 +19,6 @@ wheels/
 *.swp
 *.swo
 
-# 构建产物
-output/
-
 # 日志
 *.log
 
