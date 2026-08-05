@@ -1,0 +1,1184 @@
+/*
+ * Copyright 2016-present the IoT DC3 original author or authors.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+:root {
+    --vp-c-brand-1: #0a6cb2;
+    --vp-c-brand-2: #1183c9;
+    --vp-c-brand-3: #1296db;
+    --vp-c-brand-soft: rgba(18, 150, 219, 0.12);
+    --vp-c-bg: #ffffff;
+    --vp-c-bg-alt: #f5f7fa;
+    --vp-c-bg-elv: #ffffff;
+    --vp-c-bg-soft: #f2f5f8;
+    --vp-c-text-1: #1b2733;
+    --vp-c-text-2: #475563;
+    --vp-c-text-3: #6b7a89;
+    --vp-c-divider: #e2e7ec;
+    --vp-c-gutter: #e6eaef;
+    --vp-code-block-bg: #f2f5f8;
+    --vp-code-line-highlight-color: rgba(18, 150, 219, 0.12);
+    --vp-home-hero-name-color: transparent;
+    --vp-home-hero-name-background: linear-gradient(112deg, #07549a 4%, #119bd6 34%, #9beeff 48%, #1786d4 62%, #5558c9 96%);
+    --vp-button-brand-bg: #0a6cb2;
+    --vp-button-brand-hover-bg: #0c5f9e;
+    --vp-button-brand-active-bg: #0a5288;
+    --vp-button-brand-text: #ffffff;
+    --vp-layout-max-width: 1504px;
+    --dc3-glass-radius: 20px;
+    font-synthesis-weight: none;
+}
+
+.dark {
+    --vp-c-brand-1: #4fb0f2;
+    --vp-c-brand-2: #38a0e8;
+    --vp-c-brand-3: #1f8ad4;
+    --vp-c-brand-soft: rgba(30, 150, 230, 0.16);
+    --vp-c-bg: #0f1620;
+    --vp-c-bg-alt: #0b1018;
+    --vp-c-bg-elv: #161f2b;
+    --vp-c-bg-soft: #141c27;
+    --vp-c-text-1: #e8eef6;
+    --vp-c-text-2: #c0ccda;
+    --vp-c-text-3: #8a98a8;
+    --vp-c-divider: rgba(200, 216, 234, 0.14);
+    --vp-c-gutter: rgba(200, 216, 234, 0.12);
+    --vp-code-block-bg: #0a1018;
+    --vp-home-hero-name-background: linear-gradient(112deg, #70ccff 4%, #d5fbff 42%, #7fddff 60%, #a6a9ff 96%);
+}
+
+html {
+    background: var(--vp-c-bg);
+}
+
+body {
+    color: var(--vp-c-text-1);
+    letter-spacing: 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Remove the old site-wide bottom border; on the home page the top header blends in transparently (the hero is not covered by frosted glass),
+   turning frosted on scroll; doc pages keep VitePress's default bottom divider, echoing the sidebar's vertical line (so it doesn't look "bald"). */
+.VPNav {
+    border-bottom: none;
+}
+
+.VPNavBar {
+    background: color-mix(in srgb, var(--vp-c-bg) 85%, transparent);
+    backdrop-filter: saturate(1.4) blur(12px);
+}
+
+.VPNavBar.home.top {
+    background-color: transparent;
+    backdrop-filter: none;
+}
+
+.VPNavBar.has-sidebar .content {
+    background: transparent;
+}
+
+.VPNavBarTitle {
+    display: flex;
+    align-items: center;
+    height: var(--vp-nav-height);
+}
+
+.VPNavBarTitle .title {
+    width: auto;
+    height: 40px;
+    padding: 5px 13px 5px 6px;
+    border: 1px solid rgba(148, 216, 246, 0.34);
+    border-radius: var(--dc3-glass-radius);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
+    box-shadow:
+        0 10px 28px rgba(12, 89, 153, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86),
+        inset 0 -8px 18px rgba(55, 131, 203, 0.05);
+    backdrop-filter: blur(18px) saturate(1.45);
+    color: var(--vp-c-brand-1);
+    font-weight: 740;
+    letter-spacing: -0.01em;
+    transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+}
+
+.VPNavBarTitle .title:hover {
+    border-color: rgba(61, 172, 224, 0.46);
+    box-shadow:
+        0 14px 34px rgba(12, 89, 153, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -8px 18px rgba(55, 131, 203, 0.07);
+    transform: translateY(-1px);
+}
+
+.VPNavBarTitle .logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    filter: drop-shadow(0 4px 7px rgba(13, 82, 157, 0.2));
+}
+
+.VPNavBarTitle .title > span {
+    background: linear-gradient(112deg, #07549a, #149ed7 46%, #4f52bf);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .VPNavBarTitle .title {
+    border-color: rgba(139, 210, 250, 0.18);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
+        linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(231, 251, 255, 0.12),
+        inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.dark .VPNavBarTitle .title > span {
+    background: linear-gradient(112deg, #8edcff, #d3fbff 46%, #a5a8ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 1280px) {
+    .VPNavBar .content-body {
+        width: fit-content;
+        height: 40px;
+        margin: 12px 0 12px auto;
+        padding: 3px 5px;
+        border: 1px solid rgba(148, 216, 246, 0.34);
+        border-radius: var(--dc3-glass-radius);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
+        box-shadow:
+            0 10px 28px rgba(12, 89, 153, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.86),
+            inset 0 -8px 18px rgba(55, 131, 203, 0.05);
+        backdrop-filter: blur(18px) saturate(1.45);
+        -webkit-backdrop-filter: blur(18px) saturate(1.45);
+        transition: border-color 260ms ease, box-shadow 260ms ease;
+    }
+
+    .VPNavBar .content-body:hover {
+        border-color: rgba(61, 172, 224, 0.46);
+        box-shadow:
+            0 14px 34px rgba(12, 89, 153, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.92),
+            inset 0 -8px 18px rgba(55, 131, 203, 0.07);
+    }
+
+    .VPNavBar .translations::before,
+    .VPNavBar .appearance::before,
+    .VPNavBar .social-links::before {
+        display: none !important;
+    }
+
+    .VPNavBarTranslations .button {
+        height: 32px;
+        padding: 0 9px;
+        border-radius: 14px;
+        transition: color 220ms ease, background-color 220ms ease;
+    }
+
+    .VPNavBarTranslations .button:hover {
+        background: rgba(18, 150, 219, 0.09);
+    }
+
+    .VPNavBarAppearance {
+        padding: 0 8px;
+    }
+
+    .VPNavBarAppearance .VPSwitchAppearance {
+        border-color: rgba(86, 174, 218, 0.22);
+        background: color-mix(in srgb, var(--vp-c-bg-elv) 68%, transparent);
+    }
+
+    .VPNavBar .social-links {
+        margin-right: 0;
+    }
+
+    .VPNavBarSocialLinks {
+        gap: 2px;
+        padding-left: 2px;
+    }
+
+    .dark .VPNavBar .content-body {
+        border-color: rgba(139, 210, 250, 0.18);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
+            linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(231, 251, 255, 0.12),
+            inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .dark .VPNavBarTranslations .button:hover {
+        background: rgba(95, 195, 239, 0.1);
+    }
+}
+
+.VPNavBarSocialLinks .VPSocialLink,
+.VPNavBarExtra .VPSocialLink,
+.VPNavScreenSocialLinks .VPSocialLink {
+    --social-rgb: 67, 88, 139;
+    width: 28px;
+    height: 28px;
+    margin: 0 1px;
+    border: 1px solid rgba(var(--social-rgb), 0.22);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 28% 8%, rgba(255, 255, 255, 0.84), transparent 44%),
+        linear-gradient(145deg, rgba(var(--social-rgb), 0.18), rgba(var(--social-rgb), 0.07));
+    box-shadow:
+        0 5px 14px rgba(var(--social-rgb), 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78),
+        inset 0 -6px 12px rgba(var(--social-rgb), 0.05);
+    backdrop-filter: blur(12px) saturate(1.25);
+    -webkit-backdrop-filter: blur(12px) saturate(1.25);
+    color: rgb(var(--social-rgb));
+    transition: color 220ms ease, border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[href*="gitee.com"],
+.VPNavBarExtra .VPSocialLink[href*="gitee.com"],
+.VPNavScreenSocialLinks .VPSocialLink[href*="gitee.com"] {
+    --social-rgb: 177, 72, 91;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[href*="x.com"],
+.VPNavBarExtra .VPSocialLink[href*="x.com"],
+.VPNavScreenSocialLinks .VPSocialLink[href*="x.com"] {
+    --social-rgb: 55, 72, 98;
+}
+
+.VPNavBarSocialLinks .VPSocialLink:hover,
+.VPNavBarExtra .VPSocialLink:hover,
+.VPNavScreenSocialLinks .VPSocialLink:hover {
+    border-color: rgba(var(--social-rgb), 0.4);
+    color: rgb(var(--social-rgb));
+    box-shadow:
+        0 8px 18px rgba(var(--social-rgb), 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -7px 14px rgba(var(--social-rgb), 0.08);
+    transform: translateY(-1px);
+}
+
+.dark .VPNavBarSocialLinks .VPSocialLink,
+.dark .VPNavBarExtra .VPSocialLink,
+.dark .VPNavScreenSocialLinks .VPSocialLink {
+    --social-rgb: 158, 181, 231;
+    border-color: rgba(var(--social-rgb), 0.2);
+    background:
+        radial-gradient(circle at 28% 8%, rgba(231, 250, 255, 0.16), transparent 44%),
+        linear-gradient(145deg, rgba(var(--social-rgb), 0.17), rgba(var(--social-rgb), 0.06));
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(231, 250, 255, 0.14),
+        inset 0 -6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dark .VPNavBarSocialLinks .VPSocialLink[href*="gitee.com"],
+.dark .VPNavBarExtra .VPSocialLink[href*="gitee.com"],
+.dark .VPNavScreenSocialLinks .VPSocialLink[href*="gitee.com"] {
+    --social-rgb: 236, 147, 163;
+}
+
+.dark .VPNavBarSocialLinks .VPSocialLink[href*="x.com"],
+.dark .VPNavBarExtra .VPSocialLink[href*="x.com"],
+.dark .VPNavScreenSocialLinks .VPSocialLink[href*="x.com"] {
+    --social-rgb: 179, 196, 220;
+}
+
+.dark .VPNavBarSocialLinks .VPSocialLink:hover,
+.dark .VPNavBarExtra .VPSocialLink:hover,
+.dark .VPNavScreenSocialLinks .VPSocialLink:hover {
+    border-color: rgba(var(--social-rgb), 0.38);
+    color: rgb(var(--social-rgb));
+    box-shadow:
+        0 8px 20px rgba(var(--social-rgb), 0.16),
+        inset 0 1px 0 rgba(231, 250, 255, 0.2),
+        inset 0 -7px 14px rgba(0, 0, 0, 0.1);
+}
+
+.VPNavBarSocialLinks .VPSocialLink > [class^="vpi-social-"],
+.VPNavBarExtra .VPSocialLink > [class^="vpi-social-"],
+.VPNavScreenSocialLinks .VPSocialLink > [class^="vpi-social-"] {
+    width: 15px;
+    height: 15px;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[href*="x.com"] > [class^="vpi-social-"],
+.VPNavBarExtra .VPSocialLink[href*="x.com"] > [class^="vpi-social-"],
+.VPNavScreenSocialLinks .VPSocialLink[href*="x.com"] > [class^="vpi-social-"] {
+    width: 12.5px;
+    height: 12.5px;
+}
+
+.VPNavBarExtra .social-links-list,
+.VPNavScreenSocialLinks {
+    gap: 2px;
+}
+
+.VPNavBarExtra .social-links-list {
+    margin: 0;
+}
+
+.VPNavBarTranslations .VPMenu,
+.VPNavBarExtra .VPMenu {
+    border: 1px solid rgba(148, 216, 246, 0.3);
+    border-radius: var(--dc3-glass-radius);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+        linear-gradient(135deg, color-mix(in srgb, var(--vp-c-bg-elv) 82%, transparent), rgba(115, 205, 241, 0.12) 58%, rgba(75, 88, 210, 0.08));
+    box-shadow:
+        0 18px 46px rgba(12, 89, 153, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+        inset 0 -10px 24px rgba(55, 131, 203, 0.05);
+    backdrop-filter: blur(24px) saturate(1.45);
+    -webkit-backdrop-filter: blur(24px) saturate(1.45);
+}
+
+.VPNavBarTranslations .VPMenu .link,
+.VPNavBarExtra .VPMenu .link {
+    border-radius: 10px;
+}
+
+.VPNavBarTranslations .VPMenu .link:hover,
+.VPNavBarExtra .VPMenu .link:hover {
+    background: rgba(18, 150, 219, 0.09);
+}
+
+.dark .VPNavBarTranslations .VPMenu,
+.dark .VPNavBarExtra .VPMenu {
+    border-color: rgba(139, 210, 250, 0.18);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.13), transparent 38%),
+        linear-gradient(135deg, rgba(29, 61, 84, 0.82), rgba(15, 31, 46, 0.9) 58%, rgba(48, 48, 111, 0.72));
+    box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(231, 251, 255, 0.11),
+        inset 0 -10px 24px rgba(0, 0, 0, 0.14);
+}
+
+@media (max-width: 1279px) {
+    .VPNavBar .VPNavBarExtra {
+        margin-right: 0;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button,
+    .VPNavBar .VPNavBarHamburger {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 1px solid rgba(148, 216, 246, 0.34);
+        border-radius: var(--dc3-glass-radius);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
+        box-shadow:
+            0 10px 28px rgba(12, 89, 153, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.86),
+            inset 0 -8px 18px rgba(55, 131, 203, 0.05);
+        backdrop-filter: blur(18px) saturate(1.45);
+        -webkit-backdrop-filter: blur(18px) saturate(1.45);
+        transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button {
+        justify-content: center;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button .icon {
+        font-size: 18px;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button:hover,
+    .VPNavBar .VPNavBarHamburger:hover {
+        border-color: rgba(61, 172, 224, 0.46);
+        box-shadow:
+            0 14px 34px rgba(12, 89, 153, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.92),
+            inset 0 -8px 18px rgba(55, 131, 203, 0.07);
+        transform: translateY(-1px);
+    }
+
+    .dark .VPNavBar .VPNavBarExtra > .button,
+    .dark .VPNavBar .VPNavBarHamburger {
+        border-color: rgba(139, 210, 250, 0.18);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
+            linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(231, 251, 255, 0.12),
+            inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+    }
+}
+
+.VPNavBarMenuLink,
+.VPNavBarMenuGroup .button {
+    font-weight: 560;
+}
+
+.VPNavBarMenuLink.active,
+.VPNavBarMenuLink:hover,
+.VPNavBarMenuGroup:hover .button {
+    color: var(--vp-c-brand-1);
+}
+
+.VPNavBarSearch {
+    padding-left: 8px;
+}
+
+.VPButton {
+    border-radius: 8px !important;
+    font-weight: 650;
+}
+
+.VPButton.brand {
+    box-shadow: 0 8px 18px rgba(10, 108, 178, 0.24);
+}
+
+.VPButton.alt {
+    border: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg-elv);
+}
+
+.VPHero {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 0 !important;
+    padding-top: 24px !important;
+    padding-bottom: 44px !important;
+}
+
+/* hero content floats above the two background canvases (HeroWaves z-index 0, HeroParticles z-index 1) */
+.VPHero .container {
+    position: relative;
+    z-index: 2;
+    flex: 0 0 auto;
+    align-items: center;
+    width: 100%;
+}
+
+.VPHero .main {
+    --dc3-hero-content-gap: 22px;
+    max-width: 680px !important;
+}
+
+.VPHero .name,
+.VPHero .text {
+    letter-spacing: 0;
+}
+
+.VPHero .heading {
+    row-gap: var(--dc3-hero-content-gap);
+}
+
+.VPHero .name {
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: 0.98;
+    background-size: 220% auto;
+    filter: drop-shadow(0 12px 24px rgba(10, 92, 164, 0.14));
+    animation: hero-name-glint 8s ease-in-out infinite;
+}
+
+@keyframes hero-name-glint {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.VPHero .text {
+    max-width: 720px;
+    color: var(--vp-c-text-1);
+    font-size: clamp(25px, 3.8vw, 44px);
+    line-height: 1.15;
+}
+
+.VPHero .tagline {
+    max-width: 620px;
+    padding-top: 18px;
+    color: var(--vp-c-text-2);
+    font-size: 17px;
+    font-weight: 450;
+    line-height: 1.78;
+    letter-spacing: 0.005em;
+    white-space: pre-line;
+    text-wrap: pretty;
+}
+
+.VPHero .image-container {
+    transform: none !important;
+}
+
+.VPHero .image-bg {
+    display: none;
+}
+
+/* the hero image area is rendered by the HeroLogo component (slot home-hero-image); its sizing is defined inside the component */
+
+.VPHome {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px));
+    min-height: calc(100dvh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px));
+    padding-bottom: 0;
+    margin-bottom: 0 !important;
+}
+
+.VPHomeFeatures {
+    padding-top: 10px !important;
+}
+
+.VPFeature {
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    background: var(--vp-c-bg-soft) !important;
+    box-shadow: none;
+    transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.VPFeature:hover {
+    border-color: color-mix(in srgb, var(--vp-c-brand-1) 30%, transparent) !important;
+    background: color-mix(in srgb, var(--vp-c-brand-soft) 40%, var(--vp-c-bg-soft)) !important;
+}
+
+.VPFeature .icon {
+    border-radius: 8px !important;
+    background: var(--vp-c-brand-soft) !important;
+}
+
+.VPFeature .title {
+    color: var(--vp-c-text-1);
+    font-weight: 720;
+}
+
+.VPFeature .details {
+    color: var(--vp-c-text-2);
+    line-height: 1.72;
+}
+
+.VPDoc {
+    background: var(--vp-c-bg);
+}
+
+.VPDoc .container {
+    padding-top: 24px;
+}
+
+.VPDoc .content {
+    padding-bottom: 80px;
+}
+
+.VPDoc .content-container {
+    max-width: 900px !important;
+}
+
+.VPDoc h1 {
+    margin-bottom: 22px;
+    color: var(--vp-c-text-1);
+    font-size: 36px;
+    letter-spacing: 0;
+}
+
+.VPDoc h2 {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 1px solid var(--vp-c-divider);
+    letter-spacing: 0;
+}
+
+.VPDoc h3 {
+    margin-top: 30px;
+    letter-spacing: 0;
+}
+
+.VPDoc p,
+.VPDoc li {
+    line-height: 1.86;
+}
+
+.VPDoc a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.VPDoc blockquote {
+    border-left: 4px solid var(--vp-c-brand-2);
+    border-radius: 0 8px 8px 0;
+    background: var(--vp-c-brand-soft);
+    color: var(--vp-c-text-2);
+    padding: 12px 18px;
+}
+
+.VPDoc table {
+    display: table;
+    width: 100%;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 8px;
+    background: var(--vp-c-bg-elv);
+    box-shadow: 0 8px 24px rgba(16, 42, 72, 0.06);
+}
+
+.VPDoc th {
+    background: var(--vp-c-bg-soft);
+    color: var(--vp-c-text-1);
+    font-weight: 700;
+}
+
+.VPDoc th,
+.VPDoc td {
+    border: 0;
+    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 11px 14px;
+    vertical-align: top;
+}
+
+.VPDoc tr:last-child td {
+    border-bottom: 0;
+}
+
+.VPDoc tr:nth-child(2n) td {
+    background: color-mix(in srgb, var(--vp-c-bg-soft) 45%, transparent);
+}
+
+.vp-doc div[class*='language-'] {
+    border: 1px solid color-mix(in srgb, var(--vp-c-divider) 70%, transparent);
+    border-left: 4px solid var(--vp-c-brand-2);
+    border-radius: 8px;
+    background: var(--vp-code-block-bg);
+    box-shadow: 0 12px 28px rgba(12, 24, 40, 0.14);
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', 'Fira Mono', 'Roboto Mono', Menlo, Monaco, 'Courier New', monospace;
+}
+
+.vp-doc div[class*='language-'] pre {
+    font-family: inherit;
+}
+
+.vp-doc div[class*='language-'] code {
+    font-family: inherit;
+}
+
+.vp-doc :not(pre) > code {
+    border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 24%, var(--vp-c-divider));
+    border-radius: 5px;
+    padding: 2px 7px;
+    background: color-mix(in srgb, var(--vp-c-brand-soft) 50%, transparent);
+    color: var(--vp-c-brand-1);
+    font-size: 0.9em;
+    font-weight: 560;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', 'Fira Mono', 'Roboto Mono', Menlo, Monaco, 'Courier New', monospace;
+}
+
+/* Mermaid technical illustrations: a container consistent with the site's cards/tables — centered, horizontally scrollable, theme-aware */
+.dc3-mermaid,
+.vp-doc .mermaid {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+    padding: 20px 18px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 8px;
+    background: var(--vp-c-bg-elv);
+    box-shadow: 0 10px 28px rgba(16, 42, 72, 0.07);
+    overflow-x: auto;
+}
+
+.dc3-mermaid svg,
+.vp-doc .mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* rounded nodes + soft strokes, close to the site's card look (the rounded rectangles in the Architecture component) */
+.dc3-mermaid .node rect,
+.dc3-mermaid .node polygon,
+.dc3-mermaid .node circle,
+.dc3-mermaid .node path,
+.vp-doc .mermaid .node rect {
+    rx: 9px;
+    ry: 9px;
+    stroke-width: 1.5px;
+}
+
+/* subgraphs/groups: rounded corners + very light fill, echoing the Architecture region box */
+.dc3-mermaid .cluster rect,
+.vp-doc .mermaid .cluster rect {
+    rx: 12px;
+    ry: 12px;
+}
+
+/* crisper edges, clearer arrows */
+.dc3-mermaid .edgePath .path,
+.dc3-mermaid .flowchart-link,
+.dc3-mermaid .relation {
+    stroke-width: 1.6px;
+}
+
+/* edge labels blend with the card fill, removing the default glaring white block */
+.dc3-mermaid .edgeLabel,
+.dc3-mermaid .edgeLabel rect,
+.dc3-mermaid .edgeLabel foreignObject div {
+    background-color: var(--vp-c-bg-elv) !important;
+    fill: var(--vp-c-bg-elv) !important;
+}
+
+/* slightly bolder node and sequence-actor text for readability */
+.dc3-mermaid .nodeLabel,
+.dc3-mermaid .actor tspan,
+.dc3-mermaid .messageText {
+    font-weight: 560;
+}
+
+/* softer lifelines/activation blocks in sequence diagrams */
+.dc3-mermaid .actor-line {
+    stroke: var(--vp-c-divider);
+}
+
+/* Force mermaid SVG text to use a cross-platform reliable font stack (matching config themeVariables.fontFamily).
+   canvas measureText picks the first available font and SVG text falls back by priority — the same font keeps measurement/rendering consistent. */
+.dc3-mermaid text,
+.dc3-mermaid tspan,
+.mermaid text,
+.mermaid tspan {
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif !important;
+}
+
+/* generic diagram components (DataPlane / CommandPlane, etc.): reuse the Architecture semantic palette + card frame, theme-aware */
+.dc3-diagram {
+    --dc3-divider: #94a3b8;
+    --dc3-grid: #e2e8f0;
+    --dc3-text2: #475569;
+    --dc3-box-name: #0f172a;
+    --dc3-fe-fill: #ecfeff;
+    --dc3-fe-stroke: #0891b2;
+    --dc3-be-fill: #ecfdf5;
+    --dc3-be-stroke: #059669;
+    --dc3-be-text: #047857;
+    --dc3-db-fill: #f5f3ff;
+    --dc3-db-stroke: #7c3aed;
+    --dc3-db-text: #6d28d9;
+    --dc3-amber-fill: #fffbeb;
+    --dc3-amber-stroke: #d97706;
+    --dc3-rose-fill: #fff1f2;
+    --dc3-rose-stroke: #e11d48;
+    --dc3-bus-fill: #fff7ed;
+    --dc3-bus-stroke: #ea580c;
+    --dc3-bus-text: #c2410c;
+    --dc3-ext-fill: #f1f5f9;
+    --dc3-ext-stroke: #64748b;
+    --dc3-arrow: #94a3b8;
+    --dc3-arrow-label: #64748b;
+    --dc3-fe-text: #0e7490;
+    --dc3-region-amber: rgba(251, 191, 36, 0.06);
+    --dc3-region-be: rgba(6, 78, 59, 0.04);
+
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 12px;
+    background: var(--vp-c-bg-soft);
+    padding: 16px;
+    margin: 24px 0;
+    overflow-x: auto;
+}
+
+.dark .dc3-diagram {
+    --dc3-grid: #1e293b;
+    --dc3-text2: #94a3b8;
+    --dc3-box-name: #ffffff;
+    --dc3-fe-fill: rgba(8, 51, 68, 0.5);
+    --dc3-fe-stroke: #22d3ee;
+    --dc3-be-fill: rgba(6, 78, 59, 0.5);
+    --dc3-be-stroke: #34d399;
+    --dc3-be-text: #34d399;
+    --dc3-db-fill: rgba(76, 29, 149, 0.45);
+    --dc3-db-stroke: #a78bfa;
+    --dc3-db-text: #cbb6f7;
+    --dc3-amber-fill: rgba(120, 53, 15, 0.35);
+    --dc3-amber-stroke: #fbbf24;
+    --dc3-rose-fill: rgba(136, 19, 55, 0.4);
+    --dc3-rose-stroke: #fb7185;
+    --dc3-bus-fill: rgba(251, 146, 60, 0.3);
+    --dc3-bus-stroke: #fb923c;
+    --dc3-bus-text: #fcd9b6;
+    --dc3-ext-fill: rgba(30, 41, 59, 0.5);
+    --dc3-ext-stroke: #94a3b8;
+    --dc3-arrow: #64748b;
+    --dc3-arrow-label: #94a3b8;
+    --dc3-fe-text: #67e8f9;
+    --dc3-divider: rgba(148, 163, 184, 0.35);
+    --dc3-region-amber: rgba(251, 191, 36, 0.1);
+    --dc3-region-be: rgba(6, 78, 59, 0.15);
+}
+
+.dc3-diagram svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+}
+
+.dc3-diagram .d-name {
+    font-weight: 600;
+}
+
+.custom-block {
+    border-radius: 8px;
+    border: 1px solid var(--vp-c-divider);
+}
+
+.custom-block.tip {
+    border-color: color-mix(in srgb, var(--vp-c-brand-1) 35%, var(--vp-c-divider));
+    background: var(--vp-c-brand-soft);
+}
+
+.custom-block.warning {
+    border-color: rgba(184, 123, 22, 0.34);
+    background: rgba(184, 123, 22, 0.1);
+}
+
+.VPSidebar {
+    background: var(--vp-c-bg-alt) !important;
+    border-right: 1px solid var(--vp-c-divider);
+}
+
+.VPSidebarItem .item .text {
+    line-height: 1.5;
+}
+
+.VPSidebarItem.level-0 > .item > .text {
+    font-weight: 650;
+}
+
+/* active item: light-blue pill + bold blue text, replacing the default left vertical-bar indicator for greater prominence */
+.VPSidebarItem.is-active > .item {
+    margin: 0 -12px;
+    padding: 5px 12px;
+    border-radius: 7px;
+    background: var(--vp-c-brand-soft);
+}
+
+.VPSidebarItem.is-active > .item .indicator {
+    display: none;
+}
+
+.VPSidebarItem.is-active > .item .link > .text,
+.VPSidebarItem.is-active > .item > .link > .text {
+    color: var(--vp-c-brand-1);
+    font-weight: 600;
+}
+
+.VPDocAsideOutline .content {
+    border-left-color: var(--vp-c-divider);
+}
+
+.VPDocAsideOutline .outline-link.active {
+    color: var(--vp-c-brand-1);
+    font-weight: 600;
+}
+
+/* Sidebar "模板 = 物模型+" badge: reuses the VPBadge tip look, re-aligned for the sidebar row. */
+.VPSidebarItem .dc3-sb-badge.VPBadge {
+    transform: none;
+    vertical-align: middle;
+    margin-left: 6px;
+    padding: 0 7px;
+    line-height: 17px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 9px;
+    white-space: nowrap;
+}
+
+.VPDocFooter {
+    border-top-color: var(--vp-c-divider);
+}
+
+.VPFooter {
+    border-top: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg-alt);
+}
+
+@media (max-width: 960px) {
+    .VPHero {
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        padding-top: 12px !important;
+        padding-bottom: 24px !important;
+    }
+
+    .VPHero .image {
+        margin: -8px -24px 10px;
+    }
+
+    .VPHero .image-container {
+        width: 100%;
+        height: auto;
+    }
+
+    .VPDoc .container {
+        padding-top: 10px;
+    }
+
+    .VPDoc h1 {
+        font-size: 31px;
+    }
+}
+
+@media (max-width: 640px) {
+    .VPHero .main {
+        --dc3-hero-content-gap: 18px;
+    }
+
+    .VPHero .tagline {
+        padding-top: 16px;
+        font-size: 16px;
+        line-height: 1.72;
+    }
+
+    .VPDoc h1 {
+        font-size: 28px;
+    }
+
+    .VPDoc table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 960px) {
+    .VPHero {
+        justify-content: center;
+        padding-top: clamp(18px, calc(6.25vh - 27px), 48px) !important;
+        padding-bottom: clamp(14px, calc(6.25vh - 31px), 44px) !important;
+    }
+
+    .VPHero .name {
+        font-size: clamp(50px, 7vh, 76px);
+    }
+
+    .VPHero .text {
+        font-size: clamp(29px, 4.2vh, 44px);
+        line-height: clamp(32px, 4.8vh, 51px);
+    }
+
+    .VPHero .main {
+        --dc3-hero-content-gap: clamp(28px, 3vh, 34px);
+    }
+
+    .VPHero .tagline {
+        padding-top: clamp(18px, 2.1vh, 24px);
+        font-size: clamp(16px, 1.75vh, 18px);
+        line-height: clamp(27px, 3vh, 31px);
+    }
+
+    .VPHomeFeatures {
+        padding-top: clamp(0px, calc(2.083vh - 15px), 10px) !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .VPHero .name {
+        animation: none;
+    }
+}
+
+/* ── book 站专属 ── */
+/* online 在此隐藏 features/页脚改用全宽 CardNav；book 用默认三篇卡片 + 页脚，不沿用。 */
+
+/* 首页立体书封容器：BookCover 绝对定位填满；hero-logo class 让粒子向书封聚拢 */
+.hero-book-cover {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 480 / 680;
+    margin: 0 auto;
+}
+
+/* 正文架构图 figure：居中、带图题、点击放大 */
+.vp-doc .fig {
+    margin: 28px 0;
+    text-align: center;
+}
+.vp-doc .fig img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    cursor: zoom-in;
+    box-shadow: 0 10px 28px rgba(16, 42, 72, 0.1);
+    transition: transform 0.2s ease;
+}
+.vp-doc .fig img:hover {
+    transform: translateY(-2px);
+}
+.vp-doc .fig figcaption {
+    margin-top: 10px;
+    color: var(--vp-c-text-2);
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+/* 章扉页：装饰性整图，居中、不放大 */
+.vp-doc .chapter-divider {
+    margin: 8px 0 32px;
+    text-align: center;
+}
+.vp-doc .chapter-divider img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(16, 42, 72, 0.14);
+}
+
+/* 篇扉页 */
+.vp-doc .part-divider {
+    margin: 12px 0 28px;
+    text-align: center;
+}
+.vp-doc .part-divider img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 14px 36px rgba(16, 42, 72, 0.14);
+}
+
+/* medium-zoom 放大层跟随主题 */
+.medium-zoom-overlay {
+    background: var(--vp-c-bg) !important;
+    z-index: 100;
+}
+.medium-zoom-image {
+    z-index: 101;
+}
+
+/* 中文书阅读：正文段落首行缩进 2em（排除列表/引用/图题/容器块） */
+.vp-doc p {
+    text-indent: 2em;
+}
+.vp-doc li p,
+.vp-doc blockquote p,
+.vp-doc .custom-block p,
+.vp-doc figcaption {
+    text-indent: 0;
+}
+
+/* 搜索框：套用 header 毛玻璃胶囊风格（与 social-link 同体系），修正垂直对齐 */
+.VPNavBarSearch {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+}
+
+.VPNavBar .DocSearch-Button {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid rgba(148, 216, 246, 0.34);
+    border-radius: var(--dc3-glass-radius);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
+    box-shadow:
+        0 10px 28px rgba(12, 89, 153, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86),
+        inset 0 -8px 18px rgba(55, 131, 203, 0.05);
+    backdrop-filter: blur(18px) saturate(1.45);
+    -webkit-backdrop-filter: blur(18px) saturate(1.45);
+    color: var(--vp-c-text-2);
+    font-weight: 560;
+    transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
+    cursor: pointer;
+}
+
+.VPNavBar .DocSearch-Button:hover,
+.VPNavBar .DocSearch-Button:focus {
+    border-color: rgba(61, 172, 224, 0.46);
+    box-shadow:
+        0 14px 34px rgba(12, 89, 153, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -8px 18px rgba(55, 131, 203, 0.07);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.DocSearch-Button-Container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.DocSearch-Search-Icon {
+    width: 16px;
+    height: 16px;
+    color: var(--vp-c-brand-1);
+}
+
+.DocSearch-Button-Placeholder {
+    color: var(--vp-c-text-2);
+    font-size: 13px;
+}
+
+.DocSearch-Button-Keys {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 10px;
+    padding: 1px 6px;
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--vp-c-bg-soft) 60%, transparent);
+}
+
+.DocSearch-Button-Key {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--vp-c-text-3);
+    font-size: 11px;
+    font-family: inherit;
+}
+
+.dark .VPNavBar .DocSearch-Button {
+    border-color: rgba(139, 210, 250, 0.18);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
+        linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(231, 251, 255, 0.12),
+        inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+}

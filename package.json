@@ -1,0 +1,17 @@
+{
+  "name": "iot-dc3-book-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "web": "uv run python scripts/build_web.py",
+    "dev": "pnpm web && vitepress dev docs",
+    "build": "pnpm web && vitepress build docs",
+    "preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "medium-zoom": "^1.1.0",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.40"
+  }
+}
