@@ -3,8 +3,7 @@ layout: home
 
 hero:
   name: "从工业软件到 AI 智能体"
-  text: "AIoT 技术与实践"
-  tagline: "从物联网平台到智能体应用 · 作者 张红元 · 14 章 · 72 张架构图 · IoT DC3 开源贯穿全书"
+  text: "构建面向智能场景演进的多协议、云原生、AI Native 工业物联网平台"
   actions:
     - theme: brand
       text: 开始阅读

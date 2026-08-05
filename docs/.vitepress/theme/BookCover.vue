@@ -22,11 +22,11 @@ const copy = computed(() => props.english ? {
     'Five layers · Intelligence · IoT platform foundation',
     'LLMs · Agent · MCP · Tools · Skills · CLI · Intelligent Ops',
     'IoT DC3 open source throughout the book',
-    '14 chapters · 72 architecture diagrams · Engineering methods'
+    '14 chapters · 153 architecture diagrams · Engineering methods'
   ],
   highlightSize: 7.2,
   author: 'Henry Zhang',
-  authorTitle: 'IoT DC3 Creator · Architect · IoT Expert',
+  authorTitle: 'Architect & IoT Expert',
   pageKicker: 'AIoT STACK',
   pageTitle: 'Five-layer architecture',
   pageSubtitle: 'From devices to intelligence',
@@ -51,11 +51,11 @@ const copy = computed(() => props.english ? {
     '五层架构 · 智能层 · 物联网平台底座',
     '大模型 · Agent · MCP · Tools · Skills · CLI · 智能运维',
     'IoT DC3 开源项目贯穿全书',
-    '14 章 · 72 张架构图 · 工程方法论'
+    '14 章 · 153 张架构图 · 工程方法论'
   ],
   highlightSize: 7.6,
   author: '张红元',
-  authorTitle: 'IoT DC3 开源作者 · 架构师 · 物联网专家',
+  authorTitle: '架构师 & 物联网专家',
   pageKicker: 'AIoT STACK',
   pageTitle: '五层架构',
   pageSubtitle: '从设备接入到智能决策',

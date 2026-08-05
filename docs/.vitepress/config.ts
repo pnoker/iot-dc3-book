@@ -23,6 +23,23 @@ export default defineConfig({
 
   transformHead,
 
+  markdown: {
+    // 修复 **中文（…）**中文、**标题：**内容 等因 CommonMark flanking（闭 ** 前是中文标点、
+    // 后跟非空白 → 不闭合）导致星号字面显示：inline 解析前，把这类 **…** 直接转 <strong>
+    config(md: any) {
+      md.core.ruler.before('inline', 'cn_bold_close', (state: any) => {
+        for (const tok of state.tokens) {
+          if (tok.type === 'inline' && tok.content) {
+            tok.content = tok.content.replace(
+              /\*\*([^*\n]+?[，。、；：？！）】」』》〈〕])\*\*(?=\S)/g,
+              '<strong>$1</strong>'
+            )
+          }
+        }
+      })
+    },
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     siteTitle: '从工业软件到 AI 智能体',
@@ -44,8 +61,17 @@ export default defineConfig({
     },
 
     socialLinks: [
-      {icon: 'github', link: 'https://github.com/pnoker/iot-dc3-book'},
+      {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
+      {
+        icon: 'gitee',
+        link: 'https://gitee.com/pnoker/iot-dc3',
+      },
     ],
+
+    footer: {
+      message: '从工业软件到 AI 智能体 · 构建面向智能场景演进的多协议、云原生、AI Native 工业物联网平台',
+      copyright: '张红元 著 · © 2016–2026',
+    },
 
     docFooter: {prev: '上一章', next: '下一章'},
     darkModeSwitchLabel: '主题',

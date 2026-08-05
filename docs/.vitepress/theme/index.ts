@@ -4,7 +4,6 @@ import DefaultTheme from 'vitepress/theme'
 import mediumZoom from 'medium-zoom'
 import {useRoute} from 'vitepress'
 import './style.css'
-import BookCover from './BookCover.vue'
 import HeroWaves from './HeroWaves.vue'
 import HeroParticles from './HeroParticles.vue'
 
@@ -15,9 +14,13 @@ const theme: Theme = {
     return h(DefaultTheme.Layout, null, {
       // 首页 Hero 背景：粒子 + 波浪（保留 online 动效，仅首页）
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
-      // 首页主视觉：立体书封（hero-logo class 让粒子向书封聚拢）
+      // 首页主视觉：真实封面图（hero-logo class 让粒子向封面聚拢）
       'home-hero-image': () =>
-        h('div', {class: 'hero-book-cover hero-logo'}, [h(BookCover, {english: false})]),
+        h('img', {
+          class: 'hero-cover-image hero-logo',
+          src: '/cover.png',
+          alt: '《从工业软件到 AI 智能体》封面',
+        }),
     })
   },
 
@@ -31,8 +34,23 @@ const theme: Theme = {
           margin: 24,
         })
       })
-    onMounted(initZoom)
-    watch(() => route.path, initZoom)
+    // hero 按钮文字包成 span，实现「玻璃胶囊底 + 渐变色文字」双层结构（同 header 标题）
+    const wrapButtons = () =>
+      nextTick(() => {
+        document.querySelectorAll('.VPButton:not([data-wrapped])').forEach((el) => {
+          el.setAttribute('data-wrapped', '')
+          const t = (el.textContent || '').trim()
+          if (t) el.innerHTML = `<span class="vp-button-text">${t}</span>`
+        })
+      })
+    onMounted(() => {
+      initZoom()
+      wrapButtons()
+    })
+    watch(() => route.path, () => {
+      initZoom()
+      wrapButtons()
+    })
   },
 }
 

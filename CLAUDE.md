@@ -91,6 +91,7 @@ output/万物智联.pdf  (中间文件自动清理)
 - Python 3.13（开发版本，兼容 3.11+），依赖管理用 `uv`
 - Python 依赖：`pyyaml`、`typer`、`jinja2`、`pydantic`、`rich`、`pypdf`
 - 系统依赖（非 Python 包）：
+  - `git-lfs` — 仓库二进制资产（`.png`/`.pdf`/`.jpg` 等，见 `.gitattributes`）用 Git LFS 管理，clone/checkout 必需；否则这些文件停留在 ~130B 文本指针（浏览器裂图、PDF/构建无图）。装后执行 `git lfs install && git lfs pull`
   - `pandoc` — Markdown → HTML（PDF 导出必需）
   - Chrome/Edge — HTML → PDF 渲染（PDF 导出必需，无则仅输出 Markdown）
   - `pdftoppm`（可选）— 封面 HTML → PNG，缺失时回退 `sips`（macOS）或 Chrome 截图

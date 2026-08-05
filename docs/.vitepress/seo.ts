@@ -3,7 +3,7 @@ import type {HeadConfig, TransformContext} from 'vitepress'
 const SITE_URL = 'https://book.dc3.site'
 const SITE_IMAGE = `${SITE_URL}/cover.png`
 const DEFAULT_DESCRIPTION =
-  '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 72 张架构图，IoT DC3 开源贯穿全书。'
+  '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 153 张架构图，IoT DC3 开源贯穿全书。'
 
 function routeOf(relativePath: string): string {
   const route = relativePath

@@ -582,14 +582,28 @@ def _pandoc_metadata(metadata: dict[str, Any] | None) -> dict[str, str]:
 
 
 def _find_chrome() -> str | None:
-    """查找本机 Chromium 内核浏览器可执行文件。"""
+    """查找本机 Chromium 内核浏览器可执行文件（macOS / Linux / WSL 挂载的 Windows）。"""
+    env_chrome = os.environ.get("DC3_CHROME") or os.environ.get("CHROME_PATH")
+    if env_chrome and (Path(env_chrome).exists() or shutil.which(env_chrome)):
+        return env_chrome
     candidates = [
+        # macOS
         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
         "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
         "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
         "/Applications/Chromium.app/Contents/MacOS/Chromium",
+        # Windows（WSL 挂载点）
+        "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe",
+        "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "/mnt/c/Program Files/Microsoft/Edge/Application/msedge.exe",
     ]
     for c in candidates:
         if Path(c).exists():
             return c
-    return shutil.which("chromium") or shutil.which("google-chrome")
+    return (
+        shutil.which("chromium")
+        or shutil.which("google-chrome")
+        or shutil.which("microsoft-edge")
+        or shutil.which("msedge")
+    )
