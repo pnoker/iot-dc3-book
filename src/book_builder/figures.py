@@ -43,7 +43,6 @@ class FigureSpec:
     occurrence: int
     figure_id: str
     title: str
-    caption: str
     body_hash: str
 
 
@@ -53,7 +52,6 @@ class FigureAsset:
     chapter_id: int
     occurrence: int
     title: str
-    caption: str
     markdown_path: str
 
 
@@ -194,7 +192,6 @@ def _parse_figure_spec(
             occurrence=occurrence,
             figure_id=figure_id,
             title=normalize_book_figure_scalar(payload.get("title") or figure_id),
-            caption=normalize_book_figure_scalar(payload.get("caption") or ""),
             body_hash=body_hash,
         ),
         "",
@@ -264,7 +261,6 @@ def collect_figure_assets(
             chapter_id=spec.chapter_id,
             occurrence=spec.occurrence,
             title=spec.title,
-            caption=spec.caption,
             markdown_path=markdown_path,
         ))
 
@@ -309,9 +305,7 @@ def replace_book_figures_with_images(
             parts.append(markdown[block.start:block.end])
         else:
             image_path = f"{image_prefix}{asset.markdown_path}"
-            parts.append(
-                f"![{asset.title}]({image_path}){{width={_PUBLICATION_IMAGE_WIDTH}}}\n\n*{asset.caption}*"
-            )
+            parts.append(f"![{asset.title}]({image_path}){{width={_PUBLICATION_IMAGE_WIDTH}}}")
         cursor = block.end
     parts.append(markdown[cursor:])
     return "".join(parts)

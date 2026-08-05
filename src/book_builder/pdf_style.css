@@ -7,6 +7,9 @@ h3 { font-size: 13pt; color: #0F172A; page-break-after: avoid; }
 h4 { font-size: 11pt; color: #334155; page-break-after: avoid; }
 p { margin: 0.6em 0; text-align: justify; }
 img { max-width: 100%; height: auto; display: block; margin: 1em auto; }
+figure { margin: 1em 0; }
+figure > img { width: 100%; margin: 0; }
+figcaption { display: none; }
 table { width: 100%; border-collapse: collapse; margin: 1em 0; page-break-inside: avoid; }
 td, th { border: 1px solid #999; padding: 6px 8px; font-size: 10pt; }
 th { background: #f0f4f8; }
