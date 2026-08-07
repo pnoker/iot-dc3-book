@@ -62,7 +62,14 @@ def build(
             logger.warning("图表缺失 %d 个（book-figure 原始块保留在输出中）", len(figure_result.missing))
         logger.info("图表资产: %d 个已收集", len(figure_assets))
 
-    # 3) 生成 Markdown
+    # 3) 渲染章/篇扉页（dividers）—— build 也产出，保证 output 完整，web/PDF 均可复用
+    render_divider_assets(
+        cfg.parts,
+        Path(config_dir).parent / "dividers",
+        Path(output_dir) / "dividers",
+    )
+
+    # 4) 生成 Markdown
     cover_html = Path(config_dir).parent / "assets" / "cover.html"
     result = generate_markdown_output(
         chapters, cfg.parts, cfg, output_dir,
