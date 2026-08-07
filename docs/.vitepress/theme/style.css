@@ -1026,8 +1026,15 @@ body {
         padding-bottom: 24px !important;
     }
 
+    /* 覆盖 .container 的 align-items:flex-start：手机端 column 模式下 flex-start 会让封面 .image 水平靠左；
+       恢复 stretch 让其撑满父宽。同时下方 .image 去掉横向 -24px 负 margin，封面与标题回到同一参考系，
+       img.margin:auto 才能真正居中（负 margin 会把封面推到 viewport 最左 left=0）*/
+    .VPHero .container {
+        align-items: stretch;
+    }
+
     .VPHero .image {
-        margin: -8px -24px 10px;
+        margin: 6px 0 30px;
     }
 
     .VPHero .image-container {
