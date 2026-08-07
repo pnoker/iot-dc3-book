@@ -41,9 +41,18 @@ jobs:
       - name: Sync book deps
         run: uv sync --frozen
 
+      # Chrome：book-builder 渲染封面 cover.png 需要
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      # 手稿 → output：CI 完整构建，保证线上内容 = 手稿（不再依赖 git 里的 output 快照）
+      - name: Build book output
+        run: uv run book-builder build
+
       - run: pnpm install --frozen-lockfile
 
-      # web 脚本：output/ → docs/（含 figures/dividers 拷贝），再 VitePress 构建
+      # web 脚本：output/ → docs/（figures/dividers 转 WebP），再 VitePress 构建
       - run: pnpm build
 
       - uses: actions/configure-pages@v6

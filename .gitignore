@@ -43,6 +43,9 @@ node_modules/
 docs/.vitepress/cache/
 pnpm-debug.log*
 
+# book-builder 构建产物（手稿 → output，本地与 CI 重新生成；不进 git）
+output/
+
 # web 转换脚本生成物（由 scripts/build_web.py 产出，本地与 CI 重新生成；不进 git）
 docs/public/figures/
 docs/public/dividers/
