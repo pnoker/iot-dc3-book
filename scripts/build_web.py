@@ -28,6 +28,8 @@ import shutil
 import sys
 from pathlib import Path
 
+from PIL import Image
+
 try:
     import yaml
 except ImportError:
@@ -80,8 +82,9 @@ def js(s: str) -> str:
 
 
 def web_src(src: str) -> str:
-    """../figures/x.png → /figures/x.png"""
-    return re.sub(r"^(\.\./)+", "/", src)
+    """../figures/x.png → /figures/x.webp（网页用 WebP 优化版）"""
+    s = re.sub(r"^(\.\./)+", "/", src)
+    return s[:-4] + ".webp" if s.endswith(".png") else s
 
 
 def fix_caption(alt: str) -> str:
@@ -134,7 +137,7 @@ def convert_chapter(src: Path, cid: int, title: str, desc: str) -> str:
     body = convert_images(body)
     divider = (
         '\n<figure class="chapter-divider">\n'
-        f'  <img src="/dividers/chapter-{cid:02d}.png" alt="第 {cid} 章扉页" class="no-zoom">\n'
+        f'  <img src="/dividers/chapter-{cid:02d}.webp" alt="第 {cid} 章扉页" class="no-zoom">\n'
         "</figure>\n"
     )
     # 在第一个 H1 之后插入章扉页
@@ -170,7 +173,7 @@ def gen_part_index(part: dict, slug: str, divider_img: str) -> str:
     out = [fm(title=part["name"], description=desc)]
     out.append(
         '<figure class="part-divider">\n'
-        f'  <img src="/dividers/{divider_img}.png" alt="{part["name"]}" class="no-zoom">\n'
+        f'  <img src="/dividers/{divider_img}.webp" alt="{part["name"]}" class="no-zoom">\n'
         "</figure>\n"
     )
     out.append(f"# {part['name']}\n")
@@ -218,6 +221,24 @@ def gen_sidebar_ts(parts: list[dict]) -> str:
 
 # ── 资源 / 清理 ───────────────────────────────────────────────────────────
 
+# 网页用图最大宽度：原 PNG 是印刷级（cover/divider 2480px、figure 2400px），
+# 网页只需 ~800–1600px，缩放 + WebP 可把 ~53MB 降到 ~12MB，弱网体验大幅改善。
+FIG_MAX_W = 1600      # 正文架构图（正文 ~800px，retina 2x 取 1600px）
+DIVIDER_MAX_W = 1000  # 章 / 篇扉页
+COVER_MAX_W = 800     # 首页 hero 封面
+
+
+def optimize_to_webp(src: Path, dst: Path, max_width: int, quality: int = 85) -> None:
+    """缩放到 max_width 宽（按比例）并转 WebP。method=6 最高压缩努力，体积更小。"""
+    with Image.open(src) as img:
+        img = img.convert("RGB")
+        if img.width > max_width:
+            new_h = round(img.height * max_width / img.width)
+            img = img.resize((max_width, new_h), Image.LANCZOS)
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        img.save(dst, "WEBP", quality=quality, method=6)
+
+
 def clean_generated() -> None:
     """删除脚本上次的生成产物（保留 .vitepress 手写、docs/index.md、public 手写资源）。"""
     for d in ["preface", "foundations", "technical", "applications", "appendix"]:
@@ -231,13 +252,22 @@ def clean_generated() -> None:
 
 def copy_assets() -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
-    for name in ["figures", "dividers"]:
-        src = OUTPUT / name
-        if src.exists():
-            shutil.copytree(src, PUBLIC / name)
+    # 插图：缩放 + WebP（保留 chapter-XX/ 子目录结构）
+    fig_src = OUTPUT / "figures"
+    if fig_src.exists():
+        for png in fig_src.rglob("*.png"):
+            rel = png.relative_to(fig_src)
+            optimize_to_webp(png, PUBLIC / "figures" / rel.with_suffix(".webp"), FIG_MAX_W)
+    # 扉页：缩放 + WebP
+    div_src = OUTPUT / "dividers"
+    if div_src.exists():
+        for png in div_src.glob("*.png"):
+            optimize_to_webp(png, PUBLIC / "dividers" / png.with_suffix(".webp").name, DIVIDER_MAX_W)
+    # 封面：保留原 PNG（og:image 社交分享用，社交平台缓存一次）+ 生成 WebP（首页 hero 用，弱网友好）
     cover = OUTPUT / "cover.png"
     if cover.exists():
         shutil.copy2(cover, PUBLIC / "cover.png")
+        optimize_to_webp(cover, PUBLIC / "cover.webp", COVER_MAX_W)
 
 
 # ── 主流程 ────────────────────────────────────────────────────────────────

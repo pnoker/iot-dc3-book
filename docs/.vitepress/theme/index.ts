@@ -14,11 +14,11 @@ const theme: Theme = {
     return h(DefaultTheme.Layout, null, {
       // 首页 Hero 背景：粒子 + 波浪（保留 online 动效，仅首页）
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
-      // 首页主视觉：真实封面图（hero-logo class 让粒子向封面聚拢）
+      // 首页主视觉：真实封面图（hero-logo class 让粒子向封面聚拢）。用 WebP 优化版（≤800px），原 PNG 留给 og:image
       'home-hero-image': () =>
         h('img', {
           class: 'hero-cover-image hero-logo',
-          src: '/cover.png',
+          src: '/cover.webp',
           alt: '《从工业软件到 AI 智能体》封面',
         }),
     })
