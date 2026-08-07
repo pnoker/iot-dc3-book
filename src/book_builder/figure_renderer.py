@@ -132,6 +132,7 @@ class _ChromeSession:
                 "--disable-gpu",
                 "--hide-scrollbars",
                 "--remote-debugging-port=0",
+                "--remote-allow-origins=*",
                 f"--user-data-dir={self._profile.name}",
                 "--no-first-run",
                 "--no-default-browser-check",
@@ -241,14 +242,20 @@ class _ChromeSession:
     def _read_debugger_url(self) -> str:
         assert self._process.stderr is not None
         deadline = time.monotonic() + 20
+        stderr_buf: list[str] = []
         while time.monotonic() < deadline:
             line = self._process.stderr.readline()
+            if line:
+                stderr_buf.append(line)
             match = re.search(r"DevTools listening on (ws://\S+)", line)
             if match:
                 return match.group(1)
             if self._process.poll() is not None:
                 break
-        raise RuntimeError("启动 Chrome DevTools 失败")
+        raise RuntimeError(
+            "启动 Chrome DevTools 失败。Chrome stderr 末尾:\n"
+            + "".join(stderr_buf[-15:])
+        )
 
     @staticmethod
     def _wait_for_page_target(port: int) -> str:
