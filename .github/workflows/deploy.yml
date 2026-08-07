@@ -18,25 +18,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: true
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: latest
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
 
       # Python + uv：web 转换脚本依赖 pyyaml（复用 book venv）
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
 
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v9
 
       - name: Sync book deps
         run: uv sync --frozen
@@ -46,13 +46,13 @@ jobs:
       # web 脚本：output/ → docs/（含 figures/dividers 拷贝），再 VitePress 构建
       - run: pnpm build
 
-      - uses: actions/configure-pages@v4
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/.vitepress/dist
 
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deployment
 
     environment:
