@@ -493,7 +493,7 @@ def generate_cover_image(
     # HTML → 一页 A4 PDF
     cover_pdf = png_path.with_name(".cover_tmp.pdf")
     pdf_cmd = [
-        chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+        chrome, "--headless", "--no-sandbox", "--disable-gpu", "--no-pdf-header-footer",
         f"--print-to-pdf={cover_pdf}", cover_path.resolve().as_uri(),
     ]
     pdf_done = subprocess.run(pdf_cmd, check=False, capture_output=True, text=True)
@@ -527,7 +527,7 @@ def generate_cover_image(
 
     # 回退：直接截图
     fallback = [
-        chrome, "--headless", "--disable-gpu", "--hide-scrollbars",
+        chrome, "--headless", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
         "--default-background-color=00000000", f"--screenshot={png_path}",
         "--window-size=1240,1754", "--force-device-scale-factor=1",
         cover_path.resolve().as_uri(),

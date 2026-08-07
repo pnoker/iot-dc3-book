@@ -128,6 +128,7 @@ class _ChromeSession:
             [
                 chrome,
                 "--headless=new",
+                "--no-sandbox",
                 "--disable-gpu",
                 "--hide-scrollbars",
                 "--remote-debugging-port=0",
