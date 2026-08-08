@@ -1003,9 +1003,10 @@ body {
     border-top-color: var(--vp-c-divider);
 }
 
+/* !important 覆盖 VitePress scoped 的 .VPFooter：去掉上边框线、背景与页面统一，消除切换感 */
 .VPFooter {
-    border-top: none;
-    background: transparent;
+    border-top: none !important;
+    background-color: var(--vp-c-bg) !important;
 }
 
 .VPFooter .copyright,
