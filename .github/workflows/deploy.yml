@@ -50,13 +50,10 @@ jobs:
       - name: Install CJK fonts
         run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
 
-      # 手稿 → output：CI 完整构建，保证线上内容 = 手稿（不再依赖 git 里的 output 快照）
-      - name: Build book output
-        run: uv run book-builder build
-
       - run: pnpm install --frozen-lockfile
 
-      # web 脚本：output/ → docs/（figures/dividers 转 WebP），再 VitePress 构建
+      # pnpm build = book-builder build(手稿→output) + build_web(output→docs) + VitePress；
+      # 与本地 pnpm dev/build 同一条链，保证本地预览与线上一致
       - run: pnpm build
 
       - uses: actions/configure-pages@v6

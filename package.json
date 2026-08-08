@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "book": "uv run book-builder build",
     "web": "uv run python scripts/build_web.py",
-    "dev": "pnpm web && vitepress dev docs",
-    "build": "pnpm web && vitepress build docs",
+    "dev": "pnpm book && pnpm web && vitepress dev docs",
+    "build": "pnpm book && pnpm web && vitepress build docs",
     "preview": "vitepress preview docs"
   },
   "devDependencies": {
