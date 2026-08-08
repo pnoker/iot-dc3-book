@@ -1117,7 +1117,7 @@ body {
 .hero-cover-image {
     display: block;
     width: 100%;
-    max-width: 256px;
+    max-width: 400px;
     height: auto;
     margin: 0 auto;
     border-radius: 6px;
