@@ -7,7 +7,7 @@ const SITE_IMAGE_HEIGHT = 3508
 const BOOK_TITLE = '从工业软件到 AI 智能体'
 const AUTHOR = '张红元'
 const DEFAULT_DESCRIPTION =
-  '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 153 张架构图，IoT DC3 开源贯穿全书。'
+  '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 155 张架构图，IoT DC3 开源贯穿全书。'
 
 // 篇名映射：按路由首段还原篇章归属，用于 BreadcrumbList
 const PART_BY_SEGMENT: Record<string, {name: string; url: string}> = {
