@@ -19,6 +19,14 @@ export default defineConfig({
       name: 'keywords',
       content: 'AIoT,物联网,工业物联网,智能体,IoT DC3,云原生,从工业软件到AI智能体,在线电子书',
     }],
+    ['script', {async: true, src: 'https://www.googletagmanager.com/gtag/js?id=G-VVTDCS4KSE'}],
+    ['script', {}, 'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-VVTDCS4KSE");'],
+    ['script', {}, 'var _hmt=_hmt||[];'],
+    ['script', {src: 'https://hm.baidu.com/hm.js?6474f729cc0afe2083c201a7a0e0c60e'}],
+    // 搜索引擎验证标签 — 取消注释并填入验证值
+    // ['meta', {name: 'google-site-verification', content: ''}],
+    // ['meta', {name: 'baidu-site-verification', content: ''}],
+    // ['meta', {name: 'msvalidate.01', content: ''}],
   ],
 
   transformHead,

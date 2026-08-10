@@ -67,6 +67,25 @@ jobs:
       - uses: actions/deploy-pages@v5
         id: deployment
 
+      # --- 搜索引擎主动推送 ---
+
+      # 通知 Google sitemap 已更新
+      - name: Ping Google
+        if: success()
+        run: curl -s "https://www.google.com/ping?sitemap=https://book.dc3.site/sitemap.xml" || true
+
+      # 百度主动推送：从 sitemap 提取 URL 批量提交
+      - name: Push to Baidu
+        if: success() && env.BAIDU_PUSH_TOKEN != ''
+        env:
+          BAIDU_PUSH_TOKEN: ${{ secrets.BAIDU_PUSH_TOKEN }}
+        run: |
+          curl -s https://book.dc3.site/sitemap.xml \
+            | grep -oP '<loc>\K[^<]+' \
+            | curl -s -H 'Content-Type: text/plain' \
+                --data-binary @- \
+                "http://data.zz.baidu.com/urls?site=book.dc3.site&token=${BAIDU_PUSH_TOKEN}" || true
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
