@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>AIoT 的三阶段演进</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .timeline { position:absolute; inset:25px 30px 22px; }
+    .stages { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .stage { position:relative; height:270px; padding:18px; border-radius:17px; background:rgba(255,255,255,.94); border:1px solid var(--line); box-shadow:0 7px 20px rgba(35,82,140,.06); overflow:hidden; }
+    .stage::after { content:""; position:absolute; left:0; right:0; top:0; height:4px; background:var(--blue); }
+    .stage.two::after { background:var(--purple); }.stage.three::after { background:var(--green); }
+    .period { color:var(--muted); font:800 11px var(--num); letter-spacing:.08em; }
+    .stage h2 { margin:14px 0 7px; color:var(--ink); font-size:25px; font-weight:850; }
+    .stage .role { color:var(--blue); font-size:13px; font-weight:800; }.stage.two .role{color:var(--purple)}.stage.three .role{color:var(--green)}
+    .stage p { margin:13px 0 0; color:var(--ink-2); font-size:13px; line-height:1.55; }
+    .chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:16px; }
+    .growth { position:absolute; left:0; right:0; bottom:0; height:118px; border-radius:15px; border:1px solid var(--blue-line); background:linear-gradient(90deg,rgba(237,244,255,.92),rgba(234,250,245,.92)); }
+    .growth svg { width:100%; height:100%; display:block; }
+    .drivers { position:absolute; left:28px; right:28px; bottom:15px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .driver { padding:10px 12px; border-radius:10px; background:rgba(255,255,255,.9); border:1px solid var(--line); text-align:center; }
+    .driver b { display:block; color:var(--ink); font-size:12px; }.driver span{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <header class="head">
+      <div class="eyebrow">能力演进 · AIOT EVOLUTION</div>
+      <div class="title">AIoT 不是堆叠模块，而是<em>逐步把智能注入数据链路</em></div>
+      <div class="subtitle">每个阶段都建立在前一阶段的连接、数据和平台能力之上，不能从模型直接跳到设备。</div>
+    </header>
+    <section class="canvas">
+      <div class="timeline">
+        <div class="stages">
+          <article class="stage one"><div class="period">STAGE 01 · 连接与采集</div><h2>人看仪表盘</h2><div class="role">平台负责稳定连接和规则告警</div><p>先解决多协议设备接入、数据采集和状态可见，让现场数据能够持续进入平台。</p><div class="chips"><span class="pill blue">设备接入</span><span class="pill blue">规则引擎</span><span class="pill blue">阈值告警</span></div></article>
+          <article class="stage two"><div class="period">STAGE 02 · 智能分析</div><h2>人与 AI 协作</h2><div class="role">模型理解意图，平台提供上下文</div><p>大模型结合数据查询和工具调用，辅助分析异常、归纳原因并生成处置建议。</p><div class="chips"><span class="pill purple">LLM</span><span class="pill purple">Tool Calling</span><span class="pill purple">Copilot</span></div></article>
+          <article class="stage three"><div class="period">STAGE 03 · 受控决策</div><h2>Agent 参与闭环</h2><div class="role">策略许可后执行，全过程可审计</div><p>智能体持续监测、拆解任务并调用受控工具；高风险动作仍需规则或人工确认。</p><div class="chips"><span class="pill green">Agent</span><span class="pill green">策略校验</span><span class="pill green">回执审计</span></div></article>
+        </div>
+        <div class="growth">
+          <svg viewBox="0 0 1092 118" aria-hidden="true"><defs><linearGradient id="line" x1="0" x2="1"><stop stop-color="#215dd6"/><stop offset=".55" stop-color="#5277df"/><stop offset="1" stop-color="#10a985"/></linearGradient><marker id="arrow" viewBox="0 0 10 8" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4 0 8Z" fill="#10a985"/></marker></defs><path d="M42 48 C245 47 348 42 486 36 S760 28 1042 16" fill="none" stroke="url(#line)" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/></svg>
+          <div class="drivers"><div class="driver"><b>算力下沉</b><span>边缘 GPU / NPU</span></div><div class="driver"><b>模型突破</b><span>理解 · 推理 · 工具调用</span></div><div class="driver"><b>数据闭环</b><span>设备 · 平台 · 执行反馈</span></div></div>
+        </div>
+      </div>
+    </section>
+    <div class="footer"><b>从工业软件到 AI 智能体</b> · AIoT 能力演进不是一次技术跳跃</div><div class="page">05 / 07</div>
+  </main>
+</body>
+</html>
