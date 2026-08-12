@@ -29,6 +29,13 @@ illustrations:
     secondary: [11, 13]
     annotation_min: 11
     caption_min: 10
+  caption:
+    required_in_figure: true
+    position: "bottom"
+    prefix_with_figure_number: true
+    text_anchor: "middle"
+    font_size: 11
+    color: "#475569"
   allowed_types:
     - "architecture"
     - "sequence"

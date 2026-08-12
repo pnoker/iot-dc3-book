@@ -37,11 +37,22 @@ class PartConfig(BaseModel):
     chapters: list[ChapterConfig]
 
 
+class FigureCaptionConfig(BaseModel):
+    """图内底部图注的出版规范。"""
+    required_in_figure: bool = True
+    position: str = "bottom"
+    prefix_with_figure_number: bool = True
+    text_anchor: str = "middle"
+    font_size: int = 11
+    color: str = "#475569"
+
+
 class IllustrationConfig(BaseModel):
     """全书图表规格标记与视觉约束。"""
     marker: str = "book-figure"
     theme: str = "technical-publication-light"
     palette: dict[str, str] = Field(default_factory=dict)
+    caption: FigureCaptionConfig = Field(default_factory=FigureCaptionConfig)
     allowed_types: list[str] = Field(default_factory=list)
     required_fields: list[str] = Field(default_factory=list)
 

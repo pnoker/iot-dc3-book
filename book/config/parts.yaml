@@ -27,7 +27,7 @@
   prefix: "二"
   description: >
     在平台底座之上，注入软件工程（微服务、容器化、DevOps）、AI 智能体
-    （Spring AI、Function Calling、MCP、RAG）、安全与标准化能力，
+    （Spring AI、Tool、MCP、RAG、Agent Runtime）、安全与标准化能力，
     完成从"连接平台"到"AI Native 平台"的能力跃迁。
   chapters:
     - id: 6
@@ -35,7 +35,7 @@
       description: "从开发语言与通信方式进入微服务架构，讨论服务拆分、容器化和工程协作，并结合 IoT DC3 展示平台开发实践。"
     - id: 7
       title: "AIoT 与智能体应用"
-      description: "介绍 Spring AI、工具调用与 Agentic Center，说明智能体如何理解意图、调用受控能力，并从 Copilot 走向任务执行。"
+      description: "从 Spring AI、RAG、Tool 与 MCP 进入工业 Agent Runtime，说明概率性决策如何经过状态、权限、Workflow、恢复与审计约束，逐级走向有界自治。"
     - id: 8
       title: "物联网安全技术"
       description: "覆盖设备身份、通信加密、数据与隐私保护，并进一步讨论提示注入、工具越权等 AI 时代的新型安全边界。"

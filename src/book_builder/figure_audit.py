@@ -14,6 +14,8 @@ class FigureAuditIssue:
 
 
 _FIGURE_NUMBER_PATTERN = re.compile(r"图\s*(\d+)\s*[-—–]\s*(\d+)")
+_VISIBLE_TEXT_PATTERN = re.compile(r"<text\b[^>]*>(.*?)</text>", re.IGNORECASE | re.DOTALL)
+_TAG_PATTERN = re.compile(r"<[^>]+>")
 _FORBIDDEN_TEXT_PATTERNS = (
     re.compile(r">\s*from:\s*[^<]+<", re.IGNORECASE),
     re.compile(r">\s*color:\s*#[^<]+<", re.IGNORECASE),
@@ -29,7 +31,7 @@ def audit_figure_html(
     chapter: int | None = None,
     figure_id: str | None = None,
 ) -> list[FigureAuditIssue]:
-    """检查图号、导出根和禁止出现在出版图中的实现残留。"""
+    """检查图号、底部图注、导出根和出版图中的实现残留。"""
     root = Path(source_dir)
     chapter_pattern = f"chapter-{chapter:02d}" if chapter is not None else "chapter-*"
     sources = sorted(root.glob(f"{chapter_pattern}/*.html"))
@@ -55,6 +57,16 @@ def audit_figure_html(
                 issues.append(
                     FigureAuditIssue(source, f"缺少图号: 图{expected[0]}-{expected[1]}")
                 )
+            expected_label = f"图{expected[0]}-{expected[1]}"
+            labeled_texts = [
+                _visible_text(content)
+                for content in _VISIBLE_TEXT_PATTERN.findall(text)
+                if _visible_text(content).startswith(expected_label)
+            ]
+            if len(labeled_texts) < 2:
+                issues.append(
+                    FigureAuditIssue(source, f"缺少底部图注: {expected_label}")
+                )
         for pattern in _FORBIDDEN_TEXT_PATTERNS:
             if pattern.search(text):
                 issues.append(FigureAuditIssue(source, f"命中禁止模式: {pattern.pattern}"))
@@ -66,3 +78,8 @@ def _expected_number(source: Path) -> tuple[int, int] | None:
     if not match:
         return None
     return int(match.group(1)), int(match.group(2))
+
+
+def _visible_text(content: str) -> str:
+    """提取 SVG text 元素中的可见文本。"""
+    return " ".join(_TAG_PATTERN.sub(" ", content).split())

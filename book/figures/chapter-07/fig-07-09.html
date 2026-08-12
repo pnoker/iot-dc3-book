@@ -1,110 +1,98 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图7-9 IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线</title>
-  <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; }
-    body { background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图7-9 IoT DC3 工业 Agent Runtime 四级演进路线</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",Arial,sans-serif;color:#0F172A}.figure{width:1200px;height:620px;margin:0}.figure svg{display:block}
+</style>
 </head>
 <body>
-  <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图7-9 IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线</title>
-  <desc id="desc">展示从 Copilot 到 Agent 的三阶段演进路径，说明自主程度、人工介入、风险控制和信任度的递进关系。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+<main class="figure" data-figure-root>
+<svg width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+<title id="title">图7-9 IoT DC3 工业 Agent Runtime 四级演进路线</title>
+<desc id="desc">IoT DC3 从只读Copilot、受控Action、Workflow Runtime演进到有界自治Runtime，每一级都必须通过证据闸门，安全关键控制始终不向通用Agent开放。</desc>
+<defs><marker id="ar" viewBox="0 0 12 9" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><path d="M0 0L12 4.5 0 9Z" fill="#D97706"/></marker></defs>
+<rect width="1200" height="620" fill="#F8FAFC"/>
+<circle cx="45" cy="39" r="6" fill="#2563EB"/>
+<text x="65" y="47" font-size="25" font-weight="750" fill="#0F172A">图7-9 IoT DC3 工业 Agent Runtime 四级演进路线</text>
+<text x="65" y="74" font-size="13" fill="#475569">自主度由权限、状态、恢复与评测证据逐级获得，不由模型名称决定</text>
+<line x1="32" y1="96" x2="1168" y2="96" stroke="#D7DEE8"/>
 
-  
-  <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
-  </defs>
-  <rect width="1800" height="900" fill="#FFFFFF"/>
-  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">IoT DC3 Agentic Center 的 Copilot 到 Agent 三阶段演进路线</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">展示从 Copilot 到 Agent 的三阶段演进路径，说明自主程度、人工介入、风险控制和信任度的递进关系。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
-  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="architecture" transform="translate(-810,-228) scale(1.9)">
-  <!-- 水平时间轴 -->
-  <line x1="480" y1="390" x2="1300" y2="390" stroke="#64748B" stroke-width="2" marker-end="url(#bp-arrow-primary)" />
-  <text x="500" y="395" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#0F172A" text-anchor="end">时间→</text>
+<rect x="32" y="112" width="1136" height="466" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
 
-  <!-- 第一阶段色块 -->
-  <rect x="520" y="320" width="240" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
-  <text x="640" y="348" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">第一阶段</text>
-  <text x="640" y="366" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">Copilot 辅助</text>
-  <text x="640" y="384" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">只读·全部人工确认</text>
+<path d="M287 315H336" fill="none" stroke="#D97706" stroke-width="2.2" marker-end="url(#ar)"/>
+<path d="M574 315H623" fill="none" stroke="#D97706" stroke-width="2.2" marker-end="url(#ar)"/>
+<path d="M861 315H910" fill="none" stroke="#D97706" stroke-width="2.2" marker-end="url(#ar)"/>
+<path d="M65 139V128H559V139" fill="none" stroke="#16A34A" stroke-width="2"/>
+<text x="312" y="126" text-anchor="middle" font-size="11.5" font-weight="750" fill="#166534">当前 DC3：已具备 L0，并覆盖 L1 的部分关键链路</text>
 
-  <!-- 第二阶段色块 -->
-  <rect x="780" y="280" width="240" height="120" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
-  <text x="900" y="308" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">第二阶段</text>
-  <text x="900" y="326" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">有限自主 Agent</text>
-  <text x="900" y="344" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">自动诊断+人工确认</text>
-  <text x="900" y="362" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">写入继续进入 Action 确认</text>
-
-  <!-- 第三阶段色块 -->
-  <rect x="1040" y="240" width="240" height="160" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" />
-  <text x="1160" y="270" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">第三阶段</text>
-  <text x="1160" y="290" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">受约束长期任务</text>
-  <text x="1160" y="310" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">持续监测与分析建议</text>
-  <text x="1160" y="328" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">高风险/不可逆动作需确认</text>
-  <text x="1160" y="346" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">高风险白名单始终存在</text>
-
-  <!-- 图标：锁定（第一阶段） -->
-  <g transform="translate(628, 278)">
-    <rect x="0" y="8" width="24" height="16" rx="3" fill="none" stroke="#2563EB" stroke-width="2" />
-    <path d="M 4 8 V 4 A 8 8 0 0 1 20 4 V 8" fill="none" stroke="#2563EB" stroke-width="2" />
-    <circle cx="12" cy="16" r="3" fill="#2563EB" />
-  </g>
-
-  <!-- 图标：钥匙（第二阶段） -->
-  <g transform="translate(888, 238)">
-    <circle cx="10" cy="10" r="8" fill="none" stroke="#0F766E" stroke-width="2" />
-    <line x1="16" y1="10" x2="22" y2="10" stroke="#0F766E" stroke-width="2" />
-    <line x1="20" y1="10" x2="20" y2="18" stroke="#0F766E" stroke-width="2" />
-  </g>
-
-  <!-- 图标：盾牌（第三阶段） -->
-  <g transform="translate(1148, 198)">
-    <polygon points="12,0 24,8 24,18 12,26 0,18 0,8" fill="none" stroke="#DC2626" stroke-width="2" />
-    <line x1="12" y1="6" x2="12" y2="20" stroke="#DC2626" stroke-width="2" />
-    <line x1="6" y1="12" x2="18" y2="12" stroke="#DC2626" stroke-width="2" />
-  </g>
-
-  <!-- 信任度累积矩形（基底） -->
-  <rect x="520" y="420" width="760" height="20" rx="2" fill="#F8FAFC" stroke="#94A3B8" stroke-width="0.5" />
-  <!-- 信任度递增小矩形 -->
-  <rect x="520" y="422" width="200" height="16" rx="1" fill="#EFF6FF" />
-  <rect x="720" y="422" width="240" height="16" rx="1" fill="#ECFDF5" />
-  <rect x="960" y="422" width="320" height="16" rx="1" fill="#F5F3FF" />
-  <text x="900" y="412" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif" font-size="11" fill="#64748B" text-anchor="middle">信任度累积 →</text>
+<g>
+  <rect x="50" y="154" width="237" height="326" rx="14" fill="#F3FAF6" stroke="#16A34A" stroke-width="1.7"/>
+  <rect x="67" y="171" width="42" height="25" rx="12" fill="#DCFCE7"/><text x="88" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#166534">L0</text>
+  <text x="67" y="225" font-size="19" font-weight="780" fill="#0F172A">只读 Copilot</text>
+  <text x="67" y="249" font-size="11.5" fill="#475569">先证明系统能安全看对</text>
+  <line x1="67" y1="267" x2="270" y2="267" stroke="#BBF7D0"/>
+  <text x="67" y="293" font-size="12" font-weight="700" fill="#166534">能力</text>
+  <text x="67" y="316" font-size="11.5" fill="#334155">会话 · 查询 Tool · MCP 发现</text>
+  <text x="67" y="338" font-size="11.5" fill="#334155">设备状态解释 · 排查建议</text>
+  <text x="67" y="374" font-size="12" font-weight="700" fill="#166534">证据门槛</text>
+  <text x="67" y="397" font-size="11.5" fill="#334155">Tool 选择与参数正确</text>
+  <text x="67" y="419" font-size="11.5" fill="#334155">跨租户越权 = 0</text>
+  <rect x="67" y="442" width="104" height="23" rx="11" fill="#DCFCE7"/><text x="119" y="458" text-anchor="middle" font-size="10" font-weight="750" fill="#166534">当前已具备</text>
 </g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">浅蓝块：只读操作，全部人工确认</text>
-  <rect x="635" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-  <text x="659" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">中蓝块：自动诊断+人工确认，特定场景可配置自动放行</text>
-  <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">深蓝块：自主规划执行，但写入高风险动作仍需人工确认</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图7-9 当前基线是只读 Tool 与点位写 Action；后两阶段均需新增编排、状态和审计能力，实时联锁始终留在确定性系统。</text>
-  </svg>
+
+<g>
+  <rect x="337" y="154" width="237" height="326" rx="14" fill="#F7FAFF" stroke="#2563EB" stroke-width="1.7"/>
+  <rect x="354" y="171" width="42" height="25" rx="12" fill="#DBEAFE"/><text x="375" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#1D4ED8">L1</text>
+  <text x="354" y="225" font-size="19" font-weight="780" fill="#0F172A">受控 Action</text>
+  <text x="354" y="249" font-size="11.5" fill="#475569">再证明系统能在约束下做对</text>
+  <line x1="354" y1="267" x2="557" y2="267" stroke="#BFDBFE"/>
+  <text x="354" y="293" font-size="12" font-weight="700" fill="#1D4ED8">能力</text>
+  <text x="354" y="316" font-size="11.5" fill="#334155">风险分级 · 人工确认</text>
+  <text x="354" y="338" font-size="11.5" fill="#334155">幂等键 · 执行后验证</text>
+  <text x="354" y="374" font-size="12" font-weight="700" fill="#1D4ED8">证据门槛</text>
+  <text x="354" y="397" font-size="11.5" fill="#334155">无审批高风险执行 = 0</text>
+  <text x="354" y="419" font-size="11.5" fill="#334155">重复副作用 = 0</text>
+  <rect x="354" y="442" width="116" height="23" rx="11" fill="#FEF3C7"/><text x="412" y="458" text-anchor="middle" font-size="10" font-weight="750" fill="#B45309">点位写部分具备</text>
+</g>
+
+<g>
+  <rect x="624" y="154" width="237" height="326" rx="14" fill="#F7FAFF" stroke="#2563EB" stroke-width="1.7"/>
+  <rect x="641" y="171" width="42" height="25" rx="12" fill="#DBEAFE"/><text x="662" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#1D4ED8">L2</text>
+  <text x="641" y="225" font-size="19" font-weight="780" fill="#0F172A">Workflow Runtime</text>
+  <text x="641" y="249" font-size="11.5" fill="#475569">让任务可恢复、可补偿、可接管</text>
+  <line x1="641" y1="267" x2="844" y2="267" stroke="#BFDBFE"/>
+  <text x="641" y="293" font-size="12" font-weight="700" fill="#1D4ED8">能力</text>
+  <text x="641" y="316" font-size="11.5" fill="#334155">run_id · 状态机 · 步骤编排</text>
+  <text x="641" y="338" font-size="11.5" fill="#334155">超时重试 · 补偿 · 人工接管</text>
+  <text x="641" y="374" font-size="12" font-weight="700" fill="#1D4ED8">证据门槛</text>
+  <text x="641" y="397" font-size="11.5" fill="#334155">进程 / MQ / DB 故障恢复</text>
+  <text x="641" y="419" font-size="11.5" fill="#334155">副作用状态一致</text>
+  <rect x="641" y="442" width="86" height="23" rx="11" fill="#E2E8F0"/><text x="684" y="458" text-anchor="middle" font-size="10" font-weight="750" fill="#475569">待建设</text>
+</g>
+
+<g>
+  <rect x="911" y="154" width="237" height="326" rx="14" fill="#F7FAFF" stroke="#2563EB" stroke-width="1.7"/>
+  <rect x="928" y="171" width="42" height="25" rx="12" fill="#DBEAFE"/><text x="949" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#1D4ED8">L3</text>
+  <text x="928" y="225" font-size="19" font-weight="780" fill="#0F172A">有界自治 Runtime</text>
+  <text x="928" y="249" font-size="11.5" fill="#475569">在限定范围内持续完成任务</text>
+  <line x1="928" y1="267" x2="1131" y2="267" stroke="#BFDBFE"/>
+  <text x="928" y="293" font-size="12" font-weight="700" fill="#1D4ED8">能力</text>
+  <text x="928" y="316" font-size="11.5" fill="#334155">事件触发 · 调度租约 · 动态规划</text>
+  <text x="928" y="338" font-size="11.5" fill="#334155">Skill 版本 · 持续 Eval · kill switch</text>
+  <text x="928" y="374" font-size="12" font-weight="700" fill="#1D4ED8">证据门槛</text>
+  <text x="928" y="397" font-size="11.5" fill="#334155">接管成功 · 成本与预算受控</text>
+  <text x="928" y="419" font-size="11.5" fill="#334155">故障演练持续通过</text>
+  <rect x="928" y="442" width="86" height="23" rx="11" fill="#E2E8F0"/><text x="971" y="458" text-anchor="middle" font-size="10" font-weight="750" fill="#475569">待建设</text>
+</g>
+
+<rect x="50" y="505" width="1098" height="48" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+<text x="599" y="526" text-anchor="middle" font-size="12" font-weight="750" fill="#B91C1C">永久安全基线</text>
+<text x="599" y="544" text-anchor="middle" font-size="11.5" fill="#B91C1C">R3 安全关键动作、PLC/SIS 联锁、急停与故障保护在所有阶段都不向通用 Agent 开放</text>
+<text x="600" y="595" text-anchor="middle" font-size="11.5" fill="#64748B">图7-9 平台先证明能安全读取，再补齐受控写入与恢复能力，最后才进入有界自治</text>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">水平时间轴，从左至右分为三个等宽色块</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
-  </main>
+</main>
 </body>
 </html>

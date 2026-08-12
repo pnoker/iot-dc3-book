@@ -22,3 +22,4 @@ User-agent: Amazonbot
 Allow: /
 
 Sitemap: https://book.dc3.site/sitemap.xml
+Feed: https://book.dc3.site/feed.xml

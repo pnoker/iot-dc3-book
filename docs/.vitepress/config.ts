@@ -2,6 +2,8 @@ import {defineConfig} from 'vitepress'
 import {sidebar} from './sidebar'
 import {transformHead} from './seo'
 
+const BOOK_TITLE = '从工业软件到 AI 智能体'
+
 export default defineConfig({
   title: '从工业软件到 AI 智能体',
   description: 'AIoT 技术与实践 —— 从物联网平台到智能体应用',
@@ -13,27 +15,43 @@ export default defineConfig({
   sitemap: {hostname: 'https://book.dc3.site'},
 
   head: [
+    // ── 资源预连接（性能：减少第三方域名 DNS/TLS 握手延迟）──
+    ['link', {rel: 'preconnect', href: 'https://www.googletagmanager.com', crossorigin: 'anonymous'}],
+    ['link', {rel: 'dns-prefetch', href: 'https://www.googletagmanager.com'}],
+    ['link', {rel: 'preconnect', href: 'https://hm.baidu.com'}],
+    ['link', {rel: 'dns-prefetch', href: 'https://hm.baidu.com'}],
+
+    // ── 身份关联（IndieAuth / rel-me：搜索引擎整合作者身份）──
+    ['link', {rel: 'me', href: 'https://github.com/pnoker'}],
+
+    // ── Feed 自动发现 ──
+    ['link', {rel: 'alternate', type: 'application/atom+xml', title: BOOK_TITLE, href: '/feed.xml'}],
+
+    // ── 图标与主题 ──
     ['link', {rel: 'icon', type: 'image/svg+xml', href: '/logo.svg'}],
     ['meta', {name: 'theme-color', content: '#1296db'}],
+
     ['meta', {
       name: 'keywords',
       content: 'AIoT,物联网,工业物联网,智能体,IoT DC3,云原生,从工业软件到AI智能体,在线电子书',
     }],
+
+    // ── 分析 ──
     ['script', {async: true, src: 'https://www.googletagmanager.com/gtag/js?id=G-VVTDCS4KSE'}],
     ['script', {}, 'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-VVTDCS4KSE");'],
     ['script', {}, 'var _hmt=_hmt||[];'],
-    ['script', {src: 'https://hm.baidu.com/hm.js?6474f729cc0afe2083c201a7a0e0c60e'}],
-    // 搜索引擎验证标签 — 取消注释并填入验证值
-    // ['meta', {name: 'google-site-verification', content: ''}],
-    // ['meta', {name: 'baidu-site-verification', content: ''}],
-    // ['meta', {name: 'msvalidate.01', content: ''}],
+    ['script', {async: true, src: 'https://hm.baidu.com/hm.js?6474f729cc0afe2083c201a7a0e0c60e'}],
+
+    // 搜索引擎验证标签 — 在对应平台（Search Console / 百度站长 / Bing Webmaster）完成
+    // 所有权验证后，取消注释并填入验证值。Google 和百度可通过 DNS TXT 记录替代此 meta 方式。
+    // ['meta', {name: 'google-site-verification', content: '你的验证值'}],
+    // ['meta', {name: 'baidu-site-verification', content: '你的验证值'}],
+    // ['meta', {name: 'msvalidate.01', content: '你的验证值'}],
   ],
 
   transformHead,
 
   markdown: {
-    // 修复 **中文（…）**中文、**标题：**内容 等因 CommonMark flanking（闭 ** 前是中文标点、
-    // 后跟非空白 → 不闭合）导致星号字面显示：inline 解析前，把这类 **…** 直接转 <strong>
     config(md: any) {
       md.core.ruler.before('inline', 'cn_bold_close', (state: any) => {
         for (const tok of state.tokens) {
@@ -70,10 +88,7 @@ export default defineConfig({
 
     socialLinks: [
       {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
-      {
-        icon: 'gitee',
-        link: 'https://gitee.com/pnoker/iot-dc3',
-      },
+      {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
     ],
 
     footer: {

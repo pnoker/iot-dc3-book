@@ -7,7 +7,7 @@
     "book": "uv run book-builder build",
     "web": "uv run python scripts/build_web.py",
     "dev": "pnpm book && pnpm web && vitepress dev docs",
-    "build": "pnpm book && pnpm web && vitepress build docs",
+    "build": "pnpm book && pnpm web && vitepress build docs && node scripts/enhance-sitemap.cjs && node scripts/generate-feed.cjs",
     "preview": "vitepress preview docs"
   },
   "devDependencies": {

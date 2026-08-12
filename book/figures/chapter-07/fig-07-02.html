@@ -1,1 +1,112 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图7-2 ReAct 循环在物联网 Agent 中的工作示意</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}body{font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}.figure{width:1200px;height:620px}svg{display:block}</style></head><body><main class="figure" data-figure-root><svg width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc"><title id="title">图7-2 ReAct 循环在物联网 Agent 中的工作示意</title><desc id="desc">Agent 在思考、行动和观察之间循环；工具由平台执行，每轮都检查完成、失败、预算和人工接管条件。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker></defs><rect width="1200" height="620" fill="#F8FAFC"/><circle cx="42" cy="42" r="6" fill="#2563EB"/><text x="58" y="49" font-size="24" font-weight="700">图7-2 ReAct 循环在物联网 Agent 中的工作示意</text><text x="58" y="76" fill="#475569" font-size="13">模型决定下一步，平台执行受控 Tool；完成、失败、预算或人工接管都可终止循环。</text><rect x="1024" y="30" width="136" height="28" rx="6" fill="#FFF" stroke="#CBD5E1"/><text x="1092" y="49" fill="#64748B" font-size="11" font-weight="700" text-anchor="middle">ARCHITECTURE</text><rect x="28" y="104" width="1144" height="430" rx="8" fill="#FFF" stroke="#E2E8F0"/><rect x="68" y="132" width="170" height="86" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="153" y="165" font-size="16" font-weight="700" text-anchor="middle">用户目标</text><text x="153" y="190" fill="#475569" font-size="12" text-anchor="middle">排查 1 号泵房离线</text><rect x="292" y="125" width="690" height="300" rx="14" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="8 4"/><text x="310" y="150" fill="#B45309" font-size="12" font-weight="700">Agent 循环边界</text><path d="M238 175H360" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#a)"/><path d="M525 205H650" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#a)"/><path d="M815 205V320H695" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#a)"/><path d="M530 320H430V250" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a)"/><rect x="360" y="165" width="165" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="442" y="196" font-size="16" font-weight="700" text-anchor="middle">思考</text><text x="442" y="220" fill="#475569" font-size="12" text-anchor="middle">选择下一步与 Tool</text><rect x="650" y="165" width="165" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="732" y="196" font-size="16" font-weight="700" text-anchor="middle">行动</text><text x="732" y="220" fill="#475569" font-size="12" text-anchor="middle">平台校验后执行 Tool</text><rect x="530" y="280" width="165" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="612" y="311" font-size="16" font-weight="700" text-anchor="middle">观察</text><text x="612" y="335" fill="#475569" font-size="12" text-anchor="middle">结构化结果或错误</text><polygon points="930,268 1015,320 930,372 845,320" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><text x="930" y="313" font-size="13" font-weight="700" text-anchor="middle">继续循环？</text><text x="930" y="333" fill="#475569" font-size="11" text-anchor="middle">完成/失败/预算</text><path d="M695 320H845" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#a)"/><path d="M930 372V455H1040" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#g)"/><path d="M845 320H790V250H815" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#g)"/><text x="802" y="306" fill="#475569" font-size="11">继续</text><rect x="900" y="455" width="210" height="58" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="1005" y="480" font-size="15" font-weight="700" text-anchor="middle">输出结果或转人工</text><text x="1005" y="500" fill="#475569" font-size="11" text-anchor="middle">不虚构未执行的设备动作</text><rect x="68" y="435" width="720" height="78" rx="8" fill="#FFF" stroke="#94A3B8" stroke-dasharray="7 5"/><text x="88" y="460" font-size="12" font-weight="700">控制边界</text><text x="88" y="483" fill="#475569" font-size="11">LLM 负责目标理解与 Tool 选择；鉴权、参数校验、Action 确认、幂等和实时联锁由模型外的确定性系统承担。</text><text x="88" y="502" fill="#475569" font-size="11">工具返回空值、权限不足或达到步数预算时，循环应安全失败或转人工，不能无限重试。</text><line x1="40" y1="550" x2="1160" y2="550" stroke="#E2E8F0"/><text x="600" y="580" fill="#64748B" font-size="11" text-anchor="middle">实线表示主流程；虚线表示循环回退；菱形表示每轮必须执行的退出判断。</text><text x="600" y="607" fill="#64748B" font-size="11" text-anchor="middle">图7-2 ReAct 通过思考、行动、观察形成可干预循环，平台控制边界始终位于模型之外。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图7-2 工业 Agent Runtime 四平面架构</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",Arial,sans-serif;color:#0F172A}.figure{width:1200px;height:760px;margin:0}.figure svg{display:block}
+</style>
+</head>
+<body>
+<main class="figure" data-figure-root>
+<svg width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+<title id="title">图7-2 工业 Agent Runtime 四平面架构</title>
+<desc id="desc">任务经过上下文、决策、确定性策略闸门和执行平面进入工业系统，治理平面负责状态、恢复、审计与人工接管，PLC和SIS继续承担实时安全控制。</desc>
+<defs>
+  <marker id="arrowBlue" viewBox="0 0 12 9" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><path d="M0 0L12 4.5 0 9Z" fill="#2563EB"/></marker>
+  <marker id="arrowTeal" viewBox="0 0 12 9" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><path d="M0 0L12 4.5 0 9Z" fill="#0F766E"/></marker>
+  <marker id="arrowOrange" viewBox="0 0 12 9" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><path d="M0 0L12 4.5 0 9Z" fill="#D97706"/></marker>
+</defs>
+<rect width="1200" height="760" fill="#F8FAFC"/>
+<circle cx="45" cy="39" r="6" fill="#2563EB"/>
+<text x="65" y="47" font-size="25" font-weight="750" fill="#0F172A">图7-2 工业 Agent Runtime 四平面架构</text>
+<text x="65" y="74" font-size="13" fill="#475569">Agent 提出候选行动，Runtime 把它约束成有状态、可验证、可恢复、可审计的执行</text>
+<line x1="32" y1="96" x2="1168" y2="96" stroke="#D7DEE8"/>
+
+<rect x="32" y="112" width="1136" height="588" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
+
+<path d="M185 158V191" fill="none" stroke="#2563EB" stroke-width="2.2" marker-end="url(#arrowBlue)"/>
+<path d="M594 332H609" fill="none" stroke="#7C3AED" stroke-width="2.2" marker-end="url(#arrowOrange)"/>
+<path d="M722 332H749" fill="none" stroke="#D97706" stroke-width="2.2" marker-end="url(#arrowTeal)"/>
+<path d="M988 332H1015" fill="none" stroke="#0F766E" stroke-width="2.2" marker-end="url(#arrowTeal)"/>
+<path d="M1060 464V485H185V462" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#arrowBlue)"/>
+<rect x="485" y="474" width="188" height="21" rx="10" fill="#FFFFFF"/>
+<text x="579" y="489" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2563EB">执行结果 · 状态反馈 · 验证</text>
+
+<rect x="68" y="126" width="235" height="32" rx="16" fill="#EFF6FF" stroke="#93C5FD"/>
+<text x="185" y="147" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4ED8">用户意图 · 告警事件 · 定时任务</text>
+
+<rect x="58" y="192" width="254" height="270" rx="14" fill="#F7FAFF" stroke="#93C5FD" stroke-width="1.6"/>
+<rect x="74" y="208" width="98" height="24" rx="12" fill="#DBEAFE"/>
+<text x="123" y="225" text-anchor="middle" font-size="11" font-weight="750" fill="#1D4ED8">上下文平面</text>
+<text x="74" y="252" font-size="18" font-weight="750" fill="#0F172A">构建可信工作集</text>
+<g font-size="12">
+  <rect x="74" y="271" width="222" height="42" rx="8" fill="#FFFFFF" stroke="#BFDBFE"/><text x="90" y="297" fill="#334155">身份 · 租户 · 目标范围</text>
+  <rect x="74" y="323" width="222" height="42" rx="8" fill="#FFFFFF" stroke="#BFDBFE"/><text x="90" y="349" fill="#334155">设备状态 · 会话 · 任务状态</text>
+  <rect x="74" y="375" width="222" height="42" rx="8" fill="#FFFFFF" stroke="#BFDBFE"/><text x="90" y="401" fill="#334155">RAG 证据 · 领域 Memory</text>
+</g>
+<text x="185" y="443" text-anchor="middle" font-size="11" fill="#64748B">只提供本次决策需要的信息</text>
+
+<rect x="340" y="192" width="254" height="270" rx="14" fill="#FAF8FF" stroke="#C4B5FD" stroke-width="1.6"/>
+<rect x="356" y="208" width="98" height="24" rx="12" fill="#EDE9FE"/>
+<text x="405" y="225" text-anchor="middle" font-size="11" font-weight="750" fill="#6D28D9">决策平面</text>
+<text x="356" y="252" font-size="18" font-weight="750" fill="#0F172A">生成候选行动</text>
+<g font-size="12">
+  <rect x="356" y="271" width="222" height="42" rx="8" fill="#FFFFFF" stroke="#DDD6FE"/><text x="372" y="297" fill="#334155">意图理解 · 模型路由</text>
+  <rect x="356" y="323" width="222" height="42" rx="8" fill="#FFFFFF" stroke="#DDD6FE"/><text x="372" y="349" fill="#334155">动态规划 · 下一步选择</text>
+  <rect x="356" y="375" width="222" height="42" rx="8" fill="#FFFFFF" stroke="#DDD6FE"/><text x="372" y="401" fill="#334155">完成判断 · 证据不足回退</text>
+</g>
+<text x="467" y="443" text-anchor="middle" font-size="11" fill="#7C3AED">概率性推理 · 不是执行许可</text>
+
+<rect x="610" y="174" width="112" height="306" rx="14" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/>
+<rect x="624" y="190" width="84" height="26" rx="13" fill="#FEF3C7"/>
+<text x="666" y="208" text-anchor="middle" font-size="11" font-weight="800" fill="#B45309">确定性边界</text>
+<g text-anchor="middle">
+  <rect x="624" y="244" width="84" height="44" rx="8" fill="#FFFFFF" stroke="#FDE68A"/><text x="666" y="271" font-size="11" fill="#334155">Schema 校验</text>
+  <rect x="624" y="300" width="84" height="44" rx="8" fill="#FFFFFF" stroke="#FDE68A"/><text x="666" y="327" font-size="11" fill="#334155">策略与权限</text>
+  <rect x="624" y="356" width="84" height="44" rx="8" fill="#FFFFFF" stroke="#FDE68A"/><text x="666" y="383" font-size="11" fill="#334155">风险分级</text>
+  <rect x="624" y="412" width="84" height="44" rx="8" fill="#FFF7ED" stroke="#F97316"/><text x="666" y="439" font-size="11" font-weight="700" fill="#C2410C">人工确认</text>
+</g>
+
+<rect x="750" y="192" width="238" height="270" rx="14" fill="#F5FCF9" stroke="#99F6E4" stroke-width="1.6"/>
+<rect x="766" y="208" width="98" height="24" rx="12" fill="#CCFBF1"/>
+<text x="815" y="225" text-anchor="middle" font-size="11" font-weight="750" fill="#0F766E">执行平面</text>
+<text x="766" y="252" font-size="18" font-weight="750" fill="#0F172A">受控调用能力</text>
+<g font-size="12">
+  <rect x="766" y="271" width="206" height="42" rx="8" fill="#FFFFFF" stroke="#99F6E4"/><text x="782" y="297" fill="#334155">Workflow · 确定性步骤</text>
+  <rect x="766" y="323" width="206" height="42" rx="8" fill="#FFFFFF" stroke="#99F6E4"/><text x="782" y="349" fill="#334155">Skill · 领域能力包</text>
+  <rect x="766" y="375" width="206" height="42" rx="8" fill="#FFFFFF" stroke="#99F6E4"/><text x="782" y="401" fill="#334155">Tool · MCP · 业务 API</text>
+</g>
+<text x="869" y="443" text-anchor="middle" font-size="11" fill="#0F766E">原子能力产生可验证结果</text>
+
+<rect x="1016" y="192" width="126" height="270" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.6"/>
+<rect x="1030" y="208" width="98" height="24" rx="12" fill="#E2E8F0"/>
+<text x="1079" y="225" text-anchor="middle" font-size="11" font-weight="750" fill="#475569">工业系统</text>
+<g text-anchor="middle" font-size="11">
+  <rect x="1030" y="264" width="98" height="40" rx="8" fill="#FFFFFF" stroke="#94A3B8"/><text x="1079" y="289" fill="#334155">IoT DC3</text>
+  <rect x="1030" y="316" width="98" height="40" rx="8" fill="#FFFFFF" stroke="#94A3B8"/><text x="1079" y="341" fill="#334155">MES · ERP</text>
+  <rect x="1030" y="368" width="98" height="40" rx="8" fill="#FFFFFF" stroke="#94A3B8"/><text x="1079" y="393" fill="#334155">设备 · PLC</text>
+</g>
+<text x="1079" y="441" text-anchor="middle" font-size="10.5" fill="#64748B">结果回流验证</text>
+
+<rect x="58" y="510" width="1084" height="108" rx="14" fill="#F8FAFC" stroke="#94A3B8" stroke-dasharray="7 5"/>
+<rect x="74" y="526" width="94" height="24" rx="12" fill="#E2E8F0"/>
+<text x="121" y="543" text-anchor="middle" font-size="11" font-weight="750" fill="#475569">治理平面</text>
+<text x="184" y="543" font-size="12" font-weight="700" fill="#0F172A">贯穿每一次状态迁移与副作用</text>
+<g text-anchor="middle" font-size="11.5" fill="#334155">
+  <rect x="74" y="565" width="154" height="34" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/><text x="151" y="587">任务状态机 · run_id</text>
+  <rect x="242" y="565" width="154" height="34" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/><text x="319" y="587">超时 · 重试 · 租约</text>
+  <rect x="410" y="565" width="154" height="34" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/><text x="487" y="587">幂等 · 补偿 · 恢复</text>
+  <rect x="578" y="565" width="154" height="34" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/><text x="655" y="587">Trace · 审计 · Eval</text>
+  <rect x="746" y="565" width="154" height="34" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/><text x="823" y="587">可观测性 · 成本预算</text>
+  <rect x="914" y="565" width="212" height="34" rx="8" fill="#FFF7ED" stroke="#F97316"/><text x="1020" y="587" fill="#C2410C">人工接管 · kill switch</text>
+</g>
+
+<rect x="58" y="638" width="1084" height="42" rx="9" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+<text x="600" y="664" text-anchor="middle" font-size="12.5" font-weight="750" fill="#B91C1C">PLC / SIS 继续承担实时控制、安全联锁与故障保护，通用 Agent Runtime 不得绕过</text>
+<text x="600" y="724" text-anchor="middle" font-size="11.5" fill="#64748B">图7-2 大模型提出候选决策，Runtime 负责上下文、状态、执行治理与安全边界</text>
+</svg>
+</main>
+</body>
+</html>

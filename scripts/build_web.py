@@ -25,7 +25,9 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from PIL import Image
@@ -49,11 +51,14 @@ PART_SLUGS = {
     "应用篇": ("applications", "part-03"),
 }
 
-# 卷首单页：(output 源文件, 输出 slug, 显示名)
+# 卷首单页：(output 源文件, 输出 slug, 显示名, frontmatter description)
 PREFACE = [
-    ("01-作者简介.md", "author", "关于作者"),
-    ("02-序.md", "foreword", "序"),
-    ("03-导读.md", "guide", "导读"),
+    ("01-作者简介.md", "author", "关于作者",
+     "IoT DC3 开源作者张红元——架构师、物联网专家，十余年工业物联网平台研发经验，著有《从工业软件到 AI 智能体》。"),
+    ("02-序.md", "foreword", "序",
+     "《从工业软件到 AI 智能体》作者自序——阐述写作初衷、全书定位与技术选型考量。"),
+    ("03-导读.md", "guide", "导读",
+     "《从工业软件到 AI 智能体》阅读指南——按读者角色（入门开发者、架构师、项目经理）推荐最佳阅读路径。"),
 ]
 
 # output 篇目录前缀：第 1 篇 05、第 2 篇 06、第 3 篇 07
@@ -74,6 +79,29 @@ CITE_MARK_RE = re.compile(r"\[(?:S\d+|参考\d+)\]")
 def oneline(s: str) -> str:
     """多行描述压成一行（frontmatter description / meta 用）。"""
     return re.sub(r"\s+", " ", s or "").strip()
+
+
+def git_lastmod(*paths: str) -> str:
+    """获取指定路径最近一次 git 提交的 ISO 日期；失败时回退到最后提交日或当前时间。"""
+    try:
+        r = subprocess.run(
+            ["git", "log", "-1", "--format=%aI", "--"] + list(paths),
+            capture_output=True, text=True, cwd=str(ROOT), timeout=5,
+        )
+        if r.stdout.strip():
+            return r.stdout.strip()
+    except Exception:
+        pass
+    try:
+        r = subprocess.run(
+            ["git", "log", "-1", "--format=%aI"],
+            capture_output=True, text=True, cwd=str(ROOT), timeout=5,
+        )
+        if r.stdout.strip():
+            return r.stdout.strip()
+    except Exception:
+        pass
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
 def js(s: str) -> str:
@@ -131,7 +159,7 @@ def slug_of(part: dict) -> tuple[str, str]:
 
 # ── 页面生成 ──────────────────────────────────────────────────────────────
 
-def convert_chapter(src: Path, cid: int, title: str, desc: str) -> str:
+def convert_chapter(src: Path, cid: int, title: str, desc: str, date_modified: str = "") -> str:
     body = src.read_text(encoding="utf-8")
     body = clean_citations(body)
     body = convert_images(body)
@@ -142,15 +170,24 @@ def convert_chapter(src: Path, cid: int, title: str, desc: str) -> str:
     )
     # 在第一个 H1 之后插入章扉页
     body = re.sub(r"^# [^\n]+", lambda m: m.group(0) + divider, body, count=1, flags=re.M)
-    return fm(title=f"第 {cid} 章　{title}", description=oneline(desc)) + body.lstrip()
+    fm_fields = {
+        "title": f"第 {cid} 章　{title}",
+        "description": oneline(desc),
+    }
+    if date_modified:
+        fm_fields["dateModified"] = date_modified
+    return fm(**fm_fields) + body.lstrip()
 
 
-def convert_simple(src: Path, title: str, desc: str = "") -> str:
+def convert_simple(src: Path, title: str, desc: str = "", date_modified: str = "") -> str:
     """卷首/附录等无篇章归属的页面：加 frontmatter，转图片。"""
     body = src.read_text(encoding="utf-8")
     body = clean_citations(body)
     body = convert_images(body)
-    return fm(title=title, description=oneline(desc)) + body.lstrip()
+    fm_fields = {"title": title, "description": oneline(desc)}
+    if date_modified:
+        fm_fields["dateModified"] = date_modified
+    return fm(**fm_fields) + body.lstrip()
 
 
 def gen_contents(parts: list[dict]) -> str:
@@ -197,7 +234,7 @@ def gen_sidebar_ts(parts: list[dict]) -> str:
         "    text: '卷首',",
         "    items: [",
     ]
-    for _, slug, label in PREFACE:
+    for _, slug, label, _desc in PREFACE:
         L.append(f"      {{ text: {js(label)}, link: '/preface/{slug}' }},")
     L.append("      { text: '目录', link: '/preface/contents' },")
     L.append("    ],")
@@ -228,15 +265,43 @@ DIVIDER_MAX_W = 1000  # 章 / 篇扉页
 COVER_MAX_W = 800     # 首页 hero 封面
 
 
-def optimize_to_webp(src: Path, dst: Path, max_width: int, quality: int = 85) -> None:
-    """缩放到 max_width 宽（按比例）并转 WebP。method=6 最高压缩努力，体积更小。"""
+def optimize_to_webp(src: Path, dst: Path, max_width: int, quality: int = 85) -> tuple[int, int]:
+    """缩放到 max_width 宽（按比例）并转 WebP。返回 (width, height)。"""
     with Image.open(src) as img:
         img = img.convert("RGB")
-        if img.width > max_width:
-            new_h = round(img.height * max_width / img.width)
-            img = img.resize((max_width, new_h), Image.LANCZOS)
+        w, h = img.width, img.height
+        if w > max_width:
+            h = round(h * max_width / w)
+            w = max_width
+            img = img.resize((w, h), Image.LANCZOS)
         dst.parent.mkdir(parents=True, exist_ok=True)
         img.save(dst, "WEBP", quality=quality, method=6)
+        return (w, h)
+
+
+# 图片引用正则（匹配完整 <img ...> 标签）
+IMG_TAG_RE = re.compile(r'<img\s[^>]*?src="([^"]+)"[^>]*?>')
+
+
+def add_img_dimensions_to_pages(dims: dict[str, tuple[int, int]]) -> None:
+    """后处理所有生成的 .md 文件，为 <img> 标签添加 width/height（防止 CLS）。"""
+    for md_file in DOCS.rglob("*.md"):
+        if VITEPRESS in md_file.parents:
+            continue  # 跳过 .vitepress 目录
+        content = md_file.read_text(encoding="utf-8")
+
+        def _add_dims(m: re.Match) -> str:
+            tag = m.group(0)
+            if "width=" in tag:
+                return tag
+            src = m.group(1).lstrip("/")
+            if src in dims:
+                w, h = dims[src]
+                return tag.replace(">", f' width="{w}" height="{h}">')
+            return tag
+
+        content = IMG_TAG_RE.sub(_add_dims, content)
+        md_file.write_text(content, encoding="utf-8")
 
 
 def clean_generated() -> None:
@@ -250,24 +315,29 @@ def clean_generated() -> None:
         sb.unlink()
 
 
-def copy_assets() -> None:
+def copy_assets() -> dict[str, tuple[int, int]]:
+    """缩放并复制插图/扉页/封面到 docs/public/。返回 {相对路径: (width, height)} 映射。"""
+    dims: dict[str, tuple[int, int]] = {}
     PUBLIC.mkdir(parents=True, exist_ok=True)
-    # 插图：缩放 + WebP（保留 chapter-XX/ 子目录结构）
+    # 插图：缩放 + WebP
     fig_src = OUTPUT / "figures"
     if fig_src.exists():
         for png in fig_src.rglob("*.png"):
             rel = png.relative_to(fig_src)
-            optimize_to_webp(png, PUBLIC / "figures" / rel.with_suffix(".webp"), FIG_MAX_W)
+            w, h = optimize_to_webp(png, PUBLIC / "figures" / rel.with_suffix(".webp"), FIG_MAX_W)
+            dims[f"figures/{rel.with_suffix('.webp')}"] = (w, h)
     # 扉页：缩放 + WebP
     div_src = OUTPUT / "dividers"
     if div_src.exists():
         for png in div_src.glob("*.png"):
-            optimize_to_webp(png, PUBLIC / "dividers" / png.with_suffix(".webp").name, DIVIDER_MAX_W)
-    # 封面：保留原 PNG（og:image 社交分享用，社交平台缓存一次）+ 生成 WebP（首页 hero 用，弱网友好）
+            w, h = optimize_to_webp(png, PUBLIC / "dividers" / png.with_suffix(".webp").name, DIVIDER_MAX_W)
+            dims[f"dividers/{png.with_suffix('.webp').name}"] = (w, h)
+    # 封面：保留原 PNG（og:image）+ 生成 WebP
     cover = OUTPUT / "cover.png"
     if cover.exists():
         shutil.copy2(cover, PUBLIC / "cover.png")
         optimize_to_webp(cover, PUBLIC / "cover.webp", COVER_MAX_W)
+    return dims
 
 
 # ── 主流程 ────────────────────────────────────────────────────────────────
@@ -279,14 +349,18 @@ def main() -> None:
         parts = yaml.safe_load(f)
 
     clean_generated()
-    copy_assets()
+    img_dims = copy_assets()
+
+    # 全局最后修改时间（卷首/附录等无专属 manuscript 的页面回退到此值）
+    global_lastmod = git_lastmod("book/manuscript/")
 
     # 卷首单页
     preface_dir = DOCS / "preface"
     preface_dir.mkdir(parents=True, exist_ok=True)
-    for src_name, slug, label in PREFACE:
+    for src_name, slug, label, pdesc in PREFACE:
         (preface_dir / f"{slug}.md").write_text(
-            convert_simple(OUTPUT / src_name, label), encoding="utf-8"
+            convert_simple(OUTPUT / src_name, label, desc=pdesc, date_modified=global_lastmod),
+            encoding="utf-8",
         )
     # 全书目录页
     (preface_dir / "contents.md").write_text(gen_contents(parts), encoding="utf-8")
@@ -303,8 +377,12 @@ def main() -> None:
             if not srcs:
                 print(f"⚠️  未找到第 {ch['id']} 章源文件：{src_part_dir}")
                 continue
+            ch_lastmod = git_lastmod(f"book/manuscript/chapter-{ch['id']:02d}")
             (out_dir / f"chapter-{ch['id']}.md").write_text(
-                convert_chapter(srcs[0], ch["id"], ch["title"], ch.get("description", "")),
+                convert_chapter(
+                    srcs[0], ch["id"], ch["title"], ch.get("description", ""),
+                    date_modified=ch_lastmod,
+                ),
                 encoding="utf-8",
             )
 
@@ -312,8 +390,12 @@ def main() -> None:
     appendix_dir = DOCS / "appendix"
     appendix_dir.mkdir(parents=True, exist_ok=True)
     (appendix_dir / "index.md").write_text(
-        convert_simple(OUTPUT / "08-附录.md", "附录"), encoding="utf-8"
+        convert_simple(OUTPUT / "08-附录.md", "附录", date_modified=global_lastmod),
+        encoding="utf-8",
     )
+
+    # 后处理：注入图片 width/height 防 CLS
+    add_img_dimensions_to_pages(img_dims)
 
     # sidebar
     VITEPRESS.mkdir(parents=True, exist_ok=True)
@@ -322,6 +404,7 @@ def main() -> None:
     n_ch = sum(len(p["chapters"]) for p in parts)
     print(f"✓ 转换完成：{n_ch} 章 + 卷首 + 附录 → {DOCS.relative_to(ROOT)}")
     print(f"  静态资源：figures/ dividers/ → {PUBLIC.relative_to(ROOT)}/")
+    print(f"  每页注入 dateModified（git 历史）")
 
 
 if __name__ == "__main__":

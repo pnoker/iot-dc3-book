@@ -54,7 +54,6 @@ body { font-family: var(--font); color: var(--ink-2); -webkit-font-smoothing: an
 .card b { color: var(--ink); }
 .footer { position: absolute; left: 64px; bottom: 23px; color: var(--muted); font-size: 12px; letter-spacing: .04em; z-index: 3; }
 .footer b { color: var(--blue); }
-.page { position: absolute; right: 64px; bottom: 22px; color: #c6beb6; font: 700 12px var(--num); letter-spacing: .13em; z-index: 3; }
 .arrow { display: flex; align-items: center; justify-content: center; color: var(--blue); font: 800 23px var(--num); }
 .pill { display: inline-flex; align-items: center; justify-content: center; padding: 5px 10px; border-radius: 999px; font-size: 11px; line-height: 1; font-weight: 800; }
 .pill.blue { color: var(--blue); background: var(--blue-soft); border: 1px solid var(--blue-line); }
