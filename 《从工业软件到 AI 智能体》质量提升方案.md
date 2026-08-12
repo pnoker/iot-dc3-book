@@ -20,11 +20,11 @@ IoT 一章 → 微服务一章 → Docker 一章 → AI 一章 → MCP 一章 �
 
 让读者读完之后能够回答：
 
-> 为什么 IoT DC3 最开始这么设计？  
-> 为什么后来要微服务化？  
-> 为什么需要 Cloud Native？  
-> LLM 出现以后，原来的工业软件架构哪里需要改变？  
-> Agent 如何真正控制工业系统？  
+> 为什么 IoT DC3 最开始这么设计？
+> 为什么后来要微服务化？
+> 为什么需要 Cloud Native？
+> LLM 出现以后，原来的工业软件架构哪里需要改变？
+> Agent 如何真正控制工业系统？
 > 哪些事情应该交给 AI，哪些绝对不能交给 AI？
 
 这是整本书达到 9 分最重要的一次调整。
@@ -736,8 +736,8 @@ Red    → Security
 
 **Options**
 
-A. 单体 Plugin  
-B. 独立 Process  
+A. 单体 Plugin
+B. 独立 Process
 C. Microservice
 
 **Decision**
