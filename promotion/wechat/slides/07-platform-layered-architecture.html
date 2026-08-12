@@ -13,14 +13,14 @@
   <main class="slide">
     <header class="head">
       <div class="eyebrow">系统架构 · INDUSTRIAL IOT PLATFORM</div>
-      <div class="title">IoT DC3：从现场设备到 <em>AI Agent</em> 的一条闭环链路</div>
+      <div class="title">IoT DC3：从现场设备到 <em>AI 智能体</em> 的一条闭环链路</div>
       <div class="subtitle">北向入口统一收敛，中心服务按职责拆分；消息总线负责解耦，存储与观测保持独立。</div>
     </header>
     <section class="canvas">
       <div class="arch">
         <svg viewBox="0 0 1096 442" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
           <title id="title">工业物联网平台系统架构</title>
-          <desc id="desc">北向客户端通过 API Gateway 进入中心服务，数据中心和智能中心通过 RabbitMQ 与设备驱动解耦，旁路连接 PostgreSQL 与可观测性组件。</desc>
+          <desc id="desc">客户端通过 API 网关进入中心服务，数据中心和智能中心通过 RabbitMQ 与设备驱动解耦，旁路连接 PostgreSQL 与可观测性组件。</desc>
           <defs>
             <marker id="blueArrow" viewBox="0 0 10 8" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4 0 8Z" fill="#215DD6"/></marker>
             <marker id="tealArrow" viewBox="0 0 10 8" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4 0 8Z" fill="#10A985"/></marker>
@@ -35,44 +35,44 @@
             <path d="M634 246V274" stroke="#10A985" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#tealArrow)"/>
             <path d="M384 328V314" stroke="#215DD6" stroke-width="2.2" stroke-dasharray="7 6" marker-end="url(#blueArrow)"/>
             <path d="M384 394V384" stroke="#10A985" stroke-width="2" marker-end="url(#tealArrow)"/>
-            <path d="M541 211H772" stroke="#5277DF" stroke-width="2" marker-end="url(#blueArrow)"/>
+            <path d="M460 246V257H760V195H772" stroke="#5277DF" stroke-width="2" marker-end="url(#blueArrow)"/>
             <path d="M748 292H772" stroke="#10A985" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#tealArrow)"/>
           </g>
 
           <rect x="20" y="0" width="728" height="62" rx="13" fill="#F7FBFF" stroke="#C9DCFB"/>
           <text x="34" y="18" fill="#17233B" font-size="12" font-weight="850">北向入口</text><text x="34" y="34" fill="#73849A" font-size="8" font-weight="700" letter-spacing="1">ACCESS</text>
           <g fill="#FFFFFF" stroke="#DCE8F3"><rect x="156" y="13" width="176" height="36" rx="9"/><rect x="379" y="13" width="176" height="36" rx="9"/><rect x="602" y="13" width="176" height="36" rx="9"/></g>
-          <g text-anchor="middle" fill="#17233B"><text x="244" y="35" font-size="12" font-weight="800">Web Console</text><text x="467" y="35" font-size="12" font-weight="800">dc3-cli</text><text x="690" y="35" font-size="12" font-weight="800">AI Agent / MCP Client</text></g>
+          <g text-anchor="middle" fill="#17233B"><text x="244" y="35" font-size="12" font-weight="800">Web 管理台</text><text x="467" y="35" font-size="12" font-weight="800">dc3-cli 命令行</text><text x="690" y="35" font-size="12" font-weight="800">AI 智能体 / MCP 客户端</text></g>
 
           <rect x="68" y="72" width="680" height="46" rx="12" fill="#EAF5FF" stroke="#215DD6" stroke-width="1.6"/>
-          <text x="408" y="91" text-anchor="middle" fill="#17233B" font-size="15" font-weight="850">dc3-gateway · API Gateway :8000</text><text x="408" y="107" text-anchor="middle" fill="#5277DF" font-size="9">统一入口 · 路由 · 鉴权 · 限流</text>
+          <text x="408" y="91" text-anchor="middle" fill="#17233B" font-size="15" font-weight="850">dc3-gateway · API 网关 :8000</text><text x="408" y="107" text-anchor="middle" fill="#5277DF" font-size="9">统一入口 · 路由 · 鉴权 · 限流</text>
 
           <rect x="20" y="142" width="728" height="122" rx="13" fill="#F7FBFF" stroke="#BCEBDC" stroke-dasharray="7 5"/>
-          <text x="34" y="160" fill="#17233B" font-size="11" font-weight="850">中心服务 · gRPC / local facade</text>
+          <text x="34" y="160" fill="#17233B" font-size="11" font-weight="850">中心服务 · gRPC / 本地调用</text>
           <g stroke-width="1.4"><rect x="34" y="176" width="160" height="70" rx="10" fill="#EDF4FF" stroke="#C9DCFB"/><rect x="207" y="176" width="160" height="70" rx="10" fill="#EDF4FF" stroke="#C9DCFB"/><rect x="380" y="176" width="160" height="70" rx="10" fill="#EDF4FF" stroke="#C9DCFB"/><rect x="553" y="176" width="160" height="70" rx="10" fill="#EAFaf5" stroke="#BCEBDC"/></g>
-          <g text-anchor="middle" fill="#17233B"><text x="114" y="201" font-size="14" font-weight="850">Auth</text><text x="114" y="218" fill="#73849A" font-size="9">身份 · RBAC</text><text x="287" y="201" font-size="14" font-weight="850">Manager</text><text x="287" y="218" fill="#73849A" font-size="9">设备 · Profile</text><text x="460" y="201" font-size="14" font-weight="850">Data</text><text x="460" y="218" fill="#73849A" font-size="9">Point · Alarm · History</text><text x="633" y="201" font-size="14" font-weight="850">Agentic</text><text x="633" y="218" fill="#73849A" font-size="9">AI Tool · Session</text></g>
+          <g text-anchor="middle" fill="#17233B"><text x="114" y="201" font-size="14" font-weight="850">鉴权中心</text><text x="114" y="218" fill="#73849A" font-size="9">身份 · 角色权限</text><text x="287" y="201" font-size="14" font-weight="850">设备管理</text><text x="287" y="218" fill="#73849A" font-size="9">设备 · 物模型</text><text x="460" y="201" font-size="14" font-weight="850">数据中心</text><text x="460" y="218" fill="#73849A" font-size="9">测点 · 告警 · 历史值</text><text x="633" y="201" font-size="14" font-weight="850">智能中心</text><text x="633" y="218" fill="#73849A" font-size="9">AI 工具 · 会话</text></g>
 
           <rect x="772" y="72" width="298" height="192" rx="13" fill="#F9F7FF" stroke="#D5DEFB"/>
-          <text x="792" y="96" fill="#17233B" font-size="12" font-weight="850">PostgreSQL Storage</text><text x="792" y="113" fill="#73849A" font-size="9">Data Center 的持久化边界</text>
+          <text x="792" y="96" fill="#17233B" font-size="12" font-weight="850">PostgreSQL 存储</text><text x="792" y="113" fill="#73849A" font-size="9">数据中心的持久化边界</text>
           <g fill="#FFFFFF" stroke="#D5DEFB"><rect x="792" y="130" width="258" height="34" rx="8"/><rect x="792" y="174" width="258" height="34" rx="8"/><rect x="792" y="218" width="258" height="30" rx="8"/></g>
           <g fill="#17233B" font-size="10"><text x="808" y="151">最新值缓存</text><text x="808" y="195">历史值 · 时序数据</text><text x="808" y="237">告警 · 关系数据</text></g>
 
           <rect x="20" y="274" width="728" height="40" rx="10" fill="#FFF8E2" stroke="#F7D98B"/>
-          <text x="34" y="299" fill="#17233B" font-size="12" font-weight="850">RabbitMQ Message Bus</text><text x="250" y="299" fill="#C77F00" font-size="9">point_value · admin_command · event · notify</text>
+          <text x="34" y="299" fill="#17233B" font-size="12" font-weight="850">RabbitMQ 消息总线</text><text x="250" y="299" fill="#C77F00" font-size="9">测点值 · 管理命令 · 事件 · 通知</text>
 
           <rect x="772" y="274" width="298" height="164" rx="13" fill="#FFFCF3" stroke="#F7D98B"/>
-          <text x="792" y="298" fill="#17233B" font-size="12" font-weight="850">Observability（可选）</text>
+          <text x="792" y="298" fill="#17233B" font-size="12" font-weight="850">可观测性（可选）</text>
           <g fill="#FFFFFF" stroke="#F7D98B"><rect x="792" y="314" width="258" height="32" rx="8"/><rect x="792" y="354" width="258" height="32" rx="8"/><rect x="792" y="394" width="258" height="30" rx="8"/></g>
-          <g fill="#17233B" font-size="10"><text x="808" y="335">EMQX · MQTT Broker</text><text x="808" y="375">ELK · Log Pipeline</text><text x="808" y="415">Prometheus · Grafana</text></g>
+          <g fill="#17233B" font-size="10"><text x="808" y="335">EMQX · MQTT 接入代理</text><text x="808" y="375">ELK · 日志管道</text><text x="808" y="415">Prometheus · Grafana 监控</text></g>
 
           <rect x="20" y="328" width="728" height="58" rx="13" fill="#F2FBF7" stroke="#BCEBDC" stroke-dasharray="7 5"/>
-          <text x="34" y="347" fill="#17233B" font-size="11" font-weight="850">Driver Layer · 多协议接入</text>
+          <text x="34" y="347" fill="#17233B" font-size="11" font-weight="850">驱动层 · 多协议接入</text>
           <g fill="#FFFFFF" stroke="#BCEBDC"><rect x="34" y="356" width="126" height="24" rx="7"/><rect x="172" y="356" width="126" height="24" rx="7"/><rect x="310" y="356" width="126" height="24" rx="7"/><rect x="448" y="356" width="126" height="24" rx="7"/><rect x="586" y="356" width="126" height="24" rx="7"/></g>
-          <g text-anchor="middle" fill="#17233B" font-size="9" font-weight="800"><text x="97" y="372">Modbus</text><text x="235" y="372">OPC UA</text><text x="373" y="372">S7 PLC</text><text x="511" y="372">MQTT</text><text x="649" y="372">+ 24 protocols</text></g>
+          <g text-anchor="middle" fill="#17233B" font-size="9" font-weight="800"><text x="97" y="372">Modbus</text><text x="235" y="372">OPC UA</text><text x="373" y="372">S7 PLC</text><text x="511" y="372">MQTT</text><text x="649" y="372">+ 24 种协议</text></g>
 
           <rect x="20" y="394" width="728" height="32" rx="9" fill="#F7F9FC" stroke="#B8C6D8"/>
-          <text x="384" y="415" text-anchor="middle" fill="#17233B" font-size="11" font-weight="800">Field Devices · PLC · Sensor · Meter · Gateway</text>
-          <g fill="#5277DF" font-size="9" font-weight="700"><text x="226" y="137">gRPC / local</text><text x="432" y="266">Data</text><text x="641" y="266">Cmd</text><text x="565" y="204">JDBC</text><text x="696" y="307">metrics / logs</text><text x="399" y="321">point_value</text><text x="401" y="386">read / write</text></g>
+          <text x="384" y="415" text-anchor="middle" fill="#17233B" font-size="11" font-weight="800">现场设备 · PLC · 传感器 · 仪表 · 网关</text>
+          <g fill="#5277DF" font-size="9" font-weight="700"><text x="226" y="137">gRPC / 本地调用</text><text x="420" y="266">数据流</text><text x="641" y="266">命令流</text><text x="650" y="253">数据库写入</text><text x="696" y="307">指标 / 日志</text><text x="399" y="321">测点值</text><text x="401" y="386">读 / 写</text></g>
           <text x="1068" y="48" text-anchor="end" fill="#73849A" font-size="8.5">蓝色：同步调用与数据流　青绿色：受控执行　金色：消息总线</text>
         </svg>
       </div>
