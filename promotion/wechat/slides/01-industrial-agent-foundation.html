@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>工业智能体的三项基础</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .formula { position:absolute; left:36px; right:36px; top:24px; display:flex; align-items:center; justify-content:center; gap:16px; }
+    .formula .lead { color:var(--ink); font-size:22px; font-weight:850; }
+    .formula .eq { color:var(--orange); font:800 28px var(--num); }
+    .formula .result { padding:12px 20px; border:2px solid var(--orange); border-radius:12px; background:var(--orange-soft); color:var(--orange-deep); font-size:20px; font-weight:850; box-shadow:0 8px 20px rgba(255,105,0,.12); }
+    .columns { position:absolute; left:34px; right:34px; top:92px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+    .column { height:236px; padding:20px 18px 17px; border-radius:16px; background:#fff; border:1px solid var(--line); box-shadow:0 6px 18px rgba(73,49,23,.05); }
+    .column.blue { border-top:4px solid var(--blue); }
+    .column.purple { border-top:4px solid var(--purple); }
+    .column.green { border-top:4px solid var(--green); }
+    .column .num { font:800 14px var(--num); color:var(--muted); letter-spacing:.1em; }
+    .column h2 { margin:8px 0 9px; color:var(--ink); font-size:22px; font-weight:850; }
+    .column p { margin:0; color:var(--ink-2); font-size:14px; line-height:1.55; }
+    .tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:15px; }
+    .bottom-note { position:absolute; left:34px; right:34px; bottom:20px; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:12px; }
+    .bottom-note .item { min-height:66px; padding:12px 14px; border-radius:11px; background:rgba(255,250,245,.86); border:1px solid var(--line); }
+    .bottom-note b { display:block; color:var(--ink); font-size:13px; }
+    .bottom-note span { display:block; margin-top:4px; color:var(--muted); font-size:11px; line-height:1.4; }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <header class="head">
+      <div class="eyebrow">认知模型 · INDUSTRIAL AIOT</div>
+      <div class="title">工业智能体，<em>不是从大模型开始</em></div>
+      <div class="subtitle">模型带来交互能力；平台决定它能看见什么、能做什么，以及做错之后如何收场。</div>
+    </header>
+    <section class="canvas">
+      <div class="formula"><span class="lead">工业智能体有效性</span><span class="eq">＝</span><span class="result">数据可信度 × 工具可控性 × 闭环可靠性</span></div>
+      <div class="columns">
+        <article class="column blue">
+          <div class="num">01 / DATA</div><h2>数据可信度</h2>
+          <p>先确认 AI 读到的是什么：设备身份、采集时间、单位、来源、质量状态，以及断线和补传语义。</p>
+          <div class="tags"><span class="pill blue">设备接入</span><span class="pill blue">协议适配</span><span class="pill blue">数据治理</span></div>
+        </article>
+        <article class="column purple">
+          <div class="num">02 / TOOL</div><h2>工具可控性</h2>
+          <p>工具不等于无限权限。调用身份、对象范围、参数边界、高风险确认和审计记录必须先定义。</p>
+          <div class="tags"><span class="pill purple">最小授权</span><span class="pill purple">参数校验</span><span class="pill purple">可审计</span></div>
+        </article>
+        <article class="column green">
+          <div class="num">03 / LOOP</div><h2>闭环可靠性</h2>
+          <p>命令发送不等于执行成功。需要回执、超时、重试、回滚、降级和人工接管，才能形成可靠闭环。</p>
+          <div class="tags"><span class="pill green">执行回执</span><span class="pill green">失败回滚</span><span class="pill green">人工接管</span></div>
+        </article>
+      </div>
+      <div class="bottom-note">
+        <div class="item"><b>核心判断</b><span>任何一项接近于零，整体效果都会接近于零。</span></div>
+        <div class="item"><b>AI 的位置</b><span>平台能力的新入口，而不是绕过边界的超级管理员。</span></div>
+        <div class="item"><b>工程底线</b><span>不替代 PLC、实时控制系统和安全联锁。</span></div>
+      </div>
+    </section>
+    <div class="footer"><b>从工业软件到 AI 智能体</b> · 工业 AIoT 技术路线的系统梳理</div><div class="page">01 / 03</div>
+  </main>
+</body>
+</html>

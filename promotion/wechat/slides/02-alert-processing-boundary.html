@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>一次设备告警的 AI 处理边界</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .alert { position:absolute; left:28px; top:30px; width:206px; height:310px; padding:17px; border:1px dashed #f3aa78; border-radius:16px; background:rgba(255,246,237,.85); }
+    .alert .badge { display:inline-flex; padding:5px 8px; border-radius:7px; background:#fff0e4; color:var(--orange-deep); font:800 11px var(--num); }
+    .alert h2 { margin-top:18px; color:var(--ink); font-size:21px; line-height:1.28; font-weight:850; }
+    .alert .device { margin-top:17px; padding:12px; border-radius:11px; background:#fff; border:1px solid var(--line); }
+    .alert .device b { display:block; color:var(--ink); font-size:14px; }
+    .alert .device span { display:block; margin-top:5px; color:var(--muted); font:600 11px var(--num); }
+    .alert .question { margin-top:17px; color:var(--orange-deep); font-size:13px; font-weight:750; line-height:1.5; }
+    .flow { position:absolute; left:260px; right:27px; top:30px; height:310px; display:grid; grid-template-columns:1fr 26px 1fr 26px 1fr 26px 1fr; align-items:center; }
+    .step { height:144px; padding:16px 14px; border-radius:14px; background:#fff; border:1px solid var(--line); box-shadow:0 6px 18px rgba(73,49,23,.05); }
+    .step.blue { border-top:4px solid var(--blue); }.step.purple { border-top:4px solid var(--purple); }.step.orange { border-top:4px solid var(--orange); }.step.green { border-top:4px solid var(--green); }
+    .step .snum { color:var(--muted); font:800 12px var(--num); letter-spacing:.08em; }
+    .step h3 { margin:9px 0 7px; color:var(--ink); font-size:16px; font-weight:850; }.step p { margin:0; color:var(--ink-2); font-size:12px; line-height:1.5; }
+    .flow-arrow { color:var(--orange); font:800 24px var(--num); text-align:center; }
+    .split { position:absolute; left:28px; right:28px; bottom:20px; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .split-card { min-height:94px; padding:15px 17px; border-radius:13px; background:#fff; border:1px solid var(--line); }
+    .split-card.good { border-left:4px solid var(--green); }.split-card.guard { border-left:4px solid var(--orange); }
+    .split-card h3 { margin:0 0 7px; color:var(--ink); font-size:15px; font-weight:850; }.split-card p { margin:0; color:var(--ink-2); font-size:12px; line-height:1.55; }
+    .split-card strong { color:var(--orange-deep); }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <header class="head">
+      <div class="eyebrow">边界意识 · SAFETY BY DESIGN</div>
+      <div class="title">一条设备告警，<em>AI 不能跳过哪些边界？</em></div>
+      <div class="subtitle">工业现场的“处理异常”，不是一句自然语言指令，而是一条必须可验证、可追踪、可回退的执行链路。</div>
+    </header>
+    <section class="canvas">
+      <article class="alert">
+        <div class="badge">设备告警 · HIGH</div>
+        <h2>3 号电机温度异常，请分析原因并处理。</h2>
+        <div class="device"><b>温度测点 T-003</b><span>87.4 °C · 10:42:18 · 质量待确认</span></div>
+        <div class="question">模型要做的第一件事，不是下命令，而是确认这条数据能不能信。</div>
+      </article>
+      <div class="flow">
+        <article class="step blue"><div class="snum">01 / READ</div><h3>确认数据</h3><p>来源、时间、单位、质量状态、设备在线情况。</p></article><div class="flow-arrow">→</div>
+        <article class="step purple"><div class="snum">02 / CONTEXT</div><h3>理解上下文</h3><p>趋势、工单、运行状态和已有规则是否支持这个判断。</p></article><div class="flow-arrow">→</div>
+        <article class="step orange"><div class="snum">03 / AUTHORIZE</div><h3>校验权限</h3><p>工具、对象、参数和风险等级是否允许当前动作。</p></article><div class="flow-arrow">→</div>
+        <article class="step green"><div class="snum">04 / VERIFY</div><h3>确认执行</h3><p>等待回执，处理超时，必要时回滚或转人工。</p></article>
+      </div>
+      <div class="split">
+        <div class="split-card good"><h3>AI 可以参与</h3><p>查询数据、分析趋势、解释异常、生成建议、编排<strong>已授权</strong>的工具调用。</p></div>
+        <div class="split-card guard"><h3>AI 不能替代</h3><p>PLC 实时控制、安全联锁、最终责任判断，以及没有回执的<strong>盲目重试</strong>。</p></div>
+      </div>
+    </section>
+    <div class="footer"><b>从工业软件到 AI 智能体</b> · 工业 AIoT 技术路线的系统梳理</div><div class="page">02 / 03</div>
+  </main>
+</body>
+</html>
