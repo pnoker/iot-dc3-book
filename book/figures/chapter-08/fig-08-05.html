@@ -23,17 +23,16 @@
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-5 防篡改设计的纵深防线</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图8-5 防篡改设计的纵深防线</text>
   <text x="82" y="70" fill="#64748B" font-size="12">密钥派生与签名在安全元件内部闭环，主控只交换请求和签名结果，私钥不通过 SPI 暴露。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">LAYERED</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="layered">
   <!-- 层背景 -->
@@ -41,41 +40,41 @@
   <rect x="160" y="290" width="1480" height="120" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
   <rect x="160" y="430" width="1480" height="130" rx="6" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.5"/>
   <rect x="160" y="580" width="1480" height="130" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  
+
   <!-- 层间虚线 -->
   <path d="M 160 280 L 1640 280" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
   <path d="M 160 420 L 1640 420" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
   <path d="M 160 560 L 1640 560" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  
+
   <!-- 连线（先于卡片） -->
   <path d="M 510 485 L 850 485" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <path d="M 850 520 L 510 520" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <path d="M 920 535 L 920 605" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <path d="M 940 605 L 940 535" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <path d="M 760 640 L 850 640" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  
+
   <!-- 卡片模块 -->
   <rect x="350" y="465" width="160" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
   <text x="430" y="495" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">主控芯片</text>
   <text x="430" y="515" fill="#475569" font-size="11" text-anchor="middle">(MCU)</text>
-  
+
   <rect x="850" y="465" width="160" height="70" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
   <text x="930" y="495" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">安全元件</text>
   <text x="930" y="515" fill="#475569" font-size="11" text-anchor="middle">(SE)</text>
   <text x="990" y="485" fill="#DC2626" font-size="18" text-anchor="middle">🔒</text>
-  
+
   <rect x="600" y="605" width="160" height="70" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
   <text x="680" y="635" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">SRAM PUF</text>
   <text x="680" y="655" fill="#475569" font-size="11" text-anchor="middle">芯片指纹</text>
-  
+
   <rect x="850" y="605" width="160" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
   <text x="930" y="635" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">加密引擎</text>
   <text x="930" y="655" fill="#475569" font-size="11" text-anchor="middle">签名运算</text>
-  
+
   <rect x="1100" y="605" width="160" height="70" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
   <text x="1180" y="635" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">非易失计数器</text>
   <text x="1180" y="655" fill="#475569" font-size="11" text-anchor="middle">防重放</text>
-  
+
   <!-- 层标题与注释 -->
   <text x="180" y="210" fill="#0F172A" font-size="16" font-weight="bold">外壳层</text>
   <text x="1500" y="210" fill="#475569" font-size="13" text-anchor="end">第一道屏障：发现即显形</text>
@@ -85,13 +84,13 @@
   <text x="1500" y="490" fill="#475569" font-size="13" text-anchor="end">第三道屏障：密钥不出芯</text>
   <text x="180" y="640" fill="#0F172A" font-size="16" font-weight="bold">芯片内部</text>
   <text x="1500" y="640" fill="#475569" font-size="13" text-anchor="end">第四道屏障：指纹随片变</text>
-  
+
   <!-- 连线标签 -->
-  <rect x="650" y="465" width="60" height="18" rx="3" fill="white"/>
+  <rect x="650" y="465" width="60" height="18" rx="3" fill="#FFFFFF"/>
   <text x="680" y="478" fill="#0F172A" font-size="12" text-anchor="middle">签名请求</text>
-  <rect x="650" y="530" width="60" height="18" rx="3" fill="white"/>
+  <rect x="650" y="530" width="60" height="18" rx="3" fill="#FFFFFF"/>
   <text x="680" y="543" fill="#0F172A" font-size="12" text-anchor="middle">签名结果</text>
-  <rect x="768" y="620" width="74" height="18" rx="3" fill="white"/>
+  <rect x="768" y="620" width="74" height="18" rx="3" fill="#FFFFFF"/>
   <text x="805" y="633" fill="#0F172A" font-size="11" text-anchor="middle">密钥派生</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
@@ -101,14 +100,10 @@
   <text x="659" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头：密钥派生与使用路径（始终在SE内部闭环，不暴露给主控）</text>
   <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
   <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">带锁图标：安全元件防篡改保护</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-5 防篡改设计的四层防线：从外壳到芯片内部依次递进，攻击者需要逐层突破并付出指数级增长的成本。安全元件内部闭环完成密钥派生与签名，私钥永不离开芯片。</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-5 防篡改设计的四层防线：从外壳到芯片内部依次递进，攻击者需要逐层突破并付出指数级增长的成本。安全元件内部闭环完成密钥派生与签名，私钥永不离开芯片。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">layered</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">纵向从上到下四层，每层用虚线隔开；左侧标注物理结构，右侧展开安全元件内部逻辑</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

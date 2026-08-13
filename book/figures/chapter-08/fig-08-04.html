@@ -30,10 +30,9 @@
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-4 安全启动多层信任链流程</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图8-4 安全启动多层信任链流程</text>
   <text x="82" y="70" fill="#64748B" font-size="12">信任链根植于不可篡改的 BootROM（内含 OTP 公钥指纹），每一级验证下一级镜像，任一级失败即停机或回退恢复模式。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart">
 
@@ -131,14 +130,10 @@
   <text x="324" y="808" fill="#64748B" font-size="11" font-weight="600">红色虚线 = 验证失败路径（停机 / 恢复模式）</text>
   <rect x="640" y="797" width="16" height="12" rx="2" fill="#2563EB"/>
   <text x="664" y="808" fill="#64748B" font-size="11" font-weight="600">BootROM = Root of Trust（不可篡改）</text>
-  <text x="900" y="852" fill="#94A3B8" font-size="11" font-weight="600" text-anchor="middle">图8-4 安全启动的多层信任链流程：信任链根植于不可篡改的 BootROM（内含 OTP 公钥指纹），逐级签名验证 SBL → U-Boot → 内核 → 根文件系统（dm-verity），任一级失败即停机或回退恢复模式。</text>
+  <text x="900" y="852" fill="#475569" font-size="17" font-weight="600" text-anchor="middle">图8-4 信任链自 BootROM 起逐级验签至根文件系统；失败策略分级——SBL 凭 A/B 双分区回退恢复，BootROM、U-Boot、内核任一级失败即停机或拒绝启动，根文件系统由 dm-verity 校验完整性。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下链式流程：上电复位 → BootROM(RoT) → SBL → U-Boot → 内核 → 根文件系统；验证失败分支自决策菱形向右引出</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">圆角矩形节点 + 决策菱形；绿色实线=通过路径、红色虚线=失败路径；BootROM 标为 RoT，SBL 支持 A/B 分区回退</div></div>
-    </section>
+
   </main>
 </body>
 </html>

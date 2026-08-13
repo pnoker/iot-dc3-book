@@ -28,10 +28,9 @@
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-9 协议适配器接口与驱动实现架构</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图4-9 协议适配器接口与驱动实现架构</text>
   <text x="82" y="70" fill="#64748B" font-size="12">同一ProtocolAdapter接口下，各协议驱动组合不同的底层通信组件，异构差异被吸收在实现层。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="architecture">
     <!-- 平台服务域边界 -->
@@ -140,14 +139,10 @@
   <text x="659" y="503" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色：具体协议驱动实现</text>
   <rect x="1190" y="492" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
   <text x="1214" y="503" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">空心三角箭头：泛化（实现）</text>
-  <text x="900" y="540" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-9 协议适配器接口与驱动实现的架构示意。每个具体驱动通过组合持有底层通信组件，对上层只暴露通用接口。</text>
+  <text x="900" y="540" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-9 协议适配器接口与驱动实现的架构示意。每个具体驱动通过组合持有底层通信组件，对上层只暴露通用接口。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下分为两层：接口层（ProtocolAdapter）和实现层（ModbusRtuAdapter、MqttAdapter、BluetoothGattAdapter、LoRaWanAdapter）。每个实现类下方以虚线框列出其组合的底层组件。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

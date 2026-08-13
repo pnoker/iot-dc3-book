@@ -32,10 +32,9 @@
 
   <!-- ===== Title area ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="84" y="40" font-size="22" font-weight="700" fill="#0F172A">图10-9 IoT DC3平台微服务架构</text>
+  <text x="84" y="40" font-size="36" font-weight="700" fill="#0F172A">图10-9 IoT DC3平台微服务架构</text>
   <text x="84" y="62" font-size="13" fill="#64748B">规则引擎毫秒级快判、LLM深析走异步互不阻塞；数据中心是唯一数据枢纽，设备中心不介入实时数据流</text>
-  <rect x="1620" y="28" width="120" height="26" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1680" y="45" font-size="13" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0"/>
 
   <!-- ============================================================ -->
@@ -178,8 +177,8 @@
 
   <!-- 智能中心 ⇌ 数据中心 : 上下文查询 / 命令下发 (dashed blue, bidirectional) -->
   <line x1="980" y1="290" x2="980" y2="346" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 5" marker-start="url(#ah-blue)" marker-end="url(#ah-blue)"/>
-  <rect x="812" y="296" width="156" height="20" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="890" y="310" font-size="13" font-weight="600" fill="#2563EB" text-anchor="middle">上下文查询 ⇌ 命令下发</text>
+  <rect x="766" y="296" width="248" height="20" rx="10" fill="#FFF7ED" stroke="#D97706" stroke-width="1"/>
+  <text x="890" y="310" font-size="13" font-weight="600" fill="#B45309" text-anchor="middle">上下文查询 ⇌ 命令下发（鉴权 · 确认 · 审计）</text>
 
   <!-- 规则引擎 → 业务应用层 : HTTP 回调 (solid blue) -->
   <line x1="1500" y1="352" x2="1500" y2="178" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
@@ -211,14 +210,10 @@
   </g>
 
   <!-- ===== Caption ===== -->
-  <text x="900" y="896" font-size="13" fill="#94A3B8" text-anchor="middle">图10-9　IoT DC3平台微服务架构：物理设备经协议驱动接入，PointValue 归一化数据进入数据中心统一汇聚；规则引擎毫秒级快判，复杂上下文异步转智能中心深析，数据中心是唯一数据枢纽。</text>
+  <text x="900" y="896" font-size="17" fill="#475569" text-anchor="middle">图10-9　IoT DC3平台微服务架构：物理设备经协议驱动接入，PointValue 归一化数据进入数据中心统一汇聚；规则引擎毫秒级快判，复杂上下文异步转智能中心深析，数据中心是唯一数据枢纽。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自下而上五层：物理设备层 → 驱动接入层 → 平台服务层 → 智能决策层 → 业务应用层。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

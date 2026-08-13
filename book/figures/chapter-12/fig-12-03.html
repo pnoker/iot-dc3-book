@@ -17,7 +17,9 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img">
+    <svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig12-3-title fig12-3-desc">
+<title id="fig12-3-title">图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
+<desc id="fig12-3-desc">三种 LPWAN 技术在覆盖、速率、功耗、成本、生态、穿透六个维度采用同一 1–5 相对刻度对比，便于识别各自优势与短板。</desc>
 <defs>
                     <style>
                         text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -32,21 +34,18 @@
                         .radar-polygon-lora { fill: #F97316; fill-opacity: 0.16; stroke: #F97316; stroke-width: 2.5; }
                         .radar-polygon-nbiot { fill: #2563EB; fill-opacity: 0.14; stroke: #2563EB; stroke-width: 2.5; }
                         .radar-polygon-sigfox { fill: #0F766E; fill-opacity: 0.14; stroke: #0F766E; stroke-width: 2.5; }
-                        .radar-point { filter: url(#shadow); }
+
                         .legend-item { fill: #0F172A; font-size: 13px; }
                         .callout-text { fill: #475569; font-size: 13px; font-weight: 600; }
                     </style>
-                    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
-                        <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.04" />
-                    </filter>
+
                 </defs>
                 <rect x="0" y="0" width="1200" height="760" fill="#F8FAFC" />
                 <!-- 正确图号与标题 -->
                 <circle cx="42" cy="38" r="6" fill="#2563EB" />
                 <text x="60" y="45" fill="#0F172A" font-size="24" font-weight="700">图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</text>
                 <text x="60" y="70" fill="#475569" font-size="13">六个维度采用同一 1–5 相对刻度，辅助识别各技术优势与短板</text>
-                <rect x="1050" y="26" width="110" height="28" rx="6" fill="#FFFFFF" stroke="#CBD5E1" />
-                <text x="1105" y="45" fill="#475569" font-size="11" text-anchor="middle">MATRIX</text>
+
                 <line x1="40" y1="94" x2="1160" y2="94" stroke="#E2E8F0" />
 
                 <!-- ============================================================ -->
@@ -206,7 +205,7 @@
                     <!-- 图例 (右上角, x=880, y=100 区域)                             -->
                     <!-- ============================================================ -->
                     <g transform="translate(870, 90)">
-                        <rect x="0" y="0" width="270" height="148" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2" filter="url(#shadow)" />
+                        <rect x="0" y="0" width="270" height="148" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2" />
                         <text x="16" y="26" font-size="14" font-weight="700" fill="#0F172A">技术对比图例</text>
 
                         <!-- LoRa -->
@@ -239,14 +238,10 @@
                     <text x="490" y="409" text-anchor="middle" font-size="10" fill="#94A3B8">顺序：LoRa / NB-IoT / Sigfox</text>
 
                     <!-- 底部 callout -->
-                    <text x="600" y="735" text-anchor="middle" font-size="11" fill="#475569">图12-3 三种 LPWAN 技术采用同一相对刻度比较，便于识别各自优势与短板。</text>
+                    <text x="600" y="735" text-anchor="middle" font-size="11" fill="#475569">图12-3 六维对比显示：LoRa 生态（5）与成本占优，NB-IoT 速率与覆盖领先但生态（2）、功耗（2）偏弱，Sigfox 功耗与成本省而速率（1）、生态（1）垫底。</text>
                 </g>
             </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">matrix</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">六轴雷达图，同心圆刻度 1–5（1=最弱，5=最强）</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

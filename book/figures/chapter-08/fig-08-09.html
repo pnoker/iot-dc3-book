@@ -24,17 +24,16 @@
   <rect width="1200" height="600" fill="#F8FAFC"/>
   <svg x="24" y="72" width="1152" height="456" viewBox="0 0 1800 700" preserveAspectRatio="xMidYMid meet">
 
-  
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
   <rect width="1800" height="700" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图8-9 密钥生命周期管理与云边协同流程</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图8-9 密钥生命周期管理与云边协同流程</text>
   <text x="82" y="70" fill="#64748B" font-size="12">密钥从生成、分发、轮换到撤销和销毁有明确状态；撤销后云端与边缘都必须停止使用。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">FLOWCHART</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="flowchart">
   <!-- 泳道 -->
@@ -86,14 +85,10 @@
   <text x="104" y="568" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">颜色=使用中（绿色）、轮换中（黄色）、已撤销/停用（红色）、待销毁（灰色）</text>
   <rect x="930" y="557" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
   <text x="954" y="568" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头=通过 TLS 加密通道同步</text>
-  <text x="900" y="630" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-9 密钥生命周期管理与云边协同流程</text>
+  <text x="900" y="630" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图8-9 云端作为密钥状态的权威源，分发、轮换、撤销均经 TLS 加密通道同步到边缘；撤销后边缘同状态密钥即停止使用，防止旧密钥继续有效。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">flowchart</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从上到下的泳道流程图</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

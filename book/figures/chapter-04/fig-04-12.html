@@ -17,21 +17,20 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图4-12 协议碎片化→统一接入层→Driver SDK 架构映射</title>
-  <desc id="desc">读者应理解协议碎片化→统一接入层→Driver SDK 架构映射中的主链路、责任边界和工程取舍。</desc>
+  <desc id="desc">五类协议设备经统一 Driver 接口接入统一接入层，收敛为设备影子供业务应用读写。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-12 协议碎片化→统一接入层→Driver SDK 架构映射</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解协议碎片化→统一接入层→Driver SDK 架构映射中的主链路、责任边界和工程取舍。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">ARCHITECTURE</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图4-12 协议碎片化→统一接入层→Driver SDK 架构映射</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">五类协议设备经统一 Driver 接口接入统一接入层，收敛为设备影子供业务应用读写。</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="architecture">
   <!-- 设备层 (y=620..720) -->
@@ -67,28 +66,28 @@
     <rect x="618" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
     <text x="660" y="542" fill="#64748B" font-size="8.5" text-anchor="middle">connect/disconnect</text>
     <text x="660" y="556" fill="#64748B" font-size="8.5" text-anchor="middle">send/receive/parse</text>
-    
+
     <!-- LoRa Driver -->
     <rect x="730" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
     <text x="780" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">LoRa Driver</text>
     <rect x="738" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
     <text x="780" y="542" fill="#64748B" font-size="8.5" text-anchor="middle">connect/disconnect</text>
     <text x="780" y="556" fill="#64748B" font-size="8.5" text-anchor="middle">send/receive/parse</text>
-    
+
     <!-- BLE Driver -->
     <rect x="850" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
     <text x="900" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">BLE Driver</text>
     <rect x="858" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
     <text x="900" y="542" fill="#64748B" font-size="8.5" text-anchor="middle">connect/disconnect</text>
     <text x="900" y="556" fill="#64748B" font-size="8.5" text-anchor="middle">send/receive/parse</text>
-    
+
     <!-- Zigbee Driver -->
     <rect x="970" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
     <text x="1020" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">Zigbee Driver</text>
     <rect x="978" y="525" width="84" height="46" rx="4" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,2"/>
     <text x="1020" y="542" fill="#64748B" font-size="8.5" text-anchor="middle">connect/disconnect</text>
     <text x="1020" y="556" fill="#64748B" font-size="8.5" text-anchor="middle">send/receive/parse</text>
-    
+
     <!-- Wi-Fi Driver -->
     <rect x="1090" y="490" width="100" height="90" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
     <text x="1140" y="515" fill="#0F172A" font-size="13" font-weight="600" text-anchor="middle">Wi-Fi Driver</text>
@@ -180,14 +179,10 @@
   <text x="659" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">红色虚线箭头：指令下发方向</text>
   <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
   <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">灰色虚线框：Driver SDK 接口标准</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-12 协议碎片化→统一接入层→Driver SDK 架构映射</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-12 蓝色实线表示数据由设备经 Driver 与统一接入层上报至业务应用，红色虚线表示指令反向下发；各协议 Driver 以统一的 connect/send/receive/parse 接口接入，统一接入层对上层只暴露一份设备影子。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">水平分层（四层）：自下而上为设备层、驱动层、统一接入层、业务应用层。每层之间用带箭头的竖线连接，表示数据流转和指令转发。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

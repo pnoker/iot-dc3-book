@@ -27,10 +27,9 @@
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图10-10 IoT DC3设备接入与数据采集数据流</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图10-10 IoT DC3设备接入与数据采集数据流</text>
   <text x="82" y="70" fill="#64748B" font-size="12">SMT产线设备经 Modbus TCP 上报位号值 → Modbus驱动归一为 PointValue → 数据中心对齐写入 TimescaleDB → Grafana 大屏实时展示。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="13" text-anchor="middle" letter-spacing="1.4">DATAFLOW</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="dataflow">
   <!-- ===== 域（Region）泳道 ===== -->
@@ -161,14 +160,10 @@
   <text x="664" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">白=可视化层</text>
   <line x1="838" y1="792" x2="884" y2="792" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
   <text x="894" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">实线箭头=数据流</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="12" font-weight="600" text-anchor="middle">图10-10 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流：原始位号 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏。</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-weight="600" text-anchor="middle">图10-10 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流：原始位号 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">dataflow</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左至右水平流向：设备层→IoT DC3驱动服务→数据中心→时序库→Grafana大屏；两个域泳道：设备与边缘域、数据资产域。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

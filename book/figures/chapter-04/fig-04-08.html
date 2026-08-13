@@ -17,21 +17,20 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图4-8 设备抽象与物模型映射示意图</title>
-  <desc id="desc">读者应理解设备抽象与物模型映射示意图中的主链路、责任边界和工程取舍。</desc>
+  <desc id="desc">Modbus、BLE、LoRaWAN 三种原始帧经驱动解析与映射层类型统一，最终收敛为同一结构的物模型实例。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  
+
   <defs>
     <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
     <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图4-8 设备抽象与物模型映射示意图</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">读者应理解设备抽象与物模型映射示意图中的主链路、责任边界和工程取舍。</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">DATAFLOW</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图4-8 设备抽象与物模型映射示意图</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">Modbus、BLE、LoRaWAN 三种原始帧经驱动解析与映射层类型统一，最终收敛为同一结构的物模型实例。</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="dataflow">
   <!-- 区域边界 -->
@@ -43,38 +42,38 @@
   <!-- 连线（先于卡片） -->
   <!-- 数据源到驱动 -->
   <line x1="310" y1="210" x2="450" y2="210" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="360" y="195" width="50" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="360" y="195" width="50" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="385" y="209" text-anchor="middle" font-size="11" fill="#0F172A">原始帧</text>
 
   <line x1="310" y1="340" x2="450" y2="340" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="360" y="325" width="50" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="360" y="325" width="50" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="385" y="339" text-anchor="middle" font-size="11" fill="#0F172A">原始帧</text>
 
   <line x1="310" y1="470" x2="450" y2="470" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="360" y="455" width="50" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="360" y="455" width="50" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="385" y="469" text-anchor="middle" font-size="11" fill="#0F172A">原始帧</text>
 
   <!-- 驱动到映射层 -->
   <line x1="610" y1="210" x2="750" y2="210" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="660" y="195" width="40" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="660" y="195" width="40" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="680" y="209" text-anchor="middle" font-size="11" fill="#0F172A">整型</text>
 
   <line x1="610" y1="340" x2="750" y2="340" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="660" y="325" width="40" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="660" y="325" width="40" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="680" y="339" text-anchor="middle" font-size="11" fill="#0F172A">浮点</text>
 
   <line x1="610" y1="470" x2="750" y2="470" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="650" y="455" width="80" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="650" y="455" width="80" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="690" y="469" text-anchor="middle" font-size="11" fill="#0F172A">十六进制解码</text>
 
   <!-- 映射层到物模型 -->
   <line x1="970" y1="340" x2="1050" y2="340" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="972" y="315" width="76" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="972" y="315" width="76" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="1010" y="328" text-anchor="middle" font-size="9.5" fill="#0F172A">Schema归一化</text>
 
   <!-- 物模型到平台 -->
   <line x1="1250" y1="340" x2="1350" y2="340" stroke="#2563EB" stroke-width="1.5" marker-end="url(#bp-arrow-primary)" />
-  <rect x="1254" y="315" width="92" height="18" rx="3" fill="white" stroke="#94A3B8" stroke-width="0.5" />
+  <rect x="1254" y="315" width="92" height="18" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.5" />
   <text x="1300" y="328" text-anchor="middle" font-size="9.5" fill="#0F172A">属性 / 事件 / 服务</text>
 
   <!-- 组件卡片 -->
@@ -135,14 +134,10 @@
   <text x="659" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">青绿色方块：协议驱动</text>
   <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
   <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色方块：数据映射层（核心抽象）</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-8 三种协议传感器数据经过驱动解析和数据映射层，统一转换为相同结构的物模型实例，上层应用消费时无需感知底层协议的差异</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-8 三种协议传感器数据经过驱动解析和数据映射层，统一转换为相同结构的物模型实例，上层应用消费时无需感知底层协议的差异</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">dataflow</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">从左至右三列流向：原生数据→驱动解析→数据映射层→物模型实例→平台消费方</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

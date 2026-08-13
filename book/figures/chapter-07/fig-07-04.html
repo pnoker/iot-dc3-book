@@ -29,15 +29,14 @@
     <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
     <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F59E0B"/></marker>
     <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#E11D48"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#dc2626"/></marker>
   </defs>
 
   <!-- ===== 标题区 ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" font-size="22" font-weight="700" fill="#0F172A">图7-4 MCP 在物联网平台中的架构示意</text>
+  <text x="82" y="47" font-size="36" font-weight="700" fill="#0F172A">图7-4 MCP 在物联网平台中的架构示意</text>
   <text x="82" y="70" font-size="12" fill="#64748B">当前边界：JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · 仅声明 Tools capability</text>
-  <rect x="1638" y="28" width="118" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1697" y="44" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ARCHITECTURE</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
 
   <!-- ===== Layer 1: 外部 AI Agent（橙） ===== -->
@@ -172,19 +171,15 @@
   <text x="972" y="809" font-size="10.5" fill="#64748B">MCP 端点</text>
   <rect x="1070" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
   <text x="1092" y="809" font-size="10.5" fill="#64748B">设备 / 接入域</text>
-  <rect x="1210" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#E11D48" stroke-width="2"/>
+  <rect x="1210" y="799" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#dc2626" stroke-width="2"/>
   <text x="1232" y="809" font-size="10.5" fill="#64748B">Auth · 白名单 · 高风险确认</text>
 
   <!-- ===== caption ===== -->
-  <text x="900" y="855" font-size="11" fill="#94A3B8" text-anchor="middle">图7-4 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，</text>
+  <text x="900" y="855" font-size="17" fill="#475569" text-anchor="middle">图7-4 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，</text>
   <text x="900" y="871" font-size="11" fill="#94A3B8" text-anchor="middle">工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">architecture</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">顶部外部 Agent，中部 Gateway 的 POST /mcp，右侧 Auth，底部 OpenAPI Tool 目录与 Auth/Manager/Data/Agentic REST 后端。</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">出版级精品图资产</div></div>
-    </section>
+
   </main>
 </body>
 </html>

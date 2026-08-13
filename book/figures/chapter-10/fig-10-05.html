@@ -29,10 +29,9 @@
   </defs>
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="22" font-weight="700">图10-5 OPC UA地址空间树状结构</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图10-5 OPC UA地址空间树状结构</text>
   <text x="82" y="70" fill="#64748B" font-size="13">NodeId、DataType、Description 是 Variable Attributes；仅 EngineeringUnits 等附加属性使用 HasProperty</text>
-  <rect x="1624" y="28" width="132" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="1690" y="44" fill="#64748B" font-size="11" text-anchor="middle" letter-spacing="1.4">TOPOLOGY</text>
+
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="topology">
   <!-- ========== 根节点：Objects ========== -->
@@ -119,14 +118,10 @@
   <text x="902" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线=HasProperty</text>
   <line x1="1080" y1="803" x2="1112" y2="803" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
   <text x="1122" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色实线=Organizes</text>
-  <text x="900" y="855" fill="#94A3B8" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过 HasProperty 关联的附加属性必须区分。</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过 HasProperty 关联的附加属性必须区分。</text>
   </svg>
 </svg>
-    <section class="meta" style="display:none">
-      <div class="card"><div class="label">图表类型</div><div class="value">topology</div></div>
-      <div class="card"><div class="label">布局说明</div><div class="value">自上而下的树状图：Objects 根节点 → 设备对象 → 变量/方法节点 → 元数据叶子；三种引用类型沿主链路逐一标注</div></div>
-      <div class="card"><div class="label">渲染说明</div><div class="value">蓝色=对象节点、绿色=变量节点、橙色=方法节点；实线箭头=HasComponent、虚线箭头=HasProperty</div></div>
-    </section>
+
   </main>
 </body>
 </html>
