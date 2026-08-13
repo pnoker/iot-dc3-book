@@ -39,6 +39,8 @@
     --vp-button-brand-text: #ffffff;
     --vp-layout-max-width: 1504px;
     --dc3-glass-radius: 20px;
+    /* 正文阅读字体：系统字体栈，各平台用各自最优中文黑体，零下载、加载快 */
+    --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Source Han Sans SC', sans-serif;
     font-synthesis-weight: none;
 }
 
@@ -1137,7 +1139,8 @@ body {
     top: 0;
     left: 0;
     transform-origin: top left;
-    /* 缩放比例由 theme/index.ts 的 scaleCover() 按容器宽度动态设置 */
+    /* 初始近似缩放（hero 封面 256px / 794 ≈ 0.322），JS 挂载后精确修正；避免首次渲染放大到 794px 的 FOUC */
+    transform: scale(var(--cover-scale, 0.322));
 }
 
 .dark .hero-cover {
@@ -1209,7 +1212,8 @@ body {
     top: 0;
     left: 0;
     transform-origin: top left;
-    /* 缩放比例由 theme/index.ts 的 scaleDividers() 按容器宽度动态设置 */
+    /* 初始近似缩放（正文容器 ~688px / 1240 ≈ 0.55），JS 挂载后精确修正；避免首次渲染放大到 1240px 的 FOUC */
+    transform: scale(var(--divider-scale, 0.55));
 }
 
 /* medium-zoom 放大层跟随主题 */
@@ -1222,6 +1226,10 @@ body {
 }
 
 /* 中文书阅读：正文段落首行缩进 2em（排除列表/引用/图题/容器块） */
+.vp-doc {
+    /* 中文阅读舒适行高：默认 1.6 偏紧，提到 1.8 */
+    line-height: 1.8;
+}
 .vp-doc p {
     text-indent: 2em;
 }

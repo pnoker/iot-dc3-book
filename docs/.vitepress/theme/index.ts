@@ -42,14 +42,14 @@ const theme: Theme = {
           if (t) el.innerHTML = `<span class="vp-button-text">${t}</span>`
         })
       })
-    // 章/篇扉页：内联渲染的固定 1240px 布局，按容器宽度动态缩放
+    // 章/篇扉页：内联渲染的固定 1240px 布局，按容器宽度动态缩放（写 CSS 变量，初始值在 CSS 里预置近似比例，避免 FOUC）
     const scaleDividers = () =>
       nextTick(() => {
         document.querySelectorAll('.divider-body').forEach((body) => {
           const page = body.querySelector<HTMLElement>('.page')
           if (!page) return
           const scale = body.clientWidth / 1240
-          page.style.transform = `scale(${scale})`
+          page.style.setProperty('--divider-scale', String(scale))
         })
       })
     // 首页封面：内联渲染的固定 794px 宽（A4），按容器宽度动态缩放
@@ -59,7 +59,7 @@ const theme: Theme = {
           const body = wrap.querySelector<HTMLElement>('.cover-body')
           if (!body) return
           const scale = wrap.clientWidth / 794
-          body.style.transform = `scale(${scale})`
+          body.style.setProperty('--cover-scale', String(scale))
         })
       })
     onMounted(() => {
@@ -74,6 +74,11 @@ const theme: Theme = {
       scaleDividers()
       scaleCover()
     })
+    // 窗口尺寸变化（响应式）时重新缩放扉页/封面
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', scaleDividers)
+      window.addEventListener('resize', scaleCover)
+    }
   },
 }
 

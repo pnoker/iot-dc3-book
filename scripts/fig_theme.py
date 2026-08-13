@@ -131,10 +131,19 @@ COLOR_MAP: dict[str, str] = {
     "fff8e7": "1e293b",
     "fff9f2": "1e293b",
     "fffbf4": "1e293b",
+
+    # ── rgba() 专用：半透明背景分区 / 填充的语义色（原浅色 → 深色调）──
+    "87cefa": "1e3a8a",   # skyblue 室外域浅蓝 → blue-900
+    "ffff00": "78350f",   # 过渡区纯黄 → amber-900
+    "c8c8c8": "475569",   # 室内域中性浅灰 → slate-600
 }
 
-# 色值 → CSS 变量名。var(--fig-<hex>)
-_COLOR_RE = re.compile(r'(fill|stroke)="(#[0-9a-fA-F]{3,8})"')
+# 色值 → CSS 变量名。var(--fig-<hex>)；覆盖 fill/stroke/stop-color 属性
+_COLOR_RE = re.compile(r'(fill|stroke|stop-color)="(#[0-9a-fA-F]{3,8})"')
+# rgba(r,g,b,a) 半透明色（背景分区/填充）：颜色部分变量化，透明度保留
+_RGBA_RE = re.compile(
+    r'(fill|stroke)="rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([0-9.]+))?\s*\)"'
+)
 
 
 def to_var_color(m: re.Match) -> str:
@@ -142,19 +151,47 @@ def to_var_color(m: re.Match) -> str:
     return f'{attr}="var(--fig-{hexv})"'
 
 
+def _to_rgb_var(m: re.Match) -> str:
+    attr = m.group(1)
+    r, g, b = int(m.group(2)), int(m.group(3)), int(m.group(4))
+    a = m.group(5) or "1"
+    hexv = f"{r:02x}{g:02x}{b:02x}"
+    if hexv in COLOR_MAP:
+        return f'{attr}="rgba(var(--fig-rgb-{hexv}), {a})"'
+    return m.group(0)
+
+
+def _hex_to_rgb(hexv: str) -> tuple[int, int, int]:
+    return int(hexv[0:2], 16), int(hexv[2:4], 16), int(hexv[4:6], 16)
+
+
 def svg_to_theme(svg_markup: str) -> str:
-    """把一段 SVG（含内联）中的 fill/stroke 色值替换为 CSS 变量。
+    """把一段 SVG（含内联）中的色值替换为 CSS 变量（含 rgba/stop-color）。
 
     并压缩空行：markdown-it 的 HTML 块规则遇空行会中断 HTML 块，
     导致 Vue 编译器看到断裂标签（"Element is missing end tag"），
     因此内联进 .md 前必须去掉空行，保持连续 HTML 块。
     """
     out = _COLOR_RE.sub(to_var_color, svg_markup)
+    out = _RGBA_RE.sub(_to_rgb_var, out)
     # 英文色名 white / black 等
     out = re.sub(r'(fill|stroke)="white"', r'\1="var(--fig-ffffff)"', out, flags=re.IGNORECASE)
     # 压缩空行（保留单换行，标签间不断裂）
     out = re.sub(r'\n[ \t]*\n+', '\n', out)
     return out
+
+
+def collect_rgba_hexes() -> set[str]:
+    """扫描所有图，返回 rgba() 中用到、且已在 COLOR_MAP 的颜色 hex。"""
+    hexes: set[str] = set()
+    for f in sorted(FIGURES_DIR.glob("chapter-*/*.html")):
+        inline = extract_inline_svg(f.read_text(encoding="utf-8"))
+        for m in _RGBA_RE.finditer(inline):
+            r, g, b = int(m.group(2)), int(m.group(3)), int(m.group(4))
+            hexv = f"{r:02x}{g:02x}{b:02x}"
+            if hexv in COLOR_MAP:
+                hexes.add(hexv)
+    return hexes
 
 
 def extract_inline_svg(html: str) -> str:
@@ -201,8 +238,13 @@ def extract_inline_svg(html: str) -> str:
     return inner
 
 
-def gen_figures_css() -> str:
-    """生成 figures.css：:root 定义原色、.dark 定义暗色对应值。"""
+def gen_figures_css(rgb_hexes: set[str] | None = None) -> str:
+    """生成 figures.css：:root 定义原色、.dark 定义暗色对应值。
+
+    rgb_hexes 是 rgba() 用到的颜色 hex 集合，额外生成 --fig-rgb-<hex>
+    变量（三个 0-255 数字），供 rgba(var(--fig-rgb-<hex>), alpha) 引用。
+    """
+    rgb_hexes = rgb_hexes or set()
     lines = [
         "/* 自动生成，请勿手改 —— 由 scripts/fig_theme.py 产出 */",
         ":root {",
@@ -211,6 +253,9 @@ def gen_figures_css() -> str:
         if hexv == "fff":
             continue  # 统一用 ffffff
         lines.append(f"  --fig-{hexv}: #{hexv};")
+    for hexv in sorted(rgb_hexes):
+        r, g, b = _hex_to_rgb(hexv)
+        lines.append(f"  --fig-rgb-{hexv}: {r}, {g}, {b};")
     lines.append("}")
     lines.append("")
     lines.append(".dark {")
@@ -218,6 +263,9 @@ def gen_figures_css() -> str:
         if hexv == "fff":
             continue
         lines.append(f"  --fig-{hexv}: #{dark};")
+    for hexv in sorted(rgb_hexes):
+        dr, dg, db = _hex_to_rgb(COLOR_MAP[hexv])
+        lines.append(f"  --fig-rgb-{hexv}: {dr}, {dg}, {db};")
     lines.append("}")
     lines.append("")
     return "\n".join(lines)

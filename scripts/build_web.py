@@ -40,7 +40,7 @@ except ImportError:
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 # 插图主题适配（内联 SVG + 颜色变量），与 build_web 同目录
-from fig_theme import figure_id_of, load_figure_svg, gen_figures_css, collect_figure_styles
+from fig_theme import figure_id_of, load_figure_svg, gen_figures_css, collect_figure_styles, collect_rgba_hexes
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "output"
@@ -516,8 +516,9 @@ def copy_assets() -> dict[str, tuple[int, int]]:
         shutil.copy2(cover, PUBLIC / "cover.png")
         optimize_to_webp(cover, PUBLIC / "cover.webp", COVER_MAX_W)
     # 插图主题变量表（内联 SVG 颜色用）+ SVG 内 <style> 作用域化规则
+    rgb_hexes = collect_rgba_hexes()
     (PUBLIC / "figures.css").write_text(
-        gen_figures_css() + "\n" + collect_figure_styles(), encoding="utf-8"
+        gen_figures_css(rgb_hexes) + "\n" + collect_figure_styles(), encoding="utf-8"
     )
     # 章/篇扉页主题样式（divider.css 已变量化：:root 原色、.dark 暗色）
     # web 端作用域化到 .divider-body，丢弃 html/body 全局页面尺寸规则，避免站点无法滚动。
