@@ -1113,26 +1113,34 @@ body {
 /* ── book 站专属 ── */
 /* online 在此隐藏 features/页脚改用全宽 CardNav；book 用默认三篇卡片 + 页脚，不沿用。 */
 
-/* 首页主视觉：真实封面图（由 book/assets/cover.html 渲染）；hero-logo class 让粒子向封面聚拢 */
-.hero-cover-image {
-    display: block;
+/* 首页主视觉：内联封面（由 book/assets/cover.html 派生，颜色跟随明暗主题）；hero-logo class 让粒子向封面聚拢 */
+.hero-cover {
+    position: relative;
     width: 100%;
     max-width: 256px;
-    height: auto;
+    aspect-ratio: 794 / 1123;
     margin: 0 auto;
     border-radius: 6px;
-    cursor: zoom-in;
+    overflow: hidden;
     box-shadow:
         0 30px 60px rgba(16, 96, 161, 0.22),
         0 12px 28px rgba(0, 0, 0, 0.12);
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.hero-cover-image:hover {
+.hero-cover:hover {
     transform: translateY(-4px);
 }
 
-.dark .hero-cover-image {
+.hero-cover .cover-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    /* 缩放比例由 theme/index.ts 的 scaleCover() 按容器宽度动态设置 */
+}
+
+.dark .hero-cover {
     box-shadow:
         0 30px 60px rgba(0, 0, 0, 0.5),
         0 12px 28px rgba(0, 0, 0, 0.3);

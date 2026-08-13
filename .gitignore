@@ -51,6 +51,7 @@ docs/public/figures/
 docs/public/dividers/
 docs/public/figures.css
 docs/public/divider.css
+docs/public/cover.css
 docs/public/cover.png
 docs/public/cover.webp
 docs/preface/
@@ -59,3 +60,4 @@ docs/technical/
 docs/applications/
 docs/appendix/
 docs/.vitepress/sidebar.ts
+docs/.vitepress/theme/cover-art.ts

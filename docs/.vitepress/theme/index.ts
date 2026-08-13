@@ -6,6 +6,7 @@ import {useRoute} from 'vitepress'
 import './style.css'
 import HeroWaves from './HeroWaves.vue'
 import HeroParticles from './HeroParticles.vue'
+import {coverBodyHtml} from './cover-art'
 
 const theme: Theme = {
   extends: DefaultTheme,
@@ -14,22 +15,20 @@ const theme: Theme = {
     return h(DefaultTheme.Layout, null, {
       // 首页 Hero 背景：粒子 + 波浪（保留 online 动效，仅首页）
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
-      // 首页主视觉：真实封面图（hero-logo class 让粒子向封面聚拢）。用 WebP 优化版（≤800px），原 PNG 留给 og:image
+      // 首页主视觉：内联封面（由 book/assets/cover.html 派生，颜色跟随明暗主题）
       'home-hero-image': () =>
-        h('img', {
-          class: 'hero-cover-image hero-logo',
-          src: '/cover.webp',
-          alt: '《从工业软件到 AI 智能体》封面',
-        }),
+        h('div', {class: 'hero-cover hero-logo'}, [
+          h('div', {class: 'cover-body', innerHTML: coverBodyHtml}),
+        ]),
     })
   },
 
   setup() {
-    // 图表点击放大：绑定正文区图片，排除章/篇扉页（.no-zoom）
+    // 图表点击放大：绑定正文区图片，排除章/篇扉页（.no-zoom）；封面已内联为矢量，无需 zoom
     const route = useRoute()
     const initZoom = () =>
       nextTick(() => {
-        mediumZoom('.vp-doc img:not(.no-zoom), .hero-cover-image', {
+        mediumZoom('.vp-doc img:not(.no-zoom)', {
           background: 'var(--vp-c-bg)',
           margin: 24,
         })
@@ -53,15 +52,27 @@ const theme: Theme = {
           page.style.transform = `scale(${scale})`
         })
       })
+    // 首页封面：内联渲染的固定 794px 宽（A4），按容器宽度动态缩放
+    const scaleCover = () =>
+      nextTick(() => {
+        document.querySelectorAll('.hero-cover').forEach((wrap) => {
+          const body = wrap.querySelector<HTMLElement>('.cover-body')
+          if (!body) return
+          const scale = wrap.clientWidth / 794
+          body.style.transform = `scale(${scale})`
+        })
+      })
     onMounted(() => {
       initZoom()
       wrapButtons()
       scaleDividers()
+      scaleCover()
     })
     watch(() => route.path, () => {
       initZoom()
       wrapButtons()
       scaleDividers()
+      scaleCover()
     })
   },
 }

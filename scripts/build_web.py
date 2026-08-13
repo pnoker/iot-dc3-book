@@ -85,6 +85,70 @@ def scope_divider_css(css: str) -> str:
         out.append(f"{scoped} {{{body}}}")
     return "\n".join(out)
 
+
+# 封面（book/assets/cover.html）Jinja2 渲染：与 pdf.py _render_cover_html 同源。
+COVER_HTML = ROOT / "book" / "assets" / "cover.html"
+BOOK_YAML = ROOT / "book" / "config" / "book.yaml"
+
+
+def scope_cover_css(css: str) -> str:
+    """把封面 cover.html 的 <style> 作用域化到 .cover-body 内。
+
+    - :root/.dark 变量块保留全局（--cover-* 供 .cover-body 引用 + 响应明暗主题）
+    - body 选择器改挂 .cover-body（固定 A4 尺寸 mm 转 px，作缩放基准）
+    - 其余选择器前缀 .cover-body；丢弃 @page/@media print（web 无打印上下文）
+    """
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    # 移除 at-rule 块：@page（无嵌套）、@media print（一层嵌套）
+    css = re.sub(r"@page\s*\{[^{}]*\}", "", css)
+    css = re.sub(r"@media\s+print\s*\{[^{}]*\{[^{}]*\}[^{}]*\}", "", css)
+    out: list[str] = []
+    for m in _DIVIDER_RULE_RE.finditer(css):
+        selector = " ".join(m.group(1).split())
+        body = m.group(2)
+        if selector in (":root", ".dark"):
+            out.append(f"{selector} {{{body}}}")
+            continue
+        if selector == "body":
+            # A4 210mm×297mm 按 96dpi（1mm≈3.7795px）折合 794×1123px，作缩放基准
+            body = body.replace("210mm", "794px").replace("297mm", "1123px")
+            out.append(f".cover-body {{{body}}}")
+            continue
+        if selector == "*":
+            out.append(f".cover-body * {{{body}}}")
+            continue
+        parts = [p.strip() for p in selector.split(",")]
+        scoped = ", ".join(f".cover-body {p}" for p in parts)
+        out.append(f"{scoped} {{{body}}}")
+    return "\n".join(out)
+
+
+def render_cover_inline() -> tuple[str, str]:
+    """渲染封面模板，返回 (作用域化 CSS, body HTML)。"""
+    meta = yaml.safe_load(BOOK_YAML.read_text(encoding="utf-8"))
+    template = Environment(
+        autoescape=select_autoescape(enabled_extensions=("html",)),
+    ).from_string(COVER_HTML.read_text(encoding="utf-8"))
+    rendered = template.render(**meta)
+
+    style_m = re.search(r"<style[^>]*>(.*?)</style>", rendered, re.DOTALL)
+    css = style_m.group(1) if style_m else ""
+    body_m = re.search(r"<body[^>]*>(.*?)</body>", rendered, re.DOTALL)
+    body = body_m.group(1) if body_m else ""
+
+    # logo.svg 相对路径 → 站点根
+    body = body.replace('src="logo.svg"', 'src="/logo.svg"')
+    return scope_cover_css(css), body
+
+
+def gen_cover_art_ts(body_html: str) -> str:
+    """生成 docs/.vitepress/theme/cover-art.ts（导出封面 body HTML 字符串）。"""
+    return (
+        "// 自动生成，请勿手改 —— 由 scripts/build_web.py 产出\n"
+        f"export const coverBodyHtml = {json.dumps(body_html, ensure_ascii=False)}\n"
+    )
+
+
 # 篇关键词 → (web slug, 篇扉页图名)
 PART_SLUGS = {
     "基础篇": ("foundations", "part-01"),
@@ -460,6 +524,13 @@ def copy_assets() -> dict[str, tuple[int, int]]:
     if divider_css.exists():
         scoped = scope_divider_css(divider_css.read_text(encoding="utf-8"))
         (PUBLIC / "divider.css").write_text(scoped, encoding="utf-8")
+    # 封面主题样式 + 内联 body（hero 主视觉，跟随明暗主题）
+    if COVER_HTML.exists():
+        cover_css, cover_body = render_cover_inline()
+        (PUBLIC / "cover.css").write_text(cover_css, encoding="utf-8")
+        (VITEPRESS / "theme" / "cover-art.ts").write_text(
+            gen_cover_art_ts(cover_body), encoding="utf-8"
+        )
     return dims
 
 
