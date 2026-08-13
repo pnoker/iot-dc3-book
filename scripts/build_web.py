@@ -174,11 +174,12 @@ PART_DIR_OFFSET = 5
 # ![alt](src) 或 ![alt](src){attrs}
 IMG_RE = re.compile(r"!\[([^\]]*)\]\(([^)\s]+)\)(?:\s*\{[^}]*\})?")
 
-# 资料溯源标注（写作过程的来源标记，网站不展示）
+# 资料溯源标注（写作过程的来源标记，出版不展示）
 # ① （资料…）整块：覆盖 [S6]/[参考5]/[S1][S12]/C7-EVAL-02/参考1/自然语言描述 等所有形态
-CITE_BLOCK_RE = re.compile(r"（资料：?[^）]+）")
-# ② 散落的 [S数字] [参考数字] 标记（不动 [roundId] 等代码占位符）
-CITE_MARK_RE = re.compile(r"\[(?:S\d+|参考\d+)\]")
+CITE_BLOCK_RE = re.compile(r"（资料[^（）]*）")
+# ② 散落的 [S数字]/[S-xxx]/[S7, S8]/[参考数字]/[W-C7-xxx] 标记
+#    （不动 [roundId] 等代码占位符，也不动「参考5.2.2节」这类无方括号的章节引用）
+CITE_MARK_RE = re.compile(r"\[(?:S[^]]*|参考\d+|W-C7-[^]]*)\]")
 
 
 def oneline(s: str) -> str:

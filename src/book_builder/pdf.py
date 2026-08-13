@@ -19,6 +19,18 @@ logger = get_logger("pdf")
 
 _DIVIDER_MARKER_RE = re.compile(r"BOOK_DIVIDER:([a-z]+-\d{2})")
 
+# 资料溯源标注（写作过程的来源标记，正式出版 PDF 不展示）
+# 与 scripts/build_web.py 的 clean_citations 保持一致，保证 web 与 PDF 输出一致。
+_CITE_BLOCK_RE = re.compile(r"（资料[^（）]*）")
+_CITE_MARK_RE = re.compile(r"\[(?:S[^]]*|参考\d+|W-C7-[^]]*)\]")
+
+
+def _clean_citations(md: str) -> str:
+    """清除写作期资料溯源标注（整块 + 散落标记）；保留「参考5.2.2节」等章节引用与代码占位符。"""
+    md = _CITE_BLOCK_RE.sub("", md)
+    md = _CITE_MARK_RE.sub("", md)
+    return md
+
 
 def generate_pdf_output(
     markdown_file: str | Path,
@@ -62,8 +74,9 @@ def generate_pdf_output(
     )
     has_cover = bool(cover_path and cover_path.exists())
 
-    # pandoc 输入：去图片属性 + 去封面引用
+    # pandoc 输入：去图片属性 + 去封面引用 + 清写作期溯源标注
     text = markdown_path.read_text(encoding="utf-8")
+    text = _clean_citations(text)
     body_text = re.sub(r"(!\[[^\]]*\]\([^)]*\))\s*\{[^}]*\}", r"\1", text)
     divider_ids = list(dict.fromkeys(_DIVIDER_MARKER_RE.findall(body_text)))
     divider_paths = _resolve_divider_paths(divider_ids, divider_images)

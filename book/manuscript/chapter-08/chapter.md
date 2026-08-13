@@ -270,7 +270,7 @@ GDPR最有冲击力的条款之一是**被遗忘权**（Right to Erasure）：�
 
 ### 8.1.4 NIST AI RMF：把 Agent 风险纳入治理闭环
 
-传统安全控制常从漏洞、身份和网络边界出发，但 Agent 风险还取决于使用场景、工具权限、自主度和物理后果。同一个模型用于生成周报与用于提交设备命令，风险等级完全不同。NIST AI Risk Management Framework（AI RMF 1.0）用 GOVERN、MAP、MEASURE、MANAGE 四个函数组织 AI 风险管理；其中 GOVERN 贯穿其他函数，适合把零散控制连接成持续治理闭环（[NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework)，访问于 2026-07）。AI RMF 是自愿性风险管理框架，不应写成强制法规或产品认证。
+传统安全控制常从漏洞、身份和网络边界出发，但 Agent 风险还取决于使用场景、工具权限、自主度和物理后果。同一个模型用于生成周报与用于提交设备命令，风险等级完全不同。NIST AI Risk Management Framework（AI RMF 1.0）用 GOVERN、MAP、MEASURE、MANAGE 四个函数组织 AI 风险管理；其中 GOVERN 贯穿其他函数，适合把零散控制连接成持续治理闭环（[NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework)）。AI RMF 是自愿性风险管理框架，不应写成强制法规或产品认证。
 
 #### GOVERN：先明确谁能决定系统放权
 
@@ -365,6 +365,8 @@ X.509证书是最成熟的公钥基础设施（PKI）。设备持有私钥与证
 整个握手消息体积远小于TLS 1.3的证书交换。EDHOC同时提供身份保护（保护设备标识不被窃听）和前向保密（会话密钥泄露不影响历史会话）。它的工程落地常见于CoAP+DTLS场景，在一些轻量级M2M场景中被讨论作为可选安全模式。需要注意的是EDHOC依赖设备侧支持COSE编解码和椭圆曲线运算（如X25519），对极低端MCU仍有压力，更适合Cortex-M3级别以上的节点。
 
 #### 方案对比与选型建议
+
+**表8-2 设备认证方案对比（X.509 证书 / PSK / EDHOC）**
 
 | 特点 | X.509证书 + mTLS | PSK（预共享密钥） | EDHOC |
 |------|------------------|------------------|-------|
@@ -780,7 +782,7 @@ render_notes: 四层区域用透明度渐变的背景色区分（从外壳的不
 
 ### 8.2.4 设备生命周期、SBOM 与安全供应链
 
-第 8.2 小节前面已经解决“单台设备如何认证、启动和抗篡改”，但物联网系统的安全责任并不止于设备加电的那一刻。一台设备从工厂制造、上架、部署、更新、异常处置到最终退役，会经历若干年时间；同时，它运行的固件与云端软件都由多层第三方组件构成。生命周期治理和软件供应链一旦缺位，个别设备的漏洞会通过 OTA 或库更新在整个车队中放大。NIST 面向物联网的公开材料强调，制造商在设计、开发、生产、支持与退役各阶段都应承担明确的安全活动（[NIST Cybersecurity for IoT Program](https://www.nist.gov/itl/applied-cybersecurity/nist-cybersecurity-iot-program)，访问于 2026-07）。
+第 8.2 小节前面已经解决“单台设备如何认证、启动和抗篡改”，但物联网系统的安全责任并不止于设备加电的那一刻。一台设备从工厂制造、上架、部署、更新、异常处置到最终退役，会经历若干年时间；同时，它运行的固件与云端软件都由多层第三方组件构成。生命周期治理和软件供应链一旦缺位，个别设备的漏洞会通过 OTA 或库更新在整个车队中放大。NIST 面向物联网的公开材料强调，制造商在设计、开发、生产、支持与退役各阶段都应承担明确的安全活动（[NIST Cybersecurity for IoT Program](https://www.nist.gov/itl/applied-cybersecurity/nist-cybersecurity-iot-program)）。
 
 #### 生命周期六阶段：先分清谁负责什么
 
@@ -797,7 +799,7 @@ render_notes: 四层区域用透明度渐变的背景色区分（从外壳的不
 
 #### SBOM：让固件里的“组件成分”变得可读
 
-生命周期治理只解决“谁负责”，但供应链攻击往往来自设备固件与云端服务的第三方组件。软件物料清单（SBOM）用机器可读的方式记录一份软件里包含哪些组件、版本和供应商，让漏洞情报（如 CVE）可以在毫秒级映射到具体设备批次。SBOM 已经成为多国政策明确要求的最小共识，具体做法可以参照 NIST 的软件供应链安全指南（[NIST Software Supply Chain Security](https://www.nist.gov/itl/executive-order-improving-nations-cybersecurity/software-supply-chain-security-guidance)，访问于 2026-07）。
+生命周期治理只解决“谁负责”，但供应链攻击往往来自设备固件与云端服务的第三方组件。软件物料清单（SBOM）用机器可读的方式记录一份软件里包含哪些组件、版本和供应商，让漏洞情报（如 CVE）可以在毫秒级映射到具体设备批次。SBOM 已经成为多国政策明确要求的最小共识，具体做法可以参照 NIST 的软件供应链安全指南（[NIST Software Supply Chain Security](https://www.nist.gov/itl/executive-order-improving-nations-cybersecurity/software-supply-chain-security-guidance)）。
 
 工程实践中建议：
 
@@ -1001,7 +1003,7 @@ DTLS 的握手大致跟 TLS 一样，但多了两步：
 | 密钥交换 | RSA | 中等（大数模幂运算在低端 MCU 上较慢） | 无前向保密，TLS 1.3 中仅用于签名验证 |
 | 消息认证 | SHA-256 | 高（多数 MCU 有硬件 SHA-256） | TLS 1.2 记录层认证；TLS 1.3 改用 AEAD |
 | 消息认证 | SHA-1 | 不推荐（已证明碰撞风险） | 不应在新系统中使用 |
-*表8-1 典型密码算法适用性对比*
+*表8-3 典型密码算法适用性对比*
 
 工程实践中，推荐套件组合为 `TLS_ECDHE_ECDSA_WITH_AES_128_CCM`（RFC 6655）或 `TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305`（RFC 7905）。证书链深度不要超过两级——设备在握手阶段每多传一级证书，就多出几百字节传输量，对 LoRaWAN 或 NB-IoT 这类极低带宽链路可能撑爆 MTU 或明显延长握手完成时间。
 
@@ -1723,7 +1725,7 @@ RBAC 的设计遵循**最小权限原则**：每个角色只包含完成其工�
 
 下面是一个针对智能楼宇管理平台的角色权限配置
 
-**表 8-3 RBAC 权限配置示例（例子）**
+**表 8-4 RBAC 权限配置示例（例子）**
 
 | 角色 | 可访问资源 | 允许的操作 | 作用域限制 |
 |------|------------|------------|------------|
@@ -2229,7 +2231,7 @@ render_notes: "五层架构,输入/输出过滤器用菱形,模型层内嵌条�
 
 ### 8.5.4 Agent 安全：工具、记忆、身份与自主性
 
-Prompt 注入主要描述攻击者如何影响模型输入；当模型还能使用工具、继承身份、保存记忆和恢复长期任务时，风险会扩展到整个 Agent 系统。OWASP 对 LLM/GenAI 风险的公开材料持续强调 Prompt Injection、供应链、敏感信息泄漏、不安全插件/工具设计和 Excessive Agency 等问题（[OWASP Top 10 for Large Language Model Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)，访问于 2026-07）。具体条目名称会随版本演进，工程上应锁定采用的清单版本，而不是把编号写成永远不变的事实。
+Prompt 注入主要描述攻击者如何影响模型输入；当模型还能使用工具、继承身份、保存记忆和恢复长期任务时，风险会扩展到整个 Agent 系统。OWASP 对 LLM/GenAI 风险的公开材料持续强调 Prompt Injection、供应链、敏感信息泄漏、不安全插件/工具设计和 Excessive Agency 等问题（[OWASP Top 10 for Large Language Model Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)）。具体条目名称会随版本演进，工程上应锁定采用的清单版本，而不是把编号写成永远不变的事实。
 
 #### 间接注入：不可信内容可能伪装成系统指令
 
