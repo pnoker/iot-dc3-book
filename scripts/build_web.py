@@ -40,7 +40,7 @@ except ImportError:
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 # 插图主题适配（内联 SVG + 颜色变量），与 build_web 同目录
-from fig_theme import figure_id_of, load_figure_svg, gen_figures_css
+from fig_theme import figure_id_of, load_figure_svg, gen_figures_css, collect_figure_styles
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "output"
@@ -57,6 +57,33 @@ _DIV_ENV = Environment(
     trim_blocks=True,
     lstrip_blocks=True,
 )
+
+# divider.css 规则块解析与作用域化（web 端章扉页是内联小块，不是独立页面）
+_DIVIDER_RULE_RE = re.compile(r"([^{}]+)\{([^{}]*)\}")
+# 这些选择器是 PDF 独立渲染时用的全局页面尺寸规则，web 端必须丢弃，
+# 否则会污染 VitePress 站点（html/body 固定 1240×1754 + overflow:hidden 导致无法滚动）。
+_DIVIDER_DROP_SELECTORS = {"*", "html", "body", "html, body"}
+# 变量定义块保留原样（--div-* 是全局变量，供 .divider-body 内引用）
+_DIVIDER_VAR_SELECTORS = {":root", ".dark"}
+
+
+def scope_divider_css(css: str) -> str:
+    """把 divider.css 作用域化到 .divider-body 内，避免全局 html/body/h1 污染站点。"""
+    # 先剥离注释，避免注释混入选择器（如 `/* 注释 */ :root`）
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    out: list[str] = []
+    for m in _DIVIDER_RULE_RE.finditer(css):
+        selector = " ".join(m.group(1).split())
+        body = m.group(2)
+        if selector in _DIVIDER_DROP_SELECTORS:
+            continue
+        if selector in _DIVIDER_VAR_SELECTORS:
+            out.append(f"{selector} {{{body}}}")
+            continue
+        parts = [p.strip() for p in selector.split(",")]
+        scoped = ", ".join(f".divider-body {p}" for p in parts)
+        out.append(f"{scoped} {{{body}}}")
+    return "\n".join(out)
 
 # 篇关键词 → (web slug, 篇扉页图名)
 PART_SLUGS = {
@@ -423,12 +450,16 @@ def copy_assets() -> dict[str, tuple[int, int]]:
     if cover.exists():
         shutil.copy2(cover, PUBLIC / "cover.png")
         optimize_to_webp(cover, PUBLIC / "cover.webp", COVER_MAX_W)
-    # 插图主题变量表（内联 SVG 颜色用）
-    (PUBLIC / "figures.css").write_text(gen_figures_css(), encoding="utf-8")
+    # 插图主题变量表（内联 SVG 颜色用）+ SVG 内 <style> 作用域化规则
+    (PUBLIC / "figures.css").write_text(
+        gen_figures_css() + "\n" + collect_figure_styles(), encoding="utf-8"
+    )
     # 章/篇扉页主题样式（divider.css 已变量化：:root 原色、.dark 暗色）
+    # web 端作用域化到 .divider-body，丢弃 html/body 全局页面尺寸规则，避免站点无法滚动。
     divider_css = DIVIDERS_DIR / "divider.css"
     if divider_css.exists():
-        shutil.copy2(divider_css, PUBLIC / "divider.css")
+        scoped = scope_divider_css(divider_css.read_text(encoding="utf-8"))
+        (PUBLIC / "divider.css").write_text(scoped, encoding="utf-8")
     return dims
 
 

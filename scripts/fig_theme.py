@@ -229,6 +229,52 @@ def figure_id_of(src: str) -> str | None:
     return m.group(1) if m else None
 
 
+# SVG 内 <style> 标签：VitePress dev 模式（client 组件模板）会拒绝 <style>/<script>，
+# 且其中的颜色是硬编码、暗色主题不生效。须提取出来、作用域化到 .fig-<id> 类。
+_STYLE_RE = re.compile(r"<style\b[^>]*>(.*?)</style>", re.IGNORECASE | re.DOTALL)
+_STYLE_COLOR_RE = re.compile(r"(fill|stroke)\s*:\s*(#[0-9a-fA-F]{3,8})\b", re.IGNORECASE)
+
+
+def _extract_and_scope_style(svg: str, figure_id: str) -> tuple[str, str]:
+    """提取 SVG 内 <style>，颜色变量化 + 作用域化到 .fig-<id>。
+
+    返回 (移除 <style> 后的 svg, 作用域化后的 CSS 规则)。
+    """
+    scoped_rules: list[str] = []
+
+    def _repl(m: re.Match) -> str:
+        css_text = m.group(1)
+        # 颜色变量化：fill: #xxx → fill: var(--fig-xxx)
+        css_text = _STYLE_COLOR_RE.sub(
+            lambda cm: f"{cm.group(1)}: var(--fig-{cm.group(2).lstrip('#').lower()})",
+            css_text,
+        )
+        for rule in css_text.split("}"):
+            if "{" not in rule:
+                continue
+            sel, body = rule.split("{", 1)
+            sels = [s.strip() for s in sel.split(",") if s.strip()]
+            if not sels:
+                continue
+            scoped = ", ".join(f".{figure_id} {s}" for s in sels)
+            scoped_rules.append(f"{scoped} {{{body}}}")
+        return ""
+
+    svg_out = _STYLE_RE.sub(_repl, svg)
+    return svg_out, "\n".join(scoped_rules)
+
+
+def collect_figure_styles() -> str:
+    """扫描所有图，收集 SVG 内 <style> 作用域化后的 CSS 规则（追加到 figures.css）。"""
+    rules: list[str] = []
+    for f in sorted(FIGURES_DIR.glob("chapter-*/*.html")):
+        inline = extract_inline_svg(f.read_text(encoding="utf-8"))
+        _, scoped = _extract_and_scope_style(inline, f.stem)
+        if scoped:
+            rules.append(scoped)
+    return "\n".join(rules)
+
+
 def load_figure_svg(figure_id: str) -> str | None:
     """按 figure_id 定位并返回 theme 化的内联 SVG；找不到返回 None。"""
     chapter = figure_id.split("-")[1]  # fig-03-01 → 03
@@ -237,6 +283,10 @@ def load_figure_svg(figure_id: str) -> str | None:
         return None
     html = src_file.read_text(encoding="utf-8")
     inline = extract_inline_svg(html)
+    # 提取并作用域化 <style>（移除标签，规则交给 figures.css）
+    inline, _ = _extract_and_scope_style(inline, figure_id)
+    # 给最外层 svg 根加类，供作用域化规则匹配
+    inline = re.sub(r"<svg\b", f'<svg class="{figure_id}"', inline, count=1, flags=re.IGNORECASE)
     return svg_to_theme(inline)
 
 
