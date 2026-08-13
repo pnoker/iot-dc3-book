@@ -28,7 +28,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       # Python + uv：web 转换脚本依赖 pyyaml（复用 book venv）
@@ -68,11 +68,6 @@ jobs:
         id: deployment
 
       # --- 搜索引擎主动推送 ---
-
-      # 通知 Google sitemap 已更新
-      - name: Ping Google
-        if: success()
-        run: curl -s "https://www.google.com/ping?sitemap=https://book.dc3.site/sitemap.xml" || true
 
       # 百度主动推送：从 sitemap 提取 URL 批量提交
       - name: Push to Baidu
