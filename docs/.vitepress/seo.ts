@@ -107,7 +107,7 @@ function buildJsonLd(
           {'@type': 'Thing', name: '智能体'},
         ],
       }),
-      // WebSite + Sitelinks Searchbox
+      // WebSite（站内搜索无独立 URL 入口，无法提供 Sitelinks Searchbox，故不声明 potentialAction）
       jsonLd({
         '@context': SCHEMA,
         '@type': 'WebSite',
@@ -119,14 +119,6 @@ function buildJsonLd(
         inLanguage: 'zh-CN',
         publisher: {'@type': 'Person', '@id': authorId, name: AUTHOR},
         copyrightYear: 2025,
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-          },
-          'query-input': 'required name=search_term_string',
-        },
       }),
       // Book
       jsonLd({
