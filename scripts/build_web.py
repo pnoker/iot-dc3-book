@@ -37,12 +37,26 @@ try:
 except ImportError:
     sys.exit("缺少 pyyaml，请用 `uv run python scripts/build_web.py` 运行（复用 book venv）。")
 
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+# 插图主题适配（内联 SVG + 颜色变量），与 build_web 同目录
+from fig_theme import figure_id_of, load_figure_svg, gen_figures_css
+
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "output"
 DOCS = ROOT / "docs"
 PUBLIC = DOCS / "public"
 VITEPRESS = DOCS / ".vitepress"
 PARTS_YAML = ROOT / "book" / "config" / "parts.yaml"
+DIVIDERS_DIR = ROOT / "book" / "dividers"
+
+# 章/篇扉页 Jinja2 环境（与 src/book_builder/dividers.py 同一套模板与数据）
+_DIV_ENV = Environment(
+    loader=FileSystemLoader(DIVIDERS_DIR),
+    autoescape=select_autoescape(enabled_extensions=("html",)),
+    trim_blocks=True,
+    lstrip_blocks=True,
+)
 
 # 篇关键词 → (web slug, 篇扉页图名)
 PART_SLUGS = {
@@ -121,11 +135,27 @@ def fix_caption(alt: str) -> str:
 
 
 def to_figure(m: re.Match) -> str:
+    """插图转 <figure>：内联 theme 化 SVG（支持明暗主题）。
+
+    从 src 解析 figure_id，读 SVG 源替换色值为 CSS 变量后内联进页面；
+    源缺失时回退为 WebP <img>（保证构建不中断）。
+    """
     alt, src = m.group(1), m.group(2)
+    fig_id = figure_id_of(src)
+    inline = load_figure_svg(fig_id) if fig_id else None
+    caption = f"  <figcaption>{fix_caption(alt)}</figcaption>\n" if alt else ""
+    if inline:
+        # 内联 SVG：figcaption 前，SVG 自带 title/desc，外部再补 alt 语义用 <figure aria-label>
+        return (
+            "<figure class=\"fig fig-svg\">\n"
+            f"  <div class=\"fig-svg-body\">{inline}</div>\n"
+            f"{caption}"
+            "</figure>"
+        )
     return (
         "<figure class=\"fig\">\n"
         f'  <img src="{web_src(src)}" alt="{alt}" loading="lazy">\n'
-        f"  <figcaption>{fix_caption(alt)}</figcaption>\n"
+        f"{caption}"
         "</figure>"
     )
 
@@ -157,15 +187,71 @@ def slug_of(part: dict) -> tuple[str, str]:
     return PART_SLUGS[key]
 
 
+def render_divider_inline(context: dict[str, str]) -> str:
+    """渲染章/篇扉页模板，提取 body 内容内联进页面（去掉 <link> 与空行）。
+
+    扉页颜色由 divider.css 的 --div-* 变量驱动（:root 原色、.dark 暗色），
+    divider.css 经 <link rel="stylesheet" href="/divider.css"> 全局加载。
+    """
+    template = _DIV_ENV.get_template(context["source_name"])
+    rendered = template.render(**context)
+    m = re.search(r"<body[^>]*>(.*?)</body>", rendered, re.DOTALL)
+    if not m:
+        return ""
+    body = m.group(1)
+    # 去掉模板自带的 divider.css 引用（web 端统一由 config.ts 加载 /divider.css）
+    body = re.sub(r'<link[^>]*divider\.css[^>]*>', "", body)
+    # 压缩空行，保持连续 HTML 块（避免 markdown-it 断裂）
+    body = re.sub(r"\n[ \t]*\n+", "\n", body)
+    return body
+
+
+def part_divider_context(part: dict, part_index: int) -> dict[str, str]:
+    """篇扉页 Jinja2 上下文（与 dividers.py _build_specs 的 part 分支一致）。"""
+    themes = ("foundation", "technology", "application")
+    theme = themes[(part_index - 1) % len(themes)]
+    return {
+        "source_name": f"part-{part_index:02d}.html",
+        "kind": "part",
+        "theme": theme,
+        "number": f"{part_index:02d}",
+        "label": f"第{part['prefix']}篇",
+        "english_label": f"PART {part_index:02d}",
+        "title": part["name"],
+        "title_main": part["name"],
+        "title_sub": "",
+        "description": part["description"],
+    }
+
+
+def chapter_divider_context(part: dict, part_index: int, chapter: dict) -> dict[str, str]:
+    """章扉页 Jinja2 上下文（与 dividers.py _build_specs 的 chapter 分支一致）。"""
+    themes = ("foundation", "technology", "application")
+    theme = themes[(part_index - 1) % len(themes)]
+    title_main, _, title_sub = chapter["title"].partition("：")
+    return {
+        "source_name": f"chapter-{chapter['id']:02d}.html",
+        "kind": "chapter",
+        "theme": theme,
+        "number": f"{chapter['id']:02d}",
+        "label": f"第{chapter['id']}章",
+        "english_label": f"CHAPTER {chapter['id']:02d}",
+        "title": chapter["title"],
+        "title_main": title_main,
+        "title_sub": title_sub,
+        "description": chapter["description"],
+    }
+
+
 # ── 页面生成 ──────────────────────────────────────────────────────────────
 
-def convert_chapter(src: Path, cid: int, title: str, desc: str, date_modified: str = "") -> str:
+def convert_chapter(src: Path, cid: int, title: str, desc: str, date_modified: str = "", divider_html: str = "") -> str:
     body = src.read_text(encoding="utf-8")
     body = clean_citations(body)
     body = convert_images(body)
     divider = (
         '\n<figure class="chapter-divider">\n'
-        f'  <img src="/dividers/chapter-{cid:02d}.webp" alt="第 {cid} 章扉页" class="no-zoom">\n'
+        f'  <div class="divider-body">{divider_html}</div>\n'
         "</figure>\n"
     )
     # 在第一个 H1 之后插入章扉页
@@ -204,13 +290,13 @@ def gen_contents(parts: list[dict]) -> str:
     return "\n".join(out) + "\n"
 
 
-def gen_part_index(part: dict, slug: str, divider_img: str) -> str:
+def gen_part_index(part: dict, slug: str, divider_html: str = "") -> str:
     """篇扉页：篇图 + 篇名 + 概述 + 本章清单。"""
     desc = oneline(part.get("description", ""))
     out = [fm(title=part["name"], description=desc)]
     out.append(
         '<figure class="part-divider">\n'
-        f'  <img src="/dividers/{divider_img}.webp" alt="{part["name"]}" class="no-zoom">\n'
+        f'  <div class="divider-body">{divider_html}</div>\n'
         "</figure>\n"
     )
     out.append(f"# {part['name']}\n")
@@ -337,6 +423,12 @@ def copy_assets() -> dict[str, tuple[int, int]]:
     if cover.exists():
         shutil.copy2(cover, PUBLIC / "cover.png")
         optimize_to_webp(cover, PUBLIC / "cover.webp", COVER_MAX_W)
+    # 插图主题变量表（内联 SVG 颜色用）
+    (PUBLIC / "figures.css").write_text(gen_figures_css(), encoding="utf-8")
+    # 章/篇扉页主题样式（divider.css 已变量化：:root 原色、.dark 暗色）
+    divider_css = DIVIDERS_DIR / "divider.css"
+    if divider_css.exists():
+        shutil.copy2(divider_css, PUBLIC / "divider.css")
     return dims
 
 
@@ -366,22 +458,26 @@ def main() -> None:
     (preface_dir / "contents.md").write_text(gen_contents(parts), encoding="utf-8")
 
     # 篇与章
-    for i, part in enumerate(parts):
+    for i, part in enumerate(parts, start=1):
         slug, divider_img = slug_of(part)
-        src_part_dir = OUTPUT / f"0{PART_DIR_OFFSET + i}-{part['name']}"
+        src_part_dir = OUTPUT / f"0{PART_DIR_OFFSET + (i - 1)}-{part['name']}"
         out_dir = DOCS / slug
         out_dir.mkdir(parents=True, exist_ok=True)
-        (out_dir / "index.md").write_text(gen_part_index(part, slug, divider_img), encoding="utf-8")
+        part_html = render_divider_inline(part_divider_context(part, i))
+        (out_dir / "index.md").write_text(
+            gen_part_index(part, slug, divider_html=part_html), encoding="utf-8"
+        )
         for ch in part["chapters"]:
             srcs = list(src_part_dir.glob(f"{ch['id']:02d}-*.md"))
             if not srcs:
                 print(f"⚠️  未找到第 {ch['id']} 章源文件：{src_part_dir}")
                 continue
             ch_lastmod = git_lastmod(f"book/manuscript/chapter-{ch['id']:02d}")
+            ch_html = render_divider_inline(chapter_divider_context(part, i, ch))
             (out_dir / f"chapter-{ch['id']}.md").write_text(
                 convert_chapter(
                     srcs[0], ch["id"], ch["title"], ch.get("description", ""),
-                    date_modified=ch_lastmod,
+                    date_modified=ch_lastmod, divider_html=ch_html,
                 ),
                 encoding="utf-8",
             )

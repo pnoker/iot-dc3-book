@@ -1161,28 +1161,47 @@ body {
     line-height: 1.6;
 }
 
-/* 章扉页：装饰性整图，居中、不放大 */
+/* 内联 SVG 插图：自适应宽度，跟随明暗主题（颜色由 figures.css 变量驱动） */
+.vp-doc .fig-svg-body {
+    display: block;
+    text-align: center;
+}
+.vp-doc .fig-svg-body svg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(16, 42, 72, 0.1);
+}
+.dark .vp-doc .fig-svg-body svg {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+/* 章/篇扉页：内联渲染（固定 1240×1754 布局按容器宽度缩放） */
 .vp-doc .chapter-divider {
     margin: 8px 0 32px;
     text-align: center;
 }
-.vp-doc .chapter-divider img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 14px 36px rgba(16, 42, 72, 0.14);
-}
-
-/* 篇扉页 */
 .vp-doc .part-divider {
     margin: 12px 0 28px;
     text-align: center;
 }
-.vp-doc .part-divider img {
-    max-width: 100%;
-    height: auto;
+.vp-doc .divider-body {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1240 / 1754;
+    overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 14px 36px rgba(16, 42, 72, 0.14);
+}
+.dark .vp-doc .divider-body {
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
+}
+.vp-doc .divider-body > .page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    /* 缩放比例由 theme/index.ts 的 scaleDividers() 按容器宽度动态设置 */
 }
 
 /* medium-zoom 放大层跟随主题 */

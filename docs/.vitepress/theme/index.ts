@@ -43,13 +43,25 @@ const theme: Theme = {
           if (t) el.innerHTML = `<span class="vp-button-text">${t}</span>`
         })
       })
+    // 章/篇扉页：内联渲染的固定 1240px 布局，按容器宽度动态缩放
+    const scaleDividers = () =>
+      nextTick(() => {
+        document.querySelectorAll('.divider-body').forEach((body) => {
+          const page = body.querySelector<HTMLElement>('.page')
+          if (!page) return
+          const scale = body.clientWidth / 1240
+          page.style.transform = `scale(${scale})`
+        })
+      })
     onMounted(() => {
       initZoom()
       wrapButtons()
+      scaleDividers()
     })
     watch(() => route.path, () => {
       initZoom()
       wrapButtons()
+      scaleDividers()
     })
   },
 }

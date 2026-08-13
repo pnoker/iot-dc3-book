@@ -15,6 +15,11 @@ export default defineConfig({
   sitemap: {hostname: 'https://book.dc3.site'},
 
   head: [
+    // ── 插图主题变量（内联 SVG 颜色，跟随明暗主题）──
+    ['link', {rel: 'stylesheet', href: '/figures.css'}],
+    // ── 章/篇扉页主题样式（--div-* 变量，跟随明暗主题）──
+    ['link', {rel: 'stylesheet', href: '/divider.css'}],
+
     // ── 资源预连接（性能：减少第三方域名 DNS/TLS 握手延迟）──
     ['link', {rel: 'preconnect', href: 'https://www.googletagmanager.com', crossorigin: 'anonymous'}],
     ['link', {rel: 'dns-prefetch', href: 'https://www.googletagmanager.com'}],

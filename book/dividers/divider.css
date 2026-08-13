@@ -1,30 +1,93 @@
 * { box-sizing: border-box; }
+
+/* 扉页主题变量：light 原色（PDF 渲染用），.dark 覆盖（web 暗色模式用）。
+   变量命名 --div-*，与正文插图的 --fig-* 相互独立。 */
+:root {
+  --div-bg-from: #F8FAFC;
+  --div-bg-via: #EEF4FF;
+  --div-bg-to: #F8FAFC;
+  --div-chapter-bg-from: #FFFFFF;
+  --div-chapter-bg-via: #F8FAFC;
+  --div-chapter-bg-to: #F1F5F9;
+  --div-text: #0F172A;
+  --div-text-2: #475569;
+  --div-text-3: #64748B;
+  --div-part-title: #1D4ED8;
+  --div-primary: #2563EB;
+  --div-secondary: #0F766E;
+  --div-accent: #F97316;
+  --div-cyan: #0891B2;
+  --div-cyan-2: #06B6D4;
+  --div-green: #10B981;
+  --div-amber: #F59E0B;
+  --div-grid-line: rgba(37, 99, 235, 0.06);
+  --div-ring: #2563EB;
+  --div-glow-a: rgba(59, 130, 246, 0.16);
+  --div-glow-b: rgba(16, 185, 129, 0.1);
+  --div-glow-c: rgba(245, 158, 11, 0.07);
+  --div-eyebrow-bg: rgba(255, 255, 255, 0.5);
+  --div-surface: rgba(255, 255, 255, 0.64);
+  --div-stroke-white: #FFFFFF;
+  --div-rule-grad: linear-gradient(90deg, #2563EB, #10B981 58%, #F59E0B);
+  --div-node-shadow: rgba(37, 99, 235, 0.34);
+}
+
+.dark {
+  --div-bg-from: #0F172A;
+  --div-bg-via: #1E293B;
+  --div-bg-to: #0F172A;
+  --div-chapter-bg-from: #1E293B;
+  --div-chapter-bg-via: #0F172A;
+  --div-chapter-bg-to: #1E293B;
+  --div-text: #F1F5F9;
+  --div-text-2: #94A3B8;
+  --div-text-3: #94A3B8;
+  --div-part-title: #60A5FA;
+  --div-primary: #60A5FA;
+  --div-secondary: #2DD4BF;
+  --div-accent: #FB923C;
+  --div-cyan: #22D3EE;
+  --div-cyan-2: #22D3EE;
+  --div-green: #34D399;
+  --div-amber: #FBBF24;
+  --div-grid-line: rgba(96, 165, 250, 0.06);
+  --div-ring: #3B82F6;
+  --div-glow-a: rgba(59, 130, 246, 0.12);
+  --div-glow-b: rgba(16, 185, 129, 0.08);
+  --div-glow-c: rgba(245, 158, 11, 0.06);
+  --div-eyebrow-bg: rgba(30, 41, 59, 0.5);
+  --div-surface: rgba(30, 41, 59, 0.64);
+  --div-stroke-white: #0F172A;
+  --div-rule-grad: linear-gradient(90deg, #60A5FA, #34D399 58%, #FBBF24);
+  --div-node-shadow: rgba(96, 165, 250, 0.28);
+}
+
 html, body { width: 1240px; height: 1754px; margin: 0; overflow: hidden; }
 body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
 .page {
-  --primary: #2563EB;
-  --secondary: #0F766E;
-  --accent: #F97316;
-  --theme: #2563EB;
+  --primary: var(--div-primary);
+  --secondary: var(--div-secondary);
+  --accent: var(--div-accent);
+  --theme: var(--div-primary);
   position: relative;
   isolation: isolate;
   contain: paint;
   width: 1240px;
   height: 1754px;
   overflow: hidden;
-  color: #0F172A;
-  background: linear-gradient(150deg, #F8FAFC 0%, #EEF4FF 58%, #F8FAFC 100%);
+  color: var(--div-text);
+  background: linear-gradient(150deg, var(--div-bg-from) 0%, var(--div-bg-via) 58%, var(--div-bg-to) 100%);
 }
-.page.theme-technology { --theme: #0F766E; }
-.page.theme-application { --theme: #F97316; }
+.page.theme-technology { --theme: var(--div-secondary); }
+.page.theme-application { --theme: var(--div-accent); }
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -3;
   background-image:
-    linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
+    linear-gradient(var(--div-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--div-grid-line) 1px, transparent 1px);
   background-size: 54px 54px;
   opacity: 0.56;
 }
@@ -36,12 +99,12 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-s
   height: 620px;
   right: 24px;
   top: 24px;
-  border: 4px solid #2563EB;
+  border: 4px solid var(--div-ring);
   border-radius: 50%;
   opacity: 0.055;
 }
 .chapter-page {
-  background: linear-gradient(150deg, #FFFFFF 0%, #F8FAFC 58%, #F1F5F9 100%);
+  background: linear-gradient(150deg, var(--div-chapter-bg-from) 0%, var(--div-chapter-bg-via) 58%, var(--div-chapter-bg-to) 100%);
 }
 .chapter-page::before { opacity: 0.4; }
 .chapter-page::after { display: none; }
@@ -55,28 +118,28 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-s
   height: 650px;
   top: 0;
   right: 0;
-  background: radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.16), transparent 70%);
+  background: radial-gradient(circle at 100% 0%, var(--div-glow-a), transparent 70%);
 }
 .glow-b {
   width: 560px;
   height: 560px;
   bottom: 0;
   left: 0;
-  background: radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.1), transparent 70%);
+  background: radial-gradient(circle at 0% 100%, var(--div-glow-b), transparent 70%);
 }
 .glow-c {
   width: 470px;
   height: 470px;
   top: 43%;
   right: 0;
-  background: radial-gradient(circle at 100% 50%, rgba(245, 158, 11, 0.07), transparent 70%);
+  background: radial-gradient(circle at 100% 50%, var(--div-glow-c), transparent 70%);
 }
 .chapter-page .glow { display: none; }
 .frame {
   position: absolute;
   z-index: 2;
   inset: 68px;
-  border: 2px solid #2563EB;
+  border: 2px solid var(--div-ring);
   opacity: 0.14;
 }
 .copy {
@@ -94,7 +157,7 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-s
   border: 2px solid var(--theme);
   border-radius: 32px;
   color: var(--theme);
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--div-eyebrow-bg);
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 9px;
@@ -112,7 +175,7 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-s
   left: -14px;
   top: 36px;
   margin: 0;
-  color: #2563EB;
+  color: var(--div-primary);
   font-size: 240px;
   font-weight: 900;
   line-height: 1;
@@ -123,7 +186,7 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-s
 h1 {
   max-width: 850px;
   margin: 0;
-  color: #0F172A;
+  color: var(--div-text);
   font-size: 62px;
   font-weight: 850;
   line-height: 1.28;
@@ -131,18 +194,18 @@ h1 {
 }
 h1 span { display: block; }
 h1 .title-sub { margin-top: 8px; }
-.part-page h1 { color: #1D4ED8; font-size: 66px; }
+.part-page h1 { color: var(--div-part-title); font-size: 66px; }
 .rule {
   width: 132px;
   height: 8px;
   margin: 34px 0 28px;
   border-radius: 8px;
-  background: linear-gradient(90deg, #2563EB, #10B981 58%, #F59E0B);
+  background: var(--div-rule-grad);
 }
 .overview {
   max-width: 790px;
   margin: 0;
-  color: #475569;
+  color: var(--div-text-2);
   font-size: 28px;
   font-weight: 500;
   line-height: 1.72;
@@ -155,17 +218,17 @@ h1 .title-sub { margin-top: 8px; }
   bottom: 88px;
   width: 560px;
   height: 760px;
-  color: #2563EB;
+  color: var(--div-primary);
 }
 .part-page .visual { right: 72px; top: 86px; bottom: auto; width: 760px; height: 760px; }
 .diagram { width: 100%; height: 100%; overflow: visible; opacity: 0.62; }
 .diagram .line { fill: none; stroke: currentColor; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .diagram .line-thin { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .diagram .dash { stroke-dasharray: 13 15; }
-.diagram .surface { fill: rgba(255, 255, 255, 0.64); stroke: currentColor; stroke-width: 4; }
+.diagram .surface { fill: var(--div-surface); stroke: currentColor; stroke-width: 4; }
 .diagram .soft { fill: currentColor; opacity: 0.08; stroke: currentColor; stroke-width: 4; }
-.diagram .solid { fill: var(--theme); stroke: #FFFFFF; stroke-width: 4; }
-.diagram .accent { fill: var(--accent); stroke: #FFFFFF; stroke-width: 4; }
+.diagram .solid { fill: var(--theme); stroke: var(--div-stroke-white); stroke-width: 4; }
+.diagram .accent { fill: var(--accent); stroke: var(--div-stroke-white); stroke-width: 4; }
 .part-page .diagram { opacity: 0.58; }
 .family-network {
   display: none;
@@ -181,22 +244,22 @@ h1 .title-sub { margin-top: 8px; }
 }
 .family-network .network-line {
   fill: none;
-  stroke: #0891B2;
+  stroke: var(--div-cyan);
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .family-network .network-dash {
   fill: none;
-  stroke: #2563EB;
+  stroke: var(--div-primary);
   stroke-width: 1.7;
   stroke-dasharray: 6 13;
   opacity: 0.42;
 }
 .family-network .network-node {
-  stroke: #FFFFFF;
+  stroke: var(--div-stroke-white);
   stroke-width: 3;
-  filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.34));
+  filter: drop-shadow(0 0 8px var(--div-node-shadow));
 }
 .part-page .family-network {
   display: block;
@@ -214,7 +277,7 @@ h1 .title-sub { margin-top: 8px; }
   bottom: 82px;
   display: flex;
   justify-content: space-between;
-  color: #64748B;
+  color: var(--div-text-3);
   font-size: 17px;
   font-weight: 700;
   letter-spacing: 3px;
