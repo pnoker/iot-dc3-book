@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'PingFang SC','Microsoft YaHei','Segoe UI',Roboto,Arial,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1c2e"/>
+      <stop offset="0.55" stop-color="#0a2a44"/>
+      <stop offset="1" stop-color="#07172a"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.82" cy="0.24" r="0.5">
+      <stop offset="0" stop-color="#1296db" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#1296db" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.1" cy="0.96" r="0.45">
+      <stop offset="0" stop-color="#5558c9" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#5558c9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38c6ec"/>
+      <stop offset="0.5" stop-color="#5a8dee"/>
+      <stop offset="1" stop-color="#8f6ff2"/>
+    </linearGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d2c47"/>
+      <stop offset="1" stop-color="#0a2036"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- 左侧正文 -->
+  <g>
+    <rect x="80" y="118" width="150" height="34" rx="17" fill="rgba(56,198,236,0.12)" stroke="rgba(56,198,236,0.4)"/>
+    <text x="155" y="141" text-anchor="middle" font-size="19" fill="#8fe3ff">IoT DC3 · 系列著作</text>
+
+    <text x="80" y="290" font-size="72" font-weight="700" fill="url(#word)">从工业软件到 AI 智能体</text>
+
+    <text x="80" y="354" font-size="30" fill="#c7d7e8">AIoT 技术与实践 —— 从物联网平台到智能体应用</text>
+
+    <text x="80" y="414" font-size="23" fill="#7f93ac">张红元 著 · 14 章 · 155 张架构图</text>
+  </g>
+
+  <!-- 右侧书封 -->
+  <g>
+    <rect x="852" y="120" width="252" height="360" rx="14" fill="url(#cover)" stroke="rgba(120,190,240,0.35)"/>
+    <text x="978" y="210" text-anchor="middle" font-size="17" fill="#6f8fb0">IoT DC3</text>
+    <text x="978" y="252" text-anchor="middle" font-size="40" font-weight="700" fill="url(#word)">从工业软件</text>
+    <text x="978" y="306" text-anchor="middle" font-size="40" font-weight="700" fill="url(#word)">到 AI 智能体</text>
+    <line x1="920" y1="340" x2="1036" y2="340" stroke="rgba(120,190,240,0.35)"/>
+    <text x="978" y="382" text-anchor="middle" font-size="19" fill="#8fa7c2">AIoT 技术与实践</text>
+    <text x="978" y="452" text-anchor="middle" font-size="16" fill="#6f8fb0">张红元 著</text>
+  </g>
+
+  <!-- 底部品牌 -->
+  <g>
+    <circle cx="82" cy="568" r="7" fill="#46d3f2"/>
+    <circle cx="104" cy="560" r="4.5" fill="#6b9cf1"/>
+    <circle cx="104" cy="576" r="4.5" fill="#9d84f4"/>
+    <text x="124" y="576" font-size="22" font-weight="600" fill="#dfe9f5">IoT DC3</text>
+    <text x="1192" y="576" text-anchor="end" font-size="20" fill="#5f7590">book.dc3.site</text>
+  </g>
+</svg>

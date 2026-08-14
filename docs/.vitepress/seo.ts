@@ -4,6 +4,10 @@ const SITE_URL = 'https://book.dc3.site'
 const SITE_IMAGE = `${SITE_URL}/cover.png`
 const SITE_IMAGE_WIDTH = 2479
 const SITE_IMAGE_HEIGHT = 3508
+// 社交卡片用横版 OG 图（1200×630），Book/Article 结构化数据仍用竖版封面 SITE_IMAGE
+const OG_IMAGE = `${SITE_URL}/og-image.png`
+const OG_IMAGE_WIDTH = 1200
+const OG_IMAGE_HEIGHT = 630
 const BOOK_TITLE = '从工业软件到 AI 智能体'
 const BOOK_SUBTITLE = '构建面向智能体演进的多协议、云原生、开源工业物联网平台'
 const AUTHOR = '张红元'
@@ -292,6 +296,10 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {name: 'author', content: AUTHOR}],
     ['link', {rel: 'canonical', href: canonicalUrl}],
 
+    // ── AEO: 向 AI 答案引擎声明机器可读摘要与全量正文 ──
+    ['link', {rel: 'alternate', type: 'text/plain', href: `${SITE_URL}/llms.txt`, title: 'AI-readable site summary'}],
+    ['link', {rel: 'alternate', type: 'text/plain', href: `${SITE_URL}/llms-full.txt`, title: 'AI-readable full content'}],
+
     // ── hreflang ──
     ...buildHreflang(canonicalUrl),
 
@@ -301,11 +309,11 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {property: 'og:title', content: title}],
     ['meta', {property: 'og:description', content: description}],
     ['meta', {property: 'og:url', content: canonicalUrl}],
-    ['meta', {property: 'og:image', content: SITE_IMAGE}],
-    ['meta', {property: 'og:image:width', content: String(SITE_IMAGE_WIDTH)}],
-    ['meta', {property: 'og:image:height', content: String(SITE_IMAGE_HEIGHT)}],
+    ['meta', {property: 'og:image', content: OG_IMAGE}],
+    ['meta', {property: 'og:image:width', content: String(OG_IMAGE_WIDTH)}],
+    ['meta', {property: 'og:image:height', content: String(OG_IMAGE_HEIGHT)}],
     ['meta', {property: 'og:image:type', content: 'image/png'}],
-    ['meta', {property: 'og:image:alt', content: `《${BOOK_TITLE}》封面`}],
+    ['meta', {property: 'og:image:alt', content: `${BOOK_TITLE} · ${AUTHOR} 著 · AIoT 技术与实践`}],
     ['meta', {property: 'og:locale', content: 'zh_CN'}],
 
     // 章页 article 时间戳
@@ -329,8 +337,8 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {name: 'twitter:creator', content: TWITTER_CREATOR}],
     ['meta', {name: 'twitter:title', content: title}],
     ['meta', {name: 'twitter:description', content: description}],
-    ['meta', {name: 'twitter:image', content: SITE_IMAGE}],
-    ['meta', {name: 'twitter:image:alt', content: `《${BOOK_TITLE}》封面`}],
+    ['meta', {name: 'twitter:image', content: OG_IMAGE}],
+    ['meta', {name: 'twitter:image:alt', content: `${BOOK_TITLE} · ${AUTHOR} 著 · AIoT 技术与实践`}],
 
     // ── JSON-LD ──
     ...buildJsonLd(relativePath, canonicalUrl, title, description, dateModified),
