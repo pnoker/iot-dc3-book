@@ -106,7 +106,7 @@ export default defineConfig({
     ],
 
     footer: {
-      message: '从工业软件到 AI 智能体 · 构建面向智能场景演进的多协议、云原生、AI Native 工业物联网平台',
+      message: '从工业软件到 AI 智能体 · 构建面向智能体演进的多协议、云原生、开源工业物联网平台',
       copyright: '张红元 著 · © 2016–2026',
     },
 

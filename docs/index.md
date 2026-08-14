@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: "从工业软件到 AI 智能体"
-  text: "构建面向智能场景演进的多协议、云原生、AI Native 工业物联网平台"
+  text: "构建面向智能体演进的多协议、云原生、开源工业物联网平台"
   actions:
     - theme: brand
       text: 开始阅读
