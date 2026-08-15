@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图13-12 联邦学习与区块链的融合模式</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图13-12 联邦学习与区块链的融合模式</title>
+  <desc id="desc">参数哈希上链、完整数据存链下 CID，梯度经压缩后传输，链上只存摘要与状态。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图13-12 联邦学习与区块链的融合模式</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">区块链提供提交记录、版本与审计证据，不替代安全聚合与差分隐私</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 参数上链 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">模型参数上链：链上存哈希，链下存数据</text>
+
+  <rect x="80" y="172" width="520" height="180" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">客户端（本地训练）</text>
+  <text x="116" y="242" font-size="12" fill="#475569">计算本地模型更新 / 梯度</text>
+  <text x="116" y="268" font-size="12" fill="#475569">梯度压缩（Top-K / 量化 / 差分隐私）</text>
+  <text x="116" y="304" font-size="12" fill="#475569">参数主体经点对点通道存链下（IPFS）</text>
+  <text x="116" y="336" font-size="11" fill="#64748B">网关/边缘服务器作代理，不接触原始数据</text>
+
+  <rect x="640" y="172" width="520" height="180" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">智能合约（链上）</text>
+  <text x="676" y="242" font-size="12" fill="#475569">记录提交者 DID、版本号、时间戳</text>
+  <text x="676" y="268" font-size="12" fill="#475569">只保存参数哈希（最小指纹）</text>
+  <text x="676" y="304" font-size="12" fill="#475569">指向链下存储的 CID</text>
+  <text x="676" y="336" font-size="11" fill="#64748B">全量上链成本过高、延迟不可接受</text>
+
+  <rect x="1200" y="172" width="520" height="180" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">验证者（审计节点）</text>
+  <text x="1236" y="242" font-size="12" fill="#475569">从 IPFS 拉取实际参数</text>
+  <text x="1236" y="268" font-size="12" fill="#475569">重新计算哈希与链上记录比对</text>
+  <text x="1236" y="304" font-size="12" fill="#475569">合约中标记验证状态</text>
+  <text x="1236" y="336" font-size="11" fill="#64748B">链上“可信”只覆盖协议执行过程</text>
+
+  <line x1="600" y1="262" x2="630" y2="262" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1160" y1="262" x2="1190" y2="262" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 梯度压缩 -->
+  <text x="80" y="410" font-size="15" font-weight="700" fill="#334155">梯度压缩：适配物联网带宽与功耗约束</text>
+
+  <rect x="80" y="432" width="520" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Top-K 稀疏化</text>
+  <text x="116" y="502" font-size="12" fill="#475569">只保留绝对值最大的 K 个元素，其余置零</text>
+  <text x="116" y="528" font-size="12" fill="#475569">典型稀疏率下压缩比一个数量级以上</text>
+  <text x="116" y="554" font-size="11" fill="#64748B">收敛损失通常可接受</text>
+
+  <rect x="640" y="432" width="520" height="150" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">量化（Quantization）</text>
+  <text x="676" y="502" font-size="12" fill="#475569">32 位浮点降到 8 位整数，传输量显著降低</text>
+  <text x="676" y="528" font-size="12" fill="#475569">验证方先反量化再计算一致性</text>
+  <text x="676" y="554" font-size="11" fill="#64748B">压缩率与模型性能需一起报告</text>
+
+  <rect x="1200" y="432" width="520" height="150" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">差分隐私扰动</text>
+  <text x="1236" y="502" font-size="12" fill="#475569">提交前对梯度添加拉普拉斯噪声</text>
+  <text x="1236" y="528" font-size="12" fill="#475569">保护设备本地数据不被逆向推断</text>
+  <text x="1236" y="554" font-size="11" fill="#64748B">链上验证扰动后参数，非原始梯度</text>
+
+  <!-- 评测 -->
+  <rect x="80" y="640" width="1640" height="120" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="672" font-size="14" font-weight="700" fill="#334155">隐私、鲁棒性与可用性必须联合评测</text>
+  <text x="120" y="704" font-size="12" fill="#475569">安全聚合（聚合方只看到结果）· 差分隐私（报告 epsilon/delta、裁剪阈值）· 非 IID 公平性（最差客户端）· 投毒与后门（ASR）· 通信能耗（每轮字节、掉线率）</text>
+  <text x="120" y="730" font-size="11" fill="#64748B">链上哈希只能证明提交未被改写，不能证明更新无毒；区块链审计作为可选变量单独测量</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

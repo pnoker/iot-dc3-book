@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图13-13 智能合约驱动的自动化决策闭环</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图13-13 智能合约驱动的自动化决策闭环</title>
+  <desc id="desc">智能灌溉从 AI 推理经预言机上链、合约条件触发、设备执行到事件日志审计，形成可审计闭环。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图13-13 智能合约驱动的自动化决策闭环</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">智能灌溉：AI 的“智能判断”与链上的“信任载体”结合</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 四步闭环 -->
+  <rect x="80" y="150" width="380" height="260" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="270" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">① 数据采集与 AI 推理</text>
+  <text x="116" y="226" font-size="12" fill="#475569">土壤湿度、温度聚合到边缘网关</text>
+  <text x="116" y="252" font-size="12" fill="#475569">LSTM 时序预测未来短期需水量</text>
+  <text x="116" y="278" font-size="12" fill="#475569">输出：灌溉时长、水流速度、置信度</text>
+  <text x="116" y="316" font-size="11" fill="#64748B">AI 输出需被多方验证</text>
+  <text x="116" y="366" font-size="11" fill="#64748B">秒级采集 + 毫秒级推理</text>
+
+  <line x1="460" y1="280" x2="492" y2="280" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="492" y="150" width="380" height="260" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="682" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">② 预言机获取 AI 结果</text>
+  <text x="528" y="226" font-size="12" fill="#475569">边缘节点通常不是全节点</text>
+  <text x="528" y="252" font-size="12" fill="#475569">预言机取 AI 结果哈希与元数据</text>
+  <text x="528" y="278" font-size="12" fill="#475569">链下验证签名后写入智能合约</text>
+  <text x="528" y="316" font-size="11" fill="#64748B">确保传输过程未被篡改</text>
+  <text x="528" y="366" font-size="11" fill="#64748B">秒级，取决于出块时间</text>
+
+  <line x1="872" y1="280" x2="904" y2="280" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="904" y="150" width="380" height="260" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1094" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">③ 条件触发的合约执行</text>
+  <text x="940" y="226" font-size="12" fill="#475569">合约规则：置信度超阈值 + 标志为“开始灌溉”</text>
+  <text x="940" y="252" font-size="12" fill="#475569">合约不直接操作电磁阀</text>
+  <text x="940" y="278" font-size="12" fill="#475569">向执行微服务发签名授权消息</text>
+  <text x="940" y="316" font-size="11" fill="#64748B">含灌溉时长、目标区域、截止时间戳</text>
+  <text x="940" y="366" font-size="11" fill="#64748B">合约执行毫秒级</text>
+
+  <line x1="1284" y1="280" x2="1316" y2="280" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1316" y="150" width="404" height="260" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1518" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">④ 执行与事件日志审计</text>
+  <text x="1352" y="226" font-size="12" fill="#475569">执行微服务确认回执</text>
+  <text x="1352" y="252" font-size="12" fill="#475569">电磁阀实际开关时间戳</text>
+  <text x="1352" y="278" font-size="12" fill="#475569">关键事件结构化上链</text>
+  <text x="1352" y="316" font-size="11" fill="#64748B">不可篡改审计轨迹</text>
+  <text x="1352" y="366" font-size="11" fill="#64748B">阀门执行秒级</text>
+
+  <!-- 工程权衡 -->
+  <text x="80" y="470" font-size="15" font-weight="700" fill="#334155">工程权衡</text>
+
+  <rect x="80" y="492" width="520" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="524" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">预言机信任模型</text>
+  <text x="116" y="560" font-size="12" fill="#475569">中心化预言机 → 信任瓶颈转移到提供商</text>
+  <text x="116" y="586" font-size="12" fill="#475569">联盟预言机：10~20 节点 PBFT 共识，控制延迟</text>
+  <text x="116" y="620" font-size="11" fill="#64748B">由多家设备制造商与农场共同运行</text>
+
+  <rect x="640" y="492" width="520" height="150" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="524" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">链上事件日志成本</text>
+  <text x="676" y="560" font-size="12" fill="#475569">每次决策多条事件日志写入公链</text>
+  <text x="676" y="586" font-size="12" fill="#475569">许可链/侧链可免费用，但需维护节点</text>
+  <text x="676" y="620" font-size="11" fill="#64748B">成本可能超过数据本身价值</text>
+
+  <rect x="1200" y="492" width="520" height="150" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="524" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">交互延迟</text>
+  <text x="1236" y="560" font-size="12" fill="#475569">决策循环：采集→推理→预言机→合约→阀门</text>
+  <text x="1236" y="586" font-size="12" fill="#475569">整体秒级，阈值式灌溉可接受</text>
+  <text x="1236" y="620" font-size="11" fill="#64748B">紧急切断需本地边缘决策回路作降级</text>
+
+  <!-- 价值边界 -->
+  <rect x="80" y="700" width="1640" height="60" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="736" font-size="12" fill="#475569">真正价值是“多方可审计的自动执行”，而非替代 PLC/SCADA；为“谁、何时、基于什么数据、执行了什么”提供防伪证据</text>
+
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图13-13 智能灌溉经 AI 推理、预言机上链、合约条件触发、设备执行四步闭环，事件日志构成不可篡改审计轨迹；价值在多方可审计的自动执行，而非替代确定性控制逻辑。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
