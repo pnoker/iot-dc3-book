@@ -1,15 +1,104 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图13-1 中心化物联网架构的信任困境</title><style>body{margin:0;background:#F8FAFC;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px;margin:0 auto}svg{display:block}text{fill:#0F172A}</style></head><body><main class="page">
-<svg data-figure-root="fig-13-01" xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
-<title id="title">图13-1 中心化物联网架构的信任困境</title><desc id="desc">星型拓扑把设备、数据和日志集中到唯一云平台，单点故障、篡改风险与跨主体互信成本依次叠加。</desc>
-<defs><marker id="a" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#2563EB"/></marker><marker id="r" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#DC2626"/></marker></defs>
-<rect width="1200" height="680" fill="#F8FAFC"/><circle cx="48" cy="42" r="6" fill="#2563EB"/><text x="66" y="49" font-size="24" font-weight="700">图13-1 中心化物联网架构的信任困境</text><text x="66" y="74" font-size="12" fill="#475569">唯一信任锚点使技术故障逐步演化为跨主体信任问题</text><line x1="48" y1="96" x2="1152" y2="96" stroke="#94A3B8"/>
-<rect x="48" y="120" width="520" height="470" rx="8" fill="#FFFFFF" stroke="#94A3B8"/><text x="72" y="150" font-size="16" font-weight="700">中心化星型拓扑</text>
-<rect x="196" y="238" width="226" height="112" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/><text x="309" y="282" font-size="18" font-weight="700" text-anchor="middle">云平台 / 中心服务器</text><text x="309" y="309" font-size="13" fill="#475569" text-anchor="middle">认证 · 路由 · 数据与日志</text>
-<rect x="168" y="210" width="282" height="168" rx="10" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 5"/><text x="309" y="398" font-size="13" font-weight="700" fill="#DC2626" text-anchor="middle">信任锚点唯一 · 数据与日志同源</text>
-<g fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"><rect x="78" y="188" width="92" height="42" rx="6"/><rect x="78" y="286" width="92" height="42" rx="6"/><rect x="78" y="384" width="92" height="42" rx="6"/><rect x="448" y="188" width="92" height="42" rx="6"/><rect x="448" y="286" width="92" height="42" rx="6"/><rect x="448" y="384" width="92" height="42" rx="6"/></g><g font-size="13" font-weight="700" text-anchor="middle"><text x="124" y="214">设备 A</text><text x="124" y="312">设备 B</text><text x="124" y="410">设备 C</text><text x="494" y="214">设备 D</text><text x="494" y="312">设备 E</text><text x="494" y="410">设备 F</text></g>
-<g stroke="#2563EB" stroke-width="1.8" marker-end="url(#a)"><line x1="170" y1="209" x2="218" y2="253"/><line x1="170" y1="307" x2="194" y2="299"/><line x1="170" y1="405" x2="222" y2="338"/><line x1="448" y1="209" x2="400" y2="253"/><line x1="448" y1="307" x2="424" y2="299"/><line x1="448" y1="405" x2="396" y2="338"/></g>
-<rect x="608" y="120" width="544" height="470" rx="8" fill="#FFFFFF" stroke="#94A3B8"/><text x="632" y="150" font-size="16" font-weight="700">问题蔓延</text>
-<g><rect x="694" y="184" width="370" height="72" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="2"/><text x="879" y="214" font-size="16" font-weight="700" text-anchor="middle">单点故障与安全风险</text><text x="879" y="238" font-size="12" fill="#475569" text-anchor="middle">中心失效或失陷，影响覆盖全网</text><rect x="694" y="304" width="370" height="72" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/><text x="879" y="334" font-size="16" font-weight="700" text-anchor="middle">数据孤岛与篡改风险</text><text x="879" y="358" font-size="12" fill="#475569" text-anchor="middle">保管方同时控制数据与审计记录</text><rect x="694" y="424" width="370" height="72" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/><text x="879" y="454" font-size="16" font-weight="700" text-anchor="middle">跨主体互信成本高</text><text x="879" y="478" font-size="12" fill="#475569" text-anchor="middle">各方需反复对账并依赖中介背书</text></g>
-<g stroke="#DC2626" stroke-width="2" marker-end="url(#r)"><line x1="879" y1="257" x2="879" y2="298"/><line x1="879" y1="377" x2="879" y2="418"/><line x1="879" y1="497" x2="879" y2="530"/></g><g font-size="18" font-weight="700" fill="#DC2626"><text x="894" y="286">×</text><text x="894" y="406">×</text></g><text x="879" y="557" font-size="20" font-weight="700" fill="#475569" text-anchor="middle">？ 谁为数据可信性背书</text>
-<path d="M568 355H608" stroke="#DC2626" stroke-width="2" marker-end="url(#r)"/><text x="588" y="342" font-size="11" fill="#DC2626" text-anchor="middle">结构根因</text><text x="600" y="632" font-size="11" fill="#475569" text-anchor="middle">图13-1 单一信任锚点会把中心故障、数据篡改与跨主体互信成本连续放大。</text>
-</svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图13-1 中心化物联网架构的信任困境</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图13-1 中心化物联网架构的信任困境</title>
+  <desc id="desc">星型拓扑把信任全部压向唯一云平台，单点故障、数据篡改与跨主体互信成本沿问题蔓延层层叠加，根因是单一信任锚点。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图13-1 中心化物联网架构的信任困境</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">唯一信任锚点使技术故障逐步演化为跨主体信任问题</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 左栏：中心化星型拓扑 ===== -->
+  <text x="120" y="158" font-size="15" font-weight="700" fill="#334155">中心化星型拓扑</text>
+
+  <!-- 设备 -->
+  <g font-size="12.5" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <rect x="110" y="230" width="120" height="46" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="170" y="258">设备 A</text>
+    <rect x="310" y="205" width="120" height="46" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="370" y="233">设备 B</text>
+    <rect x="510" y="230" width="120" height="46" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="570" y="258">设备 C</text>
+    <rect x="510" y="420" width="120" height="46" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="570" y="448">设备 D</text>
+    <rect x="310" y="470" width="120" height="46" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="370" y="498">设备 E</text>
+    <rect x="110" y="420" width="120" height="46" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="170" y="448">设备 F</text>
+  </g>
+
+  <!-- 设备 → 云平台 -->
+  <line x1="230" y1="253" x2="380" y2="395" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="370" y1="253" x2="415" y2="390" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="570" y1="278" x2="490" y2="395" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="570" y1="420" x2="490" y2="452" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="370" y1="470" x2="415" y2="455" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="230" y1="443" x2="380" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 云平台 -->
+  <rect x="360" y="360" width="260" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="490" y="406" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云平台 / 中心服务器</text>
+  <text x="490" y="434" font-size="11.5" fill="#475569" text-anchor="middle">认证 · 路由 · 数据与日志</text>
+  <rect x="320" y="340" width="340" height="160" rx="14" fill="none" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="490" y="330" font-size="11.5" font-weight="700" fill="#2563EB" text-anchor="middle">信任锚点唯一 · 数据与日志同源</text>
+
+  <!-- ===== 右栏：三个困境 ===== -->
+  <rect x="860" y="180" width="820" height="90" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.8"/>
+  <text x="890" y="214" font-size="15" font-weight="700" fill="#0F172A">单点故障与安全风险</text>
+  <text x="890" y="242" font-size="11.5" fill="#475569">中心失效或失陷，影响覆盖全网</text>
+
+  <line x1="1270" y1="270" x2="1270" y2="296" stroke="#DC2626" stroke-width="2"/>
+  <text x="1252" y="287" font-size="20" font-weight="700" fill="#DC2626" text-anchor="middle">×</text>
+
+  <rect x="860" y="300" width="820" height="90" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.8"/>
+  <text x="890" y="334" font-size="15" font-weight="700" fill="#0F172A">数据孤岛与篡改风险</text>
+  <text x="890" y="362" font-size="11.5" fill="#475569">保管方同时控制数据与审计记录</text>
+
+  <line x1="1270" y1="390" x2="1270" y2="416" stroke="#DC2626" stroke-width="2"/>
+  <text x="1252" y="407" font-size="20" font-weight="700" fill="#DC2626" text-anchor="middle">×</text>
+
+  <rect x="860" y="420" width="820" height="90" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.8"/>
+  <text x="890" y="454" font-size="15" font-weight="700" fill="#0F172A">跨主体互信成本高</text>
+  <text x="890" y="482" font-size="11.5" fill="#475569">各方需反复对账并依赖中介背书</text>
+
+  <!-- 问题蔓延标注 -->
+  <text x="1360" y="340" font-size="12" font-weight="700" fill="#DC2626">问题蔓延</text>
+
+  <!-- 底部问号 -->
+  <line x1="1270" y1="510" x2="1270" y2="548" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-red)"/>
+  <rect x="1010" y="552" width="520" height="54" rx="8" fill="#F8FAFC" stroke="#475569" stroke-width="1.4"/>
+  <text x="1270" y="584" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">？ 谁为数据可信性背书</text>
+
+  <!-- 结构根因 -->
+  <text x="120" y="620" font-size="13" font-weight="700" fill="#475569">结构根因：单一信任锚点</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图13-1 单一信任锚点会把中心故障、数据篡改与跨主体互信成本连续放大。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
