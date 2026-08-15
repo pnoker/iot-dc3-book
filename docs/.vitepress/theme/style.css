@@ -1308,20 +1308,45 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    margin-left: 8px;
+    width: 28px;
+    height: 28px;
+    margin: 0 1px 0 8px;
     flex-shrink: 0;
-    color: var(--vp-c-text-2);
-    transition: color 0.25s;
+    border: 1px solid rgba(var(--clover-glass-rgb), 0.25);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 28% 8%, rgba(255, 255, 255, 0.84), transparent 44%),
+        linear-gradient(145deg, rgba(var(--clover-glass-rgb), 0.18), rgba(var(--clover-glass-rgb), 0.07));
+    box-shadow:
+        0 5px 14px rgba(var(--clover-glass-rgb), 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78),
+        inset 0 -6px 12px rgba(var(--clover-glass-rgb), 0.05);
+    backdrop-filter: blur(12px) saturate(1.25);
+    -webkit-backdrop-filter: blur(12px) saturate(1.25);
+    transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
 }
 .gallery-nav-link:hover {
-    color: var(--vp-c-text-1);
+    border-color: rgba(var(--clover-glass-rgb), 0.42);
+    box-shadow:
+        0 8px 18px rgba(var(--clover-glass-rgb), 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -7px 14px rgba(var(--clover-glass-rgb), 0.08);
+    transform: translateY(-1px);
+}
+.dark .gallery-nav-link {
+    border-color: rgba(var(--clover-glass-rgb), 0.22);
+    background:
+        radial-gradient(circle at 28% 8%, rgba(231, 250, 255, 0.16), transparent 44%),
+        linear-gradient(145deg, rgba(var(--clover-glass-rgb), 0.17), rgba(var(--clover-glass-rgb), 0.06));
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(231, 250, 255, 0.14),
+        inset 0 -6px 12px rgba(0, 0, 0, 0.08);
 }
 .gallery-nav-icon {
     display: flex;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
 }
 .gallery-nav-icon svg {
     width: 100%;
@@ -1353,10 +1378,12 @@ body {
     --clover-leaf-1: #0ce000;
     --clover-leaf-2: #44ea00;
     --clover-center: #92fa14;
+    --clover-glass-rgb: 0, 218, 56;
 }
 .dark {
     --clover-stem: #4ade80;
     --clover-leaf-1: #34d399;
     --clover-leaf-2: #6ee7b7;
     --clover-center: #d9f99d;
+    --clover-glass-rgb: 74, 222, 128;
 }
