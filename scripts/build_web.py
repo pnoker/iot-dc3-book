@@ -534,10 +534,6 @@ def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: lis
         parts.append(intro)
         parts.append("")
     parts.append(gen_chapter_summary(desc, sections, slug, cid))
-    parts.append("\n## 本章目录\n")
-    for s in sections:
-        if s["stem"]:
-            parts.append(f"- [{s['title']}]({section_link(slug, cid, s['stem'])})")
     return "\n".join(parts) + "\n"
 
 
