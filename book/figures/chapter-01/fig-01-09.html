@@ -3,80 +3,83 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>图1-9 RFID 系统基本组成</title>
+  <title>图1-9 物联网定义的演变：从识别到泛在连接</title>
   <style>
     *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:620px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
+    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
     svg{display:block}text{letter-spacing:0}
   </style>
 </head>
 <body>
 <main class="figure" data-figure-root>
-<svg width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-<title id="ft">图1-9 RFID 系统基本组成</title>
-<desc id="fd">标签与读写器通过射频场交互，读写器解码 EPC 数据并通过网络发送到后台系统。</desc>
-<defs>
-  <marker id="blue" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><path d="M0 0L12 4L0 8Z" fill="#2563EB"/></marker>
-  <marker id="teal" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><path d="M0 0L12 4L0 8Z" fill="#0F766E"/></marker>
-</defs>
-<rect width="1200" height="620" fill="#F8FAFC"/>
-<circle cx="48" cy="42" r="6" fill="#2563EB"/>
-<text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-9 RFID 系统基本组成</text>
-<text x="66" y="73" font-size="12" fill="#475569">读写器把射频世界的标签身份转换成后台可处理的数据</text>
-<line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-<rect x="24" y="108" width="1152" height="438" rx="14" fill="#FFFFFF"/>
+<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
+  <title id="ft">图1-9 物联网定义的演变：从识别到泛在连接</title>
+  <desc id="fd">物联网定义的三次扩展：1999 年 RFID+EPC 实现物品自动识别，2003 年无线传感网让物主动上报环境信息，2004 年 u-Japan 泛在网络追求人人、人物、物物互联；但此阶段连接仍是被动，主动决策是下一轮演变的起点。</desc>
 
-<rect x="58" y="148" width="292" height="330" rx="14" fill="#ECFDF5" stroke="#0F766E" stroke-width="2.2"/>
-<text x="82" y="180" font-size="12" font-weight="750" fill="#0F766E">物理对象域</text>
-<rect x="96" y="225" width="216" height="108" rx="12" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-<g transform="translate(124 250)">
-  <rect x="0" y="0" width="40" height="58" rx="5" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
-  <path d="M9 14H31M9 24H31M9 34H26M9 44H30" stroke="#0F766E" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="20" cy="51" r="3" fill="#0F766E"/>
-</g>
-<text x="222" y="272" text-anchor="middle" font-size="18" font-weight="750" fill="#0F172A">RFID 标签</text>
-<text x="222" y="298" text-anchor="middle" font-size="12" fill="#475569">有源 / 无源 · EPC</text>
-<text x="204" y="392" text-anchor="middle" font-size="11" fill="#0F766E">贴在物品上</text>
-<text x="204" y="416" text-anchor="middle" font-size="11" fill="#475569">保存唯一身份与少量数据</text>
+  <rect width="1200" height="820" fill="#F8FAFC"/>
 
-<rect x="454" y="148" width="292" height="330" rx="14" fill="#EFF6FF" stroke="#2563EB" stroke-width="2.2"/>
-<text x="478" y="180" font-size="12" font-weight="750" fill="#2563EB">射频接入域</text>
-<rect x="492" y="225" width="216" height="108" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<g transform="translate(520 248)">
-  <rect x="0" y="0" width="52" height="62" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <path d="M13 20H39M13 31H39M13 42H32" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-  <path d="M62 19C78 27 78 35 62 43M70 10C95 24 95 38 70 52" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-</g>
-<text x="618" y="272" text-anchor="middle" font-size="18" font-weight="750" fill="#0F172A">RFID 读写器</text>
-<text x="618" y="298" text-anchor="middle" font-size="12" fill="#475569">射频收发 · 解码 · 缓存</text>
-<text x="600" y="392" text-anchor="middle" font-size="11" fill="#2563EB">建立射频场，读取并解析 EPC</text>
-<text x="600" y="416" text-anchor="middle" font-size="11" fill="#475569">再将识别结果送入数字网络</text>
+  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
+  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-9 物联网定义的演变：从识别到泛在连接</text>
+  <text x="66" y="73" font-size="13" fill="#475569">定义框架不断拓宽：识别物 → 感知环境 → 连接万物</text>
+  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
+  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
 
-<rect x="850" y="148" width="292" height="330" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2.2"/>
-<text x="874" y="180" font-size="12" font-weight="750" fill="#7C3AED">业务处理域</text>
-<rect x="888" y="225" width="216" height="108" rx="12" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-<g transform="translate(916 248)">
-  <ellipse cx="28" cy="8" rx="25" ry="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
-  <path d="M3 8V48C3 58 53 58 53 48V8M3 28C3 38 53 38 53 28" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
-  <ellipse cx="28" cy="48" rx="25" ry="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
-</g>
-<text x="1014" y="272" text-anchor="middle" font-size="18" font-weight="750" fill="#0F172A">后台系统</text>
-<text x="1014" y="298" text-anchor="middle" font-size="12" fill="#475569">数据库 · ERP · 应用</text>
-<text x="996" y="392" text-anchor="middle" font-size="11" fill="#7C3AED">保存标签台账与业务事件</text>
-<text x="996" y="416" text-anchor="middle" font-size="11" fill="#475569">支持查询、追溯与自动化处理</text>
+  <!-- 三阶段卡片 -->
+  <rect x="130" y="150" width="280" height="108" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="270" y="184" font-size="14" font-weight="700" fill="#1D4ED8" text-anchor="middle">阶段一 · 识别物</text>
+  <text x="270" y="210" font-size="12.5" fill="#334155" text-anchor="middle">RFID + EPC</text>
+  <text x="270" y="232" font-size="11" fill="#64748B" text-anchor="middle">回答：这个物体是谁、在哪里</text>
+  <text x="270" y="250" font-size="11" fill="#64748B" text-anchor="middle">1999 · MIT Auto-ID Center</text>
 
-<path d="M350 248H454" fill="none" stroke="#0F766E" stroke-width="2.6" marker-end="url(#teal)"/>
-<path d="M454 292H350" fill="none" stroke="#2563EB" stroke-width="2.6" marker-end="url(#blue)"/>
-<path d="M746 272H850" fill="none" stroke="#2563EB" stroke-width="2.6" marker-end="url(#blue)"/>
-<g font-size="11" font-weight="700" text-anchor="middle">
-  <rect x="347" y="214" width="112" height="24" rx="12" fill="#FFFFFF"/><text x="403" y="231" fill="#0F766E">供电 / 激活</text>
-  <rect x="347" y="300" width="112" height="24" rx="12" fill="#FFFFFF"/><text x="403" y="317" fill="#2563EB">EPC / 标签数据</text>
-  <rect x="746" y="238" width="108" height="24" rx="12" fill="#FFFFFF"/><text x="800" y="255" fill="#2563EB">解码后数据</text>
-</g>
-<rect x="82" y="500" width="1036" height="24" rx="12" fill="#F8FAFC"/>
-<text x="600" y="517" text-anchor="middle" font-size="11" fill="#475569">实线：射频交互与数据传送　　青色：读写器供电 / 激活　　蓝色：标签身份与业务数据</text>
-<line x1="32" y1="564" x2="1168" y2="564" stroke="#CBD5E1"/>
-<text x="600" y="602" text-anchor="middle" font-size="11" fill="#475569">图1-9 标签与读写器通过射频交互，读写器解码 EPC 数据后经网络送入后台系统。</text>
+  <rect x="460" y="150" width="280" height="108" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
+  <text x="600" y="184" font-size="14" font-weight="700" fill="#115E59" text-anchor="middle">阶段二 · 感知环境</text>
+  <text x="600" y="210" font-size="12.5" fill="#334155" text-anchor="middle">WSN 无线传感网</text>
+  <text x="600" y="232" font-size="11" fill="#64748B" text-anchor="middle">主动上报温度 / 湿度 / 振动</text>
+  <text x="600" y="250" font-size="11" fill="#64748B" text-anchor="middle">2003 · 《技术评论》十大技术</text>
+
+  <rect x="790" y="150" width="280" height="108" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+  <text x="930" y="184" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">阶段三 · 连接万物</text>
+  <text x="930" y="210" font-size="12.5" fill="#334155" text-anchor="middle">u-Japan 泛在网络</text>
+  <text x="930" y="232" font-size="11" fill="#64748B" text-anchor="middle">人人、人物、物物互联</text>
+  <text x="930" y="250" font-size="11" fill="#64748B" text-anchor="middle">2004 · 日本 u-Japan 构想</text>
+
+  <!-- 阶段间箭头 -->
+  <polygon points="410,196 448,204 410,212" fill="#2563EB"/>
+  <polygon points="740,196 778,204 740,212" fill="#0F766E"/>
+
+  <!-- 时间轴 -->
+  <line x1="270" y1="330" x2="930" y2="330" stroke="#CBD5E1" stroke-width="3"/>
+  <circle cx="270" cy="330" r="12" fill="#2563EB"/>
+  <circle cx="600" cy="330" r="12" fill="#0F766E"/>
+  <circle cx="930" cy="330" r="12" fill="#F97316"/>
+  <text x="270" y="372" font-size="12.5" font-weight="700" fill="#1D4ED8" text-anchor="middle">1999</text>
+  <text x="600" y="372" font-size="12.5" font-weight="700" fill="#0F766E" text-anchor="middle">2003</text>
+  <text x="930" y="372" font-size="12.5" font-weight="700" fill="#C2410C" text-anchor="middle">2004+</text>
+
+  <!-- 能力扩展阶梯 -->
+  <rect x="130" y="420" width="280" height="52" rx="8" fill="#DBEAFE"/>
+  <text x="270" y="452" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">识别物</text>
+  <rect x="460" y="420" width="280" height="52" rx="8" fill="#CCFBF1"/>
+  <text x="600" y="452" font-size="13" font-weight="700" fill="#115E59" text-anchor="middle">感知环境</text>
+  <rect x="790" y="420" width="280" height="52" rx="8" fill="#FFEDD5"/>
+  <text x="930" y="452" font-size="13" font-weight="700" fill="#C2410C" text-anchor="middle">连接万物</text>
+  <polygon points="410,438 448,446 410,454" fill="#94A3B8"/>
+  <polygon points="740,438 778,446 740,454" fill="#94A3B8"/>
+
+  <!-- 底部说明 -->
+  <rect x="130" y="500" width="940" height="88" rx="10" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="600" y="530" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">但从「识别物」到「连接万物」，所有连接仍是被动</text>
+  <text x="600" y="554" font-size="12" fill="#475569" text-anchor="middle">设备上报数据后，由人或中心系统完成分析决策；设备自身不具备自主判断能力</text>
+  <text x="600" y="576" font-size="12" fill="#475569" text-anchor="middle">让连接具备主动决策能力，正是下一轮演变的起点（见 1.5 节）</text>
+
+  <!-- 底部结论条 -->
+  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
+  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">定义从「最小可行」走向「泛在互联」——评判系统需要多强识别、多广感知</text>
+  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">RFID+EPC 给出技术路径，泛在连接要求兼容多协议、海量并发与实时处理</text>
+
+  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
+  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">识别 → 感知 → 连接：定义的每一次扩展都决定架构取舍</text>
+  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-9 物联网定义的演变：从识别到泛在连接。RFID+EPC 实现识别，无线传感网补足感知，u-Japan 泛在网络追求连接万物——但被动连接的终点，正是主动决策的起点。</text>
 </svg>
 </main>
 </body>

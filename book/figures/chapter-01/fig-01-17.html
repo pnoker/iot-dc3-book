@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>图1-17 智能家居：从规则引擎到大模型控制</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
+    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
+    svg{display:block}text{letter-spacing:0}
+  </style>
+</head>
+<body>
+<main class="figure" data-figure-root>
+<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
+  <title id="ft">图1-17 智能家居：从规则引擎到大模型控制</title>
+  <desc id="fd">智能家居控制链路对比：左侧传统规则引擎——用户手动设规则、规则精确匹配、设备直接执行，听不懂「闷」；右侧大模型——用户自然语言描述、模型理解上下文、生成决策序列、用户二次确认后执行。</desc>
+
+  <rect width="1200" height="820" fill="#F8FAFC"/>
+
+  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
+  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-17 智能家居：从规则引擎到大模型控制</text>
+  <text x="66" y="73" font-size="13" fill="#475569">同样的「感觉有点闷」，两条链路给出不同的答案</text>
+  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
+  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
+
+  <!-- 左列标题 -->
+  <text x="280" y="142" font-size="15" font-weight="700" fill="#DC2626" text-anchor="middle">传统 · 规则引擎</text>
+  <!-- 左列节点 -->
+  <rect x="170" y="162" width="220" height="64" rx="8" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="280" y="190" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">用户手动设规则</text>
+  <text x="280" y="210" font-size="11" fill="#64748B" text-anchor="middle">固定控制面板 / App</text>
+  <line x1="280" y1="226" x2="280" y2="258" stroke="#94A3B8" stroke-width="2"/>
+  <polygon points="276,258 284,258 280,266" fill="#94A3B8"/>
+
+  <rect x="170" y="266" width="220" height="80" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="280" y="296" font-size="13" font-weight="700" fill="#B91C1C" text-anchor="middle">规则引擎精确匹配</text>
+  <text x="280" y="318" font-size="11" fill="#334155" text-anchor="middle">If CO₂&gt;1000ppm</text>
+  <text x="280" y="336" font-size="11" fill="#334155" text-anchor="middle">→ 开新风</text>
+  <line x1="280" y1="346" x2="280" y2="378" stroke="#94A3B8" stroke-width="2"/>
+  <polygon points="276,378 284,378 280,386" fill="#94A3B8"/>
+
+  <rect x="170" y="386" width="220" height="64" rx="8" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="280" y="414" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">设备执行</text>
+  <text x="280" y="434" font-size="11" fill="#64748B" text-anchor="middle">无上下文理解</text>
+
+  <!-- 左列旁注 -->
+  <rect x="410" y="278" width="180" height="56" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-dasharray="4,3"/>
+  <text x="500" y="302" font-size="12" font-weight="700" fill="#B91C1C" text-anchor="middle">听不懂「闷」</text>
+  <text x="500" y="322" font-size="11" fill="#64748B" text-anchor="middle">只识别预设阈值</text>
+
+  <!-- 中间对比箭头 -->
+  <text x="595" y="340" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">对比</text>
+  <rect x="485" y="360" width="220" height="48" rx="6" fill="#2563EB"/>
+  <text x="595" y="391" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">从规则引擎到大模型控制</text>
+  <polygon points="705,344 765,384 705,424" fill="#2563EB"/>
+
+  <!-- 右列标题 -->
+  <text x="910" y="142" font-size="15" font-weight="700" fill="#1D4ED8" text-anchor="middle">大模型 · 主动智能</text>
+  <!-- 右列节点 -->
+  <rect x="800" y="162" width="220" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="910" y="190" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">用户自然语言</text>
+  <text x="910" y="210" font-size="11" fill="#64748B" text-anchor="middle">「感觉房间有点闷」</text>
+  <line x1="910" y1="226" x2="910" y2="258" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="906,258 914,258 910,266" fill="#2563EB"/>
+
+  <rect x="800" y="266" width="220" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="910" y="296" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">LLM 理解意图</text>
+  <text x="910" y="318" font-size="11" fill="#334155" text-anchor="middle">结合温湿度 / CO₂</text>
+  <text x="910" y="336" font-size="11" fill="#334155" text-anchor="middle">/ 用户开窗习惯</text>
+  <line x1="910" y1="346" x2="910" y2="378" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="906,378 914,378 910,386" fill="#2563EB"/>
+
+  <rect x="800" y="386" width="220" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="910" y="416" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">生成决策序列</text>
+  <text x="910" y="438" font-size="11" fill="#334155" text-anchor="middle">开新风 + 调百叶窗角度</text>
+  <text x="910" y="456" font-size="11" fill="#334155" text-anchor="middle">（概率推理，非固定匹配）</text>
+  <line x1="910" y1="466" x2="910" y2="498" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="906,498 914,498 910,506" fill="#2563EB"/>
+
+  <rect x="800" y="506" width="220" height="56" rx="8" fill="#FEF9C3" stroke="#EAB308" stroke-width="1.5"/>
+  <text x="910" y="532" font-size="13" font-weight="700" fill="#A16207" text-anchor="middle">用户二次确认</text>
+  <text x="910" y="550" font-size="11" fill="#64748B" text-anchor="middle">展示推理依据后再执行</text>
+  <line x1="910" y1="562" x2="910" y2="594" stroke="#2563EB" stroke-width="2"/>
+  <polygon points="906,594 914,594 910,602" fill="#2563EB"/>
+
+  <rect x="800" y="602" width="220" height="56" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="910" y="628" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">设备执行</text>
+  <text x="910" y="646" font-size="11" fill="#64748B" text-anchor="middle">上下文理解 · 主动决策</text>
+
+  <!-- 底部结论条 -->
+  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
+  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">规则引擎精确但僵化；大模型灵活但需可解释与二次确认</text>
+  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">智能家居的直觉式交互，让消费者第一次大规模认可「物能省事」</text>
+
+  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
+  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">从「匹配规则」到「理解意图」的跃迁</text>
+  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-17 智能家居：从规则引擎到大模型控制。规则引擎只识别预设阈值，大模型结合上下文推理并生成决策序列，经用户二次确认后执行。</text>
+</svg>
+</main>
+</body>
+</html>
