@@ -136,6 +136,23 @@ COLOR_MAP: dict[str, str] = {
     "87cefa": "1e3a8a",   # skyblue 室外域浅蓝 → blue-900
     "ffff00": "78350f",   # 过渡区纯黄 → amber-900
     "c8c8c8": "475569",   # 室内域中性浅灰 → slate-600
+
+    # ── 补充：重绘批次引入、原表遗漏的色值（缺失会让 var(--fig-*) 未定义 → 局部暗色）──
+    "0ea5e9": "38bdf8",   # sky-500 主色 → sky-400
+    "60a5fa": "93c5fd",   # blue-400 → blue-300
+    "6ee7b7": "34d399",   # emerald-300 → emerald-400
+    "a16207": "fcd34d",   # amber-700 警示字（部分具备）→ amber-300
+    "ca8a04": "fbbf24",   # amber-600 警示 → amber-400
+    "fef9c3": "92400e",   # amber-100 警示底（部分具备）→ amber-800
+    "fecaca": "7f1d1d",   # red-200 浅红 → red-900
+    "e0f2fe": "0c4a6e",   # sky-100 浅蓝底 → sky-900
+    "bbd4ff": "1e40af",   # blue-200 渐变浅蓝 → blue-800
+    "c6daff": "1e40af",   # blue-100/200 渐变浅蓝 → blue-800
+    "d0e0ff": "1e40af",   # blue-100 渐变浅蓝 → blue-800
+    "dae7ff": "1e40af",   # blue-100 渐变浅蓝 → blue-800
+    "e4edff": "1e3a8a",   # blue-50/100 渐变浅蓝 → blue-900
+    "edf3ff": "1e3a8a",   # blue-50 渐变浅蓝 → blue-900
+    "f5f8ff": "1e293b",   # 近白蓝底 → 中性深底
 }
 
 # 色值 → CSS 变量名。var(--fig-<hex>)；覆盖 fill/stroke/stop-color 属性
@@ -331,7 +348,34 @@ def load_figure_svg(figure_id: str) -> str | None:
     inline, _ = _extract_and_scope_style(inline, figure_id)
     # 给最外层 svg 根加类，供作用域化规则匹配
     inline = re.sub(r"<svg\b", f'<svg class="{figure_id}"', inline, count=1, flags=re.IGNORECASE)
-    return svg_to_theme(inline)
+    inline = svg_to_theme(inline)
+    # 唯一化 title/desc id，避免同页多图内联时 id 冲突（正文多图 + 预览页 200+ 图）
+    inline = inline.replace('id="title"', f'id="{figure_id}-title"')
+    inline = inline.replace('id="desc"', f'id="{figure_id}-desc"')
+    inline = inline.replace('aria-labelledby="title desc"', f'aria-labelledby="{figure_id}-title {figure_id}-desc"')
+    return inline
+
+
+def audit_color_coverage() -> dict[str, set[str]]:
+    """扫描所有图，返回 COLOR_MAP 未覆盖的色值 → 使用该色的图 id 集合。
+
+    缺失映射会让 var(--fig-<hex>) 变量未定义，SVG 该处 fill/stroke 失效，
+    在明/暗主题下显示异常（局部暗色/白色）。build_web.py 据此在构建时
+    显式告警，避免未来新增插图再次静默回归。
+    """
+    missing: dict[str, set[str]] = {}
+    for f in sorted(FIGURES_DIR.glob("chapter-*/*.html")):
+        inline = extract_inline_svg(f.read_text(encoding="utf-8"))
+        for m in _COLOR_RE.finditer(inline):
+            hexv = m.group(2).lstrip("#").lower()
+            if hexv not in COLOR_MAP:
+                missing.setdefault(hexv, set()).add(f.stem)
+        for m in _RGBA_RE.finditer(inline):
+            r, g, b = int(m.group(2)), int(m.group(3)), int(m.group(4))
+            hexv = f"{r:02x}{g:02x}{b:02x}"
+            if hexv not in COLOR_MAP:
+                missing.setdefault("rgba " + hexv, set()).add(f.stem)
+    return missing
 
 
 if __name__ == "__main__":

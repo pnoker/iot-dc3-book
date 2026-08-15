@@ -42,7 +42,10 @@ except ImportError:
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 # 插图主题适配（内联 SVG + 颜色变量），与 build_web 同目录
-from fig_theme import figure_id_of, load_figure_svg, gen_figures_css, collect_figure_styles, collect_rgba_hexes
+from fig_theme import (
+    figure_id_of, load_figure_svg, gen_figures_css,
+    collect_figure_styles, collect_rgba_hexes, audit_color_coverage, FIGURES_DIR,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "output"
@@ -592,6 +595,19 @@ def copy_assets() -> dict[str, tuple[int, int]]:
     (PUBLIC / "figures.css").write_text(
         gen_figures_css(rgb_hexes) + "\n" + collect_figure_styles(), encoding="utf-8"
     )
+    # 全书插图 theme 化 SVG（预览页图库内联渲染，响应明暗主题；PNG 仅用于 PDF/MD 导出）
+    svg_map = {}
+    for f in sorted(FIGURES_DIR.glob("chapter-*/*.html")):
+        svg_map[f.stem] = load_figure_svg(f.stem) or ""
+    (PUBLIC / "figures-svg.json").write_text(
+        json.dumps(svg_map, ensure_ascii=False), encoding="utf-8"
+    )
+    # 校验色值覆盖：缺失映射会让 var(--fig-*) 未定义，明/暗主题下显示异常（局部暗色）
+    missing = audit_color_coverage()
+    if missing:
+        print("⚠️  插图存在 COLOR_MAP 未覆盖的色值（明暗主题会显示异常，请补全 scripts/fig_theme.py）：")
+        for hexv, figs in sorted(missing.items()):
+            print(f"    {hexv}: {sorted(figs)}")
     # 章/篇扉页主题样式（divider.css 已变量化：:root 原色、.dark 暗色）
     # web 端作用域化到 .divider-body，丢弃 html/body 全局页面尺寸规则，避免站点无法滚动。
     divider_css = DIVIDERS_DIR / "divider.css"

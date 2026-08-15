@@ -12,6 +12,7 @@ interface FigureItem {
 }
 
 const items = ref<FigureItem[]>([])
+const svgs = ref<Record<string, string>>({})
 const query = ref('')
 const activeIndex = ref(-1)
 const loading = ref(true)
@@ -67,9 +68,14 @@ const onKey = (e: KeyboardEvent) => {
 onMounted(async () => {
   window.addEventListener('keydown', onKey)
   try {
-    const res = await fetch('/figures-manifest.json')
-    if (!res.ok) throw new Error(String(res.status))
-    items.value = await res.json()
+    const [manifestRes, svgRes] = await Promise.all([
+      fetch('/figures-manifest.json'),
+      fetch('/figures-svg.json'),
+    ])
+    if (!manifestRes.ok) throw new Error(String(manifestRes.status))
+    items.value = await manifestRes.json()
+    // SVG 清单加载失败不阻塞图库（回退 WebP 缩略图）
+    if (svgRes.ok) svgs.value = await svgRes.json()
   } catch {
     error.value = '图库清单加载失败，请稍后重试'
   } finally {
@@ -119,7 +125,19 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
             @click="openLightbox(item)"
           >
             <div class="fig-thumb">
-              <img :src="item.thumb" :alt="`${item.num} ${item.title}`" loading="lazy" />
+              <div
+                v-if="svgs[item.id]"
+                class="fig-svg"
+                :aria-label="item.num + ' ' + item.title"
+                role="img"
+                v-html="svgs[item.id]"
+              ></div>
+              <img
+                v-else
+                :src="item.thumb"
+                :alt="item.num + ' ' + item.title"
+                loading="lazy"
+              />
             </div>
             <div class="fig-meta">
               <div class="fig-num">{{ item.num }}</div>
@@ -144,7 +162,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       <button class="lb-btn lb-close" @click="closeLightbox" aria-label="关闭">×</button>
       <button class="lb-btn lb-nav lb-prev" @click="prev" aria-label="上一张">‹</button>
       <figure class="lb-figure">
-        <img :src="active.thumb" :alt="`${active.num} ${active.title}`" />
+        <div v-if="svgs[active.id]" class="lb-svg" v-html="svgs[active.id]"></div>
+        <img v-else :src="active.thumb" :alt="active.num + ' ' + active.title" />
         <figcaption>
           <span class="lb-num">{{ active.num }}</span>
           <span class="lb-title">{{ active.title }}</span>
@@ -282,11 +301,25 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   justify-content: center;
   background: var(--vp-c-bg);
   border-bottom: 1px solid var(--vp-c-divider);
+  overflow: hidden;
 }
 .fig-thumb img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
+}
+/* 内联 SVG 缩略图：矢量 + 跟随明暗主题（fill/stroke 走 figures.css 变量） */
+.fig-svg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fig-svg :deep(svg) {
+  width: 100%;
+  height: 100%;
   display: block;
 }
 .fig-meta {
@@ -386,6 +419,22 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   border-radius: 6px;
   background: #fff;
 }
+/* 灯箱内联 SVG：跟随明暗主题，清晰放大 */
+.lb-svg {
+  max-width: 100%;
+  max-height: 76vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lb-svg :deep(svg) {
+  max-width: 100%;
+  max-height: 76vh;
+  width: auto;
+  height: auto;
+}
 .lb-figure figcaption {
   margin-top: 14px;
   display: flex;
@@ -419,7 +468,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   .fig-lightbox {
     padding: 16px;
   }
-  .lb-figure img {
+  .lb-figure img,
+  .lb-svg :deep(svg) {
     max-height: 68vh;
   }
   .lb-nav {
