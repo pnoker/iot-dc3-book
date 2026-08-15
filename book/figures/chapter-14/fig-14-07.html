@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图14-7 需求分析的四个来源与资产生命周期检视</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图14-7 需求分析的四个来源与资产生命周期检视</title>
+  <desc id="desc">需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法推导功能需求。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-7 需求分析的四个来源与资产生命周期检视</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">有效产出是可执行的需求基线，和明确的“不做什么”清单</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 四个来源 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">需求获取的四个来源</text>
+
+  <rect x="80" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="276" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">用户与业务方访谈</text>
+  <text x="116" y="240" font-size="12" fill="#475569">运营、运维、业务决策者</text>
+  <text x="116" y="266" font-size="12" fill="#475569">产出场景级需求</text>
+  <text x="116" y="296" font-size="11" fill="#64748B">“设备离线 5 分钟内必须告警”</text>
+
+  <rect x="496" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="692" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">设备与现场勘查</text>
+  <text x="532" y="240" font-size="12" fill="#475569">物理约束：金属遮挡、供电方式</text>
+  <text x="532" y="266" font-size="12" fill="#475569">直接决定协议选型与采集策略</text>
+  <text x="532" y="296" font-size="11" fill="#64748B">纯软件项目不会出现这类约束</text>
+
+  <rect x="912" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1108" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">存量系统分析</text>
+  <text x="948" y="240" font-size="12" fill="#475569">ERP / MES / SCADA 数据接口</text>
+  <text x="948" y="266" font-size="12" fill="#475569">字段映射与历史数据迁移</text>
+  <text x="948" y="296" font-size="11" fill="#64748B">接口文档常与实际不匹配</text>
+
+  <rect x="1328" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1524" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">行业规范与合规</text>
+  <text x="1364" y="240" font-size="12" fill="#475569">轨迹保存期限、安全等级认证</text>
+  <text x="1364" y="266" font-size="12" fill="#475569">医疗数据隐私合规</text>
+  <text x="1364" y="296" font-size="11" fill="#64748B">不是“能不能做”，而是“不做不能上线”</text>
+
+  <!-- 资产生命周期检视 -->
+  <text x="80" y="380" font-size="15" font-weight="700" fill="#334155">资产生命周期检视法：从设备出厂到退役逐阶段推导用例</text>
+
+  <rect x="80" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="230" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">部署</text>
+  <text x="230" y="468" font-size="11" fill="#475569" text-anchor="middle">批量注册 · 网关自动发现</text>
+  <text x="230" y="488" font-size="11" fill="#475569" text-anchor="middle">固件版本校验</text>
+
+  <line x1="380" y1="457" x2="412" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="412" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="562" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">运行</text>
+  <text x="562" y="468" font-size="11" fill="#475569" text-anchor="middle">实时采集 · 在线状态监控</text>
+  <text x="562" y="488" font-size="11" fill="#475569" text-anchor="middle">远程开关控制</text>
+
+  <line x1="712" y1="457" x2="744" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="744" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="894" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">告警</text>
+  <text x="894" y="468" font-size="11" fill="#475569" text-anchor="middle">温度超限 · 设备离线</text>
+  <text x="894" y="488" font-size="11" fill="#475569" text-anchor="middle">告警分级与推送</text>
+
+  <line x1="1044" y1="457" x2="1076" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1076" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1226" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">维护</text>
+  <text x="1226" y="468" font-size="11" fill="#475569" text-anchor="middle">OTA 固件升级 · 参数下发</text>
+  <text x="1226" y="488" font-size="11" fill="#475569" text-anchor="middle">日志远程拉取</text>
+
+  <line x1="1376" y1="457" x2="1408" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1408" y="402" width="312" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1564" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">退役</text>
+  <text x="1564" y="468" font-size="11" fill="#475569" text-anchor="middle">设备注销 · 数据归档</text>
+  <text x="1564" y="488" font-size="11" fill="#475569" text-anchor="middle">安全擦除</text>
+
+  <!-- 底部：MoSCoW + 非功能 -->
+  <rect x="80" y="560" width="1640" height="180" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="592" font-size="14" font-weight="700" fill="#334155">优先级划分（MoSCoW）与非功能需求</text>
+  <g font-size="12">
+    <text x="120" y="622" font-weight="700" fill="#0F172A">Must have</text>
+    <text x="240" y="622" fill="#475569">缺则无法上线：设备身份认证、数据持久化、在线状态</text>
+    <text x="120" y="648" font-weight="700" fill="#0F172A">Should have</text>
+    <text x="240" y="648" fill="#475569">重要可延迟：告警规则灵活配置、设备分组管理</text>
+    <text x="120" y="674" font-weight="700" fill="#0F172A">Could / Won't</text>
+    <text x="240" y="674" fill="#475569">锦上添花 / 本次明确排除，把 Must 列表收窄到最少</text>
+  </g>
+  <line x1="900" y1="585" x2="900" y2="715" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="12">
+    <text x="940" y="622" fill="#0F172A">非功能需求（隐形杀手）</text>
+    <text x="940" y="648" fill="#475569">可靠性 · 安全性 · 可扩展性 · 实时性</text>
+    <text x="940" y="674" fill="#64748B">决定架构选型与成本结构，需量化定义</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图14-7 需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图14-9 部署形态选择与边缘节点管理</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图14-9 部署形态选择与边缘节点管理</title>
+  <desc id="desc">公有云、私有云、边缘三种部署形态对应不同权衡，边缘节点需解决状态感知、配置分发、版本管控。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-9 部署形态选择与边缘节点管理</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">云、私有、边缘不是线性梯度，而是对应不同的数据主权与运维能力</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 三种部署形态 -->
+  <rect x="80" y="140" width="520" height="300" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="520" height="48" rx="12" fill="#2563EB"/>
+  <rect x="80" y="168" width="520" height="20" fill="#2563EB"/>
+  <text x="340" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">公有云</text>
+  <text x="116" y="230" font-size="12" fill="#0F172A">运维复杂度低，云厂商兜底</text>
+  <text x="116" y="258" font-size="12" fill="#475569">适合设备分布广、流量标准化</text>
+  <text x="116" y="284" font-size="12" fill="#475569">运维团队规模小的场景</text>
+  <text x="116" y="322" font-size="12" fill="#64748B">代价：带宽与消息量账单常超预期</text>
+  <text x="116" y="360" font-size="11" fill="#64748B">典型：智慧城市、车联网</text>
+
+  <rect x="640" y="140" width="520" height="300" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="640" y="140" width="520" height="48" rx="12" fill="#16A34A"/>
+  <rect x="640" y="168" width="520" height="20" fill="#16A34A"/>
+  <text x="900" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">私有云</text>
+  <text x="676" y="230" font-size="12" fill="#0F172A">掌控力强，数据主权敏感场景</text>
+  <text x="676" y="258" font-size="12" fill="#475569">工厂、园区、医疗</text>
+  <text x="676" y="284" font-size="12" fill="#475569">需自己扛高可用</text>
+  <text x="676" y="322" font-size="12" fill="#64748B">单台宕机的交叉损失可能超一年托管费</text>
+  <text x="676" y="360" font-size="11" fill="#64748B">多数选择单点加冷备的现实妥协</text>
+
+  <rect x="1200" y="140" width="520" height="300" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="1200" y="140" width="520" height="48" rx="12" fill="#F97316"/>
+  <rect x="1200" y="168" width="520" height="20" fill="#F97316"/>
+  <text x="1460" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">边缘部署</text>
+  <text x="1236" y="230" font-size="12" fill="#0F172A">协议驱动下沉到边缘网关</text>
+  <text x="1236" y="258" font-size="12" fill="#475569">广域网抖动消化在消息缓存</text>
+  <text x="1236" y="284" font-size="12" fill="#475569">断网时本地自治</text>
+  <text x="1236" y="322" font-size="12" fill="#64748B">降低带宽与存储，引入节点管理成本</text>
+  <text x="1236" y="360" font-size="11" fill="#64748B">典型：工业现场、矿山、港口</text>
+
+  <!-- 边缘节点管理 -->
+  <text x="80" y="500" font-size="15" font-weight="700" fill="#334155">边缘节点管理：一个被低估的运维负担</text>
+
+  <rect x="80" y="522" width="520" height="130" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="340" y="554" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">① 状态感知</text>
+  <text x="116" y="586" font-size="12" fill="#475569">Agent 驻留网关，经 MQTT/HTTP 上报心跳</text>
+  <text x="116" y="612" font-size="12" fill="#475569">心跳周期约为数据上报周期 1.5 倍</text>
+  <text x="116" y="636" font-size="11" fill="#64748B">连续多次未收到则标记“离线”</text>
+
+  <rect x="640" y="522" width="520" height="130" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="900" y="554" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">② 配置分发</text>
+  <text x="676" y="586" font-size="12" fill="#475569">驱动参数、采集频率、告警阈值修改</text>
+  <text x="676" y="612" font-size="12" fill="#475569">经中心化配置服务 + REST API 下发</text>
+  <text x="676" y="636" font-size="11" fill="#64748B">避免运维手动改文件、排查递归增压</text>
+
+  <rect x="1200" y="522" width="520" height="130" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1460" y="554" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">③ 版本管控</text>
+  <text x="1236" y="586" font-size="12" fill="#475569">驱动、Agent 版本可追溯、可回滚</text>
+  <text x="1236" y="612" font-size="12" fill="#475569">保留最近几个驱动版本镜像</text>
+  <text x="1236" y="636" font-size="11" fill="#64748B">驱动容器化，由编排工具管理更新策略</text>
+
+  <!-- OTA -->
+  <rect x="80" y="700" width="1640" height="110" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="732" font-size="14" font-weight="700" fill="#334155">OTA 升级三能力：成败在一键回滚</text>
+  <text x="120" y="764" font-size="12" fill="#475569">差分升级（只下发变更部分）· 升级事务（下载→校验签名→写入→切换→上报，失败回退）· 灰度发布（少量设备先升级，看数据量与错误率）</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图14-9 公有云、私有云、边缘三种部署形态对应不同权衡；边缘节点管理需解决状态感知、配置分发、版本管控三件事，OTA 升级依赖差分、事务与灰度保证一键回滚。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
