@@ -490,35 +490,47 @@ def gen_section_page(sec: dict, slug: str, cid: int, prev, nxt) -> str:
     return "\n".join(parts) + "\n"
 
 
-def inject_divider_summary(divider_html: str, sections: list[dict], slug: str, cid: int) -> str:
-    """把章扉页的 overview（一句话概述）替换成各节导读列表（本章导读）。"""
-    points = []
+def gen_chapter_overview(desc: str, sections: list[dict]) -> str:
+    """把章描述拓展成一段简洁的概览总结（连贯成段，不列节标题）。"""
+    topics = []
     for s in sections:
         if not s["stem"]:
             continue
-        lead = extract_description("\n".join(s["body"]), max_len=48)
-        if lead:
-            points.append(
-                f'<li><a href="{section_link(slug, cid, s["stem"])}"><strong>{s["title"]}</strong></a>{lead}</li>'
-            )
-    items = "".join(points) if points else "<li>（本章各节导读待补充）</li>"
-    summary = (
-        '<div class="divider-summary">\n'
-        f'  <ul class="divider-summary__points">{items}</ul>\n'
-        "</div>"
-    )
-    return re.sub(r'<p class="overview">.*?</p>', summary, divider_html, flags=re.DOTALL)
+        topic = re.sub(r"^\d+\.\d+\s*", "", s["title"]).strip()
+        topic = re.split(r"[：——]", topic)[0].strip()
+        if topic:
+            topics.append(topic)
+    base = desc.rstrip("。！？；\n").rstrip()
+    if not topics:
+        return base
+    if len(topics) == 1:
+        chain = f"聚焦{topics[0]}"
+    elif len(topics) == 2:
+        chain = f"先讲{topics[0]}，最后落在{topics[1]}"
+    elif len(topics) <= 5:
+        mid = "、".join(topics[1:-1])
+        chain = f"先讲{topics[0]}，再到{mid}，最后落在{topics[-1]}"
+    else:
+        mid = "、".join(topics[1:4]) + f"等{len(topics) - 1}个主题"
+        chain = f"先讲{topics[0]}，再到{mid}，最后落在{topics[-1]}"
+    return f"{base}。本章{chain}。"
 
 
 def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: list[dict], slug: str, divider_html: str) -> str:
-    """生成章首页：章扉页（overview 处替换为本章导读）+ 章引言。
+    """生成章首页：章扉页（overview 拓展为概览总结）+ 章引言。
 
-    章标题与各节导读都由扉页视觉承载（frontmatter title 仍保留，
-    供 SEO/标题栏/面包屑），正文不再重复 H1，也不另挂导读卡片。
+    章标题由扉页视觉承载（frontmatter title 仍保留，供 SEO/标题栏/面包屑），
+    扉页的描述扩展成一段连贯总结，正文不再重复 H1，也不另挂导读卡片。
     """
     parts = [fm(title=f"第 {cid} 章　{title}", description=oneline(desc))]
     if divider_html:
-        divider_html = inject_divider_summary(divider_html, sections, slug, cid)
+        overview = gen_chapter_overview(desc, sections)
+        divider_html = re.sub(
+            r'<p class="overview">.*?</p>',
+            f'<p class="overview">{overview}</p>',
+            divider_html,
+            flags=re.DOTALL,
+        )
         parts.append(
             '<figure class="chapter-divider">\n'
             f'  <div class="divider-body">{divider_html}</div>\n'
