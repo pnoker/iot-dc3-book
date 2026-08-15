@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图3-12 RFID 防碰撞两条路线与标签存储结构</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">图3-12 RFID 防碰撞两条路线与标签存储结构</title>
+  <desc id="desc">帧时隙 ALOHA 用概率换取吞吐，二进制搜索树用确定性换取按序识别；标签分 Reserved/EPC/TID/User 四存储体。</desc>
+  <rect width="1200" height="660" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="540" viewBox="0 0 1800 870" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="870" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-12 RFID 防碰撞两条路线与标签存储结构</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">防碰撞协议为大量标签在共享信道上制定有序发言规则</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 概率路线 -->
+  <rect x="80" y="140" width="800" height="260" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="800" height="48" rx="12" fill="#2563EB"/>
+  <rect x="80" y="168" width="800" height="20" fill="#2563EB"/>
+  <text x="480" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">概率路线：帧时隙 ALOHA（FSA）</text>
+  <text x="116" y="236" font-size="12" fill="#475569">读写器设帧长 2^Q 个时隙，Q ∈ [0,15]</text>
+  <text x="116" y="262" font-size="12" fill="#475569">标签随机选时隙回复：独占时隙 = 成功识别，多标签 = 碰撞</text>
+  <text x="116" y="288" font-size="12" fill="#475569">自适应 Q 值机制按碰撞/空闲比例估算标签量，动态调帧长</text>
+  <text x="116" y="326" font-size="12" font-weight="700" fill="#0F172A">适合：仓库、物流等标签量大、动态性强的场景</text>
+  <text x="116" y="352" font-size="11" fill="#64748B">标签量接近帧长时吞吐率最高；远超帧长时碰撞时隙非线性上升</text>
+
+  <!-- 确定路线 -->
+  <rect x="920" y="140" width="800" height="260" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="920" y="140" width="800" height="48" rx="12" fill="#16A34A"/>
+  <rect x="920" y="168" width="800" height="20" fill="#16A34A"/>
+  <text x="1320" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">确定路线：二进制搜索树</text>
+  <text x="956" y="236" font-size="12" fill="#475569">查询指令携带前缀比特掩码，只邀请 ID 前缀匹配的标签回复</text>
+  <text x="956" y="262" font-size="12" fill="#475569">某比特位碰撞 → 对半拆分搜索空间，缩小前缀再问</text>
+  <text x="956" y="288" font-size="12" fill="#475569">直至只剩唯一匹配标签，每张标签需多次往返通信</text>
+  <text x="956" y="326" font-size="12" font-weight="700" fill="#0F172A">适合：门禁、资产盘点等标签少但要求严格按序识别</text>
+  <text x="956" y="352" font-size="11" fill="#64748B">标签量大时总耗时通常超过 FSA 方案</text>
+
+  <!-- 标签存储 -->
+  <text x="80" y="460" font-size="15" font-weight="700" fill="#334155">EPC Gen2 标签四存储体</text>
+
+  <rect x="80" y="482" width="392" height="140" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="276" y="516" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Reserved 区</text>
+  <text x="116" y="550" font-size="12" fill="#475569">销毁口令 + 访问口令，各 32 位</text>
+  <text x="116" y="576" font-size="12" fill="#475569">Kill 命令使标签永久失效，防隐私泄露</text>
+
+  <rect x="496" y="482" width="392" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="692" y="516" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">EPC 区</text>
+  <text x="532" y="550" font-size="12" fill="#475569">物品唯一电子产品代码，常见 96 位</text>
+  <text x="532" y="576" font-size="12" fill="#475569">标头/划分号/对象分类/序列号 + CRC-16</text>
+
+  <rect x="912" y="482" width="392" height="140" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1108" y="516" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">TID 区</text>
+  <text x="948" y="550" font-size="12" fill="#475569">芯片制造商预置全球唯一标识符</text>
+  <text x="948" y="576" font-size="12" fill="#475569">64~96 位，出厂写入不可修改</text>
+
+  <rect x="1328" y="482" width="392" height="140" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1524" y="516" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">User 区（可选）</text>
+  <text x="1364" y="550" font-size="12" fill="#475569">应用自定义数据：产品批号、生产日期</text>
+  <text x="1364" y="576" font-size="12" fill="#475569">工艺参数，长度由芯片制造商定义</text>
+
+  <!-- 底部权衡 -->
+  <rect x="80" y="670" width="1640" height="70" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="700" font-size="12" fill="#475569">读取速率与标签数量呈“先升后降”非线性关系；隐藏终端效应（强信号压制弱信号）使实测速率低于理论值</text>
+  <text x="120" y="724" font-size="11" fill="#64748B">优化：设恰当 Q 初值、用 Session 机制分散负载、控制标签经过天线速度、适当倾斜标签分散天线方向</text>
+
+  <!-- Caption -->
+  <text x="900" y="830" font-size="17" fill="#475569" text-anchor="middle">图3-12 帧时隙 ALOHA 用概率换取高吞吐，二进制搜索树用确定性换取按序识别；EPC Gen2 标签分 Reserved/EPC/TID/User 四存储体，各司安全、身份、厂商与应用数据。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

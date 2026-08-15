@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图3-14 边缘数据预处理的三个工程目标</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图3-14 边缘数据预处理的三个工程目标</title>
+  <desc id="desc">边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-14 边缘数据预处理的三个工程目标</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">滤除噪声 · 减少数据量 · 独立决策，上行流量压缩到原始量一个数量级以下</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 目标1：滤除噪声 -->
+  <rect x="80" y="140" width="1640" height="170" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="110" height="170" rx="12" fill="#2563EB"/>
+  <rect x="135" y="140" width="55" height="170" fill="#2563EB"/>
+  <text x="135" y="232" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 225)">滤除噪声</text>
+  <text x="230" y="176" font-size="14" font-weight="700" fill="#0F172A">从混乱中提取干净信号</text>
+  <text x="230" y="206" font-size="12" fill="#475569">滑动平均：环形缓冲区，窗口越长平滑越强但响应延迟越大</text>
+  <text x="230" y="232" font-size="12" fill="#475569">IIR 低通：通带平坦度好，定点 MCU 上易数值漂移</text>
+  <text x="230" y="258" font-size="12" fill="#475569">中值滤波：对偶发野点完全不敏感，但每次排序增加开销</text>
+  <text x="230" y="284" font-size="11" fill="#64748B">不滤噪直接判超限，一个电磁尖峰就可能触发误告警</text>
+
+  <line x1="900" y1="310" x2="900" y2="342" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 目标2：减少数据量 -->
+  <rect x="80" y="342" width="1640" height="170" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="80" y="342" width="110" height="170" rx="12" fill="#16A34A"/>
+  <rect x="135" y="342" width="55" height="170" fill="#16A34A"/>
+  <text x="135" y="434" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 427)">减少数据量</text>
+  <text x="230" y="378" font-size="14" font-weight="700" fill="#0F172A">上传承结果，而非样本</text>
+  <text x="230" y="408" font-size="12" fill="#475569">聚合：算术平均、最大值、最小值、峰值、累积积分值</text>
+  <text x="230" y="434" font-size="12" fill="#475569">300 个采样点 → 一条均值记录；工频周期 → 有效值 + 峰值两个特征</text>
+  <text x="230" y="460" font-size="12" fill="#475569">FFT：本地做频谱分析，只上传频谱特征矢量或主要频段幅值</text>
+  <text x="230" y="486" font-size="11" fill="#64748B">需要原始波形做边频带诊断时，不能在边缘层压缩掉时域细节</text>
+
+  <line x1="900" y1="512" x2="900" y2="544" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 目标3：独立决策 -->
+  <rect x="80" y="544" width="1640" height="170" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="80" y="544" width="110" height="170" rx="12" fill="#F97316"/>
+  <rect x="135" y="544" width="55" height="170" fill="#F97316"/>
+  <text x="135" y="636" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 629)">独立决策</text>
+  <text x="230" y="580" font-size="14" font-weight="700" fill="#0F172A">不依赖云平台完成快速控制</text>
+  <text x="230" y="610" font-size="12" fill="#475569">阈值规则命中 → 立即驱动继电器 / PWM / 声光告警</text>
+  <text x="230" y="636" font-size="12" fill="#475569">异常事件上下文（时间戳、带标记原始值快照）上传平台持久化</text>
+  <text x="230" y="662" font-size="12" fill="#475569">本地闭环延迟在采样周期级，远低于云往返的数百毫秒甚至数秒</text>
+  <text x="230" y="688" font-size="11" fill="#64748B">断网时仍独立完成保护动作，恢复后事件日志补推平台</text>
+
+  <!-- 底部准则 -->
+  <rect x="80" y="760" width="1640" height="60" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="796" font-size="12" fill="#475569">工程准则：只在边缘执行“无需跨设备上下文”的操作；趋势预测、多传感器融合、大数据建模留给边缘网关或云平台</text>
+
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图3-14 边缘预处理依次滤除噪声、减少数据量、独立决策，向上传干净数据、向下做快速动作；只在边缘执行无需跨设备上下文的操作，复杂分析留给网关或云平台。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

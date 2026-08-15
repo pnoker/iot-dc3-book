@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图3-13 多源融合定位：单一技术边界与 AGV 融合</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图3-13 多源融合定位：单一技术边界与 AGV 融合</title>
+  <desc id="desc">单一定位技术各有边界，AGV 用 UWB 主源、BLE 校正、IMU 推算融合，卡尔曼滤波按观测噪声加权。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-13 多源融合定位：单一技术边界与 AGV 融合</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">目标不是单点精度纪录，而是任意时刻至少一条可信源在工作</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 单一技术边界 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">单一技术的工程边界</text>
+
+  <rect x="80" y="172" width="320" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="240" y="204" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">GPS/BDS</text>
+  <text x="116" y="238" font-size="11" fill="#475569">室外米级，室内失锁</text>
+  <text x="116" y="262" font-size="11" fill="#475569">高楼峡谷多径误差数十米</text>
+
+  <rect x="416" y="172" width="320" height="140" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="576" y="204" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">UWB</text>
+  <text x="452" y="238" font-size="11" fill="#475569">视距厘米级，室内首选</text>
+  <text x="452" y="262" font-size="11" fill="#475569">金属遮挡 NLOS 误差恶化</text>
+
+  <rect x="752" y="172" width="320" height="140" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="912" y="204" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">Wi-Fi 指纹</text>
+  <text x="788" y="238" font-size="11" fill="#475569">成本低、覆盖广</text>
+  <text x="788" y="262" font-size="11" fill="#475569">环境变化后需重采指纹库</text>
+
+  <rect x="1088" y="172" width="320" height="140" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1248" y="204" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">BLE 信标</text>
+  <text x="1124" y="238" font-size="11" fill="#475569">低功耗低成本，区域级</text>
+  <text x="1124" y="262" font-size="11" fill="#475569">电池寿命有限，维护被低估</text>
+
+  <rect x="1424" y="172" width="296" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1572" y="204" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">IMU+编码器</text>
+  <text x="1460" y="238" font-size="11" fill="#475569">短时相对精度好</text>
+  <text x="1460" y="262" font-size="11" fill="#475569">零偏漂移随时间累积</text>
+
+  <!-- AGV 融合 -->
+  <text x="80" y="370" font-size="15" font-weight="700" fill="#334155">AGV 仓库多源融合：主源 + 校正 + 推算</text>
+
+  <rect x="80" y="392" width="520" height="190" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="426" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">主定位源：UWB（约 10 Hz）</text>
+  <text x="116" y="462" font-size="12" fill="#475569">屋顶锚点覆盖主干通道</text>
+  <text x="116" y="488" font-size="12" fill="#475569">卡尔曼滤波用 UWB 观测校正</text>
+  <text x="116" y="524" font-size="12" fill="#475569">遮挡时自动增大观测噪声协方差、降权重</text>
+  <text x="116" y="556" font-size="11" fill="#64748B">正常模式主力</text>
+
+  <rect x="640" y="392" width="520" height="190" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="426" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">辅助校正源：BLE 信标</text>
+  <text x="676" y="462" font-size="12" fill="#475569">货架底部与地面，经过时触发事件</text>
+  <text x="676" y="488" font-size="12" fill="#475569">位置强制校正至信标坐标</text>
+  <text x="676" y="524" font-size="12" fill="#475569">观测噪声标准差设为 3 m，滤波加权融合</text>
+  <text x="676" y="556" font-size="11" fill="#64748B">每经过一个信标大幅压缩累计漂移</text>
+
+  <rect x="1200" y="392" width="520" height="190" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="426" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">连续推算源：IMU + 轮式编码器</text>
+  <text x="1236" y="462" font-size="12" fill="#475569">维持短时相对精度</text>
+  <text x="1236" y="488" font-size="12" fill="#475569">弥补 UWB 遮挡间隙</text>
+  <text x="1236" y="524" font-size="12" fill="#475569">无观测时纯推算，不确定性持续增长</text>
+  <text x="1236" y="556" font-size="11" fill="#64748B">UWB 遮挡时切换为主</text>
+
+  <!-- 卡尔曼滤波 -->
+  <rect x="80" y="640" width="1640" height="120" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="672" font-size="14" font-weight="700" fill="#334155">卡尔曼滤波：观测噪声 R 控制权重</text>
+  <text x="120" y="704" font-size="12" fill="#475569">R 越小，卡尔曼增益 K 越大，观测权重越高；UWB 的 R=0.5，BLE 的 R=3.0，BLE 仅在不可用时起压漂移作用</text>
+  <text x="120" y="730" font-size="12" fill="#475569">时间戳对齐（硬件时间戳 + 线性插值）· 残差超 3 倍标准差则丢弃观测 · 4×4 矩阵求逆在 M4 上 50~100 Hz 稳定运行</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图3-13 单一定位技术各有边界；AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为连续推算源，卡尔曼滤波按观测噪声 R 加权，输出带不确定性的位置供上层安全决策。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

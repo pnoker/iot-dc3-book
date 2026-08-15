@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图3-11 传感器选型四维约束与误差校准</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图3-11 传感器选型四维约束与误差校准</title>
+  <desc id="desc">选型在精度、成本、功耗、环境适应性四维取舍；误差按系统、随机、粗大三类分别校准与抑制。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-11 传感器选型四维约束与误差校准</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">没有“万能传感器”，只有“匹配场景的传感器”</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 四维约束 -->
+  <rect x="80" y="140" width="392" height="210" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="276" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">精度与分辨率</text>
+  <text x="116" y="214" font-size="12" fill="#475569">精度 = 与真实值的偏差范围</text>
+  <text x="116" y="240" font-size="12" fill="#475569">分辨率 = 可分辨的最小变化</text>
+  <text x="116" y="278" font-size="12" fill="#475569">先定容许误差 → 反推精度要求</text>
+  <text x="116" y="304" font-size="12" fill="#475569">再检查 ADC 位数是否足够</text>
+  <text x="116" y="330" font-size="11" fill="#64748B">现场实测精度常低于手册标称值</text>
+
+  <rect x="496" y="140" width="392" height="210" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="692" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">成本（看生命周期）</text>
+  <text x="532" y="214" font-size="12" fill="#475569">农业传感器几十元 vs 工业探头贵一个量级</text>
+  <text x="532" y="252" font-size="12" fill="#475569">把更换成本、维护人工、停工损失算进去</text>
+  <text x="532" y="290" font-size="12" fill="#475569">大规模部署下维护成本往往超过采购成本</text>
+  <text x="532" y="330" font-size="11" fill="#64748B">选型是生命周期总成本，而非单价</text>
+
+  <rect x="912" y="140" width="392" height="210" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1108" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">功耗与供电</text>
+  <text x="948" y="214" font-size="12" fill="#475569">电池供电每微安都要精打细算</text>
+  <text x="948" y="240" font-size="12" fill="#475569">工业产线 24V 供电则敏感度低</text>
+  <text x="948" y="278" font-size="12" fill="#475569">功耗预算在系统层做</text>
+  <text x="948" y="304" font-size="12" fill="#475569">算入 MCU 唤醒 + 射频脉冲电流</text>
+  <text x="948" y="330" font-size="11" fill="#64748B">尤其注意休眠电流，忽略它难达续航目标</text>
+
+  <rect x="1328" y="140" width="392" height="210" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1524" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">环境适应性</text>
+  <text x="1364" y="214" font-size="12" fill="#475569">防护等级、工作温度范围</text>
+  <text x="1364" y="240" font-size="12" fill="#475569">抗腐蚀、抗振动能力</text>
+  <text x="1364" y="278" font-size="12" fill="#475569">高湿、粉尘、农药、油污、电磁干扰</text>
+  <text x="1364" y="304" font-size="12" fill="#475569">是现场失效的头号原因</text>
+  <text x="1364" y="330" font-size="11" fill="#64748B">湿敏电容高湿一年后读数明显偏高</text>
+
+  <!-- 误差分类 -->
+  <text x="80" y="410" font-size="15" font-weight="700" fill="#334155">误差分类与校准方法</text>
+
+  <rect x="80" y="432" width="520" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">系统误差（方向性、重复性）</text>
+  <text x="116" y="502" font-size="12" fill="#475569">制造公差、老化漂移、安装位置不当</text>
+  <text x="116" y="528" font-size="12" fill="#475569">单点校准修正偏移，两点校准修正偏移+增益</text>
+  <text x="116" y="554" font-size="12" fill="#475569">关键应用每半年返厂校准，或固件自补偿</text>
+  <text x="116" y="580" font-size="11" fill="#64748B">校准参数存云端并关联设备 ID</text>
+
+  <rect x="640" y="432" width="520" height="160" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">随机误差（离散抖动）</text>
+  <text x="676" y="502" font-size="12" fill="#475569">热噪声、电磁干扰引起</text>
+  <text x="676" y="528" font-size="12" fill="#475569">多次测量取滑动平均抑制</text>
+  <text x="676" y="554" font-size="12" fill="#475569">慢变信号增大窗口，快变信号减小窗口</text>
+  <text x="676" y="580" font-size="11" fill="#64748B">在去噪与响应时效间平衡</text>
+
+  <rect x="1200" y="432" width="520" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">粗大误差（异常点）</text>
+  <text x="1236" y="502" font-size="12" fill="#475569">瞬时硬件故障、干扰尖峰、环境突变</text>
+  <text x="1236" y="528" font-size="12" fill="#475569">阈值判断 + 冗余传感器二维投票剔除</text>
+  <text x="1236" y="554" font-size="12" fill="#475569">已知干扰源（喷淋）用“喷淋锁定”标记无效</text>
+  <text x="1236" y="580" font-size="11" fill="#64748B">自诊断只覆盖有限故障模式，不可替代物理校准</text>
+
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图3-11 传感器选型在精度、成本、功耗、环境适应性四维之间取舍，并预留环境余量；误差按系统、随机、粗大三类分别用单点/两点校准、滑动平均、阈值加冗余投票处理。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
