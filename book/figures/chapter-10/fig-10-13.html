@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图10-13 工业时序数据库选型与 PointValue 数据模型</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图10-13 工业时序数据库选型与 PointValue 数据模型</title>
+  <desc id="desc">时序库针对工业数据流优化写入、分区、聚合与过期；PointValue 以设备、点位、值、时间、单位建模。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-13 工业时序数据库选型与 PointValue 数据模型</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">TSDB 专为时序负载优化存储格式与查询引擎，数据模型决定规则引擎与 AI 的消费成本</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 核心特点 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">时序数据库的核心特点</text>
+
+  <rect x="80" y="172" width="392" height="170" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="276" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">高写入吞吐</text>
+  <text x="116" y="242" font-size="12" fill="#475569">追加为主，很少随机更新</text>
+  <text x="116" y="268" font-size="12" fill="#475569">LSM-Tree 随机写转顺序追加</text>
+  <text x="116" y="304" font-size="11" fill="#64748B">写吞吐比传统关系库高 1~2 个数量级</text>
+  <text x="116" y="330" font-size="11" fill="#64748B">每秒数千点写入挂库 = 断裂时序</text>
+
+  <rect x="496" y="172" width="392" height="170" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="692" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">时间分区</text>
+  <text x="532" y="242" font-size="12" fill="#475569">按时间窗口（一天/一小时）自动切分</text>
+  <text x="532" y="268" font-size="12" fill="#475569">查询只扫对应分区，不全表扫描</text>
+  <text x="532" y="304" font-size="11" fill="#64748B">与保留策略直接挂钩</text>
+  <text x="532" y="330" font-size="11" fill="#64748B">一周高精度，超一年删除</text>
+
+  <rect x="912" y="172" width="392" height="170" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1108" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">降采样与聚合下推</text>
+  <text x="948" y="242" font-size="12" fill="#475569">1s 分辨率降为 1min 均值</text>
+  <text x="948" y="268" font-size="12" fill="#475569">聚合运算下推到存储层</text>
+  <text x="948" y="304" font-size="11" fill="#64748B">避免拉大量原始数据到应用层</text>
+  <text x="948" y="330" font-size="11" fill="#64748B">决定趋势图刷新秒数</text>
+
+  <rect x="1328" y="172" width="392" height="170" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1524" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">过期与自动删除</text>
+  <text x="1364" y="242" font-size="12" fill="#475569">按时间段设保留策略（Retention Policy）</text>
+  <text x="1364" y="268" font-size="12" fill="#475569">超时分区自动清理</text>
+  <text x="1364" y="304" font-size="11" fill="#64748B">无需手动任务或定期 DELETE</text>
+  <text x="1364" y="330" font-size="11" fill="#64748B">磁盘容量不随运行时间增长</text>
+
+  <!-- 选型对比 -->
+  <text x="80" y="400" font-size="15" font-weight="700" fill="#334155">主流选型：InfluxDB / TimescaleDB / TDengine</text>
+
+  <rect x="80" y="422" width="520" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="454" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">InfluxDB</text>
+  <text x="116" y="490" font-size="12" fill="#475569">独立 TSDB 引擎，InfluxQL/Flux</text>
+  <text x="116" y="516" font-size="12" fill="#475569">轻量，适合传感器写→监控看→告警</text>
+  <text x="116" y="552" font-size="11" fill="#64748B">中小规模监控、IoT 平台</text>
+
+  <rect x="640" y="422" width="520" height="150" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="454" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">TimescaleDB</text>
+  <text x="676" y="490" font-size="12" fill="#475569">PostgreSQL 扩展，超表 + 列</text>
+  <text x="676" y="516" font-size="12" fill="#475569">完整 PostgreSQL SQL，复用 SQL 技能栈</text>
+  <text x="676" y="552" font-size="11" fill="#64748B">复杂 SQL 分析、与 PG 生态结合</text>
+
+  <rect x="1200" y="422" width="520" height="150" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="454" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">TDengine</text>
+  <text x="1236" y="490" font-size="12" fill="#475569">超级表 + 标签 + 列，列式存储</text>
+  <text x="1236" y="516" font-size="12" fill="#475569">高吞吐、高压缩率</text>
+  <text x="1236" y="552" font-size="11" fill="#64748B">年数十亿点以上的大规模工业测点</text>
+
+  <!-- PointValue 数据模型 -->
+  <rect x="80" y="630" width="1640" height="130" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="662" font-size="14" font-weight="700" fill="#334155">PointValue 数据模型：tag 用于过滤 · value 用于计算 · time 用于对齐</text>
+  <text x="120" y="696" font-size="12" fill="#475569">device_id（设备）· point_id（点位）· value（工程值）· event_time（采集时间戳）· unit（单位）· tags（可选维度）</text>
+  <text x="120" y="730" font-size="11" fill="#64748B">两个坑：① 标签基数爆炸（主维度标签控 3~5 个，其余外键关联）；② 不分主副的时间分区（高频短窗口、低频长窗口）</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图10-13 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流；PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

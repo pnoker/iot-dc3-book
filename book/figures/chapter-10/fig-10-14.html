@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图10-14 工业模型的持续监控与更新闭环</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图10-14 工业模型的持续监控与更新闭环</title>
+  <desc id="desc">区分数据漂移与概念漂移，用 KS 检验检测，按三级响应更新，形成检测到再监控的闭环流水线。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-14 工业模型的持续监控与更新闭环</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">部署不是终点，而是持续运维的起点</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 两类漂移 -->
+  <rect x="80" y="140" width="800" height="180" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="480" y="174" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">数据漂移（Data Drift）</text>
+  <text x="116" y="210" font-size="12" fill="#475569">输入特征统计分布变化，但输入与输出关系不变</text>
+  <text x="116" y="236" font-size="12" fill="#475569">例：环境温度因夏季整体升高，温度与磨损仍单调正相关</text>
+  <text x="116" y="274" font-size="12" font-weight="700" fill="#0F172A">应对：增量训练或重新采样校准</text>
+  <text x="116" y="304" font-size="11" fill="#64748B">设备特性随磨损、季节、工艺调整发生偏移</text>
+
+  <rect x="920" y="140" width="800" height="180" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1320" y="174" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">概念漂移（Concept Drift）</text>
+  <text x="956" y="210" font-size="12" fill="#475569">输入与输出的映射关系发生改变</text>
+  <text x="956" y="236" font-size="12" fill="#475569">例：电机更换新型号轴承，振动基频与退化关系变了</text>
+  <text x="956" y="274" font-size="12" font-weight="700" fill="#0F172A">应对：重新收集标注数据，甚至调整模型结构</text>
+  <text x="956" y="304" font-size="11" fill="#64748B">训练时的统计分布已失效</text>
+
+  <!-- 监控指标 + KS -->
+  <rect x="80" y="370" width="800" height="200" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="480" y="404" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">监控指标与漂移检测</text>
+  <text x="116" y="440" font-size="12" fill="#475569">预测性维护关注误报率与漏报率：误报→非计划停机检查，漏报→设备损坏停产</text>
+  <text x="116" y="466" font-size="12" fill="#475569">不能只看全局均值，须按设备类型、工况、产线切片分析</text>
+  <text x="116" y="504" font-size="12" font-weight="700" fill="#0F172A">两样本 KS 检验检测数据漂移</text>
+  <text x="116" y="530" font-size="12" fill="#475569">比较当前滑动窗口分布与训练基线分布，每关键特征独立计算 KS 统计量</text>
+  <text x="116" y="556" font-size="11" fill="#64748B">连续 10 个窗口统计超阈值比例，避免单次噪声误判</text>
+
+  <!-- 三级响应 -->
+  <rect x="920" y="370" width="800" height="200" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1320" y="404" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">三级响应</text>
+  <text x="956" y="440" font-size="12" fill="#475569">① 轻量校准：轻度漂移，特征缩放或离群样本增量修正</text>
+  <text x="956" y="466" font-size="12" fill="#475569">② 主动学习：中度漂移，人工标注关键样本，增量训练/微调</text>
+  <text x="956" y="492" font-size="12" fill="#475569">③ 全量重训练：F1 下降 5 个百分点以上，重走采集/特征/训练/验证/部署</text>
+  <text x="956" y="530" font-size="12" font-weight="700" fill="#0F172A">版本元数据</text>
+  <text x="956" y="556" font-size="11" fill="#64748B">模型 ID、训练窗口、验证指标、漂移特征、部署时间、7 日滚动准确率</text>
+
+  <!-- 闭环流水线 -->
+  <rect x="80" y="630" width="1640" height="150" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="662" font-size="14" font-weight="700" fill="#334155">闭环流水线：检测 → 评估 → 校准/重训练 → 部署 → 再监控</text>
+  <text x="120" y="700" font-size="12" fill="#475569">关键不是固定周期，而是建立闭环；旋转设备每季度至半年重校准基线，季节性产线换季后两周内校准</text>
+  <text x="120" y="726" font-size="12" fill="#475569">工业现场人工确认漂移判断、人工审核校准样本，往往比全自动更可靠</text>
+  <text x="120" y="752" font-size="11" fill="#64748B">若某设备误报率高出同类两倍以上，优先排查传感器故障或通信噪声，而非急于调参</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图10-14 区分数据漂移与概念漂移，用 KS 检验检测漂移，按轻量校准、主动学习、全量重训练三级响应，形成检测、评估、校准/重训练、部署、再监控的闭环流水线。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
