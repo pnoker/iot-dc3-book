@@ -250,8 +250,6 @@ def gen_figures_css(rgb_hexes: set[str] | None = None) -> str:
         ":root {",
     ]
     for hexv, dark in sorted(COLOR_MAP.items()):
-        if hexv == "fff":
-            continue  # 统一用 ffffff
         lines.append(f"  --fig-{hexv}: #{hexv};")
     for hexv in sorted(rgb_hexes):
         r, g, b = _hex_to_rgb(hexv)
@@ -260,8 +258,6 @@ def gen_figures_css(rgb_hexes: set[str] | None = None) -> str:
     lines.append("")
     lines.append(".dark {")
     for hexv, dark in sorted(COLOR_MAP.items()):
-        if hexv == "fff":
-            continue
         lines.append(f"  --fig-{hexv}: #{dark};")
     for hexv in sorted(rgb_hexes):
         dr, dg, db = _hex_to_rgb(COLOR_MAP[hexv])
