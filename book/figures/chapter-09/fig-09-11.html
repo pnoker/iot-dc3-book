@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图9-11 CoAP/LwM2M 在 NB-IoT 中的协同</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图9-11 CoAP/LwM2M 在 NB-IoT 中的协同</title>
+  <desc id="desc">NB-IoT 提供低功耗通道，CoAP 负责轻量消息，LwM2M 承担对象标准化；状态上报用 NON、关键指令用 CON。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图9-11 CoAP/LwM2M 在 NB-IoT 中的协同</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">以城市路侧地磁停车位为例：广覆盖低功耗通道 + 轻量消息 + 对象标准化</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 三层技术栈 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">三层技术栈分工</text>
+
+  <rect x="80" y="172" width="520" height="180" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">NB-IoT 物理通道</text>
+  <text x="116" y="242" font-size="12" fill="#475569">3GPP R13 无线接入技术</text>
+  <text x="116" y="268" font-size="12" fill="#475569">eDRX 扩展非连续接收</text>
+  <text x="116" y="288" font-size="12" fill="#475569">PSM 省电模式，休眠时接近零功耗</text>
+  <text x="116" y="320" font-size="11" fill="#64748B">深度覆盖 + 低功耗小数据包</text>
+
+  <rect x="640" y="172" width="520" height="180" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">CoAP 轻量消息</text>
+  <text x="676" y="242" font-size="12" fill="#475569">无连接、无状态，与休眠天然适配</text>
+  <text x="676" y="268" font-size="12" fill="#475569">NON 发完即休眠，无重传开销</text>
+  <text x="676" y="288" font-size="12" fill="#475569">CON 指数退避重传保证可靠送达</text>
+  <text x="676" y="320" font-size="11" fill="#64748B">设备状态机：采集-组包-发送-休眠</text>
+
+  <rect x="1200" y="172" width="520" height="180" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">LwM2M 对象标准化</text>
+  <text x="1236" y="242" font-size="12" fill="#475569">Object 3 设备基本信息</text>
+  <text x="1236" y="268" font-size="12" fill="#475569">自定义地磁检测对象</text>
+  <text x="1236" y="288" font-size="12" fill="#475569">Object 5 固件升级</text>
+  <text x="1236" y="320" font-size="11" fill="#64748B">优先采用 OMA IPSO 标准对象 ID</text>
+
+  <!-- 消息分级 -->
+  <text x="80" y="420" font-size="15" font-weight="700" fill="#334155">消息可靠性分级：区分状态的冗余度与指令的实时性</text>
+
+  <rect x="80" y="442" width="800" height="200" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="480" y="476" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">状态上报：NON（无需确认）</text>
+  <text x="116" y="512" font-size="12" fill="#475569">地磁传感器检测磁场变化 → 构造 NON 消息 → 立即进入 PSM 深度休眠</text>
+  <text x="116" y="538" font-size="12" fill="#475569">允许一定丢包，用“最近状态 + 超时推断”补偿</text>
+  <text x="116" y="564" font-size="12" fill="#475569">无线状态机简化为无状态循环，无需处理断连重连、心跳超时</text>
+  <text x="116" y="600" font-size="11" fill="#64748B">能耗最低，充分释放 NB-IoT 低功耗潜力</text>
+
+  <rect x="920" y="442" width="800" height="200" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1320" y="476" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">关键指令：CON（需确认）</text>
+  <text x="956" y="512" font-size="12" fill="#475569">计费扣款、开闸、配置写入、固件操作</text>
+  <text x="956" y="538" font-size="12" fill="#475569">CoAP 内置指数退避重传，中等丢包率下可靠送达</text>
+  <text x="956" y="564" font-size="12" fill="#475569">代价：等待 RTT 级 ACK，设备唤醒窗口被拖长</text>
+  <text x="956" y="600" font-size="11" fill="#64748B">固件升级用 CoAP 块传输 + 断点续传</text>
+
+  <!-- 底部检查清单 -->
+  <rect x="80" y="700" width="1640" height="90" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="732" font-size="13" font-weight="700" fill="#334155">适用性检查（要点）</text>
+  <text x="120" y="760" font-size="12" fill="#475569">模组需支持 eDRX/PSM · 状态用 NON、关键用 CON · 优先 OMA IPSO 标准对象 · 固件升级持久化 + 回滚 · 弱覆盖区评估覆盖增强带来的功耗</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图9-11 NB-IoT 提供广覆盖低功耗通道，CoAP 负责无连接轻量消息，LwM2M 承担对象标准化；状态上报用 NON 换取低功耗，计费、配置、固件等关键指令用 CON 保证送达。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

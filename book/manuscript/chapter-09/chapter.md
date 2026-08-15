@@ -231,6 +231,26 @@ CoAP 的生态相对“年轻”。有 IETF RFC 7252 作为标准，Californium�
 
 这张表可以作为决策起点。当你走进后续章节，看到每个协议在具体案例中的表现时，可以随时回来对照：为什么这个场景选了 CoAP 而非 MQTT？为什么智能家居网关用了 MQTT 而传感器本身走 CoAP？选型框架会帮你把答案连起来。
 
+```book-figure
+id: "fig-09-09"
+type: matrix
+title: 图9-9 协议选择的三维约束与主流协议对比
+audience_takeaway: "读者应理解协议选型在网络、设备、生态三个约束维度找平衡，MQTT 适合双向高可靠，CoAP 适合低功耗休眠终端，LwM2M 适合远程管理，HTTP 适合无实时要求的 RESTful 调用。"
+purpose: 展示协议选择的三维约束与主流协议对比
+visual_focus: 三约束卡片与四协议对比表。
+design_level: matrix
+layout: 上半三约束维度卡片，中部四协议对比表，底部安全层
+elements:
+- 网络约束：带宽（小包 CoAP 低开销）、延迟（蜂窝频繁断连 TCP 重传卡顿）、可靠性（NON 发完不管）
+- 设备约束：功耗（TCP 心跳耗电）、内存（M0 跑不了完整 MQTT+TLS）、算力（CoAP 栈精简）
+- 生态约束：标准成熟度（OASIS/IETF）、工具链（Paho/EMQX/MQTTX）、社区
+- 协议对比：MQTT/CoAP/LwM2M/HTTP 的传输层、最佳与最差场景
+relationships:
+- 三约束交点决定方案；各协议有明确的最佳与最差场景
+caption: 图9-9 协议选型在网络、设备、生态三个约束维度找平衡；MQTT 适合双向高可靠，CoAP 适合低功耗休眠终端，LwM2M 适合远程管理，HTTP 适合无实时要求的 RESTful 调用。
+render_notes: HTML/SVG 渲染，三约束卡片 + 四协议对比表，蓝绿橙分层，底部安全层说明。
+```
+
 ## 9.2 MQTT协议详解
 
 ### 9.2.1 MQTT协议核心机制
@@ -953,6 +973,27 @@ LwM2M 的核心设计是把设备的能力抽象成一棵**对象树**（Object 
 - **观察/通知的阈值配置**：变化阈值和最小通知周期需在设备端和平台端达成一致。阈值过小导致频繁上报（增加功耗和网络流量），阈值过大则数据变化可能被错过，无法触发业务决策。建议在生产部署前，用真实的设备样本运行一个实验性周期，校准阈值。
 - **固件升级的失败回滚**：升级过程中需设计回退机制。设备应保留上次可用的固件版本，在升级失败或校验错误后能自动回滚，避免设备变砖。LwM2M 规范中的固件状态资源（如对象 5 的固件状态资源）就是为此提供标准化接口，平台端必须订阅该资源的变化以感知升级结果。
 
+```book-figure
+id: "fig-09-10"
+type: architecture
+title: 图9-10 LwM2M 对象树与引导注册
+audience_takeaway: "读者应理解 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐，设备经引导、注册、更新注册接入平台。"
+purpose: 展示 LwM2M 对象树三级结构与引导注册流程
+visual_focus: 对象树三级结构与引导注册三步。
+design_level: architecture
+layout: 上半对象树三级卡片，中部路径示例，下半引导注册三步
+elements:
+- Object 对象：3 设备、3303 温度、6 位置、5 固件更新
+- Instance 实例：同类能力多副本，编号从 0 开始
+- Resource 资源：/5700 读数、/5601 量程，R/W/E 权限
+- 引导注册：引导（Bootstrap）→ 注册（Register）→ 更新注册（Update）
+- 观察/通知：GET + Observe:0 推送式上报
+relationships:
+- 对象树三级嵌套，路径 /objectId/instanceId/resourceId 与 CoAP URI 对齐；引导注册三步接入平台
+caption: 图9-10 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。
+render_notes: HTML/SVG 渲染，三级对象树卡片 + 引导注册三步流程，蓝绿橙分层。
+```
+
 ### 9.3.3 CoAP/LwM2M在NB-IoT中的应用案例
 
 要理解CoAP和LwM2M在NB-IoT（Narrowband IoT，窄带物联网）中的协同价值，一个城市路侧停车位的场景比任何抽象描述更直观。**例子如下**：某城市部署了上千个地磁传感器节点，每个节点通过NB-IoT模组接入，定期上报“空闲/占用”状态，支持远程调整计费策略参数（如免费时长、高峰费率阈值）以及固件升级。这套系统中，NB-IoT提供了广覆盖、低功耗的物理通道，CoAP负责轻量消息交换，LwM2M承担设备管理与对象标准化——三者配合是实现低功耗运维的关键。
@@ -1034,6 +1075,27 @@ int main(void) {
 6. **引导服务器预置**：所有设备出厂前配置Bootstrap Server信息，避免现场逐台手动写入服务器地址和密钥。
 
 以上内容基于例子和公开标准推导。具体性能数字（如单次上报能耗、电池寿命年数）应参考实际芯片手册和运营商网络配置进行测试。CoAP/LwM2M与NB-IoT的组合，是低功耗广域网应用层的一个工程标杆——但其价值在于让运维人员理解从无线空口到设备管理语义的全链路约束，才能在设计阶段做出清醒的取舍。它不适用于需要高实时性双向交互或大数据量的场景，那些场景更适合MQTT或HTTP。
+
+```book-figure
+id: "fig-09-11"
+type: dataflow
+title: 图9-11 CoAP/LwM2M 在 NB-IoT 中的协同
+audience_takeaway: "读者应理解 NB-IoT 提供低功耗通道、CoAP 负责轻量消息、LwM2M 承担对象标准化，状态上报用 NON、关键指令用 CON。"
+purpose: 展示 NB-IoT 场景下三层技术栈分工与消息可靠性分级
+visual_focus: 三层技术栈卡片与 NON/CON 消息分级。
+design_level: dataflow
+layout: 上半三层技术栈（NB-IoT/CoAP/LwM2M），下半 NON 与 CON 消息分级
+elements:
+- NB-IoT：eDRX + PSM 节电机制，休眠接近零功耗
+- CoAP：无连接无状态，NON 发完即休眠，CON 指数退避重传
+- LwM2M：Object 3/5 与自定义地磁对象，优先 OMA IPSO
+- 状态上报 NON：允许丢包，最近状态 + 超时推断补偿
+- 关键指令 CON：计费、配置、固件保证送达
+relationships:
+- 三层技术栈各司其职；消息按冗余度与实时性分级选择 NON/CON
+caption: 图9-11 NB-IoT 提供广覆盖低功耗通道，CoAP 负责无连接轻量消息，LwM2M 承担对象标准化；状态上报用 NON 换取低功耗，计费、配置、固件等关键指令用 CON 保证送达。
+render_notes: HTML/SVG 渲染，三层技术栈 + NON/CON 分级，蓝绿橙分层。
+```
 
 ## 9.4 HTTP/HTTPS与BLE应用层协议
 
@@ -1571,6 +1633,27 @@ MCP 解决的是 AI 应用与工具/资源之间的连接。A2A 解决的是 Age
 
 实时遥测、设备影子同步、安全控制优先使用物联网平台已有的数据面与控制面。MCP 只作为 AI 应用侧的能力发现和调用入口，不替代设备面的协议栈。这一边界判断，是物联网架构师在引入 AI 交互层时必须守住的工程底线。
 
+```book-figure
+id: "fig-09-12"
+type: sequence
+title: 图9-12 MCP 消息模型与能力描述边界
+audience_takeaway: "读者应理解 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。"
+purpose: 展示 MCP 消息模型、能力协商与能力描述的责任边界
+visual_focus: initialize 协商与三类能力卡片。
+design_level: sequence
+layout: 上半 Client-Server 能力协商，中部三类能力卡片，底部责任边界
+elements:
+- JSON-RPC 2.0 载体，initialize 请求开始能力协商
+- tools：模型可调用动作 + JSON Schema 输入参数
+- resources：client 读取的上下文资源
+- prompts：可参数化提示模板
+- 责任边界：WoT TD 负责属性/单位/协议，MCP 补充权限、风险等级、幂等策略
+relationships:
+- initialize 协商后进入操作阶段；三类能力由 Server 声明；能力描述是安全代理的接口合约
+caption: 图9-12 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力；能力描述本质是安全代理的接口合约，权限、风险等级与幂等策略由平台层补充。
+render_notes: HTML/SVG 渲染，Client-Server 协商 + 三类能力卡片 + 责任边界，蓝绿橙分层。
+```
+
 ### 9.5.3 MCP协议工程原型：AI控制灯光
 
 以下场景为假设性，用于展示MCP（Model Context Protocol）如何将AI应用与物联网设备控制链路衔接。场景中的工具名、设备能力、平台接口和交互细节均不作为标准化协议定义或任何真实项目的实际实现。
@@ -1782,6 +1865,27 @@ if __name__ == "__main__":
 - **超时与重试**：平台下发MQTT指令后若超时未收到设备确认，应执行重试或状态回滚；`tools/call` 请求应支持幂等性键（idempotencyKey），防止重复执行。
 
 这一工程模式的核心分层逻辑在于：AI Agent 不直接触及设备链路。设备注册、能力描述、命令执行和状态同步仍由IoT平台和已有协议（如MQTT）完成，MCP Server仅在AI与平台之间履行转换和管控职责。这种分层为安全审计、权限控制和工具版本管理提供了明确的执行点，也大幅降低了AI应用接入时对设备侧协议的感知成本。
+
+```book-figure
+id: "fig-09-13"
+type: flowchart
+title: 图9-13 MCP 工程原型：AI 控制灯光的受控链路
+audience_takeaway: "读者应理解 AI Agent 不直连设备，经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯。"
+purpose: 展示 AI 控制灯光的受控链路与权限、审计边界
+visual_focus: AI Agent → MCP Server → IoT 平台 → 设备的主链路。
+design_level: flowchart
+layout: 上半四段主链路，中部异常处理，底部分层逻辑
+elements:
+- AI Agent：语音解析、命名实体识别、工具匹配，只与 MCP Server 交互
+- MCP Server：tools/call 分发、权限校验、参数越界校验、审计日志
+- IoT 平台：REST 接收、MQTT 下发真实指令
+- 智能灯设备：接收 MQTT 指令，回报状态
+- 异常：设备离线、参数越界、权限不足、超时重试与幂等性键
+relationships:
+- AI Agent 不直连设备；MCP Server 履行转换与管控；设备侧仍是 MQTT
+caption: 图9-13 AI Agent 不直连设备：经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯，异常场景返回结构化错误并保留审计记录。
+render_notes: HTML/SVG 渲染，四段受控链路 + 异常边界，蓝绿橙分层，明确权限与审计边界。
+```
 
 ## 9.6 从协议适配到语义互操作
 
@@ -2003,6 +2107,27 @@ W3C 的 SSN/SOSA 标准框架在学术和开源社区得到一定程度的采用
 - **Sparkplug B**：Eclipse Foundation 维护的 MQTT 上层规范，为工业设备定义了状态、Birth/Death 消息、拓扑与命名约定，使 MQTT 从纯传输协议升级为具有工业语义的应用协议。
 
 工程上不必一次采用全部。面向消费与楼宇时，优先看 Matter 和 WoT；面向车间与制造时，优先看 OPC UA 和 Sparkplug B。关键判断是不要重复造轮子，既有标准解决了一段协议或语义映射，就复用它。
+
+```book-figure
+id: "fig-09-14"
+type: layered
+title: 图9-14 语义互操作：从语法到语义的层次与路径
+audience_takeaway: "读者应理解互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体，按四步路径推进。"
+purpose: 展示语义互操作的三层次与四步实践路径
+visual_focus: 三层次卡片与四步路径。
+design_level: layered
+layout: 上半三层次卡片，下半四步实践路径，底部可选标准
+elements:
+- 语法层：消息格式一致（协议适配网关），成本最低、字段含义须人工对齐
+- 结构层：字段名类型一致（物模型），减少低级错误、跨厂商仍须映射
+- 语义层：含义上下文一致（本体 SSN/SOSA），自动推理、设计复杂
+- 四步路径：语法统一 → 结构绑定 → 语义标注 → 推理联动
+- 可选标准：Matter、WoT TD、OPC UA PubSub、Sparkplug B
+relationships:
+- 三层次映射三种载体，机器理解深度递增；四步路径从语法推进到语义
+caption: 图9-14 互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体；实践按语法统一、结构绑定、语义标注、推理联动四步推进，语义层让机器理解数据真实含义。
+render_notes: HTML/SVG 渲染，三层次卡片 + 四步路径，灰蓝绿橙分层。
+```
 
 ### 9.6.3 标准化演进：从协作到统一
 

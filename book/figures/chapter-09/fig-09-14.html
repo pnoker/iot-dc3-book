@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图9-14 语义互操作：从语法到语义的层次与路径</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图9-14 语义互操作：从语法到语义的层次与路径</title>
+  <desc id="desc">互操作分语法、结构、语义三层次，从语法统一到结构绑定、语义标注、推理联动四步推进。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图9-14 语义互操作：从语法到语义的层次与路径</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">不只关心“消息怎么写”，而是“消息真正指代什么”</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 三层次 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">互操作能力三层次</text>
+
+  <rect x="80" y="172" width="520" height="220" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="340" y="206" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">语法层</text>
+  <text x="116" y="244" font-size="12" fill="#475569">消息格式一致：JSON / CBOR / CoAP</text>
+  <text x="116" y="270" font-size="12" fill="#475569">载体：协议适配网关</text>
+  <text x="116" y="296" font-size="12" fill="#475569">优势：实现成本最低，兼容现有网络栈</text>
+  <text x="116" y="330" font-size="12" fill="#475569">局限：字段含义须人工对齐，扩展性差</text>
+  <text x="116" y="366" font-size="11" fill="#64748B">temp: 23.5 → 能被正确解码</text>
+
+  <rect x="640" y="172" width="520" height="220" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="206" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">结构层</text>
+  <text x="676" y="244" font-size="12" fill="#475569">字段名与类型一致</text>
+  <text x="676" y="270" font-size="12" fill="#475569">载体：物模型（Thing Model）</text>
+  <text x="676" y="296" font-size="12" fill="#475569">优势：代码生成减少低级错误</text>
+  <text x="676" y="330" font-size="12" fill="#475569">局限：跨厂商仍须人工映射，存在语义歧义</text>
+  <text x="676" y="366" font-size="11" fill="#64748B">temperature 统一字段名，仍不知是℃还是℉</text>
+
+  <rect x="1200" y="172" width="520" height="220" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1460" y="206" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">语义层</text>
+  <text x="1236" y="244" font-size="12" fill="#475569">含义与上下文一致</text>
+  <text x="1236" y="270" font-size="12" fill="#475569">载体：本体（Ontology，SSN/SOSA）</text>
+  <text x="1236" y="296" font-size="12" fill="#475569">优势：自动推理与发现，减少人工维护</text>
+  <text x="1236" y="330" font-size="12" fill="#475569">局限：本体设计复杂，初始投入高</text>
+  <text x="1236" y="366" font-size="11" fill="#64748B">自动识别单位不一致，统计前换算</text>
+
+  <!-- 四步实践路径 -->
+  <text x="80" y="450" font-size="15" font-weight="700" fill="#334155">从语法适配到语义映射：四步实践路径</text>
+
+  <rect x="80" y="472" width="392" height="130" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="276" y="504" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">① 语法统一</text>
+  <text x="116" y="536" font-size="11" fill="#475569">通用传输协议 + 统一消息编码</text>
+  <text x="116" y="560" font-size="11" fill="#475569">消息能被接收方正确解码</text>
+
+  <line x1="472" y1="537" x2="504" y2="537" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="504" y="472" width="392" height="130" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="700" y="504" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">② 结构绑定</text>
+  <text x="540" y="536" font-size="11" fill="#475569">引入物模型预定义属性/事件/命令</text>
+  <text x="540" y="560" font-size="11" fill="#475569">跨厂商对齐依赖人工评审</text>
+
+  <line x1="896" y1="537" x2="928" y2="537" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="928" y="472" width="392" height="130" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1124" y="504" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">③ 语义标注</text>
+  <text x="964" y="536" font-size="11" fill="#475569">物模型附加本体 URI 标注</text>
+  <text x="964" y="560" font-size="11" fill="#475569">temperature → ssn:Temperature</text>
+
+  <line x1="1320" y1="537" x2="1352" y2="537" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1352" y="472" width="368" height="130" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1536" y="504" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">④ 推理与联动</text>
+  <text x="1388" y="536" font-size="11" fill="#475569">语义推理引擎发现设备间关联</text>
+  <text x="1388" y="560" font-size="11" fill="#475569">同房间均值 / 超阈值聚合告警</text>
+
+  <!-- 底部 -->
+  <rect x="80" y="660" width="1640" height="90" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="692" font-size="13" font-weight="700" fill="#334155">可选标准（按场景复用，勿重复造轮子）</text>
+  <text x="120" y="720" font-size="12" fill="#475569">Matter（智能家居互操作）· W3C WoT TD（机器可读说明书）· OPC UA PubSub（工厂跨车间）· Sparkplug B（MQTT 工业语义）</text>
+
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图9-14 互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体；实践按语法统一、结构绑定、语义标注、推理联动四步推进，语义层让机器理解数据真实含义。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
