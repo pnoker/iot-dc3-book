@@ -1372,6 +1372,13 @@ body {
     display: block;
 }
 
+/* 小屏：header 空间有限，隐藏站名文字只留 logo，给四叶草/搜索/汉堡腾出空间 */
+@media (max-width: 767px) {
+    .VPNavBarTitle .title > span {
+        display: none;
+    }
+}
+
 /* ── 章首署名行（作者/版权/许可，随正文传播） ── */
 .book-byline {
     margin: 0.4em 0 1.4em;
