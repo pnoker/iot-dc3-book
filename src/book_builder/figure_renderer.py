@@ -123,7 +123,11 @@ class _ChromeSession:
         chrome = chrome_bin or _find_chrome()
         if chrome is None:
             raise RuntimeError("未找到 Chrome/Edge，无法导出插图 PNG。")
-        self._profile = tempfile.TemporaryDirectory(prefix="book-figures-chrome-")
+        # Chrome 子进程退出是异步的，临时目录清理偶发 Directory not empty；
+        # 忽略清理错误（残留临时目录无害，由系统定期回收），避免中断构建。
+        self._profile = tempfile.TemporaryDirectory(
+            prefix="book-figures-chrome-", ignore_cleanup_errors=True
+        )
         self._process = subprocess.Popen(
             [
                 chrome,
