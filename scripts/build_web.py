@@ -278,30 +278,29 @@ def gen_figures_manifest(parts: list[dict]) -> list[dict]:
             md = srcs[0].read_text(encoding="utf-8")
             parsed = parse_chapter_md(md)
             for s in parsed["sections"]:
-                for h3 in s["h3s"]:
-                    if not h3["stem"]:
+                if not s["stem"]:
+                    continue
+                body = "\n".join(s["body"])
+                for m in IMG_RE.finditer(body):
+                    alt, src = m.group(1), m.group(2)
+                    fig_id = figure_id_of(src)
+                    if not fig_id:
                         continue
-                    body = "\n".join(h3["body"])
-                    for m in IMG_RE.finditer(body):
-                        alt, src = m.group(1), m.group(2)
-                        fig_id = figure_id_of(src)
-                        if not fig_id:
-                            continue
-                        m_num = re.match(r"(图\s*\d+-\d+)\s*(.*)", alt.strip())
-                        if m_num:
-                            num = fix_caption(m_num.group(1))
-                            title = m_num.group(2).strip()
-                        else:
-                            num, title = alt.strip(), ""
-                        manifest.append({
-                            "id": fig_id,
-                            "num": num,
-                            "title": title,
-                            "chapter": ch["id"],
-                            "chapterTitle": ch["title"],
-                            "url": section_link(slug, ch["id"], h3["stem"]) + "#" + fig_id,
-                            "thumb": web_src(src),
-                        })
+                    m_num = re.match(r"(图\s*\d+-\d+)\s*(.*)", alt.strip())
+                    if m_num:
+                        num = fix_caption(m_num.group(1))
+                        title = m_num.group(2).strip()
+                    else:
+                        num, title = alt.strip(), ""
+                    manifest.append({
+                        "id": fig_id,
+                        "num": num,
+                        "title": title,
+                        "chapter": ch["id"],
+                        "chapterTitle": ch["title"],
+                        "url": section_link(slug, ch["id"], s["stem"]) + "#" + fig_id,
+                        "thumb": web_src(src),
+                    })
     return manifest
 
 
@@ -400,20 +399,20 @@ _H3_RE = re.compile(r"^###\s+(.+)$")
 
 
 def parse_chapter_md(md: str) -> dict:
-    """解析章 markdown → {h1, intro, sections: [{title, h3s: [{stem, title, body}]}]}。"""
+    """解析章 markdown → {h1, intro, sections: [{stem, title, body}]}。
+
+    节内 H3/H4 子标题整体降一级（H3→H2、H4→H3），作为页面正文标题。
+    """
     lines = md.split("\n")
     in_code = False
     h1 = ""
     intro: list[str] = []
     sections: list[dict] = []
     cur_section: dict | None = None
-    cur_h3: dict | None = None
 
     def append(line: str) -> None:
-        if cur_h3 is not None:
-            cur_h3["body"].append(line)
-        elif cur_section is not None:
-            cur_section["lead"].append(line)
+        if cur_section is not None:
+            cur_section["body"].append(line)
         else:
             intro.append(line)
 
@@ -431,20 +430,15 @@ def parse_chapter_md(md: str) -> dict:
             continue
         m = _H2_RE.match(line)
         if m:
-            cur_section = {"title": m.group(1).strip(), "lead": [], "h3s": []}
-            sections.append(cur_section)
-            cur_h3 = None
-            continue
-        m = _H3_RE.match(line)
-        if m:
             title = m.group(1).strip()
-            stem = re.match(r"^(\d+\.\d+\.\d+)", title)
-            cur_h3 = {"stem": stem.group(1) if stem else "", "title": title, "body": []}
-            if cur_section is None:
-                cur_section = {"title": "", "lead": [], "h3s": []}
-                sections.append(cur_section)
-            cur_section["h3s"].append(cur_h3)
+            stem = re.match(r"^(\d+\.\d+)(?=\s|$)", title)
+            cur_section = {"stem": stem.group(1) if stem else "", "title": title, "body": []}
+            sections.append(cur_section)
             continue
+        # H3/H4/H5 → 整体降一级
+        m = re.match(r"^(#{3,6})\s+(.*)$", line)
+        if m:
+            line = "#" * (len(m.group(1)) - 1) + " " + m.group(2)
         append(line)
 
     return {"h1": h1, "intro": "\n".join(intro).strip(), "sections": sections}
@@ -463,13 +457,6 @@ def extract_description(body: str) -> str:
     return ""
 
 
-def demote_headings(body: str) -> str:
-    """小节正文标题降级：H5→H3、H4→H2（页面 H1 已是小节标题）。"""
-    body = re.sub(r"^#####\s+", "### ", body, flags=re.M)
-    body = re.sub(r"^####\s+", "## ", body, flags=re.M)
-    return body
-
-
 def section_link(slug: str, cid: int, stem: str) -> str:
     return f"/{slug}/chapter-{cid}/{stem.replace('.', '-')}"
 
@@ -486,11 +473,11 @@ def gen_section_nav(prev, nxt) -> str:
     return '\n<nav class="section-nav">\n  ' + '\n  '.join(parts) + '\n</nav>\n'
 
 
-def gen_section_page(h3: dict, slug: str, cid: int, prev, nxt) -> str:
-    """生成单个小节页面 md。"""
-    title = h3["title"]
-    desc = extract_description("\n".join(h3["body"]))
-    body = demote_headings("\n".join(h3["body"])).strip()
+def gen_section_page(sec: dict, slug: str, cid: int, prev, nxt) -> str:
+    """生成单个节页面 md（节标题 = 页面 H1，节内 H3/H4 已在 parse 时降级）。"""
+    title = sec["title"]
+    desc = extract_description("\n".join(sec["body"]))
+    body = "\n".join(sec["body"]).strip()
     parts = [fm(title=title, description=desc)]
     parts.append(f"# {title}\n")
     parts.append(BYLINE)
@@ -504,7 +491,7 @@ def gen_section_page(h3: dict, slug: str, cid: int, prev, nxt) -> str:
 
 
 def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: list[dict], slug: str, divider_html: str) -> str:
-    """生成章首页：章扉页 + 章标题 + 章引言 + 节/小节清单。"""
+    """生成章首页：章扉页 + 章标题 + 章引言 + 节清单。"""
     parts = [fm(title=f"第 {cid} 章　{title}", description=oneline(desc))]
     if divider_html:
         parts.append(
@@ -516,11 +503,10 @@ def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: lis
     if intro:
         parts.append(intro)
         parts.append("")
+    parts.append("\n## 本章目录\n")
     for s in sections:
-        parts.append(f"\n## {s['title']}\n")
-        for h3 in s["h3s"]:
-            if h3["stem"]:
-                parts.append(f"- [{h3['title']}]({section_link(slug, cid, h3['stem'])})")
+        if s["stem"]:
+            parts.append(f"- [{s['title']}]({section_link(slug, cid, s['stem'])})")
     return "\n".join(parts) + "\n"
 
 
@@ -601,18 +587,9 @@ def gen_sidebar_ts(parts: list[dict]) -> str:
             parsed = parse_chapter_md(srcs[0].read_text(encoding="utf-8"))
             sec_items = []
             for s in parsed["sections"]:
-                h3_items = []
-                for h3 in s["h3s"]:
-                    if h3["stem"]:
-                        h3_items.append(
-                            f"            {{ text: {js(h3['title'])}, link: {js(section_link(slug, ch['id'], h3['stem']))} }},"
-                        )
-                if h3_items:
+                if s["stem"]:
                     sec_items.append(
-                        "        {"
-                        + f"text: {js(s['title'])}, collapsed: true, items: ["
-                        + "\n".join(h3_items)
-                        + "\n        ]}"
+                        f"        {{ text: {js(s['title'])}, link: {js(section_link(slug, ch['id'], s['stem']))} }},"
                     )
             if sec_items:
                 L.append("      {")
@@ -620,7 +597,7 @@ def gen_sidebar_ts(parts: list[dict]) -> str:
                 L.append(f"        link: {js(link)},")
                 L.append("        collapsed: true,")
                 L.append("        items: [")
-                L.append(",\n".join(sec_items))
+                L.append("\n".join(sec_items))
                 L.append("        ],")
                 L.append("      },")
             else:
@@ -795,14 +772,13 @@ def main() -> None:
             parsed = parse_chapter_md(md)
             chapters_meta.append({"i": i, "part": part, "slug": slug, "ch": ch, "parsed": parsed})
             for s in parsed["sections"]:
-                for h3 in s["h3s"]:
-                    if h3["stem"]:
-                        all_sections.append({
-                            "slug": slug, "cid": ch["id"], "h3": h3,
-                            "link": section_link(slug, ch["id"], h3["stem"]),
-                        })
+                if s["stem"]:
+                    all_sections.append({
+                        "slug": slug, "cid": ch["id"], "sec": s,
+                        "link": section_link(slug, ch["id"], s["stem"]),
+                    })
 
-    order = {(x["slug"], x["cid"], x["h3"]["stem"]): k for k, x in enumerate(all_sections)}
+    order = {(x["slug"], x["cid"], x["sec"]["stem"]): k for k, x in enumerate(all_sections)}
     for m in chapters_meta:
         slug, ch, parsed = m["slug"], m["ch"], m["parsed"]
         ch_dir = DOCS / slug / f"chapter-{ch['id']}"
@@ -816,18 +792,17 @@ def main() -> None:
             encoding="utf-8",
         )
         for s in parsed["sections"]:
-            for h3 in s["h3s"]:
-                if not h3["stem"]:
-                    continue
-                idx = order[(slug, ch["id"], h3["stem"])]
-                prev = all_sections[idx - 1] if idx > 0 else None
-                nxt = all_sections[idx + 1] if idx < len(all_sections) - 1 else None
-                prev_t = (prev["h3"]["title"], prev["link"]) if prev else None
-                nxt_t = (nxt["h3"]["title"], nxt["link"]) if nxt else None
-                (ch_dir / f"{h3['stem'].replace('.', '-')}.md").write_text(
-                    gen_section_page(h3, slug, ch["id"], prev_t, nxt_t),
-                    encoding="utf-8",
-                )
+            if not s["stem"]:
+                continue
+            idx = order[(slug, ch["id"], s["stem"])]
+            prev = all_sections[idx - 1] if idx > 0 else None
+            nxt = all_sections[idx + 1] if idx < len(all_sections) - 1 else None
+            prev_t = (prev["sec"]["title"], prev["link"]) if prev else None
+            nxt_t = (nxt["sec"]["title"], nxt["link"]) if nxt else None
+            (ch_dir / f"{s['stem'].replace('.', '-')}.md").write_text(
+                gen_section_page(s, slug, ch["id"], prev_t, nxt_t),
+                encoding="utf-8",
+            )
 
     # 附录
     appendix_dir = DOCS / "appendix"
