@@ -1347,14 +1347,16 @@ body {
     display: block;
 }
 
-/* ── 四叶草图标主题协同（明/暗两套绿色） ── */
+/* ── 四叶草图标主题协同（明/暗两套绿色，茎/外叶/内叶/中心四层） ── */
 :root {
-    --clover-leaf-1: #4ade80;
-    --clover-leaf-2: #16a34a;
-    --clover-stem: #15803d;
+    --clover-stem: #00da38;
+    --clover-leaf-1: #0ce000;
+    --clover-leaf-2: #44ea00;
+    --clover-center: #92fa14;
 }
 .dark {
-    --clover-leaf-1: #6ee7b7;
-    --clover-leaf-2: #34d399;
     --clover-stem: #4ade80;
+    --clover-leaf-1: #34d399;
+    --clover-leaf-2: #6ee7b7;
+    --clover-center: #d9f99d;
 }
