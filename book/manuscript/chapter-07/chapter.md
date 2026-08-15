@@ -192,6 +192,26 @@ IoT DC3 的 Agentic Center 正是按这个思路设计的。它通过 Spring AI 
 
 大模型在物联网中的角色可以这样收束：它补上了长期缺失的认知层。传感器采集海量数据，规则引擎做快速判决，但“理解上下文、生成建议、与人对话”在过去一直空缺。大模型正好填补这块空白，让物联网从只能被动感知，进化为能够主动认知，同时不取代原有的实时控制逻辑。下面进一步讨论：如何用 Agent Runtime 承载这种认知能力，并把概率性决策约束为可治理的工业执行。
 
+```book-figure
+id: "fig-07-10"
+type: framework
+title: 图7-10 大模型在物联网中的角色：从感知到认知
+audience_takeaway: "读者应理解大模型在规则引擎之上补上认知层，从数值判断跃迁到语义推理，带来自然语言穿透设备层、多模态融合、自动生成运维策略三层变化，且不取代实时控制逻辑。"
+purpose: 展示大模型对传统规则引擎的补充，突出从感知到认知的跃迁
+visual_focus: 规则引擎 → 大模型的跃迁，及三层变化。
+design_level: framework
+layout: 上半规则引擎与大模型左右对比，下半三层变化卡片，底部分析跃迁
+elements:
+- 规则引擎：数值判断，只处理明确定义的离散规则
+- 大模型：语义推理，关联季节、负载、历史趋势、维修记录
+- 三层变化：自然语言穿透设备层（Action 确认）、多模态融合、自动生成运维策略
+- 分析跃迁：描述性 → 诊断性 → 建议性
+relationships:
+- 规则引擎 → 大模型叠加认知层；三层变化支撑分析跃迁
+caption: 图7-10 大模型在规则引擎之上补上长期缺失的认知层：从数值判断跃迁到语义推理，带来自然语言穿透设备层、多模态融合与自动生成运维策略三层变化，且不取代实时控制逻辑。
+render_notes: HTML/SVG 渲染，左右对比 + 三层卡片，蓝色主色，跃迁箭头居中。
+```
+
 ### 7.1.3 Agent Runtime：从模型能力到受治理执行
 
 规则引擎能处理预设判断，大模型能理解模糊意图，但“排查 2 号线温度异常”既不是单步告警，也不是一次模型调用。它要求系统建立任务上下文，查询设备和历史数据，选择下一步能力，处理超时与空结果，在必要时等待人工确认，执行后验证结果，并把全过程保存为可审计记录。只讨论“模型会不会调用工具”，无法覆盖这些工程责任。
@@ -704,6 +724,26 @@ RAGAS 研究将 RAG 质量拆为检索相关性、回答对检索内容的忠实
 
 RAG Eval 的最终目的不是证明某个框架更先进，而是建立一条可重复的证据链：当语料、索引、模型或 Prompt 发生变化时，团队能够知道改善了什么、破坏了什么，以及系统是否仍满足租户隔离和高风险任务的拒答边界。
 
+```book-figure
+id: "fig-07-11"
+type: layered
+title: 图7-11 RAG Eval 分层评测
+audience_takeaway: "读者应理解 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题，失败分类比单一综合分数更能指导工程改进。"
+purpose: 展示 RAG 评测的四层结构与各层指标，强调分层定位问题
+visual_focus: 自上而下的四层评测结构。
+design_level: layered
+layout: 四层横向带（数据集 → 检索 → 生成 → 端到端），底部失败分类说明
+elements:
+- 数据集层：问题、预期证据、答案要点、拒答条件、租户、版本、有效时间
+- 检索层：Recall@k、MRR、nDCG@k、Context Precision/Recall、版本命中率、跨租户误检索率
+- 生成层：Groundedness、Answer Relevance、Citation、无证据回答率、拒答准确率
+- 端到端层：问题解决率、专家复核通过率、P50/P95、token 与成本
+relationships:
+- 四层自上而下：先固定评测集，再依次评检索、生成、端到端
+caption: 图7-11 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题；失败分类对应不同修复入口，比单一综合分数更能指导工程改进。
+render_notes: HTML/SVG 渲染，四层纵向堆叠，灰/蓝/绿/橙四色分层，左侧竖排层名。
+```
+
 ## 7.2 Spring AI 与物联网集成
 
 ### 7.2.1 Spring AI 简介与配置
@@ -1108,6 +1148,26 @@ IoT DC3 的 Agentic Center 将 `ChatMemory` 对接平台内部表结构，对话
 
 对话记忆是 Function Calling 在多轮场景中准确执行的先决条件——模型必须知道上一轮的操作结果，才能判断下一轮应查哪个位号、调哪个参数。没有它，Tool Calling 只能在单轮中生效，应用价值自然大打折扣。
 
+```book-figure
+id: "fig-07-12"
+type: matrix
+title: 图7-12 对话记忆的三种策略
+audience_takeaway: "读者应理解对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入、conversationId 隔离会话，解决无状态 API 与多轮交互的结构性矛盾。"
+purpose: 对比三种对话记忆策略的原理、适用场景与运维定位
+visual_focus: 三列策略卡片并列。
+design_level: matrix
+layout: 三列策略卡片（消息历史 / 摘要记忆 / 知识图谱记忆），底部关键实现说明
+elements:
+- 消息历史：完整消息列表附加到请求，短轮次（10 轮内），无信息损失
+- 摘要记忆：历史压缩为摘要避免 token 溢出，长轮次，须保留操作结果与状态码
+- 知识图谱记忆：维护实体关系仅检索相关实体，复杂推理、追溯多设备操作链
+- 关键实现：MessageChatMemoryAdvisor + conversationId；生产对接 Redis 跨进程共享
+relationships:
+- 三种策略同经 ChatMemory 接入，按对话长度与 token 预算选择
+caption: 图7-12 对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入，conversationId 隔离会话，解决无状态 API 与多轮交互之间的结构性矛盾。
+render_notes: HTML/SVG 渲染，三列对比，蓝/绿/橙三色，底部关键实现卡片。
+```
+
 ## 7.3 IoT DC3 的 Agentic Center 实践
 
 ### 7.3.1 IoT DC3 Agentic Center：当前实现与运行时映射
@@ -1275,6 +1335,26 @@ public AgenticToolResult<PointCommandResult> writePointValue(
 客户端可查询当前会话的待确认 Action，并调用 Action 接口确认或拒绝。确认时，`ActionService` 以租户、用户、状态和过期时间为条件原子抢占该 Action；只有仍处于 `PENDING` 且未过期的记录才能继续。随后服务调用 `PointCommandFacade.submitWrite` 提交写命令，状态更新为 `EXECUTED` 或 `FAILED`。命令再经 Data、RabbitMQ 和对应 Driver 到达物理设备。
 
 这套设计把“模型建议写入”和“平台真正执行”拆成两个明确步骤，确认依据是持久化 Action，而不是模型在自然语言里说了一句“已确认”。若还要增加值域校验、速率限制或多级审批，应继续在平台服务和 Action 流程中实现，不能依赖提示词保证。
+
+```book-figure
+id: "fig-07-13"
+type: architecture
+title: 图7-13 Agentic Center 工具生态与写入确认链路
+audience_takeaway: "读者应理解 Agentic Center 当前注册 8 类 Tool（查询为主），PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路。"
+purpose: 展示 Tool 生态全貌与写入确认的真实流程，划清模型能力边界
+visual_focus: 8 类 Tool 布局与底部写入确认链路。
+design_level: architecture
+layout: 顶部大模型，中部 8 类 Tool 卡片，底部写入确认四步链路
+elements:
+- 8 类 Tool：TenantTool、UserTool、DeviceTool、DriverTool、ProfileTool、PointTool、PointValueTool、SystemTool
+- DeviceTool / DriverTool / PointTool：只读查询（检索、状态、趋势）
+- PointValueTool.writePointValue：创建 10 分钟有效 PENDING Action，返回 actionId
+- 确认链路：模型调用 → PENDING Action → 用户确认 → submitWrite → EXECUTED/FAILED → 设备
+relationships:
+- 大模型经 Tool 复用平台 Facade；写操作必须经 Action 确认，模型不能绕过
+caption: 图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。
+render_notes: HTML/SVG 渲染，Tool 生态网格 + 底部四步写入确认链路，橙/蓝/绿区分读与写。
+```
 
 ### 7.3.5 自然语言运维：对话替代仪表盘
 
@@ -1586,6 +1666,25 @@ render_notes: "HTML/SVG 渲染，浅色背景从左到右布局，菱形决策�
 
 发布记录的价值不在于增加流程，而在于把“感觉新版本更好”变成可审计判断：哪个组件变化、哪些指标改善、哪些风险增加、谁批准，以及如何恢复到最后一个已知安全组合。
 
+```book-figure
+id: "fig-07-14"
+type: matrix
+title: 图7-14 MLOps 与 LLMOps 的边界及五道发布门
+audience_takeaway: "读者应理解 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元，发布经五道门逐步放权。"
+purpose: 对比 MLOps 与 LLMOps 的治理边界，展示五道发布门
+visual_focus: 五维对比表与底部五道发布门。
+design_level: matrix
+layout: 上半五维对比表（数据/资产/评测/发布/监控），下半五道发布门流程
+elements:
+- MLOps 重点：训练数据、模型、精度召回、模型注册、数据漂移
+- LLMOps 新增：Prompt、RAG 索引、Tool schema、策略、忠实性、越权、成本
+- 五道发布门：离线回归 → 影子流量 → 灰度租户 → 只读先行 → 扩大范围
+relationships:
+- MLOps 与 LLMOps 互补而非替代；五道门由严到宽逐步放权
+caption: 图7-14 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元；发布经离线回归、影子流量、灰度租户、只读先行、扩大范围五道门逐步放权。
+render_notes: HTML/SVG 渲染，五维对比表 + 底部五道发布门流程，蓝/绿区分新旧重点。
+```
+
 ## 7.5 从 Copilot 到 Agent：物联网运维的范式转移
 
 ### 7.5.1 Copilot 模式：辅助人类操作
@@ -1622,6 +1721,25 @@ Agent 模式通常让模型围绕目标执行“感知—规划—行动—反�
 - **补偿而非通用回滚**：设备命令通常不可撤回，应按具体动作设计补偿、前值快照和失败处置，不能承诺任意操作自动恢复。
 
 因此，本节讨论的 Agent 模式是一条**演进参考**。IoT DC3 当前可以让模型组合已注册的只读 Tool，并对点位写入执行 Action 确认；自动触发、长期任务和更高自主度编排仍需新增实现。实时安全控制始终应由 PLC、边缘控制器和确定性规则承担。
+
+```book-figure
+id: "fig-07-15"
+type: matrix
+title: 图7-15 从 Copilot 到 Agent：低自主度与高自主度对比
+audience_takeaway: "读者应理解 Copilot 是低自主度协作（模型辅助、人保留执行权），Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界。"
+purpose: 对比 Copilot 与 Agent 两种模式的自主度边界
+visual_focus: 左右并列的两种模式卡片。
+design_level: matrix
+layout: 左 Copilot（低自主度）、右 Agent（高自主度演进参考），底部共同安全边界
+elements:
+- Copilot：用户主动触发、查询与单次点位写 Action、写入等待确认、失败返回操作员处理
+- Agent：事件/调度触发、多步长期任务、高风险继续确认或外部审批、运行状态与补偿接管
+- 共同边界：模型可提出受控写入但不能绕过 Action；实时联锁由 PLC/边缘控制器承担
+relationships:
+- Copilot → Agent 自主度逐步放开，写入确认与确定性控制边界保持不变
+caption: 图7-15 Copilot 是低自主度协作，模型辅助、人保留执行权；Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界，实时安全控制始终由确定性系统承担。
+render_notes: HTML/SVG 渲染，左右对比，蓝/绿两色，底部安全边界橙框。
+```
 
 ### 7.5.3 从工具调用服务演进为工业 Agent Runtime
 
@@ -1877,6 +1995,26 @@ Agent 评测不仅要看“完成了多少个任务”，还要看每个任务�
 > - **限制**：没有真实运行结果时标记 NA。不以模型的自评（如 `tool_calls` 字段）作为最终证据；不插入示意数字或虚构数据集。
 
 Agent Eval 的价值是把自主度变成可控制的发布变量。只有当结果、轨迹、安全和价格同时达到门槛时，系统才应从只读问答逐步开放到 Copilot 和受约束执行。评测集不是一次性的通过资料，而是每次模型版本、Tool 配置或安全策略变更后的回归屏障。
+
+```book-figure
+id: "fig-07-16"
+type: layered
+title: 图7-16 Agent Eval：结果、轨迹、安全与代价四层
+audience_takeaway: "读者应理解 Agent Eval 从结果、轨迹、安全、代价四层评测：结果看目标状态、轨迹看过程合规、安全以零越权为硬门槛、代价看每成功任务综合成本。"
+purpose: 展示 Agent Eval 的四层评测结构与安全硬性阈值
+visual_focus: 自上而下的四层评测结构。
+design_level: layered
+layout: 四层横向带（结果 / 轨迹 / 安全 / 代价），底部恢复场景说明
+elements:
+- 结果层：任务成功率、正确拒绝率、人工接管率、完成时限达标率
+- 轨迹层：Tool/参数正确率、无效重复调用率、允许路径偏差、状态迁移正确率
+- 安全层：Prompt Injection、跨租户读取、审批绕过、敏感信息回显（硬性阈值 0%）
+- 代价层：P50/P95 时延、模型/Tool 调用次数、token 与成功任务成本
+relationships:
+- 四层自上而下：结果 → 轨迹 → 安全 → 代价，安全为发布门硬门槛
+caption: 图7-16 Agent Eval 从结果、轨迹、安全、代价四层评测：结果看目标状态是否达成、轨迹看过程是否合规、安全以零越权为硬门槛、代价看每成功任务的综合成本。
+render_notes: HTML/SVG 渲染，四层纵向堆叠，蓝/绿/红/橙四色分层，左侧竖排层名。
+```
 
 ## 7.6 落地之前：实践清单与常见陷阱
 

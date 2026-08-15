@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-15 从 Copilot 到 Agent：低自主度与高自主度对比</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图7-15 从 Copilot 到 Agent：低自主度与高自主度对比</title>
+  <desc id="desc">Copilot 模型辅助、人保留执行权；Agent 沿感知-规划-行动-反馈循环自主执行，当前以受控 Tool 调用为边界。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-15 从 Copilot 到 Agent：低自主度与高自主度对比</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">自主度是逐步放开的受控变量 · 实时安全控制始终由 PLC / 边缘控制器承担</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- Copilot -->
+  <rect x="80" y="150" width="800" height="480" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="150" width="800" height="48" rx="12" fill="#2563EB"/>
+  <rect x="80" y="178" width="800" height="20" fill="#2563EB"/>
+  <text x="480" y="182" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Copilot 模式 · 低自主度（当前可实现）</text>
+  <text x="120" y="236" font-size="13" fill="#0F172A">模型负责查询、解释、生成建议，操作员保留最终判断与执行权</text>
+  <g font-size="12">
+    <text x="120" y="282" font-weight="700" fill="#0F172A">触发方式</text>
+    <text x="120" y="306" fill="#475569">用户主动发起对话</text>
+    <text x="120" y="344" font-weight="700" fill="#0F172A">任务范围</text>
+    <text x="120" y="368" fill="#475569">已注册 Tool 的查询与单次点位写 Action</text>
+    <text x="120" y="406" font-weight="700" fill="#0F172A">写入控制</text>
+    <text x="120" y="430" fill="#475569">点位写入等待用户确认</text>
+    <text x="120" y="468" font-weight="700" fill="#0F172A">失败处理</text>
+    <text x="120" y="492" fill="#475569">返回错误并由操作员处理</text>
+    <text x="120" y="530" font-weight="700" fill="#0F172A">典型组合</text>
+    <text x="120" y="554" fill="#475569">DeviceTool 查设备 + DriverTool 查驱动状态 + PointValueTool 查趋势</text>
+  </g>
+  <text x="480" y="604" font-size="11" fill="#64748B" text-anchor="middle">价值：先验证模型能否稳定“看对”和“解释对”</text>
+
+  <!-- 演进箭头 -->
+  <line x1="910" y1="390" x2="950" y2="390" stroke="#2563EB" stroke-width="2.5" marker-end="url(#ah-blue)"/>
+
+  <!-- Agent -->
+  <rect x="970" y="150" width="750" height="480" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="970" y="150" width="750" height="48" rx="12" fill="#16A34A"/>
+  <rect x="970" y="178" width="750" height="20" fill="#16A34A"/>
+  <text x="1345" y="182" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Agent 模式 · 高自主度（演进参考）</text>
+  <text x="1010" y="236" font-size="13" fill="#0F172A">围绕目标执行“感知—规划—行动—反馈”循环</text>
+  <g font-size="12">
+    <text x="1010" y="282" font-weight="700" fill="#0F172A">触发方式</text>
+    <text x="1010" y="306" fill="#475569">事件或调度触发，需要新增实现</text>
+    <text x="1010" y="344" font-weight="700" fill="#0F172A">任务范围</text>
+    <text x="1010" y="368" fill="#475569">显式工作流中的多步长期任务</text>
+    <text x="1010" y="406" font-weight="700" fill="#0F172A">写入控制</text>
+    <text x="1010" y="430" fill="#475569">高风险与不可逆动作继续确认或接外部审批</text>
+    <text x="1010" y="468" font-weight="700" fill="#0F172A">失败处理</text>
+    <text x="1010" y="492" fill="#475569">运行状态、重试边界、补偿与人工接管</text>
+    <text x="1010" y="530" font-weight="700" fill="#0F172A">待补能力</text>
+    <text x="1010" y="554" fill="#475569">事件触发与显式工作流、场景白名单、外部审批、按动作设计补偿</text>
+  </g>
+  <text x="1345" y="604" font-size="11" fill="#64748B" text-anchor="middle">不是当前已上线产品模式，需新增实现</text>
+
+  <!-- 底部边界 -->
+  <rect x="80" y="680" width="1640" height="110" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="120" y="712" font-size="14" font-weight="700" fill="#0F172A">当前安全边界（两种模式共同约束）</text>
+  <text x="120" y="742" font-size="12" fill="#475569">模型可以提出并准备受控写入，但不能绕过 Action 确认直接控制设备 · CommandTool / EventTool 当前未注册</text>
+  <text x="120" y="766" font-size="12" fill="#475569">实时联锁、紧急停机、自动切换能源等确定性控制，始终由 PLC、边缘控制器或规则系统执行</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图7-15 Copilot 是低自主度协作，模型辅助、人保留执行权；Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界，实时安全控制始终由确定性系统承担。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

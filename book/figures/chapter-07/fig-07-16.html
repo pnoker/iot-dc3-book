@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-16 Agent Eval：结果、轨迹、安全与代价四层</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">图7-16 Agent Eval：结果、轨迹、安全与代价四层</title>
+  <desc id="desc">Agent 评测单位是目标-轨迹-最终状态-副作用，分结果、轨迹、安全、代价四层，安全硬性阈值为零越权。</desc>
+  <rect width="1200" height="720" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="600" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-16 Agent Eval：结果、轨迹、安全与代价四层</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">评测单位是“目标—轨迹—最终状态—副作用”，而非单轮文本</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 结果层 -->
+  <rect x="80" y="140" width="1640" height="130" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="110" height="130" rx="12" fill="#2563EB"/>
+  <rect x="135" y="140" width="55" height="130" fill="#2563EB"/>
+  <text x="135" y="212" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 205)">结果层</text>
+  <text x="230" y="172" font-size="14" font-weight="700" fill="#0F172A">模型说“已执行”，现场真的变了？</text>
+  <text x="230" y="200" font-size="12" fill="#475569">任务成功率 · 部分成功率 · 任务失败率与正确拒绝率</text>
+  <text x="230" y="226" font-size="12" fill="#475569">人工接管率 · 完成时限达标率（有 SLI 约束的场景）</text>
+  <text x="230" y="252" font-size="11" fill="#64748B">判定依据来自平台状态查询、命令回执或工单，而非模型自述（防“幻觉确认”）</text>
+
+  <!-- 轨迹层 -->
+  <rect x="80" y="286" width="1640" height="130" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="80" y="286" width="110" height="130" rx="12" fill="#16A34A"/>
+  <rect x="135" y="286" width="55" height="130" fill="#16A34A"/>
+  <text x="135" y="358" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 351)">轨迹层</text>
+  <text x="230" y="318" font-size="14" font-weight="700" fill="#0F172A">过程是否合规、可追溯</text>
+  <text x="230" y="346" font-size="12" fill="#475569">Tool 选择正确率 · 参数正确率 · 无效或重复调用率</text>
+  <text x="230" y="372" font-size="12" fill="#475569">允许路径偏差 · 状态迁移正确率（重试、验证、等待确认、人工接管）</text>
+  <text x="230" y="398" font-size="11" fill="#64748B">关键失败：越权 Tool、只读升级为写入、伪造 ID、重复不可逆副作用 —— 直接判 FAIL</text>
+
+  <!-- 安全层 -->
+  <rect x="80" y="432" width="1640" height="130" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <rect x="80" y="432" width="110" height="130" rx="12" fill="#DC2626"/>
+  <rect x="135" y="432" width="55" height="130" fill="#DC2626"/>
+  <text x="135" y="504" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 497)">安全层</text>
+  <text x="230" y="464" font-size="14" font-weight="700" fill="#0F172A">攻击者端测试是发布门的一部分</text>
+  <text x="230" y="492" font-size="12" fill="#475569">Prompt Injection（直接/间接） · 跨租户读取 · 参数越界与上下文伪造 · 审批绕过</text>
+  <text x="230" y="518" font-size="12" fill="#475569">重放已确认动作 · 敏感信息回显 · 模型/Tool 超时 · 停止与接管</text>
+  <text x="230" y="544" font-size="11" fill="#DC2626">硬性阈值：高风险写无审批执行、跨租户越权、不可逆动作自动执行、敏感信息泄露 —— 均为 0%</text>
+
+  <!-- 代价层 -->
+  <rect x="80" y="578" width="1640" height="130" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="80" y="578" width="110" height="130" rx="12" fill="#F97316"/>
+  <rect x="135" y="578" width="55" height="130" fill="#F97316"/>
+  <text x="135" y="650" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 643)">代价层</text>
+  <text x="230" y="610" font-size="14" font-weight="700" fill="#0F172A">成功任务的综合成本</text>
+  <text x="230" y="638" font-size="12" fill="#475569">端到端时延 P50/P95 · 模型调用次数 · Tool 调用次数 · 人工介入次数</text>
+  <text x="230" y="664" font-size="12" fill="#475569">Token 消费与货币成本 · 每个最终正确且无副作用任务的 token 消耗</text>
+  <text x="230" y="690" font-size="11" fill="#64748B">分母应是“每最终成功任务”，而非“每请求”：成功任务可能经历多次调用与确认</text>
+
+  <!-- 底部：评测集 -->
+  <rect x="80" y="740" width="1640" height="100" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="772" font-size="14" font-weight="700" fill="#334155">评测集必须包含恢复场景</text>
+  <text x="120" y="802" font-size="12" fill="#475569">Tool 超时 / 脏数据 / 权限不足 / 重复事件 / 中途重启 / 回执丢失 / 人工接管 / 注入越权 / 资源耗尽 / 日志审计，共十类韧性场景</text>
+
+  <!-- Caption -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图7-16 Agent Eval 从结果、轨迹、安全、代价四层评测：结果看目标状态是否达成、轨迹看过程是否合规、安全以零越权为硬门槛、代价看每成功任务的综合成本。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

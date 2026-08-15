@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-13 Agentic Center 工具生态与写入确认链路</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">图7-13 Agentic Center 工具生态与写入确认链路</title>
+  <desc id="desc">当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，用户确认后才进入设备命令链路。</desc>
+  <rect width="1200" height="720" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="600" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-13 Agentic Center 工具生态与写入确认链路</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">工具通过 Facade 复用平台能力 · 租户与用户上下文随请求进入 Tool</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 大模型 -->
+  <rect x="690" y="140" width="420" height="76" rx="12" fill="#2563EB"/>
+  <text x="900" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Agentic Center（大模型）</text>
+  <text x="900" y="196" font-size="11" fill="#DBEAFE" text-anchor="middle">Spring AI @Tool 暴露平台能力</text>
+
+  <!-- Tool 生态：8 个 Tool -->
+  <text x="80" y="270" font-size="14" font-weight="700" fill="#334155">当前注册的 8 类 Tool</text>
+
+  <rect x="80" y="290" width="200" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="180" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">TenantTool</text>
+  <text x="180" y="338" font-size="11" fill="#475569" text-anchor="middle">租户上下文</text>
+
+  <rect x="296" y="290" width="200" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="396" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">UserTool</text>
+  <text x="396" y="338" font-size="11" fill="#475569" text-anchor="middle">用户上下文</text>
+
+  <rect x="512" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="612" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">DeviceTool</text>
+  <text x="612" y="338" font-size="11" fill="#475569" text-anchor="middle">设备检索 / 状态（只读）</text>
+
+  <rect x="728" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="828" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">DriverTool</text>
+  <text x="828" y="338" font-size="11" fill="#475569" text-anchor="middle">驱动诊断（只读）</text>
+
+  <rect x="944" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1044" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">ProfileTool</text>
+  <text x="1044" y="338" font-size="11" fill="#475569" text-anchor="middle">物模型（只读）</text>
+
+  <rect x="1160" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1260" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">PointTool</text>
+  <text x="1260" y="338" font-size="11" fill="#475569" text-anchor="middle">位号检索（只读）</text>
+
+  <rect x="1376" y="290" width="200" height="64" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1476" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">PointValueTool</text>
+  <text x="1476" y="338" font-size="11" fill="#475569" text-anchor="middle">实时值读 / 写（需确认）</text>
+
+  <rect x="80" y="370" width="200" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="180" y="398" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">SystemTool</text>
+  <text x="180" y="418" font-size="11" fill="#475569" text-anchor="middle">系统信息</text>
+
+  <text x="80" y="470" font-size="11" fill="#64748B">CommandTool 与 EventTool 源码存在但未加入当前 Provider，不能算默认会话能力</text>
+
+  <!-- 写入确认链路 -->
+  <line x1="40" y1="510" x2="1760" y2="510" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="80" y="550" font-size="14" font-weight="700" fill="#334155">写入确认链路（PointValueTool.writePointValue）</text>
+
+  <rect x="80" y="572" width="300" height="90" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="230" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">模型调用 writePointValue</text>
+  <text x="230" y="628" font-size="11" fill="#475569" text-anchor="middle">校验 Device/Point/值非空</text>
+  <text x="230" y="646" font-size="11" fill="#475569" text-anchor="middle">取租户、用户、会话上下文</text>
+
+  <line x1="380" y1="617" x2="436" y2="617" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+
+  <rect x="436" y="572" width="300" height="90" rx="10" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+  <text x="586" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">创建 PENDING Action</text>
+  <text x="586" y="628" font-size="11" fill="#475569" text-anchor="middle">10 分钟有效，返回 actionId</text>
+  <text x="586" y="646" font-size="11" fill="#475569" text-anchor="middle">模型不能绕过确认直接控制设备</text>
+
+  <line x1="736" y1="617" x2="792" y2="617" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="792" y="572" width="300" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="942" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">用户通过 Action 接口确认</text>
+  <text x="942" y="628" font-size="11" fill="#475569" text-anchor="middle">原子抢占 PENDING 且未过期的记录</text>
+  <text x="942" y="646" font-size="11" fill="#475569" text-anchor="middle">依据持久化 Action，而非模型自述</text>
+
+  <line x1="1092" y1="617" x2="1148" y2="617" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1148" y="572" width="280" height="90" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1288" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">submitWrite → 设备</text>
+  <text x="1288" y="628" font-size="11" fill="#475569" text-anchor="middle">状态置为 EXECUTED / FAILED</text>
+  <text x="1288" y="646" font-size="11" fill="#475569" text-anchor="middle">经 Data、RabbitMQ、Driver 到达设备</text>
+
+  <rect x="1448" y="572" width="272" height="90" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1584" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">审计可追溯</text>
+  <text x="1584" y="628" font-size="11" fill="#475569" text-anchor="middle">会话、租户、用户、Action</text>
+  <text x="1584" y="646" font-size="11" fill="#475569" text-anchor="middle">全链路记录，运维合规基础</text>
+
+  <!-- Legend -->
+  <g font-size="11" fill="#475569">
+    <rect x="80" y="710" width="16" height="14" rx="2" fill="#F0FDF4" stroke="#16A34A" stroke-width="1"/>
+    <text x="104" y="719" dominant-baseline="middle">只读查询 Tool</text>
+    <rect x="210" y="710" width="16" height="14" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1"/>
+    <text x="234" y="719" dominant-baseline="middle">含写操作 Tool（需确认）</text>
+    <rect x="370" y="710" width="16" height="14" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1"/>
+    <text x="394" y="719" dominant-baseline="middle">上下文 / 系统 Tool</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
