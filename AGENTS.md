@@ -105,7 +105,7 @@ uv run book-builder sample --until-chapter 3
 ```text
 book/config/*.yaml → src/book_builder/config.py
                          ↓
-book/manuscript/chapter-XX/chapter.md → src/book_builder/manuscript.py
+book/manuscript/chapter-XX/X.Y.Z.md → src/book_builder/manuscript.py
                          ↓
 book/assets/images/chapter-XX/{figure_id}.png → src/book_builder/figures.py
                          ↓
@@ -116,7 +116,7 @@ src/book_builder/pdf.py      → pandoc + Chrome → output/*.pdf
 关键模块：
 
 - `src/book_builder/config.py`：加载 `book/config/` 下的 YAML，并构造应用配置；
-- `src/book_builder/manuscript.py`：优先读取各章 `chapter.md`，缺失时按编号拼接小节文件；
+- `src/book_builder/manuscript.py`：优先读取各章 `X.Y.Z.md` 小节文件（按 frontmatter 的 `section` 归节、恢复章/节/小节结构），缺失时降级读取整章 `chapter.md`；
 - `src/book_builder/figures.py`：扫描 `book-figure` 块，匹配并收集同名 PNG；
 - `src/book_builder/figure_renderer.py`：将 `book/figures/` 下的 HTML 插图导出为 PNG；
 - `src/book_builder/figure_audit.py`：检查 HTML 插图的图号、图注和出版规范；
