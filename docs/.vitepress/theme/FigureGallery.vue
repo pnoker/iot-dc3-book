@@ -165,16 +165,21 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 
 /* 工具栏：搜索 + 计数 */
 .gallery-toolbar {
+  position: sticky;
+  top: var(--vp-nav-height);
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  padding: 12px 0;
+  background: var(--vp-c-bg);
+  border-bottom: 1px solid var(--vp-c-divider);
   flex-wrap: wrap;
 }
 .gallery-search {
   position: relative;
-  flex: 1 1 360px;
-  max-width: 560px;
+  flex: 1 1 320px;
   display: flex;
   align-items: center;
 }
