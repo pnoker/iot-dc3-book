@@ -16,7 +16,7 @@ const BOOK_DATE_PUBLISHED = '2025-06-01'
 const COPYRIGHT_HOLDER = '张红元'
 const LICENSE_URL = `${SITE_URL}/copyright`
 const DEFAULT_DESCRIPTION =
-  '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 155 张架构图，IoT DC3 开源贯穿全书。'
+  '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 200 张架构图，IoT DC3 开源贯穿全书。'
 
 const SCHEMA = 'https://schema.org'
 
