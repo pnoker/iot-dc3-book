@@ -27,8 +27,10 @@ import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote
 
 from PIL import Image
 
@@ -402,6 +404,26 @@ def gen_part_index(part: dict, slug: str, divider_html: str = "") -> str:
     return "\n".join(out) + "\n"
 
 
+# VitePress 标题锚点 slug：与 vitepress 的 slugify 保持一致（用于 sidebar 二级菜单跳转锚点）
+def vp_slugify(s: str) -> str:
+    s = unicodedata.normalize("NFKD", s)
+    s = re.sub(r"[\u0300-\u036F]", "", s)
+    s = re.sub(r"[\u0000-\u001f]", "", s)
+    s = re.sub(r"[\s\x60!@#$%^&*()\-_+=[\]{}|\\;:\"'\u201c\u201d\u2018\u2019<>,.?/]+", "-", s)
+    s = re.sub(r"-{2,}", "-", s)
+    s = re.sub(r"^-+|-+$", "", s)
+    s = re.sub(r"^(\d)", r"_\1", s)
+    return s.lower()
+
+
+def _chapter_h2(ch_id, slug: str) -> list[str]:
+    """读取某章 markdown 的二级标题（##），供 sidebar 二级菜单使用。"""
+    f = DOCS / slug / f"chapter-{ch_id}.md"
+    if not f.exists():
+        return []
+    return re.findall(r"^##\s+(.+)$", f.read_text(encoding="utf-8"), flags=re.M)
+
+
 def gen_sidebar_ts(parts: list[dict]) -> str:
     L = [
         "// 自动生成，请勿手改 —— 由 scripts/build_web.py 产出",
@@ -425,7 +447,19 @@ def gen_sidebar_ts(parts: list[dict]) -> str:
         L.append("    items: [")
         for ch in part["chapters"]:
             title = f"第 {ch['id']} 章　{ch['title']}"
-            L.append(f"      {{ text: {js(title)}, link: '/{slug}/chapter-{ch['id']}' }},")
+            link = f"/{slug}/chapter-{ch['id']}"
+            subs = _chapter_h2(ch["id"], slug)
+            if subs:
+                L.append("      {")
+                L.append(f"        text: {js(title)},")
+                L.append("        collapsed: false,")
+                L.append("        items: [")
+                for h2 in subs:
+                    L.append(f"          {{ text: {js(h2)}, link: {js(link + '#' + quote(vp_slugify(h2), safe=''))} }},")
+                L.append("        ],")
+                L.append("      },")
+            else:
+                L.append(f"      {{ text: {js(title)}, link: {js(link)} }},")
         L.append("    ],")
         L.append("  },")
     L.append("  { text: '附录', link: '/appendix/' },")
