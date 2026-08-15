@@ -1346,3 +1346,15 @@ body {
 .gallery-nav-icon svg {
     display: block;
 }
+
+/* ── 四叶草图标主题协同（明/暗两套绿色） ── */
+:root {
+    --clover-leaf-1: #4ade80;
+    --clover-leaf-2: #16a34a;
+    --clover-stem: #15803d;
+}
+.dark {
+    --clover-leaf-1: #6ee7b7;
+    --clover-leaf-2: #34d399;
+    --clover-stem: #4ade80;
+}

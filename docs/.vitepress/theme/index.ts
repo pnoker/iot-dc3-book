@@ -13,11 +13,11 @@ const GALLERY_ICON =
   '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
   '<defs>' +
   '<linearGradient id="cloverLeaf" x1="0" y1="0" x2="1" y2="1">' +
-  '<stop offset="0" stop-color="#4ADE80"></stop>' +
-  '<stop offset="1" stop-color="#16A34A"></stop>' +
+  '<stop offset="0" style="stop-color:var(--clover-leaf-1)"></stop>' +
+  '<stop offset="1" style="stop-color:var(--clover-leaf-2)"></stop>' +
   '</linearGradient>' +
   '</defs>' +
-  '<path d="M12 12 V21.5" stroke="#15803D" stroke-width="1.7" fill="none" stroke-linecap="round"></path>' +
+  '<path d="M12 12 V21.5" style="stroke:var(--clover-stem)" stroke-width="1.7" fill="none" stroke-linecap="round"></path>' +
   '<g transform="translate(12 12)" fill="url(#cloverLeaf)">' +
   '<path d="M0 0 C -2.6 -1.4 -4.6 -1.6 -5.2 -4.6 C -5.6 -6.4 -4 -7 -2.4 -6.4 C -1.2 -6 -0.6 -4.8 0 -3.6 C 0.6 -4.8 1.2 -6 2.4 -6.4 C 4 -7 5.6 -6.4 5.2 -4.6 C 4.6 -1.6 2.6 -1.4 0 0 Z"></path>' +
   '<path transform="rotate(90)" d="M0 0 C -2.6 -1.4 -4.6 -1.6 -5.2 -4.6 C -5.6 -6.4 -4 -7 -2.4 -6.4 C -1.2 -6 -0.6 -4.8 0 -3.6 C 0.6 -4.8 1.2 -6 2.4 -6.4 C 4 -7 5.6 -6.4 5.2 -4.6 C 4.6 -1.6 2.6 -1.4 0 0 Z"></path>' +
