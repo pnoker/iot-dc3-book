@@ -8,6 +8,14 @@ import HeroWaves from './HeroWaves.vue'
 import HeroParticles from './HeroParticles.vue'
 import {coverBodyHtml} from './cover-art'
 
+// 图库按钮 icon（相册/图片，跟随文字色）
+const GALLERY_ICON =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<rect x="3" y="3" width="18" height="18" rx="3"></rect>' +
+  '<circle cx="9" cy="9" r="1.6"></circle>' +
+  '<path d="M21 15.5l-4.5-4.5L6 21"></path>' +
+  '</svg>'
+
 const theme: Theme = {
   extends: DefaultTheme,
 
@@ -19,6 +27,16 @@ const theme: Theme = {
       'home-hero-image': () =>
         h('div', {class: 'hero-cover hero-logo'}, [
           h('div', {class: 'cover-body', innerHTML: coverBodyHtml}),
+        ]),
+      // header 搜索框前：全书插图图库入口
+      'nav-bar-content-before': () =>
+        h('a', {
+          class: 'gallery-nav-link',
+          href: '/figures',
+          'aria-label': '全书插图',
+          title: '全书插图',
+        }, [
+          h('span', {class: 'gallery-nav-icon', innerHTML: GALLERY_ICON}),
         ]),
     })
   },

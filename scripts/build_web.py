@@ -238,16 +238,17 @@ def to_figure(m: re.Match) -> str:
     fig_id = figure_id_of(src)
     inline = load_figure_svg(fig_id) if fig_id else None
     caption = f"  <figcaption>{fix_caption(alt)}</figcaption>\n" if alt else ""
+    anchor = f' id="{fig_id}"' if fig_id else ""
     if inline:
         # 内联 SVG：figcaption 前，SVG 自带 title/desc，外部再补 alt 语义用 <figure aria-label>
         return (
-            "<figure class=\"fig fig-svg\">\n"
+            f'<figure class="fig fig-svg"{anchor}>\n'
             f"  <div class=\"fig-svg-body\">{inline}</div>\n"
             f"{caption}"
             "</figure>"
         )
     return (
-        "<figure class=\"fig\">\n"
+        f'<figure class="fig"{anchor}>\n'
         f'  <img src="{web_src(src)}" alt="{alt}" loading="lazy">\n'
         f"{caption}"
         "</figure>"
@@ -256,6 +257,43 @@ def to_figure(m: re.Match) -> str:
 
 def convert_images(md: str) -> str:
     return IMG_RE.sub(to_figure, md)
+
+
+def gen_figures_manifest(parts: list[dict]) -> list[dict]:
+    """扫描所有章节 md，生成全书插图清单（图库页数据源）。
+
+    每个条目：id、图号、标题、章节号、章节名、文章锚点链接、缩略图路径。
+    """
+    manifest: list[dict] = []
+    for i, part in enumerate(parts, start=1):
+        slug, _ = slug_of(part)
+        src_part_dir = OUTPUT / f"0{PART_DIR_OFFSET + (i - 1)}-{part['name']}"
+        for ch in part["chapters"]:
+            srcs = list(src_part_dir.glob(f"{ch['id']:02d}-*.md"))
+            if not srcs:
+                continue
+            md = srcs[0].read_text(encoding="utf-8")
+            for m in IMG_RE.finditer(md):
+                alt, src = m.group(1), m.group(2)
+                fig_id = figure_id_of(src)
+                if not fig_id:
+                    continue
+                m_num = re.match(r"(图\s*\d+-\d+)\s*(.*)", alt.strip())
+                if m_num:
+                    num = fix_caption(m_num.group(1))
+                    title = m_num.group(2).strip()
+                else:
+                    num, title = alt.strip(), ""
+                manifest.append({
+                    "id": fig_id,
+                    "num": num,
+                    "title": title,
+                    "chapter": ch["id"],
+                    "chapterTitle": ch["title"],
+                    "url": f"/{slug}/chapter-{ch['id']}#{fig_id}",
+                    "thumb": web_src(src),
+                })
+    return manifest
 
 
 def clean_citations(md: str) -> str:
@@ -634,6 +672,12 @@ def main() -> None:
     # sidebar
     VITEPRESS.mkdir(parents=True, exist_ok=True)
     (VITEPRESS / "sidebar.ts").write_text(gen_sidebar_ts(parts), encoding="utf-8")
+
+    # 全书插图清单（图库页数据源）
+    manifest = gen_figures_manifest(parts)
+    (PUBLIC / "figures-manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
     n_ch = sum(len(p["chapters"]) for p in parts)
     print(f"✓ 转换完成：{n_ch} 章 + 卷首 + 附录 → {DOCS.relative_to(ROOT)}")
