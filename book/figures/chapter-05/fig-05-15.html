@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-15 数据生命周期管理：保留策略与冷热分层</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图5-15 数据生命周期管理：保留策略与冷热分层</title>
+  <desc id="desc">保留策略按价值设定过期时长，冷热分层把数据按访问频率放到不同性价比的存储介质。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-15 数据生命周期管理：保留策略与冷热分层</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">让每一字节数据按它的查询价值来付费</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 保留策略 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">保留策略：不同粒度设定独立保留时长</text>
+
+  <rect x="80" y="172" width="520" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">原始 10 秒级数据</text>
+  <text x="116" y="240" font-size="12" fill="#475569">服务实时告警与故障排查</text>
+  <text x="116" y="266" font-size="12" font-weight="700" fill="#2563EB">保留 7 天</text>
+
+  <rect x="640" y="172" width="520" height="120" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">分钟级聚合数据</text>
+  <text x="676" y="240" font-size="12" fill="#475569">用于周报</text>
+  <text x="676" y="266" font-size="12" font-weight="700" fill="#16A34A">保留 30 天</text>
+
+  <rect x="1200" y="172" width="520" height="120" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">小时级聚合数据</text>
+  <text x="1236" y="240" font-size="12" fill="#475569">用于年度趋势分析</text>
+  <text x="1236" y="266" font-size="12" font-weight="700" fill="#F97316">保留 12 个月</text>
+
+  <!-- 冷热分层 -->
+  <text x="80" y="350" font-size="15" font-weight="700" fill="#334155">冷热分层：按访问频率放在不同性价比的存储介质</text>
+
+  <!-- 热存储 -->
+  <rect x="80" y="372" width="1640" height="150" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <rect x="80" y="372" width="110" height="150" rx="12" fill="#DC2626"/>
+  <rect x="135" y="372" width="55" height="150" fill="#DC2626"/>
+  <text x="135" y="454" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 447)">热存储</text>
+  <text x="230" y="410" font-size="14" font-weight="700" fill="#0F172A">最近 7 天 · 本地 NVMe / SSD</text>
+  <text x="230" y="442" font-size="12" fill="#475569">响应仪表盘毫秒级查询，访问频繁</text>
+  <text x="230" y="468" font-size="12" fill="#475569">时序数据库原生格式，单位成本相对较高</text>
+  <text x="900" y="442" font-size="12" font-weight="700" fill="#DC2626">实时大盘、告警触发</text>
+
+  <!-- 温存储 -->
+  <rect x="80" y="540" width="1640" height="130" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="80" y="540" width="110" height="130" rx="12" fill="#F97316"/>
+  <rect x="135" y="540" width="55" height="130" fill="#F97316"/>
+  <text x="135" y="612" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 605)">温存储</text>
+  <text x="230" y="578" font-size="14" font-weight="700" fill="#0F172A">8 天～3 个月 · 普通 HDD / SSD</text>
+  <text x="230" y="610" font-size="12" fill="#475569">用于月度报表，访问频度中等</text>
+  <text x="900" y="610" font-size="12" font-weight="700" fill="#F97316">月度报表</text>
+
+  <!-- 冷存储 -->
+  <rect x="80" y="688" width="1640" height="130" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="688" width="110" height="130" rx="12" fill="#2563EB"/>
+  <rect x="135" y="688" width="55" height="130" fill="#2563EB"/>
+  <text x="135" y="760" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 753)">冷存储</text>
+  <text x="230" y="726" font-size="14" font-weight="700" fill="#0F172A">超过 3 个月 · 对象存储（MinIO / S3 兼容）</text>
+  <text x="230" y="758" font-size="12" fill="#475569">Parquet / Avro 列式格式，按时间分区，查询只加载对应分区</text>
+  <text x="230" y="784" font-size="12" fill="#475569">用于季度回顾或算法模型训练，访问极少</text>
+  <text x="900" y="758" font-size="12" font-weight="700" fill="#2563EB">历史分析、批量训练</text>
+
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图5-15 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
