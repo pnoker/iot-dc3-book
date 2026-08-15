@@ -1409,6 +1409,67 @@ body {
     text-align: right;
 }
 
+/* ── 章首页「本章导读」卡片 ── */
+.chapter-summary {
+    position: relative;
+    margin: 1.6em 0 2em;
+    padding: 1.35em 1.5em 1.4em;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 14px;
+    background:
+        linear-gradient(135deg, rgba(16, 185, 129, 0.07), rgba(59, 130, 246, 0.07)),
+        var(--vp-c-bg-soft);
+    overflow: hidden;
+}
+.chapter-summary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
+}
+.chapter-summary__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 0.7em;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--vp-c-brand);
+}
+.chapter-summary__icon {
+    width: 18px;
+    height: 18px;
+    flex: none;
+}
+.chapter-summary__lead {
+    margin: 0 0 0.9em;
+    line-height: 1.75;
+    color: var(--vp-c-text-1);
+}
+.chapter-summary__points {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.55em;
+}
+.chapter-summary__points li {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--vp-c-text-2);
+}
+.chapter-summary__points a {
+    color: var(--vp-c-brand);
+    text-decoration: none;
+    font-weight: 500;
+}
+.chapter-summary__points a:hover {
+    text-decoration: underline;
+}
+
 /* ── 四叶草图标主题协同（明/暗两套绿色，茎/外叶/内叶/中心四层） ── */
 :root {
     --clover-stem: #00da38;

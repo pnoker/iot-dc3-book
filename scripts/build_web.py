@@ -444,8 +444,8 @@ def parse_chapter_md(md: str) -> dict:
     return {"h1": h1, "intro": "\n".join(intro).strip(), "sections": sections}
 
 
-def extract_description(body: str) -> str:
-    """从小节正文首段提取 description（跳过标题/代码/列表/表格/HTML）。"""
+def extract_description(body: str, max_len: int = 130) -> str:
+    """从正文首段提取 description（跳过标题/代码/列表/表格/HTML）。"""
     text = re.sub(r"^#.*$", "", body, flags=re.M)
     for line in text.split("\n"):
         s = line.strip()
@@ -453,7 +453,7 @@ def extract_description(body: str) -> str:
             continue
         desc = re.sub(r"[\*\`]", "", s).strip()
         if len(desc) >= 20:
-            return desc[:130] + ("…" if len(desc) > 130 else "")
+            return desc[:max_len] + ("…" if len(desc) > max_len else "")
     return ""
 
 
@@ -490,8 +490,38 @@ def gen_section_page(sec: dict, slug: str, cid: int, prev, nxt) -> str:
     return "\n".join(parts) + "\n"
 
 
+def gen_chapter_summary(desc: str, sections: list[dict], slug: str, cid: int) -> str:
+    """生成章首页的「本章导读」卡片：章概述 + 各节一句话导读。"""
+    points = []
+    for s in sections:
+        if not s["stem"]:
+            continue
+        lead = extract_description("\n".join(s["body"]), max_len=88)
+        if lead:
+            points.append(
+                f'  <li><a href="{section_link(slug, cid, s["stem"])}">'
+                f'<strong>{s["title"]}</strong></a>　{lead}</li>'
+            )
+    items = "\n".join(points) if points else "  <li>（本章各节导读待补充）</li>"
+    return (
+        '<div class="chapter-summary">\n'
+        '  <div class="chapter-summary__head">\n'
+        '    <svg class="chapter-summary__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">\n'
+        '      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>\n'
+        '      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/>\n'
+        '    </svg>\n'
+        '    <span>本章导读</span>\n'
+        '  </div>\n'
+        f'  <p class="chapter-summary__lead">{oneline(desc)}</p>\n'
+        '  <ul class="chapter-summary__points">\n'
+        f'{items}\n'
+        '  </ul>\n'
+        "</div>\n"
+    )
+
+
 def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: list[dict], slug: str, divider_html: str) -> str:
-    """生成章首页：章扉页 + 章标题 + 章引言 + 节清单。"""
+    """生成章首页：章扉页 + 章标题 + 章引言 + 本章导读卡片 + 节清单。"""
     parts = [fm(title=f"第 {cid} 章　{title}", description=oneline(desc))]
     if divider_html:
         parts.append(
@@ -503,6 +533,7 @@ def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: lis
     if intro:
         parts.append(intro)
         parts.append("")
+    parts.append(gen_chapter_summary(desc, sections, slug, cid))
     parts.append("\n## 本章目录\n")
     for s in sections:
         if s["stem"]:
