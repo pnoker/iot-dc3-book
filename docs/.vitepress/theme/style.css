@@ -1412,7 +1412,7 @@ body {
 /* ── 章首页「本章导读」卡片 ── */
 .chapter-summary {
     position: relative;
-    margin: 1.6em 0 2em;
+    margin: 0.75em 0 2em;
     padding: 1.35em 1.5em 1.4em;
     border: 1px solid var(--vp-c-divider);
     border-radius: 14px;

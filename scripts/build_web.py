@@ -521,7 +521,11 @@ def gen_chapter_summary(desc: str, sections: list[dict], slug: str, cid: int) ->
 
 
 def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: list[dict], slug: str, divider_html: str) -> str:
-    """生成章首页：章扉页 + 章标题 + 章引言 + 本章导读卡片 + 节清单。"""
+    """生成章首页：章扉页 + 本章导读卡片（紧跟扉页）+ 章引言。
+
+    章标题已由扉页视觉承载（frontmatter title 仍保留，供 SEO/标题栏/面包屑），
+    正文不再重复 H1，让导读卡片直接贴住扉页，形成第一屏「封面 + 导读」。
+    """
     parts = [fm(title=f"第 {cid} 章　{title}", description=oneline(desc))]
     if divider_html:
         parts.append(
@@ -529,11 +533,10 @@ def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: lis
             f'  <div class="divider-body">{divider_html}</div>\n'
             "</figure>\n"
         )
-    parts.append(f"# 第 {cid} 章　{title}\n")
+    parts.append(gen_chapter_summary(desc, sections, slug, cid))
     if intro:
         parts.append(intro)
         parts.append("")
-    parts.append(gen_chapter_summary(desc, sections, slug, cid))
     return "\n".join(parts) + "\n"
 
 
