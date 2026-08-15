@@ -1386,6 +1386,29 @@ body {
     text-decoration: underline;
 }
 
+/* ── 小节上/下导航 ── */
+.section-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 2.5em 0 0;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--vp-c-divider);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.section-nav a {
+    color: var(--vp-c-brand);
+    text-decoration: none;
+}
+.section-nav a:hover {
+    text-decoration: underline;
+}
+.section-nav .nav-next {
+    margin-left: auto;
+    text-align: right;
+}
+
 /* ── 四叶草图标主题协同（明/暗两套绿色，茎/外叶/内叶/中心四层） ── */
 :root {
     --clover-stem: #00da38;
