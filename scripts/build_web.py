@@ -701,5 +701,64 @@ def main() -> None:
     print(f"  每页注入 dateModified（git 历史）")
 
 
+def watch() -> None:
+    """监听插图源/配置/扉页/封面改动，自动重跑转换（配合 vitepress dev 实现热更新）。
+
+    用法：.venv/bin/python scripts/build_web.py --watch
+    零依赖轮询实现：改动后重跑 main()，vitepress dev 检测 docs/ 变化自动刷新浏览器。
+    注意：手稿（book/manuscript）改动需先跑 book-builder build，再回到本监听。
+    """
+    import time
+
+    watch_roots = [
+        ROOT / "book" / "figures",
+        ROOT / "book" / "config",
+        ROOT / "book" / "dividers",
+        ROOT / "book" / "assets",
+    ]
+
+    def snapshot() -> dict[str, float]:
+        sig: dict[str, float] = {}
+        for root in watch_roots:
+            if not root.exists():
+                continue
+            for f in root.rglob("*"):
+                if f.is_file():
+                    try:
+                        sig[str(f)] = f.stat().st_mtime
+                    except OSError:
+                        pass
+        return sig
+
+    prev = snapshot()
+    print("👀 监听插图源 / 配置 / 扉页 / 封面改动，自动重建 docs …（Ctrl+C 退出）")
+    print("   配合 `vitepress dev docs` 使用：改动后自动转换，浏览器自动刷新。\n")
+    try:
+        while True:
+            time.sleep(1.5)
+            cur = snapshot()
+            if cur == prev:
+                continue
+            added = [p for p in cur if p not in prev]
+            removed = [p for p in prev if p not in cur]
+            changed = [p for p in cur if p in prev and cur[p] != prev[p]]
+            print(
+                f"🔄 检测到 {len(added) + len(removed) + len(changed)} 个文件改动"
+                f"（新增 {len(added)} / 删除 {len(removed)} / 修改 {len(changed)}），重新转换…"
+            )
+            try:
+                main()
+            except SystemExit as e:
+                print(f"⚠️  转换中止：{e}")
+                continue
+            prev = snapshot()
+            print("✓ 已更新，等待下次改动…\n")
+    except KeyboardInterrupt:
+        print("\n已停止监听。")
+
+
 if __name__ == "__main__":
-    main()
+    if "--watch" in sys.argv:
+        watch()
+    else:
+        main()
