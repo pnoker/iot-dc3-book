@@ -211,6 +211,31 @@ h1 .title-sub { margin-top: 8px; }
   line-height: 1.72;
   text-align: justify;
 }
+.divider-summary {
+  margin-top: 12px;
+  max-width: 720px;
+}
+.divider-summary__points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 9px;
+}
+.divider-summary__points li {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--div-text-2);
+}
+.divider-summary__points a {
+  color: var(--div-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.divider-summary__points a:hover {
+  text-decoration: underline;
+}
 .visual {
   position: absolute;
   z-index: 1;

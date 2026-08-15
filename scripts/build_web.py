@@ -490,50 +490,40 @@ def gen_section_page(sec: dict, slug: str, cid: int, prev, nxt) -> str:
     return "\n".join(parts) + "\n"
 
 
-def gen_chapter_summary(desc: str, sections: list[dict], slug: str, cid: int) -> str:
-    """生成章首页的「本章导读」卡片：章概述 + 各节一句话导读。"""
+def inject_divider_summary(divider_html: str, sections: list[dict], slug: str, cid: int) -> str:
+    """把章扉页的 overview（一句话概述）替换成各节导读列表（本章导读）。"""
     points = []
     for s in sections:
         if not s["stem"]:
             continue
-        lead = extract_description("\n".join(s["body"]), max_len=88)
+        lead = extract_description("\n".join(s["body"]), max_len=48)
         if lead:
             points.append(
-                f'  <li><a href="{section_link(slug, cid, s["stem"])}">'
-                f'<strong>{s["title"]}</strong></a>　{lead}</li>'
+                f'<li><a href="{section_link(slug, cid, s["stem"])}"><strong>{s["title"]}</strong></a>{lead}</li>'
             )
-    items = "\n".join(points) if points else "  <li>（本章各节导读待补充）</li>"
-    return (
-        '<div class="chapter-summary">\n'
-        '  <div class="chapter-summary__head">\n'
-        '    <svg class="chapter-summary__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">\n'
-        '      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>\n'
-        '      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/>\n'
-        '    </svg>\n'
-        '    <span>本章导读</span>\n'
-        '  </div>\n'
-        f'  <p class="chapter-summary__lead">{oneline(desc)}</p>\n'
-        '  <ul class="chapter-summary__points">\n'
-        f'{items}\n'
-        '  </ul>\n'
-        "</div>\n"
+    items = "".join(points) if points else "<li>（本章各节导读待补充）</li>"
+    summary = (
+        '<div class="divider-summary">\n'
+        f'  <ul class="divider-summary__points">{items}</ul>\n'
+        "</div>"
     )
+    return re.sub(r'<p class="overview">.*?</p>', summary, divider_html, flags=re.DOTALL)
 
 
 def gen_chapter_index(cid: int, title: str, desc: str, intro: str, sections: list[dict], slug: str, divider_html: str) -> str:
-    """生成章首页：章扉页 + 本章导读卡片（紧跟扉页）+ 章引言。
+    """生成章首页：章扉页（overview 处替换为本章导读）+ 章引言。
 
-    章标题已由扉页视觉承载（frontmatter title 仍保留，供 SEO/标题栏/面包屑），
-    正文不再重复 H1，让导读卡片直接贴住扉页，形成第一屏「封面 + 导读」。
+    章标题与各节导读都由扉页视觉承载（frontmatter title 仍保留，
+    供 SEO/标题栏/面包屑），正文不再重复 H1，也不另挂导读卡片。
     """
     parts = [fm(title=f"第 {cid} 章　{title}", description=oneline(desc))]
     if divider_html:
+        divider_html = inject_divider_summary(divider_html, sections, slug, cid)
         parts.append(
             '<figure class="chapter-divider">\n'
             f'  <div class="divider-body">{divider_html}</div>\n'
             "</figure>\n"
         )
-    parts.append(gen_chapter_summary(desc, sections, slug, cid))
     if intro:
         parts.append(intro)
         parts.append("")
