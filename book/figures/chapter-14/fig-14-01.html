@@ -1,86 +1,130 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>图14-1 物联网平台分层架构</title>
-<style>
-*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",Arial,sans-serif;color:#0F172A}.figure{width:1200px;height:780px;margin:0}.figure svg{display:block}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图14-1 物联网平台分层架构</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
-<title id="title">图14-1 物联网平台分层架构</title>
-<desc id="desc">设备层经边缘协议驱动进入 RabbitMQ，消息总线沿一条上方分发干线分别下接数据中心和智能中心，应用层经 API Gateway 并行路由平台服务。</desc>
-<defs>
- <marker id="blueArrow" viewBox="0 0 12 8" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><path d="M0 0L12 4 0 8Z" fill="#2563EB"/></marker>
- <marker id="tealArrow" viewBox="0 0 12 8" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><path d="M0 0L12 4 0 8Z" fill="#0F766E"/></marker>
- <marker id="orangeArrow" viewBox="0 0 12 8" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><path d="M0 0L12 4 0 8Z" fill="#F97316"/></marker>
-</defs>
-<rect width="1200" height="780" fill="#F8FAFC"/>
-<circle cx="46" cy="39" r="6" fill="#2563EB"/>
-<text x="66" y="47" font-size="25" font-weight="750" fill="#0F172A">图14-1 物联网平台分层架构</text>
-<text x="66" y="73" font-size="13" fill="#475569">消息分发与 API 路由形成两组并行扇出，不是组件串行调用</text>
-<line x1="32" y1="96" x2="1168" y2="96" stroke="#e2e8f0"/>
-<!-- layer containers -->
-<rect x="32" y="116" width="1136" height="100" rx="14" fill="#FFFFFF" stroke="#475569" stroke-width="2"/>
-<rect x="32" y="236" width="1136" height="264" rx="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-<rect x="32" y="520" width="1136" height="88" rx="14" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-<rect x="32" y="628" width="1136" height="76" rx="14" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
-<g font-size="17" font-weight="750" fill="#0F172A"><text x="58" y="149">应用层</text><text x="58" y="269">平台层</text><text x="58" y="553">边缘接入层</text><text x="58" y="661">设备层</text></g>
-<!-- app cards -->
-<g fill="#FFFFFF" stroke="#64748B" stroke-width="1.5">
- <rect x="218" y="143" width="190" height="44" rx="9"/><rect x="440" y="143" width="190" height="44" rx="9"/><rect x="662" y="143" width="190" height="44" rx="9"/><rect x="884" y="143" width="190" height="44" rx="9"/>
-</g>
-<g text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A"><text x="313" y="171">监控大屏</text><text x="535" y="171">移动端 App</text><text x="757" y="171">业务客户端</text><text x="979" y="171">告警与控制台</text></g>
-<!-- platform nodes -->
-<g stroke-width="2">
- <rect x="90" y="306" width="190" height="80" rx="11" fill="#EFF6FF" stroke="#2563EB"/>
- <rect x="370" y="306" width="190" height="80" rx="11" fill="#F8FAFC" stroke="#64748B"/>
- <rect x="650" y="306" width="190" height="80" rx="11" fill="#EFF6FF" stroke="#2563EB"/>
- <rect x="930" y="306" width="190" height="80" rx="11" fill="#FFF7ED" stroke="#F97316"/>
-</g>
-<g text-anchor="middle"><g font-size="17" font-weight="750" fill="#0F172A"><text x="185" y="338">API Gateway</text><text x="465" y="338">RabbitMQ</text><text x="745" y="338">数据中心</text><text x="1025" y="338">智能中心</text></g><g font-size="12" fill="#475569"><text x="185" y="363">统一入口 · 鉴权 · 路由</text><text x="465" y="363">异步消息总线</text><text x="745" y="363">最新值 · 历史值 · 告警</text><text x="1025" y="363">AI Agent · 任务编排</text></g></g>
-<!-- grouped platform capabilities -->
-<g stroke-width="1.8">
- <rect x="90" y="420" width="350" height="58" rx="10" fill="#EFF6FF" stroke="#2563EB"/>
- <rect x="650" y="420" width="470" height="58" rx="10" fill="#ECFDF5" stroke="#0F766E"/>
-</g>
-<g text-anchor="middle"><g font-size="15" font-weight="750" fill="#0F172A"><text x="265" y="447">API 服务组</text><text x="885" y="447">受控工具与审计</text></g><g font-size="11" fill="#475569"><text x="265" y="466">鉴权 · 设备管理 · 数据查询</text><text x="885" y="466">策略校验 · 人工确认 · 操作留痕</text></g></g>
-<!-- edge drivers -->
-<g fill="#ECFDF5" stroke="#0F766E" stroke-width="1.8"><rect x="178" y="554" width="250" height="36" rx="9"/><rect x="475" y="554" width="250" height="36" rx="9"/><rect x="772" y="554" width="250" height="36" rx="9"/></g>
-<g text-anchor="middle" font-size="13" font-weight="700"><text x="303" y="577">MQTT / CoAP Driver</text><text x="600" y="577">Modbus / 私有协议 Driver</text><text x="897" y="577">协议适配 · 本地缓存</text></g>
-<!-- devices -->
-<g text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A"><text x="300" y="674">传感器</text><text x="540" y="674">PLC</text><text x="780" y="674">智能网关</text><text x="1000" y="674">现场设备</text></g>
-<!-- app API fanout bus -->
-<g fill="none" stroke="#2563EB" stroke-width="2.2">
- <path d="M313 187V250M535 187V250M757 187V250M979 187V250"/>
- <path d="M185 250H979M185 250V304" marker-end="url(#blueArrow)"/>
- <path d="M185 386V418" marker-end="url(#blueArrow)"/>
-</g>
-<text x="202" y="294" font-size="12" font-weight="700" fill="#2563EB">统一入口</text>
-<text x="198" y="407" font-size="11" font-weight="700" fill="#2563EB">API 路由</text>
-<!-- message fanout -->
-<g fill="none" stroke="#F97316" stroke-width="2.2">
- <path d="M560 326H580V280H1025"/>
- <path d="M745 280V304" marker-end="url(#orangeArrow)"/>
- <path d="M1025 280V304" marker-end="url(#orangeArrow)"/>
-</g>
-<text x="596" y="274" font-size="11" font-weight="700" fill="#F97316">消息分发</text>
-<!-- edge to bus -->
-<path d="M465 520V388" fill="none" stroke="#2563EB" stroke-width="2.3" stroke-dasharray="8 6" marker-end="url(#blueArrow)"/>
-<text x="480" y="544" font-size="11" font-weight="700" fill="#2563EB">异步推送</text>
-<!-- device to edge -->
-<path d="M600 628V610" fill="none" stroke="#0F766E" stroke-width="2.5" marker-end="url(#tealArrow)"/>
-<text x="620" y="620" font-size="11" font-weight="700" fill="#0F766E">MQTT / CoAP / Modbus</text>
-<!-- command return -->
-<path d="M1025 386V418" fill="none" stroke="#0F766E" stroke-width="2.2" stroke-dasharray="8 6" marker-end="url(#tealArrow)"/>
-<text x="1039" y="407" font-size="11" font-weight="700" fill="#0F766E">命令 / 回执</text>
-<!-- footer -->
-<line x1="32" y1="728" x2="1168" y2="728" stroke="#e2e8f0"/>
-<text x="600" y="754" text-anchor="middle" font-size="11" fill="#475569">图14-1 上行数据经消息总线并行分发，API 与 Agent 分别通过本地能力组完成受控调用。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图14-1 物联网平台分层架构</title>
+  <desc id="desc">设备经边缘 Driver 协议接入，位号值经 RabbitMQ 异步推送并并行分发给数据中心与智能中心；应用经 API Gateway 并行路由到鉴权、设备管理与数据查询。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-1 物联网平台分层架构</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">消息分发与 API 路由形成两组并行扇出，不是组件串行调用</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 应用层 ===== -->
+  <text x="140" y="150" font-size="15" font-weight="700" fill="#334155">应用层</text>
+  <rect x="140" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="320" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">监控大屏</text>
+  <text x="320" y="210" font-size="11" fill="#475569" text-anchor="middle">可视化</text>
+  <rect x="530" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="710" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">移动端 App</text>
+  <text x="710" y="210" font-size="11" fill="#475569" text-anchor="middle">移动接入</text>
+  <rect x="920" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="1100" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">业务客户端</text>
+  <text x="1100" y="210" font-size="11" fill="#475569" text-anchor="middle">第三方集成</text>
+  <rect x="1310" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="1490" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">告警与控制台</text>
+  <text x="1490" y="210" font-size="11" fill="#475569" text-anchor="middle">运维操作</text>
+
+  <!-- 应用 → API Gateway -->
+  <line x1="320" y1="224" x2="320" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <line x1="710" y1="224" x2="710" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <line x1="1100" y1="224" x2="1100" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <line x1="1490" y1="224" x2="1490" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+
+  <!-- ===== API Gateway ===== -->
+  <rect x="140" y="254" width="1520" height="56" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="900" y="288" font-size="16" font-weight="700" fill="#2563EB" text-anchor="middle">API Gateway · 统一入口 · 鉴权 · 路由</text>
+
+  <!-- Gateway → 平台服务 -->
+  <line x1="400" y1="310" x2="400" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="900" y1="310" x2="900" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1400" y1="310" x2="1400" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="560" y="330" font-size="12" font-weight="700" fill="#2563EB">API 路由（并行扇出）</text>
+
+  <!-- ===== 平台层 ===== -->
+  <rect x="140" y="342" width="1520" height="250" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="160" y="366" font-size="15" font-weight="700" fill="#2563EB">平台层</text>
+
+  <!-- RabbitMQ -->
+  <rect x="160" y="378" width="1480" height="52" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="900" y="410" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">RabbitMQ · 异步消息总线</text>
+
+  <!-- 数据中心 + 智能中心 -->
+  <rect x="160" y="452" width="720" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="520" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据中心</text>
+  <text x="520" y="508" font-size="11" fill="#475569" text-anchor="middle">最新值 · 历史值 · 告警</text>
+  <rect x="920" y="452" width="720" height="74" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.6"/>
+  <text x="1280" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">智能中心</text>
+  <text x="1280" y="508" font-size="11" fill="#475569" text-anchor="middle">AI Agent · 任务编排</text>
+
+  <!-- 消息分发：RabbitMQ → 数据中心/智能中心 -->
+  <line x1="520" y1="430" x2="520" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1280" y1="430" x2="1280" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="900" y="444" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">消息分发</text>
+
+  <!-- API 服务组 + 受控工具 -->
+  <rect x="160" y="546" width="720" height="34" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
+  <text x="520" y="568" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">API 服务组 · 鉴权 · 设备管理 · 数据查询</text>
+  <rect x="920" y="546" width="720" height="34" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
+  <text x="1280" y="568" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">受控工具与审计 · 策略校验 · 人工确认 · 操作留痕</text>
+
+  <!-- ===== 边缘接入层 ===== -->
+  <text x="140" y="622" font-size="15" font-weight="700" fill="#334155">边缘接入层</text>
+  <rect x="140" y="636" width="500" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="390" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT / CoAP Driver</text>
+  <text x="390" y="692" font-size="11" fill="#475569" text-anchor="middle">协议适配 · 本地缓存</text>
+  <rect x="670" y="636" width="500" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="920" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus / 私有协议 Driver</text>
+  <text x="920" y="692" font-size="11" fill="#475569" text-anchor="middle">协议适配 · 本地缓存</text>
+  <rect x="1200" y="636" width="460" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="1430" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">协议适配网关</text>
+  <text x="1430" y="692" font-size="11" fill="#475569" text-anchor="middle">标准化位号值</text>
+
+  <!-- 异步推送：Driver → RabbitMQ -->
+  <line x1="390" y1="636" x2="390" y2="594" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <line x1="920" y1="636" x2="920" y2="594" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <text x="660" y="620" font-size="11" font-weight="700" fill="#0F766E">异步推送</text>
+
+  <!-- ===== 设备层 ===== -->
+  <rect x="140" y="740" width="1520" height="70" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="320" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">传感器</text>
+  <text x="710" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">PLC</text>
+  <text x="1100" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">智能网关</text>
+  <text x="1490" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">现场设备</text>
+
+  <!-- 协议接入：设备 → Driver -->
+  <line x1="320" y1="740" x2="390" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <line x1="710" y1="740" x2="920" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <line x1="1100" y1="740" x2="1430" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="530" y="732" font-size="11" font-weight="700" fill="#0F766E">协议接入（MQTT / CoAP / Modbus）</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图14-1 上行数据经消息总线并行分发，API 与 Agent 分别通过本地能力组完成受控调用。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

@@ -1,15 +1,139 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图14-3 设备接入与数据流</title><style>body{margin:0;background:#F8FAFC;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px;margin:auto}text{fill:#0F172A}</style></head><body><main class="page">
-<svg data-figure-root="fig-14-03" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-<title id="title">图14-3 设备接入与数据流</title><desc id="desc">上行泳道展示设备位号值经 Driver、RabbitMQ、Data 写入缓存和数据库并供查询；下行泳道展示客户端命令经 Gateway、Data、RabbitMQ、Driver 到设备，设备执行回执沿消息链返回 Data 并供客户端查询。</desc>
-<defs><marker id="b" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#2563EB"/></marker><marker id="o" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#D97706"/></marker><marker id="t" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#0F766E"/></marker></defs>
-<rect width="1200" height="760" fill="#F8FAFC"/><circle cx="48" cy="42" r="6" fill="#2563EB"/><text x="66" y="49" font-size="24" font-weight="700">图14-3 设备接入与数据流</text><text x="66" y="74" font-size="13" fill="#475569">上行位号值与下行命令分泳道；执行回执沿消息链返回并更新命令状态</text><line x1="48" y1="96" x2="1152" y2="96" stroke="#94A3B8"/>
-<rect x="48" y="120" width="1104" height="255" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/><rect x="48" y="402" width="1104" height="270" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/><rect x="66" y="109" width="190" height="26" rx="5" fill="#FFFFFF" stroke="#2563EB"/><text x="161" y="127" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">上行：位号值与状态</text><rect x="66" y="391" width="220" height="26" rx="5" fill="#FFFFFF" stroke="#D97706"/><text x="176" y="409" font-size="14" font-weight="700" fill="#D97706" text-anchor="middle">下行：命令与执行回执</text>
-<g font-size="14" font-weight="700" text-anchor="middle"><g fill="#FFFFFF" stroke-width="2"><rect x="78" y="190" width="150" height="72" rx="6" stroke="#0F766E"/><rect x="270" y="190" width="150" height="72" rx="6" stroke="#0F766E"/><rect x="462" y="190" width="150" height="72" rx="6" stroke="#2563EB"/><rect x="654" y="190" width="150" height="72" rx="6" stroke="#2563EB"/><rect x="846" y="190" width="150" height="72" rx="6" stroke="#2563EB"/><rect x="1022" y="190" width="100" height="72" rx="6" stroke="#475569"/></g><text x="153" y="220">设备</text><text x="345" y="220">协议 Driver</text><text x="537" y="220">RabbitMQ</text><text x="729" y="220">Data</text><text x="921" y="220">存储</text><text x="1072" y="220">查询</text><g font-size="12" font-weight="400" fill="#475569"><text x="153" y="244">MQTT / Modbus</text><text x="345" y="244">解析与映射</text><text x="537" y="244">异步队列</text><text x="729" y="244">消费与批量</text><text x="921" y="244">Caffeine / PG</text><text x="1072" y="244">REST</text></g></g>
-<g fill="none" stroke="#2563EB" stroke-width="2.4" marker-end="url(#b)"><line x1="230" y1="226" x2="268" y2="226"/><line x1="422" y1="226" x2="460" y2="226"/><line x1="614" y1="226" x2="652" y2="226"/><line x1="806" y1="226" x2="844" y2="226"/><line x1="998" y1="226" x2="1020" y2="226"/></g><g font-size="11" font-weight="700" text-anchor="middle" fill="#2563EB"><text x="249" y="214">PointValue</text><text x="441" y="214">发布</text><text x="633" y="214">消费</text><text x="825" y="214">缓存/落库</text><text x="1009" y="214">读取</text></g>
-<rect x="270" y="295" width="726" height="48" rx="6" fill="#F8FAFC" stroke="#94A3B8"/><text x="633" y="316" font-size="13" font-weight="700" text-anchor="middle">Data：更新 Caffeine 最新值，批量写 PostgreSQL，再处理告警规则</text><text x="633" y="335" font-size="12" fill="#475569" text-anchor="middle">RabbitMQ 吸收上报洪峰，Driver 与 Data 不同步阻塞</text>
-<g font-size="14" font-weight="700" text-anchor="middle"><g fill="#FFFFFF" stroke-width="2"><rect x="78" y="470" width="130" height="68" rx="6" stroke="#475569"/><rect x="244" y="470" width="130" height="68" rx="6" stroke="#2563EB"/><rect x="410" y="470" width="130" height="68" rx="6" stroke="#2563EB"/><rect x="576" y="470" width="130" height="68" rx="6" stroke="#2563EB"/><rect x="742" y="470" width="130" height="68" rx="6" stroke="#0F766E"/><rect x="908" y="470" width="130" height="68" rx="6" stroke="#0F766E"/></g><text x="143" y="500">客户端</text><text x="309" y="500">Gateway</text><text x="475" y="500">Data</text><text x="641" y="500">RabbitMQ</text><text x="807" y="500">Driver</text><text x="973" y="500">设备</text><g font-size="12" font-weight="400" fill="#475569"><text x="143" y="522">commandId</text><text x="309" y="522">鉴权 / 路由</text><text x="475" y="522">校验 / 发布</text><text x="641" y="522">命令队列</text><text x="807" y="522">协议写入</text><text x="973" y="522">执行</text></g></g>
-<g fill="none" stroke="#D97706" stroke-width="2.4" marker-end="url(#o)"><line x1="210" y1="504" x2="242" y2="504"/><line x1="376" y1="504" x2="408" y2="504"/><line x1="542" y1="504" x2="574" y2="504"/><line x1="708" y1="504" x2="740" y2="504"/><line x1="874" y1="504" x2="906" y2="504"/></g><g font-size="11" font-weight="700" text-anchor="middle" fill="#D97706"><text x="226" y="490">POST 命令</text><text x="392" y="490">授权请求</text><text x="558" y="490">发布命令</text><text x="724" y="490">消费</text><text x="890" y="490">设备写入</text></g>
-<path d="M973 540V590H807V565H641V590H475V565" fill="none" stroke="#0F766E" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#t)"/><text x="724" y="612" font-size="13" font-weight="700" fill="#0F766E" text-anchor="middle">完整回执：设备结果 → Driver → RabbitMQ → Data（按 commandId 更新状态）</text><path d="M475 538V640H143V540" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#b)"/><text x="309" y="657" font-size="12" fill="#475569" text-anchor="middle">客户端查询或订阅命令状态：accepted / running / succeeded / failed</text>
-<text x="600" y="718" font-size="11" fill="#475569" text-anchor="middle">图14-3 RabbitMQ 承载上行位号值、下行命令与执行回执，Data 统一维护数据和命令状态。</text>
-</svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图14-3 设备接入与数据流</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图14-3 设备接入与数据流</title>
+  <desc id="desc">上行 Device→Driver→RabbitMQ→Data→Caffeine/PostgreSQL；下行 Client→Gateway→Data→RabbitMQ→Driver→Device，执行结果按 commandId 沿消息链回执到 Data。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-3 设备接入与数据流</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">上行位号值与下行命令分泳道；执行回执沿消息链返回并更新命令状态</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 上行泳道 ===== -->
+  <rect x="100" y="128" width="1600" height="300" rx="12" fill="#F8FAFC" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="100" y="128" width="6" height="300" rx="3" fill="#0F766E"/>
+  <text x="128" y="162" font-size="16" font-weight="700" fill="#0F766E">上行：位号值与状态</text>
+
+  <g font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <rect x="150" y="196" width="200" height="80" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="250" y="232">设备</text>
+    <text x="250" y="256" font-size="11" fill="#475569" font-weight="400">MQTT / Modbus</text>
+    <rect x="403" y="196" width="200" height="80" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="503" y="232">协议 Driver</text>
+    <text x="503" y="256" font-size="11" fill="#475569" font-weight="400">解析与映射</text>
+    <rect x="656" y="196" width="200" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="756" y="232">RabbitMQ</text>
+    <text x="756" y="256" font-size="11" fill="#475569" font-weight="400">异步队列</text>
+    <rect x="909" y="196" width="200" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="1009" y="232">Data</text>
+    <text x="1009" y="256" font-size="11" fill="#475569" font-weight="400">消费与批量</text>
+    <rect x="1162" y="196" width="200" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="1262" y="232">存储</text>
+    <text x="1262" y="256" font-size="11" fill="#475569" font-weight="400">Caffeine / PG</text>
+    <rect x="1415" y="196" width="200" height="80" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.6"/>
+    <text x="1515" y="232">查询</text>
+    <text x="1515" y="256" font-size="11" fill="#475569" font-weight="400">REST</text>
+  </g>
+
+  <!-- 上行箭头 -->
+  <line x1="352" y1="236" x2="401" y2="236" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="376" y="224" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">PointValue</text>
+  <line x1="605" y1="236" x2="654" y2="236" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="630" y="224" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">发布</text>
+  <line x1="858" y1="236" x2="907" y2="236" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="882" y="224" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">消费</text>
+  <line x1="1111" y1="236" x2="1160" y2="236" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1136" y="224" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">缓存/落库</text>
+  <line x1="1364" y1="236" x2="1413" y2="236" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="1388" y="224" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">读取</text>
+
+  <!-- 上行说明 -->
+  <rect x="150" y="304" width="660" height="60" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="170" y="330" font-size="12" font-weight="700" fill="#334155">Data：更新 Caffeine 最新值，批量写 PostgreSQL，再处理告警规则</text>
+  <text x="170" y="352" font-size="11" fill="#475569">先保存再处理规则，保证告警基于已落库数据</text>
+  <rect x="850" y="304" width="765" height="60" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="870" y="330" font-size="12" font-weight="700" fill="#334155">RabbitMQ 吸收上报洪峰，Driver 与 Data 不同步阻塞</text>
+  <text x="870" y="352" font-size="11" fill="#475569">上行只向前推进，不等待消费端回执</text>
+
+  <!-- ===== 下行泳道 ===== -->
+  <rect x="100" y="452" width="1600" height="300" rx="12" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="100" y="452" width="6" height="300" rx="3" fill="#2563EB"/>
+  <text x="128" y="486" font-size="16" font-weight="700" fill="#2563EB">下行：命令与执行回执</text>
+
+  <g font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <rect x="150" y="520" width="200" height="80" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.6"/>
+    <text x="250" y="556">客户端</text>
+    <text x="250" y="580" font-size="11" fill="#475569" font-weight="400">POST 命令</text>
+    <rect x="403" y="520" width="200" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="503" y="556">Gateway</text>
+    <text x="503" y="580" font-size="11" fill="#475569" font-weight="400">鉴权 / 路由</text>
+    <rect x="656" y="520" width="200" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="756" y="556">Data</text>
+    <text x="756" y="580" font-size="11" fill="#475569" font-weight="400">校验 / 发布</text>
+    <rect x="909" y="520" width="200" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="1009" y="556">RabbitMQ</text>
+    <text x="1009" y="580" font-size="11" fill="#475569" font-weight="400">命令队列</text>
+    <rect x="1162" y="520" width="200" height="80" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="1262" y="556">Driver</text>
+    <text x="1262" y="580" font-size="11" fill="#475569" font-weight="400">协议写入</text>
+    <rect x="1415" y="520" width="200" height="80" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="1515" y="556">设备</text>
+    <text x="1515" y="580" font-size="11" fill="#475569" font-weight="400">执行</text>
+  </g>
+
+  <!-- 下行箭头 -->
+  <line x1="352" y1="560" x2="401" y2="560" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="376" y="548" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">POST 命令</text>
+  <line x1="605" y1="560" x2="654" y2="560" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="630" y="548" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">授权请求</text>
+  <line x1="858" y1="560" x2="907" y2="560" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="882" y="548" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">发布命令</text>
+  <line x1="1111" y1="560" x2="1160" y2="560" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="1136" y="548" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">消费</text>
+  <line x1="1364" y1="560" x2="1413" y2="560" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="1388" y="548" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">设备写入</text>
+
+  <!-- 回执（反向虚线） -->
+  <line x1="1515" y1="600" x2="1262" y2="600" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <line x1="1262" y1="600" x2="1009" y2="600" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <line x1="1009" y1="600" x2="756" y2="600" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <text x="1136" y="618" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">执行回执（按 commandId 返回）</text>
+
+  <!-- 下行说明 -->
+  <rect x="150" y="650" width="660" height="74" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="170" y="676" font-size="12" font-weight="700" fill="#334155">完整回执：设备结果 → Driver → RabbitMQ → Data</text>
+  <text x="170" y="700" font-size="11" fill="#475569">Data 按 commandId 更新命令状态并供客户端查询或订阅</text>
+  <rect x="850" y="650" width="765" height="74" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="870" y="676" font-size="12" font-weight="700" fill="#334155">客户端查询或订阅命令状态</text>
+  <text x="870" y="700" font-size="11" fill="#475569">accepted / running / succeeded / failed</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图14-3 RabbitMQ 承载上行位号值、下行命令与执行回执，Data 统一维护数据和命令状态。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

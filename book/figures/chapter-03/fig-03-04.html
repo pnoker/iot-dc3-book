@@ -1,5 +1,90 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图3-4 RFID在智能仓储中的应用拓扑示意</title><style>html,body{margin:0;width:1200px;background:#F8FAFC;color:#0F172A;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}.page{width:1200px;height:680px;overflow:hidden}svg{display:block}text{letter-spacing:0}.h{font-size:15px;font-weight:700}.s{font-size:12px;fill:#475569}.tag{font-size:11px;font-weight:600}</style></head><body><main class="page" data-figure-root><svg width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc"><title id="title">图3-4 RFID在智能仓储中的应用拓扑示意</title><desc id="desc">固定式门禁与手持终端形成两类并行采集入口，标签数据经RFID中间件归一后进入WMS。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker></defs><rect width="1200" height="680" fill="#F8FAFC"/><circle cx="45" cy="39" r="6" fill="#2563EB"/><text x="62" y="47" font-size="24" font-weight="700">图3-4 RFID在智能仓储中的应用拓扑示意</text><text x="45" y="76" class="s">固定式门禁持续采集进出事件，手持终端补充货架盘点，两路数据在边缘层汇聚</text><line x1="40" y1="94" x2="1160" y2="94" stroke="#CBD5E1"/>
-<rect x="45" y="115" width="1110" height="110" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="65" y="140" class="tag">云端层</text><rect x="415" y="142" width="370" height="62" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="600" y="169" text-anchor="middle" class="h">WMS 仓储管理系统</text><text x="600" y="190" text-anchor="middle" class="s">入出库校验 · 库存台账 · 差异报告</text>
-<rect x="45" y="250" width="1110" height="115" rx="14" fill="#FFFFFF" stroke="#D97706" stroke-dasharray="8 4"/><text x="65" y="275" class="tag">边缘层</text><path d="M600 250V204" stroke="#2563EB" stroke-width="3" marker-end="url(#a)"/><rect x="365" y="280" width="470" height="62" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/><text x="600" y="307" text-anchor="middle" class="h">RFID 中间件</text><text x="600" y="328" text-anchor="middle" class="s">去重 · 过滤 · EPC事件聚合 · WMS接口</text>
-<rect x="45" y="390" width="1110" height="220" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="65" y="415" class="tag">现场层</text><path d="M225 480V410H430V342M600 480V342M975 480V410H770V342" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#a)"/><rect x="75" y="435" width="300" height="145" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-dasharray="7 4"/><text x="95" y="460" class="tag" fill="#0F766E">入库区</text><rect x="105" y="480" width="240" height="62" rx="8" fill="#FFFFFF" stroke="#0F766E"/><text x="225" y="506" text-anchor="middle" class="h">固定式读写器</text><text x="225" y="528" text-anchor="middle" class="s">门禁天线×2 ← UHF标签</text><rect x="450" y="435" width="300" height="145" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-dasharray="7 4"/><text x="470" y="460" class="tag" fill="#0F766E">出库区</text><rect x="480" y="480" width="240" height="62" rx="8" fill="#FFFFFF" stroke="#0F766E"/><text x="600" y="506" text-anchor="middle" class="h">固定式读写器</text><text x="600" y="528" text-anchor="middle" class="s">门禁天线×2 ← UHF标签</text><rect x="825" y="435" width="300" height="145" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-dasharray="7 4"/><text x="845" y="460" class="tag" fill="#0F766E">货架区</text><rect x="855" y="480" width="240" height="62" rx="8" fill="#FFFFFF" stroke="#0F766E"/><text x="975" y="506" text-anchor="middle" class="h">手持终端</text><text x="975" y="528" text-anchor="middle" class="s">移动盘点 ← 货架UHF标签</text><line x1="45" y1="635" x2="1155" y2="635" stroke="#CBD5E1"/><text x="600" y="662" text-anchor="middle" font-size="11" fill="#475569">图3-4 RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。</text></svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图3-4 RFID在智能仓储中的应用拓扑示意</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图3-4 RFID在智能仓储中的应用拓扑示意</title>
+  <desc id="desc">RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-4 RFID在智能仓储中的应用拓扑示意</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">固定式门禁持续采集进出事件，手持终端补充货架盘点，两路数据在边缘层汇聚</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 云端层 ===== -->
+  <text x="280" y="142" font-size="15" font-weight="700" fill="#334155">云端层</text>
+  <rect x="280" y="154" width="1240" height="72" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="900" y="186" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">WMS 仓储管理系统</text>
+  <text x="900" y="210" font-size="11" fill="#475569" text-anchor="middle">入出库校验 · 库存台账 · 差异报告</text>
+
+  <!-- 中间件 → WMS -->
+  <line x1="900" y1="226" x2="900" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+  <text x="560" y="244" font-size="11" font-weight="700" fill="#475569">API / 事件更新台账</text>
+
+  <!-- ===== 边缘层 ===== -->
+  <text x="280" y="274" font-size="15" font-weight="700" fill="#2563EB">边缘层</text>
+  <rect x="280" y="286" width="1240" height="72" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="900" y="318" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">RFID 中间件</text>
+  <text x="900" y="342" font-size="11" fill="#475569" text-anchor="middle">去重 · 过滤 · EPC 事件聚合 · WMS 接口</text>
+
+  <!-- ===== 现场层 ===== -->
+  <text x="280" y="386" font-size="15" font-weight="700" fill="#0F766E">现场层</text>
+  <rect x="280" y="398" width="1240" height="250" rx="8" fill="#F8FAFC" stroke="#0F766E" stroke-width="1.6"/>
+
+  <!-- 入库区 -->
+  <rect x="320" y="428" width="360" height="150" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="500" y="464" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">入库区</text>
+  <text x="500" y="492" font-size="12" fill="#0F172A" text-anchor="middle">固定式读写器</text>
+  <text x="500" y="518" font-size="11" fill="#475569" text-anchor="middle">门禁天线 ×2 ← UHF 标签</text>
+  <text x="500" y="544" font-size="11" fill="#94A3B8" text-anchor="middle">批量采集进出事件</text>
+
+  <!-- 出库区 -->
+  <rect x="720" y="428" width="360" height="150" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="900" y="464" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">出库区</text>
+  <text x="900" y="492" font-size="12" fill="#0F172A" text-anchor="middle">固定式读写器</text>
+  <text x="900" y="518" font-size="11" fill="#475569" text-anchor="middle">门禁天线 ×2 ← UHF 标签</text>
+  <text x="900" y="544" font-size="11" fill="#94A3B8" text-anchor="middle">批量采集进出事件</text>
+
+  <!-- 货架区 -->
+  <rect x="1120" y="428" width="360" height="150" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="1300" y="464" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">货架区</text>
+  <text x="1300" y="492" font-size="12" fill="#0F172A" text-anchor="middle">手持终端</text>
+  <text x="1300" y="518" font-size="11" fill="#475569" text-anchor="middle">移动盘点 ← 货架 UHF 标签</text>
+  <text x="1300" y="544" font-size="11" fill="#94A3B8" text-anchor="middle">补充盘点</text>
+
+  <!-- 现场层 → 中间件 -->
+  <line x1="500" y1="428" x2="500" y2="360" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="520" y="398" font-size="11" font-weight="700" fill="#0F766E">RJ45</text>
+  <line x1="900" y1="428" x2="900" y2="360" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="920" y="398" font-size="11" font-weight="700" fill="#0F766E">RJ45</text>
+  <line x1="1300" y1="428" x2="1300" y2="360" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
+  <text x="1320" y="398" font-size="11" font-weight="700" fill="#2563EB">Wi-Fi</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图3-4 RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

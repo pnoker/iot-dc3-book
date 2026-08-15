@@ -1,2 +1,84 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图3-8 振动传感器自适应采样状态机（示意）</title><style>html,body{margin:0;width:1200px;background:#F8FAFC;color:#0F172A;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}.page{width:1200px;height:560px;overflow:hidden}svg{display:block}text{letter-spacing:0}.h{font-size:17px;font-weight:700}.s{font-size:12px;fill:#475569}.tag{font-size:11px;font-weight:600}</style></head><body><main class="page" data-figure-root><svg width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc"><title id="title">图3-8 振动传感器自适应采样状态机（示意）</title><desc id="desc">预测误差持续放大使传感器从稳态低功率切换到加速监听，再进入数据上传；上传完成后复位。</desc><defs><marker id="a" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><polygon points="0 0,12 4,0 8" fill="#2563EB"/></marker><marker id="a-reset" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto"><polygon points="0 0,12 4,0 8" fill="#0F766E"/></marker></defs><rect width="1200" height="560" fill="#F8FAFC"/><circle cx="45" cy="39" r="6" fill="#2563EB"/><text x="62" y="47" font-size="24" font-weight="700">图3-8 振动传感器自适应采样状态机（示意）</text><text x="45" y="76" class="s">预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态</text><line x1="40" y1="94" x2="1160" y2="94" stroke="#CBD5E1"/><rect x="45" y="120" width="1110" height="315" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="65" y="148" class="tag" fill="#475569">设备侧感知域</text><path d="M350 275H470M730 275H850" stroke="#2563EB" stroke-width="2.5" marker-end="url(#a)"/><path d="M980 345V410H220V345" fill="none" stroke="#0F766E" stroke-width="2.5" stroke-dasharray="8 5" marker-end="url(#a-reset)"/><rect x="70" y="205" width="280" height="140" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="210" y="245" text-anchor="middle" class="h">稳态低功率</text><text x="210" y="277" text-anchor="middle" class="s">长间隔采样 · 频段能量计算</text><text x="210" y="302" text-anchor="middle" class="s">模型预测 · 射频关闭</text><text x="210" y="326" text-anchor="middle" class="tag" fill="#0F766E">最低功耗</text><rect x="470" y="205" width="260" height="140" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/><text x="600" y="245" text-anchor="middle" class="h">加速监听</text><text x="600" y="277" text-anchor="middle" class="s">短间隔高频采样</text><text x="600" y="302" text-anchor="middle" class="s">持续检查多轮残差</text><text x="600" y="326" text-anchor="middle" class="tag" fill="#D97706">暂不上传</text><rect x="850" y="205" width="260" height="140" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/><text x="980" y="245" text-anchor="middle" class="h">数据上传</text><text x="980" y="277" text-anchor="middle" class="s">确认异常 · 唤醒射频</text><text x="980" y="302" text-anchor="middle" class="s">上传累积原始波形</text><text x="980" y="326" text-anchor="middle" class="tag" fill="#DC2626">最高功耗</text><rect x="356" y="230" width="108" height="48" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/><text x="410" y="249" text-anchor="middle" class="tag" fill="#2563EB">预测误差</text><text x="410" y="267" text-anchor="middle" class="tag" fill="#2563EB">连续放大</text><rect x="738" y="230" width="106" height="48" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/><text x="791" y="249" text-anchor="middle" class="tag" fill="#2563EB">多轮残差</text><text x="791" y="267" text-anchor="middle" class="tag" fill="#2563EB">持续越阈</text><rect x="535" y="380" width="130" height="27" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/><text x="600" y="399" text-anchor="middle" class="tag" fill="#0F766E">上传完成 / 复位</text><line x1="45" y1="465" x2="1155" y2="465" stroke="#CBD5E1"/><text x="65" y="495" class="tag">阈值说明</text><text x="145" y="495" class="s">图中转移条件均为示意；基线阈值应依据正常工况离线数据与现场噪声重新标定。</text><text x="600" y="532" text-anchor="middle" font-size="11" fill="#475569">图3-8 状态机以逐级升高的能耗换取更完整的异常窗口，确认异常后才开启射频上传。</text></svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图3-8 振动传感器自适应采样状态机（示意）</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图3-8 振动传感器自适应采样状态机（示意）</title>
+  <desc id="desc">预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-8 振动传感器自适应采样状态机（示意）</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 设备侧感知域 -->
+  <rect x="120" y="140" width="1560" height="330" rx="12" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="140" y="172" font-size="15" font-weight="700" fill="#0F766E">设备侧感知域 · 现场传感器节点的状态管理边界</text>
+
+  <!-- ===== 稳态低功率 ===== -->
+  <rect x="170" y="250" width="340" height="160" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="340" y="288" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">稳态低功率</text>
+  <text x="340" y="318" font-size="11.5" fill="#475569" text-anchor="middle">长间隔采样 · 频段能量计算</text>
+  <text x="340" y="340" font-size="11.5" fill="#475569" text-anchor="middle">模型预测 · 射频关闭</text>
+  <rect x="200" y="356" width="280" height="30" rx="6" fill="#DCFCE7"/>
+  <text x="340" y="376" font-size="12" font-weight="700" fill="#15803D" text-anchor="middle">最低功耗</text>
+
+  <!-- ===== 加速监听 ===== -->
+  <rect x="730" y="250" width="340" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8"/>
+  <text x="900" y="288" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">加速监听</text>
+  <text x="900" y="318" font-size="11.5" fill="#475569" text-anchor="middle">短间隔高频采样</text>
+  <text x="900" y="340" font-size="11.5" fill="#475569" text-anchor="middle">持续检查多轮残差</text>
+  <rect x="760" y="356" width="280" height="30" rx="6" fill="#FFEDD5"/>
+  <text x="900" y="376" font-size="12" font-weight="700" fill="#C2410C" text-anchor="middle">暂不上传</text>
+
+  <!-- ===== 数据上传 ===== -->
+  <rect x="1290" y="250" width="340" height="160" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.8"/>
+  <text x="1460" y="288" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">数据上传</text>
+  <text x="1460" y="318" font-size="11.5" fill="#475569" text-anchor="middle">确认异常 · 唤醒射频</text>
+  <text x="1460" y="340" font-size="11.5" fill="#475569" text-anchor="middle">上传累积原始波形</text>
+  <rect x="1320" y="356" width="280" height="30" rx="6" fill="#FEE2E2"/>
+  <text x="1460" y="376" font-size="12" font-weight="700" fill="#B91C1C" text-anchor="middle">最高功耗</text>
+
+  <!-- ===== 状态转移 ===== -->
+  <!-- 稳态 → 加速监听 -->
+  <line x1="512" y1="330" x2="728" y2="330" stroke="#F97316" stroke-width="2.3" marker-end="url(#ah-orange)"/>
+  <text x="620" y="316" font-size="12" font-weight="700" fill="#D97706" text-anchor="middle">预测误差连续放大</text>
+  <!-- 加速监听 → 数据上传 -->
+  <line x1="1072" y1="330" x2="1288" y2="330" stroke="#DC2626" stroke-width="2.3" marker-end="url(#ah-red)"/>
+  <text x="1180" y="316" font-size="12" font-weight="700" fill="#DC2626" text-anchor="middle">多轮残差持续越阈</text>
+  <!-- 数据上传 → 稳态（复位回环） -->
+  <path d="M1460 410 V452 H340 V412" stroke="#0F766E" stroke-width="2.3" fill="none" marker-end="url(#ah-teal)"/>
+  <text x="900" y="444" font-size="12" font-weight="700" fill="#0F766E" text-anchor="middle">上传完成 / 复位</text>
+
+  <!-- 阈值说明 -->
+  <rect x="120" y="500" width="1560" height="58" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="900" y="534" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">阈值说明：图中转移条件均为示意；基线阈值应依据正常工况离线数据与现场噪声重新标定。</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图3-8 状态机以逐级升高的能耗换取更完整的异常窗口，确认异常后才开启射频上传。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

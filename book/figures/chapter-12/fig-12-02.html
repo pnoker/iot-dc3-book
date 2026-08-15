@@ -1,17 +1,106 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图12-2 作物病害识别CNN处理流程（架构示意）</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}.figure{width:1200px;height:760px;overflow:hidden}svg{display:block}text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}</style></head>
-<body><main class="figure" data-figure-root><svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">图12-2 作物病害识别CNN处理流程（架构示意）</title><desc id="desc">叶片图像依次经过三次卷积池化、展平和全连接层，输出各病害类别概率。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5 0 7Z" fill="#2563EB"/></marker></defs>
-<rect width="1200" height="760" fill="#F8FAFC"/><circle cx="42" cy="38" r="6" fill="#2563EB"/><text x="60" y="45" font-size="24" font-weight="700" fill="#0F172A">图12-2 作物病害识别CNN处理流程（架构示意）</text><text x="60" y="70" font-size="13" fill="#475569">卷积提取层次特征，池化逐级降采样，全连接层输出病害概率</text><line x1="40" y1="94" x2="1160" y2="94" stroke="#E2E8F0"/>
-<g fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#a)"><line x1="184" y1="340" x2="218" y2="340"/><line x1="362" y1="340" x2="396" y2="340"/><line x1="540" y1="340" x2="574" y2="340"/><line x1="718" y1="340" x2="752" y2="340"/><line x1="866" y1="340" x2="900" y2="340"/><line x1="1014" y1="340" x2="1048" y2="340"/></g>
-<g text-anchor="middle" fill="#0F172A"><g><rect x="42" y="255" width="142" height="170" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><rect x="72" y="280" width="82" height="70" rx="4" fill="#FFF" stroke="#0F766E"/><path d="M80 335Q105 290 145 338" fill="#DCFCE7" stroke="#0F766E"/><text x="113" y="380" font-size="15" font-weight="700">叶片图像</text><text x="113" y="403" font-size="11" fill="#475569">224×224×3 RGB</text></g>
-<g><rect x="220" y="235" width="142" height="210" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="291" y="275" font-size="15" font-weight="700">卷积 + 池化 ①</text><text x="291" y="305" font-size="11" fill="#475569">Conv2D + ReLU</text><text x="291" y="326" font-size="11" fill="#475569">MaxPool2D</text><rect x="250" y="350" width="82" height="50" fill="#DBEAFE" stroke="#2563EB"/><text x="291" y="424" font-size="11" fill="#475569">16×112×112</text></g>
-<g><rect x="398" y="245" width="142" height="190" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="469" y="282" font-size="15" font-weight="700">卷积 + 池化 ②</text><text x="469" y="312" font-size="11" fill="#475569">Conv2D + ReLU</text><text x="469" y="333" font-size="11" fill="#475569">MaxPool2D</text><rect x="443" y="355" width="52" height="35" fill="#BFDBFE" stroke="#2563EB"/><text x="469" y="414" font-size="11" fill="#475569">32×56×56</text></g>
-<g><rect x="576" y="255" width="142" height="170" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="647" y="289" font-size="15" font-weight="700">卷积 + 池化 ③</text><text x="647" y="319" font-size="11" fill="#475569">Conv2D + ReLU</text><text x="647" y="340" font-size="11" fill="#475569">MaxPool2D</text><rect x="629" y="360" width="36" height="24" fill="#93C5FD" stroke="#2563EB"/><text x="647" y="405" font-size="11" fill="#475569">64×28×28</text></g>
-<g><rect x="754" y="275" width="112" height="130" rx="8" fill="#FFF" stroke="#7C3AED" stroke-width="2"/><text x="810" y="326" font-size="15" font-weight="700">Flatten</text><text x="810" y="354" font-size="11" fill="#475569">展平为一维</text><text x="810" y="378" font-size="11" fill="#475569">50,176</text></g>
-<g><rect x="902" y="275" width="112" height="130" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><text x="958" y="319" font-size="15" font-weight="700">Dense</text><text x="958" y="347" font-size="11" fill="#475569">128 神经元</text><text x="958" y="371" font-size="11" fill="#475569">ReLU</text></g>
-<g><rect x="1050" y="220" width="110" height="240" rx="8" fill="#FFF" stroke="#0F766E" stroke-width="2"/><text x="1105" y="250" font-size="15" font-weight="700">病害概率</text><text x="1105" y="273" font-size="11" fill="#475569">Softmax · C类</text><g font-size="10" text-anchor="start"><text x="1062" y="310">健康 0.01</text><rect x="1062" y="319" width="4" height="9" fill="#0F766E"/><text x="1062" y="350">白粉病 0.88</text><rect x="1062" y="359" width="76" height="9" fill="#2563EB"/><text x="1062" y="390">锈病 0.05</text><rect x="1062" y="399" width="8" height="9" fill="#F97316"/><text x="1062" y="430">叶斑病 0.06</text><rect x="1062" y="439" width="10" height="9" fill="#D97706"/></g></g></g>
-<rect x="215" y="185" width="508" height="290" rx="10" fill="none" stroke="#2563EB" stroke-dasharray="7 5"/><text x="235" y="210" font-size="12" font-weight="700" fill="#2563EB">三级特征提取：边缘 → 纹理 → 形状</text>
-<line x1="40" y1="535" x2="1160" y2="535" stroke="#E2E8F0"/><g text-anchor="middle"><text x="113" y="575" font-size="12" font-weight="700" fill="#0F766E">输入</text><text x="469" y="575" font-size="12" font-weight="700" fill="#2563EB">特征提取与降采样</text><text x="884" y="575" font-size="12" font-weight="700" fill="#7C3AED">分类决策</text><text x="1105" y="575" font-size="12" font-weight="700" fill="#0F766E">概率输出</text></g><text x="600" y="625" text-anchor="middle" font-size="13" fill="#475569">空间分辨率逐级降低，通道数逐级增加；C = 病害类别数 + 健康类别。</text>
-<text x="600" y="716" text-anchor="middle" font-size="11" fill="#475569">图12-2 三级卷积池化把空间分辨率从 224 逐级压缩到 28、通道数由 3 增至 64，特征由边缘、纹理过渡到形状；Softmax 输出健康与各病害概率，取最大者为识别结果。</text>
-</svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图12-2 作物病害识别CNN处理流程（架构示意）</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图12-2 作物病害识别CNN处理流程（架构示意）</title>
+  <desc id="desc">叶片图像经三级卷积池化提取层次特征、逐级降采样，展平后进入全连接层，Softmax 输出健康与各病害概率。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-2 作物病害识别CNN处理流程（架构示意）</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">卷积提取层次特征，池化逐级降采样，全连接层输出病害概率</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 7 个方框（y=240-360） ===== -->
+  <!-- 1 输入图像 -->
+  <rect x="115" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="210" y="288" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">叶片图像</text>
+  <text x="210" y="318" font-size="11" fill="#475569" text-anchor="middle">224×224×3</text>
+  <text x="210" y="340" font-size="11" fill="#475569" text-anchor="middle">RGB</text>
+
+  <!-- 2 卷积池化① -->
+  <rect x="345" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="440" y="272" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">卷积 + 池化 ①</text>
+  <text x="440" y="298" font-size="11" fill="#475569" text-anchor="middle">Conv2D + ReLU</text>
+  <text x="440" y="320" font-size="11" fill="#475569" text-anchor="middle">MaxPool2D</text>
+  <text x="440" y="380" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">16×112×112</text>
+
+  <!-- 3 卷积池化② -->
+  <rect x="575" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="670" y="272" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">卷积 + 池化 ②</text>
+  <text x="670" y="298" font-size="11" fill="#475569" text-anchor="middle">Conv2D + ReLU</text>
+  <text x="670" y="320" font-size="11" fill="#475569" text-anchor="middle">MaxPool2D</text>
+  <text x="670" y="380" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">32×56×56</text>
+
+  <!-- 4 卷积池化③ -->
+  <rect x="805" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="900" y="272" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">卷积 + 池化 ③</text>
+  <text x="900" y="298" font-size="11" fill="#475569" text-anchor="middle">Conv2D + ReLU</text>
+  <text x="900" y="320" font-size="11" fill="#475569" text-anchor="middle">MaxPool2D</text>
+  <text x="900" y="380" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">64×28×28</text>
+
+  <!-- 5 Flatten -->
+  <rect x="1035" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.8"/>
+  <text x="1130" y="284" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Flatten</text>
+  <text x="1130" y="314" font-size="11" fill="#475569" text-anchor="middle">展平为一维</text>
+  <text x="1130" y="380" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">50,176</text>
+
+  <!-- 6 Dense -->
+  <rect x="1265" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.8"/>
+  <text x="1360" y="284" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Dense</text>
+  <text x="1360" y="314" font-size="11" fill="#475569" text-anchor="middle">128 神经元 · ReLU</text>
+
+  <!-- 7 概率条 -->
+  <rect x="1495" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="1590" y="268" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">病害概率</text>
+  <text x="1590" y="290" font-size="10.5" fill="#475569" text-anchor="middle">Softmax · C 类</text>
+  <text x="1590" y="312" font-size="11" fill="#0F172A" text-anchor="middle">健康 0.01</text>
+  <text x="1590" y="330" font-size="11" fill="#0F172A" text-anchor="middle">白粉病 0.88</text>
+  <text x="1590" y="348" font-size="11" fill="#0F172A" text-anchor="middle">锈病 0.05 · 叶斑 0.06</text>
+
+  <!-- 箭头 -->
+  <line x1="307" y1="300" x2="343" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <line x1="537" y1="300" x2="573" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <line x1="767" y1="300" x2="803" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <line x1="997" y1="300" x2="1033" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <line x1="1227" y1="300" x2="1263" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <line x1="1457" y1="300" x2="1493" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== 阶段分组标注 ===== -->
+  <line x1="115" y1="430" x2="1685" y2="430" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="210" y="462" font-size="13" font-weight="700" fill="#475569" text-anchor="middle">输入</text>
+  <text x="670" y="462" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">特征提取与降采样</text>
+  <text x="1230" y="462" font-size="13" font-weight="700" fill="#7C3AED" text-anchor="middle">分类决策</text>
+  <text x="1590" y="462" font-size="13" font-weight="700" fill="#0F766E" text-anchor="middle">概率输出</text>
+
+  <!-- 底部说明 -->
+  <rect x="115" y="500" width="1570" height="70" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="900" y="530" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">三级特征提取：边缘 → 纹理 → 形状</text>
+  <text x="900" y="554" font-size="11.5" fill="#475569" text-anchor="middle">空间分辨率逐级降低、通道数逐级增加；C = 病害类别数 + 健康类别</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图12-2 三级卷积池化把空间分辨率从 224 逐级压缩到 28、通道数由 3 增至 64，特征由边缘、纹理过渡到形状；Softmax 输出健康与各病害概率，取最大者为识别结果。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
