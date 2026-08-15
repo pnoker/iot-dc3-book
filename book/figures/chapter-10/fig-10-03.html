@@ -1,16 +1,92 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>图10-3 数字孪生五维模型架构图</title>
-<style>html,body{margin:0;background:#F8FAFC;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;color:#0F172A}.page{width:1200px;margin:0 auto}svg{display:block}text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}</style></head>
-<body><main class="page"><svg data-figure-root="fig-10-03" width="1200" height="740" viewBox="0 0 1200 740" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
-<title id="title">图10-3 数字孪生五维模型架构图</title><desc id="desc">连接层连接物理实体与虚拟模型，承载上行数据和受控下行指令，模型输出沉淀为知识并服务业务。</desc>
-<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#2563EB"/></marker><marker id="arrow2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#0F766E"/></marker></defs>
-<rect width="1200" height="740" fill="#F8FAFC"/><rect x="30" y="24" width="1140" height="692" rx="16" fill="#FFFFFF" stroke="#CBD5E1"/>
-<circle cx="62" cy="62" r="6" fill="#2563EB"/><text x="80" y="70" font-size="24" font-weight="700">图10-3 数字孪生五维模型架构图</text><line x1="60" y1="96" x2="1140" y2="96" stroke="#E2E8F0"/>
-<text x="60" y="126" font-size="13" fill="#475569">连接层 CN 统一协议、语义、频率与安全，是物理实体和虚拟模型持续同步的枢纽。</text>
-<rect x="500" y="140" width="500" height="130" rx="16" fill="#EFF6FF" stroke="#2563EB" stroke-dasharray="8 5"/><text x="520" y="166" font-size="12" font-weight="700" fill="#2563EB">平台服务域</text>
-<rect x="205" y="430" width="790" height="150" rx="16" fill="#ECFDF5" stroke="#0F766E" stroke-dasharray="8 5"/><text x="225" y="456" font-size="12" font-weight="700" fill="#0F766E">物理—模型同步主链路</text>
-<rect x="200" y="140" width="250" height="130" rx="16" fill="#F8FAFC" stroke="#94A3B8" stroke-dasharray="8 5"/><text x="220" y="166" font-size="12" font-weight="700" fill="#475569">数据资产域</text><rect x="240" y="180" width="170" height="70" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/><text x="325.0" y="212" text-anchor="middle" font-size="16" font-weight="700">数据与服务</text><text x="325.0" y="236" text-anchor="middle" font-size="12" fill="#475569">历史数据 · 业务接口</text><rect x="540" y="180" width="170" height="70" rx="12" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/><text x="625.0" y="212" text-anchor="middle" font-size="16" font-weight="700">知识</text><text x="625.0" y="236" text-anchor="middle" font-size="12" fill="#475569">规则参数 · 故障案例</text><rect x="80" y="470" width="220" height="80" rx="12" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/><text x="190.0" y="502" text-anchor="middle" font-size="16" font-weight="700">物理实体 PE</text><text x="190.0" y="526" text-anchor="middle" font-size="12" fill="#475569">设备 · 产线 · 传感器</text><rect x="490" y="455" width="220" height="110" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><text x="600.0" y="487" text-anchor="middle" font-size="16" font-weight="700">连接层 CN</text><text x="600.0" y="511" text-anchor="middle" font-size="12" fill="#475569">协议转换 · 归一 · 安全</text><rect x="900" y="470" width="220" height="80" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/><text x="1010.0" y="502" text-anchor="middle" font-size="16" font-weight="700">虚拟模型 VM</text><text x="1010.0" y="526" text-anchor="middle" font-size="12" fill="#475569">几何 · 物理 · 行为</text><line x1="300" y1="495" x2="485" y2="495" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow2)"/><text x="392" y="483" text-anchor="middle" font-size="11" fill="#0F766E">状态 / 传感器值 / 事件</text><line x1="485" y1="530" x2="300" y2="530" stroke="#2563EB" stroke-width="3" marker-end="url(#arrow)"/><text x="392" y="550" text-anchor="middle" font-size="11" fill="#2563EB">设备写指令 / 参数更新</text>
-<line x1="710" y1="495" x2="895" y2="495" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow2)"/><text x="802" y="483" text-anchor="middle" font-size="11" fill="#0F766E">归一化 PointValue</text><line x1="895" y1="530" x2="710" y2="530" stroke="#2563EB" stroke-width="3" marker-end="url(#arrow)"/><text x="802" y="550" text-anchor="middle" font-size="11" fill="#2563EB">预测结果 / 参数调整指令</text>
-<path d="M1010 470 C1010 340 680 335 625 255" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#arrow2)"/><text x="835" y="342" font-size="11" fill="#0F766E">模型输出 · 异常模式</text><line x1="540" y1="215" x2="415" y2="215" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/><text x="478" y="201" text-anchor="middle" font-size="11" fill="#2563EB">规则参数 · 故障案例</text>
-<rect x="300" y="610" width="600" height="52" rx="10" fill="#FFF7ED" stroke="#F97316"/><text x="600" y="633" text-anchor="middle" font-size="13" font-weight="700" fill="#C2410C">安全边界：写请求须经鉴权、值域/变化率校验、策略约束与必要人工确认</text><text x="600" y="651" text-anchor="middle" font-size="11" fill="#475569">PLC / SIS / 硬联锁承担确定性控制与故障保护，模型不得绕过</text><text x="600" y="704" text-anchor="middle" font-size="11" fill="#475569">图10-3 连接层决定物理实体与虚拟模型的同步精度和指令可达性；模型输出沉淀为知识并反哺业务。</text>
-</svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图10-3 数字孪生五维模型架构图</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图10-3 数字孪生五维模型架构图</title>
+  <desc id="desc">连接层连接物理实体与虚拟模型，承载上行数据和受控下行指令，模型输出沉淀为知识并服务业务。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="arr-teal" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#0F766E"/></marker>
+      <marker id="arr-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#2563EB"/></marker>
+      <marker id="arr-purple" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#7C3AED"/></marker>
+    </defs>
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-3 数字孪生五维模型架构图</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">连接层 CN 统一协议、语义、频率与安全，是物理实体和虚拟模型持续同步的枢纽。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 数据资产域（顶部分组） -->
+    <rect x="290" y="170" width="1220" height="160" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="8 5"/>
+    <text x="310" y="198" font-size="15" font-weight="700" fill="#7C3AED">数据资产域 · 数据沉淀与治理边界</text>
+
+    <!-- 平台服务域（中下部分组） -->
+    <rect x="110" y="520" width="1580" height="210" rx="14" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="8 5"/>
+    <text x="130" y="548" font-size="15" font-weight="700" fill="#2563EB">平台服务域 · 核心服务能力边界</text>
+
+    <!-- 连线（先画） -->
+    <!-- PE ⇄ CN -->
+    <line x1="400" y1="590" x2="770" y2="590" stroke="#0F766E" stroke-width="2.2" marker-end="url(#arr-teal)"/>
+    <line x1="770" y1="650" x2="400" y2="650" stroke="#2563EB" stroke-width="2.2" marker-end="url(#arr-blue)"/>
+    <!-- CN ⇄ VM -->
+    <line x1="1030" y1="590" x2="1400" y2="590" stroke="#0F766E" stroke-width="2.2" marker-end="url(#arr-teal)"/>
+    <line x1="1400" y1="650" x2="1030" y2="650" stroke="#2563EB" stroke-width="2.2" marker-end="url(#arr-blue)"/>
+    <!-- VM → Knowledge -->
+    <line x1="1530" y1="560" x2="1340" y2="330" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+    <!-- Knowledge → Data & Service -->
+    <line x1="1180" y1="255" x2="620" y2="255" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+    <!-- 卡片（后画，避免线穿字） -->
+    <!-- PE -->
+    <rect x="140" y="560" width="260" height="120" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+    <text x="270" y="612" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">物理实体 PE</text>
+    <text x="270" y="646" font-size="14" fill="#475569" text-anchor="middle">设备 · 产线 · 传感器</text>
+    <!-- CN -->
+    <rect x="770" y="550" width="260" height="130" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+    <text x="900" y="602" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">连接层 CN</text>
+    <text x="900" y="636" font-size="14" fill="#475569" text-anchor="middle">协议转换 · 数据归一 · 安全</text>
+    <text x="900" y="664" font-size="12" fill="#B45309" text-anchor="middle">双向同步枢纽</text>
+    <!-- VM -->
+    <rect x="1400" y="560" width="260" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <text x="1530" y="612" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">虚拟模型 VM</text>
+    <text x="1530" y="646" font-size="14" fill="#475569" text-anchor="middle">几何 · 物理 · 行为</text>
+    <!-- Data & Service -->
+    <rect x="320" y="200" width="300" height="110" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="470" y="248" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">数据与服务</text>
+    <text x="470" y="282" font-size="14" fill="#475569" text-anchor="middle">历史数据 · 业务接口</text>
+    <!-- Knowledge -->
+    <rect x="1180" y="200" width="300" height="110" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1330" y="248" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">知识</text>
+    <text x="1330" y="282" font-size="14" fill="#475569" text-anchor="middle">规则参数 · 故障案例</text>
+
+    <!-- 连线标签（最后画） -->
+    <text x="585" y="576" font-size="14" font-weight="600" fill="#0F766E" text-anchor="middle">设备状态 · 传感器值 · 事件</text>
+    <text x="585" y="674" font-size="14" font-weight="600" fill="#2563EB" text-anchor="middle">设备写指令 · 参数更新</text>
+    <text x="1215" y="576" font-size="14" font-weight="600" fill="#0F766E" text-anchor="middle">归一化位号值 PointValue</text>
+    <text x="1215" y="674" font-size="14" font-weight="600" fill="#2563EB" text-anchor="middle">预测结果 · 参数调整指令</text>
+    <text x="1490" y="420" font-size="14" font-weight="600" fill="#7C3AED" text-anchor="middle">模型输出 · 异常模式</text>
+    <text x="900" y="242" font-size="14" font-weight="600" fill="#7C3AED" text-anchor="middle">规则参数 · 故障案例</text>
+
+    <!-- 安全边界 -->
+    <rect x="340" y="790" width="1120" height="84" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+    <text x="900" y="824" font-size="17" font-weight="700" fill="#C2410C" text-anchor="middle">安全边界：写请求须经鉴权、值域/变化率校验、策略约束与必要人工确认</text>
+    <text x="900" y="854" font-size="14" fill="#475569" text-anchor="middle">PLC / SIS / 硬联锁承担确定性控制与故障保护，模型不得绕过</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图10-3 连接层决定物理实体与虚拟模型的同步精度和指令可达性；模型输出沉淀为知识并反哺业务。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

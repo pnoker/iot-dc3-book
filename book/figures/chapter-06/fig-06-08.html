@@ -1,7 +1,106 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图6-8 微服务可观测性分层架构</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:620px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block}</style></head><body><div data-figure-root><svg width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc"><title id="title">图6-8 微服务可观测性分层架构</title><desc id="desc">Prometheus拉取服务指标并发送告警到Alertmanager，日志经采集器进入Elasticsearch，Grafana查询Prometheus和Elasticsearch。</desc><defs><marker id="blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker></defs><rect width="1200" height="620" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="572" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700">图6-8 微服务可观测性分层架构</text><text x="80" y="91" font-size="12" fill="#475569">指标、日志与告警各走明确链路，Grafana 从两类存储查询展示。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/>
-<g font-family="inherit"><rect x="55" y="135" width="270" height="360" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="70" y="158" font-size="12" font-weight="650" fill="#475569">服务暴露层</text><rect x="90" y="185" width="200" height="68" rx="9" fill="#EFF6FF" stroke="#2563EB"/><text x="190" y="214" font-size="15" font-weight="650" text-anchor="middle">微服务 / Driver</text><text x="190" y="236" font-size="11" fill="#475569" text-anchor="middle">/actuator/prometheus</text><rect x="90" y="350" width="200" height="68" rx="9" fill="#F8FAFC" stroke="#64748B"/><text x="190" y="379" font-size="15" font-weight="650" text-anchor="middle">日志服务</text><text x="190" y="401" font-size="11" fill="#475569" text-anchor="middle">结构化日志 · traceId</text>
-<rect x="360" y="135" width="455" height="360" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="375" y="158" font-size="12" font-weight="650" fill="#475569">采集与存储层</text><rect x="410" y="185" width="180" height="68" rx="9" fill="#F5F3FF" stroke="#7C3AED"/><text x="500" y="214" font-size="15" font-weight="650" text-anchor="middle">Prometheus</text><text x="500" y="236" font-size="11" fill="#475569" text-anchor="middle">拉取指标 · 规则评估</text><rect x="410" y="350" width="150" height="68" rx="9" fill="#ECFDF5" stroke="#0F766E"/><text x="485" y="379" font-size="15" font-weight="650" text-anchor="middle">日志采集器</text><text x="485" y="401" font-size="11" fill="#475569" text-anchor="middle">采集与解析</text><rect x="620" y="350" width="160" height="68" rx="9" fill="#F5F3FF" stroke="#7C3AED"/><text x="700" y="379" font-size="15" font-weight="650" text-anchor="middle">Elasticsearch</text><text x="700" y="401" font-size="11" fill="#475569" text-anchor="middle">日志索引存储</text>
-<rect x="850" y="135" width="295" height="360" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="865" y="158" font-size="12" font-weight="650" fill="#475569">展示与告警层</text><rect x="895" y="185" width="205" height="68" rx="9" fill="#EFF6FF" stroke="#2563EB"/><text x="997" y="214" font-size="15" font-weight="650" text-anchor="middle">Grafana</text><text x="997" y="236" font-size="11" fill="#475569" text-anchor="middle">指标与日志查询</text><rect x="895" y="305" width="205" height="68" rx="9" fill="#FEF2F2" stroke="#DC2626"/><text x="997" y="334" font-size="15" font-weight="650" text-anchor="middle">Alertmanager</text><text x="997" y="356" font-size="11" fill="#475569" text-anchor="middle">分组 · 路由 · 抑制</text><rect x="895" y="415" width="205" height="55" rx="9" fill="#FFF7ED" stroke="#D97706"/><text x="997" y="448" font-size="14" font-weight="650" text-anchor="middle">钉钉 / 邮件 / 值班</text>
-<path d="M410 219H290" stroke="#2563EB" stroke-width="2" marker-end="url(#blue)"/><text x="350" y="208" font-size="11" fill="#2563EB" text-anchor="middle">Prometheus pull</text><path d="M290 384H410" stroke="#0F766E" stroke-width="2" marker-end="url(#teal)"/><text x="350" y="373" font-size="11" fill="#0F766E" text-anchor="middle">日志采集</text><path d="M560 384H620" stroke="#0F766E" stroke-width="2" marker-end="url(#teal)"/><path d="M895 209H590" stroke="#2563EB" stroke-width="2" marker-end="url(#blue)"/><text x="745" y="198" font-size="11" fill="#2563EB" text-anchor="middle">Grafana 查询 Prometheus</text><path d="M895 253H825V384H780" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#teal)"/><text x="815" y="305" font-size="11" fill="#0F766E" text-anchor="end">Grafana 查询 ES</text><path d="M590 240H850V339H895" fill="none" stroke="#DC2626" stroke-width="2" marker-end="url(#red)"/><text x="735" y="274" font-size="11" fill="#DC2626" text-anchor="middle">Prometheus → Alertmanager</text><path d="M997 373V415" stroke="#DC2626" stroke-width="2" marker-end="url(#red)"/></g>
-<line x1="60" y1="530" x2="1140" y2="530" stroke="#E2E8F0"/><text x="600" y="553" font-size="11" fill="#475569" text-anchor="middle">图6-8 Prometheus 主动拉取指标并驱动告警；日志经采集器入 ES，Grafana 分别查询 Prometheus 与 ES。</text></svg></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图6-8 微服务可观测性分层架构</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图6-8 微服务可观测性分层架构</title>
+  <desc id="desc">指标、日志与告警各走明确链路，Grafana 从两类存储查询展示。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+      <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+      <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+      <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图6-8 微服务可观测性分层架构</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">指标、日志与告警各走明确链路，Grafana 从两类存储查询展示。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 列标题 -->
+    <text x="350" y="170" font-size="26" font-weight="700" fill="#2563EB" text-anchor="middle">服务暴露层</text>
+    <text x="890" y="170" font-size="26" font-weight="700" fill="#0F766E" text-anchor="middle">采集与存储层</text>
+    <text x="1440" y="170" font-size="26" font-weight="700" fill="#7C3AED" text-anchor="middle">展示与告警层</text>
+
+    <!-- ===== 连线（先画） ===== -->
+    <line x1="1026" y1="265" x2="494" y2="265" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+    <line x1="494" y1="525" x2="686" y2="515" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="860" y1="560" x2="860" y2="581" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="1030" y1="265" x2="1226" y2="265" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-red)"/>
+    <line x1="1400" y1="320" x2="1400" y2="466" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-red)"/>
+    <line x1="1230" y1="630" x2="1030" y2="265" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <line x1="1230" y1="630" x2="1030" y2="630" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+
+    <!-- ===== 服务暴露层 ===== -->
+    <rect x="150" y="210" width="340" height="110" rx="9" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <text x="172" y="252" font-size="16" font-weight="700" fill="#0F172A">微服务 / Driver</text>
+    <text x="172" y="278" font-size="12" fill="#2563EB">/actuator/prometheus</text>
+    <text x="172" y="298" font-size="12" fill="#475569">暴露指标端点</text>
+    <rect x="150" y="470" width="340" height="110" rx="9" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <text x="172" y="512" font-size="16" font-weight="700" fill="#0F172A">日志服务</text>
+    <text x="172" y="538" font-size="12" fill="#475569">结构化日志 · traceId</text>
+    <text x="172" y="558" font-size="12" fill="#64748B">时间戳 · 租户 · 错误码</text>
+
+    <!-- ===== 采集与存储层 ===== -->
+    <rect x="690" y="210" width="340" height="110" rx="9" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+    <text x="712" y="252" font-size="16" font-weight="700" fill="#0F172A">Prometheus</text>
+    <text x="712" y="278" font-size="12" fill="#F97316">拉取指标 · 规则评估</text>
+    <text x="712" y="298" font-size="12" fill="#475569">pull 模式</text>
+    <rect x="690" y="470" width="340" height="90" rx="9" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+    <text x="712" y="510" font-size="16" font-weight="700" fill="#0F172A">日志采集器</text>
+    <text x="712" y="534" font-size="12" fill="#0F766E">采集 · 解析</text>
+    <rect x="690" y="585" width="340" height="90" rx="9" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+    <text x="712" y="625" font-size="16" font-weight="700" fill="#0F172A">Elasticsearch</text>
+    <text x="712" y="649" font-size="12" fill="#0F766E">日志索引存储</text>
+
+    <!-- ===== 展示与告警层 ===== -->
+    <rect x="1230" y="210" width="340" height="110" rx="9" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+    <text x="1252" y="252" font-size="16" font-weight="700" fill="#0F172A">Alertmanager</text>
+    <text x="1252" y="278" font-size="12" fill="#DC2626">分组 · 路由 · 抑制</text>
+    <text x="1252" y="298" font-size="12" fill="#475569">接收 Prometheus 告警</text>
+    <rect x="1230" y="470" width="340" height="90" rx="9" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+    <text x="1252" y="510" font-size="16" font-weight="700" fill="#0F172A">钉钉 / 邮件 / 值班</text>
+    <text x="1252" y="534" font-size="12" fill="#64748B">外部通知通道</text>
+    <rect x="1230" y="585" width="340" height="90" rx="9" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1252" y="625" font-size="16" font-weight="700" fill="#0F172A">Grafana</text>
+    <text x="1252" y="649" font-size="12" fill="#7C3AED">指标与日志查询</text>
+
+    <!-- ===== 标签 ===== -->
+    <text x="760" y="252" font-size="13" fill="#F97316" text-anchor="middle">Prometheus pull（拉取指标）</text>
+    <text x="590" y="507" font-size="13" fill="#0F766E" text-anchor="middle">日志采集</text>
+    <text x="872" y="575" font-size="13" fill="#0F766E">写入索引</text>
+    <text x="1128" y="252" font-size="13" fill="#DC2626" text-anchor="middle">告警规则</text>
+    <text x="1414" y="398" font-size="13" fill="#DC2626">通知路由</text>
+    <text x="1115" y="440" font-size="13" fill="#64748B" text-anchor="middle">查询指标</text>
+    <text x="1115" y="618" font-size="13" fill="#64748B" text-anchor="middle">查询日志</text>
+
+    <!-- ===== 图例 ===== -->
+    <line x1="60" y1="862" x2="118" y2="862" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+    <text x="126" y="868" font-size="14" fill="#475569">指标拉取（pull）</text>
+    <line x1="330" y1="862" x2="388" y2="862" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <text x="396" y="868" font-size="14" fill="#475569">日志链路</text>
+    <line x1="540" y1="862" x2="598" y2="862" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-red)"/>
+    <text x="606" y="868" font-size="14" fill="#475569">告警与通知</text>
+    <line x1="780" y1="862" x2="838" y2="862" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <text x="846" y="868" font-size="14" fill="#475569">Grafana 查询（虚线）</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图6-8 Prometheus 主动拉取指标并驱动告警；日志经采集器入 ES，Grafana 分别查询 Prometheus 与 ES。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

@@ -2,95 +2,82 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-14 物联网平台市场格局示意</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
-    svg{display:block}text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-  <title id="ft">图1-14 物联网平台市场格局示意</title>
-  <desc id="fd">物联网平台市场定位矩阵：横轴为生态完整性（有限到完整），纵轴为运营商支持力度（弱到强）。云原生平台（平台A）生态完整、支持中等；运营商平台（平台B）支持强、生态中等；开源/行业平台（平台C）两维均衡；垂直方案（平台D）生态有限、支持弱。定位仅作教学示意，不代表真实市场份额。</desc>
-
-  <rect width="1200" height="820" fill="#F8FAFC"/>
-
-  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
-  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-14 物联网平台市场格局示意</text>
-  <text x="66" y="73" font-size="13" fill="#475569">生态完整性 × 运营商支持力度，构成平台选型的定位坐标</text>
-  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
-
-  <!-- 四象限背景 -->
-  <rect x="660" y="170" width="420" height="215" fill="#EFF6FF"/>
-  <rect x="240" y="170" width="420" height="215" fill="#F5F3FF"/>
-  <rect x="660" y="385" width="420" height="215" fill="#ECFDF5"/>
-  <rect x="240" y="385" width="420" height="215" fill="#F8FAFC"/>
-
-  <!-- 中线（虚线） -->
-  <line x1="660" y1="170" x2="660" y2="600" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5,4"/>
-  <line x1="240" y1="385" x2="1080" y2="385" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5,4"/>
-
-  <!-- 坐标轴 -->
-  <line x1="240" y1="600" x2="1080" y2="600" stroke="#64748B" stroke-width="2"/>
-  <polygon points="1080,600 1068,596 1068,604" fill="#64748B"/>
-  <line x1="240" y1="600" x2="240" y2="170" stroke="#64748B" stroke-width="2"/>
-  <polygon points="240,170 236,182 244,182" fill="#64748B"/>
-
-  <!-- 象限标签 -->
-  <text x="680" y="194" font-size="13" font-weight="700" fill="#1D4ED8">主导区 · 综合领先</text>
-  <text x="260" y="194" font-size="13" font-weight="700" fill="#6D28D9">运营商区 · 网络强、生态一般</text>
-  <text x="680" y="409" font-size="13" font-weight="700" fill="#115E59">云生态区 · 生态强、网络一般</text>
-  <text x="260" y="409" font-size="13" font-weight="700" fill="#475569">垂直区 · 细分深耕</text>
-
-  <!-- 气泡：平台A 云原生 -->
-  <circle cx="880" cy="395" r="56" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="880" y="389" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">平台 A</text>
-  <text x="880" y="409" font-size="11" fill="#475569" text-anchor="middle">云原生厂商</text>
-  <text x="880" y="427" font-size="10" fill="#2563EB" text-anchor="middle">生态完整 · 支持中等</text>
-
-  <!-- 气泡：平台B 运营商 -->
-  <circle cx="640" cy="250" r="50" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="640" y="244" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">平台 B</text>
-  <text x="640" y="264" font-size="11" fill="#475569" text-anchor="middle">运营商平台</text>
-  <text x="640" y="282" font-size="10" fill="#7C3AED" text-anchor="middle">支持强 · 生态中等</text>
-
-  <!-- 气泡：平台C 开源/行业 -->
-  <circle cx="650" cy="420" r="44" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
-  <text x="650" y="414" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">平台 C</text>
-  <text x="650" y="434" font-size="11" fill="#475569" text-anchor="middle">开源 / 行业</text>
-  <text x="650" y="452" font-size="10" fill="#0F766E" text-anchor="middle">生态 · 支持均衡</text>
-
-  <!-- 气泡：平台D 垂直方案 -->
-  <circle cx="320" cy="545" r="38" fill="#F8FAFC" stroke="#64748B" stroke-width="2"/>
-  <text x="320" y="539" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">平台 D</text>
-  <text x="320" y="559" font-size="11" fill="#475569" text-anchor="middle">垂直方案</text>
-  <text x="320" y="577" font-size="10" fill="#64748B" text-anchor="middle">生态有限 · 支持弱</text>
-
-  <!-- 横轴刻度与标签 -->
-  <text x="240" y="626" font-size="11.5" fill="#64748B" text-anchor="middle">有限</text>
-  <text x="660" y="626" font-size="11.5" fill="#64748B" text-anchor="middle">中等</text>
-  <text x="1080" y="626" font-size="11.5" fill="#64748B" text-anchor="middle">完整</text>
-  <text x="660" y="652" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">生态完整性 →</text>
-
-  <!-- 纵轴刻度与标签 -->
-  <text x="218" y="604" font-size="11.5" fill="#64748B" text-anchor="end">弱</text>
-  <text x="218" y="389" font-size="11.5" fill="#64748B" text-anchor="end">中等</text>
-  <text x="218" y="174" font-size="11.5" fill="#64748B" text-anchor="end">强</text>
-  <text x="190" y="385" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle" transform="rotate(-90 190 385)">运营商支持力度 →</text>
-
-  <!-- 底部结论条 -->
-  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
-  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">平台市场从「技术选型竞赛」转向「生态绑定竞争」</text>
-  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">选型的本质是场景与生态的匹配，而非追大求全</text>
-
-  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
-  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">生态完整性与运营商支持力度，共同决定平台定位</text>
-  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-14 物联网平台市场格局示意。云原生、运营商、开源与垂直方案在两个维度上形成差异化定位——定位矩阵仅作教学示意，不代表真实市场份额。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-14 物联网平台市场格局示意</title>
+  <desc id="desc">物联网平台在生态完整性与运营商支持两维度的定位</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-14 物联网平台市场格局示意</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">二维定位矩阵：生态完整性 × 运营商支持力度</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<!-- 象限 -->
+<rect x="240" y="220" width="660" height="270" rx="6" fill="#F5F3FF" stroke="#E2E8F0" stroke-width="1.4"/>
+<text x="560" y="300" font-size="17" fill="#6D28D9" text-anchor="middle">运营商区</text>
+<text x="560" y="325" font-size="14" fill="#64748B" text-anchor="middle">支持强 · 生态有限</text>
+<rect x="900" y="220" width="660" height="270" rx="6" fill="#F0FDF4" stroke="#E2E8F0" stroke-width="1.4"/>
+<text x="1240" y="300" font-size="17" fill="#15803D" text-anchor="middle">主导区</text>
+<text x="1240" y="325" font-size="14" fill="#64748B" text-anchor="middle">生态完整 · 支持强</text>
+<rect x="240" y="490" width="660" height="270" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.4"/>
+<text x="560" y="570" font-size="17" fill="#475569" text-anchor="middle">垂直区</text>
+<text x="560" y="595" font-size="14" fill="#64748B" text-anchor="middle">生态有限 · 支持弱</text>
+<rect x="900" y="490" width="660" height="270" rx="6" fill="#EFF6FF" stroke="#E2E8F0" stroke-width="1.4"/>
+<text x="1240" y="570" font-size="17" fill="#1D4ED8" text-anchor="middle">云生态区</text>
+<text x="1240" y="595" font-size="14" fill="#64748B" text-anchor="middle">生态完整 · 支持弱</text>
+<!-- 坐标轴 -->
+<line x1="240" y1="760" x2="1560" y2="760" stroke="#475569" stroke-width="2.4" marker-end="url(#ag)"/>
+<line x1="240" y1="760" x2="240" y2="220" stroke="#475569" stroke-width="2.4" marker-end="url(#ag)"/>
+<text x="900" y="800" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">生态完整性 →（有限 → 完整）</text>
+<text x="900" y="828" font-size="15" fill="#64748B" text-anchor="middle">有限 &nbsp;&nbsp;&nbsp; 中等 &nbsp;&nbsp;&nbsp; 完整</text>
+<text transform="rotate(-90 200 490)" x="200" y="490" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">运营商支持力度 →（弱 → 强）</text>
+<text x="206" y="830" font-size="15" fill="#64748B" text-anchor="middle">弱 / 中等 / 强</text>
+<!-- 气泡 -->
+<circle cx="1350" cy="500" r="92" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+<text x="1350" y="488" font-size="20" font-weight="700" fill="#1D4ED8" text-anchor="middle">平台A</text>
+<text x="1350" y="518" font-size="15" fill="#475569" text-anchor="middle">云原生厂商</text>
+<circle cx="700" cy="300" r="92" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+<text x="700" y="288" font-size="20" font-weight="700" fill="#6D28D9" text-anchor="middle">平台B</text>
+<text x="700" y="318" font-size="15" fill="#475569" text-anchor="middle">运营商平台</text>
+<circle cx="1000" cy="470" r="88" fill="#DCFCE7" stroke="#0F766E" stroke-width="2"/>
+<text x="1000" y="458" font-size="20" font-weight="700" fill="#0F766E" text-anchor="middle">平台C</text>
+<text x="1000" y="488" font-size="15" fill="#475569" text-anchor="middle">开源 / 行业</text>
+<circle cx="470" cy="650" r="88" fill="#E2E8F0" stroke="#64748B" stroke-width="2"/>
+<text x="470" y="638" font-size="20" font-weight="700" fill="#475569" text-anchor="middle">平台D</text>
+<text x="470" y="668" font-size="15" fill="#475569" text-anchor="middle">垂直行业方案</text>
+<!-- 图例 -->
+<rect x="240" y="870" width="1320" height="56" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.6"/>
+<circle cx="300" cy="898" r="12" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.6"/>
+<text x="322" y="904" font-size="16" fill="#475569">云原生平台</text>
+<circle cx="520" cy="898" r="12" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<text x="542" y="904" font-size="16" fill="#475569">运营商平台</text>
+<circle cx="740" cy="898" r="12" fill="#DCFCE7" stroke="#0F766E" stroke-width="1.6"/>
+<text x="762" y="904" font-size="16" fill="#475569">开源/行业平台</text>
+<circle cx="960" cy="898" r="12" fill="#E2E8F0" stroke="#64748B" stroke-width="1.6"/>
+<text x="982" y="904" font-size="16" fill="#475569">垂直方案</text>
+<text x="1190" y="904" font-size="15" fill="#64748B">定位矩阵仅作教学示意，不反映真实市场份额</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-14 物联网平台市场格局示意。云原生、运营商、开源与垂直方案在生态完整性与运营商支持力度两个维度上形成差异化定位——</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">定位矩阵仅作教学示意，不代表真实市场份额。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

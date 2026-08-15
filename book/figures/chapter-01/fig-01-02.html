@@ -2,83 +2,74 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-2 工业软件的核心能力与不可替代性</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
-    svg{display:block}text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-  <title id="ft">图1-2 工业软件的核心能力与不可替代性</title>
-  <desc id="fd">三块底座托起工业软件：确定性实时控制（PLC 毫秒级、二值逻辑、IEC 61131-3）、结构化数据建模（OPC UA、ISA-88、IEC 61850）、工业级可靠性与安全认证（SIL、ATEX、IEC 61508）；这三项是判断下一代平台该补什么、不该动什么的标尺。</desc>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-2 工业软件的核心能力与不可替代性</title>
+  <desc id="desc">工业软件三块不可替代的核心能力</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-2 工业软件的核心能力与不可替代性</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">确定性控制 / 结构化建模 / 可靠性与安全认证三块能力并置</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<rect x="40" y="150" width="540" height="590" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="310" y="198" font-size="26" font-weight="700" fill="#1D4ED8" text-anchor="middle">确定性实时控制</text>
+<line x1="70" y1="222" x2="550" y2="222" stroke="#BFDBFE" stroke-width="2"/>
+<text x="70" y="272" font-size="19" fill="#334155">· PLC 毫秒级扫描周期</text>
+<text x="70" y="312" font-size="19" fill="#334155">· 二值逻辑，条件真即执行</text>
+<text x="70" y="352" font-size="19" fill="#334155">· 安全联锁 / 急停 / 紧急泄压</text>
+<text x="70" y="392" font-size="19" fill="#334155">· IEC 61131-3 标准 + 硬件冗余</text>
+<rect x="70" y="640" width="480" height="80" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.4"/>
+<text x="310" y="672" font-size="18" font-weight="700" fill="#1D4ED8" text-anchor="middle">为什么不可替代：确定性底座</text>
+<text x="310" y="702" font-size="16" fill="#475569" text-anchor="middle">智能层不应替代它，而应在其上补足</text>
 
-  <rect width="1200" height="820" fill="#F8FAFC"/>
+<rect x="630" y="150" width="540" height="590" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="900" y="198" font-size="26" font-weight="700" fill="#0F766E" text-anchor="middle">结构化数据建模</text>
+<line x1="660" y1="222" x2="1140" y2="222" stroke="#BBF7D0" stroke-width="2"/>
+<text x="660" y="272" font-size="19" fill="#334155">· OPC UA 信息模型</text>
+<text x="660" y="312" font-size="19" fill="#334155">· ISA-88 批次控制标准</text>
+<text x="660" y="352" font-size="19" fill="#334155">· IEC 61850 电力自动化模型</text>
+<text x="660" y="392" font-size="19" fill="#334155">· 为物模型设计提供工程基础</text>
+<rect x="660" y="640" width="480" height="80" rx="8" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.4"/>
+<text x="900" y="672" font-size="18" font-weight="700" fill="#15803D" text-anchor="middle">为什么不可替代：语义互通范式</text>
+<text x="900" y="702" font-size="16" fill="#475569" text-anchor="middle">让不同厂商设备在语义层面相互理解</text>
 
-  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
-  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-2 工业软件的核心能力与不可替代性</text>
-  <text x="66" y="73" font-size="13" fill="#475569">三块底座托起工业软件——判断下一代平台该补什么、不该动什么</text>
-  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
+<rect x="1220" y="150" width="540" height="590" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="1490" y="198" font-size="26" font-weight="700" fill="#C2410C" text-anchor="middle">可靠性与安全认证</text>
+<line x1="1250" y1="222" x2="1730" y2="222" stroke="#FED7AA" stroke-width="2"/>
+<text x="1250" y="272" font-size="19" fill="#334155">· SIL 安全完整性等级</text>
+<text x="1250" y="312" font-size="19" fill="#334155">· ATEX 防爆指令</text>
+<text x="1250" y="352" font-size="19" fill="#334155">· IEC 61508 功能安全</text>
+<text x="1250" y="392" font-size="19" fill="#334155">· 设备上市的法律准入门槛</text>
+<rect x="1250" y="640" width="480" height="80" rx="8" fill="#FFEDD5" stroke="#FDBA74" stroke-width="1.4"/>
+<text x="1490" y="672" font-size="18" font-weight="700" fill="#C2410C" text-anchor="middle">为什么不可替代：合规门槛</text>
+<text x="1490" y="702" font-size="16" fill="#475569" text-anchor="middle">新技术须在约束框架内证明自己</text>
 
-  <!-- 顶部横梁：工业软件 -->
-  <rect x="140" y="150" width="920" height="66" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="600" y="180" font-size="19" font-weight="700" fill="#1D4ED8" text-anchor="middle">工业软件：不可替代的底座</text>
-  <text x="600" y="203" font-size="12" fill="#64748B" text-anchor="middle">确定性控制 · 结构化建模 · 可靠性认证</text>
-
-  <!-- 支柱① 确定性实时控制（蓝） -->
-  <rect x="175" y="216" width="150" height="26" rx="6" fill="#2563EB"/>
-  <rect x="185" y="242" width="130" height="290" rx="4" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <rect x="175" y="532" width="150" height="28" rx="6" fill="#BFDBFE"/>
-  <text x="250" y="275" font-size="15" font-weight="700" fill="#1D4ED8" text-anchor="middle">确定性实时控制</text>
-  <line x1="205" y1="292" x2="295" y2="292" stroke="#BFDBFE"/>
-  <text x="250" y="318" font-size="11.5" fill="#334155" text-anchor="middle">PLC 毫秒级扫描</text>
-  <text x="250" y="344" font-size="11.5" fill="#334155" text-anchor="middle">二值逻辑 · 无概率输出</text>
-  <text x="250" y="370" font-size="11.5" fill="#334155" text-anchor="middle">IEC 61131-3</text>
-  <text x="250" y="396" font-size="11.5" fill="#334155" text-anchor="middle">安全联锁 · 急停 · 泄压</text>
-  <text x="250" y="500" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">补智能，不替换确定性</text>
-
-  <!-- 支柱② 结构化数据建模（青） -->
-  <rect x="525" y="216" width="150" height="26" rx="6" fill="#0F766E"/>
-  <rect x="535" y="242" width="130" height="290" rx="4" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
-  <rect x="525" y="532" width="150" height="28" rx="6" fill="#99F6E4"/>
-  <text x="600" y="275" font-size="15" font-weight="700" fill="#115E59" text-anchor="middle">结构化数据建模</text>
-  <line x1="555" y1="292" x2="645" y2="292" stroke="#99F6E4"/>
-  <text x="600" y="318" font-size="11.5" fill="#334155" text-anchor="middle">OPC UA 信息模型</text>
-  <text x="600" y="344" font-size="11.5" fill="#334155" text-anchor="middle">ISA-88 批次控制</text>
-  <text x="600" y="370" font-size="11.5" fill="#334155" text-anchor="middle">IEC 61850 电力模型</text>
-  <text x="600" y="396" font-size="11.5" fill="#334155" text-anchor="middle">语义层相互理解</text>
-  <text x="600" y="500" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">继承范式，不另起炉灶</text>
-
-  <!-- 支柱③ 可靠性与安全认证（橙） -->
-  <rect x="875" y="216" width="150" height="26" rx="6" fill="#F97316"/>
-  <rect x="885" y="242" width="130" height="290" rx="4" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-  <rect x="875" y="532" width="150" height="28" rx="6" fill="#FED7AA"/>
-  <text x="950" y="275" font-size="15" font-weight="700" fill="#C2410C" text-anchor="middle">可靠性与安全认证</text>
-  <line x1="905" y1="292" x2="995" y2="292" stroke="#FED7AA"/>
-  <text x="950" y="318" font-size="11.5" fill="#334155" text-anchor="middle">SIL 安全完整性等级</text>
-  <text x="950" y="344" font-size="11.5" fill="#334155" text-anchor="middle">ATEX 防爆指令</text>
-  <text x="950" y="370" font-size="11.5" fill="#334155" text-anchor="middle">IEC 61508 功能安全</text>
-  <text x="950" y="396" font-size="11.5" fill="#334155" text-anchor="middle">法律准入门槛</text>
-  <text x="950" y="500" font-size="11" font-weight="700" fill="#EA580C" text-anchor="middle">在约束框架内自证</text>
-
-  <!-- 底部地基 -->
-  <rect x="140" y="560" width="920" height="58" rx="8" fill="#F8FAFC" stroke="#CBD5E1"/>
-  <text x="600" y="584" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">这三项能力是工业软件最坚固的底座</text>
-  <text x="600" y="606" font-size="11" fill="#64748B" text-anchor="middle">任何叠加的智能层都不应替代它们——补足短板，而非推倒重来</text>
-
-  <!-- 底部结论条 -->
-  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
-  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">继承确定性控制、语义范式与合规框架，物联网平台在其上补足短板</text>
-  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">三块底座不可替代——这是判断「补什么、不动什么」的标尺</text>
-
-  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
-  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">三块底座托起工业软件</text>
-  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-2 工业软件的核心能力与不可替代性。确定性实时控制、结构化数据建模、工业级可靠性与安全认证构成三块不可替代的底座，是判断下一代平台「补什么、不动什么」的标尺。</text>
+<rect x="40" y="770" width="1720" height="120" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+<text x="900" y="820" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">三项能力并列，构成工业软件不可替代的底座</text>
+<text x="900" y="856" font-size="18" fill="#475569" text-anchor="middle">——物联网平台补短板，而非推倒重来</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-2 工业软件的核心能力与不可替代性。确定性实时控制、结构化数据建模、工业级可靠性与安全认证构成不可替代的底座，</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">是判断下一代平台「补什么、不动什么」的标尺。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

@@ -1,9 +1,108 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图5-2 设备认证与数据加密流程</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:650px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block}</style></head>
-<body><div data-figure-root><svg width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc"><title id="title">图5-2 设备认证与数据加密流程</title><desc id="desc">证书认证属于TLS或mTLS握手；Token必须在加密通道内认证后签发，混合路径依次经过mTLS、Token和API。</desc>
-<defs><marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker></defs><rect width="1200" height="650" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="602" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700">图5-2 设备认证与数据加密流程</text><text x="80" y="91" font-size="12" fill="#475569">认证凭据必须在正确的安全边界内使用；传输解密后仍需存储保护。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/>
-<g font-family="inherit"><rect x="55" y="135" width="1090" height="125" rx="12" fill="#ECFDF5" fill-opacity=".55" stroke="#0F766E"/><text x="75" y="160" font-size="13" font-weight="650" fill="#0F766E">证书路径</text><rect x="105" y="178" width="180" height="58" rx="9" fill="#FFFFFF" stroke="#0F766E"/><text x="195" y="207" font-size="14" font-weight="650" text-anchor="middle">设备证书与私钥</text><rect x="400" y="178" width="270" height="58" rx="9" fill="#FFFFFF" stroke="#2563EB"/><text x="535" y="200" font-size="14" font-weight="650" text-anchor="middle">TLS / mTLS 握手</text><text x="535" y="220" font-size="11" fill="#475569" text-anchor="middle">握手内验证证书链与设备身份</text><rect x="790" y="178" width="260" height="58" rx="9" fill="#FFFFFF" stroke="#2563EB"/><text x="920" y="207" font-size="14" font-weight="650" text-anchor="middle">加密会话 / 受保护 API</text><path d="M285 207H400" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/><path d="M670 207H790" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
-<rect x="55" y="280" width="1090" height="145" rx="12" fill="#EFF6FF" fill-opacity=".55" stroke="#2563EB"/><text x="75" y="305" font-size="13" font-weight="650" fill="#2563EB">Token 路径</text><rect x="75" y="328" width="170" height="58" rx="9" fill="#FFFFFF" stroke="#94A3B8"/><text x="160" y="350" font-size="14" font-weight="650" text-anchor="middle">设备凭据</text><text x="160" y="370" font-size="11" fill="#475569" text-anchor="middle">预共享密钥等</text><rect x="300" y="328" width="190" height="58" rx="9" fill="#FFFFFF" stroke="#2563EB"/><text x="395" y="350" font-size="14" font-weight="650" text-anchor="middle">TLS 加密通道</text><text x="395" y="370" font-size="11" fill="#475569" text-anchor="middle">先保护认证请求</text><rect x="545" y="328" width="190" height="58" rx="9" fill="#FFFFFF" stroke="#D97706"/><text x="640" y="350" font-size="14" font-weight="650" text-anchor="middle">通道内认证</text><text x="640" y="370" font-size="11" fill="#475569" text-anchor="middle">验证设备凭据</text><rect x="790" y="328" width="270" height="58" rx="9" fill="#FFFFFF" stroke="#F97316"/><text x="925" y="350" font-size="14" font-weight="650" text-anchor="middle">短期 Token + refresh</text><text x="925" y="370" font-size="11" fill="#475569" text-anchor="middle">签发后访问受保护 API</text><path d="M245 357H300" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/><path d="M490 357H545" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/><path d="M735 357H790" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
-<rect x="55" y="445" width="1090" height="95" rx="12" fill="#FFF7ED" fill-opacity=".65" stroke="#F97316"/><text x="75" y="470" font-size="13" font-weight="650" fill="#C2410C">混合路径</text><rect x="175" y="480" width="180" height="42" rx="8" fill="#FFFFFF" stroke="#0F766E"/><text x="265" y="506" font-size="14" font-weight="650" text-anchor="middle">mTLS 设备认证</text><rect x="510" y="480" width="180" height="42" rx="8" fill="#FFFFFF" stroke="#F97316"/><text x="600" y="506" font-size="14" font-weight="650" text-anchor="middle">短期 Token</text><rect x="845" y="480" width="180" height="42" rx="8" fill="#FFFFFF" stroke="#2563EB"/><text x="935" y="506" font-size="14" font-weight="650" text-anchor="middle">业务 API</text><path d="M355 501H510" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/><path d="M690 501H845" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/></g>
-<line x1="60" y1="575" x2="1140" y2="575" stroke="#E2E8F0"/><text x="600" y="598" font-size="11" fill="#475569" text-anchor="middle">图5-2 证书在握手内完成认证；Token 在加密通道内签发，混合模式按 mTLS → Token → API 执行。</text>
-</svg></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-2 设备认证与数据加密流程</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图5-2 设备认证与数据加密流程</title>
+  <desc id="desc">证书认证属于 TLS/mTLS 握手；Token 必须在加密通道内认证后签发，混合路径依次经过 mTLS、Token 和 API。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="mk-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+      <marker id="mk-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-2 设备认证与数据加密流程</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">认证凭据必须在正确的安全边界内使用；传输解密后仍需存储保护。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 证书路径（青绿） -->
+    <rect x="120" y="140" width="1560" height="150" rx="12" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="150" y="172" font-size="18" font-weight="700" fill="#0F766E">证书路径</text>
+    <text x="150" y="196" font-size="13" fill="#475569">设备证书与私钥在握手内完成身份验证</text>
+    <rect x="280" y="185" width="290" height="78" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="425" y="218" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">设备证书与私钥</text>
+    <text x="425" y="244" font-size="13" fill="#64748B" text-anchor="middle">X.509 证书</text>
+    <rect x="670" y="185" width="370" height="78" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="855" y="218" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">TLS / mTLS 握手</text>
+    <text x="855" y="244" font-size="13" fill="#64748B" text-anchor="middle">握手内验证证书链与设备身份</text>
+    <rect x="1140" y="185" width="380" height="78" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1330" y="218" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">加密会话 / 受保护 API</text>
+    <text x="1330" y="244" font-size="13" fill="#64748B" text-anchor="middle">会话密钥保护后续通信</text>
+    <line x1="570" y1="224" x2="668" y2="224" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="1040" y1="224" x2="1138" y2="224" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="570" y1="262" x2="668" y2="262" stroke="#64748B" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#mk-gray)"/>
+    <text x="619" y="276" font-size="13" fill="#64748B" text-anchor="middle">握手完成</text>
+
+    <!-- Token 路径（蓝） -->
+    <rect x="120" y="310" width="1560" height="150" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="150" y="342" font-size="18" font-weight="700" fill="#2563EB">Token 路径</text>
+    <text x="150" y="366" font-size="13" fill="#475569">先建立加密通道，再于通道内认证并签发短期 Token</text>
+    <rect x="280" y="355" width="250" height="78" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="405" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">设备凭据</text>
+    <text x="405" y="414" font-size="13" fill="#64748B" text-anchor="middle">预共享密钥等</text>
+    <rect x="600" y="355" width="260" height="78" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="730" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">TLS 加密通道</text>
+    <text x="730" y="414" font-size="13" fill="#64748B" text-anchor="middle">先保护认证请求</text>
+    <rect x="930" y="355" width="260" height="78" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+    <text x="1060" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">通道内认证</text>
+    <text x="1060" y="414" font-size="13" fill="#64748B" text-anchor="middle">验证设备凭据</text>
+    <rect x="1260" y="355" width="280" height="78" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+    <text x="1400" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">短期 Token + refresh</text>
+    <text x="1400" y="414" font-size="13" fill="#64748B" text-anchor="middle">短有效期限制泄漏影响</text>
+    <line x1="530" y1="394" x2="598" y2="394" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="860" y1="394" x2="928" y2="394" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="1190" y1="394" x2="1258" y2="394" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+
+    <!-- 混合路径（橙） -->
+    <rect x="120" y="480" width="1560" height="140" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="150" y="512" font-size="18" font-weight="700" fill="#C2410C">混合路径（主链路）</text>
+    <text x="150" y="536" font-size="13" fill="#475569">依次使用 mTLS → 短期 Token → 业务 API</text>
+    <rect x="280" y="540" width="290" height="70" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="425" y="572" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">mTLS 设备认证</text>
+    <text x="425" y="596" font-size="13" fill="#64748B" text-anchor="middle">握手内完成</text>
+    <rect x="700" y="540" width="250" height="70" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+    <text x="825" y="572" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">短期 Token</text>
+    <text x="825" y="596" font-size="13" fill="#64748B" text-anchor="middle">通道内签发</text>
+    <rect x="1080" y="540" width="300" height="70" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1230" y="572" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">业务 API</text>
+    <text x="1230" y="596" font-size="13" fill="#64748B" text-anchor="middle">受保护调用</text>
+    <line x1="570" y1="575" x2="698" y2="575" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="950" y1="575" x2="1078" y2="575" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+
+    <!-- 关键要点 -->
+    <rect x="120" y="650" width="1560" height="190" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <text x="150" y="686" font-size="18" font-weight="700" fill="#334155">关键要点</text>
+    <circle cx="168" cy="712" r="4" fill="#0F766E"/>
+    <text x="182" y="717" font-size="15" fill="#475569">证书认证是 TLS / mTLS 握手的一部分，不是握手前后的独立认证请求。</text>
+    <circle cx="168" cy="744" r="4" fill="#2563EB"/>
+    <text x="182" y="749" font-size="15" fill="#475569">Token 认证请求必须先由 TLS 加密通道保护，通过通道内认证后才签发。</text>
+    <circle cx="168" cy="776" r="4" fill="#F97316"/>
+    <text x="182" y="781" font-size="15" fill="#475569">Token 以短有效期 + refresh 机制限制泄漏影响，传输解密后仍需访问控制与存储保护。</text>
+
+    <!-- 图例 -->
+    <line x1="300" y1="868" x2="360" y2="868" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <text x="372" y="874" font-size="15" fill="#475569">实线箭头：请求 / 数据流</text>
+    <line x1="700" y1="868" x2="760" y2="868" stroke="#64748B" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#mk-gray)"/>
+    <text x="772" y="874" font-size="15" fill="#475569">虚线箭头：握手完成 / 返回</text>
+    <text x="1130" y="874" font-size="15" fill="#475569">主链路：mTLS → 短期 Token → 业务 API</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-2 设备认证与数据加密流程：证书在 TLS/mTLS 握手内完成认证，Token 在加密通道内认证后签发，混合模式依次使用 mTLS、短期 Token 与业务 API。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

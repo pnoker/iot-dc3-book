@@ -2,85 +2,76 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-9 物联网定义的演变：从识别到泛在连接</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
-    svg{display:block}text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-  <title id="ft">图1-9 物联网定义的演变：从识别到泛在连接</title>
-  <desc id="fd">物联网定义的三次扩展：1999 年 RFID+EPC 实现物品自动识别，2003 年无线传感网让物主动上报环境信息，2004 年 u-Japan 泛在网络追求人人、人物、物物互联；但此阶段连接仍是被动，主动决策是下一轮演变的起点。</desc>
-
-  <rect width="1200" height="820" fill="#F8FAFC"/>
-
-  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
-  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-9 物联网定义的演变：从识别到泛在连接</text>
-  <text x="66" y="73" font-size="13" fill="#475569">定义框架不断拓宽：识别物 → 感知环境 → 连接万物</text>
-  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
-
-  <!-- 三阶段卡片 -->
-  <rect x="130" y="150" width="280" height="108" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="270" y="184" font-size="14" font-weight="700" fill="#1D4ED8" text-anchor="middle">阶段一 · 识别物</text>
-  <text x="270" y="210" font-size="12.5" fill="#334155" text-anchor="middle">RFID + EPC</text>
-  <text x="270" y="232" font-size="11" fill="#64748B" text-anchor="middle">回答：这个物体是谁、在哪里</text>
-  <text x="270" y="250" font-size="11" fill="#64748B" text-anchor="middle">1999 · MIT Auto-ID Center</text>
-
-  <rect x="460" y="150" width="280" height="108" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
-  <text x="600" y="184" font-size="14" font-weight="700" fill="#115E59" text-anchor="middle">阶段二 · 感知环境</text>
-  <text x="600" y="210" font-size="12.5" fill="#334155" text-anchor="middle">WSN 无线传感网</text>
-  <text x="600" y="232" font-size="11" fill="#64748B" text-anchor="middle">主动上报温度 / 湿度 / 振动</text>
-  <text x="600" y="250" font-size="11" fill="#64748B" text-anchor="middle">2003 · 《技术评论》十大技术</text>
-
-  <rect x="790" y="150" width="280" height="108" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-  <text x="930" y="184" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">阶段三 · 连接万物</text>
-  <text x="930" y="210" font-size="12.5" fill="#334155" text-anchor="middle">u-Japan 泛在网络</text>
-  <text x="930" y="232" font-size="11" fill="#64748B" text-anchor="middle">人人、人物、物物互联</text>
-  <text x="930" y="250" font-size="11" fill="#64748B" text-anchor="middle">2004 · 日本 u-Japan 构想</text>
-
-  <!-- 阶段间箭头 -->
-  <polygon points="410,196 448,204 410,212" fill="#2563EB"/>
-  <polygon points="740,196 778,204 740,212" fill="#0F766E"/>
-
-  <!-- 时间轴 -->
-  <line x1="270" y1="330" x2="930" y2="330" stroke="#CBD5E1" stroke-width="3"/>
-  <circle cx="270" cy="330" r="12" fill="#2563EB"/>
-  <circle cx="600" cy="330" r="12" fill="#0F766E"/>
-  <circle cx="930" cy="330" r="12" fill="#F97316"/>
-  <text x="270" y="372" font-size="12.5" font-weight="700" fill="#1D4ED8" text-anchor="middle">1999</text>
-  <text x="600" y="372" font-size="12.5" font-weight="700" fill="#0F766E" text-anchor="middle">2003</text>
-  <text x="930" y="372" font-size="12.5" font-weight="700" fill="#C2410C" text-anchor="middle">2004+</text>
-
-  <!-- 能力扩展阶梯 -->
-  <rect x="130" y="420" width="280" height="52" rx="8" fill="#DBEAFE"/>
-  <text x="270" y="452" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">识别物</text>
-  <rect x="460" y="420" width="280" height="52" rx="8" fill="#CCFBF1"/>
-  <text x="600" y="452" font-size="13" font-weight="700" fill="#115E59" text-anchor="middle">感知环境</text>
-  <rect x="790" y="420" width="280" height="52" rx="8" fill="#FFEDD5"/>
-  <text x="930" y="452" font-size="13" font-weight="700" fill="#C2410C" text-anchor="middle">连接万物</text>
-  <polygon points="410,438 448,446 410,454" fill="#94A3B8"/>
-  <polygon points="740,438 778,446 740,454" fill="#94A3B8"/>
-
-  <!-- 底部说明 -->
-  <rect x="130" y="500" width="940" height="88" rx="10" fill="#F8FAFC" stroke="#CBD5E1"/>
-  <text x="600" y="530" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">但从「识别物」到「连接万物」，所有连接仍是被动</text>
-  <text x="600" y="554" font-size="12" fill="#475569" text-anchor="middle">设备上报数据后，由人或中心系统完成分析决策；设备自身不具备自主判断能力</text>
-  <text x="600" y="576" font-size="12" fill="#475569" text-anchor="middle">让连接具备主动决策能力，正是下一轮演变的起点（见 1.5 节）</text>
-
-  <!-- 底部结论条 -->
-  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
-  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">定义从「最小可行」走向「泛在互联」——评判系统需要多强识别、多广感知</text>
-  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">RFID+EPC 给出技术路径，泛在连接要求兼容多协议、海量并发与实时处理</text>
-
-  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
-  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">识别 → 感知 → 连接：定义的每一次扩展都决定架构取舍</text>
-  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-9 物联网定义的演变：从识别到泛在连接。RFID+EPC 实现识别，无线传感网补足感知，u-Japan 泛在网络追求连接万物——但被动连接的终点，正是主动决策的起点。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-9 物联网定义的演变：从识别到泛在连接</title>
+  <desc id="desc">物联网定义从识别到泛在连接的三次扩展</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-9 物联网定义的演变：从识别到泛在连接</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">1999 RFID+EPC → 2003 WSN → 2004 u-Japan 三次扩展</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<!-- 三阶段卡片 -->
+<rect x="40" y="180" width="520" height="300" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="300" y="232" font-size="24" font-weight="700" fill="#1D4ED8" text-anchor="middle">阶段一 · 识别物</text>
+<text x="300" y="272" font-size="18" fill="#475569" text-anchor="middle">RFID + EPC</text>
+<text x="300" y="310" font-size="18" fill="#334155" text-anchor="middle">回答「谁、在哪」</text>
+<text x="300" y="360" font-size="16" fill="#64748B" text-anchor="middle">1999 · MIT Auto-ID Center</text>
+<rect x="640" y="180" width="520" height="300" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="900" y="232" font-size="24" font-weight="700" fill="#0F766E" text-anchor="middle">阶段二 · 感知环境</text>
+<text x="900" y="272" font-size="18" fill="#475569" text-anchor="middle">WSN 无线传感网</text>
+<text x="900" y="310" font-size="18" fill="#334155" text-anchor="middle">主动上报温度 / 湿度 / 振动</text>
+<text x="900" y="360" font-size="16" fill="#64748B" text-anchor="middle">2003 ·《技术评论》十大技术</text>
+<rect x="1240" y="180" width="520" height="300" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="1500" y="232" font-size="24" font-weight="700" fill="#C2410C" text-anchor="middle">阶段三 · 连接万物</text>
+<text x="1500" y="272" font-size="18" fill="#475569" text-anchor="middle">u-Japan 泛在网络</text>
+<text x="1500" y="310" font-size="18" fill="#334155" text-anchor="middle">人人 · 人物 · 物物互联</text>
+<text x="1500" y="360" font-size="16" fill="#64748B" text-anchor="middle">2004 · 日本构想</text>
+<!-- 演进箭头 -->
+<line x1="560" y1="330" x2="626" y2="330" stroke="#475569" stroke-width="2.6" marker-end="url(#ag)"/>
+<text x="593" y="310" font-size="15" fill="#475569" text-anchor="middle">识别→感知</text>
+<line x1="1160" y1="330" x2="1226" y2="330" stroke="#475569" stroke-width="2.6" marker-end="url(#ag)"/>
+<text x="1193" y="310" font-size="15" fill="#475569" text-anchor="middle">感知→连接</text>
+<!-- 时间轴 -->
+<line x1="40" y1="560" x2="1760" y2="560" stroke="#94A3B8" stroke-width="2"/>
+<circle cx="300" cy="560" r="7" fill="#2563EB"/>
+<circle cx="900" cy="560" r="7" fill="#0F766E"/>
+<circle cx="1500" cy="560" r="7" fill="#F97316"/>
+<!-- 能力扩展阶梯 -->
+<rect x="40" y="620" width="500" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="290" y="668" font-size="19" font-weight="700" fill="#1D4ED8" text-anchor="middle">识别</text>
+<rect x="600" y="620" width="500" height="80" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+<text x="850" y="668" font-size="19" font-weight="700" fill="#0F766E" text-anchor="middle">感知</text>
+<rect x="1160" y="620" width="500" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.4"/>
+<text x="1410" y="668" font-size="19" font-weight="700" fill="#C2410C" text-anchor="middle">连接</text>
+<text x="900" y="596" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">能力扩展</text>
+<!-- 结论条 -->
+<rect x="40" y="740" width="1720" height="130" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+<text x="900" y="795" font-size="23" font-weight="700" fill="#6D28D9" text-anchor="middle">三阶段：识别 → 感知 → 连接，能力逐次扩展</text>
+<text x="900" y="840" font-size="18" fill="#475569" text-anchor="middle">但此阶段连接仍是被动——被动连接的终点，正是主动决策的起点（1.5 节）</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-9 物联网定义的演变：从识别到泛在连接。RFID+EPC 实现识别，无线传感网补足感知，u-Japan 泛在网络追求连接万物——</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">被动连接的终点，正是主动决策的起点。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

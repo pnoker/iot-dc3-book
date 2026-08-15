@@ -1,1 +1,93 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图2-9 设备生命周期状态机</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}main.figure{width:1200px;height:590px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}svg{display:block}text{letter-spacing:0}</style></head><body><main class="figure" data-figure-root><svg width="1200" height="590" viewBox="0 0 1200 590" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="a-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="a-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker><marker id="a-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker><marker id="a-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker><marker id="a-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker><marker id="a-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16A34A"/></marker><marker id="a-slate" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker></defs><title id="ft">图2-9 设备生命周期状态机</title><desc id="fd">图2-9 设备可在在线、离线和维护间恢复，管理员可从任意状态永久注销设备。</desc><rect width="1200" height="590" fill="#F8FAFC"/><rect x="24" y="92" width="1152" height="436" rx="12" fill="#FFF"/><circle cx="48" cy="42" r="6" fill="#2563EB"/><text x="66" y="49" font-size="24" font-weight="700" text-anchor="start" fill="#0F172A">图2-9 设备生命周期状态机</text><text x="66" y="73" font-size="12" font-weight="400" text-anchor="start" fill="#475569">正常迁移形成在线循环，任意状态可终结为已注销</text><line x1="32" y1="88" x2="1168" y2="88" stroke="#E2E8F0"/><rect x="95" y="166" width="150" height="68" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.6"/><text x="170.0" y="196" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">未激活</text><text x="170.0" y="218" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">初始状态</text><rect x="405" y="121" width="150" height="68" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.6"/><text x="480.0" y="151" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">在线</text><text x="480.0" y="173" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">正常工作</text><rect x="745" y="166" width="150" height="68" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.6"/><text x="820.0" y="196" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">离线</text><text x="820.0" y="218" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">失联超阈值</text><rect x="405" y="346" width="150" height="68" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.6"/><text x="480.0" y="376" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">维护中</text><text x="480.0" y="398" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">运维干预</text><rect x="925" y="366" width="150" height="68" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/><text x="1000.0" y="396" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">已注销</text><text x="1000.0" y="418" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">永久移除</text><line x1="245" y1="190" x2="405" y2="155" stroke="#2563EB" stroke-width="2" marker-end="url(#a-blue)"/><rect x="294.0" y="165.5" width="62" height="20" rx="4" fill="#FFF"/><text x="325.0" y="180.5" font-size="11" font-weight="600" text-anchor="middle" fill="#2563EB">首次上报</text><path d="M555 145C625 115 710 125 745 180" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#a-blue)"/><rect x="617" y="112" width="74" height="20" rx="4" fill="#FFF"/><text x="654" y="127" font-size="11" font-weight="600" text-anchor="middle" fill="#2563EB">失联超阈值</text><path d="M745 220C685 258 600 242 555 175" fill="none" stroke="#0F766E" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#a-teal)"/><rect x="619" y="226" width="62" height="20" rx="4" fill="#FFF"/><text x="650" y="241" font-size="11" font-weight="600" text-anchor="middle" fill="#0F766E">恢复上报</text><line x1="465" y1="189" x2="465" y2="346" stroke="#2563EB" stroke-width="2" marker-end="url(#a-blue)"/><rect x="390" y="258" width="62" height="20" rx="4" fill="#FFF"/><text x="421" y="273" font-size="11" font-weight="600" text-anchor="middle" fill="#2563EB">运维干预</text><line x1="495" y1="346" x2="495" y2="189" stroke="#0F766E" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#a-teal)"/><rect x="508" y="258" width="62" height="20" rx="4" fill="#FFF"/><text x="539" y="273" font-size="11" font-weight="600" text-anchor="middle" fill="#0F766E">运维恢复</text><line x1="245" y1="220" x2="925" y2="385" stroke="#DC2626" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#a-red)"/><rect x="542.0" y="300.5" width="86" height="20" rx="4" fill="#FFF"/><text x="585.0" y="315.5" font-size="11" font-weight="600" text-anchor="middle" fill="#DC2626">未激活→注销</text><line x1="555" y1="180" x2="925" y2="395" stroke="#DC2626" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#a-red)"/><rect x="703.0" y="278.0" width="74" height="20" rx="4" fill="#FFF"/><text x="740.0" y="293.0" font-size="11" font-weight="600" text-anchor="middle" fill="#DC2626">在线→注销</text><line x1="820" y1="234" x2="925" y2="410" stroke="#DC2626" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#a-red)"/><rect x="873.0" y="300.5" width="74" height="20" rx="4" fill="#FFF"/><text x="910.0" y="315.5" font-size="11" font-weight="600" text-anchor="middle" fill="#DC2626">离线→注销</text><line x1="555" y1="405" x2="925" y2="427" stroke="#DC2626" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#a-red)"/><rect x="697.0" y="390.5" width="86" height="20" rx="4" fill="#FFF"/><text x="740.0" y="405.5" font-size="11" font-weight="600" text-anchor="middle" fill="#DC2626">维护中→注销</text><text x="600" y="510" font-size="13" font-weight="700" text-anchor="middle" fill="#DC2626">状态变化触发规则事件；已注销是强制终结路径</text><line x1="32" y1="538" x2="1168" y2="538" stroke="#E2E8F0"/><text x="600" y="565" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">图2-9 设备可在在线、离线和维护间恢复，管理员可从任意状态永久注销设备。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图2-9 设备生命周期状态机</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图2-9 设备生命周期状态机</title>
+  <desc id="desc">设备从注册到退役的五个状态：未激活、在线、离线、维护中与已注销，以及状态间的迁移条件。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+    <defs>
+      <marker id="mk-blue" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><polygon points="0 0,12 4.5,0 9" fill="#2563EB"/></marker>
+      <marker id="mk-gray" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><polygon points="0 0,12 4.5,0 9" fill="#64748B"/></marker>
+    </defs>
+
+    <!-- 标题区 -->
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图2-9 设备生命周期状态机</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">正常迁移形成在线循环，任意状态可终结为已注销</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 连线：先画 -->
+    <line x1="550" y1="510" x2="780" y2="510" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="1020" y1="490" x2="1250" y2="490" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <line x1="1250" y1="530" x2="1020" y2="530" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <path d="M900 460 V390 H720 V320" fill="none" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <path d="M700 320 V350 H910 V460" fill="none" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <path d="M430 560 V650 H780 V740" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mk-gray)"/>
+    <line x1="900" y1="560" x2="900" y2="740" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mk-gray)"/>
+    <path d="M1370 560 V650 H1020 V740" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mk-gray)"/>
+    <line x1="600" y1="320" x2="900" y2="740" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mk-gray)"/>
+
+    <!-- 连线标签 -->
+    <text x="665" y="500" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">首次上报</text>
+    <text x="1135" y="480" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">失联超阈值</text>
+    <text x="1135" y="548" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">恢复上报</text>
+    <text x="820" y="382" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">运维干预</text>
+    <text x="820" y="342" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">运维恢复</text>
+
+    <!-- 节点 -->
+    <rect x="310" y="460" width="240" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <text x="430" y="506" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">未激活</text>
+    <text x="430" y="536" font-size="16" fill="#475569" text-anchor="middle">初始状态</text>
+
+    <rect x="780" y="460" width="240" height="100" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
+    <text x="900" y="506" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">在线</text>
+    <text x="900" y="536" font-size="16" fill="#475569" text-anchor="middle">正常工作</text>
+
+    <rect x="1250" y="460" width="240" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+    <text x="1370" y="506" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">离线</text>
+    <text x="1370" y="536" font-size="16" fill="#475569" text-anchor="middle">失联超阈值</text>
+
+    <rect x="480" y="220" width="240" height="100" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
+    <text x="600" y="266" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">维护中</text>
+    <text x="600" y="296" font-size="16" fill="#475569" text-anchor="middle">运维干预</text>
+
+    <rect x="780" y="740" width="240" height="100" rx="10" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+    <text x="900" y="786" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">已注销</text>
+    <text x="900" y="816" font-size="16" fill="#475569" text-anchor="middle">永久移除</text>
+
+    <!-- 图例 -->
+    <rect x="150" y="872" width="30" height="22" rx="5" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.6"/>
+    <text x="190" y="888" font-size="16" fill="#475569">在线 / 维护中</text>
+    <rect x="410" y="872" width="30" height="22" rx="5" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+    <text x="450" y="888" font-size="16" fill="#475569">离线</text>
+    <rect x="580" y="872" width="30" height="22" rx="5" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="620" y="888" font-size="16" fill="#475569">未激活</text>
+    <rect x="760" y="872" width="30" height="22" rx="5" fill="#F1F5F9" stroke="#64748B" stroke-width="1.6"/>
+    <text x="800" y="888" font-size="16" fill="#475569">已注销</text>
+
+    <line x1="980" y1="883" x2="1038" y2="883" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <text x="1050" y="888" font-size="16" fill="#475569">正常迁移</text>
+    <line x1="1210" y1="883" x2="1268" y2="883" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mk-gray)"/>
+    <text x="1280" y="888" font-size="16" fill="#475569">终结迁移（永久移除）</text>
+
+    <!-- 图注 -->
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-9 设备可在在线、离线和维护间恢复，管理员可从任意状态永久注销设备。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

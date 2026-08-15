@@ -1,1 +1,96 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图8-7 CoAP 的 OSCORE 安全处理流程示意</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}body{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px}</style></head><body><main class="page" data-figure-root><svg width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc"><title id="title">图8-7 CoAP 的 OSCORE 安全处理流程示意</title><desc id="desc">OSCORE 从安全上下文派生参数，以 AEAD 生成密文和认证标签；接收端检查重放窗口并完成 AEAD 验证解密，失败则丢弃或返回规范定义的错误。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker></defs><rect width="1200" height="680" fill="#F8FAFC"/><circle cx="42" cy="40" r="6" fill="#2563EB"/><text x="58" y="48" font-size="24" font-weight="700">图8-7 CoAP 的 OSCORE 安全处理流程</text><text x="58" y="76" font-size="13" fill="#475569">OSCORE 使用 AEAD 同时提供机密性与完整性，Partial IV 参与 nonce 构造并支撑重放检测。</text><rect x="28" y="104" width="1144" height="500" rx="8" fill="#FFF" stroke="#E2E8F0"/><g stroke-width="1.8"><rect x="55" y="170" width="180" height="84" rx="8" fill="#EFF6FF" stroke="#2563EB"/><rect x="275" y="170" width="180" height="84" rx="8" fill="#ECFDF5" stroke="#0F766E"/><rect x="495" y="170" width="180" height="84" rx="8" fill="#FFF7ED" stroke="#F97316"/><rect x="735" y="170" width="180" height="84" rx="8" fill="#FFFBEB" stroke="#D97706"/><rect x="955" y="170" width="180" height="84" rx="8" fill="#F5F3FF" stroke="#7C3AED"/></g><g text-anchor="middle"><text x="145" y="199" font-size="15" font-weight="700">发送方安全上下文</text><text x="145" y="220" font-size="12" fill="#475569">Master Secret / Salt</text><text x="145" y="238" font-size="12" fill="#475569">Sender ID · Common IV</text><text x="365" y="199" font-size="15" font-weight="700">构造 nonce 与 AAD</text><text x="365" y="220" font-size="12" fill="#475569">分配 Partial IV</text><text x="365" y="238" font-size="12" fill="#475569">保护选项分类</text><text x="585" y="199" font-size="15" font-weight="700">AEAD 加密</text><text x="585" y="220" font-size="12" fill="#475569">密文 + 认证标签</text><text x="585" y="238" font-size="12" fill="#475569">形成 OSCORE 消息</text><text x="825" y="199" font-size="15" font-weight="700">重放窗口预检查</text><text x="825" y="220" font-size="12" fill="#475569">Partial IV 是否可接受</text><text x="825" y="238" font-size="12" fill="#475569">暂不提交窗口更新</text><text x="1045" y="199" font-size="15" font-weight="700">AEAD 验证解密</text><text x="1045" y="220" font-size="12" fill="#475569">认证标签通过</text><text x="1045" y="238" font-size="12" fill="#475569">恢复 CoAP 请求</text></g><g stroke="#2563EB" stroke-width="2.5" marker-end="url(#a)"><line x1="235" y1="212" x2="270" y2="212"/><line x1="455" y1="212" x2="490" y2="212"/><line x1="675" y1="212" x2="730" y2="212"/><line x1="915" y1="212" x2="950" y2="212"/></g><line x1="1045" y1="254" x2="1045" y2="330" stroke="#2563EB" stroke-width="2.5" marker-end="url(#a)"/><rect x="895" y="335" width="300" height="72" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="1045" y="364" text-anchor="middle" font-size="15" font-weight="700">提交重放窗口更新</text><text x="1045" y="387" text-anchor="middle" font-size="12" fill="#475569">仅在 AEAD 验证成功后接受序号</text><path d="M825 254 V470 H720" fill="none" stroke="#DC2626" stroke-width="2" marker-end="url(#r)"/><path d="M1045 407 V470 H720" fill="none" stroke="#DC2626" stroke-width="2" marker-end="url(#r)"/><rect x="350" y="430" width="370" height="82" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/><text x="535" y="460" text-anchor="middle" font-size="15" font-weight="700" fill="#DC2626">失败处理</text><text x="535" y="482" text-anchor="middle" font-size="12" fill="#475569">重放 / AEAD 认证失败：丢弃消息</text><text x="535" y="500" text-anchor="middle" font-size="12" fill="#475569">需要响应时按 RFC 8613 规定返回错误</text><line x1="40" y1="620" x2="1160" y2="620" stroke="#E2E8F0"/><text x="600" y="650" text-anchor="middle" font-size="11" fill="#475569">图8-7 OSCORE 在 CoAP 应用层直接端到端加密，免去 DTLS 握手，适合受限设备；重放窗口仅在 AEAD 认证通过后才提交，认证或重放失败则丢弃并按 RFC 8613 返回错误。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图8-7 CoAP 的 OSCORE 安全处理流程示意</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-7 CoAP 的 OSCORE 安全处理流程示意</title>
+  <desc id="desc">OSCORE 从安全上下文派生 nonce 与 AAD，以 AEAD 生成密文和认证标签；接收端先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-7 CoAP 的 OSCORE 安全处理流程示意</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">OSCORE 使用 AEAD 同时提供机密性与完整性，Partial IV 参与 nonce 构造并支撑重放检测。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <defs>
+    <marker id="flw" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="ok" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+    <marker id="err" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="ctx" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/></marker>
+  </defs>
+  <!-- 安全上下文 -->
+  <rect x="380" y="130" width="290" height="128" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="525" y="162" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">发送方安全上下文</text>
+  <text x="525" y="190" text-anchor="middle" font-size="13" fill="#475569">Master Secret · Master Salt</text>
+  <text x="525" y="214" text-anchor="middle" font-size="13" fill="#475569">Sender ID · Common IV</text>
+  <text x="525" y="238" text-anchor="middle" font-size="13" fill="#475569">Sender Sequence Number</text>
+  <rect x="740" y="130" width="290" height="128" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="885" y="162" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">接收方安全上下文</text>
+  <text x="885" y="190" text-anchor="middle" font-size="13" fill="#475569">Recipient ID · Replay Window</text>
+  <text x="885" y="214" text-anchor="middle" font-size="13" fill="#475569">（Partial IV 预检查窗口）</text>
+  <line x1="525" y1="258" x2="525" y2="300" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ctx)"/>
+  <line x1="885" y1="258" x2="885" y2="300" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ctx)"/>
+  <!-- 主流程 -->
+  <rect x="110" y="330" width="210" height="160" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="215" y="372" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">CoAP Client</text>
+  <text x="215" y="400" text-anchor="middle" font-size="13" fill="#475569">（受限设备）</text>
+  <text x="215" y="432" text-anchor="middle" font-size="13" fill="#475569">发起请求</text>
+  <text x="215" y="456" text-anchor="middle" font-size="13" fill="#475569">携带原始载荷</text>
+  <line x1="320" y1="410" x2="380" y2="410" stroke="#2563EB" stroke-width="2" marker-end="url(#flw)"/>
+  <rect x="380" y="300" width="290" height="220" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="525" y="336" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">OSCORE 发送处理</text>
+  <text x="525" y="372" text-anchor="middle" font-size="13" fill="#475569">① 构造 nonce 与 AAD</text>
+  <text x="525" y="404" text-anchor="middle" font-size="13" fill="#475569">② AEAD 加密</text>
+  <text x="525" y="428" text-anchor="middle" font-size="13" fill="#475569">生成密文 + 认证标签</text>
+  <text x="525" y="460" text-anchor="middle" font-size="13" fill="#475569">③ 携带 OSCORE 选项</text>
+  <text x="525" y="484" text-anchor="middle" font-size="13" fill="#475569">（Kid / Partial IV / 序列号）</text>
+  <line x1="670" y1="410" x2="740" y2="410" stroke="#64748B" stroke-width="3" stroke-dasharray="9 5" marker-end="url(#flw)"/>
+  <text x="705" y="396" text-anchor="middle" font-size="12" fill="#64748B">UDP</text>
+  <rect x="740" y="300" width="290" height="220" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="885" y="336" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">OSCORE 接收处理</text>
+  <text x="885" y="372" text-anchor="middle" font-size="13" fill="#475569">① 重放窗口预检查（Partial IV）</text>
+  <text x="885" y="404" text-anchor="middle" font-size="13" fill="#475569">② AEAD 验证解密</text>
+  <text x="885" y="428" text-anchor="middle" font-size="13" fill="#475569">校验认证标签</text>
+  <text x="885" y="460" text-anchor="middle" font-size="13" fill="#475569">③ 恢复 CoAP 消息</text>
+  <text x="885" y="484" text-anchor="middle" font-size="13" fill="#475569">仅在验证成功后提交窗口</text>
+  <!-- 分支 -->
+  <line x1="1030" y1="380" x2="1120" y2="300" stroke="#0F766E" stroke-width="2" marker-end="url(#ok)"/>
+  <text x="1045" y="362" text-anchor="middle" font-size="12" font-weight="700" fill="#0F766E">成功</text>
+  <rect x="1120" y="200" width="360" height="100" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1300" y="238" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">恢复 CoAP 消息</text>
+  <text x="1300" y="264" text-anchor="middle" font-size="13" fill="#475569">提交重放窗口更新</text>
+  <line x1="1030" y1="440" x2="1120" y2="520" stroke="#DC2626" stroke-width="2" marker-end="url(#err)"/>
+  <text x="1045" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#DC2626">失败</text>
+  <rect x="1120" y="520" width="360" height="100" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1300" y="558" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">丢弃消息</text>
+  <text x="1300" y="584" text-anchor="middle" font-size="13" fill="#475569">需响应时按 RFC 8613 返回错误</text>
+  <!-- 图例 -->
+  <rect x="380" y="820" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="404" y="832" fill="#64748B" font-size="13">实体 / 请求方</text>
+  <rect x="540" y="820" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="564" y="832" fill="#64748B" font-size="13">发送处理</text>
+  <rect x="690" y="820" width="16" height="12" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="714" y="832" fill="#64748B" font-size="13">接收处理</text>
+  <line x1="860" y1="826" x2="895" y2="826" stroke="#64748B" stroke-width="2" stroke-dasharray="9 5" marker-end="url(#flw)"/>
+  <text x="905" y="832" fill="#64748B" font-size="13">网络链路（UDP）</text>
+  <line x1="1060" y1="826" x2="1095" y2="826" stroke="#0F766E" stroke-width="2" marker-end="url(#ok)"/>
+  <text x="1105" y="832" fill="#64748B" font-size="13">成功分支</text>
+  <line x1="1210" y1="826" x2="1245" y2="826" stroke="#DC2626" stroke-width="2" marker-end="url(#err)"/>
+  <text x="1255" y="832" fill="#64748B" font-size="13">失败分支</text>
+    <text x="900" y="960" font-size="15" fill="#475569" text-anchor="middle">图8-7 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 一次生成密文和认证标签；接收方先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新，失败则丢弃并按 RFC 8613 返回错误。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

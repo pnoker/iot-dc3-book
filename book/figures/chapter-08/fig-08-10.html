@@ -6,36 +6,82 @@
   <title>图8-10 数据脱敏与匿名化决策流程</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; }
-    body { color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
-    .figure { width: 1200px; height: 640px; background: #F8FAFC; }
-    svg { display: block; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图8-10 数据脱敏与匿名化决策流程</title>
   <desc id="desc">数据发布先分级；内部受控使用可选择脱敏，对外发布必须达到匿名化目标并通过重识别风险评估。</desc>
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
-  </defs>
-  <rect width="1200" height="640" fill="#F8FAFC"/><rect x="28" y="104" width="1144" height="452" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/><circle cx="42" cy="42" r="6" fill="#2563EB"/><text x="58" y="49" font-size="24" font-weight="700">图8-10 数据脱敏与匿名化决策流程</text>
-  <text x="58" y="76" fill="#475569" font-size="13">“做过掩盖”不等于匿名化；对外发布必须通过重识别风险评估。</text>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-10 数据脱敏与匿名化决策流程</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">“做过掩盖”不等于匿名化；对外发布必须通过重识别风险评估。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <g fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"><line x1="195" y1="250" x2="285" y2="250"/><line x1="455" y1="250" x2="530" y2="250"/><path d="M620 200V155H755"/><path d="M620 300V360H755"/><line x1="905" y1="155" x2="995" y2="155"/><line x1="905" y1="360" x2="995" y2="360"/><path d="M1075 198V290"/><path d="M1075 415V470H930"/></g>
-  <path d="M1155 360H1162V525H710V360H755" fill="none" stroke="#DC2626" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="55" y="210" width="140" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="125" y="241" font-size="15" font-weight="700" text-anchor="middle">待发布数据</text><text x="125" y="264" fill="#475569" font-size="12" text-anchor="middle">字段 · 用途 · 接收方</text>
-  <rect x="285" y="210" width="170" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="370" y="241" font-size="15" font-weight="700" text-anchor="middle">数据分级分类</text><text x="370" y="264" fill="#475569" font-size="12" text-anchor="middle">P0–P3 · 准标识符</text>
-  <polygon points="620,190 710,250 620,310 530,250" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><text x="620" y="246" font-size="14" font-weight="700" text-anchor="middle">使用边界？</text><text x="620" y="266" fill="#475569" font-size="11" text-anchor="middle">内部 / 对外</text>
-  <text x="678" y="181" fill="#475569" font-size="11" font-weight="700">内部受控使用</text><rect x="755" y="115" width="150" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="830" y="146" font-size="15" font-weight="700" text-anchor="middle">脱敏</text><text x="830" y="168" fill="#475569" font-size="12" text-anchor="middle">掩盖 · 置换 · 泛化</text>
-  <rect x="995" y="115" width="160" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="1075" y="146" font-size="15" font-weight="700" text-anchor="middle">受控交付</text><text x="1075" y="168" fill="#475569" font-size="12" text-anchor="middle">权限 · 审计 · 限用途</text>
-  <text x="680" y="342" fill="#475569" font-size="11" font-weight="700">对外发布 / 开放数据</text><rect x="755" y="320" width="150" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="830" y="348" font-size="15" font-weight="700" text-anchor="middle">匿名化处理</text><text x="830" y="370" fill="#475569" font-size="12" text-anchor="middle">泛化 · k-匿名</text><text x="830" y="388" fill="#475569" font-size="11" text-anchor="middle">必要时差分隐私</text>
-  <polygon points="1075,305 1155,360 1075,415 995,360" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/><text x="1075" y="354" font-size="13" font-weight="700" text-anchor="middle">重识别风险</text><text x="1075" y="372" font-size="13" font-weight="700" text-anchor="middle">可接受？</text>
-  <text x="930" y="520" fill="#DC2626" font-size="11" font-weight="700" text-anchor="middle">否：回到匿名化处理，调整粒度后重评</text><rect x="755" y="435" width="175" height="70" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="842" y="464" font-size="15" font-weight="700" text-anchor="middle">允许发布</text><text x="842" y="486" fill="#475569" font-size="12" text-anchor="middle">保存评估证据与版本</text><text x="947" y="447" fill="#0F766E" font-size="11" font-weight="700">是：发布</text>
-  <rect x="55" y="425" width="530" height="80" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="7 5"/><text x="75" y="450" font-size="12" font-weight="700">硬边界</text><text x="75" y="473" fill="#475569" font-size="11">脱敏数据仍可能被重新识别，只适用于有权限、有限用途的内部场景。</text><text x="75" y="492" fill="#475569" font-size="11">匿名化是否成立取决于风险评估证据，不取决于处理步骤的名称。</text>
-  <line x1="40" y1="570" x2="1160" y2="570" stroke="#E2E8F0"/><text x="600" y="598" fill="#64748B" font-size="11" text-anchor="middle">矩形表示处理或结果；菱形表示可验证决策；评估不通过必须调整处理粒度后重新评估。</text><text x="600" y="624" fill="#475569" font-size="11" text-anchor="middle">图8-10 内部使用与对外发布采用不同保护目标；对外发布只有在重识别风险可接受并留存证据后才能继续。</text>
+  <defs>
+    <marker id="a10" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="a10r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="a10g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+  </defs>
+  <!-- 连线 -->
+  <line x1="900" y1="222" x2="900" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#a10)"/>
+  <line x1="900" y1="332" x2="900" y2="352" stroke="#475569" stroke-width="2" marker-end="url(#a10)"/>
+  <line x1="830" y1="420" x2="490" y2="420" stroke="#2563EB" stroke-width="2" marker-end="url(#a10)"/>
+  <text x="660" y="408" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">内部受控使用</text>
+  <line x1="970" y1="420" x2="1340" y2="420" stroke="#F97316" stroke-width="2" marker-end="url(#a10)"/>
+  <text x="1155" y="408" text-anchor="middle" font-size="13" font-weight="700" fill="#F97316">对外发布 / 开放数据</text>
+  <line x1="330" y1="500" x2="330" y2="540" stroke="#2563EB" stroke-width="2" marker-end="url(#a10)"/>
+  <line x1="1480" y1="510" x2="1480" y2="542" stroke="#F97316" stroke-width="2" marker-end="url(#a10)"/>
+  <line x1="1480" y1="658" x2="1480" y2="692" stroke="#0F766E" stroke-width="2" marker-end="url(#a10g)"/>
+  <text x="1500" y="676" font-size="13" font-weight="700" fill="#0F766E">是</text>
+  <polyline points="1410,600 1280,600 1280,455 1340,455" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#a10r)"/>
+  <text x="1300" y="590" text-anchor="middle" font-size="13" font-weight="700" fill="#DC2626">否</text>
+  <!-- 节点 -->
+  <rect x="790" y="142" width="220" height="80" rx="40" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="178" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">待发布数据</text>
+  <text x="900" y="202" text-anchor="middle" font-size="13" fill="#475569">字段 · 用途 · 接收方</text>
+  <rect x="740" y="252" width="320" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="900" y="286" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">数据分级分类</text>
+  <text x="900" y="312" text-anchor="middle" font-size="13" fill="#475569">P0 直接标识符 · P1 准标识符 · P2 敏感 · P3 非敏感</text>
+  <polygon points="900,352 970,420 900,488 830,420" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="900" y="414" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">使用边界？</text>
+  <text x="900" y="436" text-anchor="middle" font-size="12" fill="#475569">内部 / 对外</text>
+  <rect x="200" y="420" width="260" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="330" y="456" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">脱敏处理</text>
+  <text x="330" y="480" text-anchor="middle" font-size="13" fill="#475569">掩盖 · 置换 · 泛化</text>
+  <rect x="200" y="540" width="260" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="330" y="576" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">受控交付</text>
+  <text x="330" y="600" text-anchor="middle" font-size="13" fill="#475569">权限 · 审计 · 限用途</text>
+  <rect x="1340" y="420" width="280" height="90" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1480" y="454" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">匿名化处理</text>
+  <text x="1480" y="480" text-anchor="middle" font-size="13" fill="#475569">泛化 · k-匿名</text>
+  <text x="1480" y="500" text-anchor="middle" font-size="13" fill="#475569">必要时注入差分隐私</text>
+  <polygon points="1480,542 1550,600 1480,658 1410,600" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1480" y="594" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">重识别风险</text>
+  <text x="1480" y="616" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">可接受？</text>
+  <rect x="1340" y="692" width="280" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+  <text x="1480" y="726" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">允许发布</text>
+  <text x="1480" y="750" text-anchor="middle" font-size="13" fill="#475569">保存评估证据与版本</text>
+  <!-- 硬边界 -->
+  <rect x="150" y="780" width="980" height="100" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-dasharray="7 5"/>
+  <text x="170" y="812" fill="#475569" font-size="15" font-weight="700">硬边界</text>
+  <text x="170" y="838" fill="#64748B" font-size="13">脱敏数据仍可能被重新识别，只适用于有权限、有限用途的内部场景。</text>
+  <text x="170" y="862" fill="#64748B" font-size="13">匿名化是否成立取决于重识别风险评估证据，不取决于处理步骤的名称。</text>
+  <!-- 图例 -->
+  <rect x="1160" y="800" width="16" height="12" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1184" y="812" fill="#64748B" font-size="13">圆角矩形 = 开始 / 结束</text>
+  <rect x="1160" y="828" width="16" height="12" rx="2" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1184" y="840" fill="#64748B" font-size="13">矩形 = 处理动作</text>
+  <polygon points="1168,852 1176,860 1168,868 1160,860" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1184" y="864" fill="#64748B" font-size="13">菱形 = 可验证决策</text>
+    <text x="900" y="960" font-size="15" fill="#475569" text-anchor="middle">图8-10 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

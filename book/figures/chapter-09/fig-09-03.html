@@ -1,7 +1,115 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图9-3 MQTT智能家居监控系统交互序列</title><style>html,body{margin:0;background:#F8FAFC}svg{display:block;width:1200px;height:850px;margin:auto;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.title{font-size:25px;font-weight:700;fill:#0F172A}.sub,.note{font-size:12px;fill:#475569}.head{font-size:15px;font-weight:700;fill:#0F172A}.msg{font-size:12px;fill:#0F172A}.phase{font-size:13px;font-weight:700;fill:#475569}.cap{font-size:11px;fill:#475569}</style></head><body><svg data-figure-root="fig-09-03" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc"><title id="title">图9-3 MQTT智能家居监控系统交互序列</title><desc id="desc">连接、周期温湿度上报、QoS 2告警及非正常断开后的遗嘱发布。</desc><defs><marker id="n" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#475569"/></marker><marker id="b" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#2563EB"/></marker><marker id="o" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#F97316"/></marker><marker id="r" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#DC2626"/></marker></defs><rect width="1200" height="850" fill="#F8FAFC"/><text x="70" y="52" class="title">图9-3 MQTT智能家居监控系统交互序列</text><text x="70" y="78" class="sub">周期数据、告警与设备状态采用不同可靠性路径，Broker 负责路由与遗嘱代发</text>
-<g><rect x="70" y="108" width="210" height="55" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/><rect x="355" y="108" width="210" height="55" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/><rect x="640" y="108" width="210" height="55" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/><rect x="925" y="108" width="210" height="55" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/><text x="175" y="140" class="head" text-anchor="middle">传感器 · Client</text><text x="460" y="140" class="head" text-anchor="middle">MQTT Broker</text><text x="745" y="140" class="head" text-anchor="middle">云订阅端</text><text x="1030" y="140" class="head" text-anchor="middle">手机 App</text></g><g stroke="#94A3B8" stroke-dasharray="6 5"><line x1="175" y1="163" x2="175" y2="730"/><line x1="460" y1="163" x2="460" y2="730"/><line x1="745" y1="163" x2="745" y2="730"/><line x1="1030" y1="163" x2="1030" y2="730"/></g>
-<text x="70" y="196" class="phase">Phase I · 连接建立与遗嘱注册</text><line x1="70" y1="205" x2="1130" y2="205" stroke="#94A3B8"/><line x1="175" y1="230" x2="460" y2="230" stroke="#475569" stroke-width="2" marker-end="url(#n)"/><text x="318" y="222" class="msg" text-anchor="middle">CONNECT · 含 Will 配置</text><line x1="460" y1="270" x2="175" y2="270" stroke="#475569" stroke-width="2" marker-end="url(#n)"/><text x="318" y="262" class="msg" text-anchor="middle">CONNACK</text>
-<text x="70" y="312" class="phase">Phase II · 依次上报温度、分发温度、上报湿度、分发湿度</text><line x1="70" y1="321" x2="1130" y2="321" stroke="#94A3B8"/><g stroke="#2563EB" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#b)"><line x1="175" y1="350" x2="460" y2="350"/><line x1="460" y1="390" x2="745" y2="390"/><line x1="175" y1="430" x2="460" y2="430"/><line x1="460" y1="470" x2="745" y2="470"/></g><text x="318" y="342" class="msg" text-anchor="middle">① 传感器上报温度 · PUBLISH QoS 1</text><text x="603" y="382" class="msg" text-anchor="middle">② Broker 分发温度至云订阅端</text><text x="318" y="422" class="msg" text-anchor="middle">③ 传感器上报湿度 · PUBLISH QoS 1</text><text x="603" y="462" class="msg" text-anchor="middle">④ Broker 分发湿度至云订阅端</text><rect x="660" y="489" width="170" height="34" rx="5" fill="#FFFFFF" stroke="#F97316"/><text x="745" y="511" class="msg" text-anchor="middle">阈值判断：湿度 &gt; 75%</text><line x1="745" y1="545" x2="460" y2="545" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#o)"/><text x="603" y="537" class="msg" text-anchor="middle">PUBLISH 告警 · QoS 2</text><line x1="460" y1="585" x2="1030" y2="585" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#o)"/><text x="745" y="577" class="msg" text-anchor="middle">Broker 分发关键通知</text>
-<text x="70" y="627" class="phase">Phase III · 非正常断连与遗嘱发布</text><line x1="70" y1="636" x2="1130" y2="636" stroke="#94A3B8"/><line x1="175" y1="665" x2="460" y2="665" stroke="#475569" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#n)"/><text x="318" y="657" class="msg" text-anchor="middle">TCP 中断 · Broker 心跳超时</text><line x1="460" y1="710" x2="745" y2="710" stroke="#DC2626" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#r)"/><text x="603" y="702" class="msg" text-anchor="middle">PUBLISH 遗嘱 · retain=true</text>
-<rect x="70" y="750" width="1060" height="52" rx="6" fill="#FFFFFF" stroke="#94A3B8"/><text x="90" y="774" class="note">蓝色虚线：周期数据（QoS 1）</text><text x="370" y="774" class="note">橙色虚线：关键告警（QoS 2）</text><text x="690" y="774" class="note">红色虚线：异常断连后的遗嘱</text><text x="90" y="793" class="note">遗嘱在 CONNECT 时注册，仅由 Broker 在检测到非正常断开后发布；正常 DISCONNECT 不触发。</text><text x="600" y="833" class="cap" text-anchor="middle">图9-3 周期数据、QoS 2 告警和遗嘱消息分别承担采集、关键通知与离线状态感知职责。</text></svg></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图9-3 MQTT智能家居监控系统交互序列</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图9-3 MQTT智能家居监控系统交互序列</title>
+  <desc id="desc">连接、周期温湿度上报、QoS 2 告警及非正常断开后的遗嘱发布。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="ar-blue" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#2563EB"/></marker>
+      <marker id="ar-grey" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#475569"/></marker>
+      <marker id="ar-orange" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#F97316"/></marker>
+      <marker id="ar-red" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#DC2626"/></marker>
+    </defs>
+
+    <!-- 标题区 -->
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图9-3 MQTT智能家居监控系统交互序列</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">周期数据、告警与设备状态采用不同可靠性路径，Broker 负责路由与遗嘱代发</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 生命线 -->
+    <g stroke="#94A3B8" stroke-dasharray="6 5">
+      <line x1="300" y1="185" x2="300" y2="770"/>
+      <line x1="700" y1="185" x2="700" y2="770"/>
+      <line x1="1100" y1="185" x2="1100" y2="770"/>
+      <line x1="1500" y1="185" x2="1500" y2="770"/>
+    </g>
+
+    <!-- 阶段分隔线 -->
+    <line x1="120" y1="312" x2="1680" y2="312" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="120" y1="640" x2="1680" y2="640" stroke="#CBD5E1" stroke-width="1"/>
+
+    <!-- 消息连线 -->
+    <g stroke="#475569" stroke-width="2">
+      <line x1="300" y1="235" x2="700" y2="235" marker-end="url(#ar-grey)"/>
+      <line x1="700" y1="275" x2="300" y2="275" marker-end="url(#ar-grey)"/>
+      <line x1="300" y1="680" x2="700" y2="680" stroke-dasharray="7 5" marker-end="url(#ar-grey)"/>
+    </g>
+    <g stroke="#2563EB" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ar-blue)">
+      <line x1="300" y1="355" x2="700" y2="355"/>
+      <line x1="700" y1="395" x2="1100" y2="395"/>
+      <line x1="300" y1="435" x2="700" y2="435"/>
+      <line x1="700" y1="475" x2="1100" y2="475"/>
+    </g>
+    <line x1="1100" y1="560" x2="700" y2="560" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ar-orange)"/>
+    <line x1="700" y1="600" x2="1500" y2="600" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ar-orange)"/>
+    <line x1="700" y1="730" x2="1100" y2="730" stroke="#DC2626" stroke-width="2.6" stroke-dasharray="7 5" marker-end="url(#ar-red)"/>
+
+    <!-- 消息标签 -->
+    <g font-size="14" fill="#0F172A" text-anchor="middle">
+      <text x="500" y="226">CONNECT · 含 Will 配置</text>
+      <text x="500" y="266">CONNACK</text>
+      <text x="500" y="346">① 上报温度 · PUBLISH QoS 1</text>
+      <text x="900" y="386">② 分发温度至云订阅端</text>
+      <text x="500" y="426">③ 上报湿度 · PUBLISH QoS 1</text>
+      <text x="900" y="466">④ 分发湿度至云订阅端</text>
+      <text x="900" y="551">PUBLISH 告警 · QoS 2</text>
+      <text x="1100" y="591">Broker 分发关键通知</text>
+      <text x="500" y="671">TCP 中断 · Broker 心跳超时</text>
+      <text x="900" y="721">PUBLISH 遗嘱 · retain=true</text>
+    </g>
+
+    <!-- 阈值判断框 -->
+    <rect x="960" y="505" width="280" height="34" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
+    <text x="1100" y="527" font-size="14" fill="#F97316" font-weight="700" text-anchor="middle">阈值判断：湿度 &gt; 75%</text>
+
+    <!-- 阶段标签 -->
+    <text x="120" y="218" font-size="16" font-weight="700" fill="#475569">Phase I · 连接建立与遗嘱注册</text>
+    <text x="120" y="334" font-size="16" font-weight="700" fill="#475569">Phase II · 正常运行与告警触发</text>
+    <text x="120" y="662" font-size="16" font-weight="700" fill="#475569">Phase III · 断连处理与遗嘱发布</text>
+
+    <!-- 参与者头部 -->
+    <rect x="130" y="125" width="340" height="60" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="300" y="150" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">传感器 · Client</text>
+    <text x="300" y="171" font-size="12" fill="#64748B" text-anchor="middle">MQTT 设备端</text>
+    <rect x="530" y="125" width="340" height="60" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="700" y="150" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT Broker</text>
+    <text x="700" y="171" font-size="12" fill="#64748B" text-anchor="middle">消息路由</text>
+    <rect x="930" y="125" width="340" height="60" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="1100" y="150" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">云订阅端</text>
+    <text x="1100" y="171" font-size="12" fill="#64748B" text-anchor="middle">MQTT Client</text>
+    <rect x="1330" y="125" width="340" height="60" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
+    <text x="1500" y="150" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">手机 App</text>
+    <text x="1500" y="171" font-size="12" fill="#64748B" text-anchor="middle">告警接收</text>
+
+    <!-- 图例 -->
+    <rect x="120" y="782" width="1560" height="58" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="140" y1="806" x2="175" y2="806" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="186" y="811" font-size="14" fill="#475569">蓝色虚线：周期数据（QoS 1）</text>
+    <line x1="480" y1="806" x2="515" y2="806" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="526" y="811" font-size="14" fill="#475569">橙色虚线：关键告警（QoS 2）</text>
+    <line x1="880" y1="806" x2="915" y2="806" stroke="#DC2626" stroke-width="2.6" stroke-dasharray="7 5"/>
+    <text x="926" y="811" font-size="14" fill="#475569">红色虚线：异常断连后的遗嘱</text>
+    <text x="140" y="832" font-size="14" fill="#64748B">遗嘱在 CONNECT 时注册，仅由 Broker 在检测到非正常断开后发布；正常 DISCONNECT 不触发。</text>
+
+    <!-- 图注 -->
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图9-3 周期数据、QoS 2 告警和遗嘱消息分别承担采集、关键通知与离线状态感知职责。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

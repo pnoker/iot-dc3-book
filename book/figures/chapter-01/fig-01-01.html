@@ -2,97 +2,85 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-1 工业软件的版图：ISA-95 五层金字塔</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
-    svg{display:block}text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-  <title id="ft">图1-1 工业软件的版图：ISA-95 五层金字塔</title>
-  <desc id="fd">ISA-95（IEC 62264）五层金字塔：自底向上 L0 物理过程（传感器/执行器）、L1 基础控制（PLC/DCS）、L2 过程监控（SCADA/HMI）、L3 制造运营管理（MES）、L4 业务规划（ERP），时效从毫秒到天；右侧标注其设计预设——数据由人查看、决策由人做出、指令由人下发。</desc>
-
-  <rect width="1200" height="820" fill="#F8FAFC"/>
-
-  <!-- 标题区 -->
-  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
-  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-1 工业软件的版图：ISA-95 五层金字塔</text>
-  <text x="66" y="73" font-size="13" fill="#475569">自底向上五层，时效从毫秒到天——把物理生产过程纳入管理信息系统</text>
-  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
-
-  <!-- 左侧流向标注 -->
-  <text x="58" y="375" font-size="12" font-weight="700" fill="#64748B" transform="rotate(-90 58 375)">数据上流</text>
-  <text x="812" y="375" font-size="12" font-weight="700" fill="#64748B" transform="rotate(90 812 375)">指令下发</text>
-
-  <!-- 金字塔 5 层（梯形，自底向上递减，中心 x=435）-->
-  <!-- L4 ERP（顶） -->
-  <path d="M295 150 L575 150 L605 240 L265 240 Z" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="435" y="176" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">LEVEL 4 · 企业业务规划</text>
-  <text x="435" y="204" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">ERP</text>
-  <text x="435" y="228" font-size="11" fill="#475569" text-anchor="middle">采购 · 财务 · 销售　｜　时效：天～周</text>
-
-  <!-- L3 MES -->
-  <path d="M265 240 L605 240 L635 330 L235 330 Z" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="435" y="266" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">LEVEL 3 · 制造运营管理</text>
-  <text x="435" y="294" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">MES</text>
-  <text x="435" y="318" font-size="11" fill="#475569" text-anchor="middle">排程 · 工单 · 质量追溯　｜　时效：小时～天</text>
-
-  <!-- L2 SCADA / HMI -->
-  <path d="M235 330 L635 330 L665 420 L205 420 Z" fill="#ECFEFF" stroke="#0891B2" stroke-width="2"/>
-  <text x="435" y="356" font-size="11" font-weight="700" fill="#0891B2" text-anchor="middle">LEVEL 2 · 过程监控</text>
-  <text x="435" y="384" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">SCADA / HMI</text>
-  <text x="435" y="408" font-size="11" fill="#475569" text-anchor="middle">大屏展示 · 简单告警　｜　时效：秒</text>
-
-  <!-- L1 PLC / DCS -->
-  <path d="M205 420 L665 420 L695 510 L175 510 Z" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
-  <text x="435" y="446" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">LEVEL 1 · 基础控制</text>
-  <text x="435" y="474" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">PLC / DCS</text>
-  <text x="435" y="498" font-size="11" fill="#475569" text-anchor="middle">确定性逻辑 · 固定扫描周期　｜　时效：毫秒</text>
-
-  <!-- L0 物理过程（底） -->
-  <path d="M175 510 L695 510 L725 600 L145 600 Z" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
-  <text x="435" y="536" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle">LEVEL 0 · 物理过程</text>
-  <text x="435" y="564" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">传感器 · 执行器 · 电机</text>
-  <text x="435" y="588" font-size="11" fill="#475569" text-anchor="middle">不跑软件，只产生和接收信号　｜　时效：实时</text>
-
-  <!-- 底部时间轴暗示（实时 → 天）-->
-  <line x1="145" y1="630" x2="725" y2="630" stroke="#CBD5E1"/>
-  <circle cx="725" cy="630" r="4" fill="#64748B"/><text x="725" y="652" font-size="11" fill="#64748B" text-anchor="middle">实时</text>
-  <circle cx="145" cy="630" r="4" fill="#64748B"/><text x="145" y="652" font-size="11" fill="#64748B" text-anchor="middle">天 / 周</text>
-  <text x="435" y="652" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">抽象层级升高 · 时效变慢</text>
-
-  <!-- 右侧：设计预设 -->
-  <rect x="840" y="150" width="312" height="450" rx="8" fill="#F8FAFC" stroke="#CBD5E1"/>
-  <rect x="840" y="150" width="312" height="44" rx="8" fill="#EFF6FF"/>
-  <rect x="840" y="186" width="312" height="8" fill="#EFF6FF"/>
-  <text x="860" y="179" font-size="14" font-weight="700" fill="#2563EB">ISA-95 的设计预设</text>
-  <text x="860" y="226" font-size="12" fill="#334155">这套架构在 20 世纪 90 年代定型，</text>
-  <text x="860" y="246" font-size="12" fill="#334155">支配了此后三十年的工业软件格局。</text>
-  <text x="860" y="266" font-size="12" fill="#334155">它解决的核心问题是把物理生产</text>
-  <text x="860" y="286" font-size="12" fill="#334155">过程纳入管理信息系统。</text>
-
-  <line x1="860" y1="312" x2="1132" y2="312" stroke="#E2E8F0"/>
-  <text x="860" y="340" font-size="13" font-weight="700" fill="#0F172A">但它的前提是：</text>
-  <g><circle cx="868" cy="372" r="3" fill="#2563EB"/><text x="884" y="376" font-size="13" fill="#334155">数据由 <tspan font-weight="700" fill="#0F172A">人</tspan> 查看</text></g>
-  <g><circle cx="868" cy="408" r="3" fill="#2563EB"/><text x="884" y="412" font-size="13" fill="#334155">决策由 <tspan font-weight="700" fill="#0F172A">人</tspan> 做出</text></g>
-  <g><circle cx="868" cy="444" r="3" fill="#2563EB"/><text x="884" y="448" font-size="13" fill="#334155">指令由 <tspan font-weight="700" fill="#0F172A">人</tspan> 下发</text></g>
-
-  <rect x="860" y="478" width="272" height="100" rx="6" fill="#FFFBEB" stroke="#F59E0B" stroke-dasharray="4 3"/>
-  <text x="876" y="504" font-size="12" font-weight="700" fill="#B45309">当"物"要自主感知、</text>
-  <text x="876" y="524" font-size="12" font-weight="700" fill="#B45309">AI 要接入决策时——</text>
-  <text x="876" y="550" font-size="11" fill="#92400E">这套以人为中心的信息架构</text>
-  <text x="876" y="568" font-size="11" fill="#92400E">就显出结构性局限（见下一图）</text>
-
-  <!-- 底部图题（居中，与 fig-01-03 等统一）-->
-  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
-  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">自底向上五层：时效从毫秒到天，数据由人查看、决策由人做出</text>
-  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-1 五层自底向上抽象层级升高、时效从实时变慢到天/周，数据向上流、指令向下发；数据、决策、指令都预设由人承担。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-1 工业软件的版图：ISA-95 五层金字塔</title>
+  <desc id="desc">ISA-95 五层金字塔与以人为中心的设计预设对照</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-1 工业软件的版图：ISA-95 五层金字塔</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">自底向上五层，时效从毫秒到天；设计预设：数据/决策/指令由人</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<!-- 左：ISA-95 五层金字塔 -->
+<line x1="75" y1="760" x2="75" y2="210" stroke="#2563EB" stroke-width="3.5" marker-end="url(#ab)"/>
+<text transform="rotate(-90 106 490)" x="106" y="490" font-size="16" fill="#2563EB" text-anchor="middle" font-weight="700">数据上行 · 时效递增</text>
+<line x1="135" y1="210" x2="135" y2="760" stroke="#F97316" stroke-width="3.5" marker-end="url(#ao)"/>
+<text transform="rotate(90 166 490)" x="166" y="490" font-size="16" fill="#F97316" text-anchor="middle" font-weight="700">指令下行 · 逐层下发</text>
+<!-- L4 -->
+<rect x="450" y="150" width="300" height="110" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+<text x="600" y="185" font-size="24" font-weight="700" fill="#B91C1C" text-anchor="middle">L4 业务规划</text>
+<text x="600" y="216" font-size="18" fill="#334155" text-anchor="middle">ERP · 采购/财务/销售</text>
+<text x="600" y="244" font-size="15" fill="#64748B" text-anchor="middle">时效：天 ~ 周</text>
+<!-- L3 -->
+<rect x="370" y="280" width="460" height="110" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+<text x="600" y="315" font-size="24" font-weight="700" fill="#6D28D9" text-anchor="middle">L3 制造运营管理</text>
+<text x="600" y="346" font-size="18" fill="#334155" text-anchor="middle">MES · 排程/工单/质量追溯</text>
+<text x="600" y="374" font-size="15" fill="#64748B" text-anchor="middle">时效：小时 ~ 天</text>
+<!-- L2 -->
+<rect x="290" y="410" width="620" height="110" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="600" y="445" font-size="24" font-weight="700" fill="#C2410C" text-anchor="middle">L2 过程监控</text>
+<text x="600" y="476" font-size="18" fill="#334155" text-anchor="middle">SCADA / HMI · 大屏展示与告警</text>
+<text x="600" y="504" font-size="15" fill="#64748B" text-anchor="middle">时效：秒级</text>
+<!-- L1 -->
+<rect x="210" y="540" width="780" height="110" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="600" y="575" font-size="24" font-weight="700" fill="#0F766E" text-anchor="middle">L1 基础控制</text>
+<text x="600" y="606" font-size="18" fill="#334155" text-anchor="middle">PLC / DCS · 确定性逻辑</text>
+<text x="600" y="634" font-size="15" fill="#64748B" text-anchor="middle">时效：毫秒级</text>
+<!-- L0 -->
+<rect x="180" y="670" width="840" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="600" y="705" font-size="24" font-weight="700" fill="#1D4ED8" text-anchor="middle">L0 物理过程</text>
+<text x="600" y="736" font-size="18" fill="#334155" text-anchor="middle">传感器 / 执行器 / 电机</text>
+<text x="600" y="764" font-size="15" fill="#64748B" text-anchor="middle">时效：实时（产生/接收信号）</text>
+<!-- 右：设计预设 -->
+<rect x="1100" y="150" width="660" height="630" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+<text x="1430" y="200" font-size="26" font-weight="700" fill="#0F172A" text-anchor="middle">设计预设：以人为中心</text>
+<rect x="1140" y="225" width="580" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="1170" y="265" font-size="22" font-weight="700" fill="#1D4ED8">数据由人查看</text>
+<text x="1170" y="300" font-size="17" fill="#475569">各层数据仅供人阅读，层间靠人流转</text>
+<rect x="1140" y="345" width="580" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="1170" y="385" font-size="22" font-weight="700" fill="#C2410C">决策由人做出</text>
+<text x="1170" y="420" font-size="17" fill="#475569">阈值、规则、排程判断均依赖人工</text>
+<rect x="1140" y="465" width="580" height="100" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="1170" y="505" font-size="22" font-weight="700" fill="#0F766E">指令由人下发</text>
+<text x="1170" y="540" font-size="17" fill="#475569">控制动作由操作员/管理者发起</text>
+<rect x="1140" y="585" width="580" height="165" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+<text x="1170" y="625" font-size="20" font-weight="700" fill="#B91C1C">结构性张力</text>
+<text x="1170" y="658" font-size="17" fill="#475569">层间格式转换、语义映射、</text>
+<text x="1170" y="684" font-size="17" fill="#475569">时间对齐全部依赖人工</text>
+<text x="1170" y="722" font-size="17" fill="#475569">——数据越层越慢、越抽象</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-1 工业软件的版图：ISA-95 五层金字塔。自底向上为物理过程、基础控制、过程监控、制造运营、业务规划，时效从毫秒到天；</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">这套以人为中心的信息架构正是后续结构性局限的源头。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

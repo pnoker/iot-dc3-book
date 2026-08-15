@@ -6,50 +6,94 @@
   <title>图8-2 物联网纵深防御多层模型</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; }
-    body { color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
-    .figure { width: 1200px; height: 680px; background: #F8FAFC; }
-    svg { display: block; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图8-2 物联网纵深防御多层模型</title>
   <desc id="desc">七层防御逐层拦截攻击；单层能力不足时，相邻层用补偿控制降低剩余风险。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-2 物联网纵深防御多层模型</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">补偿控制只能降低部分剩余风险，不能替代硬件 Root of Trust 等基础安全能力。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
   <defs>
-    <marker id="attack" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
-    <marker id="defend" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
-    <marker id="comp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    <marker id="atk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="def" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+    <marker id="cmp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/></marker>
   </defs>
-  <rect width="1200" height="680" fill="#F8FAFC"/><rect x="28" y="104" width="1144" height="500" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/><circle cx="42" cy="42" r="6" fill="#2563EB"/><text x="58" y="49" font-size="24" font-weight="700">图8-2 物联网纵深防御多层模型</text>
-  <text x="58" y="76" fill="#475569" font-size="13">补偿控制只能降低部分剩余风险，不能替代硬件 Root of Trust 等基础安全能力。</text>
-
-
-  <text x="118" y="128" fill="#DC2626" font-size="12" font-weight="700" text-anchor="middle">攻击逐层突破</text>
-  <line x1="118" y1="550" x2="118" y2="157" stroke="#DC2626" stroke-width="3" marker-end="url(#attack)"/>
-  <text x="1082" y="128" fill="#0F766E" font-size="12" font-weight="700" text-anchor="middle">逐层检测与阻断</text>
-  <line x1="1082" y1="157" x2="1082" y2="550" stroke="#0F766E" stroke-width="3" marker-end="url(#defend)"/>
-
-  <g font-size="12">
-    <rect x="190" y="145" width="820" height="48" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="212" y="166" font-size="15" font-weight="700">Layer 7 · 应用与 AI 安全</text><text x="212" y="184" fill="#475569">输入隔离 · Tool 白名单 · 参数校验 · 人工确认</text>
-    <rect x="190" y="202" width="820" height="48" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="212" y="223" font-size="15" font-weight="700">Layer 6 · 数据安全</text><text x="212" y="241" fill="#475569">静态加密 · 字段脱敏 · 密钥生命周期</text>
-    <rect x="190" y="259" width="820" height="48" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="212" y="280" font-size="15" font-weight="700">Layer 5 · 平台安全</text><text x="212" y="298" fill="#475569">租户隔离 · 速率限制 · 审计日志</text>
-    <rect x="190" y="316" width="820" height="48" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/><text x="212" y="337" font-size="15" font-weight="700">Layer 4 · 身份与访问控制</text><text x="212" y="355" fill="#475569">JWT / OAuth 2.0 · RBAC · fail-closed</text>
-    <rect x="190" y="373" width="820" height="48" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="212" y="394" font-size="15" font-weight="700">Layer 3 · 通信安全</text><text x="212" y="412" fill="#475569">TLS / DTLS · 双向认证 · 防重放</text>
-    <rect x="190" y="430" width="820" height="48" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><text x="212" y="451" font-size="15" font-weight="700">Layer 2 · 设备固件安全</text><text x="212" y="469" fill="#475569">Secure Boot · OTA 验签 · 回滚保护</text>
-    <rect x="190" y="487" width="820" height="48" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="212" y="508" font-size="15" font-weight="700">Layer 1 · 物理安全</text><text x="212" y="526" fill="#475569">SE / TEE · 防拆 · JTAG 锁定</text>
+  <line x1="110" y1="800" x2="110" y2="214" stroke="#DC2626" stroke-width="2.4" marker-end="url(#atk)"/>
+  <text x="92" y="520" fill="#DC2626" font-size="15" font-weight="600" text-anchor="middle" transform="rotate(-90,92,520)">攻击路径 · 自底向上突破</text>
+  <line x1="1690" y1="214" x2="1690" y2="800" stroke="#0F766E" stroke-width="2.4" marker-end="url(#def)"/>
+  <text x="1708" y="520" fill="#0F766E" font-size="15" font-weight="600" text-anchor="middle" transform="rotate(-90,1708,520)">防御阻断 · 自顶向下</text>
+  <path d="M1500 566 C1540 566 1540 660 1500 660" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="8 5" marker-end="url(#cmp)"/>
+  <g>
+    <rect x="190" y="150" width="1310" height="80" rx="8" fill="#F5F8FF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="190" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="197" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">7</text>
+    <text x="274" y="186" font-size="20" font-weight="700" fill="#0F172A">Layer 7 · 应用与 AI 安全</text>
+    <text x="274" y="214" font-size="14" fill="#475569">模型注入防护 · Prompt 威胁分类 · 输出过滤</text>
   </g>
-
-  <path d="M850 462 C1035 462 1035 397 850 397" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#comp)"/>
-  <rect x="810" y="414" width="284" height="41" rx="6" fill="#FFFFFF" stroke="#94A3B8"/><text x="952" y="430" font-size="11" font-weight="700" text-anchor="middle">补偿控制仅降低部分风险</text><text x="952" y="446" fill="#475569" font-size="11" text-anchor="middle">不能替代缺失的硬件 Root of Trust</text>
-
-  <line x1="40" y1="620" x2="1160" y2="620" stroke="#E2E8F0"/>
-  <line x1="126" y1="642" x2="158" y2="642" stroke="#DC2626" stroke-width="3" marker-end="url(#attack)"/><text x="170" y="646" fill="#475569" font-size="11">攻击路径</text>
-  <line x1="300" y1="642" x2="332" y2="642" stroke="#0F766E" stroke-width="3" marker-end="url(#defend)"/><text x="344" y="646" fill="#475569" font-size="11">检测与阻断</text>
-  <line x1="500" y1="642" x2="532" y2="642" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5"/><text x="544" y="646" fill="#475569" font-size="11">补偿控制</text>
-  <text x="600" y="670" fill="#475569" font-size="11" text-anchor="middle">图8-2 单层防御失守后仍由相邻层承接；补偿控制用于降低风险，不等于替代缺失的基础安全能力。</text>
+  <g>
+    <rect x="190" y="244" width="1310" height="80" rx="8" fill="#EDF3FF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="284" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="291" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">6</text>
+    <text x="274" y="280" font-size="20" font-weight="700" fill="#0F172A">Layer 6 · 数据安全</text>
+    <text x="274" y="308" font-size="14" fill="#475569">存储加密 · 字段级脱敏 · 密钥生命周期</text>
+  </g>
+  <g>
+    <rect x="190" y="338" width="1310" height="80" rx="8" fill="#E4EDFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="378" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="385" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">5</text>
+    <text x="274" y="374" font-size="20" font-weight="700" fill="#0F172A">Layer 5 · 平台安全</text>
+    <text x="274" y="402" font-size="14" fill="#475569">租户隔离 · 速率限制 · 审计日志</text>
+  </g>
+  <g>
+    <rect x="190" y="432" width="1310" height="80" rx="8" fill="#DAE7FF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="472" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="479" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">4</text>
+    <text x="274" y="468" font-size="20" font-weight="700" fill="#0F172A">Layer 4 · 身份与访问控制</text>
+    <text x="274" y="496" font-size="14" fill="#475569">JWT · OAuth 2.0 · RBAC · fail-closed</text>
+  </g>
+  <g>
+    <rect x="190" y="526" width="1310" height="80" rx="8" fill="#D0E0FF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="566" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="573" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">3</text>
+    <text x="274" y="562" font-size="20" font-weight="700" fill="#0F172A">Layer 3 · 通信安全</text>
+    <text x="274" y="590" font-size="14" fill="#475569">TLS / DTLS · 双向认证 · 防重放</text>
+  </g>
+  <g>
+    <rect x="190" y="620" width="1310" height="80" rx="8" fill="#C6DAFF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="660" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="667" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">2</text>
+    <text x="274" y="656" font-size="20" font-weight="700" fill="#0F172A">Layer 2 · 设备固件安全</text>
+    <text x="274" y="684" font-size="14" fill="#475569">Secure Boot · OTA 签名验证 · 回滚保护</text>
+  </g>
+  <g>
+    <rect x="190" y="714" width="1310" height="80" rx="8" fill="#BBD4FF" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="242" cy="754" r="17" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="242" y="761" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">1</text>
+    <text x="274" y="750" font-size="20" font-weight="700" fill="#0F172A">Layer 1 · 物理安全</text>
+    <text x="274" y="778" font-size="14" fill="#475569">SE / TEE · 防拆开关 · JTAG 锁定</text>
+  </g>
+  <rect x="190" y="814" width="820" height="78" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-dasharray="6 4"/>
+  <text x="210" y="844" fill="#475569" font-size="15" font-weight="700">补偿控制仅降低部分剩余风险</text>
+  <text x="210" y="872" fill="#64748B" font-size="13">即使 Layer 3 增加证书锁定与异常流量检测，也不能替代 Layer 2 缺失的硬件 Root of Trust。</text>
+  <line x1="1040" y1="830" x2="1075" y2="830" stroke="#DC2626" stroke-width="2.4" marker-end="url(#atk)"/>
+  <text x="1085" y="836" fill="#64748B" font-size="13">攻击路径</text>
+  <line x1="1170" y1="830" x2="1205" y2="830" stroke="#0F766E" stroke-width="2.4" marker-end="url(#def)"/>
+  <text x="1215" y="836" fill="#64748B" font-size="13">防御阻断</text>
+  <line x1="1305" y1="830" x2="1340" y2="830" stroke="#64748B" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="1350" y="836" fill="#64748B" font-size="13">补偿控制</text>
+    <text x="900" y="960" font-size="16" fill="#475569" text-anchor="middle">图8-2 展示了物联网系统中纵深防御的层次结构、攻击面与防御阻断方向，以及补偿控制的跨层连接。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

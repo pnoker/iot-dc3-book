@@ -2,90 +2,71 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-4 从工业软件到物联网平台：架构跃迁的动力</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
-    svg{display:block}text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-  <title id="ft">图1-4 从工业软件到物联网平台：架构跃迁的动力</title>
-  <desc id="fd">从工业软件到物联网平台的架构跃迁：左侧为带三条裂缝的工业软件金字塔（数据隔断、规则写死、封闭孤岛），右侧为物联网平台及其三点补足（数据归一、能力开放、闭环自动化），中间箭头表示跃迁——把以人为中心升级为以数据-智能为中心。</desc>
-
-  <rect width="1200" height="820" fill="#F8FAFC"/>
-
-  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
-  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-4 从工业软件到物联网平台：架构跃迁的动力</text>
-  <text x="66" y="73" font-size="13" fill="#475569">三条裂缝驱动的「向前一步」——不是把设备连上网，而是三点补足</text>
-  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
-
-  <!-- 左侧：工业软件金字塔（带三条裂缝） -->
-  <path d="M80 520 L360 520 L335 430 L105 430 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-  <path d="M105 430 L335 430 L310 350 L130 350 Z" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.5"/>
-  <path d="M130 350 L310 350 L290 280 L150 280 Z" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="220" y="266" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">工业软件</text>
-  <text x="220" y="555" font-size="12" fill="#64748B" text-anchor="middle">ISA-95 金字塔 · 以人为中心</text>
-
-  <!-- 三条裂缝（锯齿线） -->
-  <polyline points="170,295 188,325 164,355 188,385 164,415 188,445 166,475 188,505" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linejoin="round"/>
-  <polyline points="222,288 208,318 232,348 208,378 232,408 208,438 224,468 210,498" fill="none" stroke="#EA580C" stroke-width="2.5" stroke-linejoin="round"/>
-  <polyline points="272,295 258,325 282,355 262,385 284,415 266,445 276,475 262,505" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linejoin="round"/>
-
-  <!-- 裂缝图例 -->
-  <text x="60" y="588" font-size="11.5" fill="#DC2626">① 数据隔断</text>
-  <text x="60" y="610" font-size="11.5" fill="#EA580C">② 规则写死</text>
-  <text x="60" y="632" font-size="11.5" fill="#7C3AED">③ 封闭孤岛</text>
-
-  <!-- 中间：跃迁箭头 -->
-  <text x="555" y="326" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">架构跃迁</text>
-  <rect x="430" y="360" width="180" height="48" rx="6" fill="#2563EB"/>
-  <text x="520" y="391" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">跃迁</text>
-  <polygon points="610,336 700,384 610,432" fill="#2563EB"/>
-  <text x="555" y="472" font-size="11" fill="#64748B" text-anchor="middle">以人为中心</text>
-  <text x="555" y="494" font-size="11" fill="#64748B" text-anchor="middle">→ 以数据-智能为中心</text>
-
-  <!-- 右侧：物联网平台 + 三个补足模块 -->
-  <!-- 三个补足模块 -->
-  <rect x="716" y="250" width="132" height="120" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="782" y="292" font-size="14" font-weight="700" fill="#1D4ED8" text-anchor="middle">数据归一</text>
-  <text x="782" y="318" font-size="10.5" fill="#334155" text-anchor="middle">物模型 · 位号值</text>
-  <text x="782" y="340" font-size="10.5" fill="#64748B" text-anchor="middle">替代层级数据格式</text>
-
-  <rect x="862" y="250" width="132" height="120" rx="8" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
-  <text x="928" y="292" font-size="14" font-weight="700" fill="#115E59" text-anchor="middle">能力开放</text>
-  <text x="928" y="318" font-size="10.5" fill="#334155" text-anchor="middle">REST / gRPC / MQTT</text>
-  <text x="928" y="340" font-size="10.5" fill="#64748B" text-anchor="middle">替代私有适配器</text>
-
-  <rect x="1008" y="250" width="132" height="120" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
-  <text x="1074" y="292" font-size="14" font-weight="700" fill="#15803D" text-anchor="middle">闭环自动化</text>
-  <text x="1074" y="318" font-size="10.5" fill="#334155" text-anchor="middle">采集→决策→执行</text>
-  <text x="1074" y="340" font-size="10.5" fill="#64748B" text-anchor="middle">替代人看人判</text>
-
-  <!-- 平台底座 -->
-  <rect x="700" y="370" width="456" height="130" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-  <text x="928" y="420" font-size="17" font-weight="700" fill="#1D4ED8" text-anchor="middle">物联网平台</text>
-  <text x="928" y="444" font-size="12" fill="#64748B" text-anchor="middle">三点补足</text>
-  <text x="928" y="472" font-size="11" fill="#334155" text-anchor="middle">把以人为中心升级为以数据-智能为中心</text>
-
-  <!-- 模块向下接入平台 -->
-  <line x1="782" y1="370" x2="782" y2="382" stroke="#2563EB" stroke-width="2"/>
-  <line x1="928" y1="370" x2="928" y2="382" stroke="#0F766E" stroke-width="2"/>
-  <line x1="1074" y1="370" x2="1074" y2="382" stroke="#16A34A" stroke-width="2"/>
-
-  <!-- 底部结论条 -->
-  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
-  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">数据归一 · 能力开放 · 闭环自动化——工业软件留下什么、物联网平台补上什么</text>
-  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">三条裂缝一一对应三点补足，把以人为中心升级为以数据-智能为中心</text>
-
-  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
-  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#2563EB">从「以人为中心」跃迁到「以数据-智能为中心」</text>
-  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-4 从工业软件到物联网平台：架构跃迁的动力。三条裂缝驱动的「向前一步」——数据归一、能力开放、闭环自动化，把以人为中心的信息架构升级为以数据-智能为中心。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-4 从工业软件到物联网平台：架构跃迁的动力</title>
+  <desc id="desc">从工业软件到物联网平台的架构跃迁对照</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-4 从工业软件到物联网平台：架构跃迁的动力</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">左（三条裂缝）与右（三点补足）严格对照，中间跃迁箭头</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<text x="60" y="168" font-size="22" font-weight="700" fill="#DC2626">工业软件 · 三条裂缝</text>
+<text x="1150" y="168" font-size="22" font-weight="700" fill="#1D4ED8">物联网平台 · 三点补足</text>
+<!-- 左列 -->
+<rect x="60" y="190" width="620" height="150" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+<text x="90" y="232" font-size="21" font-weight="700" fill="#B91C1C">裂缝 1 · 数据被层级隔断</text>
+<text x="90" y="270" font-size="17" fill="#475569">各层数据格式不一，跨层联动靠人</text>
+<rect x="60" y="360" width="620" height="150" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="90" y="402" font-size="21" font-weight="700" fill="#C2410C">裂缝 2 · 规则写死在代码里</text>
+<text x="90" y="440" font-size="17" fill="#475569">工况一变，就要重新编程</text>
+<rect x="60" y="530" width="620" height="150" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+<text x="90" y="572" font-size="21" font-weight="700" fill="#6D28D9">裂缝 3 · 系统封闭为孤岛</text>
+<text x="90" y="610" font-size="17" fill="#475569">私有协议 / 格式，外部智能难接入</text>
+<!-- 右列 -->
+<rect x="1120" y="190" width="620" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="1150" y="232" font-size="21" font-weight="700" fill="#1D4ED8">数据归一</text>
+<text x="1150" y="270" font-size="17" fill="#475569">统一物模型与位号值抽象</text>
+<rect x="1120" y="360" width="620" height="150" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="1150" y="402" font-size="21" font-weight="700" fill="#0F766E">能力开放</text>
+<text x="1150" y="440" font-size="17" fill="#475569">REST / gRPC / MQTT 统一接口</text>
+<rect x="1120" y="530" width="620" height="150" rx="10" fill="#FEFCE8" stroke="#D97706" stroke-width="2"/>
+<text x="1150" y="572" font-size="21" font-weight="700" fill="#B45309">闭环自动化</text>
+<text x="1150" y="610" font-size="17" fill="#475569">采集 → 理解 → 决策 → 执行 → 反馈</text>
+<!-- 中间跃迁箭头 -->
+<line x1="700" y1="265" x2="1100" y2="265" stroke="#2563EB" stroke-width="4" marker-end="url(#ab)"/>
+<line x1="700" y1="435" x2="1100" y2="435" stroke="#2563EB" stroke-width="4" marker-end="url(#ab)"/>
+<line x1="700" y1="605" x2="1100" y2="605" stroke="#2563EB" stroke-width="4" marker-end="url(#ab)"/>
+<text x="900" y="195" font-size="24" font-weight="700" fill="#2563EB" text-anchor="middle">跃迁</text>
+<text x="900" y="700" font-size="17" fill="#475569" text-anchor="middle">三条裂缝 ↔ 三点补足</text>
+<text x="900" y="728" font-size="17" fill="#475569" text-anchor="middle">一一对应</text>
+<!-- 底部结论 -->
+<rect x="60" y="780" width="1680" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="900" y="826" font-size="24" font-weight="700" fill="#1D4ED8" text-anchor="middle">把以人为中心的信息架构，升级为以数据—智能为中心</text>
+<text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">不是「把设备连上网」，而是把数据—智能置于决策中心</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-4 从工业软件到物联网平台：架构跃迁的动力。三条裂缝驱动的「向前一步」——数据归一、能力开放、闭环自动化，</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">把以人为中心的信息架构升级为以数据-智能为中心。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

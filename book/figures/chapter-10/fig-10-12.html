@@ -1,10 +1,101 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图10-12 本章知识体系图谱</title><style>html,body{margin:0;background:#F8FAFC;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;color:#0F172A}.page{width:1200px;margin:0 auto}svg{display:block}text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}</style></head>
-<body><main class="page"><svg data-figure-root="fig-10-12" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg"><title id="title">图10-12 本章知识体系图谱</title><desc id="desc">主链从感知层向上经过接入层、分析层到平台层；受控决策由平台侧沿独立向下路径返回现场确定性控制系统。</desc><defs><marker id="up" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#2563EB"/></marker><marker id="down" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#D97706"/></marker></defs>
-<rect width="1200" height="800" fill="#F8FAFC"/><rect x="30" y="24" width="1140" height="752" rx="12" fill="#FFFFFF" stroke="#CBD5E1"/><circle cx="62" cy="62" r="6" fill="#2563EB"/><text x="80" y="70" font-size="24" font-weight="700">图10-12 本章知识体系图谱</text><line x1="60" y1="96" x2="1140" y2="96" stroke="#E2E8F0"/><text x="60" y="126" font-size="14" fill="#475569">数据与能力自下而上汇聚；受控决策沿独立下行链返回 PLC / SIS，不与上行主链混画。</text>
-<g><rect x="130" y="555" width="760" height="92" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><rect x="130" y="555" width="130" height="92" rx="10" fill="#0F766E"/><text x="195" y="610" text-anchor="middle" font-size="18" font-weight="700" fill="#FFFFFF">感知层</text><text x="290" y="592" font-size="16" font-weight="700">传感器 · PLC · 工业设备</text><text x="290" y="620" font-size="14" fill="#475569">产生位号值、状态与事件</text><path d="M510 555V526" stroke="#2563EB" stroke-width="3" marker-end="url(#up)"/>
-<rect x="130" y="435" width="760" height="92" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><rect x="130" y="435" width="130" height="92" rx="10" fill="#2563EB"/><text x="195" y="490" text-anchor="middle" font-size="18" font-weight="700" fill="#FFFFFF">接入层</text><text x="290" y="472" font-size="16" font-weight="700">Modbus / OPC UA · 边缘网关 · Driver</text><text x="290" y="500" font-size="14" fill="#475569">协议适配并归一为 PointValue</text><path d="M510 435V406" stroke="#2563EB" stroke-width="3" marker-end="url(#up)"/>
-<rect x="130" y="315" width="760" height="92" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><rect x="130" y="315" width="130" height="92" rx="10" fill="#F97316"/><text x="195" y="370" text-anchor="middle" font-size="18" font-weight="700" fill="#FFFFFF">分析层</text><text x="290" y="352" font-size="16" font-weight="700">数据治理 · 预测性维护 · AI 推理</text><text x="290" y="380" font-size="14" fill="#475569">形成健康评估、告警与维护建议</text><path d="M510 315V286" stroke="#2563EB" stroke-width="3" marker-end="url(#up)"/>
-<rect x="130" y="195" width="760" height="92" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><rect x="130" y="195" width="130" height="92" rx="10" fill="#2563EB"/><text x="195" y="250" text-anchor="middle" font-size="18" font-weight="700" fill="#FFFFFF">平台层</text><text x="290" y="232" font-size="16" font-weight="700">数据中心 · 规则引擎 · 消息队列 · 业务 API</text><text x="290" y="260" font-size="14" fill="#475569">统一承载数据、决策编排与业务协同</text></g>
-<rect x="950" y="195" width="170" height="452" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 5"/><text x="1035" y="225" text-anchor="middle" font-size="14" font-weight="700">受控决策下行</text><path d="M1000 260V570" fill="none" stroke="#D97706" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#down)"/><text x="1020" y="335" font-size="13" fill="#B45309">鉴权</text><text x="1020" y="375" font-size="13" fill="#B45309">参数校验</text><text x="1020" y="415" font-size="13" fill="#B45309">策略约束</text><text x="1020" y="455" font-size="13" fill="#B45309">审计 / 确认</text><text x="1035" y="610" text-anchor="middle" font-size="13" font-weight="700" fill="#0F766E">PLC / SIS 执行</text>
-<rect x="220" y="680" width="760" height="54" rx="8" fill="#FFF7ED" stroke="#F97316"/><text x="600" y="703" text-anchor="middle" font-size="14" font-weight="700" fill="#C2410C">控制边界：分析层提供建议或受限设定值，实时控制与安全联锁由确定性系统执行</text><text x="600" y="723" text-anchor="middle" font-size="12" fill="#475569">蓝色实线为感知 → 接入 → 分析 → 平台的上行主链；橙色虚线为受控决策下行</text><text x="600" y="762" text-anchor="middle" font-size="11" fill="#475569">图10-12 工业数据逐层向上形成平台能力，决策仅通过受控链路向下返回现场。</text></svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图10-12 本章知识体系图谱</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图10-12 本章知识体系图谱</title>
+  <desc id="desc">主链从感知层向上经过接入层、分析层到平台层；受控决策由平台侧沿独立下行路径返回现场确定性控制系统。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="arr-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#2563EB"/></marker>
+      <marker id="arr-orange" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#F97316"/></marker>
+    </defs>
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-12 本章知识体系图谱</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">数据与能力自下而上汇聚；受控决策沿独立下行链返回 PLC / SIS，不与上行主链混画。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 连线（先画） -->
+    <!-- 主链路：感知层 → 平台层（实线，左） -->
+    <line x1="160" y1="730" x2="90" y2="730" stroke="#2563EB" stroke-width="2.4"/>
+    <line x1="90" y1="730" x2="90" y2="190" stroke="#2563EB" stroke-width="2.4" marker-end="url(#arr-blue)"/>
+    <line x1="90" y1="190" x2="160" y2="190" stroke="#2563EB" stroke-width="2.4"/>
+    <!-- 接入层 → 分析层（虚线，中） -->
+    <line x1="900" y1="500" x2="900" y2="430" stroke="#2563EB" stroke-width="2" stroke-dasharray="9 6" marker-end="url(#arr-blue)"/>
+    <!-- 决策下发闭环（虚线，右） -->
+    <line x1="1660" y1="190" x2="1720" y2="190" stroke="#F97316" stroke-width="2" stroke-dasharray="9 6"/>
+    <line x1="1720" y1="190" x2="1720" y2="730" stroke="#F97316" stroke-width="2" stroke-dasharray="9 6" marker-end="url(#arr-orange)"/>
+    <line x1="1660" y1="370" x2="1720" y2="370" stroke="#F97316" stroke-width="2" stroke-dasharray="9 6"/>
+
+    <!-- 平台层 -->
+    <rect x="160" y="140" width="1500" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="160" y="140" width="150" height="100" rx="10" fill="#2563EB"/>
+    <text x="235" y="200" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">平台层</text>
+    <text x="340" y="192" font-size="18" font-weight="700" fill="#0F172A">驱动模块 · 数据中心 · 规则引擎 · 消息队列</text>
+    <text x="340" y="220" font-size="14" fill="#475569">统一承载数据、决策编排与业务协同</text>
+    <rect x="1410" y="168" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.4"/>
+    <text x="1525" y="196" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">IoT DC3 平台服务域</text>
+
+    <!-- 分析层 -->
+    <rect x="160" y="320" width="1500" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+    <rect x="160" y="320" width="150" height="100" rx="10" fill="#F97316"/>
+    <text x="235" y="380" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">分析层</text>
+    <text x="340" y="372" font-size="18" font-weight="700" fill="#0F172A">预测性维护 · AI 模型 · 在线推理</text>
+    <text x="340" y="400" font-size="14" fill="#475569">形成健康评估、告警与维护建议</text>
+    <rect x="1410" y="348" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#FDBA74" stroke-width="1.4"/>
+    <text x="1525" y="376" font-size="15" font-weight="700" fill="#C2410C" text-anchor="middle">规则引擎 + AI 推理</text>
+
+    <!-- 接入层 -->
+    <rect x="160" y="500" width="1500" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <rect x="160" y="500" width="150" height="100" rx="10" fill="#2563EB"/>
+    <text x="235" y="560" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">接入层</text>
+    <text x="340" y="552" font-size="18" font-weight="700" fill="#0F172A">时序数据库 · 规则引擎 · 数据质量</text>
+    <text x="340" y="580" font-size="14" fill="#475569">协议适配、归一为 PointValue、质量治理</text>
+    <rect x="1410" y="528" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.4"/>
+    <text x="1525" y="556" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">数据中心（时序·质量）</text>
+
+    <!-- 感知层 -->
+    <rect x="160" y="680" width="1500" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+    <rect x="160" y="680" width="150" height="100" rx="10" fill="#0F766E"/>
+    <text x="235" y="740" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">感知层</text>
+    <text x="340" y="732" font-size="18" font-weight="700" fill="#0F172A">工业4.0 · 数字孪生 · Modbus/OPC UA · 边缘网关</text>
+    <text x="340" y="760" font-size="14" fill="#475569">现场设备、协议与概念的认知基础</text>
+    <rect x="1410" y="708" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1.4"/>
+    <text x="1525" y="736" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">驱动模块（南向协议适配）</text>
+
+    <!-- 连线标签 -->
+    <text x="72" y="460" transform="rotate(-90 72 460)" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">驱动模块上行主链（实线）</text>
+    <text x="922" y="460" font-size="14" font-weight="600" fill="#2563EB">特征数据 · 告警事件（虚线）</text>
+    <text x="1745" y="460" transform="rotate(90 1745 460)" font-size="15" font-weight="700" fill="#C2410C" text-anchor="middle">决策下发 · 闭环（带返回线）</text>
+
+    <!-- 图例 -->
+    <rect x="360" y="812" width="1080" height="58" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"/>
+    <line x1="390" y1="841" x2="422" y2="841" stroke="#2563EB" stroke-width="2.4"/>
+    <text x="432" y="846" font-size="16" fill="#475569">实线=数据上行主链</text>
+    <line x1="610" y1="841" x2="642" y2="841" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="9 6"/>
+    <text x="652" y="846" font-size="16" fill="#475569">虚线=事件/调用</text>
+    <line x1="820" y1="841" x2="852" y2="841" stroke="#F97316" stroke-width="2.2" stroke-dasharray="9 6"/>
+    <text x="862" y="846" font-size="16" fill="#475569">橙色=AI 决策</text>
+    <rect x="1020" y="832" width="18" height="18" rx="4" fill="#0F766E"/>
+    <text x="1048" y="846" font-size="16" fill="#475569">青绿=设备/协议</text>
+    <rect x="1210" y="832" width="18" height="18" rx="4" fill="#2563EB"/>
+    <text x="1238" y="846" font-size="16" fill="#475569">蓝=平台能力</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图10-12 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

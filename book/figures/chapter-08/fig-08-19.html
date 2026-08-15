@@ -6,158 +6,111 @@
   <title>图8-19 安全应急响应与恢复流程</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; }
-    body { background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图8-19 安全应急响应与恢复流程</title>
-  <desc id="desc">从安全告警触发到事后复盘的标准处理流程，分5个阶段呈现。</desc>
+  <desc id="desc">从安全告警触发到事后复盘的标准处理流程，分 5 个阶段呈现。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-19 安全应急响应与恢复流程</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">从安全告警触发到事后复盘的标准处理流程，分 5 个阶段呈现。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
   <defs>
-    <marker id="f819-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="f" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="fb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#7C3AED"/></marker>
   </defs>
-
-  <!-- 顶部标题区 -->
-  <circle cx="64" cy="46" r="6" fill="#2563EB"/>
-  <text x="82" y="53" fill="#0F172A" font-size="22" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">图8-19 安全应急响应与恢复流程</text>
-  <text x="82" y="76" fill="#64748B" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">从安全告警触发到事后复盘的标准处理流程，分5个阶段呈现。</text>
-
-  <line x1="40" y1="90" x2="1160" y2="90" stroke="#E2E8F0"/>
-
-  <!-- ========== 阶段 1 · 准备 ========== -->
-  <rect x="40" y="105" width="1120" height="75" rx="12" fill="#F1F5F9" stroke="#CBD5E1"/>
-  <text x="60" y="122" fill="#475569" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">阶段 1 · 准备</text>
-
-  <rect x="150" y="124" width="280" height="44" rx="22" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-  <text x="290" y="150" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">建立团队与预案</text>
-
-  <line x1="430" y1="146" x2="486" y2="146" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="490" y="124" width="320" height="44" rx="10" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-  <text x="650" y="150" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">准备工具链和取证环境</text>
-
-  <!-- B → C 连接 -->
-  <polyline points="650,168 650,190 290,190 290,220" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <!-- ========== 阶段 2 · 检测与分析 ========== -->
-  <rect x="40" y="200" width="1120" height="140" rx="12" fill="#FFFBEB" stroke="#D97706"/>
-  <text x="60" y="217" fill="#B45309" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">阶段 2 · 检测与分析</text>
-
-  <rect x="150" y="220" width="280" height="44" rx="10" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-  <text x="290" y="246" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">日志平台收到告警</text>
-
-  <line x1="430" y1="242" x2="516" y2="242" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <!-- 菱形判断：研判是否为真实攻击 -->
-  <polygon points="524,250 600,224 676,250 600,276" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-  <text x="600" y="244" fill="#0F172A" font-size="12" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">研判是否为</text>
-  <text x="600" y="259" fill="#0F172A" font-size="12" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">真实攻击？</text>
-
-  <!-- 否分支 → 记录归档（终结） -->
-  <line x1="524" y1="250" x2="300" y2="278" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-  <text x="430" y="252" fill="#DC2626" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">否</text>
-  <rect x="150" y="278" width="220" height="42" rx="21" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2.5"/>
-  <rect x="158" y="286" width="204" height="26" rx="13" fill="none" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="260" y="303" fill="#0F172A" font-size="13" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">记录归档</text>
-
-  <!-- 是分支 → 进入定级 -->
-  <line x1="600" y1="276" x2="600" y2="292" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-  <text x="618" y="282" fill="#DC2626" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">是</text>
-  <rect x="540" y="292" width="200" height="40" rx="10" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-  <text x="640" y="316" fill="#0F172A" font-size="13" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">进入定级</text>
-
-  <!-- F → G1 连接 -->
-  <polyline points="640,332 640,350 250,350 250,375" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <!-- ========== 阶段 3 · 遏制与根除 ========== -->
-  <rect x="40" y="360" width="1120" height="145" rx="12" fill="#FEF2F2" stroke="#DC2626"/>
-  <text x="60" y="377" fill="#B91C1C" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">阶段 3 · 遏制与根除</text>
-
-  <rect x="150" y="375" width="200" height="44" rx="22" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="250" y="401" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">定级（P0–P3）</text>
-
-  <line x1="350" y1="397" x2="416" y2="397" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="420" y="372" width="330" height="50" rx="10" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="585" y="390" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">P0/P1 立即遏制</text>
-  <text x="585" y="406" fill="#475569" font-size="11" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">切断设备 / 账号 / 网络</text>
-
-  <!-- G2 → G3 连接 -->
-  <polyline points="585,422 585,432 420,432 420,450" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="260" y="450" width="320" height="44" rx="10" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="420" y="476" fill="#0F172A" font-size="13" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">调用取证工具记录现场快照</text>
-
-  <line x1="580" y1="472" x2="646" y2="472" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="650" y="450" width="290" height="44" rx="10" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="795" y="476" fill="#0F172A" font-size="13" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">分析根因并消除攻击源</text>
-
-
-  <!-- G4 → J 连接 -->
-  <polyline points="795,494 795,515 280,515 280,537" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <!-- ========== 阶段 4 · 恢复 ========== -->
-  <rect x="40" y="525" width="1120" height="75" rx="12" fill="#F0FDF4" stroke="#16A34A"/>
-  <text x="60" y="542" fill="#15803D" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">阶段 4 · 恢复</text>
-
-  <rect x="150" y="537" width="260" height="44" rx="10" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="280" y="563" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">清除残留影响</text>
-
-  <line x1="410" y1="559" x2="466" y2="559" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="470" y="537" width="260" height="44" rx="10" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="600" y="563" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">验证系统安全</text>
-
-  <line x1="730" y1="559" x2="786" y2="559" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="790" y="537" width="230" height="44" rx="10" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="905" y="563" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">恢复业务运行</text>
-
-  <!-- L → M 连接 -->
-  <polyline points="905,581 905,610 280,610 280,633" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <!-- ========== 阶段 5 · 事后 ========== -->
-  <rect x="40" y="620" width="1120" height="80" rx="12" fill="#EFF6FF" stroke="#2563EB"/>
-  <text x="60" y="638" fill="#1D4ED8" font-size="12" font-weight="700" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">阶段 5 · 事后</text>
-
-  <rect x="150" y="633" width="260" height="44" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="280" y="659" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">召开复盘会议</text>
-
-  <line x1="410" y1="655" x2="466" y2="655" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="470" y="633" width="280" height="44" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="610" y="659" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">生成根因分析报告</text>
-
-  <line x1="750" y1="655" x2="806" y2="655" stroke="#475569" stroke-width="1.5" marker-end="url(#f819-arrow)"/>
-
-  <rect x="810" y="633" width="260" height="44" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="940" y="659" fill="#0F172A" font-size="14" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">更新检测规则与应急预案</text>
-
-  <!-- 底部图例与图注 -->
-  <line x1="40" y1="705" x2="1160" y2="705" stroke="#E2E8F0"/>
-  <rect x="60" y="712" width="16" height="12" rx="2" fill="#F1F5F9" stroke="#64748B" stroke-width="1.5"/>
-  <text x="84" y="722" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">准备</text>
-  <rect x="180" y="712" width="16" height="12" rx="2" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
-  <text x="204" y="722" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">检测与分析</text>
-  <rect x="330" y="712" width="16" height="12" rx="2" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="354" y="722" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">遏制与根除</text>
-  <rect x="480" y="712" width="16" height="12" rx="2" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="504" y="722" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">恢复</text>
-  <rect x="590" y="712" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="614" y="722" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">事后</text>
-  <text x="600" y="740" fill="#475569" font-size="11" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">图例：圆角矩形=开始/结束 · 矩形=处理动作 · 菱形=判断/分支 · 双框圆角=归档终结 · 箭头=流程方向</text>
-  <text x="600" y="755" fill="#475569" font-size="11" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">图8-19 物联网安全事件应急响应流程图。P0 事件第一时间响应、P3 走标准流程；恢复前必须先验证系统安全。</text>
+  <!-- 阶段背景 -->
+  <rect x="60" y="150" width="1680" height="80" rx="10" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="60" y="250" width="1680" height="150" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <rect x="60" y="420" width="1680" height="160" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <rect x="60" y="600" width="1680" height="85" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="60" y="705" width="1680" height="85" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="84" y="174" font-size="13" font-weight="700" fill="#475569">阶段 1 · 准备</text>
+  <text x="84" y="274" font-size="13" font-weight="700" fill="#B45309">阶段 2 · 检测与分析</text>
+  <text x="84" y="444" font-size="13" font-weight="700" fill="#B91C1C">阶段 3 · 遏制与根除</text>
+  <text x="84" y="624" font-size="13" font-weight="700" fill="#15803D">阶段 4 · 恢复</text>
+  <text x="84" y="729" font-size="13" font-weight="700" fill="#1D4ED8">阶段 5 · 事后</text>
+  <!-- 连线 -->
+  <line x1="500" y1="189" x2="580" y2="189" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <polyline points="760,212 760,240 350,240 350,266" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="500" y1="289" x2="620" y2="289" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <polyline points="620,289 340,289 340,340" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <text x="470" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#DC2626">否</text>
+  <line x1="720" y1="318" x2="720" y2="340" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <text x="738" y="332" font-size="14" font-weight="700" fill="#0F766E">是</text>
+  <polyline points="770,382 770,410 320,410 320,436" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="440" y1="459" x2="500" y2="459" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="680" y1="486" x2="680" y2="506" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="720" y1="529" x2="800" y2="529" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <polyline points="960,552 960,580 340,580 340,612" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="480" y1="635" x2="560" y2="635" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="840" y1="635" x2="920" y2="635" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <polyline points="1050,658 1050,680 340,680 340,717" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="480" y1="740" x2="560" y2="740" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <line x1="880" y1="740" x2="960" y2="740" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <!-- 反馈回路 -->
+  <polyline points="1120,717 1120,132 350,132 350,166" fill="none" stroke="#7C3AED" stroke-width="2" stroke-dasharray="8 5" marker-end="url(#fb)"/>
+  <text x="800" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#7C3AED">反馈：复盘结论回写检测规则与应急预案</text>
+  <!-- 节点 -->
+  <rect x="200" y="166" width="300" height="46" rx="23" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="350" y="194" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">建立团队与预案</text>
+  <rect x="580" y="166" width="360" height="46" rx="8" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="760" y="194" text-anchor="middle" font-size="14" fill="#0F172A">准备工具链和取证环境</text>
+  <rect x="200" y="266" width="300" height="46" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="350" y="294" text-anchor="middle" font-size="14" fill="#0F172A">日志平台收到告警</text>
+  <polygon points="620,289 720,260 820,289 720,318" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="720" y="284" text-anchor="middle" font-size="13" fill="#0F172A">研判是否为</text>
+  <text x="720" y="300" text-anchor="middle" font-size="13" fill="#0F172A">真实攻击？</text>
+  <rect x="200" y="340" width="260" height="44" rx="22" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2.5"/>
+  <rect x="208" y="348" width="244" height="28" rx="14" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="330" y="367" text-anchor="middle" font-size="14" fill="#0F172A">记录归档</text>
+  <rect x="650" y="340" width="220" height="42" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="760" y="366" text-anchor="middle" font-size="14" fill="#0F172A">进入定级</text>
+  <rect x="200" y="436" width="240" height="46" rx="23" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="320" y="464" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">定级（P0–P3）</text>
+  <rect x="500" y="432" width="360" height="54" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="680" y="454" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">P0 / P1 立即遏制</text>
+  <text x="680" y="474" text-anchor="middle" font-size="12" fill="#475569">切断设备 / 账号 / 网络</text>
+  <rect x="380" y="506" width="340" height="46" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="550" y="534" text-anchor="middle" font-size="14" fill="#0F172A">调用取证工具记录现场快照</text>
+  <rect x="800" y="506" width="320" height="46" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="960" y="534" text-anchor="middle" font-size="14" fill="#0F172A">分析根因并消除攻击源</text>
+  <rect x="200" y="612" width="280" height="46" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="340" y="640" text-anchor="middle" font-size="14" fill="#0F172A">清除残留影响</text>
+  <rect x="560" y="612" width="280" height="46" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="2.5"/>
+  <text x="700" y="640" text-anchor="middle" font-size="15" font-weight="700" fill="#15803D">验证系统安全</text>
+  <rect x="920" y="612" width="260" height="46" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1050" y="640" text-anchor="middle" font-size="14" fill="#0F172A">恢复业务运行</text>
+  <rect x="200" y="717" width="280" height="46" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="745" text-anchor="middle" font-size="14" fill="#0F172A">召开复盘会议</text>
+  <rect x="560" y="717" width="320" height="46" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="720" y="745" text-anchor="middle" font-size="14" fill="#0F172A">生成根因分析报告</text>
+  <rect x="960" y="717" width="320" height="46" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1120" y="745" text-anchor="middle" font-size="14" fill="#0F172A">更新检测规则与应急预案</text>
+  <!-- 图例 -->
+  <rect x="160" y="830" width="16" height="12" rx="8" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="184" y="842" fill="#64748B" font-size="13">圆角矩形 = 开始 / 结束</text>
+  <rect x="360" y="830" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="384" y="842" fill="#64748B" font-size="13">矩形 = 处理动作</text>
+  <polygon points="548,830 556,838 548,846 540,838" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text x="572" y="842" fill="#64748B" font-size="13">菱形 = 判断 / 分支</text>
+  <rect x="720" y="830" width="16" height="12" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2.5"/>
+  <text x="744" y="842" fill="#64748B" font-size="13">双框 = 归档终结</text>
+  <line x1="880" y1="836" x2="915" y2="836" stroke="#475569" stroke-width="2" marker-end="url(#f)"/>
+  <text x="925" y="842" fill="#64748B" font-size="13">实线 = 主流程</text>
+  <line x1="1030" y1="836" x2="1065" y2="836" stroke="#7C3AED" stroke-width="2" stroke-dasharray="8 5" marker-end="url(#fb)"/>
+  <text x="1075" y="842" fill="#64748B" font-size="13">虚线 = 误报 / 反馈</text>
+    <text x="900" y="960" font-size="16" fill="#475569" text-anchor="middle">图8-19 安全事件只有在完成遏制、取证、根因消除和安全验证后才能恢复业务，复盘结论还需回写检测规则与应急预案。</text>
+  </svg>
 </svg>
-
   </main>
 </body>
 </html>

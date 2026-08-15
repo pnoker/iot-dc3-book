@@ -1,8 +1,154 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图6-3 智能楼宇物联网系统微服务参考架构（示意）</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:680px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block}</style></head><body><div data-figure-root><svg width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc"><title id="title">图6-3 智能楼宇物联网系统微服务参考架构（示意）</title><desc id="desc">MQTT、Modbus和BACnet设备分别连接对应Driver，上行数据与下行控制方向分离。</desc><defs><marker id="up" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="down" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker><marker id="blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker></defs><rect width="1200" height="680" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="632" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700">图6-3 智能楼宇物联网系统微服务参考架构（示意）</text><text x="80" y="91" font-size="12" fill="#475569">三类设备由对应协议 Driver 适配；遥测上行与控制下行采用相反方向。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/>
-<g font-family="inherit"><rect x="55" y="130" width="1090" height="90" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="70" y="153" font-size="12" font-weight="650" fill="#475569">北向接入与展示层</text><rect x="130" y="165" width="180" height="42" rx="8" fill="#F8FAFC" stroke="#94A3B8"/><text x="220" y="191" font-size="14" font-weight="650" text-anchor="middle">管理控制台</text><rect x="460" y="165" width="280" height="42" rx="8" fill="#FFF7ED" stroke="#F97316"/><text x="600" y="191" font-size="14" font-weight="650" text-anchor="middle">API 网关 · 路由与鉴权</text><path d="M310 186H460" stroke="#2563EB" stroke-width="2" marker-end="url(#blue)"/>
-<rect x="55" y="235" width="1090" height="115" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="70" y="258" font-size="12" font-weight="650" fill="#475569">云端微服务层：限界上下文与独立数据</text><g fill="#EFF6FF" stroke="#2563EB"><rect x="75" y="278" width="180" height="55" rx="8"/><rect x="290" y="278" width="180" height="55" rx="8"/><rect x="505" y="278" width="180" height="55" rx="8"/><rect x="720" y="278" width="180" height="55" rx="8"/><rect x="935" y="278" width="180" height="55" rx="8"/></g><g font-size="14" font-weight="650" text-anchor="middle"><text x="165" y="310">设备管理 · 关系库</text><text x="380" y="310">数据采集 · 时序库</text><text x="595" y="310">告警引擎 · 规则状态</text><text x="810" y="310">能源分析 · 数仓</text><text x="1025" y="310">用户租户 · 关系库</text></g>
-<rect x="55" y="365" width="1090" height="105" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="70" y="388" font-size="12" font-weight="650" fill="#475569">边缘协议驱动层</text><g fill="#ECFDF5" stroke="#0F766E"><rect x="120" y="402" width="230" height="52" rx="8"/><rect x="485" y="402" width="230" height="52" rx="8"/><rect x="850" y="402" width="230" height="52" rx="8"/></g><g font-size="15" font-weight="650" text-anchor="middle"><text x="235" y="434">MQTT Driver</text><text x="600" y="434">Modbus Driver</text><text x="965" y="434">BACnet Driver</text></g>
-<rect x="55" y="485" width="1090" height="115" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="70" y="508" font-size="12" font-weight="650" fill="#475569">南向设备层</text><g fill="#F8FAFC" stroke="#64748B"><rect x="120" y="532" width="230" height="50" rx="8"/><rect x="485" y="532" width="230" height="50" rx="8"/><rect x="850" y="532" width="230" height="50" rx="8"/></g><g font-size="14" font-weight="650" text-anchor="middle"><text x="235" y="562">MQTT 传感器</text><text x="600" y="562">Modbus 控制器</text><text x="965" y="562">BACnet 空调系统</text></g>
-<g fill="none" stroke-width="2"><path d="M215 532V454" stroke="#0F766E" marker-end="url(#up)"/><path d="M255 454V532" stroke="#F97316" marker-end="url(#down)"/><path d="M580 532V454" stroke="#0F766E" marker-end="url(#up)"/><path d="M620 454V532" stroke="#F97316" marker-end="url(#down)"/><path d="M945 532V454" stroke="#0F766E" marker-end="url(#up)"/><path d="M985 454V532" stroke="#F97316" marker-end="url(#down)"/></g><g font-size="11" font-weight="600"><text x="165" y="495" fill="#0F766E">上行数据</text><text x="265" y="520" fill="#C2410C">下行控制</text><text x="530" y="495" fill="#0F766E">上行数据</text><text x="630" y="520" fill="#C2410C">下行控制</text><text x="895" y="495" fill="#0F766E">上行数据</text><text x="995" y="520" fill="#C2410C">下行控制</text></g></g>
-<line x1="60" y1="615" x2="1140" y2="615" stroke="#E2E8F0"/><text x="600" y="638" font-size="11" fill="#475569" text-anchor="middle">图6-3 每类设备只连接对应协议 Driver，上行遥测与下行控制分别标明方向。</text></svg></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图6-3 智能楼宇物联网系统微服务参考架构（示意）</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图6-3 智能楼宇物联网系统微服务参考架构（示意）</title>
+  <desc id="desc">三类设备由对应协议 Driver 适配；遥测上行与控制下行采用相反方向。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+      <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+      <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16A34A"/></marker>
+      <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图6-3 智能楼宇物联网系统微服务参考架构（示意）</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">三类设备由对应协议 Driver 适配；遥测上行与控制下行采用相反方向。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- ===== 连线（先画） ===== -->
+    <!-- 管理控制台 → API 网关 -->
+    <line x1="620" y1="186" x2="1180" y2="186" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <!-- API 网关 → 微服务分发 -->
+    <line x1="1330" y1="212" x2="1330" y2="296" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <line x1="270" y1="296" x2="1450" y2="296" stroke="#2563EB" stroke-width="1.4"/>
+    <line x1="270" y1="296" x2="270" y2="346" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
+    <line x1="565" y1="296" x2="565" y2="346" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
+    <line x1="860" y1="296" x2="860" y2="346" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
+    <line x1="1155" y1="296" x2="1155" y2="346" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
+    <line x1="1450" y1="296" x2="1450" y2="346" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
+    <!-- 微服务内部数据流 -->
+    <line x1="565" y1="505" x2="858" y2="505" stroke="#F97316" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+    <line x1="862" y1="505" x2="1450" y2="505" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+    <line x1="565" y1="522" x2="1155" y2="522" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <!-- 消息队列总线：Driver → MQ → 数据采集 -->
+    <line x1="470" y1="613" x2="470" y2="573" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+    <line x1="820" y1="613" x2="820" y2="573" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+    <line x1="1170" y1="613" x2="1170" y2="573" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+    <line x1="565" y1="525" x2="565" y2="492" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+    <!-- 设备 ↔ 驱动 上行/下行 -->
+    <line x1="450" y1="745" x2="450" y2="685" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="490" y1="685" x2="490" y2="745" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+    <line x1="800" y1="745" x2="800" y2="685" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="840" y1="685" x2="840" y2="745" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+    <line x1="1150" y1="745" x2="1150" y2="685" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="1190" y1="685" x2="1190" y2="745" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+
+    <!-- ===== 北向接入与展示层 ===== -->
+    <rect x="120" y="130" width="1560" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+    <circle cx="150" cy="164" r="6" fill="#F97316"/>
+    <text x="168" y="172" font-size="18" font-weight="700" fill="#F97316">北向接入与展示层</text>
+    <rect x="320" y="160" width="300" height="52" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+    <text x="340" y="182" font-size="15" font-weight="700" fill="#0F172A">管理控制台</text>
+    <text x="340" y="201" font-size="12" fill="#16A34A">HTTP · WebSocket</text>
+    <rect x="1180" y="160" width="300" height="52" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+    <text x="1200" y="182" font-size="15" font-weight="700" fill="#0F172A">API 网关</text>
+    <text x="1200" y="201" font-size="12" fill="#F97316">路由 · 鉴权 · 统一入口</text>
+
+    <!-- ===== 云端微服务层 ===== -->
+    <rect x="120" y="300" width="1560" height="225" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <circle cx="150" cy="328" r="6" fill="#2563EB"/>
+    <text x="168" y="336" font-size="18" font-weight="700" fill="#2563EB">云端微服务层：限界上下文与独立数据</text>
+    <rect x="145" y="350" width="250" height="140" rx="9" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="163" y="380" font-size="15" font-weight="700" fill="#0F172A">设备管理</text>
+    <text x="163" y="404" font-size="12" fill="#475569">注册 · 认证 · 配置下发</text>
+    <rect x="163" y="430" width="160" height="34" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="243" y="452" font-size="12" fill="#2563EB" text-anchor="middle">存储：关系库</text>
+    <rect x="440" y="350" width="250" height="140" rx="9" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="458" y="380" font-size="15" font-weight="700" fill="#0F172A">数据采集</text>
+    <text x="458" y="404" font-size="12" fill="#475569">格式标准化 · 入时序库</text>
+    <rect x="458" y="430" width="160" height="34" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="538" y="452" font-size="12" fill="#0F766E" text-anchor="middle">存储：时序库</text>
+    <rect x="735" y="350" width="250" height="140" rx="9" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+    <text x="753" y="380" font-size="15" font-weight="700" fill="#0F172A">告警引擎</text>
+    <text x="753" y="404" font-size="12" fill="#475569">规则判定 · 通知</text>
+    <rect x="753" y="430" width="160" height="34" rx="6" fill="#FFF7ED" stroke="#F97316" stroke-width="1.4"/>
+    <text x="833" y="452" font-size="12" fill="#F97316" text-anchor="middle">存储：内存库</text>
+    <rect x="1030" y="350" width="250" height="140" rx="9" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1048" y="380" font-size="15" font-weight="700" fill="#0F172A">能源分析</text>
+    <text x="1048" y="404" font-size="12" fill="#475569">聚合 · 能耗趋势</text>
+    <rect x="1048" y="430" width="160" height="34" rx="6" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.4"/>
+    <text x="1128" y="452" font-size="12" fill="#7C3AED" text-anchor="middle">存储：数仓</text>
+    <rect x="1325" y="350" width="250" height="140" rx="9" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="1343" y="380" font-size="15" font-weight="700" fill="#0F172A">用户租户</text>
+    <text x="1343" y="404" font-size="12" fill="#475569">权限 · 多租户隔离</text>
+    <rect x="1343" y="430" width="160" height="34" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="1423" y="452" font-size="12" fill="#2563EB" text-anchor="middle">存储：关系库</text>
+
+    <!-- 消息队列总线 -->
+    <rect x="380" y="530" width="1000" height="40" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.6" stroke-dasharray="6 4"/>
+    <text x="880" y="556" font-size="15" font-weight="700" fill="#475569" text-anchor="middle">消息队列</text>
+
+    <!-- ===== 边缘协议驱动层 ===== -->
+    <rect x="120" y="580" width="1560" height="100" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+    <circle cx="150" cy="608" r="6" fill="#0F766E"/>
+    <text x="168" y="616" font-size="18" font-weight="700" fill="#0F766E">边缘协议驱动层</text>
+    <rect x="340" y="610" width="260" height="50" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="470" y="640" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT Driver</text>
+    <rect x="690" y="610" width="260" height="50" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="820" y="640" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus Driver</text>
+    <rect x="1040" y="610" width="260" height="50" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="1170" y="640" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">BACnet Driver</text>
+
+    <!-- ===== 南向设备层 ===== -->
+    <rect x="120" y="750" width="1560" height="100" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+    <circle cx="150" cy="778" r="6" fill="#0F766E"/>
+    <text x="168" y="786" font-size="18" font-weight="700" fill="#0F766E">南向设备层</text>
+    <rect x="340" y="780" width="260" height="50" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <text x="470" y="810" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT 传感器</text>
+    <rect x="690" y="780" width="260" height="50" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <text x="820" y="810" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus 控制器</text>
+    <rect x="1040" y="780" width="260" height="50" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <text x="1170" y="810" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">BACnet 空调系统</text>
+
+    <!-- ===== 标签 ===== -->
+    <text x="640" y="178" font-size="13" fill="#2563EB" text-anchor="middle">HTTP / WS</text>
+    <text x="1345" y="255" font-size="13" fill="#2563EB" text-anchor="middle">REST 路由 · 鉴权</text>
+    <text x="712" y="497" font-size="13" fill="#F97316" text-anchor="middle">实时告警</text>
+    <text x="1155" y="497" font-size="13" fill="#7C3AED" text-anchor="middle">事件通知</text>
+    <text x="860" y="516" font-size="13" fill="#64748B" text-anchor="middle">批量导入</text>
+    <text x="430" y="608" font-size="13" fill="#0F766E">标准化报文</text>
+    <text x="442" y="726" font-size="13" fill="#0F766E" text-anchor="middle">上行数据</text>
+    <text x="500" y="726" font-size="13" fill="#F97316" text-anchor="middle">下行控制</text>
+
+    <!-- ===== 图例 ===== -->
+    <line x1="60" y1="890" x2="118" y2="890" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="126" y="895" font-size="14" fill="#475569">同步 / 强依赖（REST 路由）</text>
+    <line x1="420" y1="890" x2="478" y2="890" stroke="#0F766E" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+    <text x="486" y="895" font-size="14" fill="#475569">异步消息（消息队列）</text>
+    <line x1="720" y1="890" x2="778" y2="890" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <text x="786" y="895" font-size="14" fill="#475569">上行数据（实线）</text>
+    <line x1="960" y1="890" x2="1018" y2="890" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+    <text x="1026" y="895" font-size="14" fill="#475569">下行控制（实线）</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图6-3 每类设备只连接对应协议 Driver，上行遥测与下行控制分别标明方向。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

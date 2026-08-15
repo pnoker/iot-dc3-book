@@ -1,1 +1,101 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图5-7 异常检测性能对比示意：规则 vs 机器学习</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:650px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block;width:1200px;height:650px}</style></head><body><div data-figure-root><svg viewBox="0 0 1200 650" role="img" aria-labelledby="title desc"><title id="title">图5-7 异常检测性能对比示意：规则 vs 机器学习</title><desc id="desc">规则强调可解释与确定性，机器学习强调适应性，混合策略负责衔接。</desc><defs><marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="arrow-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker><marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker></defs><rect width="1200" height="650" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="602" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700" text-anchor="start" fill="#0F172A">图5-7 异常检测性能对比示意：规则 vs 机器学习</text><text x="80" y="91" font-size="12" font-weight="400" text-anchor="start" fill="#475569">规则强调可解释与确定性，机器学习强调适应性，混合策略负责衔接。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/><rect x="120" y="155" width="760" height="390" fill="#FFFFFF" stroke="#94A3B8"/><line x1="500" y1="155" x2="500" y2="545" stroke="#CBD5E1"/><line x1="120" y1="350" x2="880" y2="350" stroke="#CBD5E1"/><text x="500" y="580" font-size="12" font-weight="650" text-anchor="middle" fill="#0F172A">适应性：低 → 高</text><text x="95" y="350" font-size="12" font-weight="650" text-anchor="middle" fill="#0F172A">可解释性</text><rect x="180" y="205" width="220" height="80" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/><text x="290.0" y="235" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">规则检测</text><text x="290.0" y="257" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">阈值 · EWMA · 复合规则</text><rect x="590" y="205" width="220" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="700.0" y="235" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">浅层 ML</text><text x="700.0" y="257" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">孤立森林 · LOF</text><rect x="590" y="410" width="220" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/><text x="700.0" y="440" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">深度学习</text><text x="700.0" y="462" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">LSTM · Transformer</text><rect x="390" y="310" width="220" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="500.0" y="340" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">混合策略</text><text x="500.0" y="362" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">边缘规则 + 云端 ML</text><rect x="910" y="190" width="220" height="270" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><text x="1020.0" y="220" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">工程判断</text><text x="1020.0" y="242" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">规则：已知故障可解释</text><text x="1020.0" y="260" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">ML：适应复杂工况</text><text x="1020.0" y="278" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">混合：确定性先过滤</text><text x="1020.0" y="296" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">模型：需版本与回滚</text><line x1="60" y1="590" x2="1140" y2="590" stroke="#E2E8F0"/><text x="600" y="608" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">图5-7 方法选择取决于工况变化、样本条件与部署资源，而不是单一准确率指标。</text></svg></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-7 异常检测性能对比示意：规则 vs 机器学习</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图5-7 异常检测性能对比示意：规则 vs 机器学习</title>
+  <desc id="desc">规则强调可解释与确定性，机器学习强调适应性，混合策略负责衔接。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="mk-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-7 异常检测性能对比示意：规则 vs 机器学习</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">规则强调可解释与确定性，机器学习强调适应性，混合策略负责衔接。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 坐标轴（先画） -->
+    <line x1="140" y1="620" x2="140" y2="170" stroke="#64748B" stroke-width="1.5" marker-end="url(#mk-gray)"/>
+    <text x="140" y="395" transform="rotate(-90 140 395)" font-size="17" font-weight="600" fill="#475569" text-anchor="middle">可解释性</text>
+    <text x="140" y="188" font-size="13" fill="#64748B" text-anchor="middle">高</text>
+    <text x="140" y="640" font-size="13" fill="#64748B" text-anchor="middle">低</text>
+    <line x1="180" y1="650" x2="1230" y2="650" stroke="#64748B" stroke-width="1.5" marker-end="url(#mk-gray)"/>
+    <text x="705" y="684" font-size="17" font-weight="600" fill="#475569" text-anchor="middle">适应性：低 → 高</text>
+
+    <!-- 矩阵网格 -->
+    <rect x="180" y="170" width="1050" height="450" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+    <line x1="705" y1="170" x2="705" y2="620" stroke="#CBD5E1" stroke-width="1"/>
+    <line x1="180" y1="395" x2="1230" y2="395" stroke="#CBD5E1" stroke-width="1"/>
+
+    <!-- 规则检测（左上，灰） -->
+    <rect x="297" y="232" width="290" height="100" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.6"/>
+    <text x="442" y="270" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">规则检测</text>
+    <text x="442" y="296" font-size="13" fill="#475569" text-anchor="middle">阈值 · EWMA · 复合规则</text>
+    <text x="442" y="320" font-size="13" font-weight="600" fill="#64748B" text-anchor="middle">高可解释 / 低适应</text>
+
+    <!-- 浅层 ML（右上，橙） -->
+    <rect x="823" y="232" width="290" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+    <text x="968" y="270" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">浅层 ML</text>
+    <text x="968" y="296" font-size="13" fill="#475569" text-anchor="middle">孤立森林 · LOF</text>
+    <text x="968" y="320" font-size="13" font-weight="600" fill="#F97316" text-anchor="middle">适应性中等</text>
+
+    <!-- 深度学习（右下，橙/红） -->
+    <rect x="823" y="458" width="290" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+    <text x="968" y="496" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">深度学习</text>
+    <text x="968" y="522" font-size="13" fill="#475569" text-anchor="middle">LSTM · Transformer</text>
+    <text x="968" y="546" font-size="13" font-weight="600" fill="#DC2626" text-anchor="middle">低可解释 / 高适应</text>
+
+    <!-- 混合策略（中心，蓝） -->
+    <rect x="560" y="345" width="290" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <text x="705" y="383" font-size="19" font-weight="700" fill="#0F172A" text-anchor="middle">混合策略</text>
+    <text x="705" y="409" font-size="13" fill="#475569" text-anchor="middle">边缘规则 + 云端 ML</text>
+    <text x="705" y="433" font-size="13" font-weight="600" fill="#2563EB" text-anchor="middle">兼顾可解释与适应</text>
+
+    <!-- 左下象限说明 -->
+    <text x="442" y="500" font-size="14" fill="#94A3B8" text-anchor="middle">低可解释 × 低适应</text>
+    <text x="442" y="526" font-size="13" fill="#94A3B8" text-anchor="middle">（通常不采用）</text>
+
+    <!-- 工程判断 -->
+    <rect x="1280" y="170" width="460" height="450" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <text x="1310" y="210" font-size="20" font-weight="700" fill="#334155">工程判断</text>
+    <circle cx="1330" cy="252" r="4" fill="#94A3B8"/>
+    <text x="1344" y="258" font-size="15" fill="#475569">规则：已知故障可解释、误报可控</text>
+    <circle cx="1330" cy="296" r="4" fill="#F97316"/>
+    <text x="1344" y="302" font-size="15" fill="#475569">ML：召回率更高、适应复杂工况</text>
+    <circle cx="1330" cy="340" r="4" fill="#2563EB"/>
+    <text x="1344" y="346" font-size="15" fill="#475569">混合：确定性先过滤、模型再兜底</text>
+    <circle cx="1330" cy="384" r="4" fill="#7C3AED"/>
+    <text x="1344" y="390" font-size="15" fill="#475569">模型：需版本管理与回滚机制</text>
+    <circle cx="1330" cy="428" r="4" fill="#DC2626"/>
+    <text x="1344" y="434" font-size="15" fill="#475569">实时边缘推理须权衡部署延迟</text>
+    <text x="1344" y="462" font-size="15" fill="#475569">与可解释性之间的取舍。</text>
+    <line x1="1310" y1="492" x2="1710" y2="492" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="1310" y="528" font-size="14" fill="#64748B">方法选择取决于工况变化、样本条件</text>
+    <text x="1310" y="556" font-size="14" fill="#64748B">与部署资源，而不是单一准确率指标。</text>
+
+    <!-- 图例 -->
+    <rect x="300" y="744" width="26" height="18" rx="4" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="336" y="758" font-size="15" fill="#475569">规则 / 决策组件</text>
+    <rect x="620" y="744" width="26" height="18" rx="4" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="656" y="758" font-size="15" fill="#475569">AI 组件（浅层 ML / 深度学习）</text>
+    <rect x="1020" y="744" width="26" height="18" rx="4" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1056" y="758" font-size="15" fill="#475569">混合策略（平台 / 架构组件）</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-7 异常检测性能对比示意：规则检测、浅层机器学习、深度学习与混合策略在适应性和可解释性上的定位，方法选择取决于工况、样本与部署资源。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

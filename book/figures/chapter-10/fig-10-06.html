@@ -1,11 +1,81 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>图10-6 原始数据与清洗后数据对比</title>
-<style>html,body{margin:0;background:#F8FAFC;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;color:#0F172A}.page{width:1200px;margin:0 auto}svg{display:block}text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}</style></head>
-<body><main class="page"><svg data-figure-root="fig-10-06" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
-<title id="title">图10-6 原始数据与清洗后数据对比</title><desc id="desc">上下对齐展示原始温度序列的缺失段和毛刺点，以及前向填充和平滑替换后的结果。</desc>
-<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#2563EB"/></marker><marker id="arrow2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#0F766E"/></marker></defs>
-<rect width="1200" height="700" fill="#F8FAFC"/><rect x="30" y="24" width="1140" height="652" rx="16" fill="#FFFFFF" stroke="#CBD5E1"/>
-<circle cx="62" cy="62" r="6" fill="#2563EB"/><text x="80" y="70" font-size="24" font-weight="700">图10-6 原始数据与清洗后数据对比</text><text x="1138" y="68" text-anchor="end" font-size="11" font-weight="700" fill="#475569">FLOWCHART / DATA QUALITY</text><line x1="60" y1="96" x2="1140" y2="96" stroke="#E2E8F0"/>
-<text x="60" y="126" font-size="13" fill="#475569">先标记异常成因，再选择处理方法；短时通信中断与单点电磁毛刺不能使用同一策略。</text><rect x="100" y="180" width="1000" height="180" rx="10" fill="#F8FAFC" stroke="#CBD5E1"/><text x="125" y="208" font-size="14" font-weight="700">原始数据</text><line x1="150" y1="325" x2="1050" y2="325" stroke="#94A3B8"/><line x1="150" y1="225" x2="150" y2="325" stroke="#94A3B8"/><rect x="100" y="430" width="1000" height="180" rx="10" fill="#F8FAFC" stroke="#CBD5E1"/><text x="125" y="458" font-size="14" font-weight="700">清洗后数据</text><line x1="150" y1="575" x2="1050" y2="575" stroke="#94A3B8"/><line x1="150" y1="475" x2="150" y2="575" stroke="#94A3B8"/><polyline points="160,285 230,275 300,280 370,270 440,278" fill="none" stroke="#475569" stroke-width="3"/><polyline points="580,275 650,280 720,272 790,278 850,205 910,276 980,270 1040,275" fill="none" stroke="#475569" stroke-width="3"/><rect x="440" y="235" width="140" height="72" rx="8" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 4"/><text x="510" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="#DC2626">通信中断 · 缺失段</text><circle cx="850" cy="205" r="24" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 4"/><text x="850" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#DC2626">电磁干扰 · 毛刺</text>
-<polyline points="160,535 230,525 300,530 370,520 440,528 510,528 580,525 650,530 720,522 790,528 850,526 910,526 980,520 1040,525" fill="none" stroke="#2563EB" stroke-width="3"/><rect x="430" y="550" width="170" height="40" rx="8" fill="#EFF6FF" stroke="#2563EB"/><text x="515" y="575" text-anchor="middle" font-size="11" fill="#2563EB">短缺失：前向填充</text><rect x="770" y="550" width="175" height="40" rx="8" fill="#EFF6FF" stroke="#2563EB"/><text x="857" y="575" text-anchor="middle" font-size="11" fill="#2563EB">毛刺：替换为平滑值</text><text x="600" y="658" text-anchor="middle" font-size="11" fill="#475569">图10-6 时间轴上下对齐：缺失段按短时中断策略填充，毛刺点按局部窗口替换；原始记录和质量标记仍应保留。</text>
-</svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图10-6 原始数据与清洗后数据对比</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图10-6 原始数据与清洗后数据对比</title>
+  <desc id="desc">上下对齐展示原始温度序列的缺失段和毛刺点，以及前向填充和平滑替换后的结果。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="arr-gray" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#475569"/></marker>
+    </defs>
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-6 原始数据与清洗后数据对比</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">先标记异常成因，再选择处理方法；短时通信中断与单点电磁毛刺不能使用同一策略。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 上：原始数据 -->
+    <rect x="160" y="160" width="1480" height="250" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"/>
+    <text x="185" y="194" font-size="19" font-weight="700" fill="#0F172A">原始数据</text>
+    <text x="185" y="218" font-size="13" fill="#64748B">包含一个空缺段和一个毛刺点</text>
+    <line x1="240" y1="240" x2="240" y2="400" stroke="#94A3B8" stroke-width="1.6"/>
+    <line x1="240" y1="400" x2="1560" y2="400" stroke="#94A3B8" stroke-width="1.6"/>
+    <text x="222" y="320" transform="rotate(-90 222 320)" font-size="13" fill="#64748B" text-anchor="middle">温度</text>
+    <text x="900" y="428" font-size="13" fill="#64748B" text-anchor="middle">时间</text>
+    <!-- 原始曲线（灰色虚线） -->
+    <polyline points="270,300 340,296 410,304 480,298 550,302" fill="none" stroke="#475569" stroke-width="2.4" stroke-dasharray="8 5"/>
+    <polyline points="790,300 860,304 930,296 1000,302 1070,298 1140,303 1210,297 1270,210 1330,299 1400,302 1470,296 1540,301" fill="none" stroke="#475569" stroke-width="2.4" stroke-dasharray="8 5"/>
+    <!-- 缺失段标注 -->
+    <rect x="550" y="245" width="220" height="155" rx="8" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 4"/>
+    <text x="660" y="228" font-size="14" font-weight="700" fill="#DC2626" text-anchor="middle">通信中断 · 缺失段</text>
+    <!-- 毛刺标注 -->
+    <circle cx="1270" cy="210" r="28" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 4"/>
+    <text x="1270" y="164" font-size="14" font-weight="700" fill="#DC2626" text-anchor="middle">电磁干扰 · 毛刺</text>
+
+    <!-- 清洗箭头 -->
+    <line x1="900" y1="410" x2="900" y2="478" stroke="#475569" stroke-width="2.4" marker-end="url(#arr-gray)"/>
+    <text x="930" y="452" font-size="16" font-weight="700" fill="#475569">清洗：缺失填充 + 毛刺平滑</text>
+
+    <!-- 下：清洗后数据 -->
+    <rect x="160" y="490" width="1480" height="250" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="185" y="524" font-size="19" font-weight="700" fill="#0F172A">清洗后数据</text>
+    <text x="185" y="548" font-size="13" fill="#64748B">空缺段前向填充补平，毛刺点替换为平滑值</text>
+    <line x1="240" y1="570" x2="240" y2="730" stroke="#94A3B8" stroke-width="1.6"/>
+    <line x1="240" y1="730" x2="1560" y2="730" stroke="#94A3B8" stroke-width="1.6"/>
+    <text x="222" y="650" transform="rotate(-90 222 650)" font-size="13" fill="#64748B" text-anchor="middle">温度</text>
+    <text x="900" y="758" font-size="13" fill="#64748B" text-anchor="middle">时间</text>
+    <!-- 清洗后曲线（蓝色实线） -->
+    <polyline points="270,632 340,628 410,630 480,626 550,630 620,628 690,630 760,630 830,632 900,628 970,630 1040,629 1110,631 1180,628 1240,629 1300,630 1370,629 1440,628 1510,630 1540,629" fill="none" stroke="#2563EB" stroke-width="2.6"/>
+    <!-- 处理标注 -->
+    <rect x="556" y="560" width="190" height="40" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="651" y="585" font-size="14" fill="#2563EB" text-anchor="middle">短缺失：前向填充</text>
+    <rect x="1140" y="560" width="200" height="40" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="1240" y="585" font-size="14" fill="#2563EB" text-anchor="middle">毛刺：替换为平滑值</text>
+
+    <!-- 图例 -->
+    <rect x="420" y="792" width="960" height="56" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"/>
+    <line x1="470" y1="820" x2="498" y2="820" stroke="#2563EB" stroke-width="2.6"/>
+    <text x="508" y="825" font-size="16" fill="#475569">蓝色实线：清洗后曲线</text>
+    <line x1="700" y1="820" x2="728" y2="820" stroke="#475569" stroke-width="2.4" stroke-dasharray="8 5"/>
+    <text x="738" y="825" font-size="16" fill="#475569">灰色虚线：原始曲线</text>
+    <circle cx="1000" cy="820" r="7" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="1018" y="825" font-size="16" fill="#475569">红色圆圈：异常位置</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图10-6 某产线电机温度数据清洗前后的对比。左侧空白为通信中断导致的缺失，右侧尖峰为电磁干扰导致的毛刺。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

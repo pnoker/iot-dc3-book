@@ -2,104 +2,72 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-3 工业软件的结构性局限：三条裂缝</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}
-    main.figure{width:1200px;height:820px;margin:0;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif}
-    svg{display:block}text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg">
-  <title id="ft">图1-3 工业软件的结构性局限：三条裂缝</title>
-  <desc id="fd">在 ISA-95 金字塔上标注三道无法靠升级版本解决的架构裂缝：数据被层级隔断、决策规则写死在代码里、系统封闭为孤岛；这三条裂缝驱动了从工业软件到物联网平台的跃迁。</desc>
-
-  <rect width="1200" height="820" fill="#F8FAFC"/>
-
-  <!-- 标题区 -->
-  <circle cx="48" cy="42" r="6" fill="#2563EB"/>
-  <text x="66" y="49" font-size="24" font-weight="700" fill="#0F172A">图1-3 工业软件的结构性局限：三条裂缝</text>
-  <text x="66" y="73" font-size="13" fill="#475569">四层金字塔在 21 世纪暴露出三个无法靠"升级版本"解决的架构矛盾</text>
-  <line x1="32" y1="88" x2="1168" y2="88" stroke="#CBD5E1"/>
-  <rect x="24" y="104" width="1152" height="640" rx="8" fill="#FFFFFF"/>
-
-  <!-- 左侧：金字塔轮廓（淡色）+ 三条裂缝 -->
-  <!-- 裂缝③ 封闭孤岛：金字塔外围虚线墙（紫）-->
-  <rect x="100" y="150" width="440" height="430" rx="10" fill="none" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 4"/>
-  <text x="320" y="140" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">私有网络 · 私有协议 · 私有格式</text>
-
-  <!-- 金字塔 4 层（淡色轮廓，中心 x=320）-->
-  <path d="M250 180 L390 180 L410 260 L230 260 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-  <text x="320" y="226" font-size="12" fill="#94A3B8" text-anchor="middle">L4 ERP</text>
-  <path d="M230 260 L410 260 L430 340 L210 340 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-  <text x="320" y="306" font-size="12" fill="#94A3B8" text-anchor="middle">L3 MES</text>
-  <path d="M210 340 L430 340 L450 420 L190 420 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-  <text x="320" y="386" font-size="12" fill="#94A3B8" text-anchor="middle">L2 SCADA</text>
-  <path d="M190 420 L450 420 L470 500 L170 500 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-  <text x="320" y="466" font-size="12" fill="#94A3B8" text-anchor="middle">L1 PLC</text>
-
-  <!-- 裂缝① 数据隔断：L2-L3 间横向锯齿断裂（红）-->
-  <path d="M170 500 L470 500 L470 500" fill="none"/>
-  <path d="M200 340 L210 332 L222 344 L234 332 L246 344 L258 332 L270 344 L282 332 L294 344 L306 332 L318 344 L330 332 L342 344 L354 332 L366 344 L378 332 L390 344 L402 332 L414 344 L426 332 L440 340"
-        fill="none" stroke="#DC2626" stroke-width="3"/>
-  <circle cx="470" cy="340" r="13" fill="#DC2626"/><text x="470" y="345" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-
-  <!-- 裂缝② 规则写死：L1 层锁图标（橙）-->
-  <g transform="translate(290 432)">
-    <rect x="0" y="14" width="60" height="44" rx="5" fill="#EA580C"/>
-    <path d="M12 14 V6 a18 18 0 0 1 36 0 V14" fill="none" stroke="#EA580C" stroke-width="5"/>
-    <text x="30" y="42" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">&lt;/&gt;</text>
-  </g>
-  <circle cx="470" cy="466" r="13" fill="#EA580C"/><text x="470" y="471" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-
-  <!-- 裂缝③ 标号（紫，在外墙上）-->
-  <circle cx="520" cy="170" r="13" fill="#7C3AED"/><text x="520" y="175" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-
-  <!-- 外部 AI 被隔绝在墙外 -->
-  <g transform="translate(40 560)">
-    <rect x="0" y="0" width="120" height="46" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-dasharray="3 3"/>
-    <text x="60" y="20" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">外部 AI / 智能体</text>
-    <text x="60" y="36" font-size="10" fill="#94A3B8" text-anchor="middle">无法安全接入</text>
-  </g>
-  <text x="175" y="588" font-size="20" fill="#94A3B8">⇠ ⃠</text>
-
-  <!-- 右侧：三条裂缝详解卡片 -->
-  <!-- 卡片① -->
-  <rect x="600" y="130" width="552" height="160" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
-  <circle cx="628" cy="160" r="16" fill="#DC2626"/><text x="628" y="166" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-  <text x="658" y="166" font-size="16" font-weight="700" fill="#0F172A">数据被层级隔断，跨层联动靠人</text>
-  <text x="624" y="200" font-size="12" fill="#334155">振动数据在 SCADA、维护记录在 MES、备件成本在 ERP——三者没有自动通路。</text>
-  <text x="624" y="222" font-size="12" fill="#334155">想回答"换备件后电机振动有改善吗"，要从三个系统导出 CSV，用 Excel 手工对齐。</text>
-  <text x="624" y="252" font-size="12" font-weight="700" fill="#B91C1C">层与层的格式转换、语义映射、时间对齐，全部依赖人工。</text>
-
-  <!-- 卡片② -->
-  <rect x="600" y="310" width="552" height="160" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.5"/>
-  <circle cx="628" cy="340" r="16" fill="#EA580C"/><text x="628" y="346" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-  <text x="658" y="346" font-size="16" font-weight="700" fill="#0F172A">决策规则写死在代码里，环境一变就过时</text>
-  <text x="624" y="380" font-size="12" fill="#334155">PLC 梯形图、SCADA 告警规则、MES 排程算法——部署时一行行写死。</text>
-  <text x="624" y="402" font-size="12" fill="#334155">工况变了、产品换了、设备老了，就要有人重新编程；老师傅退休，经验无法"拷贝"。</text>
-  <text x="624" y="432" font-size="12" font-weight="700" fill="#C2410C">只能匹配预设条件，不能自己归纳新规则。</text>
-
-  <!-- 卡片③ -->
-  <rect x="600" y="490" width="552" height="160" rx="8" fill="#FAF5FF" stroke="#7C3AED" stroke-width="1.5"/>
-  <circle cx="628" cy="520" r="16" fill="#7C3AED"/><text x="628" y="526" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-  <text x="658" y="526" font-size="16" font-weight="700" fill="#0F172A">系统是封闭孤岛，外部智能无法安全接入</text>
-  <text x="624" y="560" font-size="12" fill="#334155">私有网络、私有协议、私有数据格式。外部 AI 想查设备状态、下发一条校验指令——</text>
-  <text x="624" y="582" font-size="12" fill="#334155">要为每个品牌 PLC 写适配器、每种 SCADA 写 SQL、每个 MES API 写包装器。</text>
-  <text x="624" y="612" font-size="12" font-weight="700" fill="#6D28D9">这不是技术对接，而是巴别塔式的语义翻译工程。</text>
-
-  <!-- 底部：跃迁 -->
-  <rect x="24" y="664" width="1152" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
-  <text x="600" y="690" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">正是这三条裂缝，驱动了"从工业软件到 IoT 平台"的跃迁：数据归一 · 能力开放 · 闭环自动化（见 1.1.4）</text>
-  <text x="600" y="710" font-size="11" fill="#475569" text-anchor="middle">物联网平台要补的不是"把设备连上网"，而是把以人为中心的信息架构升级为以数据-智能为中心</text>
-
-  <!-- 底部图题（居中，与 fig-01-03 等统一）-->
-  <line x1="32" y1="742" x2="1168" y2="742" stroke="#CBD5E1"/>
-  <text x="600" y="773" font-size="12" font-weight="700" text-anchor="middle" fill="#DC2626">三条无法靠"升级版本"解决的架构裂缝</text>
-  <text x="600" y="798" font-size="11" text-anchor="middle" fill="#475569">图1-3 三道架构裂缝——数据被层级隔断、决策规则写死在代码里、系统封闭为孤岛——驱动了从工业软件到物联网平台的跃迁。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-3 工业软件的结构性局限：三条裂缝</title>
+  <desc id="desc">ISA-95 金字塔的三条结构性裂缝</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-3 工业软件的结构性局限：三条裂缝</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">金字塔上的三道裂缝与详解卡片一一对应</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<!-- 左：金字塔轮廓 -->
+<polygon points="380,170 650,170 690,740 70,740" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+<line x1="164" y1="300" x2="596" y2="300" stroke="#E2E8F0" stroke-width="1.4"/>
+<line x1="122" y1="440" x2="638" y2="440" stroke="#E2E8F0" stroke-width="1.4"/>
+<line x1="90" y1="580" x2="670" y2="580" stroke="#E2E8F0" stroke-width="1.4"/>
+<text x="380" y="740" font-size="18" fill="#64748B" text-anchor="middle">ISA-95 金字塔</text>
+<!-- 裂缝折线 -->
+<path d="M330,340 l30,-24 l30,24 l30,-24 l30,24" fill="none" stroke="#DC2626" stroke-width="4"/>
+<text x="560" y="330" font-size="18" font-weight="700" fill="#DC2626">裂缝 1 数据隔断</text>
+<path d="M300,470 l30,-24 l30,24 l30,-24 l30,24" fill="none" stroke="#F97316" stroke-width="4"/>
+<text x="560" y="460" font-size="18" font-weight="700" fill="#C2410C">裂缝 2 规则写死</text>
+<path d="M260,610 l30,-24 l30,24 l30,-24 l30,24" fill="none" stroke="#7C3AED" stroke-width="4"/>
+<text x="560" y="600" font-size="18" font-weight="700" fill="#7C3AED">裂缝 3 封闭孤岛</text>
+<!-- 指向右侧卡片的虚线 -->
+<line x1="700" y1="330" x2="780" y2="260" stroke="#DC2626" stroke-width="2" stroke-dasharray="6,5" marker-end="url(#ar)"/>
+<line x1="690" y1="470" x2="780" y2="450" stroke="#F97316" stroke-width="2" stroke-dasharray="6,5" marker-end="url(#ao)"/>
+<line x1="675" y1="610" x2="780" y2="640" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6,5" marker-end="url(#ap)"/>
+<!-- 右：三卡片详解 -->
+<rect x="780" y="180" width="980" height="160" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+<text x="810" y="222" font-size="23" font-weight="700" fill="#B91C1C">裂缝 1 · 数据被层级隔断</text>
+<text x="810" y="262" font-size="18" fill="#475569">振动数据在 SCADA、维护记录在 MES、备件成本在 ERP——</text>
+<text x="810" y="294" font-size="18" fill="#475569">三者无自动通路，跨层联动全靠人工对齐。</text>
+<rect x="780" y="360" width="980" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="810" y="402" font-size="23" font-weight="700" fill="#C2410C">裂缝 2 · 规则写死在代码里</text>
+<text x="810" y="442" font-size="18" fill="#475569">PLC 梯形图、SCADA 告警、MES 排程在部署时写死，</text>
+<text x="810" y="474" font-size="18" fill="#475569">工况一变、设备老化，就需要有人重新编程。</text>
+<rect x="780" y="540" width="980" height="160" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+<text x="810" y="582" font-size="23" font-weight="700" fill="#6D28D9">裂缝 3 · 系统封闭为孤岛</text>
+<text x="810" y="622" font-size="18" fill="#475569">私有网络 / 协议 / 格式，外部 AI 需为每个品牌 PLC 写适配器、</text>
+<text x="810" y="654" font-size="18" fill="#475569">为每种数据库写 SQL——巴别塔式的语义翻译工程。</text>
+<!-- 底部引出 -->
+<rect x="40" y="720" width="1720" height="150" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="900" y="770" font-size="24" font-weight="700" fill="#0F766E" text-anchor="middle">三条裂缝均源自 ISA-95 信息架构本身，无法靠升级版本解决</text>
+<text x="900" y="812" font-size="19" fill="#334155" text-anchor="middle">共同驱动「数据归一 · 能力开放 · 闭环自动化」的物联网平台跃迁</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-3 工业软件的结构性局限：三条裂缝。数据被层级隔断、规则写死在代码里、系统封闭为孤岛，</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">共同驱动了从工业软件到物联网平台的架构跃迁。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

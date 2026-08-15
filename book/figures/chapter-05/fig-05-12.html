@@ -1,1 +1,79 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图5-12 平台层延伸阅读工具链全景图</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:620px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block;width:1200px;height:620px}</style></head><body><div data-figure-root><svg viewBox="0 0 1200 620" role="img" aria-labelledby="title desc"><title id="title">图5-12 平台层延伸阅读工具链全景图</title><desc id="desc">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</desc><defs><marker id="b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="t" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker><marker id="g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker><marker id="o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker></defs><rect width="1200" height="620" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="572" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700" text-anchor="start" fill="#0F172A">图5-12 平台层延伸阅读工具链全景图</text><text x="80" y="91" font-size="12" font-weight="400" text-anchor="start" fill="#475569">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/><rect x="350" y="205" width="500" height="305" rx="14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/><text x="364" y="227" font-size="12" font-weight="650" text-anchor="start" fill="#475569">跨层编排：KubeEdge / Kubernetes</text><path d="M105 475L105 165" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#b)"/><text x="105" y="320" font-size="11" font-weight="650" text-anchor="middle" fill="#2563EB">上报 → 落库 → 查询</text><rect x="160" y="135" width="880" height="66" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="600.0" y="164" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">可视化与监控</text><text x="600.0" y="185" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">Prometheus · Grafana</text><rect x="160" y="230" width="880" height="66" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="600.0" y="259" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">消息与流处理</text><text x="600.0" y="280" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">Mosquitto · Kafka · Flink</text><rect x="160" y="325" width="880" height="66" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="600.0" y="354" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">时序存储</text><text x="600.0" y="375" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">InfluxDB · TimescaleDB</text><rect x="160" y="420" width="880" height="66" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="600.0" y="449" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">设备接入</text><text x="600.0" y="470" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">IoT DC3 Driver · EdgeX</text><rect x="405" y="505" width="390" height="54" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><text x="600.0" y="534" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">编排负责部署、更新与调度</text><text x="600.0" y="555" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">不替代消息、存储或设备接入能力</text><line x1="60" y1="560" x2="1140" y2="560" stroke="#E2E8F0"/><text x="600" y="578" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">图5-12 工具选择应沿数据链路按职责组合，容器编排横跨消息与存储层但不替代业务组件。</text></svg></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-12 平台层延伸阅读工具链全景图</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图5-12 平台层延伸阅读工具链全景图</title>
+  <desc id="desc">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-12 平台层延伸阅读工具链全景图</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 数据流向（先画） -->
+    <line x1="200" y1="575" x2="200" y2="185" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="188" y="449" font-size="14" font-weight="600" fill="#475569" text-anchor="end">数据上报</text>
+    <text x="188" y="384" font-size="14" font-weight="600" fill="#475569" text-anchor="end">消费落库</text>
+    <text x="188" y="319" font-size="14" font-weight="600" fill="#475569" text-anchor="end">查询/告警</text>
+
+    <!-- 跨层编排（虚线覆盖消息与时序两层，先画） -->
+    <rect x="320" y="250" width="1180" height="250" rx="14" fill="#7C3AED" fill-opacity="0.06" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="8 4"/>
+    <text x="344" y="282" font-size="16" font-weight="700" fill="#7C3AED">边缘与容器编排：KubeEdge / Kubernetes</text>
+
+    <!-- 可视化与监控 -->
+    <rect x="320" y="140" width="1180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="360" y="182" font-size="20" font-weight="700" fill="#0F172A">可视化与监控</text>
+    <text x="360" y="210" font-size="13" fill="#64748B">查询 · 告警 · 看板</text>
+    <text x="760" y="192" font-size="16" fill="#475569">Prometheus · Grafana</text>
+
+    <!-- 消息与流处理 -->
+    <rect x="320" y="270" width="1180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="360" y="312" font-size="20" font-weight="700" fill="#0F172A">消息与流处理</text>
+    <text x="360" y="340" font-size="13" fill="#64748B">缓冲 · 削峰 · 流处理</text>
+    <text x="760" y="322" font-size="16" fill="#475569">Mosquitto · Kafka · Flink</text>
+
+    <!-- 时序存储 -->
+    <rect x="320" y="400" width="1180" height="90" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="360" y="442" font-size="20" font-weight="700" fill="#0F172A">时序存储</text>
+    <text x="360" y="470" font-size="13" fill="#64748B">高效存储 · 降采样</text>
+    <text x="760" y="452" font-size="16" fill="#475569">InfluxDB · TimescaleDB</text>
+
+    <!-- 设备接入 -->
+    <rect x="320" y="530" width="1180" height="90" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="360" y="572" font-size="20" font-weight="700" fill="#0F172A">设备接入</text>
+    <text x="360" y="600" font-size="13" fill="#64748B">协议接入 · 物模型</text>
+    <text x="760" y="582" font-size="16" fill="#475569">IoT DC3 Driver · EdgeX</text>
+
+    <!-- 说明与图例 -->
+    <rect x="320" y="660" width="1180" height="150" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <circle cx="352" cy="700" r="4" fill="#7C3AED"/>
+    <text x="366" y="706" font-size="15" fill="#475569">边缘与容器编排：负责部署、更新与调度，横跨消息与时序两层。</text>
+    <circle cx="352" cy="736" r="4" fill="#7C3AED"/>
+    <text x="366" y="742" font-size="15" fill="#475569">编排不替代消息、存储或设备接入能力，各组件沿数据链路按职责组合。</text>
+    <line x1="760" y1="700" x2="810" y2="700" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="822" y="706" font-size="15" fill="#475569">数据流向（上报 → 落库 → 查询）</text>
+    <rect x="760" y="722" width="50" height="24" rx="4" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 4"/>
+    <text x="822" y="740" font-size="15" fill="#475569">跨层编排范围（虚线框）</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-12 平台层延伸阅读工具链全景图：开源工具沿数据上报、消费落库、查询告警的链路分层，边缘与容器编排横跨消息与存储两层但不替代业务组件。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

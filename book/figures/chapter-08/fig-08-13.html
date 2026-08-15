@@ -1,1 +1,106 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图8-13 智能家居多租户系统架构</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}body{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px}</style></head><body><main class="page" data-figure-root><svg width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc"><title id="title">图8-13 智能家居多租户系统架构</title><desc id="desc">Gateway 按 tenant_id 分流；租户 A 使用共享 Pod，租户 B 独享 VPC、Pod 与数据库，租户 C 独享 Pod 和 Redis 命名空间并共享数据库。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker></defs><rect width="1200" height="700" fill="#F8FAFC"/><circle cx="42" cy="40" r="6" fill="#2563EB"/><text x="58" y="48" font-size="24" font-weight="700">图8-13 智能家居多租户系统架构</text><text x="58" y="76" font-size="13" fill="#475569">混合隔离按租户风险和负载分配资源，C 与正文一致采用独享 Pod。</text><rect x="28" y="104" width="1144" height="520" rx="8" fill="#FFF" stroke="#E2E8F0"/><rect x="70" y="125" width="1060" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB"/><text x="600" y="154" text-anchor="middle" font-size="16" font-weight="700">API Gateway + JWT / tenant_id</text><text x="600" y="177" text-anchor="middle" font-size="12" fill="#475569">统一认证后按租户路由到对应计算资源</text><g stroke-width="2"><rect x="70" y="245" width="310" height="300" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-dasharray="7 4"/><rect x="445" y="245" width="310" height="300" rx="10" fill="#FEF2F2" stroke="#DC2626"/><rect x="820" y="245" width="310" height="300" rx="10" fill="#ECFDF5" stroke="#0F766E"/></g><g text-anchor="middle"><text x="225" y="278" font-size="17" font-weight="700">租户 A · 共享型</text><text x="600" y="278" font-size="17" font-weight="700">租户 B · 强隔离</text><text x="975" y="278" font-size="17" font-weight="700">租户 C · 中强度隔离</text></g><g stroke-width="1.6"><rect x="105" y="310" width="240" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-dasharray="6 4"/><rect x="105" y="405" width="240" height="60" rx="8" fill="#FFF" stroke="#94A3B8" stroke-dasharray="6 4"/><rect x="480" y="310" width="240" height="60" rx="8" fill="#FEF2F2" stroke="#DC2626"/><rect x="480" y="405" width="240" height="60" rx="8" fill="#FEF2F2" stroke="#DC2626"/><rect x="855" y="310" width="240" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E"/><rect x="855" y="405" width="240" height="60" rx="8" fill="#FFF" stroke="#94A3B8" stroke-dasharray="6 4"/></g><g text-anchor="middle"><text x="225" y="346" font-size="15" font-weight="700">共享 Pod 池</text><text x="225" y="431" font-size="14" font-weight="700">共享 Schema / Redis</text><text x="225" y="451" font-size="11" fill="#475569">租户键隔离</text><text x="600" y="346" font-size="15" font-weight="700">独享 Pod 池</text><text x="600" y="431" font-size="14" font-weight="700">独享 MySQL / Redis</text><text x="600" y="451" font-size="11" fill="#475569">独享 VPC</text><text x="975" y="346" font-size="15" font-weight="700">独享 Pod 组</text><text x="975" y="431" font-size="14" font-weight="700">共享数据库</text><text x="975" y="451" font-size="11" fill="#475569">独享 Redis 命名空间</text></g><g stroke="#2563EB" stroke-width="2" marker-end="url(#a)"><path d="M300 195 V220 H225 V240" fill="none"/><path d="M600 195 V240" fill="none"/><path d="M900 195 V220 H975 V240" fill="none"/></g><rect x="855" y="490" width="240" height="34" rx="6" fill="#ECFDF5" stroke="#0F766E"/><text x="975" y="512" text-anchor="middle" font-size="12" font-weight="700" fill="#0F766E">Kubernetes Namespace + NetworkPolicy</text><line x1="40" y1="640" x2="1160" y2="640" stroke="#E2E8F0"/><text x="600" y="670" text-anchor="middle" font-size="11" fill="#475569">图8-13 A 共享计算与数据；B 全维度独享；C 独享计算与缓存命名空间、共享数据库。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图8-13 智能家居多租户系统架构</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-13 智能家居多租户系统架构</title>
+  <desc id="desc">Gateway 按 tenant_id 分流；租户 A 使用共享 Pod，租户 B 独享 VPC、Pod 与数据库，租户 C 独享 Pod 和 Redis 命名空间并共享数据库。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-13 智能家居多租户系统架构</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">混合隔离按租户风险和负载分配资源，C 与正文一致采用独享 Pod。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <defs>
+    <marker id="rt" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+  </defs>
+  <!-- 纵向路由连线 -->
+  <line x1="400" y1="215" x2="400" y2="255" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="900" y1="215" x2="900" y2="255" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="1400" y1="215" x2="1400" y2="255" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="400" y1="315" x2="400" y2="350" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="900" y1="315" x2="900" y2="350" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="1400" y1="315" x2="1400" y2="350" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="400" y1="500" x2="400" y2="520" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="900" y1="500" x2="900" y2="520" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="1400" y1="500" x2="1400" y2="520" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="400" y1="660" x2="400" y2="680" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="900" y1="660" x2="900" y2="680" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <line x1="1400" y1="660" x2="1400" y2="680" stroke="#475569" stroke-width="1.8" marker-end="url(#rt)"/>
+  <!-- 租户层 -->
+  <rect x="240" y="150" width="320" height="65" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="400" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">租户 A · 共享型</text>
+  <rect x="740" y="150" width="320" height="65" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="900" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">租户 B · 强隔离</text>
+  <rect x="1240" y="150" width="320" height="65" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1400" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">租户 C · 中强度隔离</text>
+  <!-- 网关与认证层 -->
+  <rect x="180" y="255" width="1440" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="288" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">API Gateway + JWT / tenant_id</text>
+  <text x="900" y="308" text-anchor="middle" font-size="13" fill="#475569">统一认证后按租户路由到对应计算资源</text>
+  <!-- 计算层 -->
+  <rect x="240" y="350" width="320" height="150" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="400" y="398" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">共享 Pod 池</text>
+  <text x="400" y="426" text-anchor="middle" font-size="13" fill="#475569">多租户共享计算</text>
+  <text x="400" y="450" text-anchor="middle" font-size="13" fill="#475569">（虚线 = 共享资源）</text>
+  <rect x="740" y="350" width="320" height="150" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="900" y="398" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">独享 Pod 池</text>
+  <text x="900" y="426" text-anchor="middle" font-size="13" fill="#475569">专属计算 · 资源隔离</text>
+  <text x="900" y="450" text-anchor="middle" font-size="13" fill="#475569">（实线 = 独享资源）</text>
+  <rect x="1240" y="350" width="320" height="150" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1400" y="398" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">独享 Pod 组</text>
+  <text x="1400" y="426" text-anchor="middle" font-size="13" fill="#475569">Kubernetes Namespace</text>
+  <text x="1400" y="450" text-anchor="middle" font-size="13" fill="#475569">+ NetworkPolicy 隔离</text>
+  <!-- 数据层 -->
+  <rect x="240" y="520" width="320" height="140" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="400" y="560" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">共享 Schema · 共享 Redis</text>
+  <text x="400" y="588" text-anchor="middle" font-size="13" fill="#475569">租户键隔离（tenant_id）</text>
+  <text x="400" y="612" text-anchor="middle" font-size="13" fill="#475569">逻辑隔离</text>
+  <rect x="740" y="520" width="320" height="140" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="900" y="560" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">独享 MySQL · 独享 Redis</text>
+  <text x="900" y="588" text-anchor="middle" font-size="13" fill="#475569">独立数据库实例</text>
+  <text x="900" y="612" text-anchor="middle" font-size="13" fill="#475569">物理隔离</text>
+  <rect x="1240" y="520" width="320" height="140" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1400" y="560" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">共享数据库</text>
+  <text x="1400" y="588" text-anchor="middle" font-size="13" fill="#475569">独享 Redis 命名空间</text>
+  <text x="1400" y="612" text-anchor="middle" font-size="13" fill="#475569">计算独享 · 缓存独享 · 库共享</text>
+  <!-- 基础设施层 -->
+  <rect x="240" y="680" width="320" height="80" rx="8" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="400" y="714" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">VPC-1 · 共享基础设施</text>
+  <text x="400" y="738" text-anchor="middle" font-size="12" fill="#64748B">共享网络平面</text>
+  <rect x="740" y="680" width="320" height="80" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="900" y="714" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">VPC-2 · 独享 VPC</text>
+  <text x="900" y="738" text-anchor="middle" font-size="12" fill="#475569">整租独立网络</text>
+  <rect x="1240" y="680" width="320" height="80" rx="8" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="1400" y="714" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">VPC-1 · 共享基础设施</text>
+  <text x="1400" y="738" text-anchor="middle" font-size="12" fill="#64748B">共享网络平面</text>
+  <!-- 图例 -->
+  <rect x="380" y="830" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="404" y="842" fill="#64748B" font-size="13">虚线框 = 共享资源</text>
+  <rect x="590" y="830" width="16" height="12" rx="2" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="614" y="842" fill="#64748B" font-size="13">实线框 = 独享资源</text>
+  <rect x="800" y="830" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="824" y="842" fill="#64748B" font-size="13">A = 共享</text>
+  <rect x="920" y="830" width="16" height="12" rx="2" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="944" y="842" fill="#64748B" font-size="13">B = 强隔离</text>
+  <rect x="1040" y="830" width="16" height="12" rx="2" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1064" y="842" fill="#64748B" font-size="13">C = 中强度隔离</text>
+  <text x="1340" y="842" fill="#64748B" font-size="13">混合隔离策略可参照 8.6.1 实践清单</text>
+    <text x="900" y="960" font-size="16" fill="#475569" text-anchor="middle">图8-13 A 共享计算与数据；B 全维度独享；C 独享计算与缓存命名空间、共享数据库。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

@@ -1,1 +1,119 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图6-5 物联网微服务容器部署的端—边—云分层架构</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:640px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block;width:1200px;height:640px}</style></head><body><div data-figure-root><svg viewBox="0 0 1200 640" role="img" aria-labelledby="title desc"><title id="title">图6-5 物联网微服务容器部署的端—边—云分层架构</title><desc id="desc">边缘按规模选择运行时，实时采集与控制在本地闭环。</desc><defs><marker id="b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="t" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker><marker id="g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker><marker id="o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker></defs><rect width="1200" height="640" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="592" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700" text-anchor="start" fill="#0F172A">图6-5 物联网微服务容器部署的端—边—云分层架构</text><text x="80" y="91" font-size="12" font-weight="400" text-anchor="start" fill="#475569">边缘按规模选择运行时，实时采集与控制在本地闭环。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/><path d="M105 500L105 165" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#t)"/><path d="M1095 165L1095 500" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#b)"/><text x="105" y="330" font-size="11" font-weight="650" text-anchor="middle" fill="#0F766E">数据/状态上行</text><text x="1095" y="330" font-size="11" font-weight="650" text-anchor="middle" fill="#2563EB">配置/模型下发</text><rect x="150" y="140" width="900" height="88" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="600.0" y="169" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">云端中心层</text><text x="600.0" y="190" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">完整 Kubernetes · 中心服务 Pod</text><rect x="150" y="290" width="900" height="88" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="600.0" y="319" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">边缘计算层</text><text x="600.0" y="340" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">按规模选择 k3s / 轻量容器 · 离线缓存与规则</text><rect x="150" y="455" width="900" height="88" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="600.0" y="484" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">端设备层</text><text x="600.0" y="505" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">传感器 · PLC · 执行器 · 现场总线</text><path d="M480 455L480 378" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#t)"/><path d="M720 378L720 455" fill="none" stroke="#DC2626" stroke-width="2" marker-end="url(#r)"/><text x="480" y="420" font-size="11" font-weight="650" text-anchor="middle" fill="#0F766E">本地采集</text><text x="720" y="420" font-size="11" font-weight="650" text-anchor="middle" fill="#DC2626">确定性控制</text><line x1="60" y1="580" x2="1140" y2="580" stroke="#E2E8F0"/><text x="600" y="598" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">图6-5 云端承担集中编排，边缘承担离线自治；是否引入 k3s 取决于节点规模与运维收益。</text></svg></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图6-5 物联网微服务容器部署的端—边—云分层架构</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图6-5 物联网微服务容器部署的端—边—云分层架构</title>
+  <desc id="desc">边缘按规模选择运行时，实时采集与控制在本地闭环。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+      <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图6-5 物联网微服务容器部署的端—边—云分层架构</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">边缘按规模选择运行时，实时采集与控制在本地闭环。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 云↔缘 连线 -->
+    <line x1="700" y1="390" x2="700" y2="292" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="900" y1="292" x2="900" y2="390" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <line x1="1250" y1="390" x2="1250" y2="292" stroke="#64748B" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <!-- 缘↔端 连线 -->
+    <line x1="700" y1="675" x2="700" y2="578" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <line x1="900" y1="578" x2="900" y2="675" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+
+    <!-- 云端中心层 -->
+    <rect x="120" y="140" width="1560" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+    <circle cx="150" cy="172" r="6" fill="#2563EB"/>
+    <text x="168" y="180" font-size="18" font-weight="700" fill="#2563EB">云端中心层 · 完整 Kubernetes 集群</text>
+    <rect x="340" y="190" width="620" height="72" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="362" y="220" font-size="15" font-weight="700" fill="#0F172A">控制平面</text>
+    <text x="362" y="244" font-size="12" fill="#2563EB">API Server · Scheduler · Controller Manager</text>
+    <rect x="1010" y="190" width="620" height="72" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+    <text x="1032" y="220" font-size="15" font-weight="700" fill="#0F172A">中心服务 Pod</text>
+    <text x="1032" y="244" font-size="12" fill="#2563EB">manager · data · notify · agentic</text>
+
+    <!-- 边缘计算层 -->
+    <rect x="120" y="400" width="1560" height="170" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+    <circle cx="150" cy="432" r="6" fill="#0F766E"/>
+    <text x="168" y="440" font-size="18" font-weight="700" fill="#0F766E">边缘计算层 · 按规模选择 k3s / 轻量容器</text>
+    <rect x="170" y="448" width="420" height="107" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="192" y="474" font-size="14" font-weight="700" fill="#0F172A">边缘节点 1 · k3s</text>
+    <rect x="192" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="252" y="502" font-size="11" fill="#0F766E" text-anchor="middle">边缘网关 Pod</text>
+    <rect x="320" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="380" y="502" font-size="11" fill="#0F766E" text-anchor="middle">协议适配 Pod</text>
+    <rect x="448" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="508" y="502" font-size="11" fill="#0F766E" text-anchor="middle">本地缓冲/规则</text>
+    <rect x="680" y="448" width="420" height="107" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="702" y="474" font-size="14" font-weight="700" fill="#0F172A">边缘节点 2 · k3s</text>
+    <rect x="702" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="762" y="502" font-size="11" fill="#0F766E" text-anchor="middle">边缘网关 Pod</text>
+    <rect x="830" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="890" y="502" font-size="11" fill="#0F766E" text-anchor="middle">协议适配 Pod</text>
+    <rect x="958" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="1018" y="502" font-size="11" fill="#0F766E" text-anchor="middle">本地缓冲/规则</text>
+    <rect x="1190" y="448" width="420" height="107" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+    <text x="1212" y="474" font-size="14" font-weight="700" fill="#0F172A">边缘节点 3 · k3s</text>
+    <rect x="1212" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="1272" y="502" font-size="11" fill="#0F766E" text-anchor="middle">边缘网关 Pod</text>
+    <rect x="1340" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="1400" y="502" font-size="11" fill="#0F766E" text-anchor="middle">协议适配 Pod</text>
+    <rect x="1468" y="486" width="120" height="24" rx="6" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="1528" y="502" font-size="11" fill="#0F766E" text-anchor="middle">本地缓冲/规则</text>
+
+    <!-- 端设备层 -->
+    <rect x="120" y="680" width="1560" height="120" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+    <circle cx="150" cy="712" r="6" fill="#64748B"/>
+    <text x="168" y="720" font-size="18" font-weight="700" fill="#475569">端设备层</text>
+    <rect x="170" y="715" width="420" height="70" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <text x="380" y="742" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">传感器</text>
+    <text x="380" y="768" font-size="12" fill="#64748B" text-anchor="middle">无线 Zigbee / LoRa</text>
+    <rect x="680" y="715" width="420" height="70" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <text x="890" y="742" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">PLC</text>
+    <text x="890" y="768" font-size="12" fill="#64748B" text-anchor="middle">现场总线 Modbus RTU / CAN</text>
+    <rect x="1190" y="715" width="420" height="70" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <text x="1400" y="742" font-size="15" font-weight="700" fill="#0F172A">执行器</text>
+    <text x="1400" y="768" font-size="12" fill="#64748B" text-anchor="middle">现场总线 · 无线控制</text>
+
+    <!-- 标签 -->
+    <text x="712" y="340" font-size="14" fill="#0F766E">数据 / 状态上行</text>
+    <text x="912" y="340" font-size="14" fill="#2563EB">配置 / 模型下发</text>
+    <text x="1262" y="340" font-size="14" fill="#64748B">gRPC / MQTT QoS 1</text>
+    <text x="712" y="625" font-size="14" fill="#0F766E">本地采集</text>
+    <text x="912" y="625" font-size="14" fill="#F97316">确定性控制</text>
+    <text x="1450" y="625" font-size="13" fill="#64748B">实时采集 / 控制回路 · 不经云端</text>
+
+    <!-- 图例 -->
+    <rect x="60" y="860" width="16" height="12" rx="3" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="84" y="872" font-size="14" fill="#475569">云端中心（K8s）</text>
+    <rect x="260" y="860" width="16" height="12" rx="3" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="284" y="872" font-size="14" fill="#475569">边缘计算（k3s）</text>
+    <rect x="460" y="860" width="16" height="12" rx="3" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.6"/>
+    <text x="484" y="872" font-size="14" fill="#475569">端设备与现场总线</text>
+    <line x1="680" y1="866" x2="738" y2="866" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+    <text x="746" y="872" font-size="14" fill="#475569">实时数据 / 控制（实线）</text>
+    <line x1="1000" y1="866" x2="1058" y2="866" stroke="#64748B" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <text x="1066" y="872" font-size="14" fill="#475569">可选同步（虚线）</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图6-5 云端承担集中编排，边缘承担离线自治；是否引入 k3s 取决于节点规模与运维收益。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

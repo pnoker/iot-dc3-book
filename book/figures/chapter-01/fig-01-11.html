@@ -2,133 +2,66 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>图1-11 四层物联网参考架构示意图</title>
   <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:#F8FAFC}
-    body{font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}
-    main.figure{width:1200px;height:720px;margin:0}
-    svg{display:block}
-    text{letter-spacing:0}
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="ft fd" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
-  <title id="ft">图1-11 四层物联网参考架构示意图</title>
-  <desc id="fd">物联网由感知层、网络层、平台层和应用层构成，数据沿中央链路向上汇聚，控制指令沿右侧链路向下返回，安全治理能力从左侧贯穿所有层。</desc>
-  <defs>
-    <marker id="arrow-up" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M0 8L5.5 0L11 8Z" fill="#F97316"/>
-    </marker>
-    <marker id="arrow-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M0 0L11 4L0 8Z" fill="#2563EB"/>
-    </marker>
-  </defs>
-
-  <rect width="1200" height="720" fill="#F8FAFC"/>
-  <circle cx="46" cy="40" r="6" fill="#2563EB"/>
-  <text x="66" y="48" font-size="24" font-weight="700" fill="#0F172A">图1-11 四层物联网参考架构示意图</text>
-  <text x="66" y="74" font-size="12" fill="#475569">数据向上汇聚，指令向下闭环，安全治理跨越全部层次</text>
-  <line x1="32" y1="96" x2="1168" y2="96" stroke="#e2e8f0"/>
-
-  <rect x="24" y="112" width="1152" height="520" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
-
-  <!-- arrows are drawn before layer cards so they never cross card text -->
-  <path d="M700 430V410M700 334V314M700 238V218" fill="none" stroke="#F97316" stroke-width="2.4" stroke-linecap="round" marker-end="url(#arrow-up)"/>
-
-  <!-- security governance rail -->
-  <rect x="58" y="142" width="122" height="430" rx="14" fill="#FFF7ED" stroke="#D97706" stroke-width="1.6" stroke-dasharray="8 6"/>
-  <rect x="75" y="159" width="88" height="25" rx="12" fill="#FEF3C7"/>
-  <text x="119" y="176" text-anchor="middle" font-size="11" font-weight="700" fill="#B45309">安全治理</text>
-  <text x="119" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">身份</text>
-  <text x="119" y="246" text-anchor="middle" font-size="11" fill="#92400E">证书 / 密钥</text>
-  <line x1="82" y1="263" x2="156" y2="263" stroke="#FCD34D"/>
-  <text x="119" y="292" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">传输</text>
-  <text x="119" y="318" text-anchor="middle" font-size="11" fill="#92400E">TLS 加密</text>
-  <line x1="82" y1="335" x2="156" y2="335" stroke="#FCD34D"/>
-  <text x="119" y="364" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">访问</text>
-  <text x="119" y="390" text-anchor="middle" font-size="11" fill="#92400E">授权 / 审计</text>
-  <line x1="82" y1="407" x2="156" y2="407" stroke="#FCD34D"/>
-  <text x="119" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">数据</text>
-  <text x="119" y="462" text-anchor="middle" font-size="11" fill="#92400E">脱敏 / 留痕</text>
-  <text x="119" y="530" text-anchor="middle" font-size="10.5" font-weight="700" fill="#B45309">每层都要落实</text>
-
-  <!-- application layer -->
-  <rect x="220" y="142" width="700" height="76" rx="12" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.8"/>
-  <rect x="240" y="159" width="92" height="24" rx="12" fill="#EDE9FE"/>
-  <text x="286" y="176" text-anchor="middle" font-size="11" font-weight="700" fill="#6D28D9">应用层</text>
-  <text x="356" y="176" font-size="14" font-weight="700" fill="#0F172A">把数据变成业务动作</text>
-  <rect x="585" y="157" width="94" height="28" rx="7" fill="#FFFFFF" stroke="#DDD6FE"/>
-  <text x="632" y="175" text-anchor="middle" font-size="11" fill="#6D28D9">仪表盘 / App</text>
-  <rect x="689" y="157" width="94" height="28" rx="7" fill="#FFFFFF" stroke="#DDD6FE"/>
-  <text x="736" y="175" text-anchor="middle" font-size="11" fill="#6D28D9">告警通知</text>
-  <rect x="793" y="157" width="108" height="28" rx="7" fill="#FFFFFF" stroke="#DDD6FE"/>
-  <text x="847" y="175" text-anchor="middle" font-size="11" fill="#6D28D9">业务后端</text>
-  <text x="240" y="202" font-size="11" fill="#475569">面向人和业务系统提供可视化、告警与操作入口</text>
-
-  <!-- platform layer -->
-  <rect x="220" y="238" width="700" height="76" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.8"/>
-  <rect x="240" y="255" width="92" height="24" rx="12" fill="#DBEAFE"/>
-  <text x="286" y="272" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8">平台层</text>
-  <text x="356" y="272" font-size="14" font-weight="700" fill="#0F172A">沉淀设备与数据能力</text>
-  <rect x="540" y="253" width="108" height="28" rx="7" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="594" y="271" text-anchor="middle" font-size="11" fill="#1D4ED8">设备管理</text>
-  <rect x="658" y="253" width="108" height="28" rx="7" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="712" y="271" text-anchor="middle" font-size="11" fill="#1D4ED8">时序存储</text>
-  <rect x="776" y="253" width="108" height="28" rx="7" fill="#FFFFFF" stroke="#BFDBFE"/>
-  <text x="830" y="271" text-anchor="middle" font-size="11" fill="#1D4ED8">API 网关</text>
-  <text x="240" y="298" font-size="11" fill="#475569">统一设备模型、数据处理和能力开放</text>
-
-  <!-- network layer -->
-  <rect x="220" y="334" width="700" height="76" rx="12" fill="#F0FDFA" stroke="#0F766E" stroke-width="1.8"/>
-  <rect x="240" y="351" width="92" height="24" rx="12" fill="#CCFBF1"/>
-  <text x="286" y="368" text-anchor="middle" font-size="11" font-weight="700" fill="#0F766E">网络层</text>
-  <text x="356" y="368" font-size="14" font-weight="700" fill="#0F172A">让异构设备可靠互通</text>
-  <rect x="510" y="349" width="90" height="28" rx="7" fill="#FFFFFF" stroke="#99F6E4"/>
-  <text x="555" y="367" text-anchor="middle" font-size="11" fill="#0F766E">MQTT</text>
-  <rect x="610" y="349" width="90" height="28" rx="7" fill="#FFFFFF" stroke="#99F6E4"/>
-  <text x="655" y="367" text-anchor="middle" font-size="11" fill="#0F766E">CoAP</text>
-  <rect x="710" y="349" width="90" height="28" rx="7" fill="#FFFFFF" stroke="#99F6E4"/>
-  <text x="755" y="367" text-anchor="middle" font-size="11" fill="#0F766E">LoRaWAN</text>
-  <rect x="810" y="349" width="90" height="28" rx="7" fill="#FFFFFF" stroke="#99F6E4"/>
-  <text x="855" y="367" text-anchor="middle" font-size="11" fill="#0F766E">NB-IoT</text>
-  <text x="240" y="394" font-size="11" fill="#475569">承载消息、遥测和控制指令，处理协议与网络差异</text>
-
-  <!-- perception layer -->
-  <rect x="220" y="430" width="700" height="76" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.8"/>
-  <rect x="240" y="447" width="92" height="24" rx="12" fill="#D1FAE5"/>
-  <text x="286" y="464" text-anchor="middle" font-size="11" font-weight="700" fill="#0F766E">感知层</text>
-  <text x="356" y="464" font-size="14" font-weight="700" fill="#0F172A">接触并改变物理世界</text>
-  <rect x="570" y="445" width="108" height="28" rx="7" fill="#FFFFFF" stroke="#A7F3D0"/>
-  <text x="624" y="463" text-anchor="middle" font-size="11" fill="#0F766E">传感器</text>
-  <rect x="688" y="445" width="108" height="28" rx="7" fill="#FFFFFF" stroke="#A7F3D0"/>
-  <text x="742" y="463" text-anchor="middle" font-size="11" fill="#0F766E">执行器</text>
-  <rect x="806" y="445" width="94" height="28" rx="7" fill="#FFFFFF" stroke="#A7F3D0"/>
-  <text x="853" y="463" text-anchor="middle" font-size="11" fill="#0F766E">边缘节点</text>
-  <text x="240" y="490" font-size="11" fill="#475569">采集温度、压力、振动等信号，并执行控制动作</text>
-
-  <!-- data up labels, placed in the gaps -->
-  <text x="713" y="232" font-size="11" font-weight="700" fill="#F97316">数据上行</text>
-  <text x="713" y="328" font-size="11" font-weight="700" fill="#F97316">数据上行</text>
-  <text x="713" y="424" font-size="11" font-weight="700" fill="#F97316">数据上行</text>
-
-  <!-- one continuous control path: application decision returns to the actuator -->
-  <path d="M920 180H1018V468H930" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="8 6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-blue)"/>
-  <rect x="1029" y="304" width="82" height="24" rx="6" fill="#FFFFFF"/>
-  <text x="1070" y="321" text-anchor="middle" font-size="11" font-weight="700" fill="#2563EB">指令下行</text>
-
-  <rect x="220" y="542" width="282" height="28" rx="7" fill="#FFF7ED" stroke="#FDBA74"/>
-  <text x="361" y="560" text-anchor="middle" font-size="11" font-weight="700" fill="#C2410C">安全贯穿：身份 · TLS · 授权 · 审计</text>
-  <rect x="514" y="542" width="282" height="28" rx="7" fill="#FFF7ED" stroke="#FDBA74"/>
-  <text x="655" y="560" text-anchor="middle" font-size="11" font-weight="700" fill="#C2410C">上行数据：遥测 → 存储 → 分析 → 告警</text>
-  <rect x="808" y="542" width="312" height="28" rx="7" fill="#EFF6FF" stroke="#93C5FD"/>
-  <text x="964" y="560" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8">下行指令：业务动作 → 设备执行</text>
-
-  <line x1="32" y1="650" x2="1168" y2="650" stroke="#e2e8f0"/>
-  <text x="600" y="687" text-anchor="middle" font-size="11" fill="#475569">图1-11 四层架构中数据由感知上行至应用，指令沿反向路径下发，安全治理能力贯穿所有层次。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图1-11 四层物联网参考架构示意图</title>
+  <desc id="desc">四层物联网参考架构与层间数据/指令流</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-11 四层物联网参考架构示意图</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">感知—网络—平台—应用四层堆叠，安全贯穿，数据上行 / 指令下行</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+<defs>
+<marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
+<marker id="ao" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#F97316"/></marker>
+<marker id="at" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#0F766E"/></marker>
+<marker id="ar" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#DC2626"/></marker>
+<marker id="ap" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#7C3AED"/></marker>
+<marker id="ag" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#475569"/></marker>
+</defs>
+<!-- 安全条带 -->
+<rect x="40" y="150" width="120" height="590" rx="10" fill="#FEFCE8" stroke="#D97706" stroke-width="2"/>
+<text transform="rotate(-90 100 445)" x="100" y="445" font-size="22" font-weight="700" fill="#B45309" text-anchor="middle">安全贯穿线</text>
+<!-- 上行数据流（蓝实线） -->
+<line x1="1660" y1="740" x2="1660" y2="176" stroke="#2563EB" stroke-width="2.8" marker-end="url(#ab)"/>
+<text transform="rotate(-90 1688 445)" x="1688" y="445" font-size="16" fill="#2563EB" text-anchor="middle" font-weight="700">上行数据流</text>
+<!-- 下行指令流（橙虚线） -->
+<line x1="1720" y1="176" x2="1720" y2="740" stroke="#F97316" stroke-width="2.4" stroke-dasharray="8,6" marker-end="url(#ao)"/>
+<text transform="rotate(90 1746 445)" x="1746" y="445" font-size="16" fill="#C2410C" text-anchor="middle" font-weight="700">下行指令流</text>
+<!-- 应用层 -->
+<rect x="180" y="150" width="1430" height="110" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+<text x="215" y="198" font-size="23" font-weight="700" fill="#6D28D9">应用层</text>
+<text x="215" y="238" font-size="18" fill="#334155">仪表盘 · 移动 App · 业务后端</text>
+<!-- 平台层 -->
+<rect x="180" y="310" width="1430" height="110" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+<text x="215" y="358" font-size="23" font-weight="700" fill="#C2410C">平台层</text>
+<text x="215" y="398" font-size="18" fill="#334155">设备管理 · 数据存储与流处理 · API 网关</text>
+<!-- 网络层 -->
+<rect x="180" y="470" width="1430" height="110" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+<text x="215" y="518" font-size="23" font-weight="700" fill="#0F766E">网络层</text>
+<text x="215" y="558" font-size="18" fill="#334155">MQTT · CoAP · LoRaWAN · NB-IoT</text>
+<!-- 感知层 -->
+<rect x="180" y="630" width="1430" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="215" y="678" font-size="23" font-weight="700" fill="#1D4ED8">感知层</text>
+<text x="215" y="718" font-size="18" fill="#334155">传感器 · 执行器</text>
+<!-- 层间小箭头 -->
+<line x1="300" y1="630" x2="300" y2="586" stroke="#2563EB" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="340" y1="470" x2="340" y2="426" stroke="#2563EB" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="380" y1="310" x2="380" y2="266" stroke="#2563EB" stroke-width="2" marker-end="url(#ab)"/>
+<text x="900" y="960" font-size="18" fill="#475569" text-anchor="middle">图1-11 四层物联网参考架构。数据从感知层上行至应用层，指令反向下行至执行器，安全作为跨越所有层的约束条件贯穿始终。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>

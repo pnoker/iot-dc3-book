@@ -1,1 +1,67 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图8-6 TLS 1.3握手流程</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}body{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px}</style></head><body><main class="page" data-figure-root><svg width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc"><title id="title">图8-6 TLS 1.3握手流程</title><desc id="desc">ClientHello 和 ServerHello 携带 key_share；ServerHello 后握手消息加密，服务端先发加密 flight，客户端再发加密 flight。</desc><defs><marker id="p" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker><marker id="e" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker></defs><rect width="1200" height="760" fill="#F8FAFC"/><circle cx="42" cy="40" r="6" fill="#2563EB"/><text x="58" y="48" font-size="24" font-weight="700">图8-6 TLS 1.3握手流程</text><text x="58" y="76" font-size="13" fill="#475569">ServerHello 的 key_share 使双方导出握手流量密钥，其后的 Certificate 等 handshake flight 均受加密保护。</text><rect x="28" y="104" width="1144" height="580" rx="8" fill="#FFF" stroke="#E2E8F0"/><rect x="90" y="126" width="230" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB"/><rect x="880" y="126" width="230" height="56" rx="8" fill="#ECFDF5" stroke="#0F766E"/><text x="205" y="160" text-anchor="middle" font-size="16" font-weight="700">客户端（设备）</text><text x="995" y="160" text-anchor="middle" font-size="16" font-weight="700">服务端（平台）</text><line x1="205" y1="182" x2="205" y2="640" stroke="#94A3B8" stroke-dasharray="6 4"/><line x1="995" y1="182" x2="995" y2="640" stroke="#94A3B8" stroke-dasharray="6 4"/><g font-size="13"><line x1="205" y1="225" x2="995" y2="225" stroke="#64748B" stroke-width="2" marker-end="url(#p)"/><rect x="390" y="201" width="420" height="40" rx="6" fill="#FFF" stroke="#CBD5E1"/><text x="600" y="218" text-anchor="middle" font-weight="700">ClientHello + key_share</text><text x="600" y="234" text-anchor="middle" fill="#475569">明文：版本、套件、客户端临时公钥</text><line x1="995" y1="285" x2="205" y2="285" stroke="#64748B" stroke-width="2" marker-end="url(#p)"/><rect x="390" y="261" width="420" height="40" rx="6" fill="#FFF" stroke="#CBD5E1"/><text x="600" y="278" text-anchor="middle" font-weight="700">ServerHello + key_share</text><text x="600" y="294" text-anchor="middle" fill="#475569">明文；随后导出 handshake traffic secrets</text><rect x="350" y="318" width="500" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB"/><text x="600" y="338" text-anchor="middle" fill="#1D4ED8" font-weight="700">握手加密从这里开始</text><line x1="995" y1="400" x2="205" y2="400" stroke="#2563EB" stroke-width="3" marker-end="url(#e)"/><rect x="325" y="366" width="550" height="58" rx="7" fill="#EFF6FF" stroke="#2563EB"/><text x="600" y="386" text-anchor="middle" font-weight="700" fill="#1D4ED8">服务端加密 handshake flight</text><text x="600" y="404" text-anchor="middle" fill="#475569">EncryptedExtensions · [CertificateRequest]</text><text x="600" y="419" text-anchor="middle" fill="#475569">Certificate · CertificateVerify · Finished</text><line x1="205" y1="500" x2="995" y2="500" stroke="#2563EB" stroke-width="3" marker-end="url(#e)"/><rect x="325" y="458" width="550" height="72" rx="7" fill="#EFF6FF" stroke="#2563EB"/><text x="600" y="478" text-anchor="middle" font-weight="700" fill="#1D4ED8">客户端加密 handshake flight</text><text x="600" y="497" text-anchor="middle" fill="#B45309">[Certificate · CertificateVerify]（mTLS 可选）</text><text x="600" y="516" text-anchor="middle" fill="#475569">Finished</text><line x1="205" y1="585" x2="995" y2="585" stroke="#0F766E" stroke-width="3" marker-end="url(#e)"/><line x1="995" y1="605" x2="205" y2="605" stroke="#0F766E" stroke-width="3" marker-end="url(#e)"/><text x="600" y="579" text-anchor="middle" font-weight="700" fill="#0F766E">加密 Application Data</text></g><text x="600" y="660" text-anchor="middle" font-size="12" fill="#64748B">方括号表示可选消息；CertificateVerify 由持有对应证书私钥的一方签署握手 transcript。</text><line x1="40" y1="704" x2="1160" y2="704" stroke="#E2E8F0"/><text x="600" y="735" text-anchor="middle" font-size="11" fill="#475569">图8-6 TLS 1.3 以单次往返（1-RTT）完成握手，ServerHello 之后的证书与 Finished 全程加密，避免明文泄露证书身份；仅启用 mTLS 时客户端才额外发送 Certificate 与 CertificateVerify。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图8-6 TLS 1.3握手流程</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图8-6 TLS 1.3握手流程</title>
+  <desc id="desc">ClientHello 和 ServerHello 携带 key_share；ServerHello 后握手消息加密，服务端先发加密 flight，客户端再发加密 flight。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-6 TLS 1.3握手流程</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">ServerHello 的 key_share 使双方导出握手流量密钥，其后的 Certificate 等 handshake flight 均受加密保护。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <defs>
+    <marker id="pt" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/></marker>
+    <marker id="enc" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="apd" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0F766E"/></marker>
+  </defs>
+  <rect x="200" y="150" width="250" height="60" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="325" y="186" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">客户端（设备）</text>
+  <rect x="1350" y="150" width="250" height="60" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1475" y="186" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">服务端（平台）</text>
+  <line x1="325" y1="210" x2="325" y2="770" stroke="#94A3B8" stroke-dasharray="6 4"/>
+  <line x1="1475" y1="210" x2="1475" y2="770" stroke="#94A3B8" stroke-dasharray="6 4"/>
+  <rect x="180" y="442" width="1440" height="180" rx="10" fill="#EFF6FF"/>
+  <text x="200" y="470" font-size="14" font-weight="700" fill="#0F766E">握手流量密钥已导出 · 以下消息加密</text>
+  <line x1="325" y1="280" x2="1475" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#pt)"/>
+  <text x="900" y="266" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">ClientHello + key_share</text>
+  <text x="900" y="246" text-anchor="middle" font-size="13" fill="#64748B">明文 · 版本 / 套件 / 客户端临时公钥</text>
+  <line x1="1475" y1="375" x2="325" y2="375" stroke="#64748B" stroke-width="2" marker-end="url(#pt)"/>
+  <text x="900" y="361" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">ServerHello + key_share</text>
+  <text x="900" y="341" text-anchor="middle" font-size="13" fill="#64748B">明文 · 随后导出 handshake traffic secrets</text>
+  <line x1="1475" y1="500" x2="325" y2="500" stroke="#2563EB" stroke-width="2.4" marker-end="url(#enc)"/>
+  <text x="900" y="486" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">服务端加密 handshake flight</text>
+  <text x="900" y="466" text-anchor="middle" font-size="13" fill="#475569">EncryptedExtensions · [CertificateRequest] · Certificate · CertificateVerify · Finished</text>
+  <line x1="325" y1="590" x2="1475" y2="590" stroke="#2563EB" stroke-width="2.4" marker-end="url(#enc)"/>
+  <text x="900" y="576" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">客户端加密 handshake flight</text>
+  <text x="900" y="556" text-anchor="middle" font-size="13" fill="#475569">[Certificate · CertificateVerify]（mTLS 可选）· Finished</text>
+  <line x1="325" y1="700" x2="1475" y2="700" stroke="#0F766E" stroke-width="2" marker-end="url(#apd)"/>
+  <text x="900" y="686" text-anchor="middle" font-size="15" font-weight="700" fill="#0F766E">加密 Application Data</text>
+  <text x="900" y="666" text-anchor="middle" font-size="13" fill="#64748B">使用应用流量密钥 · 双向</text>
+  <!-- legend -->
+  <line x1="360" y1="906" x2="395" y2="906" stroke="#64748B" stroke-width="2" marker-end="url(#pt)"/>
+  <text x="405" y="912" fill="#64748B" font-size="13">明文</text>
+  <line x1="500" y1="906" x2="535" y2="906" stroke="#2563EB" stroke-width="2.4" marker-end="url(#enc)"/>
+  <text x="545" y="912" fill="#64748B" font-size="13">加密 handshake flight</text>
+  <line x1="760" y1="906" x2="795" y2="906" stroke="#0F766E" stroke-width="2" marker-end="url(#apd)"/>
+  <text x="805" y="912" fill="#64748B" font-size="13">加密应用数据</text>
+  <text x="1290" y="912" fill="#64748B" font-size="13">[方括号] = 可选消息（mTLS）</text>
+    <text x="900" y="960" font-size="16" fill="#475569" text-anchor="middle">图8-6 TLS 1.3 握手流程（含示意性的双向认证）：展示从 ClientHello 到应用数据全加密的主要步骤。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

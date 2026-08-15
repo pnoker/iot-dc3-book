@@ -1,1 +1,99 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图5-3 消息队列缓冲削峰示意</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}[data-figure-root]{width:1200px;height:650px;overflow:hidden;background:#F8FAFC;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}svg{display:block;width:1200px;height:650px}</style></head><body><div data-figure-root><svg viewBox="0 0 1200 650" role="img" aria-labelledby="title desc"><title id="title">图5-3 消息队列缓冲削峰示意</title><desc id="desc">洪峰先转化为队列积压，消费者按自身能力稳定处理。</desc><defs><marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="arrow-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker><marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker><marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker></defs><rect width="1200" height="650" fill="#F8FAFC"/><rect x="32" y="24" width="1136" height="602" rx="18" fill="#FFFFFF" fill-opacity=".94" stroke="#E2E8F0"/><circle cx="62" cy="58" r="6" fill="#2563EB"/><text x="80" y="66" font-size="24" font-weight="700" text-anchor="start" fill="#0F172A">图5-3 消息队列缓冲削峰示意</text><text x="80" y="91" font-size="12" font-weight="400" text-anchor="start" fill="#475569">洪峰先转化为队列积压，消费者按自身能力稳定处理。</text><line x1="60" y1="110" x2="1140" y2="110" stroke="#E2E8F0"/><rect x="55" y="135" width="230" height="300" rx="14" fill="#FFFFFF" fill-opacity=".55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/><text x="69" y="157" font-size="12" font-weight="650" text-anchor="start" fill="#475569">设备与边缘域</text><rect x="320" y="135" width="510" height="300" rx="14" fill="#FFFFFF" fill-opacity=".55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/><text x="334" y="157" font-size="12" font-weight="650" text-anchor="start" fill="#475569">平台消息域</text><rect x="865" y="135" width="280" height="300" rx="14" fill="#FFFFFF" fill-opacity=".55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/><text x="879" y="157" font-size="12" font-weight="650" text-anchor="start" fill="#475569">数据消费域</text><path d="M250 250 L385 250" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow-blue)"/><rect x="262.5" y="228.0" width="110" height="20" rx="4" fill="#FFFFFF"/><text x="317.5" y="242.0" font-size="11" font-weight="600" text-anchor="middle" fill="#475569">突发上报</text><path d="M780 250 L915 250" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow-blue)"/><rect x="792.5" y="228.0" width="110" height="20" rx="4" fill="#FFFFFF"/><text x="847.5" y="242.0" font-size="11" font-weight="600" text-anchor="middle" fill="#475569">稳定拉取</text><rect x="90" y="205" width="160" height="90" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/><text x="170.0" y="235" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">设备群</text><text x="170.0" y="257" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">正常流量 + 补报洪峰</text><rect x="385" y="190" width="180" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="475.0" y="220" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">Topic 分区</text><text x="475.0" y="242" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">P0  ▮▮▮▮</text><text x="475.0" y="260" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">P1  ▮▮▮</text><text x="475.0" y="278" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">P2  ▮▮</text><rect x="600" y="205" width="180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><text x="690.0" y="235" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">消费者组</text><text x="690.0" y="257" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">C1 · C2 · C3</text><rect x="915" y="190" width="180" height="120" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><text x="1005.0" y="220" font-size="15" font-weight="650" text-anchor="middle" fill="#0F172A">后端服务</text><text x="1005.0" y="242" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">告警引擎</text><text x="1005.0" y="260" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">时序库 · 降采样</text><text x="75" y="475" font-size="13" font-weight="650" text-anchor="start" fill="#0F172A">队列水位随洪峰变化</text><path d="M80 535 L250 535 L310 455 L430 455 L510 505 L690 535 L1120 535" fill="none" stroke="#2563EB" stroke-width="3"/><line x1="80" y1="545" x2="1120" y2="545" stroke="#94A3B8"/><text x="170" y="566" font-size="11" font-weight="400" text-anchor="middle" fill="#0F172A">正常</text><text x="370" y="566" font-size="11" font-weight="600" text-anchor="middle" fill="#2563EB">洪峰：水位上升</text><text x="650" y="566" font-size="11" font-weight="400" text-anchor="middle" fill="#0F172A">持续消费后回落</text><text x="1000" y="566" font-size="11" font-weight="400" text-anchor="middle" fill="#0F172A">后端按能力处理</text><line x1="60" y1="590" x2="1140" y2="590" stroke="#E2E8F0"/><text x="600" y="608" font-size="11" font-weight="400" text-anchor="middle" fill="#475569">图5-3 队列吸收瞬时洪峰并抬高水位，后端不会直接承受设备侧峰值压力。</text></svg></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图5-3 消息队列缓冲削峰示意</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图5-3 消息队列缓冲削峰示意</title>
+  <desc id="desc">洪峰先转化为队列积压，消费者按自身能力稳定处理，后端不直接承压。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="mk-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-3 消息队列缓冲削峰示意</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">洪峰先转化为队列积压，消费者按自身能力稳定处理。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+    <!-- 域边界（虚线） -->
+    <rect x="90" y="150" width="300" height="360" rx="14" fill="#FFFFFF" fill-opacity="0.55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="106" y="178" font-size="16" font-weight="700" fill="#475569">设备与边缘域</text>
+    <rect x="420" y="150" width="580" height="360" rx="14" fill="#FFFFFF" fill-opacity="0.55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="436" y="178" font-size="16" font-weight="700" fill="#475569">平台服务域</text>
+    <rect x="1030" y="150" width="680" height="360" rx="14" fill="#FFFFFF" fill-opacity="0.55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="1046" y="178" font-size="16" font-weight="700" fill="#475569">数据资产域</text>
+
+    <!-- 主链路连线（先画） -->
+    <line x1="350" y1="305" x2="466" y2="305" stroke="#2563EB" stroke-width="3" marker-end="url(#mk-blue)"/>
+    <line x1="700" y1="305" x2="736" y2="305" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
+    <line x1="960" y1="305" x2="1096" y2="305" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <rect x="360" y="276" width="96" height="26" rx="6" fill="#FFFFFF"/>
+    <text x="408" y="294" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">突发上报</text>
+    <rect x="668" y="276" width="96" height="26" rx="6" fill="#FFFFFF"/>
+    <text x="716" y="294" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">负载均衡</text>
+    <rect x="974" y="276" width="96" height="26" rx="6" fill="#FFFFFF"/>
+    <text x="1022" y="294" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">稳定拉取</text>
+
+    <!-- 设备群 -->
+    <rect x="130" y="250" width="220" height="110" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="240" y="292" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">设备群</text>
+    <text x="240" y="322" font-size="14" fill="#475569" text-anchor="middle">传感器 / PLC 等数据源</text>
+    <text x="240" y="346" font-size="13" fill="#64748B" text-anchor="middle">正常流量 + 补报洪峰</text>
+
+    <!-- Topic 分区 -->
+    <rect x="466" y="230" width="234" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="583" y="266" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">Topic 分区</text>
+    <text x="583" y="296" font-size="14" fill="#475569" text-anchor="middle">P0 ▮▮▮▮▮</text>
+    <text x="583" y="322" font-size="14" fill="#475569" text-anchor="middle">P1 ▮▮▮</text>
+    <text x="583" y="348" font-size="14" fill="#475569" text-anchor="middle">P2 ▮▮</text>
+
+    <!-- 消费者组 -->
+    <rect x="736" y="250" width="224" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="848" y="292" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">消费者组</text>
+    <text x="848" y="322" font-size="14" fill="#475569" text-anchor="middle">C1 · C2 · C3 实例</text>
+    <text x="848" y="346" font-size="13" fill="#64748B" text-anchor="middle">按能力拉取</text>
+
+    <!-- 后端服务 -->
+    <rect x="1096" y="230" width="280" height="150" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="1236" y="266" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">后端服务</text>
+    <text x="1236" y="296" font-size="14" fill="#475569" text-anchor="middle">告警引擎</text>
+    <text x="1236" y="322" font-size="14" fill="#475569" text-anchor="middle">时序库写入 · 降采样</text>
+    <text x="1236" y="348" font-size="13" fill="#64748B" text-anchor="middle">不受瞬时冲击</text>
+
+    <!-- 水位变化图 -->
+    <text x="130" y="580" font-size="20" font-weight="700" fill="#0F172A">队列水位随洪峰变化</text>
+    <polygon points="130,750 430,750 570,640 770,650 950,730 1600,740 1600,775 130,775" fill="#EFF6FF"/>
+    <path d="M130 750 L430 750 L570 640 L770 650 L950 730 L1600 740" fill="none" stroke="#2563EB" stroke-width="3"/>
+    <line x1="130" y1="775" x2="1600" y2="775" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="280" y="802" font-size="15" fill="#0F172A" text-anchor="middle">正常</text>
+    <text x="670" y="802" font-size="15" font-weight="600" fill="#2563EB" text-anchor="middle">洪峰：水位上升</text>
+    <text x="1120" y="802" font-size="15" fill="#0F172A" text-anchor="middle">持续消费后回落</text>
+    <text x="1430" y="802" font-size="15" fill="#0F172A" text-anchor="middle">后端按能力处理</text>
+
+    <!-- 图例 -->
+    <line x1="300" y1="856" x2="360" y2="856" stroke="#2563EB" stroke-width="3" marker-end="url(#mk-blue)"/>
+    <text x="372" y="862" font-size="15" fill="#475569">实线粗箭头：高流量数据上报</text>
+    <line x1="760" y1="856" x2="820" y2="856" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
+    <text x="832" y="862" font-size="15" fill="#475569">虚线箭头：调度 / 分配关系</text>
+    <line x1="1240" y1="856" x2="1300" y2="856" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <text x="1312" y="862" font-size="15" fill="#475569">消费输出</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-3 消息队列缓冲削峰示意：洪峰到达时消息在 Topic 分区中暂存、水位升高，消费者组按自身能力逐步消费，后端服务不直接承受瞬时冲击。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

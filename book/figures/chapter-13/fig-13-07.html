@@ -1,5 +1,101 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图13-7 基于区块链的供应链溯源系统分层架构</title><style>body{margin:0;background:#F8FAFC;font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px;margin:auto}text{fill:#0F172A}</style></head><body><main class="page"><svg data-figure-root="fig-13-07" xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc"><title id="title">图13-7 基于区块链的供应链溯源系统分层架构</title><desc id="desc">感知、边缘、区块链网络和应用四层逐级传递，原始数据保留链下，哈希、签名和元数据作为交易上链。</desc><defs><marker id="u" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#2563EB"/></marker><marker id="d" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0L9 3.5 0 7Z" fill="#475569"/></marker></defs><rect width="1200" height="700" fill="#F8FAFC"/><circle cx="48" cy="42" r="6" fill="#2563EB"/><text x="66" y="49" font-size="24" font-weight="700">图13-7 基于区块链的供应链溯源系统分层架构</text><text x="66" y="74" font-size="12" fill="#475569">应用只能经区块链网络查询可信记录，不直接绕过信任层访问设备</text><line x1="48" y1="96" x2="1152" y2="96" stroke="#94A3B8"/>
-<g><rect x="105" y="125" width="990" height="105" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/><rect x="105" y="250" width="990" height="125" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/><rect x="105" y="395" width="990" height="105" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/><rect x="105" y="520" width="990" height="105" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/></g>
-<g font-weight="700"><text x="92" y="180" font-size="17" text-anchor="end" fill="#F97316">应用层</text><text x="92" y="305" font-size="16" text-anchor="end" fill="#2563EB"><tspan x="92">区块链</tspan><tspan x="92" dy="20">网络层</tspan></text><text x="92" y="450" font-size="17" text-anchor="end" fill="#0F766E">边缘层</text><text x="92" y="575" font-size="17" text-anchor="end" fill="#0F766E">感知层</text></g>
-<g font-size="14" font-weight="700"><text x="150" y="160">Web 溯源查询</text><text x="380" y="160">移动端防伪验证</text><text x="650" y="160">企业 ERP 对接</text><text x="880" y="160">数据报表</text><text x="150" y="285">分布式账本</text><text x="380" y="285">共识机制</text><text x="610" y="285">智能合约</text><text x="840" y="285">参与方节点</text><text x="150" y="430">边缘网关 / 嵌入式节点</text><text x="150" y="555">温湿度传感器</text><text x="390" y="555">RFID 读写器</text><text x="630" y="555">GPS 模块</text><text x="850" y="555">工业采集设备</text></g><g font-size="12" fill="#475569"><text x="150" y="190">查询 · 防伪 · 对接 · 展示</text><text x="150" y="320">记录、Raft/PBFT 共识、质检/预警/冻结规则</text><text x="150" y="350">原始数据留在边缘存储或 IPFS；链上记录哈希、签名与元数据</text><text x="150" y="462">采集 · 格式化 · 数字签名 · 哈希运算 · 本地缓存</text><text x="150" y="590">RS-485 · Zigbee · BLE 等现场链路</text></g>
-<path d="M600 520V503" stroke="#2563EB" stroke-width="2.5" marker-end="url(#u)"/><path d="M600 395V378" stroke="#2563EB" stroke-width="2.5" marker-end="url(#u)"/><path d="M540 250V233" stroke="#2563EB" stroke-width="2.5" marker-end="url(#u)"/><path d="M660 230V247" stroke="#475569" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#d)"/><g font-size="11" font-weight="700"><text x="620" y="515" fill="#2563EB">原始数据</text><text x="620" y="389" fill="#2563EB">哈希 + 签名 + 元数据</text><text x="455" y="243" fill="#2563EB">共识结果</text><text x="680" y="243" fill="#475569">查询请求</text></g><text x="600" y="665" font-size="11" fill="#475569" text-anchor="middle">图13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图13-7 基于区块链的供应链溯源系统分层架构</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图13-7 基于区块链的供应链溯源系统分层架构</title>
+  <desc id="desc">原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录，不直接绕过信任层访问设备。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图13-7 基于区块链的供应链溯源系统分层架构</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">应用只能经区块链网络查询可信记录，不直接绕过信任层访问设备</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 应用层 ===== -->
+  <text x="400" y="142" font-size="14" font-weight="700" fill="#475569">应用层</text>
+  <g font-size="12.5" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <rect x="420" y="152" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+    <text x="565" y="185">Web 溯源查询</text>
+    <rect x="740" y="152" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+    <text x="885" y="185">移动端防伪验证</text>
+    <rect x="1060" y="152" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+    <text x="1205" y="185">企业 ERP 对接</text>
+    <rect x="1380" y="152" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+    <text x="1525" y="185">数据报表</text>
+  </g>
+
+  <!-- 应用层 ↔ 区块链网络层 -->
+  <line x1="900" y1="208" x2="900" y2="248" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="700" y="232" font-size="11" font-weight="700" fill="#2563EB">共识结果（实线）</text>
+  <line x1="1100" y1="248" x2="1100" y2="208" stroke="#475569" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <text x="1120" y="232" font-size="11" font-weight="700" fill="#475569">查询请求（虚线）</text>
+
+  <!-- ===== 区块链网络层 ===== -->
+  <text x="400" y="272" font-size="14" font-weight="700" fill="#2563EB">区块链网络层</text>
+  <g font-size="12.5" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <rect x="420" y="282" width="290" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="565" y="316">分布式账本</text>
+    <rect x="740" y="282" width="290" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="885" y="316">共识机制（Raft / PBFT）</text>
+    <rect x="1060" y="282" width="290" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1205" y="316">智能合约</text>
+    <rect x="1380" y="282" width="290" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="1525" y="316">参与方节点</text>
+  </g>
+  <text x="420" y="362" font-size="10.5" fill="#475569">质检 / 预警 / 冻结规则；链上记录哈希、签名与元数据</text>
+
+  <!-- 边缘层 → 区块链网络层 -->
+  <line x1="900" y1="400" x2="900" y2="348" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="700" y="382" font-size="11" font-weight="700" fill="#2563EB">哈希 + 签名 + 元数据</text>
+
+  <!-- ===== 边缘层 ===== -->
+  <text x="400" y="424" font-size="14" font-weight="700" fill="#0F766E">边缘层</text>
+  <rect x="420" y="434" width="1250" height="64" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1045" y="462" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">边缘网关 / 嵌入式节点</text>
+  <text x="1045" y="484" font-size="11" fill="#475569" text-anchor="middle">采集 · 格式化 · 数字签名 · 哈希运算 · 本地缓存</text>
+
+  <!-- 感知层 → 边缘层 -->
+  <line x1="900" y1="498" x2="900" y2="538" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="700" y="522" font-size="11" font-weight="700" fill="#0F766E">原始数据 · RS-485 / Zigbee / BLE</text>
+
+  <!-- ===== 感知层 ===== -->
+  <text x="400" y="562" font-size="14" font-weight="700" fill="#0F766E">感知层</text>
+  <g font-size="12.5" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <rect x="420" y="572" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="565" y="605">温湿度传感器</text>
+    <rect x="740" y="572" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="885" y="605">RFID 读写器</text>
+    <rect x="1060" y="572" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="1205" y="605">GPS 模块</text>
+    <rect x="1380" y="572" width="290" height="56" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+    <text x="1525" y="605">工业采集设备</text>
+  </g>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
