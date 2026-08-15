@@ -1,20 +1,101 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>图7-3 RAG + Tool-Calling 联合工作流</title><style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}body{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}.page{width:1200px}</style></head>
-<body><main class="page" data-figure-root><svg width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
-<title id="title">图7-3 RAG + Tool-Calling 联合工作流</title><desc id="desc">RAG 检索证据，平台只读工具读取状态，写请求创建待确认 Action，用户确认后平台才执行。</desc>
-<defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker><marker id="g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker></defs>
-<rect width="1200" height="680" fill="#F8FAFC"/><circle cx="42" cy="40" r="6" fill="#2563EB"/><text x="58" y="48" font-size="24" font-weight="700" fill="#0F172A">图7-3 RAG + Tool-Calling 联合工作流</text><text x="58" y="76" font-size="13" fill="#475569">模型准备操作意图，平台确认边界决定设备写入是否发生。</text>
-<rect x="28" y="104" width="1144" height="500" rx="8" fill="#FFF" stroke="#E2E8F0"/>
-<g font-size="13" fill="#0F172A"><text x="48" y="142" font-weight="700">证据与状态准备</text><text x="48" y="326" font-weight="700">受控写入</text></g>
-<g stroke-width="1.7"><rect x="55" y="165" width="150" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB"/><rect x="250" y="165" width="150" height="70" rx="8" fill="#FFF7ED" stroke="#F97316"/><rect x="445" y="165" width="150" height="70" rx="8" fill="#F5F3FF" stroke="#7C3AED"/><rect x="640" y="165" width="150" height="70" rx="8" fill="#ECFDF5" stroke="#0F766E"/><rect x="835" y="165" width="150" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB"/></g>
-<g text-anchor="middle" fill="#0F172A"><text x="130" y="194" font-size="15" font-weight="700">用户任务</text><text x="130" y="216" font-size="12" fill="#475569">重置 3 号泵</text><text x="325" y="194" font-size="15" font-weight="700">LLM 规划</text><text x="325" y="216" font-size="12" fill="#475569">识别所需证据</text><text x="520" y="194" font-size="15" font-weight="700">RAG 检索</text><text x="520" y="216" font-size="12" fill="#475569">版本化 SOP</text><text x="715" y="194" font-size="15" font-weight="700">只读 Tool</text><text x="715" y="216" font-size="12" fill="#475569">读取平台状态</text><text x="910" y="194" font-size="15" font-weight="700">形成操作建议</text><text x="910" y="216" font-size="12" fill="#475569">证据 + 状态快照</text></g>
-<g stroke="#2563EB" stroke-width="2" marker-end="url(#a)"><line x1="205" y1="200" x2="245" y2="200"/><line x1="400" y1="200" x2="440" y2="200"/><line x1="595" y1="200" x2="635" y2="200"/><line x1="790" y1="200" x2="830" y2="200"/></g>
-<line x1="910" y1="235" x2="910" y2="350" stroke="#2563EB" stroke-width="2" marker-end="url(#a)"/>
-<g stroke-width="2"><rect x="790" y="355" width="240" height="72" rx="8" fill="#FFF7ED" stroke="#F97316"/><rect x="470" y="355" width="240" height="72" rx="8" fill="#FFFBEB" stroke="#D97706"/><rect x="150" y="355" width="240" height="72" rx="8" fill="#ECFDF5" stroke="#0F766E"/><rect x="150" y="485" width="240" height="72" rx="8" fill="#EFF6FF" stroke="#2563EB"/><rect x="470" y="485" width="240" height="72" rx="8" fill="#ECFDF5" stroke="#0F766E"/></g>
-<g text-anchor="middle"><text x="910" y="384" font-size="15" font-weight="700">创建待确认 Action</text><text x="910" y="406" font-size="12" fill="#475569">只保存参数，不执行设备写入</text><text x="590" y="384" font-size="15" font-weight="700">用户确认</text><text x="590" y="406" font-size="12" fill="#475569">展示目标、参数与影响</text><text x="270" y="384" font-size="15" font-weight="700">鉴权与策略校验</text><text x="270" y="406" font-size="12" fill="#475569">权限 · 参数 · 联锁边界</text><text x="270" y="514" font-size="15" font-weight="700">控制器 / 执行点</text><text x="270" y="536" font-size="12" fill="#475569">用户确认后才下发</text><text x="590" y="514" font-size="15" font-weight="700">结果与审计</text><text x="590" y="536" font-size="12" fill="#475569">状态回读 · 全链路留痕</text></g>
-<g stroke="#0F766E" stroke-width="2.5" marker-end="url(#g)"><line x1="790" y1="391" x2="715" y2="391"/><line x1="470" y1="391" x2="395" y2="391"/><line x1="270" y1="427" x2="270" y2="480"/><line x1="390" y1="521" x2="465" y2="521"/></g>
-<rect x="770" y="470" width="300" height="74" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-dasharray="6 4"/><text x="920" y="498" text-anchor="middle" font-size="14" font-weight="700" fill="#DC2626">未确认 / 校验失败</text><text x="920" y="521" text-anchor="middle" font-size="12" fill="#475569">不执行，Action 保持待确认或被拒绝</text>
-<path d="M590 427 V450 H920 V470" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6 4"/>
-<line x1="40" y1="620" x2="1160" y2="620" stroke="#E2E8F0"/><text x="600" y="650" text-anchor="middle" font-size="11" fill="#475569">图7-3 RAG → 读状态 → 创建待确认 Action → 用户确认与策略校验 → 控制器执行；模型无直达设备写权限。</text>
-</svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-3 RAG + Tool-Calling 联合工作流</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图7-3 RAG + Tool-Calling 联合工作流</title>
+  <desc id="desc">RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；写入只创建待确认 Action，经用户确认与策略校验后才执行。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-3 RAG + Tool-Calling 联合工作流</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">模型准备操作意图，平台确认边界决定设备写入是否发生</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 证据与状态准备 ===== -->
+  <rect x="120" y="130" width="1560" height="250" rx="10" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="140" y="160" font-size="14" font-weight="700" fill="#0F766E">证据与状态准备</text>
+
+  <rect x="150" y="185" width="240" height="90" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="270" y="222" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">用户任务</text>
+  <text x="270" y="250" font-size="11.5" fill="#475569" text-anchor="middle">重置 3 号泵</text>
+
+  <line x1="392" y1="230" x2="438" y2="230" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="440" y="185" width="240" height="90" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="560" y="222" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">LLM 规划</text>
+  <text x="560" y="250" font-size="11.5" fill="#475569" text-anchor="middle">识别所需证据</text>
+
+  <line x1="682" y1="215" x2="738" y2="205" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="740" y="170" width="230" height="76" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+  <text x="855" y="200" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">RAG 检索</text>
+  <text x="855" y="226" font-size="11" fill="#475569" text-anchor="middle">版本化 SOP</text>
+
+  <line x1="682" y1="250" x2="738" y2="260" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="740" y="264" width="230" height="76" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="855" y="294" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">只读 Tool</text>
+  <text x="855" y="320" font-size="11" fill="#475569" text-anchor="middle">读取平台状态</text>
+
+  <line x1="972" y1="225" x2="1028" y2="225" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="1030" y="185" width="280" height="90" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="1170" y="222" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">形成操作建议</text>
+  <text x="1170" y="250" font-size="11.5" fill="#475569" text-anchor="middle">证据 + 状态快照</text>
+
+  <!-- 准备 → 受控写入 -->
+  <line x1="1170" y1="275" x2="1170" y2="370" stroke="#DC2626" stroke-width="2.3" marker-end="url(#ah-red)"/>
+  <text x="1188" y="326" font-size="11" font-weight="700" fill="#DC2626">进入受控写入边界</text>
+
+  <!-- ===== 受控写入 ===== -->
+  <rect x="120" y="380" width="1560" height="340" rx="10" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="140" y="410" font-size="14" font-weight="700" fill="#DC2626">受控写入</text>
+
+  <rect x="150" y="430" width="300" height="90" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+  <text x="300" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">创建待确认 Action</text>
+  <text x="300" y="494" font-size="11" fill="#475569" text-anchor="middle">只保存参数，不执行设备写入</text>
+
+  <line x1="452" y1="475" x2="498" y2="475" stroke="#F97316" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="500" y="430" width="300" height="90" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
+  <text x="650" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">用户确认</text>
+  <text x="650" y="494" font-size="11" fill="#475569" text-anchor="middle">展示目标、参数与影响</text>
+
+  <line x1="802" y1="475" x2="848" y2="475" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="850" y="430" width="300" height="90" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
+  <text x="1000" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">鉴权与策略校验</text>
+  <text x="1000" y="494" font-size="11" fill="#475569" text-anchor="middle">权限 · 参数 · 联锁边界</text>
+
+  <line x1="1152" y1="475" x2="1198" y2="475" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="1200" y="430" width="300" height="90" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
+  <text x="1350" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">控制器 / 执行点</text>
+  <text x="1350" y="494" font-size="11" fill="#475569" text-anchor="middle">用户确认后才下发</text>
+
+  <!-- 结果与审计 -->
+  <rect x="120" y="560" width="1560" height="60" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="150" y="586" font-size="12.5" font-weight="700" fill="#334155">结果与审计：状态回读 · 全链路留痕</text>
+  <text x="150" y="608" font-size="11" fill="#475569">未确认 / 校验失败：不执行，Action 保持待确认或被拒绝</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图7-3 RAG → 读状态 → 创建待确认 Action → 用户确认与策略校验 → 控制器执行；模型无直达设备写权限。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

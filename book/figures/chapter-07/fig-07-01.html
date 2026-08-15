@@ -1,44 +1,99 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>图7-1 AIoT 演进阶段示意</title>
-<style>
-*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",Arial,sans-serif;color:#0F172A}.figure{width:1200px;height:720px;margin:0}.figure svg{display:block}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图7-1 AIoT 演进阶段示意</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
 </head>
 <body>
-<main class="figure" data-figure-root>
-<svg width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
-<title id="title">图7-1 AIoT 演进阶段示意</title>
-<desc id="desc">AIoT 从连接采集逐步演进到智能分析和受约束决策，智能化程度随数据、模型和边缘能力成熟而提升。</desc>
-<defs><marker id="axisArrow" viewBox="0 0 16 11" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="11" refX="15" refY="5.5" orient="auto"><path d="M0 0L16 5.5 0 11Z" fill="#64748B"/></marker><marker id="curveArrow" viewBox="0 0 16 11" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="11" refX="15" refY="5.5" orient="auto"><path d="M0 0L16 5.5 0 11Z" fill="#2563EB"/></marker></defs>
-<rect width="1200" height="720" fill="#F8FAFC"/>
-<circle cx="46" cy="39" r="6" fill="#2563EB"/><text x="66" y="47" font-size="25" font-weight="750" fill="#0F172A">图7-1 AIoT 演进阶段示意</text>
-<text x="66" y="73" font-size="13" fill="#475569">AIoT 不是一蹴而就的技术堆叠，而是逐步将智能注入数据管道的系统工程</text><line x1="32" y1="96" x2="1168" y2="96" stroke="#e2e8f0"/>
-<rect x="32" y="118" width="1136" height="548" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
-<!-- stage containers -->
-<g>
- <rect x="66" y="150" width="340" height="282" rx="14" fill="#F8FCFB" stroke="#93C5FD" stroke-width="1.7" stroke-dasharray="8 5"/><rect x="430" y="150" width="340" height="282" rx="14" fill="#FFFBF4" stroke="#93C5FD" stroke-width="1.7" stroke-dasharray="8 5"/><rect x="794" y="150" width="340" height="282" rx="14" fill="#FFF9F2" stroke="#93C5FD" stroke-width="1.7" stroke-dasharray="8 5"/>
- <text x="84" y="179" font-size="14" font-weight="700" fill="#64748B">阶段一 · 约 2010—2020</text><text x="448" y="179" font-size="14" font-weight="700" fill="#64748B">阶段二 · 约 2020—2025</text><text x="812" y="179" font-size="14" font-weight="700" fill="#64748B">阶段三 · 当前逐步成形</text>
- <rect x="84" y="203" width="304" height="126" rx="11" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.8"/><rect x="448" y="203" width="304" height="126" rx="11" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8"/><rect x="812" y="203" width="304" height="126" rx="11" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8"/>
- <text x="236" y="237" text-anchor="middle" font-size="20" font-weight="750" fill="#0F172A">连接采集</text><text x="236" y="264" text-anchor="middle" font-size="13" fill="#475569">规则引擎 · 阈值告警</text><text x="236" y="288" text-anchor="middle" font-size="13" fill="#475569">人看仪表盘</text>
- <text x="600" y="237" text-anchor="middle" font-size="20" font-weight="750" fill="#0F172A">智能分析</text><text x="600" y="264" text-anchor="middle" font-size="13" fill="#475569">LLM + Tool-Calling</text><text x="600" y="288" text-anchor="middle" font-size="13" fill="#475569">自然语言操作 · 人机协作</text>
- <text x="964" y="237" text-anchor="middle" font-size="20" font-weight="750" fill="#0F172A">受约束决策</text><text x="964" y="264" text-anchor="middle" font-size="13" fill="#475569">Agent 主动监测 · 诊断与建议</text><text x="964" y="288" text-anchor="middle" font-size="13" fill="#475569">确认或经策略许可后执行</text>
-</g>
-<!-- curve and axis -->
-<line x1="90" y1="408" x2="1100" y2="408" stroke="#64748B" stroke-width="2" marker-end="url(#axisArrow)"/><path d="M112 392 C300 389 445 384 560 378 S770 368 872 360 S1010 351 1080 346" fill="none" stroke="#2563EB" stroke-width="4" stroke-linecap="round" marker-end="url(#curveArrow)"/>
-<text x="112" y="374" font-size="13" font-weight="700" fill="#2563EB">智能化程度上升</text><text x="1086" y="431" text-anchor="end" font-size="12" fill="#64748B">时间 / 能力成熟度</text>
-<!-- drivers -->
-<g>
- <rect x="84" y="475" width="304" height="74" rx="11" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/><rect x="448" y="475" width="304" height="74" rx="11" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/><rect x="812" y="475" width="304" height="74" rx="11" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
- <text x="236" y="505" text-anchor="middle" font-size="15" font-weight="750" fill="#0F172A">算力下沉</text><text x="236" y="528" text-anchor="middle" font-size="12" fill="#475569">边缘 GPU / NPU</text>
- <text x="600" y="505" text-anchor="middle" font-size="15" font-weight="750" fill="#0F172A">大模型突破</text><text x="600" y="528" text-anchor="middle" font-size="12" fill="#475569">LLM 工具调用能力</text>
- <text x="964" y="505" text-anchor="middle" font-size="15" font-weight="750" fill="#0F172A">边缘智能普及</text><text x="964" y="528" text-anchor="middle" font-size="12" fill="#475569">端侧推理与受控执行</text>
-</g>
-<line x1="66" y1="584" x2="1134" y2="584" stroke="#E2E8F0"/><text x="600" y="611" text-anchor="middle" font-size="11" fill="#475569">图7-1 连接是起点，分析是跃迁，受约束决策才是面向真实现场的下一阶段。</text>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图7-1 AIoT 演进阶段示意</title>
+  <desc id="desc">AIoT 从连接采集经智能分析到受约束决策逐步演进，智能化程度随时间持续升高。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <linearGradient id="grad-smart" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#94A3B8"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-1 AIoT 演进阶段示意</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">AIoT 不是一蹴而就的技术堆叠，而是逐步将智能注入数据管道的系统工程</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 三阶段 ===== -->
+  <!-- 阶段一 -->
+  <rect x="140" y="150" width="440" height="260" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.8"/>
+  <text x="360" y="192" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">连接采集</text>
+  <text x="360" y="218" font-size="12" fill="#64748B" text-anchor="middle">阶段一 · 约 2010—2020</text>
+  <rect x="170" y="242" width="380" height="130" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="360" y="280" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">规则引擎 · 阈值告警</text>
+  <text x="360" y="308" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">人看仪表盘</text>
+  <text x="360" y="348" font-size="11" fill="#94A3B8" text-anchor="middle">智能化程度：低</text>
+
+  <!-- 阶段二 -->
+  <rect x="680" y="150" width="440" height="260" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="900" y="192" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">智能分析</text>
+  <text x="900" y="218" font-size="12" fill="#64748B" text-anchor="middle">阶段二 · 约 2020—2025</text>
+  <rect x="710" y="242" width="380" height="130" rx="8" fill="#EFF6FF" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="900" y="280" font-size="13" font-weight="600" fill="#1D4ED8" text-anchor="middle">LLM + Tool-Calling</text>
+  <text x="900" y="308" font-size="13" font-weight="600" fill="#1D4ED8" text-anchor="middle">自然语言操作 · 人机协作</text>
+  <text x="900" y="348" font-size="11" fill="#2563EB" text-anchor="middle">智能化程度：中</text>
+
+  <!-- 阶段三 -->
+  <rect x="1220" y="150" width="440" height="260" rx="10" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="1440" y="192" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">受约束决策</text>
+  <text x="1440" y="218" font-size="12" fill="#64748B" text-anchor="middle">阶段三 · 当前逐步成形</text>
+  <rect x="1250" y="242" width="380" height="130" rx="8" fill="#F0FDF4" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="1440" y="280" font-size="13" font-weight="600" fill="#0F766E" text-anchor="middle">Agent 主动监测 · 诊断与建议</text>
+  <text x="1440" y="308" font-size="13" font-weight="600" fill="#0F766E" text-anchor="middle">确认或经策略许可后执行</text>
+  <text x="1440" y="348" font-size="11" fill="#0F766E" text-anchor="middle">智能化程度：高（有界）</text>
+
+  <!-- 阶段间箭头 -->
+  <line x1="582" y1="280" x2="678" y2="280" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <line x1="1122" y1="280" x2="1218" y2="280" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+
+  <!-- ===== 时间轴 ===== -->
+  <line x1="140" y1="500" x2="1660" y2="500" stroke="#94A3B8" stroke-width="2"/>
+  <circle cx="360" cy="500" r="5" fill="#94A3B8"/>
+  <circle cx="900" cy="500" r="5" fill="#2563EB"/>
+  <circle cx="1440" cy="500" r="5" fill="#0F766E"/>
+  <text x="360" y="540" font-size="12" font-weight="700" fill="#475569" text-anchor="middle">连接</text>
+  <text x="900" y="540" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">分析</text>
+  <text x="1440" y="540" font-size="12" font-weight="700" fill="#0F766E" text-anchor="middle">受约束决策</text>
+  <text x="1660" y="540" font-size="11" font-weight="700" fill="#94A3B8" text-anchor="end">时间 / 能力成熟度</text>
+
+  <!-- ===== 智能化程度曲线 ===== -->
+  <path d="M360 500 C 700 560, 1000 620, 1440 500" fill="none" stroke="url(#grad-smart)" stroke-width="3.5"/>
+  <text x="900" y="620" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">智能化程度上升</text>
+
+  <!-- 底部驱动因素 -->
+  <g font-size="11" fill="#475569">
+    <text x="140" y="680" font-weight="700">算力下沉</text>
+    <text x="140" y="702">边缘 GPU / NPU</text>
+    <text x="680" y="680" font-weight="700">大模型突破</text>
+    <text x="680" y="702">LLM 工具调用能力</text>
+    <text x="1220" y="680" font-weight="700">边缘智能普及</text>
+    <text x="1220" y="702">端侧推理与受控执行</text>
+  </g>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图7-1 连接是起点，分析是跃迁，受约束决策才是面向真实现场的下一阶段。</text>
+  </svg>
 </svg>
-</main>
+  </main>
 </body>
 </html>
