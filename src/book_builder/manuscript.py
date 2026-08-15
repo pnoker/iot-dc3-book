@@ -1,8 +1,9 @@
 """
 手稿文件系统读取 —— 从 book/manuscript/ 读取手稿 Markdown。
 
-手稿按小节组织：chapter-XX/X.Y.Z.md（每个三级标题一个小节文件），
-文件 frontmatter 记录所属节标题（section）。本模块按节分组、恢复章/节/小节结构。
+手稿按二级节组织：chapter-XX/X.Y.md（每个二级标题 H2 一个节文件），
+文件 frontmatter 记录节标题（section），正文保留 H2 标题与节内 H3/H4。
+本模块拼接 H1 章标题 + 章引言 + 各节文件，恢复完整章结构。
 """
 
 from __future__ import annotations
@@ -15,8 +16,8 @@ from book_builder.log import get_logger
 
 logger = get_logger("manuscript")
 
-# 匹配小节文件名: X.Y.Z.md
-_SECTION_FILE_RE = re.compile(r"^\d+\.\d+\.\d+$")
+# 匹配节文件名: X.Y.md
+_SECTION_FILE_RE = re.compile(r"^\d+\.\d+$")
 # frontmatter 块
 _FM_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n?", re.DOTALL)
 
@@ -28,9 +29,9 @@ def load_manuscript(
     """
     遍历 parts 中的章节，读取手稿文件。
 
-    优先从 chapter-XX/X.Y.Z.md 小节文件组装（每个三级标题一个小节文件，
-    按 frontmatter 的 section 归节、恢复章/节/小节三级结构）；
-    若目录下无小节文件，则降级读取 chapter-XX/chapter.md（旧版整章）。
+    优先从 chapter-XX/X.Y.md 节文件组装（每个二级标题一个节文件，
+    按文件名排序拼接，恢复 H1 章 + H2 节 + 节内 H3/H4 结构）；
+    若目录下无节文件，则降级读取 chapter-XX/chapter.md（旧版整章）。
 
     Returns:
         dict[chapter_id, assembled_markdown]
@@ -58,7 +59,7 @@ def load_manuscript(
 
 
 def _sort_key(filename: str) -> tuple[int, ...]:
-    """将 X.Y.Z 转为可排序的 tuple。"""
+    """将 X.Y 转为可排序的 tuple。"""
     try:
         return tuple(int(part) for part in filename.split("."))
     except ValueError:
@@ -66,22 +67,13 @@ def _sort_key(filename: str) -> tuple[int, ...]:
 
 
 def _strip_frontmatter(text: str) -> str:
-    """剥离 frontmatter，返回正文（小节标题 + 内容）。"""
+    """剥离 frontmatter，返回正文（节标题 + 节内内容）。"""
     m = _FM_RE.match(text)
     return text[m.end():].strip() if m else text.strip()
 
 
-def _parse_section(text: str) -> str:
-    """从 frontmatter 提取 section（所属节标题，如 "1.1 工业软件的演进与局限"）。"""
-    m = _FM_RE.match(text)
-    if not m:
-        return ""
-    sm = re.search(r'^section:\s*"?([^"\n]+)"?\s*$', m.group(1), re.M)
-    return sm.group(1).strip() if sm else ""
-
-
 def _assemble_from_sections(chapter_dir: Path, chapter_id: int, chapter_title: str) -> str:
-    """按节分组，组装小节文件为完整章 Markdown（H1 章 + H2 节 + H3 小节）。"""
+    """拼接节文件为完整章 Markdown（H1 章 + 章引言 + 各节 H2 正文）。"""
     if not chapter_dir.exists():
         return ""
     section_files = sorted(
@@ -98,21 +90,8 @@ def _assemble_from_sections(chapter_dir: Path, chapter_id: int, chapter_title: s
         if intro:
             lines.append("")
             lines.append(intro)
-    # 按节分组
-    sections: dict[str, list[str]] = {}
-    order: list[str] = []
     for sf in section_files:
-        text = sf.read_text(encoding="utf-8")
-        body = _strip_frontmatter(text)
-        section = _parse_section(text)
-        if section not in sections:
-            sections[section] = []
-            order.append(section)
-        sections[section].append(body)
-    for section in order:
+        body = _strip_frontmatter(sf.read_text(encoding="utf-8"))
         lines.append("")
-        lines.append(f"## {section}")
-        for body in sections[section]:
-            lines.append("")
-            lines.append(body)
+        lines.append(body)
     return "\n".join(lines).strip()

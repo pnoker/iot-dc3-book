@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""把 book/manuscript/chapter-XX/chapter.md 拆分为 X.Y.Z.md 分节文件。
+"""把 book/manuscript/chapter-XX/chapter.md 拆分为 X.Y.md 二级节文件。
 
-每个 H3（###）拆成一个小节文件；代码块内的 #/##/### 不视为标题；
-H4（####）保留在小节文件内；节标题（H2）写入小节 frontmatter 的 section；
+每个 H2（##）拆成一个二级节文件；代码块内的 #/##/### 不视为标题；
+节内的 H3/H4 子标题与正文原样保留在节文件内；
 章引言（H1 后、第一个 H2 前的内容）写入 _intro.md；
 原 chapter.md 归档到 book/manuscript/_archive/。
 
@@ -21,7 +21,6 @@ ARCHIVE = MANUSCRIPT / "_archive"
 
 H1_RE = re.compile(r"^#\s+(.+)$")
 H2_RE = re.compile(r"^##\s+(.+)$")
-H3_RE = re.compile(r"^###\s+(.+)$")
 FENCE_RE = re.compile(r"^\s*```")
 
 
@@ -32,13 +31,10 @@ def parse_chapter(text: str) -> dict:
     intro: list[str] = []
     sections: list[dict] = []
     cur_section: dict | None = None
-    cur_h3: dict | None = None
 
     def append(line: str) -> None:
-        if cur_h3 is not None:
-            cur_h3["body"].append(line)
-        elif cur_section is not None:
-            cur_section["lead"].append(line)
+        if cur_section is not None:
+            cur_section["body"].append(line)
         else:
             intro.append(line)
 
@@ -56,26 +52,17 @@ def parse_chapter(text: str) -> dict:
             continue
         m = H2_RE.match(line)
         if m:
-            cur_section = {"title": m.group(1).strip(), "lead": [], "h3s": []}
+            cur_section = {"title": m.group(1).strip(), "body": []}
             sections.append(cur_section)
-            cur_h3 = None
             continue
-        m = H3_RE.match(line)
-        if m:
-            cur_h3 = {"title": m.group(1).strip(), "body": []}
-            if cur_section is None:
-                cur_section = {"title": "", "lead": [], "h3s": []}
-                sections.append(cur_section)
-            cur_section["h3s"].append(cur_h3)
-            continue
-        # H4 与普通行归入当前上下文
+        # H3/H4/正文归入当前节
         append(line)
 
     return {"h1": h1, "intro": intro, "sections": sections}
 
 
-def h3_stem(title: str) -> str | None:
-    m = re.match(r"^(\d+\.\d+\.\d+)", title)
+def h2_stem(title: str) -> str | None:
+    m = re.match(r"^(\d+\.\d+)(?=\s|$)", title)
     return m.group(1) if m else None
 
 
@@ -86,13 +73,10 @@ def render_frontmatter(section_title: str) -> str:
     return f'---\nsection: "{escaped}"\n---\n\n'
 
 
-def render_h3(h3: dict, section_title: str, lead: list[str]) -> str:
-    parts = [render_frontmatter(section_title)]
-    parts.append(f"### {h3['title']}\n")
-    if lead:
-        parts.append("\n".join(lead))
-        parts.append("")
-    parts.append("\n".join(h3["body"]))
+def render_section(section: dict) -> str:
+    parts = [render_frontmatter(section["title"])]
+    parts.append(f"## {section['title']}\n")
+    parts.append("\n".join(section["body"]))
     return "\n".join(parts).rstrip() + "\n"
 
 
@@ -103,7 +87,6 @@ def split_chapter(chapter_dir: Path, dry_run: bool = False) -> dict:
     text = chapter_md.read_text(encoding="utf-8")
     parsed = parse_chapter(text)
 
-    n_h3 = sum(len(s["h3s"]) for s in parsed["sections"])
     n_h2 = len(parsed["sections"])
     intro_text = "\n".join(parsed["intro"]).strip()
 
@@ -111,7 +94,6 @@ def split_chapter(chapter_dir: Path, dry_run: bool = False) -> dict:
         "chapter": chapter_dir.name,
         "h1": parsed["h1"],
         "n_h2": n_h2,
-        "n_h3": n_h3,
         "has_intro": bool(intro_text),
         "files": [],
         "status": "ok",
@@ -119,9 +101,8 @@ def split_chapter(chapter_dir: Path, dry_run: bool = False) -> dict:
 
     if dry_run:
         for s in parsed["sections"]:
-            for h3 in s["h3s"]:
-                stem = h3_stem(h3["title"]) or h3["title"]
-                report["files"].append(f"{stem}.md")
+            stem = h2_stem(s["title"]) or s["title"]
+            report["files"].append(f"{stem}.md")
         if report["has_intro"]:
             report["files"].append("_intro.md")
         return report
@@ -130,15 +111,13 @@ def split_chapter(chapter_dir: Path, dry_run: bool = False) -> dict:
     for old in list(chapter_dir.glob("[0-9]*.md")) + list(chapter_dir.glob("_intro.md")):
         old.unlink()
     for s in parsed["sections"]:
-        for idx, h3 in enumerate(s["h3s"]):
-            stem = h3_stem(h3["title"])
-            if not stem:
-                print(f"⚠️  {chapter_dir.name}: 小节标题缺少编号，跳过 → {h3['title']}")
-                continue
-            lead = s["lead"] if idx == 0 else []
-            content = render_h3(h3, s["title"], lead)
-            (chapter_dir / f"{stem}.md").write_text(content, encoding="utf-8")
-            report["files"].append(f"{stem}.md")
+        stem = h2_stem(s["title"])
+        if not stem:
+            print(f"⚠️  {chapter_dir.name}: 节标题缺少编号，跳过 → {s['title']}")
+            continue
+        content = render_section(s)
+        (chapter_dir / f"{stem}.md").write_text(content, encoding="utf-8")
+        report["files"].append(f"{stem}.md")
     if intro_text:
         (chapter_dir / "_intro.md").write_text(intro_text + "\n", encoding="utf-8")
         report["files"].append("_intro.md")
@@ -153,17 +132,17 @@ def split_chapter(chapter_dir: Path, dry_run: bool = False) -> dict:
 def main() -> None:
     dry_run = "--dry-run" in sys.argv
     chapters = sorted(MANUSCRIPT.glob("chapter-*"))
-    total_h3 = 0
+    total_h2 = 0
     for ch in chapters:
         rep = split_chapter(ch, dry_run=dry_run)
         if rep["status"] != "ok":
             print(f"{rep['chapter']}: 跳过（{rep['status']}）")
             continue
-        total_h3 += rep["n_h3"]
+        total_h2 += rep["n_h2"]
         verb = "将拆分" if dry_run else "已拆分"
-        print(f"{verb} {rep['chapter']}: {rep['n_h2']} 节 / {rep['n_h3']} 小节"
+        print(f"{verb} {rep['chapter']}: {rep['n_h2']} 节"
               + ("（含章引言）" if rep["has_intro"] else ""))
-    print(f"\n合计 {len(chapters)} 章 / {total_h3} 个小节文件"
+    print(f"\n合计 {len(chapters)} 章 / {total_h2} 个二级节文件"
           + ("（dry-run，未写入）" if dry_run else ""))
 
 
