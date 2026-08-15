@@ -1311,13 +1311,12 @@ body {
     width: 36px;
     height: 36px;
     margin-left: 8px;
-    border-radius: 8px;
+    flex-shrink: 0;
     color: var(--vp-c-text-2);
-    transition: color 0.15s ease, background-color 0.15s ease;
+    transition: color 0.25s;
 }
 .gallery-nav-link:hover {
     color: var(--vp-c-text-1);
-    background-color: var(--vp-c-bg-soft);
 }
 .gallery-nav-icon {
     display: flex;
@@ -1344,9 +1343,6 @@ body {
 }
 
 /* ── 图库按钮图标显示加强 ── */
-.gallery-nav-link {
-    flex-shrink: 0;
-}
 .gallery-nav-icon svg {
     display: block;
 }
