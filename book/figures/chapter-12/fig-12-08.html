@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈</title>
+  <desc id="desc">湿度低于下限时先查降水预报：预报有雨则推迟灌溉，无雨才计算灌溉量并开阀；高于上限则缩短采样间隔。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">从“看到历史再反应”升级为“预判未来再决策”的混合控制</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 开始 -->
+  <rect x="790" y="140" width="220" height="52" rx="10" fill="#2563EB"/>
+  <text x="900" y="172" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">传感器回传实时湿度值</text>
+
+  <!-- 判断1：湿度 < 下限 -->
+  <polygon points="900,222 1010,262 900,302 790,262" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="268" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">湿度 &lt; 下限？</text>
+  <line x1="900" y1="192" x2="900" y2="222" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+
+  <!-- 否：等待 -->
+  <rect x="1160" y="240" width="300" height="52" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1310" y="272" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">否 · 等待下次采样</text>
+  <line x1="1010" y1="262" x2="1160" y2="266" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
+  <text x="1085" y="252" font-size="11" fill="#64748B">否</text>
+
+  <!-- 是：检查天气 -->
+  <line x1="900" y1="302" x2="900" y2="348" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <text x="912" y="328" font-size="11" fill="#64748B">是</text>
+  <rect x="790" y="348" width="220" height="52" rx="10" fill="#0F766E"/>
+  <text x="900" y="380" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">获取未来 12～24h 降水</text>
+
+  <!-- 判断2：降水概率 -->
+  <polygon points="900,430 1010,470 900,510 790,470" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="900" y="476" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">降水概率 &gt; 阈值？</text>
+  <line x1="900" y1="400" x2="900" y2="430" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+
+  <!-- 是：推迟灌溉 -->
+  <rect x="1160" y="448" width="300" height="52" rx="10" fill="#FFF7ED" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1310" y="480" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">是 · 推迟灌溉并记录决策依据</text>
+  <line x1="1010" y1="470" x2="1160" y2="474" stroke="#D97706" stroke-width="1.5" marker-end="url(#ah-orange)"/>
+  <text x="1085" y="460" font-size="11" fill="#D97706">是</text>
+
+  <!-- 否：计算灌溉量 -->
+  <line x1="900" y1="510" x2="900" y2="556" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <text x="912" y="536" font-size="11" fill="#64748B">否</text>
+  <rect x="650" y="556" width="500" height="86" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="586" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">计算灌溉量（水分平衡公式）</text>
+  <text x="900" y="612" font-size="12" fill="#475569" text-anchor="middle">灌溉量(mm) = (田间持水量 − 当前含水量) × 根系深度(m) × 1000 × 计划湿润比</text>
+  <text x="900" y="632" font-size="11" fill="#64748B" text-anchor="middle">计划湿润比取 0.3～0.8，视作物与灌溉方式而定</text>
+
+  <!-- 开阀 -->
+  <line x1="900" y1="642" x2="900" y2="688" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <rect x="790" y="688" width="220" height="52" rx="10" fill="#2563EB"/>
+  <text x="900" y="720" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">开阀灌溉 → 渗水休止</text>
+
+  <!-- 关键点 callout -->
+  <rect x="80" y="800" width="1640" height="80" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="830" font-size="13" font-weight="700" fill="#334155">工程要点：天气 API 的可靠性是前馈方案成败关键</text>
+  <text x="120" y="856" font-size="12" fill="#475569">免费 API 在高纬度或山区偏差较大，应架设本地小型气象站补充；先跑裸阈值控制积累数据，再逐步开启前馈部分；天气 API 离线时降级回退到纯阈值控制。</text>
+
+  <!-- Caption -->
+  <text x="900" y="920" font-size="17" fill="#475569" text-anchor="middle">图12-8 灌溉决策先判断湿度是否跌破下限，再查询降水预报：预报有雨则推迟灌溉，无雨才按水分平衡公式计算灌溉量并开阀，从而避免“浇完就下雨”的浪费。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

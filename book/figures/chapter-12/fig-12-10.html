@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图12-10 节点功耗组成与电池寿命估算</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图12-10 节点功耗组成与电池寿命估算</title>
+  <desc id="desc">节点功耗拆为采样处理、无线发射、休眠三阶段；由占空比计算日均耗电，再按寿命公式估算电池寿命。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-10 节点功耗组成与电池寿命估算</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">平均电流法 · 电流×时间积分求和，再除以日均耗电估算寿命</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 左：功耗四阶段 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">功耗组成（每小时唤醒发送一次）</text>
+
+  <rect x="80" y="170" width="720" height="80" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="116" y="202" font-size="14" font-weight="700" fill="#0F172A">① 传感器采样 + MCU 处理</text>
+  <text x="116" y="226" font-size="12" fill="#475569">15 mA × 0.3 s = 0.00125 mAh（覆盖预热到采集完成）</text>
+
+  <rect x="80" y="262" width="720" height="80" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="116" y="294" font-size="14" font-weight="700" fill="#0F172A">② 无线发射（+20 dBm）</text>
+  <text x="116" y="318" font-size="12" fill="#475569">120 mA × 0.5 s = 0.01667 mAh（含前导码与有效载荷）</text>
+
+  <rect x="80" y="354" width="720" height="80" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="116" y="386" font-size="14" font-weight="700" fill="#0F172A">③ 休眠</text>
+  <text x="116" y="410" font-size="12" fill="#475569">10 μA × 3599.2 s ≈ 0.01000 mAh（MCU + 模组待机，占时最长）</text>
+
+  <rect x="80" y="446" width="720" height="70" rx="10" fill="#0F766E"/>
+  <text x="116" y="476" font-size="14" font-weight="700" fill="#FFFFFF">单周期总计（活跃 + 休眠）</text>
+  <text x="116" y="500" font-size="12" fill="#E2E8F0">0.01792 + 0.01000 = 0.02792 mAh → 日均耗电 = 0.02792 × 24 = 0.670 mAh</text>
+
+  <!-- 右：寿命估算 -->
+  <text x="900" y="150" font-size="15" font-weight="700" fill="#334155">电池寿命估算（平均电流法）</text>
+
+  <rect x="900" y="170" width="820" height="110" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="936" y="204" font-size="14" font-weight="700" fill="#0F172A">寿命公式</text>
+  <text x="936" y="236" font-size="15" font-weight="700" fill="#2563EB">寿命(天) = (电池标称容量 × 降额因子) / 日均耗电</text>
+  <text x="936" y="262" font-size="11" fill="#475569">降额因子吸收温度、放电率与自放电影响，算例取 0.75</text>
+
+  <rect x="900" y="296" width="820" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="936" y="330" font-size="14" font-weight="700" fill="#0F172A">算例（AA 碱性电池 3000 mAh）</text>
+  <text x="936" y="362" font-size="15" font-weight="700" fill="#2563EB">(3000 × 0.75) / 0.670 ≈ 3358 天 ≈ 9.2 年</text>
+  <text x="936" y="388" font-size="11" fill="#475569">覆盖典型项目周期 3～5 年，无需中途换电池</text>
+
+  <text x="936" y="446" font-size="13" font-weight="700" fill="#334155">不同上报间隔的理论寿命对比</text>
+  <rect x="900" y="462" width="820" height="150" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <g font-size="12">
+    <text x="936" y="490" fill="#0F172A">10 分钟</text>
+    <rect x="1030" y="480" width="36" height="12" fill="#F97316"/>
+    <text x="1078" y="491" font-size="11" fill="#475569">0.94 年（高实时 · 灌溉阀门反馈）</text>
+    <text x="936" y="514" fill="#0F172A">1 小时</text>
+    <rect x="1030" y="504" width="340" height="12" fill="#2563EB"/>
+    <text x="1382" y="515" font-size="11" fill="#475569">9.2 年（工程平衡点）</text>
+    <text x="936" y="538" fill="#0F172A">2 小时</text>
+    <rect x="1030" y="528" width="680" height="12" fill="#16A34A"/>
+    <text x="1722" y="539" font-size="11" fill="#475569">18.3 年</text>
+    <text x="936" y="562" fill="#0F172A">6 小时</text>
+    <rect x="1030" y="552" width="820" height="12" fill="#16A34A"/>
+    <text x="1606" y="580" font-size="11" fill="#475569">51.3 年（存储类数据）</text>
+  </g>
+
+  <!-- 底部：工程注意事项 -->
+  <rect x="80" y="590" width="1640" height="150" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="624" font-size="14" font-weight="700" fill="#334155">工程注意事项</text>
+  <g font-size="12" fill="#475569">
+    <text x="120" y="656">• 低温降额：北方冬季碱性电池容量显著下降，应使用低温锂电池并加大降额系数</text>
+    <text x="120" y="682">• 休眠电流陷阱：稳压器/DC-DC 漏电流可能使实测休眠电流超过 50 μA，寿命直接打五折</text>
+    <text x="120" y="708">• 实际寿命 &lt; 理论值：自放电、高低温循环、传感器漂移都会缩短寿命，理论值 × 0.6～0.8 作运维依据</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图12-10 节点功耗拆为采样处理、无线发射与休眠三阶段，由“电流×时间”积分得到日均耗电 0.670 mAh，再按寿命公式估算出每小时上报约 9.2 年、每 10 分钟上报仅 0.94 年。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

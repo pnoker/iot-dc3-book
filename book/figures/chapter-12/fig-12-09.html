@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图12-9 农业场景 LPWAN 选型四维约束</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">图12-9 农业场景 LPWAN 选型四维约束</title>
+  <desc id="desc">农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。</desc>
+  <rect width="1200" height="640" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="520" viewBox="0 0 1800 850" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="850" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-9 农业场景 LPWAN 选型四维约束</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">选型之前先厘清约束 · 四个维度共同决定技术取舍</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 维度1：覆盖 -->
+  <rect x="80" y="140" width="392" height="300" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="392" height="44" rx="12" fill="#2563EB"/>
+  <rect x="80" y="164" width="392" height="20" fill="#2563EB"/>
+  <text x="276" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">覆盖距离</text>
+  <text x="116" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：高</text>
+  <text x="116" y="262" font-size="12" fill="#475569">开阔农田覆盖数公里</text>
+  <text x="116" y="288" font-size="12" fill="#475569">温室金属骨架、薄膜、密植冠层</text>
+  <text x="116" y="314" font-size="12" fill="#475569">对信号有明显阻挡与吸收</text>
+  <text x="116" y="352" font-size="12" fill="#64748B">链路预算需考虑作物冠层衰减</text>
+  <text x="116" y="402" font-size="12" fill="#475569">LoRa 郊野覆盖可达数公里；NB-IoT</text>
+  <text x="116" y="424" font-size="12" fill="#475569">依托运营商基站亦可覆盖空旷地</text>
+
+  <!-- 维度2：速率 -->
+  <rect x="496" y="140" width="392" height="300" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="496" y="140" width="392" height="44" rx="12" fill="#16A34A"/>
+  <rect x="496" y="164" width="392" height="20" fill="#16A34A"/>
+  <text x="692" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">数据速率</text>
+  <text x="532" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：中</text>
+  <text x="532" y="262" font-size="12" fill="#475569">典型“上行为主”业务模式</text>
+  <text x="532" y="288" font-size="12" fill="#475569">每次上传几十到几百字节</text>
+  <text x="532" y="314" font-size="12" fill="#475569">土壤每小时、气象每 15～30 分钟</text>
+  <text x="532" y="352" font-size="12" fill="#64748B">要求“极低但稳定”</text>
+  <text x="532" y="402" font-size="12" fill="#475569">高清病虫害图像属特殊需求，</text>
+  <text x="532" y="424" font-size="12" fill="#475569">另走 4G/5G 高带宽通道承载</text>
+
+  <!-- 维度3：功耗 -->
+  <rect x="912" y="140" width="392" height="300" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="912" y="140" width="392" height="44" rx="12" fill="#F97316"/>
+  <rect x="912" y="164" width="392" height="20" fill="#F97316"/>
+  <text x="1108" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">功耗与电池寿命</text>
+  <text x="948" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：高</text>
+  <text x="948" y="262" font-size="12" fill="#475569">田间供电困难，依赖电池 / 光伏</text>
+  <text x="948" y="288" font-size="12" fill="#475569">目标续航至少 1～2 年，最好 3～5 年</text>
+  <text x="948" y="314" font-size="12" fill="#475569">功耗 = 采集 + 发射 + 休眠</text>
+  <text x="948" y="352" font-size="12" fill="#64748B">能量大头在 MCU 休眠漏电流</text>
+  <text x="948" y="402" font-size="12" fill="#475569">NB-IoT 联网需与基站同步，</text>
+  <text x="948" y="424" font-size="12" fill="#475569">待机电流通常比 LoRa 高一个量级</text>
+
+  <!-- 维度4：成本 -->
+  <rect x="1328" y="140" width="392" height="300" rx="12" fill="#F8FAFC" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="1328" y="140" width="392" height="44" rx="12" fill="#0F766E"/>
+  <rect x="1328" y="164" width="392" height="20" fill="#0F766E"/>
+  <text x="1524" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">设备与运维成本</text>
+  <text x="1364" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：高</text>
+  <text x="1364" y="262" font-size="12" fill="#475569">大规模、低利润，物料成本须低廉</text>
+  <text x="1364" y="288" font-size="12" fill="#475569">传感器成本往往超过通信模块</text>
+  <text x="1364" y="314" font-size="12" fill="#475569">运维成本关键在于通信费用</text>
+  <text x="1364" y="352" font-size="12" fill="#64748B">LoRa 免授权频段、自建网关无通信费</text>
+  <text x="1364" y="402" font-size="12" fill="#475569">NB-IoT 需 SIM 卡与运营商资费</text>
+  <text x="1364" y="424" font-size="12" fill="#475569">零散农田依托运营商可降低门槛</text>
+
+  <!-- 结论 callout -->
+  <rect x="80" y="500" width="1640" height="130" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="540" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">选型框架结论</text>
+  <text x="900" y="576" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">远覆盖 · 低速率 · 长续航 · 低成本，且以单向上传为主</text>
+  <text x="900" y="604" font-size="12" fill="#475569" text-anchor="middle">核心问题：在 LoRa 与 NB-IoT 之间，哪一个能同时满足四维约束且生态成熟度最高？</text>
+
+  <!-- Caption -->
+  <text x="900" y="810" font-size="17" fill="#475569" text-anchor="middle">图12-9 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图12-6 农业数据分层采集与三道清洗流程</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图12-6 农业数据分层采集与三道清洗流程</title>
+  <desc id="desc">传感器数据经分层采集、MQTT 传输后，依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，再供 AI 模型消费。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-6 农业数据分层采集与三道清洗流程</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">分层采集 → MQTT 传输 → 三道清洗 → AI 模型 · “够用”覆盖关键变化拐点</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 阶段1：传感器节点 -->
+  <rect x="80" y="150" width="300" height="210" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="230" y="184" font-size="15" font-weight="700" fill="#16A34A" text-anchor="middle">传感器节点</text>
+  <circle cx="120" cy="224" r="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="120" cy="224" r="4" fill="#16A34A"/>
+  <text x="144" y="228" font-size="12" fill="#0F172A">土壤湿度 / 温度 / EC</text>
+  <circle cx="120" cy="266" r="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="120" cy="266" r="4" fill="#16A34A"/>
+  <text x="144" y="270" font-size="12" fill="#0F172A">空气温湿度 / 光照 / CO₂</text>
+  <circle cx="120" cy="308" r="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="120" cy="308" r="4" fill="#16A34A"/>
+  <text x="144" y="312" font-size="12" fill="#0F172A">风速 / 降雨量</text>
+  <text x="230" y="344" font-size="11" fill="#64748B" text-anchor="middle">低功耗 MCU · 深度休眠</text>
+
+  <!-- 阶段2：分层采集 -->
+  <rect x="420" y="150" width="300" height="210" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="570" y="184" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">分层采集策略</text>
+  <rect x="452" y="206" width="236" height="54" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="570" y="228" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">土壤参数 · 每 1 小时</text>
+  <text x="570" y="248" font-size="11" fill="#475569" text-anchor="middle">变化分钟~小时级</text>
+  <rect x="452" y="276" width="236" height="54" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="570" y="298" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">气象参数 · 每 15 分钟</text>
+  <text x="570" y="318" font-size="11" fill="#475569" text-anchor="middle">风速/光照/CO₂ 变化更快</text>
+
+  <!-- 阶段3：MQTT -->
+  <rect x="760" y="150" width="280" height="210" rx="12" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="900" y="184" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">MQTT 传输</text>
+  <text x="900" y="224" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">发布 / 订阅 · 最小报文头 2 字节</text>
+  <text x="820" y="254" font-size="12" fill="#0F172A">QoS 0 · 至多一次</text>
+  <text x="820" y="276" font-size="11" fill="#475569">定期采集的土壤温度</text>
+  <text x="820" y="306" font-size="12" fill="#0F172A">QoS 1 · 至少一次</text>
+  <text x="820" y="328" font-size="11" fill="#475569">阈值告警确保不丢包</text>
+
+  <!-- 阶段4：三道清洗 -->
+  <rect x="1080" y="150" width="400" height="210" rx="12" fill="#FFF7ED" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="184" font-size="15" font-weight="700" fill="#D97706" text-anchor="middle">三道清洗</text>
+  <rect x="1108" y="202" width="344" height="44" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="219" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">① 异常值检测</text>
+  <text x="1280" y="237" font-size="11" fill="#475569" text-anchor="middle">滑动窗口 3σ · 上下限过滤</text>
+  <rect x="1108" y="254" width="344" height="44" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="271" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">② 缺失值插补</text>
+  <text x="1280" y="289" font-size="11" fill="#475569" text-anchor="middle">线性插值 · 前向填充</text>
+  <rect x="1108" y="306" width="344" height="44" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="323" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">③ 时间戳对齐</text>
+  <text x="1280" y="341" font-size="11" fill="#475569" text-anchor="middle">重采样到固定锚点</text>
+
+  <!-- 阶段5：AI 模型 -->
+  <rect x="1520" y="150" width="200" height="210" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1620" y="184" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AI 模型</text>
+  <text x="1620" y="224" font-size="12" fill="#0F172A" text-anchor="middle">病害识别</text>
+  <text x="1620" y="248" font-size="12" fill="#0F172A" text-anchor="middle">产量预测</text>
+  <text x="1620" y="272" font-size="12" fill="#0F172A" text-anchor="middle">灌溉决策</text>
+
+  <!-- 箭头 -->
+  <line x1="380" y1="255" x2="420" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="720" y1="255" x2="760" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1040" y1="255" x2="1080" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1480" y1="255" x2="1520" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 关键点 callout -->
+  <rect x="420" y="420" width="960" height="96" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="440" y="448" font-size="13" font-weight="700" fill="#334155">关键要点：事件驱动 + 定期采样</text>
+  <text x="440" y="472" font-size="12" fill="#475569">端侧 AI 在本地做简单趋势识别，仅在检测到异常波动时提高上传频率；</text>
+  <text x="440" y="494" font-size="12" fill="#475569">“够用”原则——覆盖关键变化拐点，同时不给现场供电和回传通道造成压力。</text>
+
+  <!-- Legend -->
+  <line x1="40" y1="580" x2="1760" y2="580" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <rect x="60" y="605" width="16" height="14" rx="2" fill="#16A34A"/>
+    <text x="84" y="614" dominant-baseline="middle">采集 / 传输</text>
+    <rect x="180" y="605" width="16" height="14" rx="2" fill="#D97706"/>
+    <text x="204" y="614" dominant-baseline="middle">数据清洗</text>
+    <rect x="300" y="605" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="324" y="614" dominant-baseline="middle">模型消费</text>
+    <line x1="450" y1="612" x2="490" y2="612" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="498" y="614" dominant-baseline="middle">数据流向</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="900" y="850" font-size="17" fill="#475569" text-anchor="middle">图12-6 传感器数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供下游 AI 模型消费。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
