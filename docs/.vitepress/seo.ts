@@ -13,6 +13,8 @@ const BOOK_SUBTITLE = '构建面向智能体演进的多协议、云原生、开
 const AUTHOR = '张红元'
 const TWITTER_CREATOR = '@iotdc3'
 const BOOK_DATE_PUBLISHED = '2025-06-01'
+const COPYRIGHT_HOLDER = '张红元'
+const LICENSE_URL = `${SITE_URL}/copyright`
 const DEFAULT_DESCRIPTION =
   '《从工业软件到 AI 智能体》—— AIoT 技术与实践，从物联网平台到智能体应用。作者张红元，14 章 · 155 张架构图，IoT DC3 开源贯穿全书。'
 
@@ -148,6 +150,9 @@ function buildJsonLd(
         bookFormat: `${SCHEMA}/EBook`,
         isAccessibleForFree: true,
         publisher: {'@type': 'Person', name: AUTHOR},
+        copyrightHolder: {'@type': 'Person', name: COPYRIGHT_HOLDER},
+        copyrightYear: 2025,
+        license: LICENSE_URL,
         numberOfPages: 155,
       }),
     ]

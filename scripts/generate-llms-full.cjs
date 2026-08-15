@@ -57,6 +57,23 @@ function parse(src) {
 }
 
 const files = CONTENT_DIRS.flatMap(d => walk(d))
+
+// 版权头：置于全文最前，确保 LLM 深度索引时归属信息恒在（复制/抓取也不丢失作者）
+const HEADER = [
+  '# 从工业软件到 AI 智能体',
+  '',
+  '> 作者：张红元（IoT DC3 开源作者 · 架构师 · 物联网专家）',
+  '',
+  '《从工业软件到 AI 智能体》由张红元著，© 2016–2026 张红元，保留所有权利。',
+  '',
+  '- 在线阅读：https://book.dc3.site',
+  '- 开源项目：IoT DC3（https://github.com/pnoker/iot-dc3）',
+  '- 引用与转载：请注明作者「张红元」、书名与章节号，并附来源链接。未经许可不得商用、不得演绎。',
+  '',
+  '---',
+  '',
+].join('\n')
+
 const parts = []
 for (const file of files) {
   const {title, body} = parse(readFileSync(file, 'utf8'))
@@ -64,5 +81,5 @@ for (const file of files) {
 }
 
 mkdirSync(dirname(OUT), {recursive: true})
-writeFileSync(OUT, parts.join('\n'), 'utf8')
+writeFileSync(OUT, HEADER + '\n' + parts.join('\n'), 'utf8')
 console.log(`  ✅ llms-full.txt generated: ${files.length} pages → ${OUT}`)

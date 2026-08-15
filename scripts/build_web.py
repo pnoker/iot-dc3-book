@@ -389,8 +389,15 @@ def convert_chapter(src: Path, cid: int, title: str, desc: str, date_modified: s
         f'  <div class="divider-body">{divider_html}</div>\n'
         "</figure>\n"
     )
-    # 在第一个 H1 之后插入章扉页
-    body = re.sub(r"^# [^\n]+", lambda m: m.group(0) + divider, body, count=1, flags=re.M)
+    # 署名行（每章正文顶部：复制粘贴时归属信息随文字传播，而非只存在于页脚）
+    byline = (
+        '\n<div class="book-byline">'
+        "作者：张红元 · © 2016–2026 · 保留所有权利 · "
+        '<a href="/copyright">版权与许可</a>'
+        "</div>\n"
+    )
+    # 在第一个 H1 之后插入署名 + 章扉页
+    body = re.sub(r"^# [^\n]+", lambda m: m.group(0) + byline + divider, body, count=1, flags=re.M)
     fm_fields = {
         "title": f"第 {cid} 章　{title}",
         "description": oneline(desc),
@@ -504,6 +511,7 @@ def gen_sidebar_ts(parts: list[dict]) -> str:
         L.append("    ],")
         L.append("  },")
     L.append("  { text: '附录', link: '/appendix/' },")
+    L.append("  { text: '版权与许可', link: '/copyright' },")
     L.append("]")
     L.append("")
     return "\n".join(L)

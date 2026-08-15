@@ -1372,6 +1372,20 @@ body {
     display: block;
 }
 
+/* ── 章首署名行（作者/版权/许可，随正文传播） ── */
+.book-byline {
+    margin: 0.4em 0 1.4em;
+    font-size: 13px;
+    color: var(--vp-c-text-2);
+}
+.book-byline a {
+    color: var(--vp-c-brand);
+    text-decoration: none;
+}
+.book-byline a:hover {
+    text-decoration: underline;
+}
+
 /* ── 四叶草图标主题协同（明/暗两套绿色，茎/外叶/内叶/中心四层） ── */
 :root {
     --clover-stem: #00da38;
