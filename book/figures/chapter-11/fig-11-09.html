@@ -1,1 +1,90 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图11-9 LSTM交通流预测模型架构图</title><style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#F8FAFC}body{font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',Arial,sans-serif;color:#0F172A}.figure{width:1200px;height:620px;overflow:hidden}svg{display:block}</style></head><body><main class="figure" data-figure-root><svg width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc"><title id="title">图11-9 LSTM交通流预测模型架构图</title><desc id="desc">96步三通道输入经64单元LSTM压缩为64维，Dropout保持64维，Dense输出未来6步流量。</desc><defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5 0 7Z" fill="#2563EB"/></marker></defs><rect width="1200" height="620" fill="#F8FAFC"/><circle cx="44" cy="42" r="6" fill="#2563EB"/><text x="62" y="49" font-size="24" font-weight="700">图11-9 LSTM交通流预测模型架构图</text><text x="62" y="75" font-size="13" fill="#475569">维度链严格对应 Keras 模型：输入序列 → 隐状态 → 正则化 → 六步预测</text><line x1="40" y1="100" x2="1160" y2="100" stroke="#E2E8F0"/><rect x="300" y="145" width="790" height="300" rx="14" fill="none" stroke="#94A3B8" stroke-dasharray="8 4"/><text x="320" y="172" font-size="13" font-weight="700" fill="#475569">特征提取与预测</text><g fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#a)"><line x1="260" y1="285" x2="340" y2="285"/><line x1="560" y1="285" x2="640" y2="285"/><line x1="820" y1="285" x2="900" y2="285"/></g><g font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle"><text x="300" y="268">(96, 3)</text><text x="600" y="268">64</text><text x="860" y="268">64</text><text x="1110" y="268">6</text></g><rect x="50" y="220" width="210" height="130" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="155" y="255" text-anchor="middle" font-size="16" font-weight="700">输入序列</text><text x="155" y="280" text-anchor="middle" font-size="13">(batch, 96, 3)</text><text x="155" y="307" text-anchor="middle" font-size="11" fill="#475569">流量 · 时刻 · 星期</text><text x="155" y="328" text-anchor="middle" font-size="11" fill="#475569">过去 96 分钟</text><rect x="340" y="195" width="220" height="180" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="450" y="240" text-anchor="middle" font-size="18" font-weight="700">LSTM(64)</text><text x="450" y="270" text-anchor="middle" font-size="12" fill="#475569">return_sequences=False</text><text x="450" y="304" text-anchor="middle" font-size="11" fill="#475569">遗忘门 · 输入门 · 输出门</text><text x="450" y="330" text-anchor="middle" font-size="13" font-weight="700">输出隐藏状态：64维</text><rect x="640" y="220" width="180" height="130" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/><text x="730" y="270" text-anchor="middle" font-size="17" font-weight="700">Dropout(0.2)</text><text x="730" y="302" text-anchor="middle" font-size="12" fill="#475569">维度保持 64</text><text x="730" y="326" text-anchor="middle" font-size="11" fill="#475569">抑制过拟合</text><rect x="900" y="220" width="180" height="130" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><text x="990" y="270" text-anchor="middle" font-size="17" font-weight="700">Dense(6)</text><text x="990" y="302" text-anchor="middle" font-size="12" fill="#475569">线性激活</text><text x="990" y="326" text-anchor="middle" font-size="11" fill="#475569">未来 6 分钟流量</text><line x1="1080" y1="285" x2="1140" y2="285" stroke="#F97316" stroke-width="3" marker-end="url(#a)"/><rect x="120" y="410" width="960" height="64" rx="8" fill="#FFF" stroke="#CBD5E1"/><text x="145" y="438" font-size="13" font-weight="700">维度契约</text><text x="145" y="460" font-size="12" fill="#475569">(batch, 96, 3) → (batch, 64) → (batch, 64) → (batch, 6)</text><line x1="40" y1="505" x2="1160" y2="505" stroke="#E2E8F0"/><text x="600" y="550" text-anchor="middle" font-size="11" fill="#475569">图11-9 三通道的 96 步历史序列经 LSTM 压缩为 64 维，Dropout 不改变维度，Dense(6) 输出未来六步预测。</text></svg></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图11-9 LSTM交通流预测模型架构图</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图11-9 LSTM交通流预测模型架构图</title>
+  <desc id="desc">三通道的 96 步历史序列经 LSTM 压缩为 64 维，Dropout 不改变维度，Dense(6) 输出未来六步预测。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图11-9 LSTM交通流预测模型架构图</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">维度链严格对应 Keras 模型：输入序列 → 隐状态 → 正则化 → 六步预测</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- 特征提取阶段（虚线框） -->
+  <rect x="520" y="180" width="760" height="290" rx="12" fill="none" stroke="#CBD5E1" stroke-width="1.4" stroke-dasharray="8 5"/>
+  <text x="540" y="208" font-size="13" font-weight="700" fill="#64748B">特征提取阶段</text>
+
+  <!-- 输入序列 -->
+  <rect x="120" y="240" width="340" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="290" y="278" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">输入序列</text>
+  <text x="290" y="306" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">(batch, 96, 3)</text>
+  <text x="290" y="334" font-size="11.5" fill="#475569" text-anchor="middle">流量 · 时刻 · 星期</text>
+  <text x="290" y="356" font-size="11.5" fill="#475569" text-anchor="middle">过去 96 分钟</text>
+
+  <!-- LSTM(64) -->
+  <rect x="540" y="240" width="360" height="160" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="720" y="278" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">LSTM(64)</text>
+  <text x="720" y="306" font-size="11.5" fill="#475569" text-anchor="middle">return_sequences=False</text>
+  <text x="720" y="332" font-size="11.5" fill="#475569" text-anchor="middle">遗忘门 · 输入门 · 输出门</text>
+  <text x="720" y="358" font-size="11.5" fill="#0F766E" text-anchor="middle">输出隐藏状态：64 维</text>
+
+  <!-- Dropout(0.2) -->
+  <rect x="980" y="240" width="280" height="160" rx="10" fill="#FEFCE8" stroke="#CA8A04" stroke-width="1.8"/>
+  <text x="1120" y="278" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Dropout(0.2)</text>
+  <text x="1120" y="306" font-size="11.5" fill="#475569" text-anchor="middle">维度保持 64</text>
+  <text x="1120" y="332" font-size="11.5" fill="#475569" text-anchor="middle">抑制过拟合</text>
+
+  <!-- Dense(6) -->
+  <rect x="1340" y="240" width="320" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8"/>
+  <text x="1500" y="278" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Dense(6)</text>
+  <text x="1500" y="306" font-size="11.5" fill="#475569" text-anchor="middle">线性激活</text>
+  <text x="1500" y="332" font-size="11.5" fill="#D97706" text-anchor="middle">未来 6 分钟流量</text>
+
+  <!-- 箭头 -->
+  <line x1="462" y1="320" x2="538" y2="320" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <text x="500" y="344" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">(96,3)→(64)</text>
+  <line x1="902" y1="320" x2="978" y2="320" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <text x="940" y="344" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">(64)</text>
+  <line x1="1262" y1="320" x2="1338" y2="320" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <text x="1300" y="344" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">(64)→(6)</text>
+
+  <!-- 输入通道说明 -->
+  <rect x="120" y="500" width="660" height="104" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="145" y="528" font-size="12" font-weight="700" fill="#334155">输入通道（96 步 × 3 通道）</text>
+  <text x="145" y="554" font-size="11" fill="#475569">① 流量值（实数，已标准化）</text>
+  <text x="145" y="576" font-size="11" fill="#475569">② 时刻编码（归一化标量，[0,1]）</text>
+  <text x="145" y="598" font-size="11" fill="#475569">③ 星期特征（示意星期一的 one-hot 编码值）</text>
+
+  <!-- 维度契约 -->
+  <rect x="820" y="500" width="840" height="104" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="845" y="528" font-size="12" font-weight="700" fill="#334155">维度契约</text>
+  <text x="845" y="560" font-size="13" font-weight="700" fill="#2563EB">(batch, 96, 3) → (batch, 64) → (batch, 64) → (batch, 6)</text>
+  <text x="845" y="586" font-size="11" fill="#475569">Dropout 不改变维度；Dense(6) 用线性激活输出未来六步预测。</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图11-9 三通道的 96 步历史序列经 LSTM 压缩为 64 维，Dropout 不改变维度，Dense(6) 输出未来六步预测。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>

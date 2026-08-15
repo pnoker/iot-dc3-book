@@ -1,20 +1,103 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>图11-2 RSU与OBU通信流程</title>
-<style>*{box-sizing:border-box}html,body{margin:0;background:#F8FAFC}.figure{width:1200px;height:760px;overflow:hidden}svg{display:block}text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif}</style></head>
-<body><main class="figure" data-figure-root>
-<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">图11-2 RSU与OBU通信流程</title><desc id="desc">信号机相位经RSU编码为SPAT，雷达目标经RSU编码为RSI，OBU融合CAN数据后分别向HMI和ADAS输出。</desc>
-<defs><marker id="blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5 0 7Z" fill="#2563EB"/></marker><marker id="teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5 0 7Z" fill="#0F766E"/></marker></defs>
-<rect width="1200" height="760" fill="#F8FAFC"/><circle cx="42" cy="38" r="6" fill="#2563EB"/><text x="60" y="45" font-size="24" font-weight="700" fill="#0F172A">图11-2 RSU与OBU通信流程</text>
-<text x="60" y="70" font-size="13" fill="#475569">RSU汇聚信号相位与路侧目标，经PC5广播给车载终端</text><line x1="40" y1="94" x2="1160" y2="94" stroke="#E2E8F0"/>
-<g font-size="14" font-weight="700" text-anchor="middle" fill="#0F172A"><g><rect x="48" y="116" width="150" height="48" rx="6" fill="#FFF" stroke="#2563EB" stroke-width="2"/><text x="123" y="145">信号机</text></g><g><rect x="238" y="116" width="150" height="48" rx="6" fill="#FFF" stroke="#0F766E" stroke-width="2"/><text x="313" y="145">路侧雷达</text></g><g><rect x="428" y="116" width="150" height="48" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="503" y="145">RSU</text></g><g><rect x="618" y="116" width="150" height="48" rx="6" fill="#FFF" stroke="#2563EB" stroke-width="2"/><text x="693" y="145">OBU</text></g><g><rect x="808" y="116" width="150" height="48" rx="6" fill="#FFF" stroke="#F97316" stroke-width="2"/><text x="883" y="145">车载 HMI</text></g><g><rect x="998" y="116" width="150" height="48" rx="6" fill="#FFF" stroke="#F97316" stroke-width="2"/><text x="1073" y="145">ADAS</text></g></g>
-<g stroke="#94A3B8" stroke-width="1.3" stroke-dasharray="6 5"><line x1="123" y1="164" x2="123" y2="640"/><line x1="313" y1="164" x2="313" y2="640"/><line x1="503" y1="164" x2="503" y2="640"/><line x1="693" y1="164" x2="693" y2="640"/><line x1="883" y1="164" x2="883" y2="640"/><line x1="1073" y1="164" x2="1073" y2="640"/></g>
-<g fill="#475569" font-size="12"><text x="40" y="205" font-weight="700" fill="#2563EB">信号相位链路</text><text x="40" y="408" font-weight="700" fill="#0F766E">道路事件链路</text></g>
-<g fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#blue)"><line x1="503" y1="220" x2="131" y2="220"/><line x1="123" y1="270" x2="495" y2="270"/><line x1="503" y1="326" x2="685" y2="326"/><line x1="693" y1="374" x2="875" y2="374"/><line x1="693" y1="606" x2="1065" y2="606"/></g>
-<g fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#teal)"><line x1="313" y1="438" x2="495" y2="438"/><line x1="503" y1="494" x2="685" y2="494"/><line x1="693" y1="542" x2="875" y2="542"/></g>
-<g font-size="12" fill="#0F172A" text-anchor="middle"><text x="313" y="211">1 轮询相位与倒计时（RS-232/485）</text><text x="313" y="261">2 灯色数据响应</text><text x="594" y="317">3 编码并广播 SPAT（PC5）</text><text x="784" y="365">4 解析 SPAT + GNSS/CAN</text><text x="404" y="429">5 目标位置、速度（以太网）</text><text x="594" y="485">6 编码并广播 RSI（PC5）</text><text x="784" y="533">7 障碍物 / 异常停车提示</text><text x="879" y="597">8 相位、计时与目标信息送入路径规划</text></g>
-<rect x="434" y="183" width="138" height="425" rx="8" fill="#2563EB" fill-opacity=".04" stroke="#2563EB" stroke-dasharray="5 4"/><text x="503" y="628" text-anchor="middle" font-size="11" fill="#2563EB">路侧消息枢纽</text>
-<line x1="40" y1="666" x2="1160" y2="666" stroke="#E2E8F0"/><g font-size="11" fill="#475569"><line x1="70" y1="690" x2="110" y2="690" stroke="#2563EB" stroke-width="2" marker-end="url(#blue)"/><text x="122" y="694">SPAT / 车载决策链路</text><line x1="330" y1="690" x2="370" y2="690" stroke="#0F766E" stroke-width="2" marker-end="url(#teal)"/><text x="382" y="694">RSI / 道路事件链路</text><text x="600" y="694">端到端事件播发目标：百毫秒级</text></g>
-<text x="600" y="733" text-anchor="middle" font-size="11" fill="#475569">图11-2 RSU把信号机灯色编码为SPAT、把雷达目标编码为RSI，OBU融合车载数据后供HMI提示与ADAS规划。</text>
-</svg></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图11-2 RSU与OBU通信流程</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main class="page" data-figure-root>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图11-2 RSU与OBU通信流程</title>
+  <desc id="desc">RSU 把信号机灯色编码为 SPAT、把雷达目标编码为 RSI，经 PC5 广播给 OBU，OBU 融合车载数据供 HMI 提示与 ADAS 规划。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+  </defs>
+
+  <!-- 标题 -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图11-2 RSU与OBU通信流程</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">RSU 汇聚信号相位与路侧目标，经 PC5 广播给车载终端</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== 六生命线头部 ===== -->
+  <rect x="195" y="140" width="160" height="70" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.6"/>
+  <text x="275" y="172" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">信号机</text>
+  <text x="275" y="194" font-size="10.5" fill="#475569" text-anchor="middle">RS-232/485</text>
+
+  <rect x="445" y="140" width="160" height="70" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="525" y="172" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">路侧雷达</text>
+  <text x="525" y="194" font-size="10.5" fill="#475569" text-anchor="middle">以太网</text>
+
+  <rect x="695" y="140" width="160" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="775" y="172" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">RSU</text>
+  <text x="775" y="194" font-size="10.5" fill="#475569" text-anchor="middle">路侧枢纽</text>
+
+  <rect x="945" y="140" width="160" height="70" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
+  <text x="1025" y="172" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">OBU</text>
+  <text x="1025" y="194" font-size="10.5" fill="#475569" text-anchor="middle">车载终端</text>
+
+  <rect x="1195" y="140" width="160" height="70" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.6"/>
+  <text x="1275" y="172" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">车载 HMI</text>
+  <text x="1275" y="194" font-size="10.5" fill="#475569" text-anchor="middle">显示提示</text>
+
+  <rect x="1445" y="140" width="160" height="70" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+  <text x="1525" y="172" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">ADAS</text>
+  <text x="1525" y="194" font-size="10.5" fill="#475569" text-anchor="middle">路径规划</text>
+
+  <!-- 生命线 -->
+  <line x1="275" y1="210" x2="275" y2="740" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="525" y1="210" x2="525" y2="740" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="775" y1="210" x2="775" y2="740" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="1025" y1="210" x2="1025" y2="740" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="1275" y1="210" x2="1275" y2="740" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="1525" y1="210" x2="1525" y2="740" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 4"/>
+
+  <!-- 1 信号机 → RSU：轮询 -->
+  <line x1="275" y1="260" x2="773" y2="260" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="524" y="248" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">1 轮询相位与倒计时（RS-232/485）</text>
+  <!-- 2 RSU → 信号机：响应 -->
+  <line x1="775" y1="310" x2="277" y2="310" stroke="#475569" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+  <text x="524" y="298" font-size="11" font-weight="600" fill="#64748B" text-anchor="middle">2 灯色数据响应</text>
+  <!-- 3 RSU → OBU：SPAT -->
+  <line x1="775" y1="370" x2="1023" y2="370" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <text x="900" y="358" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">3 编码并广播 SPAT（PC5）</text>
+  <!-- 4 OBU 解析 -->
+  <text x="1045" y="410" font-size="10.5" font-weight="600" fill="#F97316">4 解析 SPAT + GNSS/CAN</text>
+  <!-- 5 雷达 → RSU：目标列表 -->
+  <line x1="525" y1="450" x2="773" y2="450" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <text x="650" y="438" font-size="11" font-weight="700" fill="#0F766E" text-anchor="middle">5 目标位置、速度（以太网）</text>
+  <!-- 6 RSU → OBU：RSI -->
+  <line x1="775" y1="510" x2="1023" y2="510" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <text x="900" y="498" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">6 编码并广播 RSI（PC5）</text>
+  <!-- 7 OBU → HMI -->
+  <line x1="1025" y1="570" x2="1273" y2="570" stroke="#F97316" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="1150" y="558" font-size="11" font-weight="700" fill="#D97706" text-anchor="middle">7 障碍物 / 异常停车提示</text>
+  <!-- 8 OBU → ADAS -->
+  <line x1="1025" y1="630" x2="1523" y2="630" stroke="#7C3AED" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="1275" y="618" font-size="11" font-weight="700" fill="#7C3AED" text-anchor="middle">8 相位、计时与目标信息送入路径规划</text>
+
+  <!-- 阶段标注 -->
+  <text x="120" y="260" font-size="11" font-weight="700" fill="#475569">信号相位链路</text>
+  <text x="120" y="450" font-size="11" font-weight="700" fill="#0F766E">道路事件链路</text>
+  <text x="120" y="700" font-size="11" font-weight="700" fill="#7C3AED">端到端事件播发目标：百毫秒级</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图11-2 RSU 把信号机灯色编码为 SPAT、把雷达目标编码为 RSI，OBU 融合车载数据后供 HMI 提示与 ADAS 规划。</text>
+  </svg>
+</svg>
+  </main>
+</body>
+</html>
