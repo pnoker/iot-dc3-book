@@ -1328,3 +1328,25 @@ body {
     width: 100%;
     height: 100%;
 }
+
+/* ── 图库页面：突破正文宽度限制（container/content/content-container 全链路） ── */
+.VPDoc .container:has(.vp-doc._figures) {
+    max-width: 1360px !important;
+}
+.VPDoc .content:has(.vp-doc._figures) {
+    max-width: 1280px !important;
+}
+.VPDoc .content-container:has(.vp-doc._figures) {
+    max-width: 1280px !important;
+}
+.vp-doc._figures {
+    max-width: 1280px !important;
+}
+
+/* ── 图库按钮图标显示加强 ── */
+.gallery-nav-link {
+    flex-shrink: 0;
+}
+.gallery-nav-icon svg {
+    display: block;
+}
