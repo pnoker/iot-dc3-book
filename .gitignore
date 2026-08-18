@@ -63,3 +63,4 @@ docs/en/appendix/
 docs/.vitepress/sidebar.ts
 docs/.vitepress/sidebar.en.ts
 docs/.vitepress/theme/cover-art.ts
+figures-svg-en.json

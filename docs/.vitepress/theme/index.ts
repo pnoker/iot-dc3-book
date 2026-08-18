@@ -27,6 +27,7 @@ const theme: Theme = {
   extends: DefaultTheme,
 
   Layout() {
+    const route = useRoute()
     return h(DefaultTheme.Layout, null, {
       // 首页 Hero 背景：粒子 + 波浪（保留 online 动效，仅首页）
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
@@ -35,16 +36,18 @@ const theme: Theme = {
         h('div', {class: 'hero-cover hero-logo'}, [
           h('div', {class: 'cover-body', innerHTML: coverBodyHtml}),
         ]),
-      // header 搜索框前：全书插图图库入口
-      'nav-bar-content-before': () =>
-        h('a', {
+      // header 搜索框前：全书插图图库入口（跟随语言路由切换中/英文图库）
+      'nav-bar-content-before': () => {
+        const isEn = route.path.startsWith('/en/')
+        return h('a', {
           class: 'gallery-nav-link',
-          href: '/figures',
-          'aria-label': '全书插图',
-          title: '全书插图',
+          href: isEn ? '/en/figures' : '/figures',
+          'aria-label': isEn ? 'Figure gallery' : '全书插图',
+          title: isEn ? 'Figure gallery' : '全书插图',
         }, [
           h('span', {class: 'gallery-nav-icon', innerHTML: GALLERY_ICON}),
-        ]),
+        ])
+      },
     })
   },
 

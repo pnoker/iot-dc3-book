@@ -311,13 +311,18 @@ def assemble_chapter(manuscript_dir: Path, cid: int, title: str, h1: str) -> str
     return "\n".join(lines).strip()
 
 
-def gen_figures_manifest(parts: list[dict], chapters_md: dict[int, str]) -> list[dict]:
+def gen_figures_manifest(parts: list[dict], chapters_md: dict[int, str], parts_en: list[dict] | None = None) -> list[dict]:
     """生成全书插图清单（图库页数据源；条目：id/num/title/chapter/url）。
 
     chapters_md 传入的是锚点已解析为内联插图的章稿，
     因此扫描 <figure … id="fig-XX-YY"> 而非 @[fig] 锚点。
     """
     fig_in_body_re = re.compile(r'<figure[^>]*\bid="(fig-\d{2}-\d{2})"')
+    chapter_title_en = {
+        ch["id"]: ch["title"]
+        for part in (parts_en or [])
+        for ch in part.get("chapters", [])
+    }
     manifest: list[dict] = []
     for part in parts:
         slug, _ = slug_of(part)
@@ -339,12 +344,16 @@ def gen_figures_manifest(parts: list[dict], chapters_md: dict[int, str]) -> list
                         num, title = fix_caption(m_num.group(1)), m_num.group(2).strip()
                     else:
                         num, title = "", title_src
+                    ch_no, fig_no = fig_id.split("-")[1], fig_id.split("-")[2]
                     manifest.append({
                         "id": fig_id,
                         "num": num,
+                        "numEn": f"Figure {int(ch_no)}-{int(fig_no)}",
                         "title": title,
+                        "titleEn": _figure_title_en(fig_id, reg) or title,
                         "chapter": ch["id"],
                         "chapterTitle": ch["title"],
+                        "chapterTitleEn": chapter_title_en.get(ch["id"], ch["title"]),
                         "url": section_link(slug, ch["id"], sec["stem"]) + "#" + fig_id,
                         "thumb": "",
                     })
@@ -1030,10 +1039,16 @@ def copy_assets() -> None:
     )
     # 全书插图 theme 化 SVG（预览页图库内联渲染，响应明暗主题；PNG 仅用于 PDF/MD 导出）
     svg_map = {}
+    svg_map_en = {}
     for f in sorted(FIGURES_DIR.glob("chapter-*/*.html")):
         svg_map[f.stem] = load_figure_svg(f.stem) or ""
+        svg_map_en[f.stem] = load_figure_svg(f.stem, "en") or svg_map[f.stem]
     (PUBLIC / "figures-svg.json").write_text(
         json.dumps(svg_map, ensure_ascii=False), encoding="utf-8"
+    )
+    # 英文版图库（labels.en 文本覆盖后的 SVG；未翻译的图回落中文标注）
+    (PUBLIC / "figures-svg-en.json").write_text(
+        json.dumps(svg_map_en, ensure_ascii=False), encoding="utf-8"
     )
     # 校验色值覆盖：缺失映射会让 var(--fig-*) 未定义，明/暗主题下显示异常（局部暗色）
     missing = audit_color_coverage()
@@ -1162,6 +1177,7 @@ def main() -> None:
     )
 
     # 英文版（/en/）：有 manuscript-en 时生成，否则输出空侧栏骨架保证 import 不悬空
+    parts_en: list[dict] | None = None
     if MANUSCRIPT_EN.exists() and PARTS_EN_YAML.exists():
         with open(PARTS_EN_YAML, encoding="utf-8") as f:
             parts_en = yaml.safe_load(f)
@@ -1169,8 +1185,8 @@ def main() -> None:
     else:
         (VITEPRESS / "sidebar.en.ts").write_text(EMPTY_SIDEBAR_EN, encoding="utf-8")
 
-    # 全书插图清单（图库页数据源）
-    manifest = gen_figures_manifest(parts, chapters_md)
+    # 全书插图清单（图库页数据源，含英文字段）
+    manifest = gen_figures_manifest(parts, chapters_md, parts_en)
     (PUBLIC / "figures-manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
     )

@@ -4,12 +4,19 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 interface FigureItem {
   id: string
   num: string
+  numEn?: string
   title: string
+  titleEn?: string
   chapter: number
   chapterTitle: string
+  chapterTitleEn?: string
   url: string
   thumb: string
 }
+
+const props = withDefaults(defineProps<{lang?: 'zh' | 'en'}>(), {lang: 'zh'})
+const en = computed(() => props.lang === 'en')
+const t = (zh: string, enText: string) => (en.value ? enText : zh)
 
 const items = ref<FigureItem[]>([])
 const svgs = ref<Record<string, string>>({})
@@ -22,11 +29,19 @@ const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (!q) return items.value
   return items.value.filter((it) =>
-    [it.num, it.title, it.chapterTitle, String(it.chapter)].some((s) =>
-      s.toLowerCase().includes(q),
-    ),
+    [
+      it.num, it.numEn, it.title, it.titleEn,
+      it.chapterTitle, it.chapterTitleEn, String(it.chapter),
+    ].some((s) => (s || '').toLowerCase().includes(q)),
   )
 })
+
+const numOf = (it: FigureItem) => (en.value ? it.numEn || it.num : it.num)
+const titleOf = (it: FigureItem) => (en.value ? it.titleEn || it.title : it.title)
+const chTitleOf = (it: FigureItem) =>
+  en.value ? it.chapterTitleEn || it.chapterTitle : it.chapterTitle
+const urlOf = (it: FigureItem) =>
+  en.value && !it.url.startsWith('/en/') ? '/en' + it.url : it.url
 
 const grouped = computed(() => {
   const map = new Map<number, FigureItem[]>()
@@ -70,14 +85,14 @@ onMounted(async () => {
   try {
     const [manifestRes, svgRes] = await Promise.all([
       fetch('/figures-manifest.json'),
-      fetch('/figures-svg.json'),
+      fetch(en.value ? '/figures-svg-en.json' : '/figures-svg.json'),
     ])
     if (!manifestRes.ok) throw new Error(String(manifestRes.status))
     items.value = await manifestRes.json()
-    // SVG 清单加载失败不阻塞图库（回退 WebP 缩略图）
+    // SVG 清单加载失败不阻塞图库
     if (svgRes.ok) svgs.value = await svgRes.json()
   } catch {
-    error.value = '图库清单加载失败，请稍后重试'
+    error.value = t('图库清单加载失败，请稍后重试', 'Failed to load the figure list — please retry')
   } finally {
     loading.value = false
   }
@@ -96,26 +111,26 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
         <input
           v-model="query"
           type="search"
-          placeholder="搜索图号、标题或章节…"
-          aria-label="搜索插图"
+          :placeholder="t('搜索图号、标题或章节…', 'Search by number, title, or chapter…')"
+          :aria-label="t('搜索插图', 'Search figures')"
         />
       </label>
       <div class="gallery-count">
-        <template v-if="loading">加载中…</template>
-        <template v-else>共 {{ filtered.length }} 张插图</template>
+        <template v-if="loading">{{ t('加载中…', 'Loading…') }}</template>
+        <template v-else>{{ t(`共 ${filtered.length} 张插图`, `${filtered.length} figures`) }}</template>
       </div>
     </div>
 
-    <p v-if="loading" class="gallery-hint">正在加载全书插图清单…</p>
+    <p v-if="loading" class="gallery-hint">{{ t('正在加载全书插图清单…', 'Loading the figure list…') }}</p>
     <p v-else-if="error" class="gallery-hint">{{ error }}</p>
-    <p v-else-if="!filtered.length" class="gallery-hint">没有匹配「{{ query }}」的插图</p>
+    <p v-else-if="!filtered.length" class="gallery-hint">{{ t(`没有匹配「${query}」的插图`, `No figures match “${query}”`) }}</p>
 
     <template v-else>
       <section v-for="[ch, list] in grouped" :key="ch" class="gallery-group">
         <h2 class="gallery-group-title">
-          <span class="gallery-group-no">第 {{ ch }} 章</span>
-          <span class="gallery-group-name">{{ list[0].chapterTitle }}</span>
-          <span class="gallery-group-count">{{ list.length }} 张</span>
+          <span class="gallery-group-no">{{ t(`第 ${ch} 章`, `Chapter ${ch}`) }}</span>
+          <span class="gallery-group-name">{{ chTitleOf(list[0]) }}</span>
+          <span class="gallery-group-count">{{ t(`${list.length} 张`, `${list.length} figures`) }}</span>
         </h2>
         <div class="gallery-grid">
           <article
@@ -128,23 +143,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
               <div
                 v-if="svgs[item.id]"
                 class="fig-svg"
-                :aria-label="item.num + ' ' + item.title"
+                :aria-label="numOf(item) + ' ' + titleOf(item)"
                 role="img"
                 v-html="svgs[item.id]"
               ></div>
-              <img
-                v-else
-                :src="item.thumb"
-                :alt="item.num + ' ' + item.title"
-                loading="lazy"
-              />
             </div>
             <div class="fig-meta">
-              <div class="fig-num">{{ item.num }}</div>
-              <div class="fig-title">{{ item.title }}</div>
+              <div class="fig-num">{{ numOf(item) }}</div>
+              <div class="fig-title">{{ titleOf(item) }}</div>
             </div>
-            <a class="fig-jump" :href="item.url" @click.stop :title="'前往原文 · ' + item.num">
-              前往原文 →
+            <a class="fig-jump" :href="urlOf(item)" @click.stop :title="t('前往原文 · ', 'Open in text · ') + numOf(item)">
+              {{ t('前往原文 →', 'Open in text →') }}
             </a>
           </article>
         </div>
@@ -157,21 +166,20 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       @click.self="closeLightbox"
       role="dialog"
       aria-modal="true"
-      :aria-label="active.num + ' ' + active.title"
+      :aria-label="numOf(active) + ' ' + titleOf(active)"
     >
-      <button class="lb-btn lb-close" @click="closeLightbox" aria-label="关闭">×</button>
-      <button class="lb-btn lb-nav lb-prev" @click="prev" aria-label="上一张">‹</button>
+      <button class="lb-btn lb-close" @click="closeLightbox" :aria-label="t('关闭', 'Close')">×</button>
+      <button class="lb-btn lb-nav lb-prev" @click="prev" :aria-label="t('上一张', 'Previous')">‹</button>
       <figure class="lb-figure">
         <div v-if="svgs[active.id]" class="lb-svg" v-html="svgs[active.id]"></div>
-        <img v-else :src="active.thumb" :alt="active.num + ' ' + active.title" />
         <figcaption>
-          <span class="lb-num">{{ active.num }}</span>
-          <span class="lb-title">{{ active.title }}</span>
-          <span class="lb-chapter">第 {{ active.chapter }} 章 · {{ active.chapterTitle }}</span>
-          <a class="lb-jump" :href="active.url">前往原文 →</a>
+          <span class="lb-num">{{ numOf(active) }}</span>
+          <span class="lb-title">{{ titleOf(active) }}</span>
+          <span class="lb-chapter">{{ t(`第 ${active.chapter} 章`, `Chapter ${active.chapter}`) }} · {{ chTitleOf(active) }}</span>
+          <a class="lb-jump" :href="urlOf(active)">{{ t('前往原文 →', 'Open in text →') }}</a>
         </figcaption>
       </figure>
-      <button class="lb-btn lb-nav lb-next" @click="next" aria-label="下一张">›</button>
+      <button class="lb-btn lb-nav lb-next" @click="next" :aria-label="t('下一张', 'Next')">›</button>
     </div>
   </section>
 </template>
