@@ -1,8 +1,10 @@
 import {defineConfig} from 'vitepress'
 import {sidebar} from './sidebar'
+import {sidebarEn} from './sidebar.en'
 import {transformHead} from './seo'
 
 const BOOK_TITLE = '从工业软件到 AI 智能体'
+const BOOK_TITLE_EN = 'From Industrial Software to AI Agents'
 
 export default defineConfig({
   title: '从工业软件到 AI 智能体',
@@ -13,6 +15,34 @@ export default defineConfig({
   srcExclude: ['design/**', 'AGENTS.md', 'CLAUDE.md'],
 
   sitemap: {hostname: 'https://book.dc3.site'},
+
+  // ── 中英双语：根路径为中文，/en/ 为英文（未翻译章节仅存在于中文侧）──
+  locales: {
+    root: {
+      label: '简体中文',
+      lang: 'zh-CN',
+    },
+    en: {
+      label: 'English',
+      lang: 'en-US',
+      description: `${BOOK_TITLE_EN} — AIoT technology and practice, from IoT platform to agent applications`,
+      themeConfig: {
+        siteTitle: BOOK_TITLE_EN,
+        outline: {level: [2, 3], label: 'On this page'},
+        outlineTitle: 'On this page',
+        nav: [{text: '中文版', link: '/'}],
+        docFooter: {prev: 'Previous section', next: 'Next section'},
+        darkModeSwitchLabel: 'Appearance',
+        sidebarMenuLabel: 'Contents',
+        returnToTopLabel: 'Back to top',
+        langMenuLabel: 'Language',
+        footer: {
+          message: `${BOOK_TITLE_EN} · Building a multi-protocol, cloud-native, open-source industrial IoT platform ready to evolve toward AI agents`,
+          copyright: 'By Zhang Hongyuan · © 2016–2026',
+        },
+      },
+    },
+  },
 
   head: [
     // ── 插图主题变量（内联 SVG 颜色，跟随明暗主题）──
@@ -77,7 +107,10 @@ export default defineConfig({
     logo: '/logo.svg',
     siteTitle: '从工业软件到 AI 智能体',
     outline: {level: [2, 3], label: '本页目录'},
-    sidebar,
+    sidebar: {
+      '/': sidebar,
+      '/en/': sidebarEn,
+    },
 
     search: {
       provider: 'local',

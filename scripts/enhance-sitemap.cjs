@@ -34,11 +34,13 @@ function priorityOf(route) {
 }
 
 let count = 0
-xml = xml.replace(/<url><loc>([^<]+)<\/loc><\/url>/g, (_, url) => {
+// VitePress 双 locale 会在 <url> 内输出 xhtml:link hreflang 交替链;
+// 匹配任意子元素形态,在 </url> 前追加 lastmod/priority
+xml = xml.replace(/<url><loc>([^<]+)<\/loc>((?:(?!<\/url>)[\s\S])*?)<\/url>/g, (_, url, rest) => {
   const route = new URL(url).pathname
   const priority = priorityOf(route)
   count++
-  return `<url><loc>${url}</loc><lastmod>${lastmod}</lastmod><priority>${priority}</priority></url>`
+  return `<url><loc>${url}</loc>${rest}<lastmod>${lastmod}</lastmod><priority>${priority}</priority></url>`
 })
 
 writeFileSync(sitemapPath, xml)

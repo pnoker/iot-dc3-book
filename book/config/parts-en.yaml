@@ -1,0 +1,72 @@
+# English part/chapter structure — mirrors book/config/parts.yaml (same chapter ids, same order).
+# Consumed by scripts/build_web.py to generate the /en/ locale of the web edition.
+# Translate a chapter by adding section files under book/manuscript-en/chapter-XX/.
+
+- name: "Part I · Foundations: From Industrial Software to the IoT Platform Base"
+  prefix: "I"
+  description: >
+    Starting from the limits of industrial software (SCADA/DCS/MES/PLC), this part shows
+    how an IoT platform supplies the three missing capabilities: unified data, open
+    interfaces, and closed-loop automation. It covers system architecture, sensing,
+    communication, and platform-side data processing.
+  chapters:
+    - id: 1
+      title: "IoT Overview: From Industrial Software to AI Agents"
+      description: "Starting from the capability boundaries of traditional industrial software, this chapter surveys the definition of the Internet of Things, its technical evolution, and the AIoT restructuring — building a top-down view from device connectivity to intelligent decision-making."
+    - id: 2
+      title: "IoT System Architecture"
+      description: "Compares the classic four-layer architecture with the five-layer architecture of the AI era, traces each layer's responsibilities along the data loop, and uses IoT DC3 to show how the microservices collaborate."
+    - id: 3
+      title: "Sensing-Layer Fundamentals"
+      description: "From sensors, RFID, and positioning to edge nodes, on-device AI, and thing models — how physical signals become data a platform can understand."
+    - id: 4
+      title: "Network-Layer Communication Technologies"
+      description: "Compares mainstream communication technologies and their fit, analyzes protocol fragmentation, and presents the design of a unified access layer, a driver framework, and a multi-protocol gateway."
+    - id: 5
+      title: "Platform Layer and Data Processing"
+      description: "Following the data path from device to cloud, this chapter covers core platform components, cloud-edge collaboration, data storage, and intelligent processing — the engineering whole picture of a reliable data base."
+
+- name: "Part II · Technology: Cloud-Native and AI-Agent Capabilities"
+  prefix: "II"
+  description: >
+    On top of the platform base, this part adds software engineering (microservices,
+    containers, DevOps), AI agents (Spring AI, tools, MCP, RAG, Agent Runtime),
+    security, and standardization — completing the leap from a connectivity platform
+    to an AI-native platform.
+  chapters:
+    - id: 6
+      title: "IoT Software Development"
+      description: "From languages and communication styles into microservice architecture: service decomposition, containerization, and engineering collaboration, illustrated with IoT DC3 development practice."
+    - id: 7
+      title: "AIoT and Agent Applications"
+      description: "From Spring AI, RAG, tools, and MCP into an industrial Agent Runtime — how probabilistic decisions are constrained by state, permissions, workflows, recovery, and audit into bounded autonomy."
+    - id: 8
+      title: "IoT Security"
+      description: "Covers device identity, communication encryption, and data and privacy protection, then discusses the new security perimeter of the AI era: prompt injection, tool privilege escalation, and beyond."
+    - id: 9
+      title: "IoT Protocols and Standards"
+      description: "From MQTT, CoAP, LwM2M, HTTP, and BLE to MCP and semantic interoperability — understanding which layer each protocol occupies, what it is responsible for, and when to choose it."
+
+- name: "Part III · Applications: Multi-Scenario Practice and Trusted Collaboration"
+  prefix: "III"
+  description: >
+    This part projects the same multi-protocol, cloud-native, AI-native base onto three
+    contrasting scenarios — industry, city, and agriculture — to validate cross-scenario
+    adaptability. It adds cross-organization trust (DID, blockchain, federated learning)
+    and closes the book with a hands-on IoT DC3 project.
+  chapters:
+    - id: 10
+      title: "Industrial IoT and Smart Manufacturing"
+      description: "Brings the platform capabilities back to the factory floor, connecting digital twins, Modbus, OPC UA, time-series data, rule engines, and predictive maintenance into one complete loop."
+    - id: 11
+      title: "Smart Cities and Connected Vehicles"
+      description: "Around traffic, urban governance, and vehicular networks: massive device access, V2X communication, capacity governance, and AI-driven prediction and optimization."
+    - id: 12
+      title: "Agricultural IoT and Environmental Monitoring"
+      description: "From environmental sensor networks and precision agriculture to LPWAN selection, edge analytics, and AI serving long-running, dispersed agricultural sites."
+    - id: 13
+      title: "Trusted Data Collaboration, Decentralized Identity, and Privacy-Preserving Computation"
+      description: "With device identity and trusted data as the thread, connects DID, blockchain, supply-chain traceability, and privacy-preserving computation — how trust is built across organizations."
+    - id: 14
+      title: "IoT DC3 in Practice: From Platform to Agent Applications"
+      description: "An end-to-end project connecting device access, data collection, platform deployment, and agent applications, closing with the common pitfalls and trade-offs of real implementations."
