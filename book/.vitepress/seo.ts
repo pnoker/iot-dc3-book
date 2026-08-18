@@ -339,6 +339,10 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     typeof fmDesc === 'string' && fmDesc.trim() ? fmDesc.trim() : (isEn ? DEFAULT_DESCRIPTION_EN : DEFAULT_DESCRIPTION)
   const canonicalUrl = new URL(routeOf(relativePath), SITE_URL).href
   const dateModified: string | undefined = context.pageData.frontmatter.dateModified
+  // keywords 按语言注入（此前在 config head 全局配中文，英文页会带中文关键词）
+  const keywords = isEn
+    ? 'AIoT,Industrial IoT,internet of things,AI agents,IoT DC3,cloud-native,From Industrial Software to AI Agents,online book'
+    : 'AIoT,物联网,工业物联网,智能体,IoT DC3,云原生,从工业软件到AI智能体,在线电子书'
   // 英文页的中文对照路径（/en/foundations/... → /foundations/...，翻译镜像结构必然存在）
   const zhCounterpartUrl = isEn
     ? new URL(routeOf(relativePath.replace(/^en\//, '')), SITE_URL).href
@@ -394,6 +398,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {name: 'twitter:description', content: description}],
     ['meta', {name: 'twitter:image', content: OG_IMAGE}],
     ['meta', {name: 'twitter:image:alt', content: isEn ? `${BOOK_TITLE_EN} · by Zhang Hongyuan · AIoT technology and practice` : `${BOOK_TITLE} · ${AUTHOR} 著 · AIoT 技术与实践`}],
+    ['meta', {name: 'keywords', content: keywords}],
 
     // ── JSON-LD ──
     ...buildJsonLd(relativePath, canonicalUrl, title, description, dateModified, lang),
