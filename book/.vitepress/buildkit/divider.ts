@@ -27,8 +27,8 @@ export function renderDividerInline(context: DividerContext): string {
   let body = m[1]
   // 去掉模板自带的 divider.css 引用（web 端统一由 config 加载 /divider.css）
   body = body.replace(/<link[^>]*divider\.css[^>]*>/g, '')
-  // 压缩空行，保持连续 HTML 块（避免 markdown-it 断裂）
-  body = body.replace(/\n[ \t]*\n+/g, '\n')
+  // 压缩空行，保持连续 HTML 块（避免 markdown-it 断裂；一次吃掉整段相邻空白行）
+  body = body.replace(/\n(?:[ \t]*\n)+/g, '\n')
   return body
 }
 
