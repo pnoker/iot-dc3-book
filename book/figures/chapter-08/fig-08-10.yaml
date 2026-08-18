@@ -1,0 +1,211 @@
+type: flowchart
+title: 图8-10 数据脱敏与匿名化决策流程
+audience_takeaway: 读者应理解脱敏只是弱保护，匿名化须注入差分隐私并通过重识别风险评估方可发布，仅掩盖一层即发布是重识别泄露的根源。
+purpose: 展示在数据发布前，如何根据数据敏感等级选择脱敏或匿名化策略，并最终通过重识别风险评估。
+visual_focus: 从id到from的主链路。
+design_level: implementation
+layout: 自上而下的正交流程图
+elements:
+- 'id: start'
+- 'id: classify'
+- 'id: deidentify'
+- 'id: branch'
+- 'id: weak'
+- 'id: strong'
+- 匿名 + 差分隐私注入）
+- 'id: risk'
+- 'id: publish'
+- 'from: start'
+- 'from: classify'
+- 'from: classify'
+- 'from: deidentify'
+- 'from: branch'
+- 'from: branch'
+- 'from: weak'
+- 'from: strong'
+- 'from: risk'
+- 'from: risk'
+- 'color: #gray'
+- 'color: #blue'
+relationships:
+- 'from: start'
+- 'from: classify'
+- 'from: classify'
+- 'from: deidentify'
+- 'from: branch'
+- 'from: branch'
+- 'from: weak'
+- 'from: strong'
+- 'from: risk'
+- 'from: risk'
+- 'color: #gray'
+- 'color: #blue'
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: id
+  type: platform
+  subtitle: start
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: id
+  type: platform
+  subtitle: classify
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: id
+  type: platform
+  subtitle: deidentify
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: id
+  type: platform
+  subtitle: branch
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c5
+  label: id
+  type: platform
+  subtitle: weak
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c6
+  label: id
+  type: platform
+  subtitle: strong
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c7
+  label: 匿名 + 差分隐私注入）
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c8
+  label: id
+  type: platform
+  subtitle: risk
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c9
+  label: id
+  type: platform
+  subtitle: publish
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c10
+  label: from
+  type: platform
+  subtitle: start
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 'from: start'
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 'from: classify'
+  style: solid
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 'from: classify'
+  style: solid
+  direction: left-to-right
+- from: c4
+  to: c5
+  label: 'from: deidentify'
+  style: solid
+  direction: left-to-right
+- from: c5
+  to: c6
+  label: 'from: branch'
+  style: solid
+  direction: left-to-right
+- from: c6
+  to: c7
+  label: 'from: branch'
+  style: solid
+  direction: left-to-right
+- from: c7
+  to: c8
+  label: 'from: weak'
+  style: solid
+  direction: left-to-right
+- from: c8
+  to: c9
+  label: 'from: strong'
+  style: solid
+  direction: left-to-right
+- from: c9
+  to: c10
+  label: 'from: risk'
+  style: solid
+  direction: left-to-right
+callouts:
+- 'from: start'
+- 'from: classify'
+- 'from: classify'
+legend:
+- 'color: #gray'
+- 'color: #blue'
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: '|'
+caption:
+  zh: 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估（资料：[S2]）。
+  en: 'The problem in most projects is confusing masking with anonymization: a single layer of masking is treated as anonymized and published, causing re-identification risk leaks. The difference is that strong anonymization must pass a re-identification risk assessment (source: [S2]).'
+labels:
+  en:
+    图8-10 数据脱敏与匿名化决策流程: Figure 8-10 Data Masking vs Anonymization Decision Flow
+    数据发布先分级；内部受控使用可选择脱敏，对外发布必须达到匿名化目标并通过重识别风险评估。: Classify data before release; internal controlled use may rely on masking, but external release must meet anonymization goals and pass a re-identification risk assessment.
+    “做过掩盖”不等于匿名化；对外发布必须通过重识别风险评估。: '"Masked" is not "anonymized"; external release must pass a re-identification risk assessment.'
+    内部受控使用: Internal Controlled Use
+    对外发布 / 开放数据: External Release / Open Data
+    是: 'Yes'
+    否: 'No'
+    待发布数据: Data Pending Release
+    字段 · 用途 · 接收方: Fields · Purpose · Recipients
+    数据分级分类: Data Classification
+    P0 直接标识符 · P1 准标识符 · P2 敏感 · P3 非敏感: P0 Direct ID · P1 Quasi-ID · P2 Sensitive · P3 Non-Sensitive
+    使用边界？: Usage Boundary?
+    内部 / 对外: Internal / External
+    脱敏处理: Masking
+    掩盖 · 置换 · 泛化: Masking · Substitution · Generalization
+    受控交付: Controlled Delivery
+    权限 · 审计 · 限用途: Permissions · Audit · Restricted Use
+    匿名化处理: Anonymization
+    泛化 · k-匿名: Generalization · k-Anonymity
+    必要时注入差分隐私: Add Differential Privacy If Needed
+    重识别风险: Re-Identification Risk
+    可接受？: Acceptable?
+    允许发布: Allow Release
+    保存评估证据与版本: Keep Assessment Evidence & Version
+    硬边界: Hard Boundary
+    脱敏数据仍可能被重新识别，只适用于有权限、有限用途的内部场景。: Masked data can still be re-identified; it only fits internal scenarios with permissions and limited use.
+    匿名化是否成立取决于重识别风险评估证据，不取决于处理步骤的名称。: Whether anonymization holds depends on evidence from a re-identification risk assessment, not on the name of the processing step.
+    圆角矩形 = 开始 / 结束: Rounded Rect = Start / End
+    矩形 = 处理动作: Rectangle = Processing Action
+    菱形 = 可验证决策: Diamond = Verifiable Decision
+    图8-10 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估。: 'Figure 8-10 The problem in most projects is confusing masking with anonymization: a single layer of masking gets published as anonymized, leaking re-identification risk; strong anonymization must pass a re-identification risk assessment.'

@@ -1,0 +1,59 @@
+type: dataflow
+title: 图12-6 农业数据分层采集与三道清洗流程
+audience_takeaway: 读者应理解农业数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供 AI 模型消费。
+purpose: 展示从传感器到 AI 模型的完整数据链路，突出分层采集策略与三道清洗的先后顺序
+visual_focus: 横向数据流主链路（传感器 → 分层采集 → MQTT → 三道清洗 → AI 模型）。
+design_level: dataflow
+layout: 横向五阶段数据流，左至右，三道清洗用三步编号卡片展开
+elements:
+- 传感器节点：土壤湿度/温度/EC、空气温湿度/光照/CO₂、风速/降雨
+- 分层采集：土壤参数每 1 小时、气象参数每 15 分钟
+- MQTT 传输：QoS 0（至多一次）、QoS 1（至少一次）
+- 三道清洗：异常值检测（滑动窗口 3σ / 上下限过滤）、缺失值插补（线性插值 / 前向填充）、时间戳对齐（重采样）
+- AI 模型：病害识别、产量预测、灌溉决策
+relationships:
+- 传感器 → 分层采集 → MQTT → 三道清洗 → AI 模型，单向数据流
+render_notes: HTML/SVG 渲染，横向五阶段数据流，箭头左至右，三道清洗用①②③编号卡片区分顺序。
+caption:
+  zh: 图12-6 传感器数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供下游 AI 模型消费。
+  en: Figure 12-6 Sensor data are collected in tiers by rate of change (soil hourly, weather every 15 minutes); after MQTT transport they go through three cleaning steps — outlier detection, missing-value imputation, and timestamp alignment — before downstream AI models can consume them.
+labels:
+  en:
+    图12-6 农业数据分层采集与三道清洗流程: Figure 12-6 Tiered Agricultural Data Collection & Three-Step Cleaning
+    传感器数据经分层采集、MQTT 传输后，依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，再供 AI 模型消费。: After tiered collection and MQTT transport, sensor data pass outlier detection, missing-value imputation, and timestamp alignment before AI models consume them.
+    分层采集 → MQTT 传输 → 三道清洗 → AI 模型 · “够用”覆盖关键变化拐点: Tiered collection → MQTT → three-step cleaning → AI models · "good enough" covers key inflection points
+    传感器节点: Sensor node
+    土壤湿度 / 温度 / EC: Soil moisture / temp / EC
+    空气温湿度 / 光照 / CO₂: Air temp & humidity / light / CO₂
+    风速 / 降雨量: Wind speed / rainfall
+    低功耗 MCU · 深度休眠: Low-power MCU · deep sleep
+    分层采集策略: Tiered collection strategy
+    土壤参数 · 每 1 小时: Soil · every 1 hour
+    变化分钟~小时级: Changes over minutes~hours
+    气象参数 · 每 15 分钟: Weather · every 15 min
+    风速/光照/CO₂ 变化更快: Wind/light/CO₂ change faster
+    MQTT 传输: MQTT Transport
+    发布 / 订阅 · 最小报文头 2 字节: Pub/sub · 2-byte minimum header
+    QoS 0 · 至多一次: QoS 0 · at most once
+    定期采集的土壤温度: Periodic soil temperature reads
+    QoS 1 · 至少一次: QoS 1 · at least once
+    阈值告警确保不丢包: Threshold alerts must not be lost
+    三道清洗: Three-Step Cleaning
+    ① 异常值检测: ① Outlier detection
+    滑动窗口 3σ · 上下限过滤: Sliding-window 3σ · limit filtering
+    ② 缺失值插补: ② Missing-value imputation
+    线性插值 · 前向填充: Linear interpolation · forward fill
+    ③ 时间戳对齐: ③ Timestamp alignment
+    重采样到固定锚点: Resample to fixed anchors
+    AI 模型: AI Models
+    病害识别: Disease recognition
+    产量预测: Yield prediction
+    灌溉决策: Irrigation decisions
+    关键要点：事件驱动 + 定期采样: 'Key point: event-driven + periodic sampling'
+    端侧 AI 在本地做简单趋势识别，仅在检测到异常波动时提高上传频率；: On-device AI spots simple trends locally and raises the upload rate only on anomalous swings;
+    “够用”原则——覆盖关键变化拐点，同时不给现场供电和回传通道造成压力。: the "good enough" principle — cover key inflection points without straining field power or the backhaul.
+    采集 / 传输: Collection / transport
+    数据清洗: Data cleaning
+    模型消费: Model consumption
+    数据流向: Data flow
+    图12-6 传感器数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供下游 AI 模型消费。: Figure 12-6 Sensor data are collected in tiers by rate of change (soil hourly, weather every 15 minutes); after MQTT transport they go through three cleaning steps — outlier detection, missing-value imputation, and timestamp alignment — before downstream AI models can consume them.

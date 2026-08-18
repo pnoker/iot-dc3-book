@@ -1,0 +1,93 @@
+type: matrix
+title: 图5-11 平台层工程检查矩阵
+audience_takeaway: 读者应理解检查矩阵在五维×四属性交叉点给出可验证检查项并按绿黄红标风险等级，如消息队列须acks=all、复制因子≥2。
+purpose: 提供平台层设计时需关注的五个维度与四个检查属性，帮助工程师快速定位潜在风险
+visual_focus: 从进入下一判断到进入下一判断的主链路。
+design_level: decision
+layout: 5行 × 4列表格
+elements:
+- 平台层工程检查矩阵
+relationships:
+- 每个（行，列）交叉点放置一个关键检查项，使用颜色图标表示风险等级：绿色✓（低风险）、黄色△（需关注）、红色✗（必须重点验证）
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 每个（行，列）交叉点放置一个关键检…
+  style: solid
+  direction: left-to-right
+callouts:
+- 每个（行，列）交叉点放置一个关键检查项，使用颜色图标表示风险等级：绿色✓（低风险）、黄色△（需关注）、红色✗（必须…
+legend:
+- 蓝色=核心平台/主链路；青绿色=设备与边缘；橙色=AI/风险/关键决策。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 'HTML/SVG渲染时，表格每个单元格内容不超过15个中文字符。例如：
+
+  (设备接入，功能完整性): 协议一致性测试
+
+  (消息队列，容错与高可用): acks=all，复制因子≥2
+
+  (时序数据库，容量与性能边界): 批量大小≥500 points
+
+  整体宽高比3:2，表头加粗，单元格内用24×24圆点图标表示风险等级。'
+caption:
+  zh: 图5-11 平台层工程检查矩阵。这些检查项来自多个企业级物联网项目设计阶段的复盘，帮助设计者在五个维度上快速定位风险点。
+  en: 'Figure 5-11 Platform-layer engineering check matrix. These checks come from retrospectives of the design phase of several enterprise IoT projects and help designers quickly locate risks across five dimensions.'
+labels:
+  en:
+    图5-11 平台层工程检查矩阵: Figure 5-11 Platform-Layer Engineering Check Matrix
+    五个工程维度必须同时覆盖功能、容量、容错和回滚。: All five dimensions must cover functionality, capacity, fault tolerance, and rollback together.
+    检查维度: Dimension
+    功能完整性: Functional Completeness
+    容量/性能: Capacity/Performance
+    容错/高可用: Fault Tolerance/HA
+    运维/回滚: Ops/Rollback
+    设备接入: Device Access
+    协议兼容: Protocol compatibility
+    连接规模: Connection scale
+    重连会话: Reconnect sessions
+    版本管理: Version management
+    消息队列: Message Queue
+    Topic 隔离: Topic isolation
+    峰值分区: Peak partitioning
+    acks=all ·副本≥2: acks=all · replicas≥2
+    DLQ 监控: DLQ monitoring
+    时序数据库: Time-Series DB
+    Tag/Field 建模: Tag/Field modeling
+    批量写入≥500: Batch writes ≥ 500
+    RP/CQ 策略: RP/CQ policies
+    冷热分层: Hot/cold tiering
+    边缘节点: Edge Node
+    本地闭环: Local closed loop
+    缓存上限: Cache cap
+    断网补传: Offline backfill
+    OTA 回滚: OTA rollback
+    AI 模型: AI Model
+    特征契约: Feature contracts
+    推理资源: Inference resources
+    影子验证: Shadow validation
+    模型回退: Model rollback
+    低风险（常规验证）: Low risk (routine check)
+    需关注（上线前给出证据）: Attention (evidence before go-live)
+    必须重点验证（失败边界）: Must verify (failure boundary)
+    图5-11 平台层工程检查矩阵：在五维 × 四属性交叉点给出可验证检查项，红点表示必须重点验证的失败边界，黄点表示上线前需要给出证据的检查项。: 'Figure 5-11 Platform-layer engineering check matrix: verifiable checks at each of the five dimensions × four attributes — red dots mark failure boundaries that must be verified, yellow dots mark items needing evidence before go-live.'

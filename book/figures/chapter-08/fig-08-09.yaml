@@ -1,0 +1,95 @@
+type: flowchart
+title: 图8-9 密钥生命周期管理与云边协同流程
+audience_takeaway: 读者应理解密钥状态沿生成、分发、轮换、撤销、销毁迁移，云端与边缘经TLS加密通道协同管理，撤销即从可用态剔除。
+purpose: 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥状态转换。
+visual_focus: 从进入下一判断到进入下一判断的主链路。
+design_level: implementation
+layout: 从上到下的泳道流程图
+elements:
+- 图8-5 密钥生命周期管理与云边协同流程
+relationships:
+- 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥状态转换。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 主链路
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 主链路
+  style: solid
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 主链路
+  style: solid
+  direction: left-to-right
+callouts:
+- 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥…
+legend:
+- 颜色=使用中（绿色）、轮换中（黄色）、已撤销/停用（红色）、待销毁（灰色）
+- 箭头=实线箭头表示直接操作，虚线箭头表示通过TLS加密通道传输
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: 绘制时使用矩形表示各节点，箭头线表示流程方向，并在箭头旁标注操作名，如“生成”、“分发”、“加密”、“解密”、“轮换”、“撤销”、“销毁”。泳道之间用水平虚线分隔，每条泳道的左侧标注角色名。使用指定颜色区分密钥状态。虚线箭头代表TLS加密传输。图例置于图下方或右侧。
+caption:
+  zh: 图8-9 密钥生命周期管理与云边协同流程
+  en: Figure 8-9 Key lifecycle management and cloud-edge coordination
+labels:
+  en:
+    图8-9 密钥生命周期管理与云边协同流程: Figure 8-9 Key Lifecycle Management & Cloud-Edge Coordination
+    密钥从生成、分发、轮换到撤销和销毁有明确状态；撤销后云端与边缘都必须停止使用。: Keys move through explicit states — generate, distribute, rotate, revoke, destroy; after revocation both cloud and edge must stop using them.
+    云端: Cloud
+    边缘: Edge
+    分发 (TLS): Distribute (TLS)
+    轮换 (TLS): Rotate (TLS)
+    撤销 (TLS): Revoke (TLS)
+    密钥生成: Key Generation
+    使用中: In Use
+    密钥轮换: Key Rotation
+    轮换中: Rotating
+    密钥撤销: Key Revocation
+    已撤销: Revoked
+    密钥销毁: Key Destruction
+    待销毁: Pending Destruction
+    密钥接收与使用: Key Reception & Use
+    已撤销 · 停止使用: Revoked · Stop Use
+    颜色=使用中（绿色）、轮换中（黄色）、已撤销/停用（红色）、待销毁（灰色）: Color = In Use (green), Rotating (yellow), Revoked/Disabled (red), Pending Destruction (gray)
+    虚线箭头=通过 TLS 加密通道同步: Dashed Arrow = Synced over TLS Encrypted Channel
+    图8-9 云端作为密钥状态的权威源，分发、轮换、撤销均经 TLS 加密通道同步到边缘；撤销后边缘同状态密钥即停止使用，防止旧密钥继续有效。: Figure 8-9 The cloud is the authoritative source of key state; distribution, rotation, and revocation sync to the edge over TLS, and once revoked the matching edge key stops being used, preventing old keys from remaining valid.

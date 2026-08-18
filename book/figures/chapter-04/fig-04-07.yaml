@@ -1,0 +1,134 @@
+type: layered
+title: 图4-7 统一接入层四层架构
+audience_takeaway: 读者应理解四层架构把协议差异逐层收口到最底层,上层只见设备影子与标准载荷,调用向下、数据回调向上。
+purpose: 展示统一接入层内部的四个功能层以及各层间的接口与数据流向。
+visual_focus: 从设备抽象层向下到协议泛化层的 read/write的主链路。
+design_level: logical
+layout: 自上而下竖向堆叠，层间用实线分隔并标注接口箭头。
+elements:
+- 顶层：设备抽象层，维护设备影子（Property/Event/Service），接口标注 getDeviceShadow() / updateShadow()
+- 第二层：数据解析层，处理字节流与标准化JSON/Protobuf的互转，接口标注 toStandardPayload() / fromStandardPayload()
+- 第三层：连接管理层，维护会话表、心跳、重连，接口标注 connect() / keepAlive() / onDisconnect()
+- 底层：协议泛化层，封装具体协议驱动，接口标注 read(address, length) / write(address, value)
+relationships:
+- 设备抽象层向下调用数据解析层的 toStandardPayload/fromStandardPayload
+- 数据解析层向下调用连接管理层的 connect/keepAlive
+- 连接管理层向下调用协议泛化层的 read/write
+- 左侧标注'调用方向向下'，右侧标注'数据上报方向向上'
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 设备抽象层向下
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 数据解析层的 toStandard…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r3
+  label: 数据解析层向下
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r4
+  label: 连接管理层的 connect/ke…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 连接管理层向下
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: 协议泛化层的 read/write
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: 左侧标注'
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r8
+  label: 方向向下'，右侧标注'数据上报方向…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+connections:
+- from: r1
+  to: tostandardpayl
+  label: 设备抽象层向下调用数据解析层的 t…
+  style: solid
+  direction: request
+- from: r3
+  to: connect_keepal
+  label: 数据解析层向下调用连接管理层的 c…
+  style: solid
+  direction: request
+- from: r5
+  to: r6
+  label: 连接管理层向下调用协议泛化层的 r…
+  style: solid
+  direction: request
+callouts:
+- 设备抽象层向下调用数据解析层的 toStandardPayload/fromStandardPayload
+- 数据解析层向下调用连接管理层的 connect/keepAlive
+- 连接管理层向下调用协议泛化层的 read/write
+legend:
+- 浅绿：设备抽象层；浅蓝：数据解析层；浅黄：连接管理层；浅橙：协议泛化层
+- 实线箭头：同步调用依赖；虚线箭头：异步数据回调
+- 最上层和最下层分别加指向外的宽箭头表示上下衔接
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 四个纵向堆叠的方框，宽度一致，高度均匀。层间用实线分隔，接口标注在箭头旁。色盘按legend分配。
+caption:
+  zh: 图4-7 统一接入层通过四层解耦将协议差异逐层收口，上层对下层是调用依赖，下层对上层通过回调上送数据。
+  en: 'Figure 4-7 Through four decoupled layers, the unified access layer funnels protocol differences downward: upper layers depend on lower layers via calls, and lower layers deliver data upward via callbacks.'
+labels:
+  en:
+    图4-7 统一接入层四层架构: 'Figure 4-7 Unified Access Layer: Four-Layer Architecture'
+    四层自上而下依次为设备抽象、数据解析、连接管理与协议泛化，上层向下调用、下层经回调向上上报数据。: 'Top to bottom: device abstraction, data parsing, connection management, and protocol generalization — upper layers call down, lower layers report up via callbacks.'
+    调用方向向下: 'Calls Flow Down'
+    数据上报方向: 'Data Reports Up'
+    设备抽象层: 'Device Abstraction Layer'
+    数据解析层: 'Data Parsing Layer'
+    字节流 ↔ JSON/Protobuf: 'Byte Stream ↔ JSON/Protobuf'
+    连接管理层: 'Connection Management Layer'
+    会话/心跳/重连: 'Session / Heartbeat / Reconnect'
+    协议泛化层: 'Protocol Generalization Layer'
+    具体协议驱动: 'Per-Protocol Drivers'
+    上游设备接入: 'Upstream Device Access'
+    下游协议驱动: 'Downstream Protocol Drivers'
+    浅绿：设备抽象层: 'Light green: device abstraction layer'
+    实线箭头：同步调用依赖；虚线箭头：异步数据回调: 'Solid arrows: synchronous call dependency; dashed arrows: asynchronous data callback'
+    最上层和最下层分别加指向外的宽箭头表示上下衔接: 'Wide outward arrows at the top and bottom indicate upstream and downstream connections'
+    图4-7 统一接入层通过四层解耦将协议差异逐层收口，上层对下层是调用依赖，下层对上层通过回调上送数据。: 'Figure 4-7 The unified access layer funnels protocol differences layer by layer through four decoupled layers: upper layers call the layers below, and lower layers push data up through callbacks.'

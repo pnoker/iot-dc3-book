@@ -1,0 +1,102 @@
+type: architecture
+title: 图4-9 协议适配器接口与驱动实现架构
+audience_takeaway: 读者应理解同一接口下驱动组合的组件各异(Modbus配串口表与超时器,BLE靠GATT解析),异构差异被吸收在实现层。
+purpose: 展示 ProtocolAdapter 接口层与多个具体协议驱动实现层的静态关系，以及每个驱动内部依赖的关键通信组件。
+visual_focus: 从接口层到实现层的主链路。
+design_level: logical
+layout: 自上而下分为两层：接口层（ProtocolAdapter）和实现层（ModbusRtuAdapter、MqttAdapter、BluetoothGattAdapter、LoRaWanAdapter）。每个实现类下方以虚线框列出其组合的底层组件。
+elements:
+- 接口层：ProtocolAdapter（ <<interface>> ），声明 init、connect、disconnect、read、write、isConnected、onHeartbeat 方法，使用蓝色圆角矩形。
+- 实现层：ModbusRtuAdapter，组合 SerialPortManager（端口管理）、ModbusSlaveTable（从机配置表）、TimeoutScheduler（超时调度器），使用青绿色矩形。
+- 实现层：MqttAdapter，组合 MqttClient、TopicMapper（主题映射），使用青绿色矩形。
+- 实现层：BluetoothGattAdapter，组合 BleScanner、BleGattConnection、GattCharacteristicResolver，使用青绿色矩形。
+- 实现层：LoRaWanAdapter，组合 LoraNetworkClient、DevAddrMapper、FPortDispatcher，使用青绿色矩形。
+relationships:
+- 每个实现类通过UML实现关系（虚线+空心三角箭头）指向ProtocolAdapter接口。
+- 每个实现层类通过组合关系（实心菱形+箭头）指向其依赖的组件，组件为矩形。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 接口层
+  type: platform
+  subtitle: ProtocolAdapter（ <<interfac…
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 实现层
+  type: platform
+  subtitle: ModbusRtuAdapter，组合 SerialP…
+  group: platform_domain
+  priority: normal
+  shape: actor
+- id: c3
+  label: 实现层
+  type: platform
+  subtitle: MqttAdapter，组合 MqttClient、T…
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 实现层
+  type: platform
+  subtitle: BluetoothGattAdapter，组合 Ble…
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c5
+  label: 实现层
+  type: platform
+  subtitle: LoRaWanAdapter，组合 LoraNetwo…
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 接口层通过泛化关系（空心三角箭头）…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 每个实现层类通过组合关系（实心菱形…
+  style: solid
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 接口层通过泛化关系（空心三角箭头）…
+  style: solid
+  direction: left-to-right
+- from: c4
+  to: c5
+  label: 每个实现层类通过组合关系（实心菱形…
+  style: solid
+  direction: left-to-right
+callouts:
+- 接口层通过泛化关系（空心三角箭头）指向每个实现层类，表示实现关系
+- 每个实现层类通过组合关系（实心菱形+箭头）指向其依赖的组件，组件为矩形
+legend:
+- 蓝色：接口定义层，统一抽象
+- 青绿色：具体协议驱动实现
+- 空心三角箭头：泛化（实现）
+- 实心菱形+箭头：组合（强依赖）
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用HTML/SVG渲染，接口层使用浅蓝背景和<<interface>>标签，实现层使用浅青绿色背景，组件使用白色小方块，连接线使用标准UML箭头样式，颜色遵循全书统一配置。
+caption:
+  zh: 图4-9 协议适配器接口与驱动实现的架构示意。每个具体驱动通过组合持有底层通信组件，对上层只暴露通用接口。
+  en: 'Figure 4-9 Architecture of the protocol adapter interface and driver implementations. Each concrete driver composes its own low-level communication components and exposes only the generic interface to upper layers.'
+labels:
+  en:
+    图4-9 协议适配器接口与驱动实现架构: 'Figure 4-9 Protocol Adapter Interface and Driver Implementations'
+    同一ProtocolAdapter接口下，各协议驱动组合不同的底层通信组件，异构差异被吸收在实现层。: 'Under one ProtocolAdapter interface, each protocol driver composes different low-level communication components; heterogeneity is absorbed in the implementation layer.'
+    平台服务域: 'Platform Domain'
+    蓝色：接口定义层，统一抽象: 'Blue: interface definition, unified abstraction'
+    青绿色：具体协议驱动实现: 'Teal: concrete protocol driver implementations'
+    空心三角箭头：泛化（实现）: 'Hollow triangle: generalization (realization)'
+    图4-9 协议适配器接口与驱动实现的架构示意。每个具体驱动通过组合持有底层通信组件，对上层只暴露通用接口。: 'Figure 4-9 The protocol adapter interface and driver implementations. Each concrete driver holds its low-level communication components through composition and exposes only the generic interface upward.'

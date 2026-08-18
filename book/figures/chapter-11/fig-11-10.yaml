@@ -1,0 +1,180 @@
+type: flowchart
+title: 图11-10 十字路口强化学习框架
+purpose: 展示十字路口中，RL智能体与环境之间的交互闭环，包括状态观测、动作执行、奖励反馈、经验回放与参数更新。
+audience_takeaway: 读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。
+visual_focus: 从环境到智能体目标网络的主训练链路，强调经验回放和双网络结构对训练稳定性的支撑。
+design_level: implementation
+layout: 左右两列布局。左侧为环境域，右侧为智能体域。
+elements:
+- 十字路口环境：路网拓扑、车流生成模型、信号灯执行器
+- 状态构建：排队长度、相位剩余时间、时段编码
+- 在线Q网络：全连接网络，根据状态输出各动作Q值
+- 目标Q网络：定期同步在线Q网络参数
+- 经验回放缓冲区：存储(S, a, r, S')四元组
+- 权重更新：采样小批量，计算TD误差
+relationships:
+- 环境向状态构建发送当前状态S_t
+- 状态构建向在线Q网络输入状态
+- 在线Q网络向信号灯执行器输出动作a_t
+- 环境向经验回放缓冲区发送奖励r_t
+- 经验回放缓冲区向权重更新提供小批量
+- 在线Q网络每C步复制参数至目标Q网络
+regions:
+- id: environment_domain
+  label: 环境域
+  role: 物理路口与信号灯执行边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型训练与推理边界
+components:
+- id: env_intersection
+  label: 十字路口环境
+  type: edge
+  subtitle: 路网、车流、排队
+  group: environment_domain
+  priority: primary
+  shape: card
+- id: env_traffic_gen
+  label: 车流生成
+  type: edge
+  subtitle: 到达模型
+  group: environment_domain
+  priority: normal
+  shape: decision
+- id: env_traffic_light
+  label: 信号灯执行器
+  subtitle: 相位切换与计时
+  group: environment_domain
+  priority: normal
+  shape: card
+- id: agent_state
+  label: 状态构建
+  type: ai
+  subtitle: 排队、相位时间、时段
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: agent_q_network
+  label: 在线Q网络
+  type: ai
+  subtitle: 全连接层，输出Q值
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: agent_target_q
+  label: 目标Q网络
+  type: ai
+  subtitle: 定期软更新参数
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: agent_replay
+  label: 经验回放缓冲区
+  type: data
+  subtitle: (S, a, r, S')四元组
+  group: intelligence_domain
+  priority: primary
+  shape: database
+- id: agent_update
+  label: 权重更新
+  type: process
+  subtitle: 采样小批量，计算TD误差
+  group: intelligence_domain
+  priority: primary
+  shape: decision
+connections:
+- from: env_intersection
+  to: agent_state
+  label: 状态S_t
+  style: solid
+  direction: request
+- from: agent_state
+  to: agent_q_network
+  label: 输入当前状态
+  style: solid
+  direction: request
+- from: agent_q_network
+  to: env_traffic_light
+  label: 动作a_t
+  style: solid
+  direction: request
+- from: env_intersection
+  to: agent_replay
+  label: 奖励r_t
+  style: dashed
+  direction: event
+- from: agent_replay
+  to: agent_update
+  label: 随机采样小批量
+  style: solid
+  direction: request
+- from: agent_q_network
+  to: agent_target_q
+  label: 每C步参数复制
+  style: dashed
+  direction: event
+callouts:
+- 状态S_t包含排队长度、相位剩余时间、时段编码，是动作决策的全部依据。
+- 经验回放缓冲区切断时间相关性，使在线Q网络训练更稳定。
+- 目标Q网络为TD误差计算提供固定目标，避免训练震荡。
+- 奖励r_t直接惩罚排队长度，是控制目标的量化表达。
+legend:
+- 蓝色实线箭头：状态与动作的主交互链路
+- 橙色虚线箭头：奖励反馈与经验回放
+- 青绿色节点：环境域组件
+- 橙色节点：智能决策域组件
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入callouts或正文。
+- 图例放在图底部，不遮挡主体结构。
+- 颜色强调训练主链路，其他辅助链路适当淡化。
+render_notes: SVG渲染，浅色背景。左侧环境域使用#f0f8ff背景色，右侧智能域使用#fff8dc背景色。箭头线宽2px，颜色按图例定义。
+caption:
+  zh: 图11-10 十字路口强化学习框架图。展示了RL智能体通过状态观测、动作执行、奖励反馈及经验回放训练DQN网络的闭环过程。
+  en: 'Figure 11-10 Reinforcement learning framework for an intersection, showing the closed loop in which the RL agent trains a DQN network through state observation, action execution, reward feedback, and experience replay.'
+labels:
+  en:
+    图11-10 十字路口强化学习框架: 'Figure 11-10 Intersection Reinforcement Learning'
+    读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。: 'The training path from environment to agent target network, and how replay and twin networks stabilize training.'
+    环境域: 'Environment Domain'
+    物理路口与信号灯执行边界: 'Physical intersection & signal actuation'
+    智能决策域: 'Intelligent Decision Domain'
+    模型训练与推理边界: 'Model training & inference'
+    状态S_t: 'State S_t'
+    输入当前状态: 'Input current state'
+    动作a_t · 经安全约束: 'Action a_t · safety-checked'
+    奖励r_t: 'Reward r_t'
+    随机采样小批量: 'Sample random mini-batch'
+    每C步参数复制: 'Copy params every C steps'
+    十字路口环境: 'Intersection Environment'
+    路网、车流、排队: 'Road network, flow, queues'
+    车流生成: 'Traffic generation'
+    到达模型: 'Arrival model'
+    信号灯执行器: 'Signal actuator'
+    相位切换与计时: 'Phase switching & timing'
+    状态构建: 'State builder'
+    排队、相位时间、时段: 'Queue, phase time, period'
+    在线Q网络: 'Online Q-network'
+    全连接层，输出Q值: 'Dense layers, outputs Q-values'
+    经验回放缓冲区: 'Replay buffer'
+    (S, a, r, S')四元组: '(S, a, r, S'') tuples'
+    目标Q网络: 'Target Q-network'
+    定期软更新参数: 'Periodic soft updates'
+    权重更新: 'Weight update'
+    采样小批量，计算TD误差: 'Sample mini-batch, compute TD error'
+    状态 S_t: 'State S_t'
+    排队长度、相位剩余时间、时段编码，: 'Queue length, remaining phase time, period encoding,'
+    是动作决策的全部依据。: 'the full basis for action decisions.'
+    经验回放: 'Experience replay'
+    切断时间相关性，使在线 Q 网络: 'Breaks temporal correlation so the online Q-network'
+    训练更稳定。: 'trains more stably.'
+    目标 Q 网络: 'Target Q-network'
+    为 TD 误差计算提供固定目标，: 'provides a fixed target for TD error,'
+    避免训练震荡。: 'avoiding oscillation.'
+    奖励 r_t: 'Reward r_t'
+    直接惩罚排队长度，是控制目标: 'directly penalizes queue length, quantifying'
+    的量化表达。: 'the control objective.'
+    蓝色实线箭头：状态与动作的主交互链路: 'Blue solid arrows: main state/action loop'
+    橙色虚线箭头：奖励反馈与经验回放: 'Orange dashed arrows: reward feedback & replay'
+    青绿色节点：环境域组件: 'Teal nodes: environment components'
+    橙色节点：智能决策域组件: 'Orange nodes: agent components'
+    图11-10 状态 S_t 由排队、相位与时段编码构成，奖励 r_t 直接惩罚排队长度；经验回放切断时间相关性、目标 Q 网络提供固定 TD 目标，共同抑制训练震荡。: 'Figure 11-10 State S_t combines queue, phase, and period encoding; reward r_t penalizes queue length; replay breaks temporal correlation and the target Q-network fixes the TD target, damping oscillation.'

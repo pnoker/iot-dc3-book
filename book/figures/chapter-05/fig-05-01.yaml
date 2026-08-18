@@ -1,0 +1,114 @@
+type: layered
+title: 图5-1 物联网平台分层架构示意
+purpose: 展示从感知层到应用层的标准四层模型，并明确平台层在这一模型中的桥梁位置
+audience_takeaway: 读者应理解物联网的四层职责边界，以及数据流和控制流的方向差异。
+visual_focus: 数据流的绿色箭头从感知层向上贯穿至应用层，控制流的蓝色箭头反向；平台层内部组件顺序关系用水平箭头表示。
+design_level: logical
+layout: 自下而上四个矩形堆叠，每层宽度一致，颜色不同；平台层内部用四个更小的水平方块表示组件流程。
+elements:
+- '感知层（浅绿）: 传感器、执行器、RFID'
+- '网络层：浅蓝: 无线局域网、蜂窝、LPWAN、有线'
+- '平台层（浅橙）: 设备接入 → 消息处理 → 存储 → 应用使能'
+- '应用层（浅紫）: 监控大屏、移动App、AI模型、企业系统集成'
+relationships:
+- '数据流（绿色实线箭头）: 感知层 → 网络层 → 平台层 → 应用层'
+- '控制流（蓝色实线箭头）: 应用层 → 平台层 → 网络层 → 感知层'
+- '平台内部流（橙色水平箭头）: 设备接入 → 消息处理 → 存储 → 应用使能'
+legend:
+- '绿色箭头: 数据流（上行感知数据）'
+- '蓝色箭头: 控制流（下行命令）'
+- '橙色水平箭头: 平台层内部处理顺序'
+- 背景色：感知层-浅绿，网络层-浅蓝，平台层-浅橙，应用层-浅紫
+visual_constraints:
+- 节点标签使用短名词，解释性文字放入callouts或正文。
+- 箭头线型统一，不出现多重交叉。
+- 图例置于底部，不遮挡主体。
+render_notes: HTML/SVG渲染，浅色背景，各层矩形宽度比例1:1:1:1，高度比例1:1.5:2:1.2；平台层内部四个方块宽度均匀，箭头使用标准三角头；图例使用小号字体。
+components:
+- id: sensor
+  label: 感知层
+  type: edge
+  subtitle: 传感器、执行器
+  group: ''
+  priority: normal
+  shape: card
+- id: network
+  label: 网络层
+  type: edge
+  subtitle: 无线/WAN/有线
+  group: ''
+  priority: normal
+  shape: card
+- id: platform
+  label: 平台层
+  type: platform
+  subtitle: 设备接入→消息→存储→使能
+  group: ''
+  priority: primary
+  shape: card
+- id: application
+  label: 应用层
+  type: application
+  subtitle: 大屏/App/AI/系统
+  group: ''
+  priority: normal
+  shape: card
+connections:
+- from: sensor
+  to: network
+  label: 数据流
+  style: solid
+  direction: bottom-to-top
+- from: network
+  to: platform
+  label: 数据
+  style: solid
+  direction: bottom-to-top
+- from: platform
+  to: application
+  label: 数据
+  style: solid
+  direction: bottom-to-top
+- from: application
+  to: platform
+  label: 控制流
+  style: solid
+  direction: top-to-bottom
+- from: platform
+  to: network
+  label: 控制
+  style: solid
+  direction: top-to-bottom
+- from: network
+  to: sensor
+  label: 控制
+  style: solid
+  direction: top-to-bottom
+caption:
+  zh: 图5-1 物联网平台分层架构示意。感知层采集物理信号并数字化，经网络层传输至平台层；平台层完成协议转换、消息缓冲、规则判断与存储，最后通过API暴露给应用层；应用层提供人机交互与决策支持。
+  en: 'Figure 5-1 Layered architecture of an IoT platform. The sensing layer digitizes physical signals and transports them through the network layer to the platform layer; the platform layer performs protocol conversion, message buffering, rule evaluation, and storage, then exposes everything to the application layer through APIs; the application layer provides human-machine interaction and decision support.'
+labels:
+  en:
+    图5-1 物联网平台分层架构示意: Figure 5-1 Layered IoT Platform Architecture
+    平台层承上启下：数据向上汇聚，控制指令向下传递。: 'The platform layer bridges: data converges upward, commands pass downward.'
+    数据上行: Data up
+    控制下行: Control down
+    应用层: Application Layer
+    监控大屏 · 移动 App · AI 模型 · 企业系统集成: Dashboards · Apps · AI Models · Enterprise Integration
+    平台层: Platform Layer
+    设备接入: Device Access
+    协议适配: Protocol Adaptation
+    消息处理: Message Processing
+    队列缓冲: Queue Buffering
+    存储: Storage
+    时序 / 关系库: Time-Series / Relational DB
+    应用使能: App Enablement
+    API / 订阅: API / Subscription
+    网络层: Network Layer
+    无线局域网 · 蜂窝 / LPWAN · 有线: WLAN · Cellular / LPWAN · Wired
+    感知层: Sensing Layer
+    传感器 · 执行器 · RFID: Sensors · Actuators · RFID
+    数据流（上行感知数据）: Data flow (upstream data)
+    控制流（下行命令）: Control flow (downlink commands)
+    平台层内部处理顺序: Platform-layer processing order
+    图5-1 物联网平台分层架构示意：感知层采集物理信号并数字化，经网络层传输至平台层完成协议转换、消息缓冲、规则判断与存储，再通过 API 暴露给应用层提供人机交互与决策支持。: 'Figure 5-1 Layered IoT platform architecture: the sensing layer digitizes physical signals and sends them through the network layer to the platform, which performs protocol conversion, message buffering, rule evaluation, and storage, then exposes them via APIs to the application layer for human-machine interaction and decision support.'

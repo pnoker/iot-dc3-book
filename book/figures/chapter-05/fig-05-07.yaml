@@ -1,0 +1,100 @@
+type: matrix
+title: 图5-7 异常检测性能对比示意：规则 vs 机器学习
+purpose: 对比基于规则和基于机器学习的异常检测方法在准确率、召回率、误报率、维护成本上的定性差异。
+audience_takeaway: 机器学习在召回率和自适应方面占优，规则在低误报率（针对已知故障）和解释性上更强；混合策略结合两者优势。
+visual_focus: 四象限矩阵，横轴为'适应性'（低→高），纵轴为'可解释性'（高→低）；左上象限为规则，右下象限为机器学习。
+design_level: conceptual
+layout: 2×2矩阵，四个象限分别标注：规则（高可解释、低适应）、浅层ML（中等）、深度学习（低可解释、高适应）、混合策略（居中）。
+elements:
+- 矩阵主体：横轴'适应性'，纵轴'可解释性'。
+- 象限点：规则检测、浅层ML（孤立森林/LOF）、深度学习（LSTM/Transformer）、混合策略（边缘规则+云端ML）。
+- 每个点附带雷达图小图标表示准确率/召回率/误报率/部署延迟的相对大小。
+relationships:
+- 规则检测：准确率高（针对已知故障）、召回率低（漏报未知故障）、误报率可控、维护成本高。
+- 浅层ML：召回率较高、误报率可接受、维护成本中等、需定期更新模型。
+- 深度学习：召回率最高、但训练/推理资源开销大、可解释性差。
+- 混合策略：准确率与召回率均优、误报率低、维护成本综合优化。
+regions:
+- id: high_explainability
+  label: 高可解释区域
+  role: 规则和浅层ML所在区域
+- id: low_explainability
+  label: 低可解释区域
+  role: 深度学习所在区域
+components:
+- id: rule
+  label: 规则检测
+  type: decision
+  subtitle: 阈值/EWMA/复合规则
+  group: high_explainability
+  priority: normal
+  shape: card
+- id: shallow_ml
+  label: 浅层ML
+  type: ai
+  subtitle: 孤立森林/LOF
+  group: high_explainability
+  priority: primary
+  shape: card
+- id: deep_learning
+  label: 深度学习
+  type: ai
+  subtitle: LSTM/Transformer
+  group: low_explainability
+  priority: supporting
+  shape: card
+- id: hybrid
+  label: 混合策略
+  type: platform
+  subtitle: 边缘规则+云端ML
+  group: high_explainability
+  priority: primary
+  shape: card
+connections: []
+callouts:
+- 混合策略位于象限中心，兼顾可解释性与适应性。
+- 深度学习虽适应性强，但部署延迟高、可解释性差，不适合实时边缘推理。
+legend:
+- 蓝色=平台/架构组件；橙色=AI组件；灰色=规则/决策组件。
+- 实线框表示该象限的核心方法。
+visual_constraints:
+- 最多4个节点，节点标签短，解释放入callouts。
+- 矩阵坐标轴清晰标注。
+render_notes: HTML/SVG渲染，浅色背景，白底卡片，圆角矩形，使用象限网格线，底部图例和出版级图注。
+caption:
+  zh: 图5-7 异常检测性能对比示意：规则检测、浅层机器学习、深度学习与混合策略在适应性和可解释性上的定位。
+  en: 'Figure 5-7 Anomaly detection performance comparison: how rule-based detection, shallow machine learning, deep learning, and hybrid strategies are positioned on adaptability and explainability.'
+labels:
+  en:
+    图5-7 异常检测性能对比示意：规则 vs 机器学习: 'Figure 5-7 Anomaly Detection: Rules vs Machine Learning'
+    规则强调可解释与确定性，机器学习强调适应性，混合策略负责衔接。: Rules emphasize explainability and determinism, machine learning emphasizes adaptability, and hybrid strategies bridge the two.
+    可解释性: Explainability
+    高: High
+    低: Low
+    适应性：低 → 高: 'Adaptability: Low → High'
+    规则检测: Rule-Based Detection
+    阈值 · EWMA · 复合规则: Thresholds · EWMA · Composite Rules
+    高可解释 / 低适应: Explainable / low adaptability
+    浅层 ML: Shallow ML
+    孤立森林 · LOF: Isolation Forest · LOF
+    适应性中等: Medium adaptability
+    深度学习: Deep Learning
+    低可解释 / 高适应: Low explainability / high adaptability
+    混合策略: Hybrid Strategy
+    边缘规则 + 云端 ML: Edge Rules + Cloud ML
+    兼顾可解释与适应: Balances explain & adapt
+    低可解释 × 低适应: Low explain × low adapt
+    （通常不采用）: (rarely used)
+    工程判断: Engineering Judgment
+    规则：已知故障可解释、误报可控: 'Rules: explainable, false alarms controlled'
+    ML：召回率更高、适应复杂工况: 'ML: higher recall, adapts to complex conditions'
+    混合：确定性先过滤、模型再兜底: 'Hybrid: rules filter, model backs up'
+    模型：需版本管理与回滚机制: 'Models: need versioning & rollback'
+    实时边缘推理须权衡部署延迟: Real-time edge inference must weigh deployment latency
+    与可解释性之间的取舍。: against explainability.
+    方法选择取决于工况变化、样本条件: Method choice depends on varying conditions and samples,
+    与部署资源，而不是单一准确率指标。: and deployment resources — not accuracy alone.
+    规则 / 决策组件: Rule / Decision Components
+    AI 组件（浅层 ML / 深度学习）: AI Components (Shallow ML / Deep Learning)
+    混合策略（平台 / 架构组件）: Hybrid Strategy (Platform / Architecture Components)
+    图5-7 异常检测性能对比示意：规则检测、浅层机器学习、深度学习与混合策略在适应性和可解释性上的定位，方法选择取决于工况、样本与部署资源。: 'Figure 5-7 Anomaly detection performance comparison: how rules, shallow ML, deep learning, and hybrid strategies are positioned on adaptability and explainability; method choice depends on operating conditions, samples, and deployment resources.'

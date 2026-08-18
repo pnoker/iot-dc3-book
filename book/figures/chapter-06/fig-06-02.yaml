@@ -1,0 +1,131 @@
+type: architecture
+title: 图6-2 物联网平台协议分层架构
+purpose: 展示MQTT、REST、gRPC在典型平台中的部署层次与交互主链路。
+audience_takeaway: 读者应理解设备、平台、北向三个层次的责任边界，以及各层次应选择的“最佳”协议。
+visual_focus: 从设备层经网关/边缘层到平台服务层再到北向应用层的主链路；不同协议用不同线型区分。
+design_level: logical
+layout: 自下而上四层：设备层、网关/边缘层、平台服务层、北向应用层。
+elements:
+- 设备层：传感器、执行器、PLC，运行MQTT客户端；示意图省略Modbus/OPC UA等遗留协议。
+- 网关/边缘层：MQTT Broker、协议适配模块，向下连接设备、向上对接平台。
+- 平台服务层：设备管理、数据存储、规则引擎等微服务，服务间用gRPC通信。
+- 北向应用层：Web前端、移动App、第三方系统，通过REST API接入。
+relationships:
+- 设备层→网关层：MQTT（发布/订阅），实线箭头标注。
+- 网关层→平台层：MQTT（持续数据流），实线箭头；少量REST用于网关状态注册，虚线箭头。
+- 平台层内部：服务间同步调用使用gRPC，实线箭头；异步事件通过消息队列，虚线箭头。
+- 平台层→北向层：RESTful API为主，实线箭头；少量场景支持gRPC-Web，虚线箭头。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据传播与治理边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: device
+  label: 设备层
+  type: edge
+  subtitle: 传感器、PLC、执行器
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: gateway
+  label: 网关/边缘层
+  type: edge
+  subtitle: MQTT Broker、协议适配
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: mqtt_protocol
+  label: MQTT
+  type: platform
+  subtitle: 发布/订阅、持续数据流
+  group: data_domain
+  priority: primary
+  shape: database
+- id: grpc_service
+  label: gRPC
+  type: platform
+  subtitle: 服务间同步调用
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: rest_api
+  label: REST
+  type: platform
+  subtitle: 北向API
+  group: platform_domain
+  priority: primary
+  shape: card
+connections:
+- from: device
+  to: gateway
+  label: 设备数据上报
+  style: solid
+  direction: request
+- from: gateway
+  to: mqtt_protocol
+  label: 持续数据流
+  style: solid
+  direction: request
+- from: mqtt_protocol
+  to: grpc_service
+  label: 服务间调用
+  style: solid
+  direction: request
+- from: grpc_service
+  to: rest_api
+  label: 数据提供
+  style: solid
+  direction: request
+callouts:
+- 设备层→网关层：MQTT（发布/订阅）是主链路。
+- 网关层→平台层：MQTT用于持续数据流，少量REST用于配置更新。
+- 平台层内部：gRPC用于服务间同步调用。
+- 平台层→北向层：RESTful API为主，gRPC-Web为辅助场景。
+legend:
+- 蓝色=核心通信路径；青色=设备与边缘节点。
+- 实线箭头=主要通信链路；虚线箭头=辅助或可选的通信路径。
+visual_constraints:
+- 最多7个节点，节点标签短，解释放入callouts。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG渲染，浅色背景，四层布局，不同协议用不同线型、颜色区分，底部图例和出版级图注。
+caption:
+  zh: 图6-2 展示MQTT、REST、gRPC在物联网平台各层次中的部署位置与交互关系。
+  en: 'Figure 6-2 Shows where MQTT, REST, and gRPC sit in each layer of an IoT platform and how they interact.'
+labels:
+  en:
+    图6-2 物联网平台协议分层架构: Figure 6-2 Protocol Layering in an IoT Platform
+    MQTT 服务南向设备，gRPC 服务内部调用，REST 服务北向开放。: 'MQTT serves southbound devices, gRPC internal calls, REST northbound APIs.'
+    设备层: Device Layer
+    传感器: Sensors
+    运行 MQTT 客户端: Runs MQTT Clients
+    执行器: Actuators
+    网关 / 边缘层: Gateway / Edge Layer
+    离线缓存 · 订阅分发: Offline Cache · Pub/Sub
+    协议适配模块: Protocol Adaptation
+    Modbus / OPC UA 等: Modbus / OPC UA etc.
+    平台服务层: Platform Service Layer
+    设备管理: Device Management
+    gRPC 服务: gRPC Services
+    数据存储: Data Storage
+    规则引擎: Rule Engine
+    服务间：gRPC 同步 + 消息队列异步: 'Inter-service: sync gRPC + async message queue'
+    北向应用层: Northbound App Layer
+    Web 前端: Web Frontend
+    移动 App: Mobile App
+    第三方系统: Third-Party Systems
+    MQTT 发布/订阅: MQTT Pub/Sub
+    MQTT 持续数据流: MQTT Continuous Stream
+    REST 状态注册: REST Status Registration
+    REST 北向 API: REST Northbound API
+    gRPC-Web 辅助: gRPC-Web Auxiliary
+    MQTT（设备/边缘）: 'MQTT (device/edge)'
+    REST（北向）: 'REST (northbound)'
+    辅助 / 可选路径: Auxiliary / Optional Path
+    平台服务（gRPC 内部）: 'Platform services (internal gRPC)'
+    图6-2 协议按层次互补，不以单一协议强行覆盖设备、服务与外部系统。: 'Figure 6-2 Protocols complement each other by layer; no single protocol is forced across devices, services, and external systems.'

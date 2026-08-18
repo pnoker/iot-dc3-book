@@ -1,0 +1,135 @@
+type: architecture
+title: 图10-3 数字孪生五维模型架构图
+audience_takeaway: 读者应理解连接层是数字孪生枢纽:传感器值经CN上行、控制指令下行,模型输出沉淀为知识反哺业务,形成自我进化的双向闭环。
+purpose: 展示数字孪生的五个核心维度及它们之间的数据与控制流向，帮助读者理解CPS在工程层面的完整协作关系
+visual_focus: 从PE到Data & Service的主链路。
+design_level: logical
+layout: 中心式五边形布局，以“连接层”为轴心，左右两侧对称放置“物理实体”和“虚拟模型”，“数据与服务”与“知识”位于顶部两个角落，连接线标识双向互动关系
+elements:
+- PE（物理实体）
+- VM（虚拟模型）
+- CN（连接层）
+- Data & Service（数据与服务）
+- Knowledge（知识）
+relationships:
+- PE → CN（设备状态、传感器值、事件）
+- CN → VM（归一化位号值（PointValue））
+- VM → CN（预测结果、参数调整指令）
+- CN → PE（设备写指令、参数更新）
+- VM → Knowledge（模型输出、异常模式）
+- Knowledge → Data & Service（规则参数、故障案例）
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: r1
+  label: PE
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: CN
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: VM
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: Knowledge
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: Data & Service
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 设备状态、传感器值、事件
+  style: dashed
+  direction: right
+- from: r2
+  to: r3
+  label: 归一化位号值（PointValue）
+  style: solid
+  direction: right
+- from: r3
+  to: r2
+  label: 预测结果、参数调整指令
+  style: solid
+  direction: left
+- from: r2
+  to: r1
+  label: 设备写指令、参数更新
+  style: solid
+  direction: left
+- from: r3
+  to: r4
+  label: 模型输出、异常模式
+  style: risk
+  direction: up
+- from: r4
+  to: r5
+  label: 规则参数、故障案例
+  style: solid
+  direction: right
+callouts:
+- PE → CN（设备状态、传感器值、事件）
+- CN → VM（归一化位号值（PointValue））
+- VM → CN（预测结果、参数调整指令）
+legend:
+- PE - CN - VM 之间的数据流与控制流
+- VM 向 Knowledge 和 Data & Service 的知识沉淀路径
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用SVG绘制，物理实体与虚拟模型使用蓝色/绿色色系，连接层使用橙色居中，数据与服务与知识使用紫色系。双向箭头使用不同颜色区分数据流与控制流。底部添加图注，附一句话说明：五维模型的核心是连接层——它决定了数字孪生的实时性与可靠性。
+caption:
+  zh: 五维模型架构图。连接层（CN）是数字孪生能否实时运转的关键：它决定了物理实体与虚拟模型之间的同步精度和指令可达性。数据与服务层和知识层则提供了从数据到决策的持续演进能力。
+  en: 'The five-dimension model architecture. The connection layer (CN) is the key to whether a digital twin can run in real time: it determines the synchronization accuracy and command reachability between the physical entity and the virtual model. The data & service layer and the knowledge layer provide the capacity to keep evolving from data to decisions.'
+labels:
+  en:
+    图10-3 数字孪生五维模型架构图: Figure 10-3 Five-Dimension Digital Twin Architecture
+    连接层连接物理实体与虚拟模型，承载上行数据和受控下行指令，模型输出沉淀为知识并服务业务。: The connection layer links the physical entity and virtual model, carries uplink data and governed downlink commands, and settles model output into knowledge that serves the business.
+    连接层 CN 统一协议、语义、频率与安全，是物理实体和虚拟模型持续同步的枢纽。: The CN unifies protocol, semantics, frequency, and security — the hub that keeps PE and VM in sync.
+    数据资产域 · 数据沉淀与治理边界: Data asset domain · data & governance boundary
+    平台服务域 · 核心服务能力边界: Platform service domain · core service boundary
+    物理实体 PE: Physical Entity (PE)
+    设备 · 产线 · 传感器: Devices · lines · sensors
+    连接层 CN: Connection (CN)
+    协议转换 · 数据归一 · 安全: Protocols · normalization · security
+    双向同步枢纽: Two-way sync hub
+    虚拟模型 VM: Virtual Model (VM)
+    几何 · 物理 · 行为: Geometry · physics · behavior
+    数据与服务: Data & Service
+    历史数据 · 业务接口: History · business APIs
+    知识: Knowledge
+    规则参数 · 故障案例: Rule parameters · fault cases
+    设备状态 · 传感器值 · 事件: Device status · sensor values · events
+    设备写指令 · 参数更新: Write commands · parameter updates
+    归一化位号值 PointValue: Normalized PointValue
+    预测结果 · 参数调整指令: Predictions · tuning commands
+    模型输出 · 异常模式: Model output · anomaly patterns
+    安全边界：写请求须经鉴权、值域/变化率校验、策略约束与必要人工确认: 'Safety boundary: writes need auth, range/rate checks, policy limits, and sign-off when required'
+    PLC / SIS / 硬联锁承担确定性控制与故障保护，模型不得绕过: PLC / SIS / hard interlocks own deterministic control and protection; models cannot bypass them
+    图10-3 连接层决定物理实体与虚拟模型的同步精度和指令可达性；模型输出沉淀为知识并反哺业务。: Figure 10-3 The connection layer sets the sync accuracy and command reachability between physical entity and virtual model; model output settles into knowledge that feeds the business.

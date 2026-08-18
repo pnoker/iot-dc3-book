@@ -1,0 +1,222 @@
+type: layered
+title: 图3-1 感知层在物联网多层参考架构中的位置
+purpose: 展示感知层在物联网多层参考架构中的底层位置，及其内部三大类组件（传感器、识别设备、定位模块）与上层网络层/平台层/应用层的接口关系。同时标注感知层的逻辑边界。
+audience_takeaway: 读者应理解感知层是物理世界与数字系统的桥梁，其核心产出是带语义的位号值流，四层架构的数据流与控制流方向相反。
+visual_focus: 感知层内部三大组件（传感器、RFID、定位模块）共同向上输出数据的主链路；平台层内部四等分展示关键服务能力。
+design_level: logical
+layout: 自下而上分层架构：物理世界→感知层→网络层→平台层→应用层。感知层内部三等分展示传感器、识别设备、定位模块。平台层内部四等分展示设备管理、物模型管理、数据存储、规则引擎。
+elements:
+- 物理世界与感知层的传感器、识别设备、定位模块
+- 网络层与平台层的设备管理、物模型、数据存储、规则引擎
+- 应用层与控制指令
+relationships:
+- 物理世界 → 传感器、识别设备、定位模块：产生物理量、身份码与空间坐标
+- 感知层组件 → 网络层 → 平台层 → 应用层：位号值、身份和位置数据逐层上行
+- 应用层 → 控制指令 → 物理世界：决策下发并驱动执行或复位
+regions:
+- id: physical_world
+  label: 物理世界域
+  role: 设备、环境、物品等被监测对象
+- id: perception_domain
+  label: 感知层
+  role: 数据采集、身份识别、位置感知与初步处理
+- id: network_domain
+  label: 网络层
+  role: 远距离数据传输与协议封装
+- id: platform_domain
+  label: 平台层
+  role: 设备管理、数据治理、规则引擎与物模型抽象
+- id: application_domain
+  label: 应用层
+  role: 业务价值交付与决策执行
+components:
+- id: physical_sensors
+  label: 物理世界
+  type: edge
+  subtitle: 设备、环境、物品
+  group: physical_world
+  priority: normal
+  shape: boundary
+- id: sensor_devices
+  label: 传感器
+  type: edge
+  subtitle: 温度、压力、振动、气体
+  group: perception_domain
+  priority: primary
+  shape: card
+- id: rfid_reader
+  label: 识别设备
+  type: edge
+  subtitle: RFID读写器、条码扫描器
+  group: perception_domain
+  priority: primary
+  shape: card
+- id: gnss_uwb
+  label: 定位模块
+  type: edge
+  subtitle: GNSS接收机、UWB基站
+  group: perception_domain
+  priority: primary
+  shape: card
+- id: network_layer
+  label: 网络层
+  type: platform
+  subtitle: 有线/无线通信
+  group: network_domain
+  priority: primary
+  shape: card
+- id: service_devmgt
+  label: 设备管理
+  type: platform
+  subtitle: 注册、远程配置
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: service_twin
+  label: 物模型管理
+  type: data
+  subtitle: 属性、事件、服务
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: service_data
+  label: 数据存储
+  type: data
+  subtitle: 时序、位号值
+  group: platform_domain
+  priority: primary
+  shape: database
+- id: service_rule
+  label: 规则引擎
+  type: ai
+  subtitle: 阈值、条件分发
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: application_layer
+  label: 应用层
+  type: application
+  subtitle: 工业监控、智慧园区
+  group: application_domain
+  priority: normal
+  shape: card
+- id: control_feedback
+  label: 控制指令
+  type: decision
+  subtitle: 平台→设备
+  group: application_domain
+  priority: normal
+  shape: card
+connections:
+- from: physical_sensors
+  to: sensor_devices
+  label: 物理量/状态
+  style: solid
+  direction: bottom-to-top
+- from: physical_sensors
+  to: rfid_reader
+  label: 标签ID/条码
+  style: solid
+  direction: bottom-to-top
+- from: physical_sensors
+  to: gnss_uwb
+  label: 空间坐标
+  style: solid
+  direction: bottom-to-top
+- from: sensor_devices
+  to: network_layer
+  label: 位号值流
+  style: solid
+  direction: bottom-to-top
+- from: rfid_reader
+  to: network_layer
+  label: 身份码
+  style: solid
+  direction: bottom-to-top
+- from: gnss_uwb
+  to: network_layer
+  label: 坐标数据
+  style: solid
+  direction: bottom-to-top
+- from: network_layer
+  to: service_devmgt
+  label: 传输
+  style: solid
+  direction: bottom-to-top
+- from: service_devmgt
+  to: service_twin
+  label: 注册/更新
+  style: solid
+  direction: left-to-right
+- from: service_twin
+  to: service_data
+  label: 持久化
+  style: solid
+  direction: left-to-right
+- from: service_data
+  to: service_rule
+  label: 触发
+  style: dashed
+  direction: event
+- from: service_rule
+  to: application_layer
+  label: 决策输出
+  style: solid
+  direction: request
+- from: application_layer
+  to: control_feedback
+  label: 下发指令
+  style: solid
+  direction: request
+- from: control_feedback
+  to: physical_sensors
+  label: 执行/复位
+  style: dashed
+  direction: feedback
+callouts:
+- 感知层内部三大组件：传感器、识别设备、定位模块，各自负责不同维度的物理世界映射。
+- 平台层的物模型管理是关键抽象，它将感知层的原始数据升维为可理解的设备属性与事件。
+- 控制反馈链路（虚线）构成了从感知到决策再到执行的完整闭环。
+legend:
+- 蓝色系：感知层组件；蓝绿色：网络层；绿色系：平台层服务；橙色：应用层；灰色：物理世界
+- 实线箭头：数据流方向（自下而上）；虚线箭头：控制流或事件驱动（自上而下）
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入callouts或正文。
+- 图例放在底部，不遮挡主体结构。
+- 平台层内部四个服务节点之间使用横向实线箭头表示处理顺序。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形（半径6px），层间垂直间隔10px。字体参照全书配置。箭头颜色#888，线宽2px。
+caption:
+  zh: 图3-1 感知层在物联网多层参考架构中的位置。感知层包含传感器、识别设备和定位模块三大组件，负责将物理世界信息转换为位号值流、身份码和坐标数据，通过网络层上传至平台层和应用层。实线箭头表示数据流方向，虚线箭头表示控制指令或事件驱动方向。
+  en: Figure 3-1 Where the sensing layer sits in the multi-layer IoT reference architecture. The sensing layer comprises three component groups — sensors, identification devices, and positioning modules — which convert physical-world information into point-value streams, identity codes, and coordinate data, uploaded through the network layer to the platform and application layers. Solid arrows mark data flow; dashed arrows mark control commands or event-driven flow.
+labels:
+  en:
+    图3-1 感知层在物联网多层参考架构中的位置: Figure 3-1 The Sensing Layer in the Multi-Layer IoT Reference Architecture
+    感知层连接物理世界与数字系统，传感器、识别设备和定位模块共同向上输出数据，控制流反向下行。: 'The sensing layer bridges the physical and digital worlds: sensors, identification devices, and positioning modules feed data upward while control flows back down.'
+    物理世界: Physical World
+    设备、环境、物品: Devices / Environment / Goods
+    感知层: Sensing Layer
+    传感器: Sensors
+    温度、压力、振动、气体: Temp / Pressure / Vibration / Gas
+    识别设备: Identification Devices
+    RFID读写器、条码扫描器: RFID readers / barcode scanners
+    定位模块: Positioning Modules
+    GNSS接收机、UWB基站: GNSS receivers / UWB anchors
+    网络层: Network Layer
+    有线通信 / 无线通信: Wired / Wireless
+    平台层: Platform Layer
+    设备管理: Device Management
+    物模型管理: Thing Model Management
+    数据存储: Data Storage
+    规则引擎: Rule Engine
+    应用层: Application Layer
+    工业监控 / 智慧园区 / 能源管理: Industrial Monitoring / Smart Park / Energy Mgmt
+    汇聚节点中: In aggregation nodes,
+    远距离通信: long-distance links
+    功能属于网络层: are network-layer functions
+    物理量 / 状态: Physical quantities / states
+    位号值流 / 身份码 / 坐标: Point values / ID codes / coordinates
+    传输协议 (MQTT/Modbus/OPC UA): Transport (MQTT/Modbus/OPC UA)
+    API 与数据服务: API & Data Services
+    控制指令: Control Commands
+    实线箭头 = 数据流，虚线箭头 = 控制流: Solid arrows = data flow, dashed = control flow
+    图3-1 感知层在物联网多层参考架构中的位置。感知层包含传感器、识别设备和定位模块三大组件，负责将物理世界信息转换为位号值流、身份码和坐标数据，通过网络层上传至平台层和应用层。箭头方向表示数据流向（自下而上）或控制指令流向（自上而下虚线）。: Figure 3-1 The sensing layer in the multi-layer IoT reference architecture. Its three component groups — sensors, identification devices, and positioning modules — convert physical-world information into point-value streams, identity codes, and coordinate data, uploaded through the network layer to the platform and application layers. Arrows show data flow (bottom-up) and control-command flow (top-down, dashed).

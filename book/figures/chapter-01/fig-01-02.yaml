@@ -1,0 +1,48 @@
+type: framework
+title: 图1-2 工业软件的核心能力与不可替代性
+audience_takeaway: 读者应理解工业软件的三大核心能力——确定性实时控制、结构化数据建模、工业级可靠性与安全认证——它们构成不可替代的底座，是判断下一代平台「补什么、不动什么」的标尺。
+purpose: 归纳工业软件做得足够好的三块能力，说明其不可替代性，为 1.1.3 的结构性局限与 1.1.4 的架构跃迁划清边界——物联网平台补短板，而非推倒重来。
+visual_focus: 三列等宽卡片（确定性控制 / 结构化建模 / 可靠性与安全认证），每列标注关键标准与「为什么不可替代」。
+design_level: logical
+layout: 三列等宽卡片横向排列，顶部标题区，底部结论条与图注。
+elements:
+- 确定性实时控制：PLC 毫秒级扫描周期、二值逻辑、安全联锁/急停/紧急泄压、IEC 61131-3 + 硬件冗余
+- 结构化数据建模：OPC UA 信息模型、ISA-88 批次控制、IEC 61850 电力模型、为物模型打基础
+- 可靠性与安全认证：SIL 安全完整性等级、ATEX 防爆、IEC 61508 功能安全、法律准入门槛
+relationships:
+- 三项能力并列，共同构成工业软件不可替代的底座
+- 任何叠加的智能层都不应替代确定性控制，而应在其之上补足
+render_notes: 三列等宽卡片，语义色蓝/青/橙，每列含要点与「为什么不可替代」说明。完整 HTML 见 figures/chapter-01/fig-01-02.html。
+caption:
+  zh: 图1-2 工业软件的核心能力与不可替代性。确定性实时控制、结构化数据建模、工业级可靠性与安全认证构成不可替代的底座，是判断下一代平台「补什么、不动什么」的标尺。
+  en: Figure 1-2 The core capabilities of industrial software and why they are irreplaceable. Deterministic real-time control, structured data modeling, and industrial-grade reliability with safety certification form a base that cannot be replaced — the yardstick for judging what the next-generation platform should add and what it must leave alone.
+labels:
+  en:
+    图1-2 工业软件的核心能力与不可替代性: Figure 1-2 Core Capabilities That Cannot Be Replaced
+    工业软件三块不可替代的核心能力: Three irreplaceable core capabilities of industrial software
+    确定性控制 / 结构化建模 / 可靠性与安全认证三块能力并置: Deterministic control / structured modeling / reliability & safety certification, side by side
+    确定性实时控制: Deterministic Real-Time Control
+    · PLC 毫秒级扫描周期: · PLC scan cycles in milliseconds
+    · 二值逻辑，条件真即执行: · Binary logic — true means execute
+    · 安全联锁 / 急停 / 紧急泄压: · Safety interlocks / e-stop / emergency venting
+    · IEC 61131-3 标准 + 硬件冗余: · IEC 61131-3 + hardware redundancy
+    为什么不可替代：确定性底座: 'Why irreplaceable: the deterministic base'
+    智能层不应替代它，而应在其上补足: Intelligence should build on it, not replace it
+    结构化数据建模: Structured Data Modeling
+    · OPC UA 信息模型: · OPC UA information models
+    · ISA-88 批次控制标准: · ISA-88 batch control
+    · IEC 61850 电力自动化模型: · IEC 61850 power automation
+    · 为物模型设计提供工程基础: · Engineering basis for thing models
+    为什么不可替代：语义互通范式: 'Why irreplaceable: semantic interop paradigm'
+    让不同厂商设备在语义层面相互理解: Vendors' devices understand each other semantically
+    可靠性与安全认证: Reliability & Safety Certification
+    · SIL 安全完整性等级: · SIL safety integrity levels
+    · ATEX 防爆指令: · ATEX explosion-proofing directive
+    · IEC 61508 功能安全: · IEC 61508 functional safety
+    · 设备上市的法律准入门槛: · Legal market-entry requirements
+    为什么不可替代：合规门槛: 'Why irreplaceable: compliance gate'
+    新技术须在约束框架内证明自己: New technology must prove itself within them
+    三项能力并列，构成工业软件不可替代的底座: Together the three form an irreplaceable base
+    ——物联网平台补短板，而非推倒重来: — the IoT platform fills gaps; it does not rebuild
+    图1-2 工业软件的核心能力与不可替代性。确定性实时控制、结构化数据建模、工业级可靠性与安全认证构成不可替代的底座，: Figure 1-2 The core capabilities of industrial software. Deterministic real-time control, structured data modeling, and industrial-grade reliability with safety certification form a base that cannot be replaced —
+    是判断下一代平台「补什么、不动什么」的标尺。: the yardstick for what the next-generation platform should add, and what it must leave alone.

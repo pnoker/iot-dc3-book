@@ -1,0 +1,58 @@
+type: lifecycle
+title: 图14-10 可复现实验的五个环节与证据包
+audience_takeaway: 读者应理解可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化证据包。
+purpose: 展示可复现实验的五个环节与证据包结构
+visual_focus: 五环节横向流程与证据包目录结构。
+design_level: lifecycle
+layout: 上半五个环节横向流程，底部证据包目录结构
+elements:
+- 冻结 manifest：commit/镜像 digest/依赖/模型/Prompt/RAG 版本
+- 工作负载可重放：设备数、上报频率、payload、故障参数固定
+- 指标字典：先定义分母，报告 P50/P95/P99
+- 故障与安全用例：重复遥测、断网、积压、跨租户、超时、回执丢失等
+- 证据包：README/manifest/workload/raw/summary/failures/figures
+relationships:
+- 五环节依次递进：先冻结再重放，先定义分母再报告，最后沉淀证据包
+render_notes: HTML/SVG 渲染，五环节流程 + 证据包目录树，蓝绿橙红灰分层。
+caption:
+  zh: 图14-10 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化的出版证据包。
+  en: 'Figure 14-10 A reproducible experiment freezes the environment manifest, pins a replayable workload, defines denominators before reporting per the metric dictionary, covers failure and security cases, and finally deposits a structured publication evidence pack.'
+labels:
+  en:
+    图14-10 可复现实验的五个环节与证据包: 'Figure 14-10 Five Steps of a Reproducible Experiment & the Evidence Pack'
+    可复现实验依次冻结 manifest、固定工作负载、定义指标字典、覆盖故障用例、沉淀出版证据包。: 'A reproducible experiment freezes the manifest, pins the workload, defines the metric dictionary, covers failure cases, and deposits a publication evidence pack.'
+    没有实测就标记 NA，不用数值冒充结果 · 0 与 NA 含义不同: 'Mark NA when unmeasured; never pass numbers off as results · 0 and NA mean different things'
+    ① 冻结 manifest: '1. Freeze the manifest'
+    commit/tag、镜像 digest、Compose 版本: 'commit/tag, image digest, Compose version'
+    OS/CPU/内存/网络、JDK/Python: 'OS/CPU/RAM/network, JDK/Python'
+    PG/RabbitMQ/Driver 版本: 'PG/RabbitMQ/Driver versions'
+    模型/Prompt/Tool/RAG 版本: 'Model/Prompt/Tool/RAG versions'
+    密钥不入 manifest，用脱敏摘要: 'No secrets in the manifest; use redacted digests'
+    ② 工作负载可重放: '2. Replayable workload'
+    固定设备数、位号数、上报频率: 'Fixed device count, point count, report frequency'
+    payload 大小、读写比、命令比例: 'Payload size, read/write ratio, command ratio'
+    持续时间、预热时间: 'Duration, warm-up time'
+    故障：延迟/丢包、断网窗口、重启时刻: 'Faults: latency/loss, offline windows, restart times'
+    一次比较只改变主要变量: 'Change only the primary variable per comparison'
+    ③ 指标字典: '3. Metric dictionary'
+    先定义分母，再报告数字: 'Define the denominator before reporting numbers'
+    设备接入 / 数据链路 / 命令链路: 'Device access / data path / command path'
+    存储 / 可靠性 / RAG / Agent / 成本: 'Storage / reliability / RAG / Agent / cost'
+    时延起止点必须固定: 'Latency start and end points must be fixed'
+    多次独立运行，报告 P50/P95/P99: 'Multiple independent runs; report P50/P95/P99'
+    ④ 故障与安全用例: '4. Failure & security cases'
+    重复遥测、乱序时间戳: 'Duplicate telemetry, out-of-order timestamps'
+    断开重连、积压恢复、数据库故障: 'Reconnection, backlog recovery, database failures'
+    权限不足、跨租户、模型超时: 'Missing permissions, cross-tenant access, model timeouts'
+    回执丢失、重放、人工接管: 'Lost receipts, replays, human takeover'
+    优先模拟器，不绕过 PLC/SIS 联锁: 'Prefer simulators; never bypass PLC/SIS interlocks'
+    ⑤ 证据包: '5. Evidence pack'
+    正文数字反链实验 ID: 'Figures in the text link back to experiment IDs'
+    出版证据包结构（experiments/EXP-14-E2E-01/）: 'Publication evidence pack layout (experiments/EXP-14-E2E-01/)'
+    复现步骤与已知限制: 'Reproduction steps and known limitations'
+    版本、环境和数据哈希: 'Version, environment, and data hashes'
+    负载与故障参数 / 实际执行命令: 'Workload & fault parameters / actual commands run'
+    原始指标、日志与逐任务 trace: 'Raw metrics, logs, and per-task traces'
+    指标定义和汇总: 'Metric definitions and summaries'
+    失败样本与复盘 / 图表生成方法: 'Failure samples & postmortems / chart generation'
+    图14-10 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化的出版证据包。: 'Figure 14-10 A reproducible experiment freezes the environment manifest, pins a replayable workload, defines denominators before reporting per the metric dictionary, covers failure and security cases, and finally deposits a structured publication evidence pack.'

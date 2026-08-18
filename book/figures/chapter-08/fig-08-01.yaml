@@ -1,0 +1,94 @@
+type: layered
+title: 图8-1 物联网安全威胁分层分类
+audience_takeaway: 读者应理解物理接触可沿“提取固件密钥→伪造平台身份”逐层升级为跨租户数据窃取，威胁本质是跨层传导的链条，故安全必须全链路防御。
+purpose: 建立全局威胁认知，展示威胁如何从底层向高层扩散，以及跨层攻击向量
+visual_focus: 从攻击路径可逐层递进，例如：物理接触…到提取固件密钥 → 伪造平台身份的主链路。
+design_level: logical
+layout: 按OSI分层从下到上排列，左右两侧标注横切威胁
+elements:
+- '底层: 感知层（物理/感知设备）
+
+  威胁: 物理拆解、调试接口（JTAG/SWD）、固件提取（非加密Flash）、侧信道攻击（功耗/电磁分析）、默认弱口令'
+- '第二层: 网络层：通信/传输
+
+  威胁: 窃听（明文传输）、篡改（中间人）、重放（未加nonce/时间戳）、降级攻击（强制用弱加密算法）、DDoS（僵尸网络）'
+- '第三层: 平台层（云端/边缘/API）
+
+  威胁: 身份伪造、JWT泄露/伪造、多租户逃逸、API滥用/无限流、SQL/NoSQL注入、脆弱认证'
+- '顶层: 应用层（用户界面/业务逻辑）
+
+  威胁: XSS/CSRF、不安全移动接口、敏感信息暴露、Prompt注入、模型窃取/投毒'
+- '右侧纵贯标注: 数据泄露与隐私侵犯（横跨所有层）'
+- '左侧纵贯标注: AI模型攻击（横跨平台层与应用层）'
+relationships:
+- 攻击路径可逐层递进，例如：物理接触（感知层）→ 提取固件密钥 → 伪造平台身份（平台层）→ 窃取跨租户数据（数据泄露）
+- 右侧箭头标注数据泄露是跨层结果，攻击者可以在任何一层窃取数据
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 攻击路径可逐层递进，例如：物理接触…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 提取固件密钥 → 伪造平台身份
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 攻击路径可逐层递进，例如：物理接触…
+  style: solid
+  direction: left-to-right
+callouts:
+- 攻击路径可逐层递进，例如：物理接触（感知层）→ 提取固件密钥 → 伪造平台身份（平台层）→ 窃取跨租户数据（数据泄…
+- 右侧箭头标注数据泄露是跨层结果，攻击者可以在任何一层窃取数据
+legend:
+- 蓝色=核心平台服务；青绿色=设备与边缘；橙色=AI 智能能力；红色=威胁标注
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG 渲染，浅色背景，四层垂直排列，左侧用纵向箭头标注‘AI模型攻击’，右侧用纵向箭头标注‘数据泄露与隐私侵犯’；每个威胁项用小文字标注在对应层右侧，并用虚线箭头指示可跨层传导。
+caption:
+  zh: 图8-1 物联网安全威胁分层分类，展示威胁从物理层到应用层的分布及跨层攻击向量。数据泄露和AI模型攻击作为横切面威胁纵贯多个层次。
+  en: Figure 8-1 A layered classification of IoT security threats, showing how threats are distributed from the physical layer to the application layer along with cross-layer attack vectors. Data leakage and AI model attacks run vertically through multiple layers as cross-cutting threats.
+labels:
+  en:
+    图8-1 物联网安全威胁分层分类: Figure 8-1 Layered IoT Threat Classification
+    物理接触、链路攻击、平台越权与 Prompt 注入可跨层传导，安全必须覆盖设备到应用全链路。: Physical access, link attacks, platform privilege escalation, and prompt injection propagate across layers; security must cover the full device-to-application chain.
+    AI模型攻击: AI Model Attacks
+    数据泄露与隐私侵犯: Data Leakage & Privacy Violation
+    应用层（用户界面/业务逻辑）: Application Layer (UI / Business Logic)
+    • 不安全移动接口: • Insecure Mobile Interfaces
+    • 敏感信息暴露: • Sensitive Data Exposure
+    • Prompt注入: • Prompt Injection
+    • 模型窃取/投毒: • Model Theft / Poisoning
+    平台层（云端/边缘/API）: Platform Layer (Cloud / Edge / API)
+    • 身份伪造: • Identity Forgery
+    • JWT泄露/伪造: • JWT Leakage / Forgery
+    • 多租户逃逸: • Multi-Tenancy Escape
+    • API滥用/无限流: • API Abuse / No Rate Limiting
+    • SQL/NoSQL注入: • SQL / NoSQL Injection
+    • 脆弱认证: • Weak Authentication
+    网络层（通信/传输）: Network Layer (Communication / Transport)
+    • 窃听（明文传输）: • Eavesdropping (Plaintext)
+    • 篡改（中间人）: • Tampering (MITM)
+    • 重放（未加nonce/时间戳）: • Replay (No Nonce/Timestamp)
+    • 降级攻击（强制用弱加密算法）: • Downgrade (Forced Weak Crypto)
+    • DDoS（僵尸网络）: • DDoS (Botnets)
+    感知层（物理/感知设备）: Perception Layer (Physical / Sensing Devices)
+    • 物理拆解: • Physical Disassembly
+    • 调试接口（JTAG/SWD）: • Debug Ports (JTAG/SWD)
+    • 固件提取（非加密Flash）: • Firmware Extraction (Unencrypted Flash)
+    • 侧信道攻击（功耗/电磁分析）: • Side-Channel (Power/EM)
+    • 默认弱口令: • Default Weak Passwords
+    蓝色=核心平台服务: Blue = Core Platform Services
+    图8-1 物联网安全威胁分层分类，展示威胁从物理层到应用层的分布及跨层攻击向量。数据泄露和AI模型攻击作为横切面威胁纵贯多个层次。: 'Figure 8-1 A layered classification of IoT security threats: threat distribution from the physical to the application layer plus cross-layer attack vectors; data leakage and AI model attacks cut across multiple layers.'

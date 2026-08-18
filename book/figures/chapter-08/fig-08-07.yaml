@@ -1,0 +1,96 @@
+type: dataflow
+title: 图8-7 CoAP 的 OSCORE 安全处理流程示意
+audience_takeaway: 读者应理解 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 生成密文和认证标签；接收方通过重放窗口与 AEAD 验证解密后才接受消息。
+purpose: 展示 OSCORE 从安全上下文、AEAD 加密认证、接收端重放预检查到 AEAD 验证解密和重放窗口提交的处理链，并说明失败处理。
+visual_focus: 从CoAP Client 生成原始请求到终点的主链路。
+design_level: implementation
+layout: 水平流向，从左至右依次排列：CoAP Client 方框、OSCORE 处理子模块、网络链路线、CoAP Server 方框、OSCORE 反处理子模块、通过分支和拒绝分支。
+elements:
+- 左端方框：CoAP Client（受限设备），内部文字提示‘发起请求，携带原始载荷’
+- 发送方安全上下文：Master Secret、Master Salt、Sender ID、Common IV 与 Sender Sequence Number
+- 发送处理：构造 nonce 与 AAD，使用 AEAD 生成密文和认证标签，并携带 OSCORE 选项中的标识信息
+- 接收方重放窗口：使用 Partial IV 预检查消息是否过旧或重复，AEAD 成功前不提交窗口更新
+- 接收处理：重建 nonce 与 AAD，完成 AEAD 认证验证与解密
+- 成功分支：恢复 CoAP 消息并提交重放窗口更新
+- 失败分支：重放或 AEAD 认证失败时丢弃；需要响应时按 RFC 8613 规定返回错误
+relationships:
+- 安全上下文 → 构造 nonce 与 AAD → AEAD 加密并生成认证标签 → 传输 OSCORE 消息
+- 接收方先做重放窗口预检查，再执行 AEAD 验证解密；仅在验证成功后提交重放窗口更新
+- 重放检查或 AEAD 验证失败 → 丢弃消息，或在规范要求响应的场景返回对应错误。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: CoAP Client 生成原始请求
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: OSCORE 处理模块将请求加密…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: oscore_m
+  label: Kid）和序列号 → 网络链路传递…
+  style: solid
+  direction: request
+callouts:
+- CoAP Client 生成原始请求 → OSCORE 处理模块将请求加密、计算 MAC、打包密钥标识（Kid）和…
+- 否则返回 4.01 Unauthorized（拒绝）
+legend:
+- 矩形框：实体或处理模块（实体框填白色，处理框填浅灰色）
+- 水平粗箭头：网络数据传输（UDP，可加虚线表示）
+- 细箭头：数据流向
+- 条件分支：从反处理模块右侧出发的上下两条箭头分别指向文档图标和错误图标
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG 渲染，水平布局，从左至右绘制主要实体和方框，实体间用带箭头的直线连接。左端矩形‘CoAP Client’右侧紧接矩形‘OSCORE 处理’，之后画一条粗箭线表示网络链路（可加虚线表示 UDP）。右端矩形‘CoAP Server’内部再划出一个子矩形‘OSCORE 反处理’。从该子矩形右侧分出两条分支线：一条向上指向文档图标，一条向下指向错误图标。各箭头旁标注相应文字。附注框以虚线边框矩形置于相应分支终点处。
+caption:
+  zh: 图8-7 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 一次生成密文和认证标签；接收方先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新。重放或认证失败时丢弃消息，并按规范处理需要返回的错误。
+  en: Figure 8-7 OSCORE derives the nonce and AAD from the security context and uses AEAD to produce the ciphertext and authentication tag in one pass; the receiver first pre-checks the replay window, then performs AEAD verification and decryption, and commits the window update only on success. On replay or authentication failure the message is dropped, and required error responses are handled per the specification.
+labels:
+  en:
+    图8-7 CoAP 的 OSCORE 安全处理流程示意: Figure 8-7 OSCORE Security Processing for CoAP
+    OSCORE 从安全上下文派生 nonce 与 AAD，以 AEAD 生成密文和认证标签；接收端先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新。: OSCORE derives the nonce and AAD from the security context and uses AEAD to produce ciphertext and tag; the receiver pre-checks the replay window, then verifies and decrypts, committing the window only on success.
+    OSCORE 使用 AEAD 同时提供机密性与完整性，Partial IV 参与 nonce 构造并支撑重放检测。: OSCORE uses AEAD for both confidentiality and integrity; the Partial IV builds the nonce and supports replay detection.
+    发送方安全上下文: Sender Security Context
+    接收方安全上下文: Receiver Security Context
+    （Partial IV 预检查窗口）: (Partial IV Pre-Check Window)
+    （受限设备）: (Constrained Device)
+    发起请求: Send Request
+    携带原始载荷: With Original Payload
+    OSCORE 发送处理: OSCORE Send Processing
+    ① 构造 nonce 与 AAD: ① Build Nonce and AAD
+    ② AEAD 加密: ② AEAD Encryption
+    生成密文 + 认证标签: Ciphertext + Auth Tag
+    ③ 携带 OSCORE 选项: ③ Attach OSCORE Option
+    （Kid / Partial IV / 序列号）: (Kid / Partial IV / Sequence Number)
+    OSCORE 接收处理: OSCORE Receive Processing
+    ① 重放窗口预检查（Partial IV）: ① Replay Window Pre-Check (Partial IV)
+    ② AEAD 验证解密: ② AEAD Verify & Decrypt
+    校验认证标签: Verify Auth Tag
+    ③ 恢复 CoAP 消息: ③ Restore CoAP Message
+    仅在验证成功后提交窗口: Commit Window Only After Success
+    成功: Success
+    恢复 CoAP 消息: Restore CoAP Message
+    提交重放窗口更新: Commit Replay Window Update
+    失败: Failure
+    丢弃消息: Drop Message
+    需响应时按 RFC 8613 返回错误: Return Error per RFC 8613 If Response Needed
+    实体 / 请求方: Entity / Requester
+    发送处理: Send Processing
+    接收处理: Receive Processing
+    网络链路（UDP）: Network Link (UDP)
+    成功分支: Success Branch
+    失败分支: Failure Branch
+    图8-7 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 一次生成密文和认证标签；接收方先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新，失败则丢弃并按 RFC 8613 返回错误。: Figure 8-7 OSCORE derives the nonce and AAD from the security context and uses AEAD to produce ciphertext and tag in one pass; the receiver pre-checks the replay window, then verifies and decrypts, committing the window update only on success — on failure the message is dropped and errors are returned per RFC 8613.

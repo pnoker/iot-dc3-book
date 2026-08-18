@@ -1,0 +1,224 @@
+type: sequence
+title: 图2-12 五大中心协同流程（智能灌溉场景）
+purpose: 展示从设备注册、元数据配置、数据上报、规则触发、AI推理到指令下发的完整时序，涵盖Gateway、Auth、Manager、Data、Agentic、驱动和现场设备七个参与者。突出闭环中PointValue的传递路径和责任边界。
+audience_takeaway: 读者应看到五个中心不是独立运行的，它们通过JWT、PointValue和消息队列串联成一个完整的“感知-决策-执行”闭环。
+visual_focus: 从现场设备经Gateway进入平台域，再经Data进入Agentic域的主链路；Agentic域的橙色节点视觉高亮。
+design_level: implementation
+layout: 水平时序，参与者沿时间轴排列，交互线垂直下行。左侧加注阶段标签（注册/配置/上报/推理/控制）。
+elements:
+- 现场设备、运维人员与驱动服务
+- Gateway、Auth、Manager 与 Data 中心
+- Agentic 中心
+relationships:
+- 现场设备 → Gateway ↔ Auth：注册、验证身份并取得 JWT
+- 运维人员 → Manager → Data：配置并同步规则
+- 现场设备 → Gateway → Data：上报 PointValue 并执行规则检查
+- Data ↔ Agentic：触发推理、查询历史数据并提交控制指令
+- Agentic → Data → 驱动服务 → 现场设备：命令经消息队列和 Modbus 链路执行
+components:
+- id: device_sensor
+  label: 现场设备
+  type: edge
+  subtitle: 传感器+执行器
+  group: edge_domain
+  priority: primary
+  shape: actor
+- id: gateway
+  label: Gateway
+  type: platform
+  subtitle: 协议接入
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: auth
+  label: Auth
+  type: platform
+  subtitle: 身份认证
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: operator
+  label: 运维人员
+  type: application
+  subtitle: 配置管理
+  group: application_domain
+  priority: normal
+  shape: actor
+- id: manager
+  label: Manager
+  type: platform
+  subtitle: 元数据与规则
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: data
+  label: Data
+  type: data
+  subtitle: 数据治理
+  group: data_domain
+  priority: primary
+  shape: card
+- id: agentic
+  label: Agentic
+  type: ai
+  subtitle: 智能推理
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: driver
+  label: 驱动服务
+  type: platform
+  subtitle: 协议执行
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: device_sensor
+  to: gateway
+  label: ① 注册请求
+  style: solid
+  direction: request
+- from: gateway
+  to: auth
+  label: ② 验证身份
+  style: solid
+  direction: request
+- from: auth
+  to: gateway
+  label: ③ 返回JWT
+  style: dashed
+  direction: response
+- from: gateway
+  to: device_sensor
+  label: ④ 认证完成
+  style: dashed
+  direction: response
+- from: operator
+  to: manager
+  label: ⑤ 配置规则
+  style: solid
+  direction: request
+- from: manager
+  to: data
+  label: ⑥ 同步规则
+  style: dashed
+  direction: event
+- from: device_sensor
+  to: gateway
+  label: ⑦ 上报数据
+  style: solid
+  direction: request
+- from: gateway
+  to: data
+  label: ⑧ 转发PointValue
+  style: solid
+  direction: request
+- from: data
+  to: data
+  label: ⑨ 规则检查
+  style: solid
+  direction: feedback
+- from: data
+  to: agentic
+  label: ⑩ 条件触发
+  style: solid
+  direction: event
+- from: agentic
+  to: data
+  label: ⑪ 查历史数据
+  style: solid
+  direction: request
+- from: data
+  to: agentic
+  label: ⑫ 返回时序数据
+  style: dashed
+  direction: response
+- from: agentic
+  to: agentic
+  label: ⑬ LLM推理
+  style: solid
+  direction: feedback
+- from: agentic
+  to: data
+  label: ⑭ 下发指令
+  style: solid
+  direction: request
+- from: data
+  to: driver
+  label: ⑮ 异步转MQ
+  style: dashed
+  direction: event
+- from: driver
+  to: device_sensor
+  label: ⑯ Modbus写入
+  style: solid
+  direction: request
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型推理与编排边界
+- id: application_domain
+  label: 业务应用域
+  role: 人机交互配置边界
+callouts:
+- 第⑨步 Data 内部规则引擎触发，走最短路径。
+- 第⑬步 Agentic 内部推理，外部请求需设超时降级。
+- 第⑮步消息队列解耦，驱动先回“已接收”再等设备回执。
+visual_constraints:
+- 参与者不超过8个，每组标签用短名词。
+- 图中橙色（AI）节点不超过1个，避免全图高亮。
+- 图例放在图底部，不遮挡主体结构。
+render_notes: HTML/SVG渲染。水平时序布局，参与者沿顶部排列。交互线垂直下行，阶段标签加在左侧（注册→配置→上报→推理→控制）。线型：实线同步调用，虚线异步返回或事件。配色：Gateway灰色，Auth紫色，Manager绿色，Data蓝色，Agentic橙色，驱动青绿。底部统一图例。
+caption:
+  zh: 图2-12 展示五大中心协同完成从设备注册到智能控制的完整流程。箭头上的编号对应正文中的步骤说明。
+  en: 'Figure 2-12 The five centers working together from device registration to intelligent control. The numbers on the arrows correspond to the step-by-step description in the text.'
+labels:
+  en:
+    图2-12 五大中心协同流程（智能灌溉场景）: Figure 2-12 Five-Center Collaboration (Smart Irrigation)
+    五大中心通过 JWT、PointValue 与消息队列串联设备注册、数据上报、AI 推理与受控命令下发的完整闭环。: Linked by JWT, PointValue, and the message queue, the five centers chain device registration, data reporting, AI reasoning, and controlled command delivery into one closed loop.
+    JWT、PointValue 与消息队列串联注册、配置、推理和控制: JWT, PointValue, and the message queue chain registration, configuration, reasoning, and control
+    注册: Registration
+    配置: Configuration
+    上报: Reporting
+    推理: Reasoning
+    控制: Control
+    现场设备: Field Device
+    传感器+执行器: Sensors + Actuators
+    协议接入: Protocol Access
+    身份认证: Authentication
+    运维人员: Operator
+    配置管理: Configuration Mgmt
+    元数据与规则: Metadata & Rules
+    数据治理: Data Governance
+    智能推理: AI Reasoning
+    驱动服务: Driver Service
+    协议执行: Protocol Execution
+    ⑨ 规则检查: ⑨ Rule Check
+    ⑬ LLM 推理: ⑬ LLM Reasoning
+    ① 注册请求: ① Register Request
+    ② 验证身份: ② Verify Identity
+    ③ 返回 JWT: ③ Return JWT
+    ④ 认证完成: ④ Auth Done
+    ⑤ 配置规则: ⑤ Configure Rules
+    ⑥ 同步规则: ⑥ Sync Rules
+    ⑦ 上报数据: ⑦ Report Data
+    ⑧ 转发 PointValue: ⑧ Forward PointValue
+    ⑩ 条件触发: ⑩ Condition Met
+    ⑪ 查历史数据: ⑪ Query History
+    ⑫ 返回时序数据: ⑫ Return Time Series
+    ⑭ 下发指令: ⑭ Send Command
+    ⑮ 异步转消息队列: ⑮ Async to MQ
+    ⑯ Modbus 写入: ⑯ Modbus Write
+    同步调用: Sync Call
+    异步返回 / 事件: Async Return / Event
+    内部处理: Internal Processing
+    图2-12 五大中心协同完成设备注册、数据上报、AI 推理与受控命令下发，箭头编号对应正文步骤说明。: Figure 2-12 The five centers work together on device registration, data reporting, AI reasoning, and controlled command delivery; the arrow numbers match the steps described in the text.

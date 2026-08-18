@@ -1,0 +1,188 @@
+type: sequence
+title: 图13-3 设备DID注册与验证流程
+audience_takeaway: 验证方生成一次性nonce，身份设备签名回复；验证方结合最新DID状态校验并消费nonce，防止重放。
+purpose: 展示从设备出厂、注册到被另一设备验证的完整身份生命周期。
+visual_focus: 设备2生成nonce→设备1签名回复→查询最新DID状态→校验并消费nonce的主链路。
+design_level: implementation
+layout: 泳道从左至右依次为：设备1（身份主体）、智能合约（DeviceDIDRegistry，区块链上）、设备2（验证方）。
+elements:
+- 设备1内部：安全飞地生成ECDSA密钥对（私钥不可导出）。
+- 设备1内部：根据公钥哈希构造DID字符串（例如 did:example:0xabcd...）。
+- 设备1→合约：发起 registerDevice(did, publicKeyHash) 交易，携带设备1以太坊账户签名。
+- '合约内部：验证签名，写入状态（owner, publicKeyHash, timestamp, isActive: true）。'
+- 合约→区块链：日志 DIDRegistered 写入区块。
+- 设备2内部：生成并登记一次性nonce，作为本次握手的随机挑战。
+- 设备2→设备1：发送nonce挑战。
+- 设备1内部：使用安全飞地内私钥对nonce签名。
+- 设备1→设备2：回复DID与nonce签名。
+- 设备2→合约：静态调用 didDocs[didHash] 查询最新DID文档。
+- 合约→设备2：返回DID文档（owner, publicKeyHash, isActive）。
+- 设备2内部：校验nonce签名与isActive，并原子消费nonce；已使用、过期或未知nonce均拒绝。
+- 设备2→设备1：返回验证结果（通过/失败）。
+relationships:
+- 验证方先生成nonce并向设备1发起挑战，设备1只对该nonce签名回复。
+- 验证方收到签名后查询最新DID状态，再校验签名并消费nonce，防止旧签名被重放。
+- DID注册和状态查询使用虚线箭头，其余挑战、签名与结果通信使用实线箭头。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 设备1内部
+  type: edge
+  subtitle: 安全飞地生成ECDSA密钥对（私钥不可导出）
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 设备1内部
+  type: edge
+  subtitle: 根据公钥哈希构造DID字符串（例如 did:examp…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 设备1→合约
+  type: edge
+  subtitle: 发起 registerDevice(did, publ…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 合约内部
+  type: platform
+  subtitle: 验证签名，写入状态（owner, publicKeyH…
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c5
+  label: 合约→区块链
+  type: platform
+  subtitle: 日志 DIDRegistered 写入区块
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c6
+  label: 设备1→设备2
+  type: edge
+  subtitle: 发送握手消息（包含DID + 随机挑战 + 对挑战的签…
+  group: edge_domain
+  priority: normal
+  shape: bus
+- id: c7
+  label: 设备2→合约
+  type: edge
+  subtitle: 静态调用 didDocs[didHash] 查询DID…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c8
+  label: 合约→设备2
+  type: edge
+  subtitle: 返回DID文档（owner, publicKeyHas…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c9
+  label: 设备2内部
+  type: edge
+  subtitle: 检查 isActive
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c10
+  label: 设备2→设备1
+  type: edge
+  subtitle: 返回验证结果（通过/失败）
+  group: edge_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c4
+  to: c5
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c5
+  to: c6
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c6
+  to: c7
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c7
+  to: c8
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c8
+  to: c9
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+- from: c9
+  to: c10
+  label: 步骤3、5、7为链上操作（虚线箭头…
+  style: dashed
+  direction: left-to-right
+callouts:
+- DID注册和状态查询为链上操作（虚线箭头），挑战、签名回复与结果为链下操作（实线箭头）
+legend:
+- 实线箭头：链下通信，速度快，无gas消耗。
+- 虚线箭头：链上交易/查询，有gas成本和区块确认延迟。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 标准时序图布局，参与者列于顶部，生命线垂直向下。按步骤编号+描述标注箭头。可选步骤10处增加回退分支（验证失败时显示握手终止）。
+caption:
+  zh: 图13-3 展示设备从硬件密钥生成、DID注册到挑战验证的完整身份生命周期；验证方以一次性nonce发起挑战，收到签名后查询最新DID状态并消费nonce，从而阻断重放。
+  en: 'Figure 13-3 The complete device identity lifecycle, from hardware key generation and DID registration to challenge-based verification. The verifier issues a one-time nonce challenge, then queries the latest DID state upon receiving the signature and consumes the nonce, thereby blocking replay.'
+labels:
+  en:
+    图13-3 设备DID注册与验证流程: Figure 13-3 Device DID Registration & Verification
+    设备注册 DID 与公钥哈希后，验证方结合一次性 nonce、签名和最新链上状态完成身份验证。: Device registers DID + key hash; verifier checks one-time nonce, signature and on-chain state.
+    验证方发起一次性挑战，签名回复须结合最新 DID 状态验证: One-time challenge; reply verified against latest DID state
+    设备 1 · 身份主体: Device 1 · Identity Subject
+    安全飞地 · 私钥不可导出: Secure enclave · non-exportable private key
+    智能合约 · 区块链: Smart Contract · Blockchain
+    设备 2 · 验证方: Device 2 · Verifier
+    生成并消费一次性 nonce: Generates & consumes one-time nonce
+    1 生成 ECDSA 密钥对: 1 Generate ECDSA key pair
+    2 公钥哈希 → DID: 2 Public-key hash → DID
+    3 registerDevice(did, publicKeyHash) + 账户签名: 3 registerDevice(did, publicKeyHash) + account signature
+    4 验证签名；写入 owner/hash/timestamp/isActive: 4 Verify signature; store owner/hash/timestamp/isActive
+    5 记录 DIDRegistered 日志: 5 Emit DIDRegistered log
+    注册阶段: Registration Phase
+    6 生成并登记一次性 nonce: 6 Generate & register one-time nonce
+    7 nonce 挑战 → 设备 1: 7 Nonce challenge → Device 1
+    8 用设备私钥签名 nonce: 8 Sign nonce with device private key
+    9 DID + nonce 签名 → 设备 2: 9 DID + nonce signature → Device 2
+    10 查询最新 didDocs[didHash]: 10 Query latest didDocs[didHash]
+    11 返回 owner / publicKeyHash / isActive: 11 Return owner / publicKeyHash / isActive
+    12 校验签名与 isActive；消费 nonce，拒绝重放: 12 Verify signature & isActive; consume nonce, reject replay
+    13 验证通过 / 失败: 13 Verification pass / fail
+    链下操作：密钥生成、nonce 生成与签名: 'Off-chain: key generation, nonce creation & signing'
+    链上操作 / 查询：注册交易、状态写入、DID 文档查询: 'On-chain ops / queries: registration tx, state writes, DID doc lookup'
+    图13-3 设备注册 DID 与公钥哈希后，验证方结合一次性 nonce、签名和最新链上状态完成身份验证。: Figure 13-3 Device registers DID + key hash; verifier uses one-time nonce, signature and on-chain state.

@@ -18,7 +18,7 @@
       <p class="section-label">{{ label }}</p>
       <h1>
         {% if title_sub %}
-        <span>{{ title_main }}：</span>
+        <span>{{ title_main }}{{ title_sep|default("：") }}</span>
         <span class="title-sub">{{ title_sub }}</span>
         {% else %}
         <span>{{ title }}</span>

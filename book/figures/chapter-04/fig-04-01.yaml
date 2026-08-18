@@ -1,0 +1,91 @@
+type: topology
+title: 图4-1 NB-IoT 网络架构示意
+audience_takeaway: 读者应理解NB-IoT复用运营商LTE蜂窝网络,终端经Uu空口、S1/SGi接口直达核心网与平台,无需自建网关。
+purpose: 展示一个传感器数据从终端到应用的完整穿越路径，并区分各层角色在 3GPP 体系中的职责，帮助读者理解 NB-IoT 的端到端通信模型。
+visual_focus: 从上行数据流：实线向上箭头从终端层到终点的主链路。
+design_level: logical
+layout: 自上而下垂直分列，包含五层结构，核心网部分内部再拆解为三个功能实体。底部为终端，顶部为应用，中间层按数据流方向依次连接。
+elements:
+- 应用层：标注为‘垂直行业应用（抄表、市政、环境）’，采用浅灰蓝色图标，内容简化为人物与仪表盘图形。
+- IoT 平台层：标注为‘IoT 平台（设备管理、数据汇聚、API 暴露）’，使用齿轮+云朵的简洁图标。
+- 核心网层：包含三个内部圆角矩形——MME（移动性管理实体）、SGW（服务网关）、PGW（分组数据网网关）。
+- 网络接入层：一个简化的基站铁塔图标，标注‘eNodeB（LTE 基站），200 kHz 带宽’。
+- 终端层：三个简化设备图标——智能水表、智能井盖、小型气象站，统一标注‘NB-IoT 模组’。
+relationships:
+- 上行数据流：实线向上箭头从终端层→接入层→核心网→IoT 平台→应用层，箭头旁标注‘上行数据’。
+- 下行控制流：虚线向下箭头从应用层贯穿至终端层，箭头旁标注‘下行指令’。
+- 接口标注：终端与基站间标‘Uu 空口’，基站与核心网间标‘S1 接口’，核心网与 IoT 平台间标‘SGi 接口’。
+regions:
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
+components:
+- id: r1
+  label: 上行数据流：实线向上箭头从终端层
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: primary
+  shape: database
+- id: r2
+  label: 接入层→核心网→IoT 平台→应用…
+  type: application
+  subtitle: ''
+  group: application_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: iot
+  label: 上行数据流：实线向上箭头从终端层→…
+  style: solid
+  direction: request
+callouts:
+- 上行数据流：实线向上箭头从终端层→接入层→核心网→IoT 平台→应用层，箭头旁标注‘上行数据’
+- 下行控制流：虚线向下箭头从应用层贯穿至终端层，箭头旁标注‘下行指令’
+- 接口标注：终端与基站间标‘Uu 空口’，基站与核心网间标‘S1 接口’，核心网与 IoT 平台间标‘SGi 接口’
+legend:
+- 浅灰色画布背景，各层用由深到浅蓝色区分：终端层最深，应用层最浅。
+- 实线箭头=上行数据流，虚线箭头=下行指令流。
+- 接口标签使用加粗字体置于箭头旁。
+- 右上角加注：‘3GPP定义的NB-IoT空口仅支持频分双工（FDD）半双工类型’
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG 渲染，采用浅色背景圆角矩形图标，箭头带文字标签；所有图标保持等宽（约 30px 宽），颜色使用 Web 安全色，确保印刷清晰。
+caption:
+  zh: 图4-1 NB-IoT 从终端到应用的四层网络架构，展示上行数据与下行控制的完整路径，并标注关键 3GPP 接口。
+  en: 'Figure 4-1 The four-layer NB-IoT network architecture from devices to applications, showing the complete uplink data and downlink control paths with key 3GPP interfaces marked.'
+labels:
+  en:
+    图4-1 NB-IoT 网络架构示意: 'Figure 4-1 NB-IoT Network Architecture'
+    终端经 Uu 空口接入 eNodeB，经 S1 接口进入核心网，经 SGi 接口直达 IoT 平台与应用；企业侧无需自建现场网关。: 'Devices reach eNodeB over the Uu air interface, enter the core network via S1, and reach the IoT platform and applications via SGi — no on-site gateway is needed.'
+    终端直接接入运营商蜂窝网络，端到端链路不需要企业自建现场网关: 'Devices attach directly to the operator cellular network; no enterprise-built on-site gateway required'
+    应用层: 'Application Layer'
+    垂直行业应用: 'Vertical Applications'
+    抄表 · 市政 · 环境监测: 'Metering · Municipal · Environmental'
+    IoT 平台层: 'IoT Platform Layer'
+    IoT 平台: 'IoT Platform'
+    设备管理 · 数据汇聚 · API 暴露: 'Device Mgmt · Data Aggregation · APIs'
+    SGi 接口: 'SGi Interface'
+    核心网层: 'Core Network Layer'
+    移动性管理: 'Mobility Mgmt'
+    服务网关: 'Serving GW'
+    分组数据网网关: 'PDN GW'
+    S1 接口: 'S1 Interface'
+    网络接入层: 'Network Access Layer'
+    eNodeB（LTE 基站）: 'eNodeB (LTE Base Station)'
+    NB-IoT 200 kHz 载波: 'NB-IoT 200 kHz Carrier'
+    Uu 空口: 'Uu Air Interface'
+    终端层: 'Device Layer'
+    智能水表: 'Smart Water Meter'
+    NB-IoT 模组: 'NB-IoT Module'
+    智能井盖: 'Smart Manhole Cover'
+    小型气象站: 'Mini Weather Station'
+    上行数据: 'Uplink Data'
+    下行指令: 'Downlink Command'
+    图4-1 NB-IoT 复用运营商 LTE 基站与核心网，企业侧无需建设现场蜂窝网关。: 'Figure 4-1 NB-IoT reuses operator LTE base stations and the core network; no on-site cellular gateway is needed on the enterprise side.'

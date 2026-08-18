@@ -1,0 +1,40 @@
+type: architecture
+title: 图1-3 工业软件的结构性局限：三条裂缝
+audience_takeaway: 读者应理解 ISA-95 金字塔的三条架构裂缝：数据被层级隔断靠人联动、决策规则写死环境一变就过时、系统封闭外部智能难接入，它们共同驱动了向物联网平台的跃迁。
+purpose: 在 ISA-95 金字塔上标注三条结构性裂缝，说明其无法靠升级版本解决，为 1.1.4 物联网平台的架构跃迁铺垫。
+visual_focus: 金字塔上的三道裂缝与右侧三条详解卡片的对应。
+design_level: logical
+layout: 左侧金字塔轮廓 + 三条裂缝标注（数据隔断/规则写死/封闭孤岛），右侧三卡片详解，底部引出跃迁。
+elements:
+- 裂缝1 数据隔断：振动数据在 SCADA、维护记录在 MES、成本在 ERP，三者无自动通路，跨层联动靠人
+- 裂缝2 规则写死：PLC 梯形图、SCADA 告警、MES 排程在部署时写死，工况变化需重新编程
+- 裂缝3 封闭孤岛：私有网络/协议/格式，外部 AI 需为每个品牌 PLC 写适配器
+relationships:
+- 三条裂缝均源自 ISA-95 金字塔的信息架构本身，无法靠升级版本解决
+- 共同驱动"数据归一·能力开放·闭环自动化"的物联网平台跃迁
+render_notes: 左侧金字塔轮廓 + 三道裂缝标注（红/橙/紫），右侧三卡片详解，底部引出跃迁。完整 HTML 见 figures/chapter-01/fig-01-03.html。
+caption:
+  zh: 图1-3 工业软件的结构性局限：三条裂缝。数据被层级隔断、规则写死在代码里、系统封闭为孤岛，共同驱动了从工业软件到物联网平台的架构跃迁。
+  en: 'Figure 1-3 The structural limits of industrial software: three cracks. Data partitioned by levels with human-mediated linkage, rules hard-coded against a changing world, closed systems barring external intelligence — together these drive the leap toward the IoT platform.'
+labels:
+  en:
+    图1-3 工业软件的结构性局限：三条裂缝: 'Figure 1-3 Structural Limits: Three Cracks'
+    ISA-95 金字塔的三条结构性裂缝: Three structural cracks in the ISA-95 pyramid
+    金字塔上的三道裂缝与详解卡片一一对应: Each crack on the pyramid maps to a detail card
+    ISA-95 金字塔: ISA-95 Pyramid
+    裂缝 1 数据隔断: Crack 1 Data Silos
+    裂缝 2 规则写死: Crack 2 Hard-Coded Rules
+    裂缝 3 封闭孤岛: Crack 3 Closed Islands
+    裂缝 1 · 数据被层级隔断: Crack 1 · Data partitioned by levels
+    振动数据在 SCADA、维护记录在 MES、备件成本在 ERP——: Vibration data in SCADA, maintenance in MES, costs in ERP —
+    三者无自动通路，跨层联动全靠人工对齐。: No automatic path among them; humans align the levels.
+    裂缝 2 · 规则写死在代码里: Crack 2 · Rules hard-coded
+    PLC 梯形图、SCADA 告警、MES 排程在部署时写死，: PLC ladder logic, SCADA alarms, MES scheduling are fixed at deployment;
+    工况一变、设备老化，就需要有人重新编程。: when conditions change or equipment ages, reprogramming is manual.
+    裂缝 3 · 系统封闭为孤岛: Crack 3 · Closed islands
+    私有网络 / 协议 / 格式，外部 AI 需为每个品牌 PLC 写适配器、: 'Private networks / protocols / formats: external AI needs an adapter per PLC brand,'
+    为每种数据库写 SQL——巴别塔式的语义翻译工程。: SQL per database — a Tower-of-Babel translation project.
+    三条裂缝均源自 ISA-95 信息架构本身，无法靠升级版本解决: All three cracks come from the ISA-95 architecture itself — no upgrade fixes them
+    共同驱动「数据归一 · 能力开放 · 闭环自动化」的物联网平台跃迁: Together they drive the leap to unified data · open capabilities · closed-loop automation
+    图1-3 工业软件的结构性局限：三条裂缝。数据被层级隔断、规则写死在代码里、系统封闭为孤岛，: 'Figure 1-3 The structural limits of industrial software: three cracks. Data partitioned by levels, rules hard-coded in software, systems closed as islands —'
+    共同驱动了从工业软件到物联网平台的架构跃迁。: together they drive the architectural leap from industrial software to the IoT platform.

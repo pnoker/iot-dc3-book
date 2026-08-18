@@ -1,0 +1,97 @@
+type: architecture
+title: 图3-8 振动传感器自适应采样状态机（示意）
+purpose: 展示振动传感器在三种工作模式下的切换逻辑，解释如何通过状态转移平衡功耗与异常检测能力。
+audience_takeaway: 振动传感器通过预测误差连续放大驱动状态切换，从稳态低功耗模式逐步跃迁到高速上传模式，从而在电池受限条件下捕捉早期故障窗口。
+visual_focus: 从稳态经加速到上传的主转发路径，以及上传完复位回稳态的回环。
+design_level: logical
+layout: 三个圆角矩形状态框横向排列，箭头标注转移条件，底部图例说明阈值含义。
+elements:
+- 稳态低功率状态
+- 加速监听状态
+- 原始波形上传状态
+relationships:
+- 稳态低功率 → 加速监听：预测误差连续超过示意倍数阈值后提高采样频率
+- 加速监听 → 数据上传：残差连续高于阈值后上传全速波形
+- 数据上传 → 稳态低功率：上传完成后复位并恢复长间隔采样
+regions:
+- id: sensor_domain
+  label: 设备侧感知域
+  role: 现场传感器节点的状态管理边界
+components:
+- id: steady_state
+  label: 稳态低功率
+  type: edge
+  subtitle: 长间隔采样+模型预测
+  group: sensor_domain
+  priority: primary
+  shape: card
+- id: fast_monitor
+  label: 加速监听
+  type: edge
+  subtitle: 短间隔采样+残差检查
+  group: sensor_domain
+  priority: normal
+  shape: card
+- id: upload_state
+  label: 数据上传
+  type: edge
+  subtitle: 全速原始波形
+  group: sensor_domain
+  priority: normal
+  shape: card
+connections:
+- from: steady_state
+  to: fast_monitor
+  label: 连续多次超过示意倍数阈值
+  style: solid
+  direction: request
+- from: fast_monitor
+  to: upload_state
+  label: 连续多次高于阈值
+  style: solid
+  direction: request
+- from: upload_state
+  to: steady_state
+  label: 上传完成复位
+  style: dashed
+  direction: event
+callouts:
+- 基线阈值需根据离线振动数据标定，正常工况最大残差倍数范围为示意值。
+- 稳态下射频模块完全关闭，只有MCU以低时钟运行模型预测，功耗降至微瓦级示意值。
+- 加速监听阶段只计算不发射，能耗仍远低于全速上传模式。
+- 稳态内循环：残差小于阈值则继续保持低功率采样（图中未画出自环箭头）。
+legend:
+- 青绿色：设备侧状态节点
+- 实线箭头：条件驱动转移；虚线箭头：复位事件
+- 阈值为示意值，实际需实测标定
+visual_constraints:
+- 最多三个主状态节点，节点标签8汉字以内，副标题用于细化解释。
+- 箭头label不超过14汉字。
+- 图例放在图底部，与主体分离。
+render_notes: 'SVG渲染，浅色背景。状态框使用圆角矩形，边框2px，底色#E3F2FD、#1565C0。箭头黑色实线1.5px，label宋体11px #666。复位箭头虚线。底部图例宋体10px。按出版级图注输出。'
+caption:
+  zh: 图3-8 振动传感器自适应采样状态机（示意）。状态转移由模型预测误差的连续放大驱动，混合了事件驱动与变化率策略。
+  en: Figure 3-8 Adaptive sampling state machine of a vibration sensor (illustrative). Transitions are driven by consecutive growth of the model prediction error, blending event-driven and rate-of-change strategies.
+labels:
+  en:
+    图3-8 振动传感器自适应采样状态机（示意）: Figure 3-8 Vibration Sensor Adaptive Sampling State Machine (Illustrative)
+    预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态。: As prediction residuals keep rising, sampling and communication cost step up level by level; once the anomalous waveform is uploaded, the sensor returns to low power.
+    预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态: As prediction residuals keep rising, sampling and communication cost step up level by level; once the anomalous waveform is uploaded, the sensor returns to low power
+    设备侧感知域 · 现场传感器节点的状态管理边界: Device-side sensing domain · state management boundary of the field sensor node
+    稳态低功率: Steady Low Power
+    长间隔采样 · 频段能量计算: Long-interval sampling · band energy
+    模型预测 · 射频关闭: Model prediction · radio off
+    最低功耗: Lowest power
+    加速监听: Accelerated Listening
+    短间隔高频采样: Short-interval fast sampling
+    持续检查多轮残差: Check residuals over rounds
+    暂不上传: No upload yet
+    数据上传: Data Upload
+    确认异常 · 唤醒射频: Anomaly confirmed · radio wakes
+    上传累积原始波形: Upload buffered raw waveform
+    最高功耗: Highest power
+    预测误差连续放大: Prediction error keeps growing
+    多轮残差持续越阈: Residuals stay above threshold
+    上传完成 / 复位: Upload done / reset
+    阈值说明：图中转移条件均为示意；基线阈值应依据正常工况离线数据与现场噪声重新标定。: 'Thresholds: transitions shown are illustrative; baseline thresholds must be recalibrated from offline data of normal conditions and on-site noise.'
+    图3-8 状态机以逐级升高的能耗换取更完整的异常窗口，确认异常后才开启射频上传。: Figure 3-8 The state machine trades stepwise higher energy for a fuller anomaly window, and only turns on the radio to upload once an anomaly is confirmed.

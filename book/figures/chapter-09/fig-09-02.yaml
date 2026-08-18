@@ -1,0 +1,147 @@
+type: sequence
+title: 图9-2 MQTT会话连接与心跳交互示意
+purpose: 展示客户端与Broker之间会话建立、心跳保活、断线检测、遗嘱执行、重连与会话恢复的完整流程。
+audience_takeaway: 理解会话持久化、心跳超时判定以及重连策略如何配合恢复已缓存的消息。
+visual_focus: 从Client重连到Broker推送离线缓存消息的主链路。
+design_level: implementation
+layout: 自上而下时间轴，左侧Client生命线，右侧Broker生命线，底部示意重连恢复。
+elements:
+- MQTT Client sensor01
+- MQTT Broker
+- 遗嘱消息订阅者
+relationships:
+- Client → Broker：以持久会话参数连接、订阅、发布并发送心跳
+- Broker → Client：确认连接、订阅、发布和心跳请求
+- Broker → Subscriber：心跳超时后代发遗嘱消息
+- Client → Broker → Client：以相同 Client ID 重连并恢复会话与缓存消息
+regions:
+- id: client_domain
+  label: 客户端域
+  role: 发起连接与上报数据
+- id: broker_domain
+  label: Broker域
+  role: 路由消息、管理会话与心跳
+components:
+- id: client
+  label: Client (sensor01)
+  type: edge
+  subtitle: MQTT客户端设备
+  group: client_domain
+  priority: primary
+  shape: actor
+- id: broker
+  label: Broker
+  type: platform
+  subtitle: MQTT代理服务器
+  group: broker_domain
+  priority: primary
+  shape: card
+- id: subscriber
+  label: Subscriber
+  type: external
+  subtitle: 遗嘱消息接收者
+  group: ''
+  priority: normal
+  shape: actor
+connections:
+- from: client
+  to: broker
+  label: CONNECT (CleanSess=false, KA=60s)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: CONNACK (SessionPresent=false)
+  style: solid
+  direction: response
+- from: client
+  to: broker
+  label: SUBSCRIBE (temp/room1)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: SUBACK
+  style: solid
+  direction: response
+- from: client
+  to: broker
+  label: PUBLISH (25.3°C, QoS1)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: PUBACK
+  style: solid
+  direction: response
+- from: client
+  to: broker
+  label: PINGREQ (每60s)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: PINGRESP
+  style: solid
+  direction: response
+- from: broker
+  to: broker
+  label: 1.5倍KA超时 (90s)
+  style: dashed
+  direction: event
+- from: broker
+  to: subscriber
+  label: PUBLISH (Will Message)
+  style: dashed
+  direction: event
+- from: client
+  to: broker
+  label: CONNECT (重连, 相同ClientID)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: CONNACK (SessionPresent=true)
+  style: solid
+  direction: response
+- from: broker
+  to: client
+  label: 推送缓存消息 (QoS1/2)
+  style: solid
+  direction: request
+callouts:
+- 心跳超时（90s）不销毁会话。只要Session未过期，重连即可恢复。
+- 连接恢复后，Broker自动推送缓存消息，客户端无需重新订阅。
+legend:
+- 青绿色：客户端；蓝色：Broker；灰色：外部订阅者
+- 实线箭头：网络消息；虚线箭头：内部事件或超时自触发
+- 绿色箭头：恢复会话后的缓存消息推送路径
+visual_constraints:
+- 最多5个主节点，节点标签用短英文。
+- 超时和遗嘱广播用虚线。
+- 恢复会话后的消息推送用绿色高亮。
+- 图例放在图底部。
+render_notes: HTML/SVG渲染，浅色背景。Client用青绿色框，Broker用蓝色框。消息箭头带短标签。超时事件用broker自指向虚线节点。恢复会话后的推送箭头用绿色。底部图例。
+caption:
+  zh: 图9-2 MQTT会话连接与心跳交互示意。Client（sensor01）向Broker发起持久会话连接，完成订阅并与Broker维持60秒间隔的心跳。网络中断后Broker在90秒（1.5倍KA）超时后判定Client离线，执行遗嘱消息。Client通过指数退避策略重连，Broker识别出相同ClientID并恢复会话，随后推送断开期间缓存的消息。
+  en: Figure 9-2 MQTT session connection and heartbeat interaction. The Client (sensor01) opens a persistent session with the Broker, subscribes, and keeps a 60-second heartbeat. After the network drops, the Broker marks the Client offline at the 90 s (1.5×KA) timeout and publishes its Last Will. The Client reconnects with exponential backoff; the Broker recognizes the same Client ID, restores the session, and pushes the messages buffered during the outage.
+labels:
+  en:
+    图9-2 MQTT会话连接与心跳交互示意: Figure 9-2 MQTT Session, Connection and Heartbeat
+    持久会话建立、心跳保活、超时触发遗嘱、指数退避重连与缓存消息恢复。: Persistent session setup, heartbeat keep-alive, timeout-triggered Last Will, exponential-backoff reconnect, and buffered message recovery.
+    心跳超时清理连接但不必销毁会话；相同 Client ID 重连后可恢复订阅与离线缓存消息: Heartbeat timeout clears the connection but need not destroy the session; reconnecting with the same Client ID restores subscriptions and offline buffered messages
+    PINGREQ · 最长 60 s 无其他控制报文时发送: PINGREQ · sent when no control message for 60 s
+    CONNECT · 重连 · 相同 Client ID: CONNECT · reconnect · same Client ID
+    推送断线期间缓存消息 · QoS 1/2: Push buffered messages · QoS 1/2
+    1.5×KA 超时 (90 s) 断开连接: 1.5×KA timeout (90 s) disconnects
+    指数退避 + 随机抖动: Exponential backoff + jitter
+    建立持久会话: Persistent session setup
+    心跳与断线检测: Heartbeat & outage detection
+    指数退避重连与恢复: Backoff reconnect & recovery
+    MQTT 客户端设备: MQTT client device
+    代理服务器 · 会话管理: Broker · session management
+    遗嘱消息接收者: Last Will receiver
+    实线：网络消息: 'Solid: network messages'
+    虚线：超时 / 本地策略: 'Dashed: timeout / local policy'
+    绿色：会话恢复后的缓存推送: 'Green: buffered push after session restore'
+    图9-2 Broker 在心跳超时后执行遗嘱；持久会话未过期时，重连可恢复订阅并接收缓存消息。: Figure 9-2 The Broker executes the Last Will after a heartbeat timeout; while the persistent session has not expired, reconnecting restores subscriptions and delivers buffered messages.

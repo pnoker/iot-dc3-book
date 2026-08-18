@@ -1,0 +1,56 @@
+type: architecture
+title: 图3-13 多源融合定位：单一技术边界与 AGV 融合
+audience_takeaway: 读者应理解单一定位技术各有边界，AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为推算源，卡尔曼滤波按观测噪声 R 加权。
+purpose: 展示单一定位技术边界与 AGV 多源融合方案
+visual_focus: 单一技术边界与 AGV 三源融合。
+design_level: architecture
+layout: 上半单一技术边界卡片，下半 AGV 三源融合，底部卡尔曼滤波
+elements:
+- 单一技术边界：GPS 室内失锁、UWB 遮挡恶化、Wi-Fi 指纹需重采、BLE 电池有限、IMU 漂移累积
+- AGV 三源：UWB 主源（10Hz）、BLE 校正（事件型观测）、IMU+编码器连续推算
+- 卡尔曼滤波：观测噪声 R 控制权重，UWB R=0.5、BLE R=3.0
+relationships:
+- 三源互补，融合输出带不确定性的位置；R 越小观测权重越高
+render_notes: HTML/SVG 渲染，单一技术边界 + AGV 三源融合 + 卡尔曼滤波，蓝绿橙分层。
+caption:
+  zh: 图3-13 单一定位技术各有边界；AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为连续推算源，卡尔曼滤波按观测噪声 R 加权，输出带不确定性的位置供上层安全决策。
+  en: Figure 3-13 Every single positioning technology has its limits; the AGV uses UWB as primary source, BLE as correction source, and IMU + wheel encoders for continuous dead reckoning, with a Kalman filter weighting observations by noise R and outputting positions with uncertainty for upper-layer safety decisions.
+labels:
+  en:
+    图3-13 多源融合定位：单一技术边界与 AGV 融合: 'Figure 3-13 Multi-Source Fusion Positioning: Single-Technology Limits & AGV Fusion'
+    单一定位技术各有边界，AGV 用 UWB 主源、BLE 校正、IMU 推算融合，卡尔曼滤波按观测噪声加权。: Each positioning technology has limits; the AGV fuses UWB primary, BLE correction, and IMU dead reckoning, weighted by observation noise in the Kalman filter.
+    目标不是单点精度纪录，而是任意时刻至少一条可信源在工作: The goal is not record-setting point accuracy, but at least one trusted source working at all times
+    单一技术的工程边界: Engineering Limits of Single Technologies
+    室外米级，室内失锁: Meter-level outdoors, lost indoors
+    高楼峡谷多径误差数十米: 'Urban-canyon multipath: tens of meters'
+    视距厘米级，室内首选: Centimeter-level with LOS; indoor first choice
+    金属遮挡 NLOS 误差恶化: Metal blockage worsens NLOS error
+    Wi-Fi 指纹: Wi-Fi Fingerprinting
+    成本低、覆盖广: Low cost, wide coverage
+    环境变化后需重采指纹库: The fingerprint map must be recollected after changes
+    BLE 信标: BLE Beacon
+    低功耗低成本，区域级: Low power and cost, zone-level
+    电池寿命有限，维护被低估: Battery life is finite; maintenance is underestimated
+    IMU+编码器: IMU + Encoders
+    短时相对精度好: Good short-term relative accuracy
+    零偏漂移随时间累积: Bias drift accumulates over time
+    AGV 仓库多源融合：主源 + 校正 + 推算: 'AGV Warehouse Fusion: Primary + Correction + Dead Reckoning'
+    主定位源：UWB（约 10 Hz）: 'Primary source: UWB (~10 Hz)'
+    屋顶锚点覆盖主干通道: Roof anchors cover main aisles
+    卡尔曼滤波用 UWB 观测校正: Kalman filter corrects with UWB observations
+    遮挡时自动增大观测噪声协方差、降权重: Under blockage, inflates observation covariance and lowers weight
+    正常模式主力: Workhorse in normal mode
+    辅助校正源：BLE 信标: 'Auxiliary correction: BLE beacons'
+    货架底部与地面，经过时触发事件: At rack bases and on the floor; triggers events when passed
+    位置强制校正至信标坐标: Position snap-corrected to beacon coordinates
+    观测噪声标准差设为 3 m，滤波加权融合: Observation noise SD set to 3 m, fused by filter weighting
+    每经过一个信标大幅压缩累计漂移: Each beacon pass greatly shrinks accumulated drift
+    连续推算源：IMU + 轮式编码器: 'Continuous dead reckoning: IMU + wheel encoders'
+    维持短时相对精度: Maintains short-term relative accuracy
+    弥补 UWB 遮挡间隙: Fills UWB blockage gaps
+    无观测时纯推算，不确定性持续增长: Pure dead reckoning without observations; uncertainty keeps growing
+    UWB 遮挡时切换为主: Becomes primary when UWB is blocked
+    卡尔曼滤波：观测噪声 R 控制权重: 'Kalman Filter: Observation Noise R Controls Weight'
+    R 越小，卡尔曼增益 K 越大，观测权重越高；UWB 的 R=0.5，BLE 的 R=3.0，BLE 仅在不可用时起压漂移作用: Smaller R gives larger Kalman gain K and higher observation weight; UWB has R=0.5, BLE has R=3.0 — BLE only suppresses drift when UWB is unavailable
+    时间戳对齐（硬件时间戳 + 线性插值）· 残差超 3 倍标准差则丢弃观测 · 4×4 矩阵求逆在 M4 上 50~100 Hz 稳定运行: Timestamp alignment (hardware timestamps + linear interpolation) · observations discarded when residuals exceed 3σ · 4×4 matrix inversion runs steadily at 50–100 Hz on an M4
+    图3-13 单一定位技术各有边界；AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为连续推算源，卡尔曼滤波按观测噪声 R 加权，输出带不确定性的位置供上层安全决策。: Figure 3-13 Every single positioning technology has its limits; the AGV uses UWB as primary source, BLE as correction source, and IMU + wheel encoders for continuous dead reckoning, with a Kalman filter weighting observations by noise R and outputting positions with uncertainty for upper-layer safety decisions.

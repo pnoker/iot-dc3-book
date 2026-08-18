@@ -1,0 +1,143 @@
+type: flowchart
+title: 图8-4 安全启动多层信任链流程
+audience_takeaway: 读者应理解信任链根植于不可篡改的 BootROM（内含 OTP 公钥指纹），每一级验证下一级镜像，任一级失败即停机或回退恢复模式。
+purpose: 展示从芯片上电到 Linux 内核启动的逐级验证过程，强调当前可信级验证下一级镜像后才移交执行。
+visual_focus: 从BootROM 验证 SBL 签名到通过则挂载，否则拒绝启动的主链路。
+design_level: implementation
+layout: 自上而下链式流程，起点：上电复位，终点：正常启动或拒绝启动。
+elements:
+- BootROM（固化只读代码，含OTP公钥指纹）
+- 第一阶段 Bootloader (SBL)
+- 第二阶段 Bootloader (U-Boot)
+- 操作系统内核镜像
+- 根文件系统
+relationships:
+- BootROM 验证 SBL 签名 → 通过则加载，否则停机
+- SBL 验证 第二阶段 Bootloader 签名 → 通过则加载，否则回退恢复模式
+- 第二阶段 Bootloader 验证 内核镜像签名 → 通过则解压执行，否则停机
+- 内核镜像 校验 根文件系统完整性（dm-verity） → 通过则挂载，否则拒绝启动
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: BootROM 验证 SBL 签名
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 通过则加载，否则停机
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: SBL 验证 第二阶段 Bootl…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 通过则加载，否则回退恢复模式
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 第二阶段 Bootloader 验…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: 通过则解压执行，否则停机
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: 内核镜像 校验 根文件系统完整性（…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r8
+  label: 通过则挂载，否则拒绝启动
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: BootROM 验证 SBL 签名…
+  style: solid
+  direction: request
+- from: sbl_bootloade
+  to: r4
+  label: SBL 验证 第二阶段 Bootl…
+  style: solid
+  direction: request
+- from: bootloader
+  to: r6
+  label: 第二阶段 Bootloader 验…
+  style: solid
+  direction: request
+- from: dm-v
+  to: r8
+  label: 内核镜像 校验 根文件系统完整性（…
+  style: solid
+  direction: request
+callouts:
+- BootROM 验证 SBL 签名 → 通过则加载，否则停机
+- SBL 验证 第二阶段 Bootloader 签名 → 通过则加载，否则回退恢复模式
+- 第二阶段 Bootloader 验证 内核镜像签名 → 通过则解压执行，否则停机
+legend:
+- 绿色实线：验证通过路径
+- 红色虚线：验证失败路径（停机或恢复模式）
+- BootROM 标注为 Root of Trust (RoT)，不可修改
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: HTML5/SVG 渲染，使用圆角矩形节点和带文字标签的箭头。绿色实线表示成功路径，红色虚线表示失败路径。可附加注释说明双副本 A/B 分区回滚示意。
+caption:
+  zh: 图8-4 安全启动的多层信任链流程，展示从 BootROM 到文件系统的逐级签名验证关系。
+  en: Figure 8-4 The multi-level chain of trust in secure boot, showing signature verification cascading level by level from BootROM to the file system.
+labels:
+  en:
+    图8-4 安全启动多层信任链流程: Figure 8-4 Secure Boot Chain of Trust
+    信任链根植于不可篡改的 BootROM（内含 OTP 公钥指纹），每一级验证下一级镜像，任一级失败即停机或回退恢复模式。: The chain of trust is rooted in the immutable BootROM (with an OTP public key fingerprint); each level verifies the next image, and any failure halts the boot or falls back to recovery mode.
+    平台服务域 · 核心服务能力边界: Platform Domain · Core Service Boundary
+    上电复位: Power-On Reset
+    固化只读代码 · 内含 OTP 公钥指纹: Read-Only Code · Embeds OTP Public Key Fingerprint
+    不可篡改 · 信任链的根（Root of Trust）: Immutable · Root of Trust
+    验证 SBL 签名: Verify SBL Signature
+    通过: Pass
+    第一阶段 Bootloader (SBL): Stage-1 Bootloader (SBL)
+    验证 U-Boot 签名: Verify U-Boot Signature
+    第二阶段 Bootloader (U-Boot): Stage-2 Bootloader (U-Boot)
+    验证 内核签名: Verify Kernel Signature
+    操作系统内核镜像: OS Kernel Image
+    校验根文件系统完整性 (dm-verity): Verify Rootfs Integrity (dm-verity)
+    挂载根文件系统: Mount Root File System
+    正常启动: Normal Boot
+    失败: Fail
+    停机: Halt
+    回退恢复模式: Fall Back to Recovery Mode
+    注：SBL 采用 A/B 双分区，验证失败回退至备用副本启动。: 'Note: SBL uses A/B partitions; on verification failure it falls back to the backup copy.'
+    拒绝启动: Refuse to Boot
+    绿色实线 = 验证通过路径: Green Solid = Verification Passed
+    红色虚线 = 验证失败路径（停机 / 恢复模式）: Red Dashed = Verification Failed (Halt / Recovery)
+    BootROM = Root of Trust（不可篡改）: BootROM = Root of Trust (Immutable)
+    图8-4 信任链自 BootROM 起逐级验签至根文件系统；失败策略分级——SBL 凭 A/B 双分区回退恢复，BootROM、U-Boot、内核任一级失败即停机或拒绝启动，根文件系统由 dm-verity 校验完整性。: Figure 8-4 The chain of trust verifies signatures level by level from BootROM to the root file system; failure handling is tiered — SBL falls back via A/B partitions, failure at BootROM, U-Boot, or the kernel halts or refuses to boot, and rootfs integrity is checked by dm-verity.

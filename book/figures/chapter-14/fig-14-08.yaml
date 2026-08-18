@@ -1,0 +1,55 @@
+type: lifecycle
+title: 图14-8 按硬件节拍编排的迭代与三层测试
+audience_takeaway: 读者应理解迭代周期对齐硬件发布节奏（四周），CI/CD 分阶段统一集成验证，测试分单元、集成、端到端三层。
+purpose: 展示按硬件节拍编排的四周迭代节奏与三层测试策略
+visual_focus: 四周迭代三阶段与 CI/CD 三阶段、三层测试。
+design_level: lifecycle
+layout: 上半四周迭代（冻结/并行开发/集成回归）+ 硬规则，中部 CI/CD 三阶段，底部三层测试
+elements:
+- 第 1 周方案冻结（对齐接口契约）、第 2~3 周并行开发、第 4 周集成与回归
+- CI/CD：build → integration → package（仅 master 出制品）
+- 三层测试：单元（最快最多）、集成（模拟设备）、端到端（真实固件）
+relationships:
+- 硬件发布节奏为迭代锚点；CI/CD 用自动化质量门挡未验证代码；三层测试由快到慢、代价递增
+render_notes: HTML/SVG 渲染，四周迭代流程 + CI/CD 三阶段 + 三层测试，蓝绿橙分层。
+caption:
+  zh: 图14-8 迭代周期对齐硬件发布节奏，四周内完成方案冻结、并行开发、集成回归；CI/CD 分阶段统一集成验证，测试分单元、集成、端到端三层。
+  en: 'Figure 14-8 Iterations align with the hardware release cadence: plan freeze, parallel development, and integration regression complete within four weeks; CI/CD runs staged, unified integration validation, and testing spans three layers — unit, integration, and end-to-end.'
+labels:
+  en:
+    图14-8 按硬件节拍编排的迭代与三层测试: 'Figure 14-8 Hardware-Cadence Iterations & Three-Layer Testing'
+    四周迭代以硬件发布为锚点，CI/CD 分阶段统一集成验证，测试分单元、集成、端到端三层。: 'Four-week iterations anchored on hardware releases; CI/CD runs staged unified integration validation; testing spans unit, integration, and end-to-end layers.'
+    把硬件发布节奏作为迭代锚点 · 每次集成都在同一已知版本快照下: 'Hardware release cadence as the iteration anchor · every integration runs on the same known version snapshot'
+    四周迭代（固件固定四周发布一次）: 'Four-Week Iteration (firmware ships every four weeks)'
+    第 1 周 · 方案冻结: 'Week 1 · Plan Freeze'
+    确定固件新增物模型属性与命令: 'Define new firmware thing-model attributes and commands'
+    前后端 + 嵌入式对齐接口契约: 'Frontend, backend, and embedded align on interface contracts'
+    所有变更记录在统一契约文档: 'All changes recorded in one contract document'
+    第 2～3 周 · 并行开发: 'Weeks 2–3 · Parallel Development'
+    嵌入式：固件；后端：驱动 + API: 'Embedded: firmware; backend: drivers + API'
+    前端：人机交互界面: 'Frontend: the HMI'
+    接口契约编码为自动化契约测试: 'Interface contracts encoded as automated contract tests'
+    第 4 周 · 集成与回归: 'Week 4 · Integration & Regression'
+    固件烧录测试设备，后端前端部署测试环境: 'Firmware flashed to test devices; backend and frontend deployed to the test environment'
+    执行全链路联调: 'Run full-chain joint debugging'
+    目标：通过全部集成测试用例: 'Goal: pass all integration test cases'
+    硬规则: 'Hard Rule'
+    主分支上所有模块: 'all modules on the main branch'
+    必须同时处在一个: 'must always stay in an'
+    可集成状态: 'integrable state'
+    CI/CD：分阶段、分仓库、统一集成验证: 'CI/CD: staged, per-repo, unified integration validation'
+    build 构建: 'build (compile)'
+    integration 集成测试: 'integration (integration tests)'
+    package 打包（仅 master）: 'package (master only)'
+    不要用一套工具链既编译固件又编译 Java 微服务：分开构建，只在集成测试阶段把产物拉到一起: 'Never build firmware and Java microservices with one toolchain: build separately and pull artifacts together only at the integration-test stage'
+    三层测试策略: 'Three-Layer Test Strategy'
+    单元测试 · 最快最多: 'Unit Tests · Fastest & Most'
+    设备注册校验、告警条件计算、数据格式转换: 'Device registration checks, alert condition math, data format conversion'
+    不依赖设备，覆盖核心业务逻辑绝大部分路径: 'No devices needed; covers most core business-logic paths'
+    集成测试 · 模拟设备: 'Integration Tests · Simulated Devices'
+    启动驱动、Broker、数据服务，模拟客户端收发报文: 'Start drivers, broker, and data services; simulate clients exchanging messages'
+    最易识别物模型字段类型不匹配等跨团队问题: 'Best at catching cross-team issues such as thing-model field type mismatches'
+    端到端测试 · 真实固件: 'End-to-End Tests · Real Firmware'
+    真实固件烧录测试板，验证上电注册到告警触发全链路: 'Real firmware on test boards verifies the full chain from power-on registration to alert triggering'
+    代价最高，仅关键提交与发布候选执行: 'Highest cost; run only on key commits and release candidates'
+    图14-8 迭代周期对齐硬件发布节奏，四周内完成方案冻结、并行开发、集成回归；CI/CD 分阶段统一集成验证，测试分单元、集成、端到端三层。: 'Figure 14-8 Iterations align with the hardware release cadence: plan freeze, parallel development, and integration regression complete within four weeks; CI/CD runs staged, unified integration validation, and testing spans three layers — unit, integration, and end-to-end.'

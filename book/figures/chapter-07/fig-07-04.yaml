@@ -1,0 +1,64 @@
+type: architecture
+title: 图7-4 MCP 在物联网平台中的架构示意
+purpose: 展示外部 AI Agent 通过 IoT DC3 MCP Tools 端点发现和调用平台 REST 能力的真实路径。
+audience_takeaway: 当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。
+visual_focus: Agent→Gateway /mcp→Auth 校验与工具白名单→OpenAPI Tool 目录→REST 后端。
+design_level: logical
+layout: 顶部外部 Agent，中部 Gateway 的 POST /mcp，右侧 Auth，底部 OpenAPI Tool 目录与 Auth/Manager/Data/Agentic REST 后端。
+elements:
+- 外部 AI Agent：先 initialize，再调用 ping、tools/list、tools/call。
+- Gateway /mcp：JSON-RPC 2.0，只声明 tools capability。
+- Auth：token introspection、连接上下文、工具白名单与调用授权。
+- OpenAPI 聚合：从静态 OpenAPI 规格生成 Tool 目录和输入模式。
+- REST 后端：Auth、Manager、Data、Agentic。
+- 灰色说明框：Resources、Prompts 为协议可选能力，当前未声明。
+relationships:
+- Agent→Gateway：MCP JSON-RPC 请求。
+- Gateway↔Auth：token 与 Tool 可见性校验。
+- OpenAPI 规格→工具目录：静态规格聚合，不扫描 @Tool。
+- Gateway→REST 后端：授权后转发 tools/call。
+render_notes: 浅色分层 SVG。Tools 主链路用实线；OpenAPI 汇聚用虚线；Resources/Prompts 放入灰色“协议可选、当前未启用”区域，禁止把所有能力标为 Resource。
+caption:
+  zh: 图7-4 IoT DC3 当前 MCP 边界：外部 Agent 经 initialize 协商后使用 tools/list 与 tools/call；Gateway 每次调用前经 Auth 校验，工具目录由 OpenAPI 规格汇聚，Resources 与 Prompts 当前未启用。
+  en: 'Figure 7-4 The current MCP boundary of IoT DC3: after initialize negotiation, external agents use tools/list and tools/call; the Gateway verifies with Auth before each call, the tool catalog is aggregated from OpenAPI specs, and Resources and Prompts are not yet enabled.'
+labels:
+  en:
+    图7-4 MCP 在物联网平台中的架构示意: Figure 7-4 MCP Architecture in the IoT Platform
+    当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。: The endpoint declares Tools only; Resources and Prompts are protocol knowledge, not yet enabled.
+    当前边界：JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · 仅声明 Tools capability: 'Current boundary: JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · Tools capability only'
+    外部 AI Agent: External AI agent
+    LLM · 自然语言指令 · 单一端点接入: LLM · natural-language commands · one endpoint
+    MCP 端点 · POST /mcp: MCP endpoint · POST /mcp
+    能力握手 · 协议协商: Capability handshake · protocol negotiation
+    发现当前调用者可见 Tools: Discover caller-visible tools
+    工具调用 · 参数校验: Tool calls · parameter validation
+    'capabilities: tools only · Resources / Prompts 当前未声明、未实现': 'capabilities: tools only · Resources / Prompts not declared, not implemented'
+    鉴权中心: Authorization Center
+    OAuth 2.1 · 多租户: OAuth 2.1 · multi-tenant
+    校验 access_token: Validate access_token
+    提取租户上下文: Extract tenant context
+    注入 scope / 权限: Inject scope / permissions
+    高危操作二次确认: Re-confirm high-risk operations
+    ① 校验 token: ① Validate token
+    ② 上下文 + scope: ② Context + scope
+    后端服务层: Backend services
+    静态 OpenAPI · 管理域: Static OpenAPI · management domain
+    Command · Event 定义: Command · Event definitions
+    租户范围内元数据: Tenant-scoped metadata
+    静态 OpenAPI · 数据域: Static OpenAPI · data domain
+    最新值 · 历史值: Latest values · history
+    位号读写命令: Point read/write commands
+    状态 · Dashboard: Status · Dashboard
+    RabbitMQ 设备链路: RabbitMQ device link
+    其他平台 API: Other platform APIs
+    静态 OpenAPI · 按规格汇聚: Static OpenAPI · aggregated from specs
+    实际 REST 后端: Actual REST backend
+    按 token 与白名单过滤: Filtered by token & allowlist
+    工具调用（实线）: Tool call (solid)
+    OpenAPI 自动聚合（虚线）: OpenAPI auto-aggregation (dashed)
+    OAuth 鉴权回传（实线）: OAuth authorization return (solid)
+    MCP 端点: MCP endpoint
+    设备 / 接入域: Device / access domain
+    Auth · 白名单 · 高风险确认: Auth · allowlist · high-risk confirmation
+    图7-4 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，: 'Figure 7-4 The current /mcp declares the Tools capability only: after initialize negotiation it serves tools/list and tools/call,'
+    工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。: the tool catalog is aggregated from static OpenAPI specs and filtered by OAuth connection, allowlist, and risk policy; Resources / Prompts are not yet enabled.

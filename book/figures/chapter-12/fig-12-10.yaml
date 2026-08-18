@@ -1,0 +1,56 @@
+type: dataflow
+title: 图12-10 节点功耗组成与电池寿命估算
+audience_takeaway: 读者应掌握平均电流法：把节点功耗拆为采样处理、无线发射、休眠三阶段，由“电流×时间”积分得到日均耗电，再按寿命公式估算电池寿命。
+purpose: 展示节点功耗拆解与电池寿命估算的完整计算链
+visual_focus: 左功耗组成、右寿命估算的双栏结构。
+design_level: dataflow
+layout: 左栏功耗三阶段分解与单周期合计，右栏寿命公式、算例与不同上报间隔对比
+elements:
+- 传感器采样 + MCU 处理：15 mA × 0.3 s = 0.00125 mAh
+- 无线发射：120 mA × 0.5 s = 0.01667 mAh
+- 休眠：10 μA × 3599.2 s ≈ 0.01000 mAh
+- 单周期总计：0.02792 mAh → 日均耗电 0.670 mAh
+- 寿命公式：寿命(天) = (标称容量 × 降额因子) / 日均耗电
+- 算例：(3000 × 0.75) / 0.670 ≈ 3358 天 ≈ 9.2 年
+- 间隔对比：10min → 0.94 年、1h → 9.2 年、2h → 18.3 年、6h → 51.3 年
+relationships:
+- 三阶段功耗相加得单周期耗电 → 乘 24 得日均耗电 → 代入寿命公式
+render_notes: HTML/SVG 渲染，左右双栏，左功耗分解、右寿命估算，底部工程注意事项。
+caption:
+  zh: 图12-10 节点功耗拆为采样处理、无线发射与休眠三阶段，由“电流×时间”积分得到日均耗电 0.670 mAh，再按寿命公式估算出每小时上报约 9.2 年、每 10 分钟上报仅 0.94 年。
+  en: Figure 12-10 Node power is split into three phases — sampling/processing, radio transmit, and sleep; integrating current × time gives a daily drain of 0.670 mAh, and the lifetime formula then estimates about 9.2 years at hourly reporting but only 0.94 years at 10-minute reporting.
+labels:
+  en:
+    图12-10 节点功耗组成与电池寿命估算: Figure 12-10 Node Power Breakdown & Battery Life Estimation
+    节点功耗拆为采样处理、无线发射、休眠三阶段；由占空比计算日均耗电，再按寿命公式估算电池寿命。: Node power splits into sampling/processing, radio transmit, and sleep; duty-cycle math yields the daily drain, and the lifetime formula estimates battery life.
+    平均电流法 · 电流×时间积分求和，再除以日均耗电估算寿命: Average-current method · integrate current×time, divide by daily drain for life
+    功耗组成（每小时唤醒发送一次）: Power breakdown (wake & send once per hour)
+    ① 传感器采样 + MCU 处理: ① Sensor sampling + MCU processing
+    15 mA × 0.3 s = 0.00125 mAh（覆盖预热到采集完成）: 15 mA × 0.3 s = 0.00125 mAh (from warm-up to sampling done)
+    ② 无线发射（+20 dBm）: ② Radio transmit (+20 dBm)
+    120 mA × 0.5 s = 0.01667 mAh（含前导码与有效载荷）: 120 mA × 0.5 s = 0.01667 mAh (preamble + payload)
+    ③ 休眠: ③ Sleep
+    10 μA × 3599.2 s ≈ 0.01000 mAh（MCU + 模组待机，占时最长）: 10 μA × 3599.2 s ≈ 0.01000 mAh (MCU + module standby, longest share)
+    单周期总计（活跃 + 休眠）: Total per cycle (active + sleep)
+    0.01792 + 0.01000 = 0.02792 mAh → 日均耗电 = 0.02792 × 24 = 0.670 mAh: 0.01792 + 0.01000 = 0.02792 mAh → daily drain = 0.02792 × 24 = 0.670 mAh
+    电池寿命估算（平均电流法）: Battery Life Estimation (average-current method)
+    寿命公式: Lifetime formula
+    寿命(天) = (电池标称容量 × 降额因子) / 日均耗电: Life (days) = (rated capacity × derating factor) / daily drain
+    降额因子吸收温度、放电率与自放电影响，算例取 0.75: Derating absorbs temperature, discharge rate, and self-discharge; the example uses 0.75
+    算例（AA 碱性电池 3000 mAh）: Example (AA alkaline, 3000 mAh)
+    (3000 × 0.75) / 0.670 ≈ 3358 天 ≈ 9.2 年: (3000 × 0.75) / 0.670 ≈ 3358 days ≈ 9.2 years
+    覆盖典型项目周期 3～5 年，无需中途换电池: Covers the typical 3–5 year project cycle without a battery swap
+    不同上报间隔的理论寿命对比: Theoretical life by reporting interval
+    10 分钟: 10 min
+    0.94 年（高实时 · 灌溉阀门反馈）: 0.94 years (near-real-time · valve feedback)
+    1 小时: 1 hour
+    9.2 年（工程平衡点）: 9.2 years (engineering sweet spot)
+    2 小时: 2 hours
+    18.3 年: 18.3 years
+    6 小时: 6 hours
+    51.3 年（存储类数据）: 51.3 years (archival data)
+    工程注意事项: Engineering Notes
+    • 低温降额：北方冬季碱性电池容量显著下降，应使用低温锂电池并加大降额系数: '• Cold derating: alkaline capacity drops sharply in northern winters — use low-temp lithium cells and a larger derating factor'
+    • 休眠电流陷阱：稳压器/DC-DC 漏电流可能使实测休眠电流超过 50 μA，寿命直接打五折: '• Sleep-current trap: regulator/DC-DC leakage can push measured sleep current past 50 μA, halving battery life'
+    • 实际寿命 &lt; 理论值：自放电、高低温循环、传感器漂移都会缩短寿命，理论值 × 0.6～0.8 作运维依据: '• Actual life < theoretical: self-discharge, thermal cycling, and sensor drift shorten it — plan O&M on theory × 0.6–0.8'
+    图12-10 节点功耗拆为采样处理、无线发射与休眠三阶段，由“电流×时间”积分得到日均耗电 0.670 mAh，再按寿命公式估算出每小时上报约 9.2 年、每 10 分钟上报仅 0.94 年。: Figure 12-10 Node power is split into three phases — sampling/processing, radio transmit, and sleep; integrating current × time gives a daily drain of 0.670 mAh, and the lifetime formula then estimates about 9.2 years at hourly reporting but only 0.94 years at 10-minute reporting.

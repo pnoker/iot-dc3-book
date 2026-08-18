@@ -1,0 +1,87 @@
+type: layered
+title: 图8-5 防篡改设计的纵深防线
+audience_takeaway: 读者应理解密钥派生与签名全程在安全元件内部闭环，PUF派生私钥永不通过SPI暴露给主控，物理取芯也拿不到明文私钥。
+purpose: 展示从外壳到芯片内部的四层物理安全防护体系，以及安全元件内部密钥派生的数据流
+visual_focus: 从主控发起签名请求到终点的主链路。
+design_level: logical
+layout: 纵向从上到下四层，每层用虚线隔开；左侧标注物理结构，右侧展开安全元件内部逻辑
+elements:
+- 外壳层：金属外壳轮廓，内部标注'防拆螺丝 + 易碎贴纸'；右侧注释'第一道屏障：发现即显形'
+- 灌封层：灰色胶状填充物包裹电路板；右侧注释'第二道屏障：取芯需破坏'
+- 电路板层：主控芯片（MCU）通过SPI总线连接安全元件（SE）；SE用带锁图标表示；右侧注释'第三道屏障：密钥不出芯'
+- 芯片内部：安全元件内部放大图，包含SRAM PUF模块、加密引擎、非易失计数器；右侧注释'第四道屏障：指纹随片变'
+- 数据流1：主控芯片发起签名请求，通过SPI总线（实线箭头）传给安全元件加密引擎；箭头旁标注'签名请求'
+- 数据流2：SRAM PUF模块通过虚线箭头将派生密钥传入加密引擎，箭头旁标注'派生路径，始终在SE内部'
+- 数据流3：加密引擎通过SPI总线（实线箭头）返回签名结果给主控芯片，箭头旁标注'签名结果'
+relationships:
+- 外壳包裹灌封层
+- 灌封层包裹电路板
+- 主控芯片与安全元件集成在电路板上，安全元件内部放大显示
+- 主控发起签名请求 -> SE内部调用PUF派生密钥 -> 执行签名 -> 返回结果
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 主控发起签名请求
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: SE内部调用PUF派生密钥 ->…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: se_puf_-
+  label: 主控发起签名请求 -> SE内部调…
+  style: dashed
+  direction: response
+callouts:
+- 外壳包裹灌封层
+- 灌封层包裹电路板
+- 主控芯片与安全元件集成在电路板上，安全元件内部放大显示
+legend:
+- 实线箭头：物理数据交换（SPI总线）
+- 虚线箭头：密钥派生与使用路径（始终在SE内部闭环，不暴露给主控）
+- 带锁图标：安全元件防篡改保护
+- 指纹图标：SRAM PUF模块，代表芯片的唯一物理指纹
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 四层区域用透明度渐变的背景色区分（从外壳的不透明浅灰到芯片内部的深蓝），安全元件用硬件芯片符号，内部用矩形框划分模块，数据流用橙色箭头标注'密钥不出芯'字样。
+caption:
+  zh: 图8-5 防篡改设计的四层防线：从外壳到芯片内部依次递进，攻击者需要逐层突破并付出指数级增长的成本。安全元件内部闭环完成密钥派生与签名，私钥永不离开芯片。
+  en: 'Figure 8-5 The four lines of defense in tamper-resistant design, advancing from the enclosure to the inside of the chip: an attacker must break through each layer at exponentially growing cost. Key derivation and signing close the loop inside the secure element, and the private key never leaves the chip.'
+labels:
+  en:
+    图8-5 防篡改设计的纵深防线: Figure 8-5 Defense in Depth for Tamper Resistance
+    密钥派生与签名在安全元件内部闭环，主控只交换请求和签名结果，私钥不通过 SPI 暴露。: Key derivation and signing close the loop inside the secure element; the host only exchanges requests and signatures, and the private key is never exposed over SPI.
+    主控芯片: Host MCU
+    安全元件: Secure Element
+    芯片指纹: Chip Fingerprint
+    加密引擎: Crypto Engine
+    签名运算: Signing Operation
+    非易失计数器: Non-Volatile Counter
+    防重放: Anti-Replay
+    外壳层: Enclosure Layer
+    第一道屏障：发现即显形: 'Barrier 1: Tamper Evident'
+    灌封层: Potting Layer
+    第二道屏障：取芯需破坏: 'Barrier 2: Extraction Is Destructive'
+    电路板层: Circuit Board Layer
+    第三道屏障：密钥不出芯: 'Barrier 3: Keys Never Leave the Chip'
+    芯片内部: Inside the Chip
+    第四道屏障：指纹随片变: 'Barrier 4: Fingerprint Varies per Chip'
+    签名请求: Signature Request
+    签名结果: Signature Result
+    密钥派生: Key Derivation
+    实线箭头：物理数据交换（SPI总线）: 'Solid Arrow: Physical Data Exchange (SPI)'
+    虚线箭头：密钥派生与使用路径（始终在SE内部闭环，不暴露给主控）: 'Dashed Arrow: Key Path (closed inside the SE, never exposed to the host)'
+    带锁图标：安全元件防篡改保护: 'Lock Icon: Secure Element Tamper Protection'
+    图8-5 防篡改设计的四层防线：从外壳到芯片内部依次递进，攻击者需要逐层突破并付出指数级增长的成本。安全元件内部闭环完成密钥派生与签名，私钥永不离开芯片。: Figure 8-5 The four lines of defense advance from enclosure to chip interior, forcing an attacker to break through each layer at exponentially growing cost; key derivation and signing close the loop inside the secure element, and the private key never leaves the chip.

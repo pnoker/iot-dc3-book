@@ -1,0 +1,102 @@
+type: topology
+title: 图12-1 环境传感网络部署拓扑示意
+audience_takeaway: 读者应理解终端节点与云端不直连——大量LoRa传感器先星型汇聚到单一网关,再由网关经4G/有线回传上云,网关承担隔离与汇聚中继角色。
+purpose: 显示农业环境传感网络的星型拓扑结构，涵盖终端节点、网关与云平台之间的通信关系。
+visual_focus: 从顶层（云平台层）到底层（终端节点层）的主链路。
+design_level: logical
+layout: 自下而上分层布局：底层为终端节点层，中层为网关层，顶层为云平台层。
+elements:
+- 顶层（云平台层）：蓝色圆角矩形，标注‘云平台 / 数据中台’。内部包含四个小图标：数据库、AI模型、可视化大屏、告警通知。此层负责数据汇聚、存储、分析与下发。
+- 中层（网关层）：橙色矩形，标注‘LoRaWAN网关 (Gateway)’，带天线图标。固定安装于农田中央立杆或温室顶部，通过4G/5G或有线回传与云平台通信。
+- 底层（终端节点层）：多个绿色圆点，每个圆点内带不同传感器符号——水滴（土壤水分）、树叶（叶面湿度）、太阳（光照）、温度计（空气温湿度）。圆点附着在波形虚线上，表示无线连接。此层由大量低功耗传感器节点构成。
+relationships:
+- 底层终端节点与中层网关之间用‘虚线’表示LoRa星型上行链路。
+- 中层网关与顶层云平台之间用‘实线+箭头’表示4G/有线回传链路。
+regions:
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: c1
+  label: 顶层（云平台层）
+  type: data
+  subtitle: 内部包含四个小图标：数据库、AI模型、可视化大屏、告警…
+  group: data_domain
+  priority: primary
+  shape: database
+- id: c2
+  label: 中层（网关层）
+  type: edge
+  subtitle: 固定安装于农田中央立杆或温室顶部，通过4G/5G或有线…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 底层（终端节点层）
+  type: edge
+  subtitle: 水滴（土壤水分）、树叶（叶面湿度）、太阳（光照）、温度…
+  group: edge_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 底层终端节点与中层网关之间用‘虚线…
+  style: dashed
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 中层网关与顶层云平台之间用‘实线+…
+  style: solid
+  direction: left-to-right
+callouts:
+- 底层终端节点与中层网关之间用‘虚线’表示LoRa星型上行链路
+- 中层网关与顶层云平台之间用‘实线+箭头’表示4G/有线回传链路
+legend:
+- 虚线：LoRa星型上行链路
+- 实线+箭头：4G/有线回传链路
+- 绿色圆点（水滴）：土壤水分传感器
+- 绿色圆点（树叶）：叶面湿度传感器
+- 绿色圆点（太阳）：光照强度传感器
+- 绿色圆点（温度计）：空气温湿度传感器
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景。底层所有绿色圆点分布在二维平面（代表农田）上，各圆点与中心橙色网关的物理距离不完全相等，以模拟真实地形。每根虚线从节点出发均指向同一个网关，确保‘星型’关系可视化。点击某个终端节点或网关，可弹出提示框，显示其ID、最近一次上报时间、电池电压。图例置入左下角浮动的半透明灰框内。图题置于图片正下方居中加粗显示。
+caption:
+  zh: 图12-1 环境传感网络部署拓扑示意，展示了从终端节点到云平台的星型连接关系。
+  en: Figure 12-1 Deployment topology of an environmental sensor network, showing the star-shaped connection between end nodes and the cloud platform.
+labels:
+  en:
+    图12-1 环境传感网络部署拓扑示意: Figure 12-1 Environmental Sensor Network Deployment Topology
+    星型拓扑：终端节点单跳直达 LoRaWAN 网关，网关经 4G/有线回传至云平台。: 'Star topology: end nodes reach the LoRaWAN gateway in one hop, and the gateway backhauls to the cloud via 4G/wired links.'
+    星型拓扑 · 终端节点单跳直达网关 · 数据自下而上汇聚至云平台: Star topology · end nodes one hop to the gateway · data converges upward to the cloud
+    数据资产域: Data Asset Domain
+    数据沉淀与治理边界: Data retention & governance boundary
+    云平台 / 数据中台: Cloud Platform / Data Hub
+    数据库 · AI模型 · 大屏 · 告警: DB · AI models · dashboards · alerts
+    设备与边缘域: Device & Edge Domain
+    现场异构资源边界: Field heterogeneous resource boundary
+    LoRaWAN 网关: LoRaWAN Gateway
+    农田中央立杆 · 4G/有线回传: Field-center pole · 4G/wired backhaul
+    星型单跳 = 低功耗根源: Star one-hop = the root of low power
+    终端不维护中继路由，仅与网关一对一通信；: End nodes keep no relay routes and talk only to the gateway;
+    长休眠占空比，故可电池长期运行。: long sleep duty cycles let batteries run for years.
+    4G / 有线回传: 4G / Wired Backhaul
+    终端节点（多类传感器）: End nodes (multi-sensor)
+    土壤水分 · 叶面湿度 · 光照 · 温湿度: Soil moisture · leaf wetness · light · temp & humidity
+    土壤水分: Soil moisture
+    温湿度: Temp & humidity
+    叶面湿度: Leaf wetness
+    光照: Light
+    虚线 · LoRa 星型上行（终端单跳直达网关）: Dashed · LoRa star uplink (one hop to gateway)
+    实线 · 4G / 有线回传（网关→云平台）: Solid · 4G/wired backhaul (gateway→cloud)
+    紫 · 数据资产域: Purple · data asset domain
+    绿 · 设备与边缘域: Green · device & edge domain
+    绿圆 · 终端节点（传感器）: Green dot · end node (sensor)
+    圆柱 · 云平台数据存储: Cylinder · cloud data storage
+    图12-1 星型单跳免去终端维护中继路由，终端得以长休眠、电池长期运行；数据经 LoRa 上行至网关后由 4G/有线回传，自下而上汇入云平台数据资产域。: Figure 12-1 The star one-hop design frees end nodes from relay routing, enabling long sleep and multi-year battery life; data rises over LoRa to the gateway, is backhauled via 4G/wired links, and converges upward into the cloud data asset domain.

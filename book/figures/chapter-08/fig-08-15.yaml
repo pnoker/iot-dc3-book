@@ -1,0 +1,62 @@
+type: matrix
+title: 图8-15 模型注入攻击防御策略及适用场景对比表
+purpose: 按攻击面、防御方法、核心思路、工程成本、IoT适用性五个维度对比模型注入防御策略。
+layout: 六行五列对比表,表头:攻击面/防御方法/核心思路/工程成本/IoT适用性。
+elements:
+- 数据投毒→训练数据溯源审计+异常样本检测(中等成本,云端训练适用)。
+- 数据投毒→差分隐私聚合(低-中等成本,联邦学习IoT适用)。
+- 模型盗用→API查询限频+结果扰动(低成本,云端服务适用)。
+- 供应链污染→模型签名+部署前验签(低成本,适用所有IoT设备分发)。
+- 多攻击面→对抗训练(高成本,云端训练后下发)。
+- 联邦学习→梯度异常值剔除+验证集测试(中等成本,联邦场景专用)。
+relationships:
+- 多种防御叠加使用效果优于单一种类,但需注意聚合后的总开销。
+render_notes: 六行五列表格,第一行表头加粗;各列宽度按内容分配。
+caption:
+  zh: 图8-15 模型注入防御需按攻击面组合策略:云端训练侧重数据溯源与对抗训练,设备端侧重验签与查询防护。
+  en: 'Figure 8-15 Model injection defenses must combine strategies by attack surface: cloud-side training emphasizes data provenance and adversarial training, while the device side emphasizes signature verification and query protection.'
+labels:
+  en:
+    图8-15 模型注入攻击防御策略及适用场景对比表: Figure 8-15 Model Injection Defense Strategies & Applicability
+    按攻击面、防御方法、核心思路、工程成本、IoT 适用性五个维度对比模型注入防御策略。: 'Model injection defenses compared across five dimensions: attack surface, defense method, core idea, engineering cost, and IoT fit.'
+    攻击面: Attack Surface
+    防御方法: Defense Method
+    核心思路: Core Idea
+    工程成本: Engineering Cost
+    IoT 适用性: IoT Fit
+    数据投毒: Data Poisoning
+    训练数据溯源审计 + 异常样本检测: Training Data Provenance Audit + Outlier Sample Detection
+    审查数据来源与样本分布: Inspect Data Sources & Sample Distribution
+    剔除被投毒样本: Remove Poisoned Samples
+    中等: Medium
+    云端训练适用: Fits Cloud Training
+    差分隐私聚合: Differential Privacy Aggregation
+    聚合梯度注入噪声: Inject Noise into Aggregated Gradients
+    隐藏个体样本影响: Hide Individual Sample Influence
+    低-中等: Low-Medium
+    联邦学习 IoT 适用: Fits Federated IoT
+    模型盗用: Model Extraction
+    API 查询限频 + 结果扰动: API Query Rate Limiting + Result Perturbation
+    限制查询频率与结果扰动: Limit Query Frequency & Perturb Results
+    阻止模型窃取: Block Model Stealing
+    低: Low
+    云端服务适用: Fits Cloud Services
+    供应链污染: Supply Chain Contamination
+    模型签名 + 部署前验签: Model Signing + Pre-Deployment Verification
+    对模型进行签名: Sign the Model
+    部署时校验签名完整性: Verify Signature Integrity at Deployment
+    所有 IoT 设备分发: All IoT Device Distribution
+    多攻击面: Multiple Attack Surfaces
+    对抗训练: Adversarial Training
+    训练中注入对抗样本: Inject Adversarial Samples During Training
+    提升模型鲁棒性: Improve Model Robustness
+    高: High
+    云端训练后下发: Trained in Cloud, Then Distributed
+    联邦学习: Federated Learning
+    梯度异常值剔除 + 验证集测试: Gradient Outlier Removal + Validation Set Testing
+    剔除异常梯度: Remove Outlier Gradients
+    通过验证集识别恶意参与方: Identify Malicious Parties via Validation Set
+    联邦场景专用: Federated Scenarios Only
+    组合策略: Combined Strategy
+    多种防御叠加使用效果优于单一种类，但需注意聚合后的总开销；云端训练侧重数据溯源与对抗训练，设备端侧重验签与查询防护。: Stacking multiple defenses beats any single one, but watch the aggregated overhead; cloud training emphasizes data provenance and adversarial training, devices emphasize signature verification and query protection.
+    图8-15 模型注入防御需按攻击面组合策略：云端训练侧重数据溯源与对抗训练，设备端侧重验签与查询防护。: 'Figure 8-15 Model injection defenses must combine strategies by attack surface: cloud training emphasizes data provenance and adversarial training, devices emphasize verification and query protection.'

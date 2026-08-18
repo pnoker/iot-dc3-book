@@ -1,0 +1,144 @@
+type: flowchart
+title: 图12-2 作物病害识别CNN处理流程（架构示意）
+purpose: 展示一张作物叶片图像从输入到输出病害分类概率的完整CNN推理流程。
+audience_takeaway: 读者应理解CNN推理的主链路——从输入图像经多次卷积池化、展平到全连接分类，以及各层的数据尺寸变化。
+visual_focus: 从输入图像经过三个卷积池化模块流向展平层，再经全连接层到输出概率条，实线箭头方向清晰。
+design_level: implementation
+layout: 从左至右七个方框，依次为输入图像、三个卷积池化模块、展平层、全连接层、输出概率条。框间带箭头实线连接，框下方标注特征图尺寸变化。
+elements:
+- 输入图像框（224×224×3 RGB）。
+- 三个卷积池化模块框，标注“Conv2D + ReLU + MaxPool2D”，框下分别标注输出尺寸：16×112×112、32×56×56、64×28×28。
+- 展平层框，宽矩形，标注“展平（Flatten）”。
+- 全连接层框，标注“128神经元 (ReLU)”。
+- 输出层框，标注“C个节点 (Softmax)”，C=病害类别数+1。
+- '输出概率条，垂直堆叠条，示例内容：“健康: 0.01, 白粉病: 0.88, 锈病: 0.05, 叶斑病: 0.06”。'
+relationships:
+- 输入图像 → 第一个卷积池化模块（实线箭头）。
+- 第一个卷积池化模块 → 第二个卷积池化模块（实线箭头）。
+- 第二个卷积池化模块 → 第三个卷积池化模块（实线箭头）。
+- 第三个卷积池化模块 → 展平层（实线箭头）。
+- 展平层 → 全连接层（实线箭头）。
+- 全连接层 → 输出层（实线箭头）。
+- 输出层 → 概率条（实线箭头）。
+regions:
+- id: processing_pipeline
+  label: 模型推理流水线
+  role: 从图像输入到分类输出的线性处理链。
+components:
+- id: input_img
+  label: 输入图像 (224×224×3)
+  type: process
+  subtitle: ''
+  group: processing_pipeline
+  priority: normal
+  shape: card
+- id: conv1
+  label: Conv+Pool (16×112×112)
+  type: process
+  subtitle: ''
+  group: processing_pipeline
+  priority: normal
+  shape: card
+- id: conv2
+  label: Conv+Pool (32×56×56)
+  type: process
+  subtitle: ''
+  group: processing_pipeline
+  priority: normal
+  shape: card
+- id: conv3
+  label: Conv+Pool (64×28×28)
+  type: process
+  subtitle: ''
+  group: processing_pipeline
+  priority: normal
+  shape: card
+- id: flatten
+  label: 展平层 (Flatten)
+  type: process
+  subtitle: ''
+  group: processing_pipeline
+  priority: normal
+  shape: card
+- id: fc1
+  label: 全连接层 (128)
+  type: process
+  subtitle: ''
+  group: processing_pipeline
+  priority: normal
+  shape: card
+- id: output
+  label: 输出层 (C类别)
+  type: decision
+  subtitle: Softmax
+  group: processing_pipeline
+  priority: primary
+  shape: decision
+connections:
+- from: input_img
+  to: conv1
+  label: 前向传播
+  style: solid
+  direction: left-to-right
+- from: conv1
+  to: conv2
+  label: 前向传播
+  style: solid
+  direction: left-to-right
+- from: conv2
+  to: conv3
+  label: 前向传播
+  style: solid
+  direction: left-to-right
+- from: conv3
+  to: flatten
+  label: 展平
+  style: solid
+  direction: left-to-right
+- from: flatten
+  to: fc1
+  label: 前向传播
+  style: solid
+  direction: left-to-right
+- from: fc1
+  to: output
+  label: 前向传播
+  style: solid
+  direction: left-to-right
+callouts:
+- 卷积核数量递增（16→32→64）对应特征抽象层次加深，空间分辨率递减（112→56→28）由池化操作实现。
+- MobileNet、EfficientNet等轻量化架构可大幅压缩此通用结构的参数量与推理延时，具体选型见下文。
+legend:
+- 方框：处理步骤或网络层。
+- 实线箭头：数据流向（前向推理）。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 输出概率条用垂直堆叠条表示，最高概率项颜色加深。
+render_notes: SVG渲染：浅色背景，圆角矩形框，统一6px间距。箭头带文字标签'前向传播'。输出概率条示意三个病害概率。
+caption:
+  zh: 图12-2 展示作物病害识别CNN从输入到输出的主要网络层与数据变换过程。工程实践中，卷积核数量与网络深度依据训练数据集规模和计算资源调整。
+  en: Figure 12-2 The main network layers and data transformations of a crop disease recognition CNN from input to output. In engineering practice, the number of convolution kernels and the network depth are tuned to the training dataset size and the compute budget.
+labels:
+  en:
+    图12-2 作物病害识别CNN处理流程（架构示意）: Figure 12-2 Crop Disease Recognition CNN Pipeline (Architecture)
+    叶片图像经三级卷积池化提取层次特征、逐级降采样，展平后进入全连接层，Softmax 输出健康与各病害概率。: Leaf images go through three conv-pool stages for hierarchical features and progressive downsampling, then flatten into dense layers; Softmax outputs health and disease probabilities.
+    卷积提取层次特征，池化逐级降采样，全连接层输出病害概率: Convolution extracts hierarchical features, pooling downsamples stage by stage, dense layers output disease probabilities
+    叶片图像: Leaf image
+    卷积 + 池化 ①: Conv + Pool ①
+    卷积 + 池化 ②: Conv + Pool ②
+    卷积 + 池化 ③: Conv + Pool ③
+    展平为一维: Flatten to 1-D
+    128 神经元 · ReLU: 128 units · ReLU
+    病害概率: Disease probabilities
+    Softmax · C 类: Softmax · C classes
+    健康 0.01: Healthy 0.01
+    白粉病 0.88: Powdery mildew 0.88
+    锈病 0.05 · 叶斑 0.06: Rust 0.05 · leaf spot 0.06
+    输入: Input
+    特征提取与降采样: Feature extraction & downsampling
+    分类决策: Classification decision
+    概率输出: Probability output
+    三级特征提取：边缘 → 纹理 → 形状: 'Three feature stages: edges → texture → shape'
+    空间分辨率逐级降低、通道数逐级增加；C = 病害类别数 + 健康类别: Spatial resolution falls and channels rise stage by stage; C = disease classes + healthy
+    图12-2 三级卷积池化把空间分辨率从 224 逐级压缩到 28、通道数由 3 增至 64，特征由边缘、纹理过渡到形状；Softmax 输出健康与各病害概率，取最大者为识别结果。: Figure 12-2 Three conv-pool stages shrink spatial resolution from 224 to 28 while channels grow from 3 to 64, moving features from edges and texture to shape; Softmax outputs health and disease probabilities, and the largest wins as the recognition result.

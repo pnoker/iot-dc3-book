@@ -1,0 +1,114 @@
+type: architecture
+title: 图14-6 AGI时代物联网架构演进
+audience_takeaway: 读者应理解AGI时代智能层由规则+固定模型升级为Agent编排与动态模型调度,自动决策须经独立安全护栏层校验后才可下发。
+purpose: 展示从传统IoT平台到AGI时代平台的核心层次变化：智能层升级为Agent编排+动态模型调度，安全护栏串接在所有自动决策与平台执行之间。
+visual_focus: 设备→接入→平台→智能的上行数据主链，以及智能→安全护栏→平台的独立向下受控决策链。
+design_level: logical
+layout: 左右对比。两侧基础数据主链均按设备层→接入层→平台层→智能层向上排列。左侧智能层内嵌规则引擎与固定模型；右侧智能层细分为Agent编排层与模型调度网关，安全护栏作为独立管控节点承接受控决策，并沿另一条向下链路连接平台层。
+elements:
+- 左侧：设备层→接入层（MQTT/CoAP/Modbus）→平台层（认证、设备管理、数据中心）→智能层（规则引擎、预训练模型）→应用层。
+- 右侧上行数据主链：设备层→接入层（同左）→平台层（同左）→智能层（Agent编排层：多Agent调度、上下文管理、推理链追踪；模型调度网关：端/云模型路由、模型版本管理）。
+- 右侧向下受控决策链：智能层→安全护栏（决策校验服务、操作区间约束、人工接管接口）→平台层执行；该链与基础数据主链分开绘制。
+- 两侧都用青绿色表示设备层，蓝色表示接入层和平台层，橙色表示智能层，红色表示安全护栏层，灰色表示应用层。
+relationships:
+- 传统IoT：平台层向智能层提供数据源，智能层通过规则和模型产生告警/控制指令返回至平台层。
+- AGI时代：平台层向智能层提供数据源
+- Agent编排层调用模型调度网关，后者可路由到边缘或云端模型
+- Agent编排层的输出先进入安全护栏层校验，通过后才下发至平台层进行指令执行。安全护栏层有独立通道连接应用层以支持人工确认。模型调度网关与Agent编排层之间虚线表示动态路由。
+regions:
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: r1
+  label: AGI时代：平台层向智能层提供数据…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: primary
+  shape: database
+- id: r2
+  label: 模型调度网关，后者可路由到边缘或云…
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+connections:
+- from: agent
+  to: age
+  label: Agent编排层的输出先进入安全护…
+  style: dashed
+  direction: request
+callouts:
+- 传统IoT：平台层向智能层提供数据源，智能层通过规则和模型产生告警/控制指令返回至平台层
+- AGI时代：平台层向智能层提供数据源
+- Agent编排层调用模型调度网关，后者可路由到边缘或云端模型
+legend:
+- 青绿色=设备与边缘；蓝色=接入与平台基础服务；橙色=AI与Agent能力；红色=安全与管控；灰色=外部应用与UI。
+- 实线箭头=同步调用/强依赖；虚线箭头=异步事件/可选路由。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，左右对比布局，圆角矩形，12px间距，箭头带文字标签。颜色使用全书面板配色。左侧传统架构节点数6个，右侧AGI架构节点数8个，注意右侧安全护栏层使用红色边框填充。
+caption:
+  zh: 图14-6 AGI时代物联网架构演进。基础数据沿设备、接入、平台、智能逐层向上；受控决策经独立安全护栏沿另一链路向下返回平台执行。
+  en: 'Figure 14-6 IoT architecture evolution in the AGI era. Base data flows up through the device, access, platform, and intelligence layers; controlled decisions return down a separate path, through the independent safety guardrail, for platform execution.'
+labels:
+  en:
+    图14-6 AGI时代物联网架构演进: 'Figure 14-6 IoT Architecture Evolution in the AGI Era'
+    左右对比：基础数据主链均由设备层经接入层、平台层向上进入智能层。右侧 AGI 时代平台将智能层升级为 Agent 编排层与模型调度网关，并以独立安全护栏承接受控决策；决策校验通过后沿另一条向下链路回到平台层执行。: 'Side by side: both base data chains run from the device layer up through the access and platform layers into the intelligence layer. The AGI-era platform (right) upgrades the intelligence layer into an Agent orchestration layer plus a model scheduling gateway, with an independent safety guardrail carrying controlled decisions; once validated, decisions return to the platform layer along a separate downlink path for execution.'
+    基础数据由设备向智能层逐层上行，受控决策经独立安全护栏沿另一链路向下执行: 'Base data flows up from devices to the intelligence layer; controlled decisions flow down a separate path through the independent safety guardrail'
+    演进: 'Evolution'
+    传统 IoT 平台: 'Traditional IoT Platform'
+    规则 + 固定模型 · 分层联动: 'Rules + Fixed Models · Layered Linkage'
+    应用层: 'Application Layer'
+    监控大屏 / 告警 / 业务应用: 'Dashboards / Alerts / Business Apps'
+    告警/结果: 'Alerts/Results'
+    智能层 · 规则引擎 + 预训练模型: 'Intelligence Layer · Rule Engine + Pretrained Models'
+    规则引擎: 'Rule Engine'
+    阈值规则 / 条件触发: 'Threshold Rules / Condition Triggers'
+    预训练模型: 'Pretrained Models'
+    异常检测 / 预测: 'Anomaly Detection / Prediction'
+    数据源: 'Data Source'
+    告警/控制指令: 'Alerts/Control Commands'
+    平台层: 'Platform Layer'
+    认证 / 设备管理 / 数据中心: 'Auth / Device Mgmt / Data Center'
+    接入数据: 'Ingested Data'
+    接入层: 'Access Layer'
+    设备数据: 'Device Data'
+    设备层: 'Device Layer'
+    传感器 / 控制器 / 边缘网关: 'Sensors / Controllers / Edge Gateways'
+    AGI 时代平台: 'AGI-Era Platform'
+    Agent 编排 + 动态模型调度 + 独立安全护栏: 'Agent Orchestration + Dynamic Model Scheduling + Independent Guardrail'
+    结果/告警: 'Results/Alerts'
+    安全护栏层 · 所有自动决策必经: 'Safety Guardrail Layer · mandatory for all automated decisions'
+    决策校验服务: 'Decision Validation Service'
+    操作区间约束: 'Operating-Range Constraints'
+    人工接管接口: 'Human Takeover Interface'
+    自动决策: 'Automated Decisions'
+    智能层 · Agent 编排 + 模型调度: 'Intelligence Layer · Agent Orchestration + Model Scheduling'
+    Agent 编排层: 'Agent Orchestration Layer'
+    多Agent调度 · 上下文管理 · 推理链追踪: 'Multi-Agent Scheduling · Context Mgmt · Reasoning Traces'
+    模型调度网关: 'Model Scheduling Gateway'
+    端/云模型路由 · 模型版本管理: 'Edge/Cloud Model Routing · Model Versioning'
+    调用: 'Calls'
+    边缘模型: 'Edge Models'
+    云端模型: 'Cloud Models'
+    动态路由: 'Dynamic Routing'
+    决策送检: 'Submit for Check'
+    受控决策向下 · 校验通过后执行: 'Controlled decisions flow down · executed once validated'
+    人工确认: 'Human Confirmation'
+    图例: 'Legend'
+    设备与边缘: 'Devices & Edge'
+    接入与平台基础服务: 'Access & Platform Services'
+    AI 与 Agent 能力: 'AI & Agent Capabilities'
+    安全与管控: 'Safety & Control'
+    外部应用与 UI: 'External Apps & UI'
+    实线箭头 = 同步调用/强依赖: 'Solid arrows = synchronous calls / hard dependencies'
+    虚线箭头 = 异步事件/可选路由: 'Dashed arrows = async events / optional routes'
+    图14-6 AGI时代物联网架构演进。基础数据沿设备、接入、平台、智能逐层向上；受控决策经独立安全护栏沿另一链路向下返回平台执行。: 'Figure 14-6 IoT architecture evolution in the AGI era. Base data flows up through the device, access, platform, and intelligence layers; controlled decisions return down a separate path, through the independent safety guardrail, for platform execution.'

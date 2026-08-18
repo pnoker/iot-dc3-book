@@ -1,0 +1,153 @@
+type: architecture
+title: 图2-7 IoT DC3 五大中心逻辑关系
+purpose: 展示Gateway、Auth、Manager、Data、Agentic五个微服务之间的调用依赖和数据流向，以及它们与外部基础设施（消息队列、时序数据库）的关系。
+audience_takeaway: 读者应理解DC3五大中心的分工边界：Gateway收口、Auth管准入、Manager管定义、Data管流转、Agentic管推理；以及Agentic中心如何通过API调度Data和Manager实现理解→决策闭环。
+visual_focus: 从Gateway中心接收外部请求，经Auth校验后分发给Manager（元数据查询）和Data（数据读写）的主调用链路；Agentic中心作为独立智能层通过内部API调度Data和Manager。
+design_level: logical
+layout: 自下而上分层布局：存储层（时序数据库）→ 数据层（Data中心）→ 基础服务层（Auth、Manager中心）→ 接入层（Gateway中心），AI层（Agentic中心）横向挂接在数据层和基础服务层之间。
+elements:
+- Gateway、Auth、Manager、Data 与 Agentic 五大中心
+- 消息队列与时序数据库
+relationships:
+- Gateway → Auth：校验令牌与访问身份
+- Gateway → Manager、Data、Agentic：路由元数据、数据与 AI 请求
+- Agentic → Manager、Data：查询元数据并读取数据或提交命令
+- Data → 消息队列、时序数据库：异步交换设备消息并持久化位号值
+components:
+- id: gateway_center
+  label: Gateway 中心
+  type: platform
+  subtitle: 路由、鉴权、限流
+  group: ''
+  priority: primary
+  shape: card
+- id: auth_center
+  label: Auth 中心
+  type: platform
+  subtitle: 身份、RBAC、租户
+  group: ''
+  priority: normal
+  shape: card
+- id: manager_center
+  label: Manager 中心
+  type: platform
+  subtitle: 设备模板、位号定义
+  group: ''
+  priority: normal
+  shape: card
+- id: data_center
+  label: Data 中心
+  type: data
+  subtitle: 位号值写入、查询、命令
+  group: ''
+  priority: primary
+  shape: card
+- id: agentic_center
+  label: Agentic 中心
+  type: ai
+  subtitle: 大模型、工具调用
+  group: ''
+  priority: primary
+  shape: card
+- id: message_queue
+  label: 消息队列
+  type: data
+  subtitle: AMQP
+  group: ''
+  priority: normal
+  shape: database
+- id: tsdb
+  label: 时序数据库
+  type: data
+  subtitle: 位号值存储
+  group: ''
+  priority: normal
+  shape: database
+connections:
+- from: gateway_center
+  to: auth_center
+  label: 令牌校验
+  style: solid
+  direction: request
+- from: gateway_center
+  to: manager_center
+  label: 元数据查询
+  style: solid
+  direction: request
+- from: gateway_center
+  to: data_center
+  label: 数据读写/命令
+  style: solid
+  direction: request
+- from: gateway_center
+  to: agentic_center
+  label: AI 请求
+  style: solid
+  direction: request
+- from: agentic_center
+  to: data_center
+  label: 查询/命令
+  style: dashed
+  direction: request
+- from: agentic_center
+  to: manager_center
+  label: 元数据查询
+  style: dashed
+  direction: request
+- from: data_center
+  to: message_queue
+  label: 驱动上报/命令回执
+  style: dashed
+  direction: event
+- from: data_center
+  to: tsdb
+  label: 写入/查询
+  style: solid
+  direction: request
+regions: []
+callouts: []
+legend:
+- 蓝色实线卡片：平台微服务节点
+- 灰色虚线数据库：外部基础设施
+- 实线箭头：REST API 同步调用（外部请求入口）
+- 虚线箭头：Agentic 中心发起的内部 REST 调用或 AMQP 消息
+visual_constraints:
+- 最多7个节点，节点标签短，解释放入正文。
+- 图例放在图底部，不遮挡主体结构。
+- 虚线箭头只用于 Agentic 中心调用和异步消息路径，避免全图都是虚线。
+render_notes: HTML/SVG渲染，浅色背景。采用自上而下三层布局，Agentic 中心置于右侧并独立于主链路。Gateway、Auth、Manager、Data 使用蓝色系，Agentic 使用橙色，消息队列和 TSDB 使用灰色。箭头带短标签，底部图例。
+caption:
+  zh: 图2-7 IoT DC3 五大中心逻辑关系。Gateway 是北向唯一入口，Auth 提供鉴权上下文，Manager 提供元数据，Data 是数据核心枢纽，Agentic 是 AI 能力层。数据经由消息队列解耦采集与命令下发。
+  en: 'Figure 2-7 Logical relationships among the five IoT DC3 centers. Gateway is the sole northbound entry, Auth provides the authorization context, Manager provides metadata, Data is the core data hub, and Agentic is the AI capability layer. The message queue decouples data collection from command delivery.'
+labels:
+  en:
+    图2-7 IoT DC3 五大中心逻辑关系: Figure 2-7 Logical View of the Five IoT DC3 Centers
+    Gateway 是北向唯一入口，Auth 提供鉴权上下文，Manager 提供元数据，Data 是数据核心枢纽，Agentic 是 AI 能力层，数据经消息队列解耦采集与命令下发。: Gateway is the sole northbound entry, Auth provides the authorization context, Manager provides metadata, Data is the core data hub, and Agentic is the AI capability layer; the message queue decouples collection from command delivery.
+    Gateway 收口、Auth 管准入、Manager 管定义、Data 管流转、Agentic 管推理: Gateway routes, Auth admits, Manager defines, Data moves, Agentic reasons
+    令牌校验: Token Verification
+    元数据查询: Metadata Query
+    数据读写/命令: Data R/W / Commands
+    AI 请求: AI Request
+    查询/命令: Query / Command
+    驱动上报/命令回执: Driver Reports / Command ACKs
+    写入/查询: Write / Query
+    Gateway 中心: Gateway Center
+    路由 · 鉴权 · 限流: Routing · Auth · Throttling
+    Auth 中心: Auth Center
+    身份 · RBAC · 租户: Identity · RBAC · Tenants
+    Manager 中心: Manager Center
+    设备模板 · 位号定义: Device Templates · Point Definitions
+    Data 中心: Data Center
+    位号值写入 · 查询 · 命令: Point-Value Write · Query · Command
+    Agentic 中心: Agentic Center
+    大模型 · 工具调用: LLMs · Tool Calls
+    消息队列: Message Queue
+    时序数据库: Time-Series DB
+    位号值存储: Point-Value Storage
+    平台微服务节点: Platform Microservice Node
+    外部基础设施: External Infrastructure
+    Agentic（AI 层）: Agentic (AI Layer)
+    REST 同步调用: REST Sync Call
+    Agentic 内部调用: Agentic Internal Call
+    AMQP 消息: AMQP Message
+    图2-7 五大中心按入口、准入、定义、数据流转和智能推理分工协作，数据经消息队列解耦采集与命令下发。: Figure 2-7 The five centers divide the work across entry, admission, definitions, data flow, and reasoning, with the message queue decoupling collection from command delivery.

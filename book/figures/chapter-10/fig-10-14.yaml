@@ -1,0 +1,51 @@
+type: lifecycle
+title: 图10-14 工业模型的持续监控与更新闭环
+audience_takeaway: 读者应理解区分数据漂移与概念漂移，用 KS 检验检测漂移，按轻量校准、主动学习、全量重训练三级响应，形成检测到再监控的闭环流水线。
+purpose: 展示工业模型的持续监控指标、漂移检测与更新策略闭环
+visual_focus: 两类漂移、三级响应与闭环流水线。
+design_level: lifecycle
+layout: 上半两类漂移，中部监控指标与三级响应，底部闭环流水线
+elements:
+- 数据漂移：特征分布变化、映射不变，增量训练校准
+- 概念漂移：映射关系改变，重采集标注、调整结构
+- 监控指标：误报率、漏报率，按设备类型/工况/产线切片
+- KS 检验：滑动窗口分布 vs 训练基线，连续窗口统计超阈值比例
+- 三级响应：轻量校准、主动学习、全量重训练
+relationships:
+- 漂移类型决定应对策略；检测→评估→校准/重训练→部署→再监控形成闭环
+render_notes: HTML/SVG 渲染，两类漂移 + 三级响应 + 闭环流水线，蓝绿橙灰分层。
+caption:
+  zh: 图10-14 区分数据漂移与概念漂移，用 KS 检验检测漂移，按轻量校准、主动学习、全量重训练三级响应，形成检测、评估、校准/重训练、部署、再监控的闭环流水线。
+  en: Figure 10-14 Distinguish data drift from concept drift, detect drift with the KS test, and respond in three tiers — lightweight calibration, active learning, and full retraining — forming a closed-loop pipeline of detection, assessment, calibration/retraining, deployment, and re-monitoring.
+labels:
+  en:
+    图10-14 工业模型的持续监控与更新闭环: Figure 10-14 Continuous Monitoring and Update Loop for Industrial Models
+    区分数据漂移与概念漂移，用 KS 检验检测，按三级响应更新，形成检测到再监控的闭环流水线。: Tell data drift from concept drift, detect with the KS test, update via three response tiers, and close the pipeline from detection back to re-monitoring.
+    部署不是终点，而是持续运维的起点: Deployment is the start of continuous ops
+    数据漂移（Data Drift）: Data Drift
+    输入特征统计分布变化，但输入与输出关系不变: Input distribution shifts; the input–output relation holds
+    例：环境温度因夏季整体升高，温度与磨损仍单调正相关: e.g., summer raises ambient temperature; temperature–wear correlation holds
+    应对：增量训练或重新采样校准: 'Fix: incremental training or recalibration'
+    设备特性随磨损、季节、工艺调整发生偏移: Equipment shifts with wear, season, process changes
+    概念漂移（Concept Drift）: Concept Drift
+    输入与输出的映射关系发生改变: The input–output mapping itself changes
+    例：电机更换新型号轴承，振动基频与退化关系变了: e.g., a new bearing model changes the vibration–degradation relation
+    应对：重新收集标注数据，甚至调整模型结构: 'Fix: re-collect labeled data, even change model structure'
+    训练时的统计分布已失效: The training distribution is stale
+    监控指标与漂移检测: Monitoring Metrics & Drift Detection
+    预测性维护关注误报率与漏报率：误报→非计划停机检查，漏报→设备损坏停产: 'Predictive maintenance watches false alarms and misses: false alarm → unplanned stop; miss → damage and downtime'
+    不能只看全局均值，须按设备类型、工况、产线切片分析: Don't trust global averages — slice by device type, duty, and line
+    两样本 KS 检验检测数据漂移: Two-sample KS test detects data drift
+    比较当前滑动窗口分布与训练基线分布，每关键特征独立计算 KS 统计量: Compares the sliding window against the training baseline; KS statistic per key feature
+    连续 10 个窗口统计超阈值比例，避免单次噪声误判: Tracks over-threshold share across 10 windows to dodge noise
+    三级响应: Three-Tier Response
+    ① 轻量校准：轻度漂移，特征缩放或离群样本增量修正: '① Light calibration: mild drift — rescale features or incrementally fix outliers'
+    ② 主动学习：中度漂移，人工标注关键样本，增量训练/微调: '② Active learning: moderate drift — hand-label key samples, incremental train/fine-tune'
+    ③ 全量重训练：F1 下降 5 个百分点以上，重走采集/特征/训练/验证/部署: '③ Full retrain: F1 drops 5+ points — redo collect/features/train/validate/deploy'
+    版本元数据: Version Metadata
+    模型 ID、训练窗口、验证指标、漂移特征、部署时间、7 日滚动准确率: Model ID, training window, validation metrics, drift features, deploy time, 7-day rolling accuracy
+    闭环流水线：检测 → 评估 → 校准/重训练 → 部署 → 再监控: 'Closed-loop pipeline: detect → assess → calibrate/retrain → deploy → re-monitor'
+    关键不是固定周期，而是建立闭环；旋转设备每季度至半年重校准基线，季节性产线换季后两周内校准: The loop, not a fixed schedule, matters; recalibrate rotating gear quarterly to semiannually, seasonal lines within 2 weeks of changeover
+    工业现场人工确认漂移判断、人工审核校准样本，往往比全自动更可靠: On the floor, humans confirming drift calls and reviewing samples often beat full automation
+    若某设备误报率高出同类两倍以上，优先排查传感器故障或通信噪声，而非急于调参: If one device's false-alarm rate doubles its peers, check sensors or comms noise before tuning parameters
+    图10-14 区分数据漂移与概念漂移，用 KS 检验检测漂移，按轻量校准、主动学习、全量重训练三级响应，形成检测、评估、校准/重训练、部署、再监控的闭环流水线。: Figure 10-14 Distinguish data drift from concept drift, detect drift with the KS test, and respond in three tiers — lightweight calibration, active learning, and full retraining — forming a closed-loop pipeline of detection, assessment, calibration/retraining, deployment, and re-monitoring.

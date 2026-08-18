@@ -1,0 +1,40 @@
+type: flowchart
+title: 图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈
+audience_takeaway: 读者应理解灌溉决策从纯阈值反馈升级为“阈值 + 天气预报前馈”的混合控制：湿度低于下限时先查降水预报，有雨推迟灌溉、无雨才按水分平衡公式计算灌溉量。
+purpose: 展示智能灌溉的决策流程，突出天气预报前馈对纯阈值控制的改进
+visual_focus: 主决策链（湿度判断 → 降水判断 → 灌溉量计算 → 开阀）。
+design_level: flowchart
+layout: 纵向决策流程，两个菱形判断节点，右侧“否 / 是”分支
+elements:
+- 传感器回传实时湿度值
+- 判断 1：湿度 < 下限？（否 → 等待下次采样）
+- 获取未来 12～24h 降水
+- 判断 2：降水概率 > 阈值？（是 → 推迟灌溉并记录决策依据）
+- 计算灌溉量：灌溉量 = (田间持水量 − 当前含水量) × 根系深度 × 1000 × 计划湿润比
+- 开阀灌溉 → 渗水休止
+relationships:
+- 湿度 < 下限 → 查降水 → 有雨推迟 / 无雨计算灌溉量 → 开阀
+render_notes: HTML/SVG 渲染，纵向决策流程，菱形判断、矩形动作，蓝色主链、橙色前馈分支。
+caption:
+  zh: 图12-8 灌溉决策先判断湿度是否跌破下限，再查询降水预报：预报有雨则推迟灌溉，无雨才按水分平衡公式计算灌溉量并开阀，从而避免“浇完就下雨”的浪费。
+  en: 'Figure 12-8 Irrigation decisions first check whether moisture has fallen below the lower limit, then consult the rainfall forecast: if rain is forecast, irrigation is deferred; only otherwise is the irrigation amount computed with the water-balance formula and the valve opened, avoiding the waste of watering right before it rains.'
+labels:
+  en:
+    图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈: 'Figure 12-8 Smart Irrigation Control: Threshold + Weather Feedforward'
+    湿度低于下限时先查降水预报：预报有雨则推迟灌溉，无雨才计算灌溉量并开阀；高于上限则缩短采样间隔。: 'When moisture falls below the lower limit, check the rain forecast first: defer irrigation if rain is coming, otherwise compute the amount and open the valve; above the upper limit, shorten the sampling interval.'
+    从“看到历史再反应”升级为“预判未来再决策”的混合控制: 'Hybrid control: from reacting to history to deciding on forecast'
+    传感器回传实时湿度值: Sensor reports live moisture
+    湿度 &lt; 下限？: Moisture < lower limit?
+    否 · 等待下次采样: No · wait for next sample
+    否: 'No'
+    是: 'Yes'
+    获取未来 12～24h 降水: Fetch 12–24 h rain forecast
+    降水概率 &gt; 阈值？: Rain probability > threshold?
+    是 · 推迟灌溉并记录决策依据: Yes · defer irrigation and log the reason
+    计算灌溉量（水分平衡公式）: Compute irrigation amount (water balance)
+    灌溉量(mm) = (田间持水量 − 当前含水量) × 根系深度(m) × 1000 × 计划湿润比: Irrigation (mm) = (field capacity − current moisture) × root depth (m) × 1000 × planned wetting fraction
+    计划湿润比取 0.3～0.8，视作物与灌溉方式而定: Planned wetting fraction 0.3–0.8, by crop and irrigation type
+    开阀灌溉 → 渗水休止: Open valve → irrigate → stop after infiltration
+    工程要点：天气 API 的可靠性是前馈方案成败关键: 'Engineering note: weather API reliability makes or breaks feedforward'
+    免费 API 在高纬度或山区偏差较大，应架设本地小型气象站补充；先跑裸阈值控制积累数据，再逐步开启前馈部分；天气 API 离线时降级回退到纯阈值控制。: Free APIs drift at high latitudes and in mountains — add a local mini weather station; run bare threshold control first to collect data, then enable feedforward gradually; fall back to pure threshold control when the API is offline.
+    图12-8 灌溉决策先判断湿度是否跌破下限，再查询降水预报：预报有雨则推迟灌溉，无雨才按水分平衡公式计算灌溉量并开阀，从而避免“浇完就下雨”的浪费。: 'Figure 12-8 Irrigation decisions first check whether moisture has fallen below the lower limit, then consult the rainfall forecast: if rain is forecast, irrigation is deferred; only otherwise is the irrigation amount computed with the water-balance formula and the valve opened, avoiding the waste of watering right before it rains.'

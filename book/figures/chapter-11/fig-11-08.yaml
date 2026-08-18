@@ -1,0 +1,123 @@
+type: architecture
+title: 图11-8 云边协同分层架构示意
+purpose: 展示智慧交通场景中从设备层到云端层的四层数据处理与模型协同部署关系，重点说明不同层级承担的职责和数据处理流。
+audience_takeaway: 读者应理解云边协同不是简单地把计算下放，而是按延迟、数据量和算力三个维度进行任务卸载；每层有其清晰的职责边界。
+visual_focus: 从设备层到云端层的数据流路径用蓝色粗箭头强调；云端向边缘下发模型和策略的路径用橙色虚线箭头表示；RSU层和汇聚边缘层用青绿色/蓝色强调其边缘计算角色。
+design_level: logical
+layout: 自上而下分层矩形块，设备层→路侧边缘层→汇聚边缘层→云端层；箭头标注数据流和模型下发流。
+elements:
+- 设备层：车辆、摄像头、地磁线圈，灰色节点。
+- 路侧边缘层：RSU / 嵌入式节点，青绿色节点，带毫秒级响应标识。
+- 汇聚边缘层：区域服务器 / 5G MEC，蓝色节点，带短期预测标识。
+- 云端层：云平台 / 训练集群，深蓝色数据库节点，带全局训练标识。
+relationships:
+- 设备层通过有线/无线链路将原始数据上传至路侧边缘层。
+- 路侧边缘层将聚合统计量发送至汇聚边缘层。
+- 汇聚边缘层将压缩后的训练数据上传至云端层。
+- 云端层通过模型下发通道将更新后的模型发往汇聚边缘层。
+regions:
+- id: device_domain
+  label: 设备域
+  role: 原始数据产生源
+- id: edge_rsu_domain
+  label: 路侧边缘域
+  role: 毫秒级实时响应与本地决策
+- id: edge_aggregate_domain
+  label: 汇聚边缘域
+  role: 短期预测、数据缓存与格式转换
+- id: cloud_domain
+  label: 云端域
+  role: 全局模型训练、长期分析与模型管理
+components:
+- id: device_layer
+  label: 设备层
+  type: edge
+  subtitle: 车辆、摄像头、地磁线圈
+  group: device_domain
+  priority: normal
+  shape: card
+- id: rsu_layer
+  label: 路侧边缘层
+  type: edge
+  subtitle: RSU / 嵌入式节点
+  group: edge_rsu_domain
+  priority: primary
+  shape: card
+- id: aggregate_edge_layer
+  label: 汇聚边缘层
+  type: platform
+  subtitle: 区域服务器 / 5G MEC
+  group: edge_aggregate_domain
+  priority: primary
+  shape: card
+- id: cloud_layer
+  label: 云端层
+  type: data
+  subtitle: 云平台 / 训练集群
+  group: cloud_domain
+  priority: normal
+  shape: database
+connections:
+- from: device_layer
+  to: rsu_layer
+  label: 原始数据流
+  style: solid
+  direction: bottom-to-top
+- from: rsu_layer
+  to: aggregate_edge_layer
+  label: 聚合统计流
+  style: solid
+  direction: bottom-to-top
+- from: aggregate_edge_layer
+  to: cloud_layer
+  label: 压缩训练数据
+  style: solid
+  direction: bottom-to-top
+- from: cloud_layer
+  to: aggregate_edge_layer
+  label: 模型更新下发
+  style: dashed
+  direction: top-to-bottom
+callouts:
+- 路侧边缘层用青绿色强调，聚焦于毫秒级实时响应。
+- 汇聚边缘层是模型推理的主要阵地，承担短期预测任务。
+- 云端负责全局模型训练和策略下发，不直接控制现场设备。
+legend:
+- 蓝色/青绿色=边缘计算节点；蓝色=平台或汇聚层；青绿色=数据存储；灰色=外部设备。
+- 实线箭头=实时或聚合数据流；虚线箭头=模型或配置下发。
+visual_constraints:
+- 最多5个主节点，节点标签短，解释放入callouts。
+- 图例放在图底部，不遮挡分组边界。
+- 橙色只用于模型下发链路。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形，四层分明，箭头带短标签，底部图例和出版级图注。
+caption:
+  zh: 图11-8 云边协同分层架构示意：设备层数据经路侧RSU实时处理后，聚合统计上传至区域汇聚节点，汇聚节点运行短期预测模型，并与云端进行训练数据交换。
+  en: 'Figure 11-8 Layered edge-cloud collaboration architecture: device data is processed in real time by the roadside RSU, aggregated statistics are uploaded to regional aggregation nodes, which run short-term prediction models and exchange training data with the cloud.'
+labels:
+  en:
+    图11-8 云边协同分层架构示意: 'Figure 11-8 Layered Edge-Cloud Collaboration'
+    延迟敏感任务逐层就近处理，数据逐层上行，云端负责全域训练与策略协调并向边缘下发模型。: 'Latency-sensitive tasks run near the source; data flows up layer by layer; the cloud trains and pushes models down.'
+    延迟敏感任务逐层就近处理，云端负责全域训练与策略协调: 'Latency-sensitive tasks run near the source; the cloud trains and coordinates'
+    云端层 · 云平台 / 训练集群: 'Cloud Layer · platform / training cluster'
+    全域历史数据 · 全局需求预测 · 多路口协同调度 · 模型训练与版本管理: 'City-wide history · global forecasts · cross-intersection scheduling · model training/versioning'
+    分钟级 / 小时级: 'Minutes / hours'
+    全局最优: 'Global optimum'
+    汇聚边缘层 · 区域服务器 / 5G MEC: 'Aggregation Edge · regional servers / 5G MEC'
+    聚合多个 RSU 统计 · 短期拥堵预测 · 内存数据库 · 断网降级: 'Multi-RSU aggregation · short-term congestion forecast · in-memory DB · offline degradation'
+    秒级 / 分钟级: 'Seconds / minutes'
+    区域协同: 'Regional coordination'
+    路侧边缘层 · RSU / 嵌入式边缘节点: 'Roadside Edge · RSU / embedded nodes'
+    相位切换 · OBU 验证 · 安全预警过滤 · 原始数据短时缓存: 'Phase switching · OBU check · safety-alert filtering · short raw cache'
+    毫秒级: 'Milliseconds'
+    路口本地闭环: 'Local intersection loop'
+    设备层: 'Device Layer'
+    车辆 / OBU: 'Vehicles / OBU'
+    摄像头: 'Cameras'
+    地磁线圈: 'Magnetic loop'
+    原始感知数据: 'Raw sensing data'
+    车流量 / 平均车速: 'Traffic volume / mean speed'
+    压缩统计 / 预测结果: 'Compressed stats / forecasts'
+    数据上行：逐层聚合压缩: 'Data uplink: aggregate & compress per layer'
+    下发模型、版本与调度策略: 'Push models, versions & schedules'
+    模型/策略下发：带版本控制与回退: 'Model/policy delivery: versioned with rollback'
+    图11-8 四层按延迟、数据量与算力分工：数据逐层上行，云端训练的模型和策略向边缘下发。: 'Figure 11-8 Layers split by latency, data volume, and compute: data flows up, cloud-trained models and policies flow down.'

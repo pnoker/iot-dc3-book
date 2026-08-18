@@ -1,0 +1,54 @@
+type: matrix
+title: 图7-14 MLOps 与 LLMOps 的边界及五道发布门
+audience_takeaway: 读者应理解 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元，发布经五道门逐步放权。
+purpose: 对比 MLOps 与 LLMOps 的治理边界，展示五道发布门
+visual_focus: 五维对比表与底部五道发布门。
+design_level: matrix
+layout: 上半五维对比表（数据/资产/评测/发布/监控），下半五道发布门流程
+elements:
+- MLOps 重点：训练数据、模型、精度召回、模型注册、数据漂移
+- LLMOps 新增：Prompt、RAG 索引、Tool schema、策略、忠实性、越权、成本
+- 五道发布门：离线回归 → 影子流量 → 灰度租户 → 只读先行 → 扩大范围
+relationships:
+- MLOps 与 LLMOps 互补而非替代；五道门由严到宽逐步放权
+render_notes: HTML/SVG 渲染，五维对比表 + 底部五道发布门流程，蓝/绿区分新旧重点。
+caption:
+  zh: 图7-14 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元；发布经离线回归、影子流量、灰度租户、只读先行、扩大范围五道门逐步放权。
+  en: Figure 7-14 MLOps governs data and models, while LLMOps brings prompts, indexes, tool schemas, policies, and evaluation sets into the release unit; releases pass five gates — offline regression, shadow traffic, canary tenants, read-only first, and widening scope — granting autonomy step by step.
+labels:
+  en:
+    图7-14 MLOps 与 LLMOps 的边界及五道发布门: Figure 7-14 MLOps vs. LLMOps boundaries and the five release gates
+    MLOps 治理模型与数据，LLMOps 新增 Prompt、索引、Tool schema、策略与评测集，经五道发布门逐步放权。: MLOps governs models and data; LLMOps adds prompts, indexes, tool schemas, policies, and eval sets — five gates widen autonomy step by step.
+    AI 应用是一组有依赖关系的资产，而不只是一个模型: An AI app is a set of interdependent assets, not just a model
+    维度: Dimension
+    MLOps 重点: MLOps focus
+    LLMOps 新增重点: LLMOps additions
+    数据: Data
+    训练/验证数据、特征、标签: Training/validation data, features, labels
+    特征流水线: Feature pipelines
+    Prompt、会话、RAG 语料、工具返回、人工反馈: Prompts, sessions, RAG corpora, tool returns, human feedback
+    新增: New
+    资产: Assets
+    模型、训练代码、特征流水线: Models, training code, feature pipelines
+    模型、Prompt、索引、Tool schema、策略、评测集: Models, prompts, indexes, tool schemas, policies, eval sets
+    评测: Evaluation
+    精度、召回、漂移、服务指标: Accuracy, recall, drift, serving metrics
+    忠实性、拒答、轨迹、越权、成本、非确定性波动: Faithfulness, refusals, traces, violations, cost, non-determinism
+    发布: Release
+    模型注册、灰度、回滚: Model registry, canary, rollback
+    组件独立版本、只读先行、自主度分级、策略回退: Per-component versioning, read-only first, autonomy tiers, policy fallback
+    监控: Monitoring
+    数据/概念漂移、预测质量: Data/concept drift, prediction quality
+    无证据回答、工具失败、注入、人工拒绝、上下文污染: Ungrounded answers, tool failures, injection, human rejections, context pollution
+    五道发布门：先证明没有破坏，再逐步放权: 'Five gates: prove no breakage first, then widen autonomy'
+    ① 离线回归: ① Offline regression
+    golden set + 不可回答集 + 攻击集: golden set + unanswerable set + attack set
+    ② 影子流量: ② Shadow traffic
+    读真实请求、无外部副作用: Read real requests, no side effects
+    ③ 灰度租户: ③ Canary tenants
+    仅限定租户、设备、用户开放: Only selected tenants, devices, users
+    ④ 只读先行: ④ Read-only first
+    先查询 Tool，再需确认的写操作: Query tools first, then confirmed writes
+    ⑤ 扩大范围: ⑤ Widen scope
+    指标稳定、演练通过后增加场景: Add scenarios once metrics and drills pass
+    图7-14 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元；发布经离线回归、影子流量、灰度租户、只读先行、扩大范围五道门逐步放权。: Figure 7-14 MLOps governs data and models, while LLMOps brings prompts, indexes, tool schemas, policies, and evaluation sets into the release unit; releases pass five gates — offline regression, shadow traffic, canary tenants, read-only first, and widening scope — granting autonomy step by step.

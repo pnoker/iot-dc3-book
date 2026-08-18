@@ -1,0 +1,151 @@
+type: flowchart
+title: 图13-4 数据上链流程图
+audience_takeaway: 读者应理解存证是'链下存原文、链上存指纹'的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。
+purpose: 展示从传感器采样到链上存证、链下存储、验证的完整流程，说明链下存储与链上指纹的协作关系。
+visual_focus: 从传感器到终点的主链路。
+design_level: implementation
+layout: 自左向右的流程，传感器→边缘节点（聚合+哈希）→分支：左侧去往IPFS/Arweave（链下存储），右侧去往区块链（链上存证）→两侧再合并到验证方。
+elements:
+- 传感器：设备采样、生成JSON记录，用青绿色图标。
+- 边缘节点：聚合数据、计算哈希（可构建Merkle树），用蓝色图标。
+- IPFS/Arweave：去中心化存储节点，用灰色图标，标注‘链下存储’。
+- 区块链：智能合约接收哈希，写入日志事件，用蓝色图标，标注‘链上存证’。
+- 验证方：从链下获取原始数据、计算哈希，与链上查询比对，用蓝色图标。
+relationships:
+- 传感器 → 边缘节点：实线箭头，标注‘采样数据’。
+- 边缘节点 → IPFS/Arweave：实线箭头，标注‘原始数据’。
+- 边缘节点 → 区块链：实线箭头，标注‘哈希+元数据’。
+- IPFS/Arweave → 验证方：实线箭头，标注‘提供原始数据’。
+- 区块链 → 验证方：实线箭头，标注‘查询哈希是否存在’。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: decision_domain
+  label: 决策判断域
+  role: 判断条件与分支边界
+components:
+- id: r1
+  label: 传感器
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 边缘节点：实线箭头，标注‘采样数据’
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: database
+- id: r3
+  label: 边缘节点
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: IPFS/Arweave：实线箭头…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 区块链：实线箭头，标注‘哈希+元数…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r6
+  label: IPFS/Arweave
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: 验证方：实线箭头，标注‘提供原始数…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r8
+  label: 区块链
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r9
+  label: 验证方：实线箭头，标注‘查询哈希是…
+  type: decision
+  subtitle: ''
+  group: decision_domain
+  priority: normal
+  shape: decision
+connections:
+- from: r1
+  to: r2
+  label: 传感器 → 边缘节点：实线箭头，标…
+  style: solid
+  direction: request
+- from: r3
+  to: ipfs_arweave
+  label: 边缘节点 → IPFS/Arwea…
+  style: solid
+  direction: request
+callouts:
+- 传感器 → 边缘节点：实线箭头，标注‘采样数据’
+- 边缘节点 → IPFS/Arweave：实线箭头，标注‘原始数据’
+- 边缘节点 → 区块链：实线箭头，标注‘哈希+元数据’
+legend:
+- 青绿色=设备/传感器；蓝色=核心处理逻辑；灰色=外部存储系统。
+- 实线箭头=同步/主动推送；虚线箭头=查询/读取。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: HTML/SVG渲染，浅色背景，流程穿越表示使用折线，避免交叉。关键节点加粗边框，箭头带文字标签。
+caption:
+  zh: 图13-4 展示数据从传感器采样到链下存储和链上存证，最终验证方通过两侧数据比对确认完整性的典型流程。
+  en: 'Figure 13-4 The typical flow in which data sampled by sensors goes to off-chain storage and on-chain attestation, and the verifier finally confirms integrity by comparing data from both sides.'
+labels:
+  en:
+    图13-4 数据上链流程图: Figure 13-4 Data On-Chain Flow
+    数据从传感器采样，经边缘节点分两路：原始数据存入链下存储，哈希与元数据写入链上；验证方重算哈希与链上比对确认完整性。: 'Sensor data splits at the edge: raw data off-chain, hash + metadata on-chain; the verifier re-hashes and compares on-chain to confirm integrity.'
+    存证是“链下存原文、链上存指纹”的分工，兼顾存储成本与不可篡改性: Originals off-chain, fingerprints on-chain — balancing cost and tamper resistance
+    传感器: Sensor
+    设备采样: Device sampling
+    生成 JSON 记录: Generate JSON record
+    边缘节点: Edge Node
+    聚合数据 · 计算哈希: Aggregate data · compute hash
+    （可构建 Merkle 树）: '(Merkle tree optional)'
+    去中心化存储节点: Decentralized Storage Node
+    链下存储: Off-chain Storage
+    区块链: Blockchain
+    智能合约接收哈希 · 写入日志事件: Contract takes hash · logs event
+    链上存证: On-chain Attestation
+    验证方: Verifier
+    取原始数据 · 重算哈希: Fetch raw data · re-hash
+    链上比对 · 确认完整性: Compare on-chain · confirm integrity
+    采样数据: Sampled data
+    原始数据: Raw data
+    哈希+元数据: Hash + metadata
+    提供原始数据: Provides raw data
+    查询哈希是否存在: Query hash existence
+    青绿 = 设备 / 传感器: Teal = Devices / Sensors
+    蓝 = 核心处理 / 链上: Blue = Core Processing / On-chain
+    灰 = 外部存储 / 链下: Gray = External Storage / Off-chain
+    实线 = 同步推送 · 虚线 = 查询 / 读取: Solid = push · Dashed = query / read
+    图13-4 数据从传感器采样后，原始数据存链下、哈希指纹存链上，验证方通过两侧数据比对确认完整性。: Figure 13-4 Raw data off-chain, hash fingerprints on-chain; the verifier compares both to confirm integrity.

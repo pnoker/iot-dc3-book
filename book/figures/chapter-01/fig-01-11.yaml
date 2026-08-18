@@ -1,0 +1,43 @@
+type: layered
+title: 图1-11 四层物联网参考架构示意图
+purpose: 展示物联网四层参考架构及层间数据流
+audience_takeaway: 读者应理解物联网系统由四个职责清晰且相互依赖的层次构成，安全作为一个跨越所有层的约束条件存在。
+visual_focus: 数据从感知层上行至应用层的主链路，以及指令下行的反向回路。
+design_level: logical
+layout: 从下到上垂直堆叠，左侧标出贯穿的安全条带
+elements:
+- 应用层：仪表盘、移动App、业务后端
+- 平台层：设备管理、数据存储与流处理、API网关
+- 网络层：MQTT、CoAP、LoRaWAN、NB-IoT
+- 感知层：传感器、执行器
+relationships:
+- 感知层（传感器）→ 网络层：MQTT/CoAP——上行数据
+- 网络层 → 平台层（API网关）——上行数据
+- 平台层（数据存储）→ 应用层（仪表盘）——推送数据
+- 应用层（业务后端）→ 平台层（API网关）——指令下发
+- 平台层（设备管理）→ 网络层：LoRaWAN/NB-IoT——指令下发
+- 网络层 → 感知层（执行器）——指令下发
+legend:
+- 橙色箭头：上行数据流
+- 蓝色箭头：下行指令流
+- 金色竖条：安全贯穿线
+render_notes: 垂直分层，每层用一个带标题的圆角矩形表示。上行数据用橙色箭头标注，下行指令用蓝色箭头标注。左侧绘制一条金色竖带，标注“安全”，表示安全是跨越所有层的治理能力。使用 SVG 绘制，整体居中对齐。
+caption:
+  zh: 图1-11 四层物联网参考架构。数据从感知层上行至应用层，指令以相反方向下行，形成闭环控制。安全条带从左侧贯穿，跨越所有层次。
+  en: Figure 1-11 A four-layer IoT reference architecture. Data flows up from the sensing layer to the application layer while commands travel the opposite way down, forming closed-loop control. A security band runs down the left side, spanning every layer.
+labels:
+  en:
+    图1-11 四层物联网参考架构示意图: Figure 1-11 Four-Layer IoT Reference Architecture
+    四层物联网参考架构与层间数据/指令流: Four-layer IoT reference architecture with data/command flows between layers
+    感知—网络—平台—应用四层堆叠，安全贯穿，数据上行 / 指令下行: Sensing—network—platform—application stack; security throughout; data up / commands down
+    安全贯穿线: Security spine
+    上行数据流: Upstream data flow
+    下行指令流: Downstream command flow
+    应用层: Application Layer
+    仪表盘 · 移动 App · 业务后端: Dashboards · mobile apps · business backends
+    平台层: Platform Layer
+    设备管理 · 数据存储与流处理 · API 网关: Device management · storage & stream processing · API gateway
+    网络层: Network Layer
+    感知层: Sensing Layer
+    传感器 · 执行器: Sensors · actuators
+    图1-11 四层物联网参考架构。数据从感知层上行至应用层，指令反向下行至执行器，安全作为跨越所有层的约束条件贯穿始终。: Figure 1-11 Four-layer IoT reference architecture. Data flows up from sensing to application, commands flow down to actuators, and security endures as a constraint across all layers.

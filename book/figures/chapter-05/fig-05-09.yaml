@@ -1,0 +1,127 @@
+type: dataflow
+title: 图5-9 Kappa架构示意图
+audience_takeaway: 读者应理解Kappa用单一流管道同时覆盖实时与历史：消息总线持久化原始流，历史分析靠Time Travel回放而非另建批管道，省去Lambda双管道维护。
+purpose: 展示Kappa架构如何通过单一流处理管道兼容实时与历史分析
+visual_focus: 从数据源到结果输出：持续输出的主链路。
+design_level: implementation
+layout: 单行流向布局，左中右三列
+elements:
+- 左侧 '数据源' 圆角矩形节点（标记'传感器/设备/MQTT代理'），引出两条实线箭头。
+- 第一条实线箭头直接向下连接到 '实时流处理' 菱形节点（标注'Flink / Kafka Streams'）。
+- 第二条实线箭头从数据源出发，先指向一个中间存储（标记'消息总线 / Kafka Topic'），然后从该存储引出实线箭头同样汇入同一菱形节点。
+- 菱形节点下方引出一条虚线箭头回头指向自己，标注'历史回放（Time Travel）'。
+- 菱形节点右侧引出实线箭头指向 '结果输出' 圆角矩形（告警系统 / Dashboard / 时序数据库）。
+relationships:
+- 数据源→实时流处理：实时数据流
+- 数据源→消息总线→实时流处理：持久化数据流
+- 实时流处理→历史回放：事件时间回溯
+- 实时流处理→结果输出：持续输出
+regions:
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 数据源
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: primary
+  shape: database
+- id: r2
+  label: 实时流处理：实时数据流
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r3
+  label: 消息总线→实时流处理：持久化数据流
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r4
+  label: 实时流处理
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 历史回放：事件时间回溯
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: 结果输出：持续输出
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 数据源→实时流处理：实时数据流
+  style: solid
+  direction: request
+- from: r1
+  to: r3
+  label: 数据源→消息总线→实时流处理：持久…
+  style: solid
+  direction: request
+- from: r4
+  to: r5
+  label: 实时流处理→历史回放：事件时间回溯
+  style: dashed
+  direction: event
+- from: r4
+  to: r6
+  label: 实时流处理→结果输出：持续输出
+  style: solid
+  direction: request
+callouts:
+- 数据源→实时流处理：实时数据流
+- 数据源→消息总线→实时流处理：持久化数据流
+- 实时流处理→历史回放：事件时间回溯
+legend:
+- 实线箭头：实时数据流
+- 虚线箭头：历史数据回放
+- 圆角矩形：数据源或数据槽
+- 菱形节点：核心计算引擎
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 菱形节点采用蓝绿色，虚线箭头使用灰色；数据源和输出端用浅色圆角矩形；所有箭头带文字标签。
+caption:
+  zh: Kappa架构通过单一流处理管道完成所有计算，历史数据的批量分析通过回放流（replay）实现，消除了Lambda架构并行维护两条管道的成本。
+  en: 'The Kappa architecture completes all computation through a single stream-processing pipeline; batch analysis of historical data is achieved by replaying the stream, eliminating the cost of maintaining two parallel pipelines as in the Lambda architecture.'
+labels:
+  en:
+    图5-9 Kappa 架构示意图: Figure 5-9 Kappa Architecture
+    原始流持久化后，实时与历史计算复用同一处理管道。: Once the raw stream is persisted, real-time and historical computation reuse the same pipeline.
+    单一流处理管道（实时与历史复用同一引擎）: Single pipeline (real-time & history share one engine)
+    实时数据流: Real-time data stream
+    持久化原始流: Persisted raw stream
+    历史回放（Time Travel）: Historical Replay (Time Travel)
+    持续输出: Continuous output
+    数据源: Data Sources
+    传感器 / 设备: Sensors / Devices
+    MQTT 代理: MQTT Broker
+    消息总线: Message Bus
+    实时流处理: Real-Time Stream Processing
+    结果输出: Results
+    告警系统: Alarm System
+    Dashboard · 时序库: Dashboard · Time-Series DB
+    实线箭头：实时数据流: 'Solid arrows: real-time data stream'
+    虚线箭头：历史数据回放（replay）: 'Dashed arrows: historical replay'
+    历史分析靠回放，而非另建批管道: History by replay, no batch pipeline
+    图5-9 Kappa 架构通过单一流处理管道完成所有计算：历史数据经 Time Travel 回放实现，消除了 Lambda 架构并行维护两条管道的成本。: 'Figure 5-9 The Kappa architecture runs all computation in a single stream-processing pipeline: historical data is handled via Time Travel replay, eliminating the cost of maintaining two parallel pipelines as in the Lambda architecture.'

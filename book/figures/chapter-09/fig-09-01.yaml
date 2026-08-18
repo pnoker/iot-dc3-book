@@ -1,0 +1,185 @@
+type: layered
+title: 图9-1 物联网协议栈与分类图
+purpose: 区分可直接承载IP的接入技术与通常需要IP适配或网关的接入技术，并展示它们汇入应用协议栈的路径。
+audience_takeaway: 读者应理解Wi-Fi与蜂窝网络通常直接承载IP，而BLE、Zigbee、LoRa通常需经适配或网关进入IP网络。
+visual_focus: 从感知层分出直接IP承载与需IP适配/网关两条路径，在网络层汇合后进入TCP/UDP与应用协议。
+design_level: logical
+layout: 自下而上分层；无线接入层左右分为常用IP承载和需IP适配/网关两列，汇入统一网络层。
+elements:
+- 感知层与传感器、执行器
+- 常用IP承载：Wi-Fi、蜂窝（NB-IoT、4G、5G）
+- 需IP适配或网关：BLE、Zigbee、LoRa
+- IP网络、TCP/UDP与应用层协议
+relationships:
+- 感知层 → Wi-Fi/蜂窝 → IP网络：直接IP承载
+- 感知层 → BLE/Zigbee/LoRa → IP适配或网关 → IP网络：适配后接入
+- IP网络 → TCP → MQTT、HTTP；IP网络 → UDP → CoAP：逐层封装
+- CoAP → LwM2M：为设备管理上层协议提供传输基础
+regions:
+- id: stack_domain
+  label: 网络协议栈
+  role: 感知层到传输层的协议封装边界
+- id: app_domain
+  label: 应用层域
+  role: 设备消息格式与互操作边界
+components:
+- id: perception
+  label: 感知层
+  type: edge
+  subtitle: 传感器、执行器
+  group: stack_domain
+  priority: primary
+  shape: card
+- id: direct_ip_access
+  label: 常用IP承载
+  type: edge
+  subtitle: Wi-Fi、蜂窝（NB-IoT、4G、5G）
+  group: stack_domain
+  priority: normal
+  shape: card
+- id: gateway_access
+  label: 需IP适配/网关
+  type: edge
+  subtitle: BLE、Zigbee、LoRa
+  group: stack_domain
+  priority: normal
+  shape: card
+- id: ip_adapter
+  label: IP适配或边缘网关
+  type: edge
+  subtitle: 协议转换、组网与IP接入
+  group: stack_domain
+  priority: normal
+  shape: card
+- id: network
+  label: 网络层
+  type: platform
+  subtitle: IP 分组
+  group: stack_domain
+  priority: normal
+  shape: card
+- id: transport
+  label: 传输层
+  type: platform
+  subtitle: TCP / UDP
+  group: stack_domain
+  priority: normal
+  shape: card
+- id: pubsub_protocol
+  label: 发布/订阅
+  type: application
+  subtitle: MQTT
+  group: app_domain
+  priority: primary
+  shape: card
+- id: reqresp_protocol
+  label: 请求/响应
+  type: application
+  subtitle: CoAP、HTTP
+  group: app_domain
+  priority: primary
+  shape: card
+- id: lwm2m_overlay
+  label: LwM2M
+  type: application
+  subtitle: 架于 CoAP 之上
+  group: app_domain
+  priority: normal
+  shape: card
+connections:
+- from: perception
+  to: direct_ip_access
+  label: 传感器数据
+  style: solid
+  direction: bottom-to-top
+- from: perception
+  to: gateway_access
+  label: 传感器数据
+  style: solid
+  direction: bottom-to-top
+- from: direct_ip_access
+  to: network
+  label: 直接承载IP
+  style: solid
+  direction: bottom-to-top
+- from: gateway_access
+  to: ip_adapter
+  label: 协议适配
+  style: dashed
+  direction: bottom-to-top
+- from: ip_adapter
+  to: network
+  label: 接入IP网络
+  style: solid
+  direction: bottom-to-top
+- from: network
+  to: transport
+  label: TCP/UDP 封装
+  style: solid
+  direction: bottom-to-top
+- from: transport
+  to: pubsub_protocol
+  label: 发布/订阅
+  style: solid
+  direction: bottom-to-top
+- from: transport
+  to: reqresp_protocol
+  label: 请求/响应
+  style: solid
+  direction: bottom-to-top
+- from: reqresp_protocol
+  to: lwm2m_overlay
+  label: 依赖 CoAP
+  style: dashed
+  direction: bottom-to-top
+callouts:
+- 应用层内部按通信模型分左右：左侧为发布/订阅模型，代表协议为 MQTT；右侧为请求/响应模型，代表协议为 CoAP、HTTP。
+- LwM2M 以虚线边框框在 CoAP 之上，表示其依赖关系。
+legend:
+- 青绿色：感知层与无线接入
+- 蓝色：网络层与传输层
+- 左侧蓝色系：发布/订阅模型
+- 右侧橙色系：请求/响应模型
+- 虚线边框：协议栈依赖关系
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts。
+- 图例放在底部，不遮挡主体结构。
+- 应用层内左右两列用不同颜色区分。
+render_notes: SVG 绘制五层水平矩形，左侧竖排标签“物联网协议栈”。最顶层左右两列用不同颜色区分通信模型，协议名称标注在对应色块内。各层之间虚线箭头表示数据流向。LwM2M 以虚线边框框在 CoAP 上方。底部署图例。
+caption:
+  zh: 图9-1 Wi-Fi与蜂窝常直接承载IP；BLE、Zigbee、LoRa通常经适配或网关接入IP网络。
+  en: Figure 9-1 Wi-Fi and cellular usually carry IP directly; BLE, Zigbee, and LoRa typically reach the IP network through adaptation or a gateway.
+labels:
+  en:
+    图9-1 物联网协议栈与分类图: Figure 9-1 IoT Protocol Stack and Classification
+    Wi-Fi 与蜂窝网络可直接承载 IP；BLE、Zigbee 与 LoRa 通常需经 IP 适配或网关后再进入 TCP、UDP 及应用协议。: Wi-Fi and cellular carry IP directly; BLE, Zigbee and LoRa reach TCP/UDP and application protocols through IP adaptation or a gateway.
+    接入技术先按是否直接承载 IP 分流，再汇入统一的传输层与应用层: Access splits by direct IP vs. adaptation, then merges into shared transport and application layers
+    物联网协议栈: IoT Protocol Stack
+    传感器数据: Sensor data
+    直接承载 IP: Direct IP
+    协议适配: Protocol adaptation
+    接入 IP 网络: Join IP network
+    TCP / UDP 封装: TCP / UDP encapsulation
+    发布 / 订阅: Publish / Subscribe
+    请求 / 响应: Request / Response
+    应用层: Application layer
+    设备消息格式与互操作边界: Device message format & interoperability boundary
+    MQTT · TCP 长连接: MQTT · TCP persistent connection
+    LwM2M · 架于 CoAP 之上: LwM2M · over CoAP
+    传输层: Transport layer
+    TCP · 面向连接: TCP · connection-oriented
+    UDP · 无连接: UDP · connectionless
+    网络层: Network layer
+    IP 分组 · 两类接入在此汇合: IP packets · both access paths merge here
+    IP 适配 / 边缘网关: IP adaptation / edge gateway
+    协议转换 · 组网与 IP 接入: Protocol conversion · networking & IP access
+    常用 IP 承载: Direct IP access
+    Wi-Fi · 蜂窝（NB-IoT / 4G / 5G）: Wi-Fi · Cellular (NB-IoT / 4G / 5G)
+    需 IP 适配 / 网关: Needs adaptation / gateway
+    感知层: Perception layer
+    传感器 · 执行器 · 产生数据与接收控制指令: Sensors · actuators · generate data, receive commands
+    网络层 / 传输层 · 直接 IP 主链: Network / transport · direct IP spine
+    感知层 / 无线接入 · 网关适配路径: Perception / wireless access · gateway path
+    请求 / 响应模型: Request / response model
+    适配 / 依赖边界: Adaptation / dependency boundary
+    图9-1 Wi-Fi 与蜂窝常直接承载 IP；BLE、Zigbee、LoRa 通常经适配或网关接入 IP 网络。: Figure 9-1 Wi-Fi and cellular usually carry IP directly; BLE, Zigbee and LoRa typically join the IP network via adaptation or a gateway.

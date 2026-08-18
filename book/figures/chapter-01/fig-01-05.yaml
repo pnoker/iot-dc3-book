@@ -1,0 +1,97 @@
+type: timeline
+title: 图1-5 三次浪潮演进时间线示意
+audience_takeaway: 读者应理解三次浪潮的核心驱动力依次从信息数字化、人的移动性转向物的数字化,连接规模从约10亿、20亿跃升一个数量级至百亿级。
+purpose: 直观展示PC互联网、移动互联网、万物互联三个阶段的时间范围、连接主体、连接规模与核心驱动力
+visual_focus: 从从移动互联网到万物互联：实线箭头，标注'技术演进'的主链路。
+design_level: implementation
+layout: 横向时间轴，从左到右排列三个阶段
+elements:
+- PC互联网：1990s，蓝色矩形，标注'信息数字化'，连接约10亿人
+- 移动互联网：2000s-2010s，橙色矩形，标注'人的移动性'，连接约20亿人
+- 万物互联：2010s至今，绿色矩形，标注'物的数字化'，连接数量有望增加10倍
+relationships:
+- 从PC互联网到移动互联网：实线箭头，标注'技术演进'
+- 从移动互联网到万物互联：实线箭头，标注'技术演进'
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 从PC互联网
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 移动互联网：实线箭头，标注'技术演…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: 从移动互联网
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 万物互联：实线箭头，标注'技术演进'
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r3
+  to: r4
+  label: 从移动互联网到万物互联：实线箭头…
+  style: solid
+  direction: request
+callouts:
+- 从PC互联网到移动互联网：实线箭头，标注'技术演进'
+- 从移动互联网到万物互联：实线箭头，标注'技术演进'
+legend:
+- 蓝色=第一次浪潮（PC互联网）
+- 橙色=第二次浪潮（移动互联网）
+- 绿色=第三次浪潮（万物互联）
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 渲染为横向时间轴SVG。三个矩形盒子从左到右排列，宽度220px、高度60px，间距40px。盒子内显示阶段名称和时间范围。盒子正上方显示连接主体描述，盒子正下方显示连接规模数据（引用[S1]）。两条箭头从左到右连接相邻盒子，连线中点上方标注'技术演进'。图例位于时间轴下方或右侧，用2行×3列网格展示颜色块与标签。
+caption:
+  zh: 图1-5 三次浪潮演进时间线示意。时间轴下方标注连接规模数据，箭头表示演进方向。
+  en: Figure 1-5 A schematic timeline of the three waves' evolution. Connection-scale figures sit below the timeline; arrows mark the direction of evolution.
+labels:
+  en:
+    图1-5 三次浪潮演进时间线示意: Figure 1-5 Timeline of the Three Waves
+    PC互联网、移动互联网、万物互联三阶段时间线: PC Internet, mobile Internet, and Internet of Everything
+    三次浪潮的核心驱动力与连接规模演进: Core drivers and connection scale of the three waves
+    PC 互联网: PC Internet
+    1990s · 第一次浪潮: 1990s · Wave 1
+    连接：人 — 信息: 'Connects: people — information'
+    驱动力：信息数字化: 'Driver: digitizing information'
+    TCP/IP 与万维网把内容搬上屏幕: TCP/IP and the Web brought content to screens
+    移动互联网: Mobile Internet
+    2000s – 2010s · 第二次浪潮: 2000s – 2010s · Wave 2
+    连接：人 — 人: 'Connects: people — people'
+    驱动力：人的移动性: 'Driver: human mobility'
+    智能机 + 3G/4G 让「随时在线」成真: Smartphones + 3G/4G made "always online" real
+    万物互联: Internet of Everything
+    2010s 至今 · 第三次浪潮: 2010s–today · Wave 3
+    连接：物 — 物: 'Connects: things — things'
+    驱动力：物的数字化: 'Driver: digitizing things'
+    传感器 / 执行器 / 嵌入式系统入网: Sensors / actuators / embedded systems join the network
+    技术演进: Technology evolution
+    连接约 10 亿用户: ~1 billion users connected
+    连接约 20 亿用户: ~2 billion users connected
+    连接数百亿物（×10）: Tens of billions of things (×10)
+    图例: Legend
+    第一次浪潮（信息数字化）: Wave 1 (digitizing information)
+    第二次浪潮（人的移动性）: Wave 2 (human mobility)
+    第三次浪潮（物的数字化）: Wave 3 (digitizing things)
+    连接规模从约 10 亿、20 亿跃升一个数量级至百亿级；连接主体从信息、人到物。: Connection scale jumps an order of magnitude, from ~1 and 2 billion to tens of billions; the subjects shift from information and people to things.
+    图1-5 三次浪潮演进时间线示意。时间轴上方为阶段与驱动力，下方标注连接规模，箭头表示技术演进方向。: Figure 1-5 Timeline of the three waves. Stages and drivers above the axis, connection scale below; arrows mark the direction of evolution.

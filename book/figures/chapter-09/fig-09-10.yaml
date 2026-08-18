@@ -1,0 +1,56 @@
+type: architecture
+title: 图9-10 LwM2M 对象树与引导注册
+audience_takeaway: 读者应理解 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐，设备经引导、注册、更新注册接入平台。
+purpose: 展示 LwM2M 对象树三级结构与引导注册流程
+visual_focus: 对象树三级结构与引导注册三步。
+design_level: architecture
+layout: 上半对象树三级卡片，中部路径示例，下半引导注册三步
+elements:
+- Object 对象：3 设备、3303 温度、6 位置、5 固件更新
+- Instance 实例：同类能力多副本，编号从 0 开始
+- Resource 资源：/5700 读数、/5601 量程，R/W/E 权限
+- 引导注册：引导（Bootstrap）→ 注册（Register）→ 更新注册（Update）
+- 观察/通知：GET + Observe:0 推送式上报
+relationships:
+- 对象树三级嵌套，路径 /objectId/instanceId/resourceId 与 CoAP URI 对齐；引导注册三步接入平台
+render_notes: HTML/SVG 渲染，三级对象树卡片 + 引导注册三步流程，蓝绿橙分层。
+caption:
+  zh: 图9-10 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。
+  en: Figure 9-10 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update registration, and the observe/notify mechanism provides push-style reporting.
+labels:
+  en:
+    图9-10 LwM2M 对象树与引导注册: Figure 9-10 LwM2M Object Tree and Bootstrap/Register
+    LwM2M 把设备能力抽象为对象/实例/资源三级对象树，经引导、注册、更新注册接入平台。: LwM2M abstracts device capabilities into an object/instance/resource tree and joins the platform via bootstrap, register, and update.
+    CoAP 管消息收发，LwM2M 管设备能力的抽象、注册、配置与维护: CoAP handles message exchange; LwM2M handles capability abstraction, registration, configuration, and upkeep
+    对象树三级结构：把设备能力变成可寻址路径: 'Three-level object tree: turning device capabilities into addressable paths'
+    Object 对象: Object
+    代表一类能力: One capability class
+    3 设备 · 3303 温度 · 6 位置 · 5 固件更新: 3 Device · 3303 Temperature · 6 Location · 5 Firmware Update
+    同对象 ID = 平台读写接口可复用: Same object ID = reusable platform read/write interface
+    Instance 对象实例: Instance
+    同一能力的多个副本: Multiple copies of one capability
+    三个温度传感器 = 三个 /3303/ 实例: Three temperature sensors = three /3303/ instances
+    编号从 0 开始: Numbering starts at 0
+    Resource 资源: Resource
+    实例里的可读/写/执行项: Readable/writable/executable items in an instance
+    /5700 当前读数 · /5601 最小量程: /5700 current reading · /5601 min range
+    R 只读 / W 可写 / E 可执行: R read / W write / E execute
+    访问路径示例: Path example
+    读第一个温度传感器的当前值：/3303/0/5700: 'Read the first temperature sensor: /3303/0/5700'
+    路径语义与 CoAP URI 天然对齐，客户端固件按路径查表找处理器函数: Path semantics align naturally with CoAP URIs; client firmware dispatches handlers by path lookup
+    引导与注册：设备上平台的标准三步: 'Bootstrap & registration: the standard three steps to onboard'
+    ① 引导（Bootstrap）: ① Bootstrap
+    出厂预置信息联系引导服务器: Contact the bootstrap server with factory presets
+    返回主服务器地址、端口、PSK/证书、初始配置: Returns server address, port, PSK/certificate, initial config
+    仅首次上电 / 恢复出厂 / 证书过期时发生: Only on first power-up / factory reset / certificate expiry
+    ② 注册（Register）: ② Register
+    向 Server 发 CoAP POST: CoAP POST to the server
+    携带对象 ID 列表与端点名: Carries object ID list and endpoint name
+    返回 CoAP 2.01 Created: Returns CoAP 2.01 Created
+    ③ 更新注册（Update）: ③ Update
+    存活时间（Lifetime）到期前周期性 POST 续约: Periodic POST renews registration before Lifetime expiry
+    超时未更新 → 判定离线，释放注册资源: Missed update → marked offline, registration released
+    NB-IoT 水表通电后自动完成全流程: An NB-IoT water meter completes the whole flow on power-up
+    观察/通知：从轮询到推送: 'Observe/Notify: from polling to push'
+    平台发 GET + Observe:0 → 设备加入观察者列表 → 变化阈值 / 最小通知周期触发主动上报 → RST 取消观察，把通信主动权交给设备侧: Platform sends GET + Observe:0 → device joins the observer list → change threshold / minimum notify period triggers reports → RST cancels, handing the initiative to the device
+    图9-10 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。: Figure 9-10 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update, and the observe/notify mechanism provides push-style reporting.

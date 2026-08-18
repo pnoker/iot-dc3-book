@@ -1,0 +1,123 @@
+type: dataflow
+title: 图5-3 消息队列缓冲削峰示意
+audience_takeaway: 读者应理解洪峰时队列水位升高而下游不直接承压，消费者按自身能力拉取削峰，多个消费者组可独立消费同一Topic满足不同时效。
+purpose: 说明消息队列在设备洪峰到来时如何暂存消息，防止后端处理系统过载。
+visual_focus: 从设备群到时间轴的主链路。
+design_level: implementation
+layout: 从左到右数据流：设备群→Topic分区→消费者组→后端服务。时间轴上展示瞬时流量尖峰和队列水位变化。
+elements:
+- 设备群：使用青绿色节点，表示多个传感器、PLC等数据源。
+- Topic分区：蓝色矩形，代表Kafka等消息队列的分区结构。
+- 消费者组：蓝色节点，包含三个消费者实例（C1, C2, C3），实线指向后端。
+- 后端服务：灰色节点，包括告警引擎、时序库写入器、降采样服务。
+- 时间轴：底部横轴，标注正常流量和洪峰两个阶段，队列水位在洪峰期间升高。
+relationships:
+- 设备群向Topic分区发送消息，实线箭头，箭头宽度表示流量大小（洪峰时变宽）。
+- Topic分区向消费者组分配消息，虚线箭头，表示负载均衡。
+- 消费者组处理后送入后端服务，实线箭头。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: device_group
+  label: 设备群
+  type: edge
+  subtitle: 传感器、PLC等数据源
+  group: edge_domain
+  priority: primary
+  shape: database
+- id: topic_partition
+  label: Topic分区
+  type: platform
+  subtitle: Kafka分区结构
+  group: platform_domain
+  priority: normal
+  shape: bus
+- id: consumer_group
+  label: 消费者组
+  type: platform
+  subtitle: C1, C2, C3实例
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: backend
+  label: 后端服务
+  type: data
+  subtitle: 告警引擎、时序库、降采样
+  group: data_domain
+  priority: normal
+  shape: card
+- id: timeline
+  label: 时间轴
+  type: platform
+  subtitle: 正常与洪峰阶段
+  group: platform_domain
+  priority: supporting
+  shape: boundary
+connections:
+- from: device_group
+  to: topic_partition
+  label: 数据上报
+  style: solid
+  direction: left-to-right
+- from: topic_partition
+  to: consumer_group
+  label: 负载均衡
+  style: dashed
+  direction: left-to-right
+- from: consumer_group
+  to: backend
+  label: 消费输出
+  style: solid
+  direction: left-to-right
+callouts:
+- 洪峰期间队列水位升高，消费者按能力拉取，后端不受瞬时冲击。
+- 多个消费者组可独立消费同一Topic，满足不同处理时效要求。
+legend:
+- 青绿色=数据源；蓝色=消息队列与消费者；灰色=后端服务；实线=直接数据流；虚线=调度/分配关系；粗箭头=高流量。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景，时间轴使用水平线，队列水位用柱状图表示。
+caption:
+  zh: 图5-3 消息队列缓冲削峰示意：洪峰到达时，消息在Topic分区中暂存，消费者组按积压数据逐步消费，后端服务不直接承受瞬时冲击。
+  en: 'Figure 5-3 Message queue buffering and peak shaving: when a burst arrives, messages are held in Topic partitions and consumer groups work through the backlog at their own pace, so backend services never take the instantaneous hit directly.'
+labels:
+  en:
+    图5-3 消息队列缓冲削峰示意: Figure 5-3 Message Queue Peak Buffering
+    洪峰先转化为队列积压，消费者按自身能力稳定处理，后端不直接承压。: Bursts become queue backlog first; consumers process at their own pace, keeping the backend unburdened.
+    洪峰先转化为队列积压，消费者按自身能力稳定处理。: Bursts become queue backlog first; consumers process at their own pace.
+    设备与边缘域: Device & Edge Domain
+    平台服务域: Platform Service Domain
+    数据资产域: Data Asset Domain
+    突发上报: Burst Upload
+    负载均衡: Load Balancing
+    稳定拉取: Steady Pull
+    设备群: Device Fleet
+    传感器 / PLC 等数据源: Sensors / PLC Sources
+    正常流量 + 补报洪峰: Normal traffic + backfill burst
+    Topic 分区: Topic Partitions
+    消费者组: Consumer Group
+    C1 · C2 · C3 实例: C1 · C2 · C3 Instances
+    按能力拉取: Pull at own pace
+    后端服务: Backend Services
+    告警引擎: Alarm Engine
+    时序库写入 · 降采样: Time-Series Writes · Downsampling
+    不受瞬时冲击: No instantaneous hit
+    队列水位随洪峰变化: Queue depth varies with bursts
+    正常: Normal
+    洪峰：水位上升: 'Burst: level rises'
+    持续消费后回落: Falls after draining
+    后端按能力处理: Backend processes at its pace
+    实线粗箭头：高流量数据上报: 'Thick solid arrows: high-volume uploads'
+    虚线箭头：调度 / 分配关系: 'Dashed arrows: scheduling / assignment'
+    消费输出: Consumed Output
+    图5-3 消息队列缓冲削峰示意：洪峰到达时消息在 Topic 分区中暂存、水位升高，消费者组按自身能力逐步消费，后端服务不直接承受瞬时冲击。: 'Figure 5-3 Message queue buffering and peak shaving: when a burst arrives, messages are held in Topic partitions while the queue level rises, consumer groups work through the backlog at their own pace, and backend services never take the instantaneous hit directly.'

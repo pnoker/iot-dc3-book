@@ -1,0 +1,96 @@
+type: architecture
+title: 图6-9 物联网系统关键决策三元组
+purpose: 展示语言、协议、架构三个决策维度在原型阶段与生产阶段的典型差异和迁移路径。
+audience_takeaway: 读者应理解物联网系统决策不是孤立选择，而是三个维度互相影响的系统工程。
+visual_focus: 从“语言→协议→架构”的递进影响链路，以及每个维度内迁移路径上的关键工程动作。
+design_level: logical
+layout: 三栏并排布局。每栏分上下两个区域：上方“原型阶段”浅蓝底色，下方“生产阶段”深蓝底色；两区域之间用橙色箭头竖直连接，箭头旁标注迁移动作。
+elements:
+- 左栏：语言决策列，包含原型阶段（Python）和生产阶段（Java），迁移标注“重写 I/O 层”
+- 中栏：协议决策列，包含原型阶段（MQTT + REST）和生产阶段（MQTT + REST + gRPC），迁移标注“引入 API 网关”
+- 右栏：架构决策列，包含原型阶段（单体模块）和生产阶段（微服务集），迁移标注“提取独立服务”
+relationships:
+- 语言选型影响协议实现的复杂度
+- 协议选型直接影响架构边界
+- 架构选型决定了各协议层能否独立扩缩容
+regions:
+- id: intelligence_domain
+  label: 智能决策域
+  role: 决策三元组的影响域边界
+components:
+- id: c1
+  label: 语言决策
+  type: ai
+  subtitle: Python→Java
+  group: intelligence_domain
+  priority: primary
+  shape: decision
+- id: c2
+  label: 协议决策
+  type: ai
+  subtitle: MQTT+REST→+gRPC
+  group: intelligence_domain
+  priority: normal
+  shape: decision
+- id: c3
+  label: 架构决策
+  type: ai
+  subtitle: 单体→微服务
+  group: intelligence_domain
+  priority: normal
+  shape: decision
+connections:
+- from: c1
+  to: c2
+  label: 影响协议实现复杂度
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 影响架构边界划分
+  style: solid
+  direction: left-to-right
+callouts:
+- 语言选型影响协议实现的复杂度：Python 的 GIL 可能在高并发 gRPC 流场景下成为瓶颈，而 Java 的 Netty 框架更适合实现服务端流。
+- 协议选型直接影响架构边界：不同协议需要不同的接入点，这些接入点必须由 API 网关统一管理。
+- 架构选型决定了各协议层能否独立扩缩容：设备接入层按设备数量水平扩展，数据服务层按消息量扩展。
+legend:
+- 浅蓝底色=原型阶段选项，深蓝底色=生产阶段升级选项。
+- 橙色箭头=迁移路径，标注最短工程动作。
+- 左侧代码文件图标=语言列，中间网络信号图标=协议列，右侧服务器集群图标=架构列。
+visual_constraints:
+- 最多 9 个主节点（每列 3 个，含阶段和动作）。
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 使用 HTML/SVG 绘制。整体采用三并排卡片布局，左中右三列分别对应语言、协议、架构。每个卡片分为上下两个区域：上区域浅蓝底（原型），下区域深蓝底（生产），两区域之间用橙色箭头竖直连接，箭头旁标注迁移动作。卡片内标题为小号黑色加粗。图下方放置图例。图注置于图下方，字号稍小。
+caption:
+  zh: 图6-9 从原型到生产的三元决策矩阵。每一列展示了在语言、协议、架构层面，原型阶段和生产阶段分别采用的最佳选项，以及两者之间的最短迁移路径。图中元素来源于本章各节讨论（6.1 语言实践、6.2 协议实践、6.3 架构实践）。
+  en: 'Figure 6-9 The prototype-to-production decision triad. Each column shows the best option at the prototype and production stages for language, protocol, and architecture, together with the shortest migration path between them. Elements draw on this chapter''s sections (6.1 language practice, 6.2 protocol practice, 6.3 architecture practice).'
+labels:
+  en:
+    图6-9 物联网系统关键决策三元组: Figure 6-9 Key IoT Decision Triad
+    语言、协议与架构相互制约，迁移应围绕最短工程动作展开。: Language, protocol, and architecture constrain each other; migrate via the shortest engineering move.
+    影响实现: Shapes Implementation
+    划定边界: Draws Boundaries
+    语言决策: Language Decision
+    协议决策: Protocol Decision
+    架构决策: Architecture Decision
+    单体 → 微服务: 'Monolith → Microservices'
+    原型阶段: Prototype Stage
+    脚本 · 快速验证: Scripts · Fast Validation
+    生产阶段: Production Stage
+    JVM · 高并发生产就绪: JVM · High-Concurrency Ready
+    重写高并发 I/O: Rewrite Concurrent I/O
+    南向北向直连: Direct South/North Links
+    分层互补 · 各取所长: Layered & Complementary
+    固化接口契约: Solidify API Contracts
+    模块化单体: Modular Monolith
+    包结构划分职责: Roles by Package
+    领域微服务: Domain Microservices
+    按领域拆分 · 独立部署: Domain Split · Independent Deploy
+    提取部署单元: Extract Deploy Units
+    原型阶段选项: Prototype Options
+    生产阶段选项: Production Options
+    迁移动作（最短工程动作）: 'Migration move (shortest action)'
+    决策影响链路: Decision Influence Chain
+    图6-9 从原型到生产不是一次技术替换，而是语言能力、通信契约和部署边界的协同演进。: 'Figure 6-9 Prototype to production is not a single technology swap but the co-evolution of language capability, communication contracts, and deployment boundaries.'

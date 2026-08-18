@@ -1,0 +1,117 @@
+type: architecture
+title: 图11-13 新区城市大脑系统部署架构图
+audience_takeaway: 读者应理解端-边-云职责切分:云端训练模型,12个边缘RSU内嵌推理引擎与控制Agent就地闭环,端层设备仅采集上报。
+purpose: 展示 Horizon 项目端-边-云三层部署拓扑，标注协议栈和三个关键闭环的数据流路径
+visual_focus: 从端层到云层的主链路，以及三个闭环路径（交通预测闭环、能耗优化闭环、应急响应闭环）的高亮标识。
+design_level: logical
+layout: 自上而下的三层分层拓扑图，每层为一个横向矩形区块；顶层浅蓝、中间层浅灰、底层浅绿
+elements:
+- “云层（顶部浅蓝区块）：包含四个子模块——设备管理中心、AI训练引擎、数据湖、应急协同平台”
+- “边缘层（中部浅灰区块）：由12个RSU网格节点构成（图示用3×4网格简化），每个节点标注内嵌组件：容器化推理引擎和信号灯控制Agent”
+- “端层（底部浅绿区块）：包含路灯集群、环境传感器、OBU/车载终端”
+relationships:
+- “端层→边缘层：双向箭头连线，标注‘MQTT over 5G’和‘C-V2X PC5直连（OBU与RSU之间）’”
+- “边缘层→云层：双向箭头连线，标注‘gRPC流式上传聚合数据’和‘下发模型更新/配置指令’”
+- “三个关键闭环路径用高亮箭头标出：\n a. 交通预测闭环（绿色路径）：端采集→边缘推理→信号灯控制Agent执行\n b. 能耗优化闭环（橙色路径）：灯控节点→边缘侧调光策略→灯控指令下发\n c. 应急响应闭环（红色路径）：边缘侧事件检测→云平台跨部门路由→车载端消息推送”
+regions:
+- id: “cloud”
+  label: “云层”
+  role: “训练、路由、集中管控”
+- id: “edge”
+  label: “边缘层”
+  role: “推理、控制、本地闭环”
+- id: “device”
+  label: “端层”
+  role: “数据采集、执行指令”
+components:
+- id: “r1”
+  label: “云端平台”
+  type: “platform”
+  subtitle: “设备中心/DL/应急”
+  group: “cloud”
+  priority: “primary”
+  shape: “card”
+- id: “r2”
+  label: “边缘RSU群”
+  type: “edge”
+  subtitle: “推理+控制Agent”
+  group: “edge”
+  priority: “normal”
+  shape: “bus”
+- id: “r3”
+  label: “端层设备”
+  type: “edge”
+  subtitle: “路灯/传感器/OBU”
+  group: “device”
+  priority: “normal”
+  shape: “card”
+connections:
+- from: “r3”
+  to: “r2”
+  label: “MQTT / C-V2X PC5”
+  style: “solid”
+  direction: “bottom-to-top”
+- from: “r2”
+  to: “r1”
+  label: “gRPC / 模型下发”
+  style: “solid”
+  direction: “bottom-to-top”
+- from: “r2”
+  to: “r3”
+  label: “控制指令”
+  style: “dashed”
+  direction: “top-to-bottom”
+callouts:
+- “边层的设计目标：把延迟敏感闭环留在本地，聚合数据异步上传到云。”
+- “应急响应闭环穿越三个层级，端到端延迟需在 100 ms 以内。”
+legend:
+- “浅蓝区块 = 云层（训练/路由/集中管控）”
+- “浅灰区块 = 边缘层（推理/控制/本地闭环）”
+- “浅绿区块 = 端层（采集/执行）”
+- “绿色高亮箭头 = 交通预测闭环”
+- “橙色高亮箭头 = 能耗优化闭环”
+- “红色高亮箭头 = 应急响应闭环”
+- “实线箭头 = 数据上报/请求；虚线箭头 = 指令下发/响应”
+visual_constraints:
+- “节点标签使用短名词短语，解释性文字放入 callouts 或正文。”
+- “图例放在底部，不遮挡主体结构。”
+- “优先表达边界和主链路，不把所有概念塞进一张图。”
+- “三个闭环路径需使用不同类型的高亮色区分，避免视觉混淆。”
+render_notes: “推荐使用 SVG 渲染。画布尺寸：960×640 px。云层置于 Y=0~160 区域，边层置于 Y=160~400 区域，端层置于 Y=400~640 区域。节点间连线宽度 2px，高亮路径宽度 4px 加描边效果。图例置于右下角 200×200 区域，字体大小 12px。”
+caption:
+  zh: 图11-13 新区城市大脑系统部署架构图（Project Horizon示意）。端-边-云三层结构，边缘节点承担推理与控制闭环，云层负责模型训练与跨部门协同。”
+  en: 'Figure 11-13 Deployment architecture of the new-district city brain (Project Horizon, illustrative). A three-tier device-edge-cloud structure in which edge nodes own inference and control loops while the cloud layer handles model training and cross-department coordination.'
+labels:
+  en:
+    图11-13 新区城市大脑系统部署架构图: 'Figure 11-13 New-District City Brain Deployment'
+    端层交通感知数据进入边缘预测与控制Agent，信号灯就地执行形成闭环；云端负责模型训练和跨部门应急协同。: 'Traffic sensing feeds edge prediction/control agents that close the loop locally; the cloud handles training and cross-department coordination.'
+    交通感知在边缘完成预测与信号控制闭环，云端负责模型训练和跨部门应急协同: 'Edge closes the prediction-to-signal-control loop; cloud trains models and coordinates emergencies'
+    云层: 'Cloud Layer'
+    边缘层: 'Edge Layer'
+    端层: 'Device Layer'
+    交通感知数据: 'Traffic sensing data'
+    边缘预测 / Agent · 受控执行: 'Edge prediction / agent · controlled actuation'
+    能耗优化闭环: 'Energy optimization loop'
+    应急上报: 'Emergency report'
+    协同指令: 'Coordination command'
+    设备管理中心: 'Device Management Center'
+    设备管理: 'Device management'
+    AI训练引擎: 'AI Training Engine'
+    模型训练: 'Model training'
+    数据湖: 'Data Lake'
+    数据存储: 'Data storage'
+    应急协同平台: 'Emergency Coordination Platform'
+    跨部门协同: 'Cross-department coordination'
+    推理/控制: 'Inference/control'
+    环境传感器: 'Environment sensor'
+    空气 · 噪声 · 气象: 'Air · noise · weather'
+    路灯集群: 'Streetlight cluster'
+    照明控制: 'Lighting control'
+    交通感知 / 信号灯: 'Traffic sensing / signals'
+    车流采集 · 相位执行: 'Flow capture · phase actuation'
+    OBU/车载终端: 'OBU / vehicle terminal'
+    车联网: 'Connected vehicles (V2X)'
+    浅蓝区块 = 云层（训练/路由/集中管控）: 'Light blue = cloud layer (training/routing/central control)'
+    浅灰区块 = 边缘层（推理/控制/本地闭环）: 'Light gray = edge layer (inference/control/local loops)'
+    浅绿区块 = 端层（采集/执行）: 'Light green = device layer (sensing/actuation)'
+    图11-13 交通感知经边缘推理就地执行信号相位闭环，路灯能耗优化走双向闭环；应急上报与协同指令经云端应急平台路由，训练在云、推理在边缘分层协同。: 'Figure 11-13 Edge inference closes the signal loop locally; streetlights run a two-way energy loop; emergencies route through the cloud — training in cloud, inference at edge.'

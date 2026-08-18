@@ -1,0 +1,189 @@
+type: architecture
+title: 图10-9 IoT DC3平台微服务架构
+audience_takeaway: 读者应理解规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。
+purpose: 展示IoT DC3核心模块（设备中心、数据中心、规则引擎、智能中心）之间的职责边界和数据闭环路径。
+visual_focus: 主链路从设备驱动经数据中心到规则引擎和智能中心，规则引擎与智能中心之间用虚线表示“快判转深析”的可选路径。
+design_level: logical
+layout: 自下而上五层：物理设备层 → 驱动接入层 → 平台服务层 → 智能决策层 → 业务应用层。
+elements:
+- 物理设备层：PLC、传感器、RTU、边缘网关，使用青绿色节点。
+- 驱动接入层：Modbus TCP/RTU、OPC UA等独立驱动微服务实例，使用青绿色块。
+- 平台服务层：设备中心（注册/物模型/映射）、数据中心（时序入库/消息路由）、规则引擎（ECA/告警/动作），使用蓝色服务块。
+- 智能决策层：智能中心（Agent编排/LLM推理/Tool绑定），使用橙色服务块。
+- 业务应用层：运维告警台、预测性维护应用、MES/ERP集成，使用灰色块。
+relationships:
+- 物理设备通过Modbus TCP/RTU或OPC UA协议接入对应的驱动实例，实线箭头。
+- 驱动实例将归一化的PointValue数据发送到数据中心，虚线箭头（MQTT/RabbitMQ异步消息）。
+- 数据中心将实时数据推送到规则引擎，实线箭头（RabbitMQ实时通道）。
+- 规则引擎触发告警后，通过HTTP回调通知业务应用层，实线箭头。
+- 规则引擎将复杂上下文传递给智能中心请求深度分析，虚线箭头（异步方式）。
+- 智能中心通过Spring AI @Tool绑定读取数据中心的历史数据和下发命令到数据中心，虚线双向箭头。
+- 数据中心通过设备中心查询设备上下文（物模型、驱动映射），虚线箭头。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与Agent边界
+components:
+- id: device_edge
+  label: 物理设备层
+  type: edge
+  subtitle: PLC、传感器、RTU
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: driver_layer
+  label: 驱动接入层
+  type: edge
+  subtitle: Modbus/OPC UA驱动实例
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: device_center
+  label: 设备中心
+  type: platform
+  subtitle: 注册、物模型、映射管理
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: data_center
+  label: 数据中心
+  type: data
+  subtitle: 时序入库、消息路由
+  group: data_domain
+  priority: primary
+  shape: database
+- id: rule_engine
+  label: 规则引擎
+  type: platform
+  subtitle: ECA、告警、命令下发
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: intelligence_center
+  label: 智能中心
+  type: ai
+  subtitle: Agent编排、LLM推理
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: business_app
+  label: 业务应用层
+  type: application
+  subtitle: 告警台、MES、ERP
+  group: intelligence_domain
+  priority: normal
+  shape: card
+connections:
+- from: device_edge
+  to: driver_layer
+  label: 协议接入
+  style: solid
+  direction: bottom-to-top
+- from: driver_layer
+  to: data_center
+  label: PointValue推送
+  style: dashed
+  direction: bottom-to-top
+- from: data_center
+  to: rule_engine
+  label: 实时数据流
+  style: solid
+  direction: left-to-right
+- from: rule_engine
+  to: intelligence_center
+  label: 快判转深析
+  style: dashed
+  direction: left-to-right
+- from: intelligence_center
+  to: data_center
+  label: 上下文查询
+  style: dashed
+  direction: response
+- from: data_center
+  to: device_center
+  label: 物模型查询
+  style: dashed
+  direction: left-to-right
+- from: rule_engine
+  to: business_app
+  label: HTTP回调
+  style: solid
+  direction: top-to-bottom
+callouts:
+- 规则引擎与智能中心之间的虚线路径是关键的工程取舍：快判不过AI，深析不做毫秒响应。
+- 数据中心是数据流的枢纽，同时服务规则引擎和智能中心，需关注写入带宽瓶颈。
+- 设备中心不参与运行时数据流，它只在设备配置变更时影响驱动行为。
+legend:
+- 蓝色=核心平台服务；青绿色=设备接入与驱动；橙色=AI智能能力；灰色=外部应用；实线=同步/强依赖；虚线=异步消息或可选依赖。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景（#F8FAFC），圆角矩形服务块，统一12px间距，箭头带协议或消息标签。
+caption:
+  zh: 图10-9 IoT DC3平台微服务架构，展示从设备接入到智能决策闭环的五层结构与模块边界。
+  en: Figure 10-9 The IoT DC3 platform microservice architecture, showing the five-layer structure and module boundaries from device access to the intelligent decision closed loop.
+labels:
+  en:
+    图10-9 IoT DC3平台微服务架构: Figure 10-9 IoT DC3 Platform Microservice Architecture
+    读者应理解规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。: The rule engine judges in milliseconds while LLM deep analysis runs async — neither blocks the other; the data center is the sole data hub, and the device center stays out of the real-time data flow.
+    规则引擎毫秒级快判、LLM深析走异步互不阻塞；数据中心是唯一数据枢纽，设备中心不介入实时数据流: 'Rule engine: millisecond decisions; LLM analysis: async — no mutual blocking. The data center is the sole data hub; the device center stays out of real-time data flow'
+    业务应用层: Business Application Layer
+    智能决策层: Intelligence Layer
+    平台服务层: Platform Service Layer
+    驱动接入层: Driver Access Layer
+    物理设备层: Physical Device Layer
+    运维告警台: Ops Alarm Console
+    预测性维护: Predictive Maintenance
+    能源监控: Energy Monitoring
+    智能中心: Intelligence Center
+    Agent编排 · LLM推理 · Spring AI @Tool绑定: Agent orchestration · LLM reasoning · Spring AI @Tool binding
+    设备中心: Device Center
+    注册 · 物模型 · 映射管理: Registry · thing model · mapping
+    设备上下文 / 驱动映射查询: Device context / driver mapping queries
+    不参与实时数据流: Not in the real-time data path
+    数据中心: Data Center
+    时序入库 · 消息路由: Time-series ingest · message routing
+    唯一数据枢纽 · 同时服务规则引擎与智能中心: Sole data hub · serves rule engine and intelligence center
+    MQTT / RabbitMQ 异步消息通道: MQTT / RabbitMQ async channel
+    规则引擎: Rule Engine
+    ECA 规则 · 告警 · 命令下发: ECA rules · alarms · commands
+    毫秒级快判，不调 AI: Millisecond checks, no AI calls
+    快判转深析 → 智能中心（异步）: Quick check → deep analysis (async)
+    Modbus 驱动: Modbus Driver
+    TCP / RTU 协议实例: TCP / RTU protocol instances
+    OPC UA 驱动: OPC UA Driver
+    统一数据模型实例: Unified data model instances
+    MQTT 驱动: MQTT Driver
+    轻量消息接入实例: Lightweight messaging instances
+    其他协议驱动: Other Protocol Drivers
+    独立微服务实例: Independent microservices
+    Modbus 设备: Modbus Devices
+    设备信息模型: Device information model
+    MQTT 设备: MQTT Devices
+    发布遥测消息: Publishes telemetry
+    其他协议设备: Other Protocol Devices
+    BACnet · S7 等: BACnet · S7, etc.
+    对应设备协议: Matching device protocols
+    PointValue 归一化 · MQTT/RabbitMQ: PointValue normalization · MQTT/RabbitMQ
+    实时数据流 · RabbitMQ: Real-time stream · RabbitMQ
+    物模型查询: Thing model lookup
+    快判转深析 · 异步: Quick check → deep analysis · async
+    上下文查询 ⇌ 命令下发（鉴权 · 确认 · 审计）: Context query ⇌ command dispatch (auth · confirm · audit)
+    HTTP 回调 · 告警: HTTP callback · alarm
+    核心平台服务: Core platform services
+    设备接入与驱动: Device access & drivers
+    AI 智能能力: AI capabilities
+    外部应用: External applications
+    同步 / 强依赖: Sync / strong dependency
+    异步消息 / 可选依赖: Async messaging / optional dependency
+    图10-9　IoT DC3平台微服务架构：物理设备经协议驱动接入，PointValue 归一化数据进入数据中心统一汇聚；规则引擎毫秒级快判，复杂上下文异步转智能中心深析，数据中心是唯一数据枢纽。: 'Figure 10-9 IoT DC3 platform microservice architecture: physical devices connect through protocol drivers; normalized PointValues converge in the data center; the rule engine decides in milliseconds while complex context goes async to the intelligence center — the data center is the sole data hub.'

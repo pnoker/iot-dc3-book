@@ -1,0 +1,56 @@
+type: dataflow
+title: 图13-12 联邦学习与区块链的融合模式
+audience_takeaway: 读者应理解联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证。
+purpose: 展示联邦学习与区块链融合的参数上链与梯度压缩模式
+visual_focus: 链上哈希 + 链下存储的数据流，梯度压缩三方法。
+design_level: dataflow
+layout: 上半参数上链（客户端/合约/验证者），下半梯度压缩三方法
+elements:
+- 参数上链：客户端本地训练、合约存哈希与 CID、验证者比对哈希
+- Top-K 稀疏化：保留绝对值最大的 K 个元素
+- 量化：32 位浮点降 8 位整数
+- 差分隐私：梯度加拉普拉斯噪声
+relationships:
+- 链上只存摘要与状态，不拖入大块参数；链上可信只覆盖协议执行过程
+render_notes: HTML/SVG 渲染，参数上链数据流 + 梯度压缩三方法，蓝绿橙分层。
+caption:
+  zh: 图13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。
+  en: 'Figure 13-12 In federated learning, parameter hashes go on-chain while complete data is stored off-chain under a CID; gradients are compressed via Top-K, quantization, or differential privacy before transmission, and the verifier completes on-chain verification by comparing hashes. Privacy, robustness, and availability must be evaluated jointly.'
+labels:
+  en:
+    图13-12 联邦学习与区块链的融合模式: Figure 13-12 Federated Learning Meets Blockchain
+    参数哈希上链、完整数据存链下 CID，梯度经压缩后传输，链上只存摘要与状态。: Hashes on-chain, full data off-chain by CID; gradients compressed in transit; chain keeps digests + state.
+    区块链提供提交记录、版本与审计证据，不替代安全聚合与差分隐私: Blockchain supplies commits, versions and audit evidence, not secure aggregation or differential privacy
+    模型参数上链：链上存哈希，链下存数据: 'Model parameters: hashes on-chain, data off-chain'
+    客户端（本地训练）: Client (local training)
+    计算本地模型更新 / 梯度: Compute local updates / gradients
+    梯度压缩（Top-K / 量化 / 差分隐私）: Gradient compression (Top-K / quantization / differential privacy)
+    参数主体经点对点通道存链下（IPFS）: Parameters stored off-chain via P2P (IPFS)
+    网关/边缘服务器作代理，不接触原始数据: Gateway/edge server proxies; never touches raw data
+    智能合约（链上）: Smart Contract (on-chain)
+    记录提交者 DID、版本号、时间戳: Records submitter DID, version, timestamp
+    只保存参数哈希（最小指纹）: Stores only the parameter-hash fingerprint
+    指向链下存储的 CID: CID of the off-chain store
+    全量上链成本过高、延迟不可接受: 'On-chain full data: too costly, too slow'
+    验证者（审计节点）: Verifier (audit node)
+    从 IPFS 拉取实际参数: Fetches actual parameters from IPFS
+    重新计算哈希与链上记录比对: Re-hashes and compares on-chain
+    合约中标记验证状态: Marks status on-chain
+    链上“可信”只覆盖协议执行过程: On-chain "trust" covers execution only
+    梯度压缩：适配物联网带宽与功耗约束: Gradient compression for IoT bandwidth & power
+    Top-K 稀疏化: Top-K Sparsification
+    只保留绝对值最大的 K 个元素，其余置零: Keep only the K largest magnitudes; zero the rest
+    典型稀疏率下压缩比一个数量级以上: Typical sparsity yields 10x+ compression
+    收敛损失通常可接受: Convergence loss acceptable
+    量化（Quantization）: Quantization
+    32 位浮点降到 8 位整数，传输量显著降低: 32-bit floats to 8-bit integers; much less traffic
+    验证方先反量化再计算一致性: Verifier de-quantizes, then checks
+    压缩率与模型性能需一起报告: 'Compression + performance: report together'
+    差分隐私扰动: Differential Privacy Perturbation
+    提交前对梯度添加拉普拉斯噪声: Laplace noise added before submission
+    保护设备本地数据不被逆向推断: Protects local data from inference
+    链上验证扰动后参数，非原始梯度: Checks perturbed parameters, not raw gradients
+    隐私、鲁棒性与可用性必须联合评测: Privacy, robustness & availability evaluated jointly
+    安全聚合（聚合方只看到结果）· 差分隐私（报告 epsilon/delta、裁剪阈值）· 非 IID 公平性（最差客户端）· 投毒与后门（ASR）· 通信能耗（每轮字节、掉线率）: Secure aggregation (sees results only) · differential privacy (epsilon/delta, clipping) · non-IID fairness (worst client) · poisoning/backdoor (ASR) · energy (bytes/round, dropout)
+    链上哈希只能证明提交未被改写，不能证明更新无毒；区块链审计作为可选变量单独测量: On-chain hashes prove no tampering, not benign updates; audit is an optional, separately measured variable
+    图13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。: Figure 13-12 Hashes on-chain, full data off-chain by CID; gradients compressed via Top-K, quantization or differential privacy; verifiers compare hashes on-chain; privacy, robustness and availability evaluated jointly.

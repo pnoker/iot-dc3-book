@@ -1,0 +1,57 @@
+type: framework
+title: 图12-9 农业场景 LPWAN 选型四维约束
+audience_takeaway: 读者应理解农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。
+purpose: 梳理农业场景对 LPWAN 的具体约束，为后续技术比选建立框架
+visual_focus: 四维约束卡片并列，底部结论。
+design_level: framework
+layout: 横向四张约束卡片（覆盖 / 速率 / 功耗 / 成本），底部选型框架结论
+elements:
+- 覆盖距离：数公里 + 穿透冠层，重要程度高
+- 数据速率：极低但稳定、上行为主，重要程度中
+- 功耗与电池寿命：1～5 年，重要程度高
+- 设备与运维成本：模块 + 传感器 + 通信费，重要程度高
+relationships:
+- 四维约束共同归结为“远覆盖、低速率、长续航、低成本、上行为主”
+render_notes: HTML/SVG 渲染，横向四张卡片，蓝/绿/橙/青四色区分维度，底部蓝色结论框。
+caption:
+  zh: 图12-9 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。
+  en: Figure 12-9 Agricultural scenarios constrain LPWAN selection from four dimensions — coverage distance, data rate, power and battery life, device and O&M cost — boiling down to "long range, low rate, long battery life, low cost, and uplink-dominant traffic".
+labels:
+  en:
+    图12-9 农业场景 LPWAN 选型四维约束: Figure 12-9 Four Constraints on LPWAN Selection in Agriculture
+    农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。: Agriculture imposes four constraints on LPWAN — coverage, rate, power, cost — summing up to long range, low rate, long battery life, low cost, and uplink-dominant traffic.
+    选型之前先厘清约束 · 四个维度共同决定技术取舍: Clarify constraints before choosing · four dimensions drive the trade-off
+    覆盖距离: Coverage distance
+    重要程度：高: 'Importance: high'
+    开阔农田覆盖数公里: Several kilometers over open fields
+    温室金属骨架、薄膜、密植冠层: Greenhouse steel frames, film, and dense canopies
+    对信号有明显阻挡与吸收: markedly block and absorb signals
+    链路预算需考虑作物冠层衰减: Link budgets must count canopy attenuation
+    LoRa 郊野覆盖可达数公里；NB-IoT: LoRa reaches several km in the countryside; NB-IoT
+    依托运营商基站亦可覆盖空旷地: rides carrier base stations to cover open land
+    数据速率: Data rate
+    重要程度：中: 'Importance: medium'
+    典型“上行为主”业务模式: Typical "uplink-dominant" traffic pattern
+    每次上传几十到几百字节: Tens to hundreds of bytes per upload
+    土壤每小时、气象每 15～30 分钟: Soil hourly, weather every 15–30 min
+    要求“极低但稳定”: Must be "very low but stable"
+    高清病虫害图像属特殊需求，: HD pest-and-disease images are a special case,
+    另走 4G/5G 高带宽通道承载: carried instead on 4G/5G broadband channels
+    功耗与电池寿命: Power & battery life
+    田间供电困难，依赖电池 / 光伏: Field power is scarce; rely on battery / solar
+    目标续航至少 1～2 年，最好 3～5 年: 'Target life: at least 1–2 years, ideally 3–5'
+    功耗 = 采集 + 发射 + 休眠: Power = sense + transmit + sleep
+    能量大头在 MCU 休眠漏电流: The biggest drain is MCU sleep leakage
+    NB-IoT 联网需与基站同步，: NB-IoT must sync with the base station to attach,
+    待机电流通常比 LoRa 高一个量级: standby current typically an order above LoRa
+    设备与运维成本: Device & O&M cost
+    大规模、低利润，物料成本须低廉: Large scale, thin margins — BOM must be cheap
+    传感器成本往往超过通信模块: Sensors often cost more than comm modules
+    运维成本关键在于通信费用: O&M hinges on connectivity fees
+    LoRa 免授权频段、自建网关无通信费: 'LoRa: unlicensed band, own gateway, no fees'
+    NB-IoT 需 SIM 卡与运营商资费: NB-IoT needs SIM cards and carrier plans
+    零散农田依托运营商可降低门槛: Scattered fields lower the barrier via carriers
+    选型框架结论: Selection Framework Conclusion
+    远覆盖 · 低速率 · 长续航 · 低成本，且以单向上传为主: Long range · low rate · long battery life · low cost, mostly one-way uplink
+    核心问题：在 LoRa 与 NB-IoT 之间，哪一个能同时满足四维约束且生态成熟度最高？: 'Core question: between LoRa and NB-IoT, which meets all four constraints with the most mature ecosystem?'
+    图12-9 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。: Figure 12-9 Agricultural scenarios constrain LPWAN selection from four dimensions — coverage distance, data rate, power and battery life, device and O&M cost — boiling down to "long range, low rate, long battery life, low cost, and uplink-dominant traffic".

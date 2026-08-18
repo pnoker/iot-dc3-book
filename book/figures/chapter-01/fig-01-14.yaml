@@ -1,0 +1,101 @@
+type: matrix
+title: 图1-14 物联网平台市场格局示意
+purpose: 示意展示2020年前后主流物联网云平台在生态完整性与运营商支持力度两个维度的分布，帮助读者理解平台选择的工程权衡。
+audience_takeaway: 读者应理解平台市场并非一家独大，差异化定位决定了不同场景下的选型优先级。
+visual_focus: 四象限定位矩阵与四个平台气泡的分布，右上主导区与左下垂直区形成对角。
+design_level: logical
+layout: 二维定位矩阵：横轴为生态完整性（有限→完整），纵轴为运营商支持力度（弱→强），四个象限标注主导区、运营商区、云生态区、垂直区，气泡位置示意差异化定位（非真实份额）。
+elements:
+- 横轴：生态完整性（有限→完整），标注三个刻度：有限、中等、完整。
+- 纵轴：运营商支持力度（弱→强），标注三个刻度：弱、中等、强。
+- 四个象限：右上主导区（生态完整+支持强）、左上运营商区（支持强+生态有限）、右下云生态区（生态完整+支持弱）、左下垂直区（生态有限+支持弱）。
+- 四个平台气泡：平台A（云原生，生态高/支持中）、平台B（运营商，支持强/生态中）、平台C（开源/行业，两维均衡）、平台D（垂直方案，生态低/支持弱）。
+relationships:
+- 气泡位置仅用于示意差异化，不代表精确市场份额。
+regions:
+- id: dominant_region
+  label: 主导区
+  role: 生态完整且运营商支持强——右上象限
+- id: carrier_region
+  label: 运营商区
+  role: 运营商支持强但生态有限——左上象限
+- id: cloud_region
+  label: 云生态区
+  role: 生态完整但运营商支持弱——右下象限
+- id: vertical_region
+  label: 垂直区
+  role: 生态有限且运营商支持弱——左下象限
+components:
+- id: platform_a
+  label: 平台A
+  type: platform
+  subtitle: 云原生厂商
+  group: cloud_region
+  priority: primary
+  shape: card
+- id: platform_b
+  label: 平台B
+  type: platform
+  subtitle: 运营商平台
+  group: carrier_region
+  priority: primary
+  shape: card
+- id: platform_c
+  label: 平台C
+  type: platform
+  subtitle: 开源或行业平台
+  group: dominant_region
+  priority: normal
+  shape: card
+- id: platform_d
+  label: 平台D
+  type: platform
+  subtitle: 垂直行业方案
+  group: vertical_region
+  priority: supporting
+  shape: card
+connections: []
+callouts:
+- 定位矩阵仅作教学示意，不反映真实市场份额。
+- 平台选型的首要权衡：生态完整性与运营商支持力度往往不可兼得。
+legend:
+- 蓝=云原生平台；紫=运营商平台；青=开源/行业平台；灰=垂直方案。
+- 气泡位置示意差异化定位（非真实数据）。
+visual_constraints:
+- 气泡最多四个，标签简短，不遮挡坐标轴。
+- 横纵坐标刻度清晰，图注说明示意性质。
+render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，边界虚线，箭头带短标签，底部图例和出版级图注。
+caption:
+  zh: 图1-14 物联网平台市场格局示意。云原生、运营商、开源与垂直方案在生态完整性与运营商支持力度两个维度上形成差异化定位——定位矩阵仅作教学示意，不代表真实市场份额。
+  en: Figure 1-14 A schematic map of the IoT platform market. Cloud-native, carrier, open-source, and vertical offerings take differentiated positions along two dimensions — ecosystem completeness and carrier support. The positioning matrix is for teaching purposes only and does not represent real market shares.
+labels:
+  en:
+    图1-14 物联网平台市场格局示意: Figure 1-14 IoT Platform Market Landscape
+    物联网平台在生态完整性与运营商支持两维度的定位: Platform positions on ecosystem completeness vs. carrier support
+    二维定位矩阵：生态完整性 × 运营商支持力度: 'Positioning matrix: ecosystem completeness × carrier support'
+    运营商区: Carrier Zone
+    支持强 · 生态有限: Strong support · limited ecosystem
+    主导区: Dominant Zone
+    生态完整 · 支持强: Complete ecosystem · strong support
+    垂直区: Vertical Zone
+    生态有限 · 支持弱: Limited ecosystem · weak support
+    云生态区: Cloud-Ecosystem Zone
+    生态完整 · 支持弱: Complete ecosystem · weak support
+    生态完整性 →（有限 → 完整）: Ecosystem completeness → (limited → complete)
+    有限 &nbsp;&nbsp;&nbsp; 中等 &nbsp;&nbsp;&nbsp; 完整: Limited &nbsp;&nbsp;&nbsp; Medium &nbsp;&nbsp;&nbsp; Complete
+    运营商支持力度 →（弱 → 强）: Carrier support → (weak → strong)
+    弱 / 中等 / 强: Weak / medium / strong
+    平台A: Platform A
+    云原生厂商: Cloud-native vendor
+    平台B: Platform B
+    运营商平台: Carrier platform
+    平台C: Platform C
+    开源 / 行业: Open-source / industry
+    平台D: Platform D
+    垂直行业方案: Vertical solution
+    云原生平台: Cloud-native platform
+    开源/行业平台: Open-source/industry platform
+    垂直方案: Vertical solution
+    定位矩阵仅作教学示意，不反映真实市场份额: Matrix for teaching only — not real market share
+    图1-14 物联网平台市场格局示意。云原生、运营商、开源与垂直方案在生态完整性与运营商支持力度两个维度上形成差异化定位——: Figure 1-14 IoT platform market landscape. Cloud-native, carrier, open-source, and vertical offerings differentiate along ecosystem completeness and carrier support —
+    定位矩阵仅作教学示意，不代表真实市场份额。: the matrix is for teaching only, not real market share.

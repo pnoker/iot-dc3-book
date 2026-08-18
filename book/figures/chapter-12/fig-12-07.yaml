@@ -1,0 +1,51 @@
+type: matrix
+title: 图12-7 产量预测：ARIMA 与 LSTM 两条路线对比
+audience_takeaway: 读者应理解产量预测有统计模型（ARIMA 只用目标变量历史值、可解释性强）与深度学习（LSTM 融合多源环境变量、能捕捉非线性关系）两条路线，并以 RMSE、MAE 评估。
+purpose: 对比两条产量预测路线的输入、建模步骤与评估指标
+visual_focus: 左右并列的两条建模路线。
+design_level: matrix
+layout: 左右并列：左侧 ARIMA 五步流程，右侧 LSTM 四层结构，底部共同评估指标
+elements:
+- ARIMA：平稳性检验（ADF）、差分、模型识别（ACF/PACF）、参数估计与诊断（Ljung-Box）、预测
+- LSTM：多维特征输入（温度/降水/土壤湿度/生长天数）、滑动窗口（30～60 天）、LSTM 层 + Dropout、Dense 回归输出
+- 评估：RMSE（对大误差惩罚更重）、MAE（反映平均偏离更直观）
+relationships:
+- 两条路线独立并列，最终都以 RMSE、MAE 评估
+render_notes: HTML/SVG 渲染，左右并列对比，蓝/绿区分两条路线，底部评估指标卡片。
+caption:
+  zh: 图12-7 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。
+  en: 'Figure 12-7 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables such as temperature, rainfall, soil moisture, and growing days and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'
+labels:
+  en:
+    图12-7 产量预测：ARIMA 与 LSTM 两条路线对比: 'Figure 12-7 Yield Prediction: ARIMA vs. LSTM'
+    ARIMA 只利用目标变量历史值，LSTM 融合温度、降水、土壤湿度、生长天数多变量；两条路线最终都以 RMSE、MAE 评估。: ARIMA uses only the history of the target variable; LSTM fuses temperature, rainfall, soil moisture, and growing days; both are scored by RMSE and MAE.
+    统计模型看自身历史 · 深度学习融合多源环境 · 输出连续产量值（公斤/公顷）: Statistics reads its own history · deep learning fuses multi-source environment · continuous yield output (kg/ha)
+    统计模型 · ARIMA（自回归积分滑动平均）: Statistical · ARIMA (autoregressive integrated moving average)
+    只利用目标变量自身的历史值，结构简单、可解释性强: Uses only the history of the target itself; simple and highly interpretable
+    平稳性检验: Stationarity test
+    ADF 检验 · p&gt;0.05 序列非平稳: ADF test · p>0.05 means non-stationary
+    差分: Differencing
+    一阶差分 y_t − y_{t−1} 消除趋势，d=1: First difference y_t − y_{t−1} removes trend, d=1
+    模型识别: Model identification
+    ACF / PACF 拖尾截尾特征定 p、q 阶数: ACF/PACF tailing and cutoffs set orders p and q
+    参数估计与诊断: Estimation & diagnostics
+    极大似然估计 · Ljung-Box 检验残差白噪声: Maximum likelihood · Ljung-Box tests residual white noise
+    预测: Forecast
+    点预测值 + 置信区间，依赖历史模式延续: Point forecast + confidence interval, assuming history repeats
+    深度学习 · LSTM（长短期记忆网络）: Deep learning · LSTM (long short-term memory)
+    融合多个外生变量，学习环境与产量的非线性关系: Fuses exogenous variables to learn nonlinear environment–yield relations
+    输入：多维环境特征序列: 'Input: multivariate environment sequences'
+    温度 · 降水 · 土壤湿度 · 生长天数（n_features=4）: Temperature · rainfall · soil moisture · growing days (n_features=4)
+    滑动窗口：过去 T 天（30～60 天）: 'Sliding window: past T days (30–60 days)'
+    覆盖灌浆期等完整生长期，转为三维张量输入: Covers full stages like grain filling; reshaped into 3-D tensors
+    LSTM 层 + Dropout: LSTM layer + Dropout
+    记忆单元与门控机制解决梯度消失，Dropout 防过拟合: Memory cells and gates fix vanishing gradients; Dropout prevents overfitting
+    Dense 回归输出: Dense regression output
+    linear 激活，输出未来产量（公斤/公顷）: linear activation, outputs future yield (kg/ha)
+    共同评估指标: Shared Evaluation Metrics
+    RMSE 均方根误差 · 对大误差惩罚更重: RMSE root mean square error · penalizes large errors more
+    MAE 平均绝对误差 · 反映平均偏离更直观: MAE mean absolute error · a more intuitive average deviation
+    ARIMA · 统计路线: ARIMA · statistical route
+    LSTM · 深度学习路线: LSTM · deep-learning route
+    团队资源有限时先从 ARIMA 建立基线，跨入 LSTM 前需积累 2～3 个完整生长周期数据: Start with an ARIMA baseline under tight resources; gather 2–3 full growing seasons before moving to LSTM
+    图12-7 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。: 'Figure 12-7 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables — temperature, rainfall, soil moisture, and growing days — and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'

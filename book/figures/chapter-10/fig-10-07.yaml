@@ -1,0 +1,163 @@
+type: architecture
+title: 图10-7 AI模型部署架构（从训练到边缘推理）
+audience_takeaway: 读者应理解模型仓库一份模型可同时服务REST与专用推理,边缘只跑裁剪模型且仅上报结果,与云端分工避免重复工单。
+purpose: 展示模型从训练环境产出、导出、部署到推理服务并接入IoT DC3平台的完整链路。
+visual_focus: 从训练阶段经模型仓库到推理服务的主链路，以及边缘推理节点本地推理后上报结果到数据中心的虚线路径。
+design_level: logical
+layout: 从左至右三段式：训练阶段（建模平台）→ 推理阶段（服务层）→ 集成阶段（IoT DC3与边缘层）。
+elements:
+- 训练阶段：Jupyter/MLflow环境中导出ONNX或PMML模型文件。
+- 模型仓库：存放导出的模型文件及其版本元信息。
+- 推理服务：包括REST端点（Flask/FastAPI）和专用推理服务器（TensorFlow Serving / Triton），接收请求并返回预测。
+- IoT DC3数据中心：存储实时位号值，供推理服务拉取。
+- 边缘推理节点：在设备侧或网关侧运行精简模型，接收实时数据并输出结果。
+- 规则引擎：接收推理结果，触发告警或工单。
+relationships:
+- 训练阶段导出模型文件存入模型仓库，实线箭头。
+- 推理服务从模型仓库加载模型版本，实线箭头。
+- IoT DC3数据中心通过消息队列/API向推理服务推送或提供实时数据，虚线箭头。
+- 推理服务将预测结果写回IoT DC3数据中心或直接推送给规则引擎，虚线箭头。
+- 边缘推理节点本地推理后上报结果到数据中心，虚线箭头。
+regions:
+- id: training_region
+  label: 模型训练域
+  role: 开发与离线训练环境
+- id: serve_region
+  label: 模型推理域
+  role: 在线推理与版本管理
+- id: platform_region
+  label: IoT平台域
+  role: 数据存储与规则编排
+- id: edge_region
+  label: 边缘推理域
+  role: 靠近设备的本地推理
+components:
+- id: dev_env
+  label: 建模与导出
+  type: ai
+  subtitle: Jupyter / MLflow
+  group: training_region
+  priority: normal
+  shape: card
+- id: model_registry
+  label: 模型仓库
+  type: data
+  subtitle: ONNX / PMML
+  group: training_region
+  priority: normal
+  shape: database
+- id: inference_rest
+  label: REST端点
+  type: ai
+  subtitle: Flask / FastAPI
+  group: serve_region
+  priority: normal
+  shape: card
+- id: inference_dedicated
+  label: 专用推理
+  type: ai
+  subtitle: TF Serving / Triton
+  group: serve_region
+  priority: primary
+  shape: card
+- id: iotdc3_data
+  label: IoT DC3数据
+  type: data
+  subtitle: 时序 / 状态
+  group: platform_region
+  priority: primary
+  shape: database
+- id: rule_engine
+  label: 规则引擎
+  type: platform
+  subtitle: 告警 / 工单
+  group: platform_region
+  priority: primary
+  shape: card
+- id: edge_inference
+  label: 边缘推理
+  type: edge
+  subtitle: 裁剪模型
+  group: edge_region
+  priority: primary
+  shape: card
+connections:
+- from: dev_env
+  to: model_registry
+  label: 导出
+  style: solid
+  direction: left-to-right
+- from: model_registry
+  to: inference_rest
+  label: 加载
+  style: solid
+  direction: left-to-right
+- from: model_registry
+  to: inference_dedicated
+  label: 加载
+  style: solid
+  direction: left-to-right
+- from: iotdc3_data
+  to: inference_dedicated
+  label: 上下文输入
+  style: dashed
+  direction: left-to-right
+- from: inference_dedicated
+  to: rule_engine
+  label: 预测结果
+  style: dashed
+  direction: left-to-right
+- from: edge_inference
+  to: iotdc3_data
+  label: 上报结果
+  style: dashed
+  direction: bottom-to-top
+- from: inference_rest
+  to: rule_engine
+  label: 结果
+  style: dashed
+  direction: left-to-right
+callouts:
+- 模型仓库可同时服务多个推理服务，避免重复部署。
+- 边缘推理节点与云端推理服务应避免对同一设备发出重复工单。
+legend:
+- 蓝色=IoT DC3平台服务层；青绿色=边缘与设备侧；橙色=AI模型与推理能力；灰色=模型仓库与外部依赖。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景，三段式布局。训练阶段使用橙色块，推理服务使用蓝色块，边缘层使用青绿色块。数据流使用带标签的虚线箭头。
+caption:
+  zh: 图10-7 AI模型部署架构：从训练环境到工业物联网平台的完整链路，涉及模型导出、推理服务化和与IoT DC3的集成。
+  en: 'Figure 10-7 AI model deployment architecture: the complete chain from the training environment to the industrial IoT platform, covering model export, model serving, and integration with IoT DC3.'
+labels:
+  en:
+    图10-7 AI模型部署架构（从训练到边缘推理）: Figure 10-7 AI Model Deployment Architecture (Training to Edge Inference)
+    模型仓库中的同一版本可供 REST 与专用推理服务加载；边缘仅运行裁剪模型并上报结果，需避免与平台推理产生重复工单。: The same registry version serves both REST and dedicated inference; the edge runs only a pruned model and reports results, avoiding duplicate work orders with the platform.
+    模型训练域: Model Training Domain
+    模型推理域: Model Inference Domain
+    IoT平台域: IoT Platform Domain
+    边缘推理域: Edge Inference Domain
+    导出: Export
+    加载: Load
+    上下文输入: Context input
+    预测结果: Predictions
+    上报结果: Report results
+    结果: Results
+    建模与导出: Modeling & Export
+    模型仓库: Model Registry
+    REST端点: REST Endpoint
+    专用推理: Dedicated Inference
+    IoT DC3数据: IoT DC3 Data
+    时序 / 状态: Time-series / State
+    规则引擎: Rule Engine
+    告警 / 工单: Alarms / Work Orders
+    边缘推理: Edge Inference
+    裁剪模型: Pruned model
+    一份模型，多种服务形态: One model, many serving forms
+    模型仓库统一版本，REST 与专用推理服务按部署需要分别加载。: The registry versions once; REST and dedicated servers load per deployment needs.
+    边缘与平台去重: Edge–platform dedup
+    同一设备、同一窗口只允许一个工单决策源，边缘仅上报结果。: One device, one window, one decision source; the edge only reports results.
+    蓝=平台服务　青绿=边缘推理　橙=模型与推理　灰=模型仓库: Blue=platform · teal=edge inference · orange=model & inference · gray=registry
+    实线=模型制品流　虚线=实时上下文或推理结果: Solid=model artifacts · dashed=real-time context or results
+    图10-7 AI模型部署架构：模型由训练环境导出并进入版本仓库，平台推理服务消费实时上下文，边缘节点仅上报本地推理结果，最终由规则引擎统一触发告警或工单。: 'Figure 10-7 AI model deployment architecture: models are exported from training into a versioned registry, platform inference consumes real-time context, edge nodes only report local results, and the rule engine triggers alarms or work orders.'

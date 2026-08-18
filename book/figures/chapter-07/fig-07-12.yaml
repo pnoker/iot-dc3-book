@@ -1,0 +1,52 @@
+type: matrix
+title: 图7-12 对话记忆的三种策略
+audience_takeaway: 读者应理解对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入、conversationId 隔离会话，解决无状态 API 与多轮交互的结构性矛盾。
+purpose: 对比三种对话记忆策略的原理、适用场景与运维定位
+visual_focus: 三列策略卡片并列。
+design_level: matrix
+layout: 三列策略卡片（消息历史 / 摘要记忆 / 知识图谱记忆），底部关键实现说明
+elements:
+- 消息历史：完整消息列表附加到请求，短轮次（10 轮内），无信息损失
+- 摘要记忆：历史压缩为摘要避免 token 溢出，长轮次，须保留操作结果与状态码
+- 知识图谱记忆：维护实体关系仅检索相关实体，复杂推理、追溯多设备操作链
+- 关键实现：MessageChatMemoryAdvisor + conversationId；生产对接 Redis 跨进程共享
+relationships:
+- 三种策略同经 ChatMemory 接入，按对话长度与 token 预算选择
+render_notes: HTML/SVG 渲染，三列对比，蓝/绿/橙三色，底部关键实现卡片。
+caption:
+  zh: 图7-12 对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入，conversationId 隔离会话，解决无状态 API 与多轮交互之间的结构性矛盾。
+  en: Figure 7-12 Dialogue memory has three strategies — message history, summary memory, and knowledge-graph memory — unified behind the ChatMemory interface, with conversationId isolating sessions, resolving the structural conflict between stateless APIs and multi-turn interaction.
+labels:
+  en:
+    图7-12 对话记忆的三种策略: Figure 7-12 Three Dialogue-Memory Strategies
+    消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口与 conversationId 隔离会话。: Message history, summary, and knowledge-graph memory — sessions isolated by the ChatMemory interface and conversationId.
+    无状态 API 与多轮交互的矛盾，由 ChatMemory 与应用层显式管理解决: ChatMemory plus explicit app-layer management resolves stateless API vs. multi-turn use
+    消息历史: Message history
+    原理: How it works
+    完整消息列表（用户 + 助手）直接: The full message list (user + assistant)
+    附加到每次请求: is appended to every request
+    适用场景: Best for
+    短轮次对话（通常 10 轮以内），: Short conversations (usually ≤10 turns),
+    保留上下文且无信息损失: full context, no information loss
+    运维定位: Ops role
+    围绕有限设备和位号、轮数可控，: Bounded devices and points, controllable turns,
+    最直接的默认选择: the simplest default
+    摘要记忆: Summary memory
+    将历史压缩为一段摘要，: History compressed into one summary
+    避免 token 溢出: to avoid token overflow
+    长轮次对话或 token 预算紧张时，: For long chats or tight token budgets,
+    需保留关键操作结果: key operation results must be kept
+    操作类历史必须保留执行结果与状态码，: Operational history must keep results and status codes,
+    避免模型重复执行相同下发指令: preventing the model from re-issuing commands
+    知识图谱记忆: Knowledge-graph memory
+    维护实体关系，仅检索相关实体: Maintains entity relations, retrieves only relevant entities
+    获得上下文: to obtain context
+    复杂推理，如追溯多台设备的: Complex reasoning — e.g. tracing the
+    历史操作链: operation chains of many devices
+    跨设备、跨会话的关联追溯，: Cross-device, cross-session tracing,
+    适合复杂故障链分析: fits complex fault-chain analysis
+    关键实现：MessageChatMemoryAdvisor + conversationId: 'Key implementation: MessageChatMemoryAdvisor + conversationId'
+    Advisor 每次 call 前从 ChatMemory 取出与 conversationId 关联的历史注入提示词，调用结束后再写回: Before each call the advisor loads the conversationId history from ChatMemory into the prompt and writes it back afterward
+    conversationId 是会话唯一标识，不同会话用不同 ID 隔离上下文 · 生产环境对接 Redis 跨进程共享 · 写入平台表支持会话回放与审计: conversationId uniquely identifies a session; different IDs isolate context · production shares via Redis across processes · platform-table writes enable replay and audit
+    工程折中：保留最近若干轮全量历史，更早历史由摘要器压缩为含关键操作结果与时间戳的结构化摘要: 'Engineering trade-off: keep the last few turns verbatim; older history is compressed into a structured summary with key operation results and timestamps'
+    图7-12 对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入，conversationId 隔离会话，解决无状态 API 与多轮交互之间的结构性矛盾。: Figure 7-12 Dialogue memory has three strategies — message history, summary memory, and knowledge-graph memory — unified behind the ChatMemory interface, with conversationId isolating sessions, resolving the structural conflict between stateless APIs and multi-turn interaction.

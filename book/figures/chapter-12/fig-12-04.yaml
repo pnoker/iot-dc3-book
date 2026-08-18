@@ -1,0 +1,186 @@
+type: architecture
+title: 图12-4 智慧果园综合监测系统架构（示意）
+purpose: 展示10公顷苹果园监测系统中感知层、通信层、边缘处理层和云平台层之间的接口划分与主数据流路径。
+audience_takeaway: 读者应理解混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。
+visual_focus: 两类数据流的分离路径：LoRaWAN服务于土壤和气象节点，4G服务于图像节点；以及云平台下行控制电磁阀的链路。
+design_level: logical
+layout: 自下而上的四层架构：田间感知层、混合通信层、边缘处理层、云端平台与应用层。
+elements:
+- 田间感知层：20个土壤三合一传感器节点 + 1个气象站（LoRaWAN），5个图像采集节点（内置边缘AI推理 + 4G模组）
+- 混合通信层：1个LoRaWAN网关（以太网或4G回传），4G Cat-1基站（运营商网络）
+- 边缘处理层：图像节点本地部署EfficientNet-Lite推理，输出“异常/无异常”结果
+- 云端平台层：规则引擎、设备管理、可视化看板
+relationships:
+- 土壤传感器和气象站通过LoRaWAN网关定时上报环境数据
+- 图像节点经4G基站上传异常图像（仅在模型判为异常时）
+- 云平台规则引擎通过LoRaWAN网关下行控制电磁阀
+regions:
+- id: field_domain
+  label: 田间感知域
+  role: 异构传感与数据源边界
+- id: comm_domain
+  label: 混合通信域
+  role: 双通道收发与协议适配边界
+- id: cloud_domain
+  label: 云服务平台域
+  role: 数据汇聚、决策、存储与服务边界
+components:
+- id: soil_sensor
+  label: 土壤传感器节点
+  type: edge
+  subtitle: LoRaWAN, 20个
+  group: field_domain
+  priority: normal
+  shape: card
+- id: weather_station
+  label: 气象站
+  type: edge
+  subtitle: LoRaWAN, 1个
+  group: field_domain
+  priority: normal
+  shape: card
+- id: camera_node
+  label: 图像采集节点
+  type: edge
+  subtitle: 内置AI推理, 5个
+  group: field_domain
+  priority: primary
+  shape: card
+- id: lorawan_gw
+  label: LoRaWAN网关
+  type: platform
+  subtitle: 8通道, 以太网/4G回传
+  group: comm_domain
+  priority: primary
+  shape: card
+- id: cellular_bs
+  label: 4G基站
+  type: external
+  subtitle: 运营商网络
+  group: comm_domain
+  priority: normal
+  shape: card
+- id: rule_engine
+  label: 云规则引擎
+  type: platform
+  subtitle: 灌溉决策 + 告警
+  group: cloud_domain
+  priority: primary
+  shape: card
+- id: valve_actuator
+  label: 电磁阀节点
+  type: edge
+  subtitle: LoRaWAN, 5个
+  group: field_domain
+  priority: supporting
+  shape: card
+connections:
+- from: soil_sensor
+  to: lorawan_gw
+  label: 定时上报(200B)
+  style: solid
+  direction: bottom-to-top
+- from: weather_station
+  to: lorawan_gw
+  label: 定时上报(200B)
+  style: solid
+  direction: bottom-to-top
+- from: camera_node
+  to: cellular_bs
+  label: 异常图像(200-300KB)
+  style: solid
+  direction: bottom-to-top
+- from: cellular_bs
+  to: rule_engine
+  label: 回传
+  style: solid
+  direction: bottom-to-top
+- from: lorawan_gw
+  to: rule_engine
+  label: 环境数据汇聚
+  style: solid
+  direction: bottom-to-top
+- from: rule_engine
+  to: lorawan_gw
+  label: '"下行: 电磁阀指令"'
+  style: dashed
+  direction: request
+- from: lorawan_gw
+  to: valve_actuator
+  label: '"开关控制"'
+  style: dashed
+  direction: request
+callouts:
+- LoRaWAN和4G各自承载不同量级和频次的数据，不存在‘谁替代谁’的问题。
+- 图像节点中的AI推理模块是减少流量消耗的关键，属于边缘计算在农业中最典型的应用之一。
+- 灌溉指令的下行通道延迟可达秒级到分钟级，但对灌溉场景完全适用。
+legend:
+- 青绿色：田间感知设备及数据源
+- 蓝色：网关、云平台及通信基础设施
+- 实线箭头：同步数据上行
+- 虚线箭头：下行控制或配置指令
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入callouts或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达数据类型分离和边缘处理逻辑。
+render_notes: HTML/SVG渲染，浅色背景。LoRaWAN网关以集中式拓扑示意，4G基站使用蜂窝网络图标。图注和字段使用统一10pt字体，箭头标签均使用中文标注。
+caption:
+  zh: 图12-4 展示智慧果园混合组网的完整数据路径。土壤与气象数据通过LoRaWAN统一周期上报；图像数据在边缘完成病害推理后通过4G回传；灌溉指令由云端规则引擎通过LoRaWAN下行通道执行。
+  en: Figure 12-4 The complete data path of a smart orchard hybrid network. Soil and weather data are reported periodically over LoRaWAN; images are backhauled over 4G after edge disease inference; irrigation commands are executed by the cloud rule engine through the LoRaWAN downlink.
+labels:
+  en:
+    图12-4 智慧果园综合监测系统架构（示意）: Figure 12-4 Smart Orchard Monitoring Architecture (Schematic)
+    展示10公顷苹果园监测系统中感知层、通信层、边缘处理层和云平台层之间的接口划分与主数据流路径。: Interfaces and main data flows across the sensing, communication, edge-processing, and cloud layers of a 10-hectare apple orchard system.
+    读者应理解混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。: Hybrid networking is not a compromise but a rational split between low-frequency small packets and high-frequency large ones.
+    云端平台与应用层: Cloud Platform & Applications
+    云服务平台域 · 数据汇聚 / 决策 / 存储 / 服务: Cloud service domain · aggregation / decisions / storage / services
+    云规则引擎: Cloud Rule Engine
+    灌溉决策 · 告警: Irrigation decisions · alerts
+    灌溉决策: Irrigation decision
+    异常告警: Anomaly alerts
+    设备管理: Device management
+    接入 · 状态 · 配置: Access · status · config
+    可视化看板: Visualization dashboard
+    实时数据 · 大屏展示: Live data · big-screen display
+    要点① 下行链路: Point ① Downlink
+    灌溉指令下行延迟可达秒级到分钟级，: Irrigation command downlink latency can reach seconds to minutes,
+    但对灌溉场景完全适用。: yet is fully acceptable for irrigation.
+    混合通信层: Hybrid Communication Layer
+    混合通信域 · 双通道收发 / 协议适配: Hybrid comm domain · dual-channel TX/RX / protocol adaptation
+    LoRaWAN 网关: LoRaWAN Gateway
+    8通道 · 以太网 / 4G 回传: 8 channels · Ethernet / 4G backhaul
+    4G Cat-1 基站: 4G Cat-1 Base Station
+    运营商网络: Carrier network
+    要点② 双通道互补: Point ② Dual channels complement
+    LoRaWAN 与 4G 各自承载不同量级: LoRaWAN and 4G each carry different payload sizes
+    和频次的数据，不存在“谁替代: and frequencies — neither replaces
+    谁”的问题。: the other.
+    边缘处理层 · 图像节点本地推理（EfficientNet-Lite）→ 异常 / 无异常: Edge layer · on-node inference (EfficientNet-Lite) → anomaly / normal
+    田间感知层: Field Sensing Layer
+    田间感知域 · 异构传感与数据源: Field sensing domain · heterogeneous sensors & sources
+    土壤传感器节点: Soil sensor node
+    LoRaWAN · 20个: LoRaWAN · 20 nodes
+    三合一 · 温湿度 / 电导率: 3-in-1 · temp & humidity / EC
+    气象站: Weather station
+    LoRaWAN · 1个: LoRaWAN · 1 node
+    风速 / 雨量 / 光照: Wind / rain / light
+    图像采集节点: Image capture node
+    内置边缘AI推理 · 5个: Built-in edge AI · 5 nodes
+    电磁阀节点: Solenoid valve node
+    LoRaWAN · 5个: LoRaWAN · 5 nodes
+    灌溉执行: Irrigation actuation
+    要点③ 边缘推理: Point ③ Edge inference
+    图像节点的边缘AI推理是减少流量: On-node edge AI inference is the key to cutting
+    消耗的关键，是边缘计算在农业中: traffic — one of the most typical uses of
+    最典型的应用之一。: edge computing in agriculture.
+    定时上报 · 200B: Periodic report · 200B
+    异常图像 · 200-300KB: Anomaly image · 200-300KB
+    回传: Backhaul
+    环境数据汇聚: Environmental data aggregation
+    下行：电磁阀指令: 'Downlink: valve command'
+    开关控制: On/off control
+    青绿=田间感知设备及数据源: Teal = field sensing devices & sources
+    蓝=网关 · 云平台 · 通信基础设施: Blue = gateways · cloud · comm infrastructure
+    实线=数据上行: Solid = data uplink
+    虚线=下行控制: Dashed = downlink control
+    图12-4 智慧果园混合组网完整数据路径：土壤与气象数据经 LoRaWAN 周期上报；图像数据在边缘完成推理后经 4G 回传；灌溉指令由云端规则引擎经 LoRaWAN 下行通道执行。: 'Figure 12-4 The complete data path of the smart orchard hybrid network: soil and weather data are reported periodically over LoRaWAN; images are backhauled over 4G after edge disease inference; irrigation commands are issued by the cloud rule engine over the LoRaWAN downlink.'

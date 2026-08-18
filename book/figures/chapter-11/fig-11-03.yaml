@@ -1,0 +1,151 @@
+type: architecture
+title: 图11-3 智能路灯杆功能图（假设场景）
+purpose: 展示单根智能路灯杆上挂载的五类模块、边缘计算盒的位置及数据流动方向，帮助读者理解不同传感器在带宽、安全、实时性上的差异如何决定数据是否本地处理或上传云端。
+audience_takeaway: 读者应理解边缘计算盒的关键作用——视频等高频数据本地消失，低频和控制数据上传，这是城市级物联网带宽与管理成本的工程折中。
+visual_focus: 数据从环境传感器组、摄像头、照明、充电桩流向边缘计算盒，再经MQTT上传云端IoT Hub的主链路。摄像头到边缘盒的虚线标注“本地推理”。
+design_level: logical
+layout: 纵向三层：挂载层（顶部）、边缘计算层（中部）、云端层（底部）
+elements:
+- “挂载层：五类模块标识——照明灯头 (DALI)、AI摄像头 (RTSP)、环境传感器组 (Modbus)、充电桩 (CAN)、5G微基站 (SFP)。模块间无直接连接，均通过统一线槽接入边缘计算盒。”
+- “边缘计算层：ARM+NPU，标注‘视频流本地处理，不上传’。”
+- “云端层：IoT Hub (MQTT/CoAP Broker) 与应用服务（照明控制、环境看板、安防告警、充电计费）。”
+relationships:
+- “环境传感器组 → 边缘计算盒：Modbus RTU，1条/分钟”
+- “AI摄像头 → 边缘计算盒：RTSP，12 fps（本地推理→结构化消息）”
+- “边缘计算盒 → IoT Hub：MQTT，车流统计+告警，<1 KB/条”
+- “IoT Hub → 照明控制：CoAP，调光指令”
+- “充电桩 → IoT Hub：MQTT+TLS，计费数据”
+regions:
+- id: edge_domain
+  label: 设备域
+  role: 现场异构资源边界
+- id: intelligence_domain
+  label: 智能域
+  role: 模型推理与本地决策
+- id: platform_domain
+  label: 平台域
+  role: 核心服务能力边界
+components:
+- id: env_sensors
+  label: 环境传感器组
+  type: edge
+  subtitle: Modbus
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: cam
+  label: AI摄像头
+  type: ai
+  subtitle: RTSP
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: lighting
+  label: 照明灯头
+  type: edge
+  subtitle: DALI
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: charger
+  label: 充电桩
+  type: edge
+  subtitle: CAN
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: edge_box
+  label: 边缘计算盒
+  type: ai
+  subtitle: ARM+NPU
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: iothub
+  label: IoT Hub
+  type: platform
+  subtitle: MQTT/CoAP
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: app_services
+  label: 应用服务
+  type: application
+  subtitle: 照明/安防/计费
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: env_sensors
+  to: edge_box
+  label: Modbus
+  style: solid
+  direction: bottom-to-top
+- from: cam
+  to: edge_box
+  label: RTSP(本地推理)
+  style: dashed
+  direction: bottom-to-top
+- from: lighting
+  to: edge_box
+  label: DALI
+  style: solid
+  direction: bottom-to-top
+- from: charger
+  to: edge_box
+  label: CAN
+  style: solid
+  direction: bottom-to-top
+- from: edge_box
+  to: iothub
+  label: MQTT
+  style: solid
+  direction: bottom-to-top
+- from: iothub
+  to: app_services
+  label: 事件/指令
+  style: solid
+  direction: request
+- from: app_services
+  to: iothub
+  label: 调光/计费
+  style: solid
+  direction: response
+callouts:
+- “环境传感器、照明、充电桩数据经边缘计算盒统一接入MQTT。”
+- “AI摄像头视频流在边缘盒内完成推理，不上传裸流。”
+legend:
+- “青绿色 = 边缘设备；橙色 = AI推理；蓝色 = 平台服务。”
+- “虚线 = 高频流本地终止；实线 = 数据上传或控制指令。”
+visual_constraints:
+- “节点标签用短名词，解释性文字放入callouts。”
+- “图例置于底部，不遮挡主体。”
+render_notes: “1. 标题行加‘(假设场景)’标识。2. 摄像头-边缘盒箭头中线标注‘本地推理’。3. 充电桩链路加锁图标表示TLS。4. IoT Hub与应用服务间用双向箭头。5. 三层用浅灰底色区分。6. 所有模块文字在14个汉字以内。”
+caption:
+  zh: 图11-3 智能路灯杆功能图（假设场景），展示五类模块与边缘计算盒的数据流向关系。”
+  en: 'Figure 11-3 Functional diagram of a smart light pole (hypothetical scenario), showing how the five module types exchange data with the edge computing box.'
+labels:
+  en:
+    图11-3 智能路灯杆功能图（假设场景）: 'Figure 11-3 Smart Light Pole Functions (Hypothetical)'
+    五类杆载模块经边缘盒汇聚，高带宽视频就地推理，仅低频数据和结构化事件通过 MQTT 进入 IoT Hub。: 'Five pole modules converge on the edge box; video is inferred locally; only low-rate data and structured events reach the IoT Hub.'
+    多协议杆载设备在边缘汇聚，视频只上传推理后的结构化结果: 'Multi-protocol pole devices converge at the edge; only structured inference results are uploaded'
+    挂载层 · 五类模块: 'Mounting Layer · Five Modules'
+    智能照明: 'Smart Lighting'
+    DALI · 调光执行: 'DALI · dimming actuator'
+    AI 摄像头: 'AI Camera'
+    环境传感器组: 'Env Sensor Array'
+    充电桩: 'EV Charger'
+    CAN · 计费鉴权: 'CAN · billing & auth'
+    5G 微基站: '5G Micro Cell'
+    SFP · 通信补盲: 'SFP · coverage fill-in'
+    Modbus RTU · 1条/分钟: 'Modbus RTU · 1 msg/min'
+    RTSP 本地推理（12 fps）: 'RTSP local inference (12 fps)'
+    边缘计算层: 'Edge Computing Layer'
+    边缘计算盒 · ARM + NPU: 'Edge Box · ARM + NPU'
+    协议适配 · 本地控制 · 数据聚合: 'Protocol adaptation · local control · data aggregation'
+    摄像头本地推理：视频不上传 → 车流统计 / 异常事件 / 特征码: 'Local camera inference: no video upload → traffic counts / events / feature codes'
+    MQTT + TLS · 计费数据: 'MQTT + TLS · billing data'
+    MQTT · 结构化消息（&lt;1 KB/条）: 'MQTT · structured msg (&lt;1 KB)'
+    云端层: 'Cloud Layer'
+    照明控制 · 环境看板 · 安防告警 · 充电计费: 'Lighting control · env dashboard · security alerts · EV billing'
+    图11-3 五类模块经边缘盒汇聚；高带宽视频就地推理，仅低频数据和结构化事件通过 MQTT 进入 IoT Hub。: 'Figure 11-3 Five module types converge on the edge box; high-bandwidth video is inferred in place, and only low-rate data and structured events reach the IoT Hub via MQTT.'

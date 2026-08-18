@@ -1,0 +1,182 @@
+type: dataflow
+title: 图4-8 设备抽象与物模型映射示意图
+audience_takeaway: 读者应理解驱动把原始字节解析为带类型值(0x0A加偏移15.3得25.3℃),映射层按Schema归一成统一物模型实例。
+purpose: 展示从底层原生数据（Modbus寄存器、BLE特征值、LoRaWAN负载）到统一物模型实例的映射过程，说明设备抽象层如何屏蔽协议差异，实现数据模型标准化。
+visual_focus: '从Modbus 寄存器值到数据映射层 : 解析值的主链路。'
+design_level: implementation
+layout: 从左至右三列流向：原生数据→驱动解析→数据映射层→物模型实例→平台消费方
+elements:
+- 第一列（左）：三个原生数据源方块，分别标注为 Modbus 寄存器值（地址 0x0001，值 0x0A）、BLE 特征值（UUID 0x2A6E，值 0x419A0000）、LoRaWAN FPort 负载（0x02 0xFD 0x00 0x27）
+- 第二列（中上）：三个驱动方块：Modbus Driver、BLE Driver、LoRaWAN Driver，框内标出关键处理逻辑（例如 Modbus Driver 将 0x0A 转换为整数 10 后加上偏移 15.3 得到温度 25.3）
+- 第三列（中下）：数据映射层大方块，接收三个驱动的解析结果，根据 JSON Schema 进行字段映射和类型统一
+- '第四列（右）：物模型实例方块，展示 JSON 对象字段（temperature: 25.3, humidity: 45.0），并附上“统一模型”和“与协议无关”标签'
+- 最右侧：一个或多个平台应用方块（告警引擎、规则引擎、实时仪表盘）
+relationships:
+- 'Modbus 寄存器值 → Modbus Driver : 原始帧'
+- 'Modbus Driver → 数据映射层 : 解析值（整型）'
+- 'BLE 特征值 → BLE Driver : 原始帧'
+- 'BLE Driver → 数据映射层 : 解析值（浮点）'
+- 'LoRaWAN 负载 → LoRaWAN Driver : 原始帧'
+- 'LoRaWAN Driver → 数据映射层 : 解析值（十六进制解码）'
+- '数据映射层 → 物模型实例 : 根据 Schema 归一化'
+- '物模型实例 → 平台应用（告警/规则/仪表盘） : 语义化的属性、事件、服务'
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: r1
+  label: Modbus 寄存器值
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 'Modbus Driver : 原…'
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: Modbus Driver
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: '数据映射层 : 解析值'
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r5
+  label: BLE 特征值
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: 'BLE Driver : 原始帧'
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: BLE Driver
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r8
+  label: LoRaWAN 负载
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r9
+  label: LoRaWAN Driver…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r10
+  label: LoRaWAN Driver
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: modbus_driver
+  label: Modbus 寄存器值 → Mod…
+  style: solid
+  direction: request
+- from: r3
+  to: r4
+  label: 整型
+  style: solid
+  direction: request
+- from: r5
+  to: r6
+  label: BLE 特征值 → BLE Dri…
+  style: solid
+  direction: request
+- from: r7
+  to: r4
+  label: 浮点
+  style: solid
+  direction: request
+- from: r8
+  to: lorawan_driver
+  label: LoRaWAN 负载 → LoRa…
+  style: solid
+  direction: request
+- from: r10
+  to: r4
+  label: 十六进制解码
+  style: solid
+  direction: request
+callouts:
+- 'Modbus 寄存器值 → Modbus Driver : 原始帧'
+- 'Modbus Driver → 数据映射层 : 解析值（整型）'
+- 'BLE 特征值 → BLE Driver : 原始帧'
+legend:
+- 蓝色方块：原生数据源
+- 青绿色方块：协议驱动
+- 橙色方块：数据映射层（核心抽象）
+- 绿色方块：统一物模型实例
+- 灰色方块：平台应用
+- 实线箭头：数据流动方向，标注数据转换/传输步骤
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景。水平从左到右流向布局。第一列三个原生数据方块垂直排列，各通过箭头指向对应的驱动方块。驱动方块水平排列。从驱动发出的箭头汇集到中央的“数据映射层”大方块。映射层发出一个箭头指向最右侧的“物模型实例”大方块，实例再指向最右侧的应用方块。每个元素和箭头使用简洁的线条，颜色按图例标注。文字标签简短清晰，避免覆盖核心元素。
+caption:
+  zh: 图4-8 三种协议传感器数据经过驱动解析和数据映射层，统一转换为相同结构的物模型实例，上层应用消费时无需感知底层协议的差异
+  en: 'Figure 4-8 Sensor data from three protocols is parsed by drivers and unified by the data mapping layer into thing model instances of the same structure, so upper-layer applications consume it without sensing the underlying protocol differences.'
+labels:
+  en:
+    图4-8 设备抽象与物模型映射示意图: 'Figure 4-8 Device Abstraction and Thing Model Mapping'
+    Modbus、BLE、LoRaWAN 三种原始帧经驱动解析与映射层类型统一，最终收敛为同一结构的物模型实例。: 'Raw frames from Modbus, BLE, and LoRaWAN are parsed by drivers and type-unified by the mapping layer, converging into thing model instances of one structure.'
+    平台服务域: 'Platform Domain'
+    数据资产域: 'Data Asset Domain'
+    原始帧: 'Raw Frame'
+    整型: 'Integer'
+    浮点: 'Float'
+    十六进制解码: 'Hex Decode'
+    Schema归一化: 'Schema Normalization'
+    属性 / 事件 / 服务: 'Attribute / Event / Service'
+    Modbus寄存器值: 'Modbus Register Value'
+    地址0x0001 值0x0A: 'Address 0x0001, Value 0x0A'
+    BLE特征值: 'BLE Characteristic'
+    UUID 0x2A6E 值0x419A0000: 'UUID 0x2A6E, Value 0x419A0000'
+    LoRaWAN负载: 'LoRaWAN Payload'
+    IEEE754转换: 'IEEE754 Conversion'
+    端口解码: 'Port Decode'
+    数据映射层: 'Data Mapping Layer'
+    JSON Schema字段映射: 'JSON Schema Field Mapping'
+    类型统一: 'Type Unification'
+    物模型实例: 'Thing Model Instance'
+    统一模型 与协议无关: 'Unified Model, Protocol-Agnostic'
+    平台应用: 'Platform Apps'
+    告警引擎: 'Alarm Engine'
+    规则引擎: 'Rule Engine'
+    实时仪表盘: 'Real-Time Dashboard'
+    蓝色方块：原生数据源: 'Blue box: raw data source'
+    青绿色方块：协议驱动: 'Teal box: protocol driver'
+    橙色方块：数据映射层（核心抽象）: 'Orange box: data mapping layer (core abstraction)'
+    图4-8 三种协议传感器数据经过驱动解析和数据映射层，统一转换为相同结构的物模型实例，上层应用消费时无需感知底层协议的差异: 'Figure 4-8 Sensor data from three protocols is parsed by drivers and unified by the data mapping layer into thing model instances of the same structure, so upper-layer applications consume it without sensing the underlying protocol differences.'

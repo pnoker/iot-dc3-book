@@ -1,0 +1,136 @@
+type: sequence
+title: 图11-2 RSU与OBU通信流程
+audience_takeaway: 读者应理解RSU是路侧枢纽:信号机灯色经串口轮询编码SPAT,雷达目标经以太网编码RSI,OBU融合CAN数据供ADAS。
+purpose: 展示信号机、RSU、雷达、OBU、车载HMI以及ADAS域控制器之间的消息交互顺序和时序关系
+visual_focus: 从信号机到终点的主链路。
+design_level: implementation
+layout: 垂直方向，六条生命线，自左向右排列
+elements:
+- '信号机: 通过RS-232/485接口输出灯色数据（相位+倒计时秒数）'
+- 'RSU: 轮询信号机数据，编码SPAT消息；接收雷达目标列表，编码RSI消息'
+- '雷达: 路侧毫米波雷达或雷视一体机，以太网输出目标列表'
+- 'OBU: 接收PC5广播，解析SPAT/RSI，融合CAN总线数据'
+- 'HMI: 车载人机交互界面，显示提示信息'
+- 'ADAS: 自动驾驶域控制器，用于路径规划决策'
+relationships:
+- '信号机 -> RSU: 实线箭头，标注''灯色数据(相位, 倒计时秒数)'''
+- 'RSU -> OBU: 双竖线表示PC5广播通道，从双竖线引出两根实线箭头分别指向HMI和ADAS，标注''SPAT消息''与''RSI消息'''
+- '雷达 -> RSU: 虚线箭头，标注''目标列表(位置, 速度, 类型)'''
+- 'OBU -> HMI: 实线箭头，标注''显示提示'''
+- 'OBU -> ADAS: 实线箭头，标注''决策输入'''
+regions:
+- id: roadside_domain
+  label: 路侧域
+  role: 路侧设备与信号机控制边界
+- id: vehicle_domain
+  label: 车载域
+  role: 车载通信与决策边界
+components:
+- id: signal_controller
+  label: 信号机
+  type: edge
+  subtitle: 灯色输出
+  group: roadside_domain
+  priority: primary
+  shape: card
+- id: rsu
+  label: RSU
+  type: platform
+  subtitle: 协议转换与广播
+  group: roadside_domain
+  priority: primary
+  shape: card
+- id: radar
+  label: 雷达
+  type: edge
+  subtitle: 目标检测
+  group: roadside_domain
+  priority: normal
+  shape: card
+- id: obu
+  label: OBU
+  type: platform
+  subtitle: 消息接收与融合
+  group: vehicle_domain
+  priority: primary
+  shape: card
+- id: hmi
+  label: HMI
+  type: application
+  subtitle: 驾驶员提示
+  group: vehicle_domain
+  priority: normal
+  shape: card
+- id: adas
+  label: ADAS
+  type: ai
+  subtitle: 路径决策
+  group: vehicle_domain
+  priority: normal
+  shape: decision
+connections:
+- from: signal_controller
+  to: rsu
+  label: 灯色数据
+  style: solid
+  direction: request
+- from: radar
+  to: rsu
+  label: 目标列表
+  style: dashed
+  direction: request
+- from: rsu
+  to: obu
+  label: SPAT/RSI广播
+  style: solid
+  direction: left-to-right
+- from: obu
+  to: hmi
+  label: 显示提示
+  style: solid
+  direction: response
+- from: obu
+  to: adas
+  label: 决策输入
+  style: solid
+  direction: response
+callouts:
+- 信号机的灯色数据通过串口输出，RSU轮询读取。
+- SPAT和RSI消息通过PC5广播，不确认接收。
+- ADAS域控制器直接利用SPAT相位信息进行绿波或停车决策。
+legend:
+- '实线箭头: 确认的消息流或数据流'
+- '虚线箭头: 非周期广播或可选链路'
+- '双竖线: 表示PC5广播通道'
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 绘制六条垂直生命线，自左向右排列为：信号机、RSU、雷达、OBU、HMI、ADAS。信号机与RSU之间画一根实线箭头。RSU与OBU之间画一条双竖线表示PC5广播通道。雷达与RSU之间画一根虚线箭头。OBU与HMI和ADAS的箭头分别从OBU生命线出发。箭头间隔建议保留80-120像素。所有生命线底部对齐。
+caption:
+  zh: 图11-2 RSU与OBU通信流程图。展示了信号机、路侧雷达、RSU、OBU、车载HMI和ADAS域控制器之间的消息流向和时序。
+  en: 'Figure 11-2 Message flow between the RSU and the OBU, showing the message paths and timing among the signal controller, roadside radar, RSU, OBU, in-vehicle HMI, and ADAS domain controller.'
+labels:
+  en:
+    图11-2 RSU与OBU通信流程: 'Figure 11-2 RSU–OBU Communication Flow'
+    RSU 把信号机灯色编码为 SPAT、把雷达目标编码为 RSI，经 PC5 广播给 OBU，OBU 融合车载数据供 HMI 提示与 ADAS 规划。: 'The RSU encodes signal phases as SPAT and radar targets as RSI and broadcasts over PC5; the OBU fuses vehicle data for HMI alerts and ADAS planning.'
+    RSU 汇聚信号相位与路侧目标，经 PC5 广播给车载终端: 'RSU aggregates signal phases and roadside targets, broadcast over PC5 to the vehicle'
+    信号机: 'Signal Controller'
+    路侧雷达: 'Roadside Radar'
+    以太网: 'Ethernet'
+    路侧枢纽: 'Roadside Hub'
+    车载终端: 'Vehicle Side'
+    车载 HMI: 'In-vehicle HMI'
+    显示提示: 'Show alerts'
+    路径规划: 'Path planning'
+    1 轮询相位与倒计时（RS-232/485）: '1 Poll phase & countdown (RS-232/485)'
+    2 灯色数据响应: '2 Signal state reply'
+    3 编码并广播 SPAT（PC5）: '3 Encode & broadcast SPAT (PC5)'
+    4 解析 SPAT + GNSS/CAN: '4 Parse SPAT + GNSS/CAN'
+    5 目标位置、速度（以太网）: '5 Target position & speed (Ethernet)'
+    6 编码并广播 RSI（PC5）: '6 Encode & broadcast RSI (PC5)'
+    7 障碍物 / 异常停车提示: '7 Obstacle / stopped-vehicle alert'
+    8 相位、计时与目标信息送入路径规划: '8 Phase, timing & targets to path planning'
+    信号相位链路: 'Signal phase link'
+    道路事件链路: 'Road event link'
+    端到端事件播发目标：百毫秒级: 'End-to-end event target: ~100 ms'
+    图11-2 RSU 把信号机灯色编码为 SPAT、把雷达目标编码为 RSI，OBU 融合车载数据后供 HMI 提示与 ADAS 规划。: 'Figure 11-2 The RSU encodes signal state as SPAT and radar targets as RSI; the OBU fuses vehicle data for HMI alerts and ADAS planning.'

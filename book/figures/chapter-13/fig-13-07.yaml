@@ -1,0 +1,116 @@
+type: layered
+title: 图13-7 基于区块链的供应链溯源系统分层架构
+audience_takeaway: 读者应理解应用层无权直连感知层与边缘层，任何数据查询都须经区块链网络层中转，链上成为唯一可信数据出口。
+purpose: 展示从物理感知到业务展示的四层结构，以及数据在各层间的流动方向。
+visual_focus: 从边缘层将计算出的数据哈希、数字签名…到应用层，实线箭头；应用层发起的查询…的主链路。
+design_level: logical
+layout: 自下而上四层叠加，左侧标注层名，右侧标注关键组件和职责。
+elements:
+- 感知层：温度传感器、湿度传感器、RFID读写器、GPS模块等物理硬件。
+- 边缘层：边缘网关、嵌入式节点。负责数据采集、格式化、数字签名、哈希运算和本地缓存。
+- 区块链网络层：分布式账本、共识机制（Raft或PBFT）、智能合约（质检、预警、冻结业务逻辑）。包含各参与方节点。
+- 应用层：Web端溯源查询、移动端防伪验证、企业ERP对接、数据报表。
+relationships:
+- 感知层通过有线/短距无线（RS-485、Zigbee、BLE）将原始数据传入边缘层。
+- 边缘层将计算出的数据哈希、数字签名和元数据打包成交易，发送到区块链网络层，实线箭头。
+- 区块链网络层将共识结果同步到应用层，实线箭头
+- 应用层发起的查询请求反向流入区块链网络层，虚线箭头。
+- 应用层不直接访问感知层或边缘层，数据只能通过区块链网络层获取，虚线箭头表示请求方向，实线箭头表示数据推送方向。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
+components:
+- id: r1
+  label: 边缘层将计算出的数据哈希、数字签名…
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: database
+- id: r2
+  label: 区块链网络层，实线箭头
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: 区块链网络层将共识结果同步
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 应用层，实线箭头；应用层发起的查询…
+  type: application
+  subtitle: ''
+  group: application_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 感知层通过有线/短距无线（RS-4…
+  style: solid
+  direction: left-to-right
+- from: r2
+  to: r3
+  label: 边缘层将计算出的数据哈希、数字签名…
+  style: solid
+  direction: left-to-right
+- from: r3
+  to: r4
+  label: 区块链网络层将共识结果同步到应用层…
+  style: solid
+  direction: left-to-right
+callouts:
+- 感知层通过有线/短距无线（RS-485、Zigbee、BLE）将原始数据传入边缘层
+- 边缘层将计算出的数据哈希、数字签名和元数据打包成交易，发送到区块链网络层，实线箭头
+- 区块链网络层将共识结果同步到应用层，实线箭头
+legend:
+- 蓝色=核心服务（区块链网络层）；青绿色=设备与边缘（感知层、边缘层）；橙色=终端应用（应用层）。
+- 实线箭头：数据推送；虚线箭头：查询请求。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG渲染，浅色背景。四层自下而上堆叠，每层使用不同底色（青绿→蓝色→橙色），层名使用粗体白色字体。层间箭头用粗细区分，实线箭头表示数据推送，虚线箭头表示查询请求。
+caption:
+  zh: 图13-7 展示四层结构的职责边界和数据流向。边缘层将原始传感器数据哈希化后上链，原始数据保留在边缘存储或IPFS中。区块链网络层负责记录、共识与智能合约执行。
+  en: 'Figure 13-7 The responsibility boundaries and data flows of the four-layer structure. The edge layer hashes raw sensor data and puts it on-chain, while the raw data stays in edge storage or IPFS. The blockchain network layer is responsible for recording, consensus, and smart-contract execution.'
+labels:
+  en:
+    图13-7 基于区块链的供应链溯源系统分层架构: Figure 13-7 Layered Architecture of a Blockchain-Based Supply-Chain Traceability System
+    原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录，不直接绕过信任层访问设备。: Raw data stays off-chain; hash, signature and metadata on-chain; apps query trusted records via the chain, never bypassing the trust layer.
+    应用只能经区块链网络查询可信记录，不直接绕过信任层访问设备: Apps query trusted records only via the chain, never bypassing the trust layer
+    应用层: Application Layer
+    Web 溯源查询: Web traceability query
+    移动端防伪验证: Mobile anti-counterfeit check
+    企业 ERP 对接: Enterprise ERP integration
+    数据报表: Data reports
+    共识结果（实线）: Consensus results (solid)
+    查询请求（虚线）: Query requests (dashed)
+    区块链网络层: Blockchain Network Layer
+    分布式账本: Distributed Ledger
+    共识机制（Raft / PBFT）: Consensus (Raft / PBFT)
+    智能合约: Smart Contract
+    参与方节点: Participant nodes
+    质检 / 预警 / 冻结规则；链上记录哈希、签名与元数据: Quality/alert/freeze rules; hash, signature & metadata on-chain
+    哈希 + 签名 + 元数据: Hash + signature + metadata
+    边缘层: Edge Layer
+    边缘网关 / 嵌入式节点: Edge gateway / embedded nodes
+    采集 · 格式化 · 数字签名 · 哈希运算 · 本地缓存: Collect · format · sign · hash · local cache
+    原始数据 · RS-485 / Zigbee / BLE: Raw data · RS-485 / Zigbee / BLE
+    感知层: Perception Layer
+    温湿度传感器: Temp/humidity sensors
+    RFID 读写器: RFID reader
+    GPS 模块: GPS module
+    工业采集设备: Industrial acquisition devices
+    图13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。: Figure 13-7 Raw data off-chain, hash + signature + metadata on-chain; apps query trusted records via the chain.

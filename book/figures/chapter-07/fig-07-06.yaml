@@ -1,0 +1,67 @@
+type: architecture
+title: 图7-6 IoT DC3 Agentic Center 的 Runtime 能力映射
+purpose: 把工业 Agent Runtime 四平面映射到 IoT DC3 当前实现，明确已具备、部分具备和尚未具备的能力，避免将目标架构误写为现状。
+audience_takeaway: IoT DC3 已形成受治理的对话式 Tool 运行基础，并具备受控点位写入与 MCP 工具授权；通用 Workflow、长期任务状态机、调度恢复和统一 Skill 注册仍是后续建设项。
+visual_focus: 左侧为四平面能力框架，中间为 DC3 当前组件，右侧用已具备、部分具备、待建设三种状态标记能力成熟度；底部显示 Data、RabbitMQ、Driver 与设备链路。
+design_level: implementation
+layout: 1200×760 分层架构图。自上而下为入口与会话、模型与上下文、Tool 与受控执行、平台与设备四层；右侧为运行时治理旁路。每个组件右上角带状态标签：已具备、部分具备、待建设。
+elements:
+- 入口：Web 对话、内部 API、Gateway MCP 客户端
+- 模型适配：ChatClientFactory、Provider/Model 配置
+- 上下文：会话消息、ToolContext、租户/用户/会话
+- 能力：8 个已注册 Tool、Facade、MCP 工具目录与白名单
+- 受控写入：PENDING Action、用户确认、ActionService
+- 平台链路：Manager/Data/Auth、RabbitMQ、Driver、设备
+- 部分具备：调用记录、会话回放、模型与 Tool Eval
+- 待建设：统一 run_id、长期任务状态机、Workflow/Skill 注册、调度租约、恢复补偿、kill switch
+relationships:
+- 会话请求经 ChatClientFactory 选择模型并注入可见 Tool
+- ToolContext 将身份与租户上下文带入 Facade 调用
+- 只读 Tool 直接返回经过业务层授权的数据
+- 点位写 Tool 先创建 Action，确认后再进入 Data—RabbitMQ—Driver 命令链路
+- 外部 Agent 经 Gateway MCP 入口发现经过连接授权和白名单裁剪的工具
+- 待建设能力不参与当前主调用链，用虚线表示演进方向
+legend:
+- 绿色标签：当前已具备
+- 橙色标签：已有基础但尚未统一
+- 灰色虚线：目标能力，当前未实现
+render_notes: 遵循 style.yaml 的浅色技术出版风格。状态标签位置统一，已具备用 secondary/success，部分具备用 accent/warning，待建设用 neutral 虚线。当前调用链使用实线，目标演进使用虚线；避免将待建设组件画入当前数据主链路。
+caption:
+  zh: 图7-6 IoT DC3 Agentic Center 的 Runtime 能力映射。当前系统已经具备会话、模型适配、显式 Tool、租户上下文、MCP 授权和 Action 确认；长期任务编排、状态恢复与统一治理仍需继续建设。
+  en: Figure 7-6 Runtime capability mapping of the IoT DC3 Agentic Center. The system already provides sessions, model adaptation, explicit tools, tenant context, MCP authorization, and Action confirmation; long-horizon task orchestration, state recovery, and unified governance still need further construction.
+labels:
+  en:
+    图7-6 IoT DC3 Agentic Center 的 Runtime 能力映射: 'Figure 7-6 IoT DC3 Agentic Center: Runtime Capability Map'
+    DC3 已形成受治理的对话式 Tool 运行基础，通用 Workflow、长期任务状态机、调度恢复和统一 Skill 注册仍是后续建设项。: DC3 already has a governed conversational tool runtime; general workflows, long-task state machines, schedule recovery, and unified Skill registration remain future work.
+    当前实现、已有基础与目标能力分开表达，避免把演进方向误写成现成功能: Implemented vs. foundational vs. target are separated — no roadmap item drawn as shipped
+    入口与会话: Entry & sessions
+    Web 对话 / 内部 API: Web chat / internal API
+    Gateway MCP 客户端入口: Gateway MCP client entry
+    已具备 · 多入口受控接入: Available · controlled multi-entry access
+    决策与上下文: Decision & context
+    Provider / Model 配置与客户端缓存: Provider / model config & client cache
+    已具备: Available
+    会话与消息持久化: Session & message persistence
+    多轮连续 · 消息回放 · 会话范围: Multi-turn · message replay · session scope
+    租户 · 用户 · 会话上下文: Tenant · user · session context
+    能力与平台复用: Capabilities & platform reuse
+    8 类显式注册 Tool: 8 explicitly registered tools
+    Facade / 平台服务: Facade / platform services
+    复用 Auth · Manager · Data 边界: Reuse Auth · Manager · Data boundaries
+    不复制设备协议和业务逻辑: No duplicated protocols or business logic
+    MCP 工具目录与白名单: MCP tool catalog & allowlist
+    OAuth · 连接授权 · 工具裁剪: OAuth · connection auth · tool scoping
+    供外部 Agent 发现平台能力: External agent capability discovery
+    受控写入与平台链路: Controlled writes & platform chain
+    确认后由 ActionService 下发: Issued by ActionService after confirmation
+    点位写部分具备: Point writes partially available
+    Driver · 设备: Driver · devices
+    运行时治理旁路: Runtime governance lane
+    部分具备: Partial
+    调用记录 · 会话回放: Call logs · session replay
+    模型与 Tool Eval: Model & tool eval
+    待建设: To build
+    统一 run_id · 长期任务状态机: Unified run_id · long-task state machine
+    Workflow / Skill 注册: Workflow / Skill registration
+    调度租约 · 恢复补偿: Scheduling leases · recovery compensation
+    图7-6 DC3 已形成受治理的对话式 Tool 运行基础与受控点位写入；通用 Workflow、长期状态机、调度恢复与统一 Skill 注册仍是后续建设项。: Figure 7-6 DC3 already provides a governed conversational tool runtime and controlled point writes; general workflows, long-horizon state machines, schedule recovery, and unified Skill registration remain future work.

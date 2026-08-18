@@ -1,0 +1,107 @@
+type: architecture
+title: 图6-3 智能楼宇物联网系统微服务参考架构（示意）
+audience_takeaway: 读者应理解楼宇中MQTT/Modbus/BACnet三类异种协议统一由边缘网关的协议驱动接入，微服务按领域边界拆分且各自独立存储，数据流与控制流分离传递。
+purpose: 展示按DDD限界上下文拆分的智能楼宇微服务分层架构，以及数据流与控制流的分离路径。
+visual_focus: 从起点到对应的协议驱动层服务，实线箭头的主链路。
+design_level: logical
+layout: 自下而上分层：南向设备层 -> 协议驱动层 -> 云端微服务层 -> 北向接入与展示层。
+elements:
+- 南向设备层：MQTT传感器、Modbus控制器、BACnet空调系统，使用青绿色设备节点。
+- 协议驱动层（边缘网关）：MQTT驱动、Modbus驱动、BACnet驱动，使用青绿色服务块。
+- 云端微服务层：设备管理服务、数据采集服务、告警引擎服务、能源分析服务、用户与租户服务，均使用蓝色服务块。
+- 北向接入与展示层：API网关（橙色网关节点），管理控制台（绿色前端节点）。
+relationships:
+- 南向设备经由MQTT/Modbus/BACnet协议接入对应的协议驱动层服务，实线箭头。
+- 协议驱动层服务通过消息队列将标准化报文发送至云端的数据采集服务，虚线箭头。
+- 数据采集服务通过消息队列将实时数据推送至告警引擎服务，虚线箭头。
+- 数据采集服务通过批量任务将数据导入能源分析服务，虚线箭头。
+- 告警引擎服务通过事件分发将告警通知送达用户与租户服务，虚线箭头。
+- 管理控制台通过HTTP/WebSocket访问API网关，API网关进行路由与鉴权后分发至各微服务，实线箭头。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 南向设备经由MQTT/Modbus…
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: bus
+- id: r2
+  label: 对应的协议驱动层服务，实线箭头
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: mqtt_modbus_bac
+  to: r2
+  label: 南向设备经由MQTT/Modbus…
+  style: solid
+  direction: request
+callouts:
+- 南向设备经由MQTT/Modbus/BACnet协议接入对应的协议驱动层服务，实线箭头
+- 协议驱动层服务通过消息队列将标准化报文发送至云端的数据采集服务，虚线箭头
+- 数据采集服务通过消息队列将实时数据推送至告警引擎服务，虚线箭头
+legend:
+- 青绿色：设备与边缘节点。
+- 蓝色：核心微服务。
+- 橙色：API网关。
+- 绿色：前端展示层。
+- 实线箭头：同步或强依赖调用。
+- 虚线箭头：异步消息或事件流。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。每个微服务节点需显示名称和一句话职责描述。服务间连接线需标注通信方式（消息队列/HTTP/事件）。
+caption:
+  zh: 图6-3 展示智能楼宇系统中，南向设备通过边缘节点驱动接入，微服务层按领域拆分且各自持有独立数据存储，以及数据流与控制流分离的设计（示意）。
+  en: 'Figure 6-3 In a smart building system, southbound devices connect through edge protocol drivers, the microservice layer is split by domain with an independent data store each, and data flow and control flow are kept separate (illustrative).'
+labels:
+  en:
+    图6-3 智能楼宇物联网系统微服务参考架构（示意）: Figure 6-3 Smart Building IoT Microservice Reference (Illustrative)
+    三类设备由对应协议 Driver 适配；遥测上行与控制下行采用相反方向。: Each device class maps to its protocol driver; telemetry uplink and control downlink run in opposite directions.
+    北向接入与展示层: Northbound Access & UI Layer
+    管理控制台: Admin Console
+    API 网关: API Gateway
+    路由 · 鉴权 · 统一入口: Routing · Auth · Single Entry
+    云端微服务层：限界上下文与独立数据: 'Cloud microservices: bounded contexts, separate data'
+    设备管理: Device Management
+    注册 · 认证 · 配置下发: Register · Auth · Config Push
+    存储：关系库: 'Storage: RDBMS'
+    数据采集: Data Acquisition
+    格式标准化 · 入时序库: Normalize · into Time-Series DB
+    存储：时序库: 'Storage: time-series DB'
+    告警引擎: Alarm Engine
+    规则判定 · 通知: Rule Evaluation · Notify
+    存储：内存库: 'Storage: in-memory DB'
+    能源分析: Energy Analytics
+    聚合 · 能耗趋势: Aggregate · Energy Trends
+    存储：数仓: 'Storage: data warehouse'
+    用户租户: Users & Tenants
+    权限 · 多租户隔离: Permissions · Tenant Isolation
+    消息队列: Message Queue
+    边缘协议驱动层: Edge Protocol Driver Layer
+    南向设备层: Southbound Device Layer
+    MQTT 传感器: MQTT Sensors
+    Modbus 控制器: Modbus Controllers
+    BACnet 空调系统: BACnet HVAC
+    REST 路由 · 鉴权: REST Routing · Auth
+    实时告警: Real-Time Alarms
+    事件通知: Event Notification
+    批量导入: Batch Import
+    标准化报文: Normalized Messages
+    上行数据: Uplink Data
+    下行控制: Downlink Control
+    同步 / 强依赖（REST 路由）: 'Sync / strong dependency (REST routing)'
+    异步消息（消息队列）: 'Async messaging (message queue)'
+    上行数据（实线）: 'Uplink data (solid)'
+    下行控制（实线）: 'Downlink control (solid)'
+    图6-3 每类设备只连接对应协议 Driver，上行遥测与下行控制分别标明方向。: 'Figure 6-3 Each device class connects only to its matching protocol driver; uplink telemetry and downlink control are each labeled with direction.'

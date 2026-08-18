@@ -1,0 +1,121 @@
+type: layered
+title: 图4-5 多种协议设备的接入困境
+audience_takeaway: 读者应理解每增加一种接入协议，都需新增对应适配器，并在解析、模型映射与指令处理等跨层环节产生重复工作。
+purpose: 展示在一个物联网网关或平台上，接入多种异构协议设备时各层所面临的复杂度和重复适配工作。
+visual_focus: 从设备到平台：统一数据模型转换（转换逻辑因…的主链路。
+design_level: logical
+layout: 上下三层纵向排布：设备层→协议转换层→平台层。设备层多个图标水平排列，每个设备向下引出独立路径穿过转换层到达平台层。
+elements:
+- 设备层：NB-IoT水表、LoRa传感器、Zigbee灯控、BLE信标、WiFi摄像头、Modbus RTU仪表。
+- 协议转换层：每个设备对应独立的协议适配器——NB-IoT完成AT指令解析与窄带帧重组；LoRaWAN负责Class A帧拆包与确认；ZCL/Zigbee做集群消息解析；BLE处理GATT（Generic Attribute Profile）配网与数据读取；WiFi完成HTTP/CoAP协商与媒体流分发；Modbus RTU负责寄存器读写与CRC校验。
+- 平台层：IoT平台内部每个物模型映射、参数绑定、告警规则都需不同的处理路径。
+relationships:
+- 设备到对应适配器：专用协议连接（物理层+数据链路层），用实线箭头。
+- 各适配器到平台：统一数据模型转换（转换逻辑因协议而异），用虚线箭头。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 设备
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 对应适配器：专用协议连接（物理层+…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r3
+  label: 各适配器
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 平台：统一数据模型转换（转换逻辑因…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+connections:
+- from: r1
+  to: r2
+  label: 设备到对应适配器：专用协议连接（物…
+  style: solid
+  direction: left-to-right
+- from: r2
+  to: r3
+  label: 各适配器到平台：统一数据模型转换（…
+  style: solid
+  direction: left-to-right
+- from: r3
+  to: r4
+  label: 设备到对应适配器：专用协议连接（物…
+  style: solid
+  direction: left-to-right
+callouts:
+- 设备到对应适配器：专用协议连接（物理层+数据链路层），用实线箭头
+- 各适配器到平台：统一数据模型转换（转换逻辑因协议而异），用虚线箭头
+legend:
+- 设备图标代表一种协议族，适配器代表独立的协议转换逻辑。
+- 颜色编码：设备层浅灰，协议转换层淡蓝，平台层深灰。
+- 警告图标表示平台侧的重复开发风险。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 使用div.row flex布局，每层背景颜色递进。设备用SVG图标（如fa-water、fa-wi-fi等）表示。每个设备下方绘制纵向箭头和文字标签框。最底层添加平台图标和警告标签。整体色调偏冷灰蓝，适配层淡蓝边框以示强调。无真实设备供应商Logo或型号，仅使用占位图标。
+caption:
+  zh: 图4-5 多种协议设备的接入困境示意图。每增加一种协议，都要新增对应适配器，并在解析、模型映射与指令处理等跨层环节重复投入。
+  en: 'Figure 4-5 The access dilemma of multi-protocol devices. Each additional protocol requires a new adapter and repeated investment in cross-layer work such as parsing, model mapping, and command handling.'
+labels:
+  en:
+    图4-5 多种协议设备的接入困境: 'Figure 4-5 The Multi-Protocol Access Dilemma'
+    接入协议每增加一种，设备解析、模型映射和指令桥接的重复适配范围随之扩大。: 'Each added access protocol widens the duplicated work of device parsing, model mapping, and command bridging.'
+    设备与边缘域: 'Device & Edge Domain'
+    协议转换层: 'Protocol Conversion Layer'
+    平台服务域: 'Platform Domain'
+    NB-IoT水表: 'NB-IoT Water Meter'
+    AT指令+窄带帧: 'AT Cmds + Narrowband Frames'
+    LoRa传感器: 'LoRa Sensor'
+    Class A帧拆包: 'Class A Frame Unpacking'
+    Zigbee灯控: 'Zigbee Lighting'
+    集群消息解析: 'Cluster Msg Parsing'
+    BLE信标: 'BLE Beacon'
+    GATT配网读取: 'GATT Setup & Read'
+    WiFi摄像头: 'WiFi Camera'
+    HTTP/CoAP协商: 'HTTP/CoAP Negotiation'
+    Modbus RTU仪表: 'Modbus RTU Meter'
+    寄存器读写CRC: 'Register R/W + CRC'
+    NB-IoT适配器: 'NB-IoT Adapter'
+    AT指令解析/帧重组: 'AT Parsing / Frame Reassembly'
+    LoRaWAN适配器: 'LoRaWAN Adapter'
+    Class A拆包/确认: 'Class A Unpack / ACK'
+    ZCL/Zigbee适配器: 'ZCL/Zigbee Adapter'
+    BLE适配器: 'BLE Adapter'
+    GATT配网/数据读取: 'GATT Provision / Read'
+    WiFi适配器: 'WiFi Adapter'
+    HTTP/CoAP/媒体分发: 'HTTP/CoAP/Media Delivery'
+    Modbus RTU适配器: 'Modbus RTU Adapter'
+    寄存器读写/CRC校验: 'Register R/W / CRC Check'
+    IoT平台: 'IoT Platform'
+    每个物模型映射、参数绑定、告警规则: 'Each thing-model mapping, parameter binding, alarm rule'
+    都需不同的处理路径: 'requires a different processing path'
+    重复开发风险: 'Duplicated Development Risk'
+    设备图标代表一种协议族，适配器代表独立的协议转换逻辑: 'Each device icon stands for a protocol family; each adapter is independent conversion logic'
+    颜色编码：设备层浅灰，协议转换层淡蓝，平台层深灰: 'Colors: devices light gray, conversion layer light blue, platform dark gray'
+    警告图标表示平台侧的重复开发风险: 'Warning icon marks duplicated development risk on the platform side'
+    图4-5 多种协议设备的接入困境示意图。每增加一种协议，都要新增对应适配器，并在解析、模型映射与指令处理等跨层环节重复投入。: 'Figure 4-5 The access dilemma of multi-protocol devices. Each new protocol demands a new adapter and repeated investment in parsing, model mapping, and command handling.'

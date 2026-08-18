@@ -1,0 +1,109 @@
+type: architecture
+title: 图5-12 平台层延伸阅读工具链全景图
+audience_takeaway: 读者应理解开源工具沿数据上报→消费落库→查询告警的数据流链条分层，且边缘与容器编排层以虚框横跨消息与时序两层。
+purpose: 展示本节推荐的开源工具在物联网平台层中各层级的分布
+visual_focus: 从设备接入到可视化与监控的主链路。
+design_level: logical
+layout: 水平方向分层排列，每层一个矩形条，从上到下依次为“可视化与监控”“消息与流处理”“边缘与容器编排”“时序存储”和“设备接入”
+elements:
+- 可视化与监控
+- 消息与流处理
+- 边缘与容器编排
+- 时序存储
+- 设备接入
+relationships:
+- 设备接入 → 消息与流处理（数据上报）
+- 消息与流处理 → 时序存储（消费落库）
+- 时序存储 → 可视化与监控（查询/告警）
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: r1
+  label: 设备接入
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 消息与流处理
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: bus
+- id: r3
+  label: 时序存储
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r4
+  label: 可视化与监控
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 数据上报
+  style: solid
+  direction: request
+- from: r2
+  to: r3
+  label: 消费落库
+  style: solid
+  direction: request
+- from: r3
+  to: r4
+  label: 查询/告警
+  style: risk
+  direction: event
+callouts:
+- 设备接入 → 消息与流处理（数据上报）
+- 消息与流处理 → 时序存储（消费落库）
+- 时序存储 → 可视化与监控（查询/告警）
+legend:
+- 数据流向
+- 跨层编排（边缘与容器编排层）
+- 独立组件或功能模块
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用 SVG 绘制5个水平矩形条作为层，由上至下排列；在“边缘与容器编排”层用半透明虚线矩形覆盖其下方的“消息与流处理”和“时序存储”层，表示编排范围；每层内用圆角矩形放置组件名称；箭头带标签从设备接入层指向消息与流处理层，再到时序存储层，最后从时序存储层双向连接到可视化与监控层；整体加上浅灰色背景和边框。
+caption:
+  zh: 图中每个方框对应正文推荐的开源项目或功能模块；“设备接入”层延伸自5.1节网关层。
+  en: 'Each box corresponds to an open-source project or functional module recommended in the text; the "Device Access" layer extends the gateway layer from Section 5.1.'
+labels:
+  en:
+    图5-12 平台层延伸阅读工具链全景图: Figure 5-12 Platform-Layer Toolchain Panorama
+    开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。: Open-source tools are layered along the device-access, messaging, time-series storage, and visualization chain.
+    数据上报: Data upload
+    消费落库: Consume & store
+    查询/告警: Query/Alarm
+    边缘与容器编排：KubeEdge / Kubernetes: 'Edge & Orchestration: KubeEdge / Kubernetes'
+    可视化与监控: Visualization & Monitoring
+    查询 · 告警 · 看板: Query · Alarm · Dashboards
+    消息与流处理: Messaging & Stream Processing
+    缓冲 · 削峰 · 流处理: Buffering · Peak Shaving · Streaming
+    时序存储: Time-Series Storage
+    高效存储 · 降采样: Efficient Storage · Downsampling
+    设备接入: Device Access
+    协议接入 · 物模型: Protocol Access · Thing Model
+    边缘与容器编排：负责部署、更新与调度，横跨消息与时序两层。: 'Edge & orchestration: deployment, updates, and scheduling across the messaging and storage layers.'
+    编排不替代消息、存储或设备接入能力，各组件沿数据链路按职责组合。: Orchestration does not replace messaging, storage, or device access; components combine by responsibility along the data path.
+    数据流向（上报 → 落库 → 查询）: Data flow (upload → store → query)
+    跨层编排范围（虚线框）: Cross-layer orchestration scope (dashed)
+    图5-12 平台层延伸阅读工具链全景图：开源工具沿数据上报、消费落库、查询告警的链路分层，边缘与容器编排横跨消息与存储两层但不替代业务组件。: 'Figure 5-12 Platform-layer toolchain panorama: open-source tools layered along the upload-consume-query chain; edge and container orchestration spans the messaging and storage layers without replacing business components.'

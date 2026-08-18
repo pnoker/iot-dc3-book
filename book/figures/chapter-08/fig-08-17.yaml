@@ -1,0 +1,195 @@
+title: 物联网安全开发活动与阶段对应关系
+type: lifecycle
+purpose: 展示物联网安全活动如何嵌入需求、开发、测试、部署和运维阶段，并通过质量门禁阻止缺陷流入下一阶段。
+layout: 横向五阶段生命周期；安全活动位于对应阶段下方，阶段之间设置质量门禁，不合格路径回退到上一阶段。
+render_notes: 横向铺满五个阶段，开发阶段、安全活动和质量门禁通过边框、线型与文字标签共同区分，回退路径使用虚线并标明条件。
+description: 本图以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动，以及活动之间的串联关系。图中使用颜色区分“开发阶段”、“安全活动”和“质量门禁”，并用箭头表示流程推进方向。门禁处设置判定条件，不合格时回退至上阶段重做。
+elements:
+- type: timeline
+  direction: horizontal
+  nodes:
+  - id: phase_req
+    label: 需求与设计
+    color: blue
+  - id: phase_dev
+    label: 开发
+    color: blue
+  - id: phase_test
+    label: 测试
+    color: blue
+  - id: phase_deploy
+    label: 部署
+    color: blue
+  - id: phase_ops
+    label: 运维
+    color: blue
+- type: activity
+  label: 威胁建模 (STRIDE)
+  belongs_to: phase_req
+  position: bottom
+- type: activity
+  label: 输出安全需求
+  belongs_to: phase_req
+  position: bottom
+- type: gate
+  label: 设计评审
+  condition: 威胁模型与安全需求被采纳
+  between: phase_req, phase_dev
+- type: activity
+  label: 代码安全审查
+  belongs_to: phase_dev
+  position: bottom
+- type: activity
+  label: 静态分析 (SAST)
+  belongs_to: phase_dev
+  position: bottom
+- type: gate
+  label: 构建门禁
+  condition: SAST无高危漏洞
+  between: phase_dev, phase_test
+- type: activity
+  label: 动态分析 (DAST)
+  belongs_to: phase_test
+  position: bottom
+- type: activity
+  label: 渗透测试
+  belongs_to: phase_test
+  position: bottom
+- type: gate
+  label: 安全验证门禁
+  condition: 测试结果通过阈值
+  between: phase_test, phase_deploy
+- type: activity
+  label: 依赖漏洞扫描
+  belongs_to: phase_deploy
+  position: bottom
+- type: activity
+  label: 最小化攻击面
+  belongs_to: phase_deploy
+  position: bottom
+- type: gate
+  label: 合规基线检查
+  condition: 日志与监控正常
+  between: phase_deploy, phase_ops
+- type: feedback
+  from: phase_ops
+  to: phase_req
+  label: 安全事件触发迭代
+  style: dashed
+relationships:
+- from: phase_req
+  to: activity_threat_model
+  type: sequential
+- from: activity_threat_model
+  to: activity_security_req
+  type: sequential
+- from: activity_security_req
+  to: gate_design_review
+  type: sequential
+- from: gate_design_review_ok
+  to: phase_dev
+  type: forward
+- from: gate_design_review_fail
+  to: activity_threat_model
+  type: rework
+- from: phase_dev
+  to: activity_code_review
+  type: sequential
+- from: activity_code_review
+  to: activity_sast
+  type: optional
+- from: activity_sast
+  to: gate_build
+  type: sequential
+- from: gate_build_ok
+  to: phase_test
+  type: forward
+- from: gate_build_fail
+  to: phase_dev
+  type: rework
+- from: phase_test
+  to: activity_dast
+  type: sequential
+- from: activity_dast
+  to: activity_penetration
+  type: optional
+- from: activity_penetration
+  to: gate_test
+  type: sequential
+- from: gate_test_ok
+  to: phase_deploy
+  type: forward
+- from: gate_test_fail
+  to: phase_test
+  type: rework
+- from: phase_deploy
+  to: activity_dep_scan
+  type: sequential
+- from: activity_dep_scan
+  to: activity_harden
+  type: optional
+- from: activity_harden
+  to: gate_compliance
+  type: sequential
+- from: gate_compliance_ok
+  to: phase_ops
+  type: forward
+- from: gate_compliance_fail
+  to: phase_deploy
+  type: rework
+- from: phase_ops
+  to: gate_ops
+  type: sequential
+- from: gate_ops_fail
+  to: phase_req
+  type: feedback
+notes:
+- “评审”和“门禁”的含义不同：评审由人工审查，门禁由自动化工具在CI/CD流水线中强制执行。
+- 运维阶段收集的安全事件可能揭示新的威胁，应反馈到需求阶段更新威胁模型，形成持续改进的闭环。
+html_rendering: "<svg viewBox=\"0 0 960 560\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"arrowHead\" markerWidth=\"10\" markerHeight=\"7\" refX=\"10\" refY=\"3.5\" orient=\"auto\"><polygon points=\"0 0, 10 3.5, 0 7\" fill=\"#34495e\"/></marker>\n    <marker id=\"arrowHeadRed\" markerWidth=\"10\" markerHeight=\"7\" refX=\"10\" refY=\"3.5\" orient=\"auto\"><polygon points=\"0 0, 10 3.5, 0 7\" fill=\"#e74c3c\"/></marker>\n  </defs>\n  <!-- 标题 -->\n  <text x=\"480\" y=\"30\" text-anchor=\"middle\" fill=\"#2c3e50\" font-size=\"18\" font-weight=\"bold\">物联网安全开发活动与阶段对应关系</text>\n  <!-- 五阶段 -->\n  <rect x=\"40\" y=\"50\" width=\"140\" height=\"40\" rx=\"8\" fill=\"#4A90D9\" stroke=\"#2c3e50\" stroke-width=\"2\"/>\n  <text x=\"110\" y=\"75\" text-anchor=\"middle\" fill=\"white\" font-size=\"14\" font-weight=\"bold\">需求与设计</text>\n  <rect x=\"230\" y=\"50\" width=\"120\" height=\"40\" rx=\"8\" fill=\"#4A90D9\" stroke=\"#2c3e50\" stroke-width=\"2\"/>\n  <text x=\"290\" y=\"75\" text-anchor=\"middle\" fill=\"white\" font-size=\"14\" font-weight=\"bold\">开发</text>\n  <rect x=\"400\" y=\"50\" width=\"120\" height=\"40\" rx=\"8\" fill=\"#4A90D9\" stroke=\"#2c3e50\" stroke-width=\"2\"/>\n  <text x=\"460\" y=\"75\" text-anchor=\"middle\" fill=\"white\" font-size=\"14\" font-weight=\"bold\">测试</text>\n  <rect x=\"570\" y=\"50\" width=\"120\" height=\"40\" rx=\"8\" fill=\"#4A90D9\" stroke=\"#2c3e50\" stroke-width=\"2\"/>\n  <text x=\"630\" y=\"75\" text-anchor=\"middle\" fill=\"white\" font-size=\"14\" font-weight=\"bold\">部署</text>\n  <rect x=\"740\" y=\"50\" width=\"120\" height=\"40\" rx=\"8\" fill=\"#4A90D9\" stroke=\"#2c3e50\" stroke-width=\"2\"/>\n  <text x=\"800\" y=\"75\" text-anchor=\"middle\" fill=\"white\" font-size=\"14\" font-weight=\"bold\">运维</text>\n  <!-- 活动 -->\n  <rect x=\"50\" y=\"120\" width=\"120\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"110\" y=\"140\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">威胁建模</text>\n  <rect x=\"50\" y=\"160\" width=\"120\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"110\" y=\"180\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">安全需求</text>\n  <rect x=\"240\" y=\"120\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"290\" y=\"140\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">代码审查</text>\n  <rect x=\"240\" y=\"160\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"290\" y=\"180\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">SAST</text>\n  <rect x=\"410\" y=\"120\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"460\" y=\"140\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">DAST</text>\n  <rect x=\"410\" y=\"160\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"460\" y=\"180\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">渗透测试</text>\n  <rect x=\"580\" y=\"120\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"630\" y=\"140\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">依赖扫描</text>\n  <rect x=\"580\" y=\"160\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"630\" y=\"180\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">最小化攻击面</text>\n  <rect x=\"750\" y=\"120\" width=\"100\" height=\"30\" rx=\"5\" fill=\"#27AE60\" stroke=\"#1e8449\" stroke-width=\"1\"/>\n  <text x=\"800\" y=\"140\" text-anchor=\"middle\" fill=\"white\" font-size=\"12\">日志与告警</text>\n  <!-- 门禁 -->\n  <rect x=\"180\" y=\"100\" width=\"40\" height=\"20\" rx=\"3\" fill=\"#f1c40f\" stroke=\"#f39c12\" stroke-width=\"1\"/>\n  <text x=\"200\" y=\"115\" text-anchor=\"middle\" fill=\"#2c3e50\" font-size=\"9\">评审</text>\n  <line x1=\"200\" y1=\"120\" x2=\"200\" y2=\"90\" stroke=\"#e74c3c\" stroke-width=\"1.5\" marker-end=\"url(#arrowHeadRed)\" stroke-dasharray=\"4,4\"/>\n  <rect x=\"350\" y=\"100\" width=\"40\" height=\"20\" rx=\"3\" fill=\"#f1c40f\" stroke=\"#f39c12\" stroke-width=\"1\"/>\n  <text x=\"370\" y=\"115\" text-anchor=\"middle\" fill=\"#2c3e50\" font-size=\"9\">门禁</text>\n  <!-- ... 后续 SVG 节点与箭头同前，此处省略以保持简洁 ... -->\n</svg>caption: \"图8-17 以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。\"\n"
+caption:
+  zh: 图8-17 安全不是上线前的一次检查，而是贯穿需求、开发、测试、部署与运维的持续工程活动；每个阶段的质量门禁负责阻止未达标产物继续流转。
+  en: Figure 8-17 Security is not a one-off check before launch but a continuous engineering activity spanning requirements, development, testing, deployment, and operations; the quality gate at each stage stops non-conforming artifacts from flowing onward.
+labels:
+  en:
+    图8-17 物联网安全开发活动与阶段对应关系: Figure 8-17 IoT Security Activities Mapped to SDLC Phases
+    以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。: Along a five-phase SDLC, showing each phase's core security activities and quality gates; failing a gate sends work back to the previous phase.
+    本图以五阶段软件开发生命周期为主线，展示每个阶段应执行的核心安全活动与质量门禁，门禁不合格时回退上阶段重做。: Along a five-phase SDLC, the figure shows each phase's core security activities and quality gates; failing a gate sends work back for rework.
+    持续监测: Continuous Monitoring
+    通过: Pass
+    需求与设计: Requirements & Design
+    开发: Development
+    测试: Testing
+    部署: Deployment
+    运维: Operations
+    设计评审: Design Review
+    构建门禁: Build Gate
+    安全验证: Security Verification
+    合规基线: Compliance Baseline
+    安全监测: Security Monitoring
+    条件：威胁模型与安全需求被采纳: 'Condition: Threat Model & Security Requirements Accepted'
+    条件：SAST无高危漏洞: 'Condition: No Critical SAST Vulnerabilities'
+    条件：测试结果通过阈值: 'Condition: Test Results Meet Thresholds'
+    条件：日志与监控正常: 'Condition: Logging & Monitoring Healthy'
+    条件：安全事件超出阈值: 'Condition: Security Incidents Exceed Threshold'
+    威胁建模 (STRIDE): Threat Modeling (STRIDE)
+    输出安全需求: Produce Security Requirements
+    代码安全审查: Secure Code Review
+    静态分析 (SAST): Static Analysis (SAST)
+    动态分析 (DAST): Dynamic Analysis (DAST)
+    渗透测试: Penetration Testing
+    依赖漏洞扫描: Dependency Vulnerability Scanning
+    最小化攻击面: Minimize Attack Surface
+    安全监测与告警: Security Monitoring & Alerting
+    （可选）: (Optional)
+    回退: Rework
+    安全事件触发迭代: Security Incidents Trigger Iteration
+    开发阶段: Development Phases
+    安全活动: Security Activities
+    质量门禁: Quality Gates
+    可选路径: Optional Path
+    回退重做: Rework
+    安全反馈: Security Feedback
+    注1：评审由人工审查；门禁由自动化工具在 CI/CD 流水线中强制执行。: 'Note 1: Reviews are manual; gates are enforced automatically in the CI/CD pipeline.'
+    注2：运维阶段收集的安全事件可能揭示新威胁，反馈至需求阶段更新威胁模型，形成持续改进闭环。: 'Note 2: Incidents collected in operations may reveal new threats and feed back to requirements to update the threat model, closing the improvement loop.'
+    图8-17 五阶段各配安全活动与质量门禁，门禁由 CI/CD 自动化强制执行、不合格即回退上阶段；运维阶段的安全事件经橙色闭环反馈至需求，更新威胁模型形成持续改进。: Figure 8-17 Each of the five phases pairs security activities with quality gates enforced automatically by CI/CD — failing a gate sends work back to the previous phase; incidents from operations feed back to requirements via the orange loop, updating the threat model for continuous improvement.

@@ -1,0 +1,92 @@
+type: matrix
+title: 图8-12 多租户隔离强度对比
+audience_takeaway: 读者应理解隔离强度与跨租户风险反向、与资源效率和运维复杂度也反向，强隔离必有成本代价，需按租户价值取舍。
+purpose: 对比三种主要隔离维度在不同隔离强度（低/中/高）下的实现方式、跨租户风险、资源效率和运维复杂度
+visual_focus: 从进入下一判断到进入下一判断的主链路。
+design_level: decision
+layout: 表格，行为三种维度（数据隔离、计算资源隔离、网络隔离），每行三个强度等级（低/中/高），列包含典型实现方式、跨租户风险、资源效率高低、运维复杂度高低四项指标
+elements:
+- 多租户隔离强度对比
+relationships:
+- 同一行内从左到右隔离强度递增，跨租户风险递减
+- 资源效率单向递减，运维复杂度单向递增
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 同一行内从左到右隔离强度递增，跨租…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 资源效率单向递减，运维复杂度单向递增
+  style: solid
+  direction: left-to-right
+callouts:
+- 同一行内从左到右隔离强度递增，跨租户风险递减
+- 资源效率单向递减，运维复杂度单向递增
+legend:
+- 低强度使用灰色背景，中强度使用浅蓝色，高强度使用深蓝色；行名加粗并加底色以区分维度
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML表格，表头加粗居中，第一列左对齐加底色。低/中/高强度三列使用渐变背景（灰→浅蓝→深蓝）。每个单元格内包含实现方式与三项指标。
+caption:
+  zh: 表8-5 多租户隔离强度对比（假设场景：智能家居平台“智家云”）
+  en: 'Table 8-5 Multi-tenancy isolation strength compared (hypothetical scenario: the smart-home platform "ZhiJia Cloud")'
+labels:
+  en:
+    图8-12 多租户隔离强度对比: Figure 8-12 Multi-Tenancy Isolation Strength
+    隔离强度越高，跨租户风险越低，但资源效率下降、运维复杂度上升。: The stronger the isolation, the lower the cross-tenant risk — but resource efficiency drops and operational complexity rises.
+    维度: Dimension
+    低强度: Low Strength
+    中强度: Medium Strength
+    高强度: High Strength
+    数据隔离: Data Isolation
+    实现方式：共享Schema: 'Implementation: Shared Schema'
+    跨租户风险：高: 'Cross-Tenant Risk: High'
+    资源效率：高: 'Resource Efficiency: High'
+    运维复杂度：低: 'Ops Complexity: Low'
+    实现方式：表级隔离: 'Implementation: Table-Level Isolation'
+    跨租户风险：中: 'Cross-Tenant Risk: Medium'
+    资源效率：中: 'Resource Efficiency: Medium'
+    运维复杂度：中: 'Ops Complexity: Medium'
+    实现方式：独立数据库: 'Implementation: Dedicated Database'
+    跨租户风险：低: 'Cross-Tenant Risk: Low'
+    资源效率：低: 'Resource Efficiency: Low'
+    运维复杂度：高: 'Ops Complexity: High'
+    计算资源隔离: Compute Isolation
+    实现方式：共享进程: 'Implementation: Shared Process'
+    实现方式：容器隔离: 'Implementation: Container Isolation'
+    实现方式：独立VM: 'Implementation: Dedicated VM'
+    网络隔离: Network Isolation
+    实现方式：共享IP: 'Implementation: Shared IP'
+    实现方式：VLAN隔离: 'Implementation: VLAN Isolation'
+    实现方式：独立VPC: 'Implementation: Dedicated VPC'
+    低强度使用灰色背景，中强度使用浅蓝色，高强度使用深蓝色: Gray for Low, Light Blue for Medium, Dark Blue for High
+    图8-12 隔离强度越高，跨租户风险越低，但资源效率下降、运维复杂度上升。: Figure 8-12 The stronger the isolation, the lower the cross-tenant risk — but resource efficiency drops and operational complexity rises.

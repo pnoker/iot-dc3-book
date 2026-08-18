@@ -1,0 +1,199 @@
+type: matrix
+title: 图1-22 实践建议优先级矩阵
+audience_takeaway: 读者应理解应优先执行投入产出高且实施难度低的条目,如用三次浪潮框架重新定位项目、分隔感知值与推理值,而非先投原型搭建。
+purpose: 将本章核心概念转化为5条可立即执行行动建议，并按投入产出和实施难度两个维度评估优先级，帮助读者快速决策从哪一条开始。
+visual_focus: 从建议编号到建议3：评估规则引擎承载极限的主链路。
+design_level: decision
+layout: 矩阵布局，按比较维度分组呈现。
+elements:
+- 建议编号
+- 投入产出（价值/时间）
+- 实施难度（低/中/高）
+- 建议1：用三次浪潮框架重新定位项目
+- 高——半天思考可避免数月技术路线错误
+- 低——仅需白板会议与团队讨论
+- 建议2：分隔感知值与推理值
+- 高——为未来AI引入节省大量数据清洗时间
+- 低-中——调整数据库设计即可
+- 建议3：评估规则引擎承载极限
+- 中——避免规则膨胀失控
+- 中——需要理解业务场景复杂度
+- 建议4：动手搭建最小闭环原型
+- 极高——一次实践胜过十篇文档
+- 中——需要硬件采购与调试时间
+- 建议5：预留AI接入点
+- 高——一年后低摩擦接入新能力
+- 低——设计API时遵循OpenAPI规范即可
+relationships:
+- 每一行对应一条实践建议
+- 第一列是投入产出评估，第二列是实施难度评估
+- 理想切入点：同时具备‘投入产出高’和‘实施难度低’的条目
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与 Agent 边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: c1
+  label: 建议编号
+  type: platform
+  subtitle: corner_header
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 投入产出（价值/时间）
+  type: platform
+  subtitle: column_header
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 实施难度（低/中/高）
+  type: platform
+  subtitle: column_header
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 建议1：用三次浪潮框架重新定位项目
+  type: platform
+  subtitle: row_header
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c5
+  label: 高——半天思考可避免数月技术路线错误
+  type: platform
+  subtitle: cell
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c6
+  label: 低——仅需白板会议与团队讨论
+  type: platform
+  subtitle: cell
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c7
+  label: 建议2：分隔感知值与推理值
+  type: ai
+  subtitle: row_header
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: c8
+  label: 高——为未来AI引入节省大量数据清…
+  type: data
+  subtitle: cell
+  group: data_domain
+  priority: normal
+  shape: database
+- id: c9
+  label: 低-中——调整数据库设计即可
+  type: data
+  subtitle: cell
+  group: data_domain
+  priority: normal
+  shape: database
+- id: c10
+  label: 建议3：评估规则引擎承载极限
+  type: platform
+  subtitle: row_header
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 每一行对应一条实践建议
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 第一列是投入产出评估，第二列是实施…
+  style: solid
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 理想切入点：同时具备‘投入产出高’…
+  style: solid
+  direction: left-to-right
+- from: c4
+  to: c5
+  label: 每一行对应一条实践建议
+  style: solid
+  direction: left-to-right
+- from: c5
+  to: c6
+  label: 第一列是投入产出评估，第二列是实施…
+  style: solid
+  direction: left-to-right
+- from: c6
+  to: c7
+  label: 理想切入点：同时具备‘投入产出高’…
+  style: solid
+  direction: left-to-right
+- from: c7
+  to: c8
+  label: 每一行对应一条实践建议
+  style: solid
+  direction: left-to-right
+- from: c8
+  to: c9
+  label: 第一列是投入产出评估，第二列是实施…
+  style: solid
+  direction: left-to-right
+- from: c9
+  to: c10
+  label: 理想切入点：同时具备‘投入产出高’…
+  style: solid
+  direction: left-to-right
+callouts:
+- 每一行对应一条实践建议
+- 第一列是投入产出评估，第二列是实施难度评估
+- 理想切入点：同时具备‘投入产出高’和‘实施难度低’的条目
+legend:
+- 高投入产出或低实施难度
+- 中等投入产出或中等实施难度
+- 低投入产出或高实施难度
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: '使用HTML `<table>`实现，表头行和首列采用#333333背景色与白色粗体字，数据单元格根据评分配置背景色（绿色#d4edda、黄色#fff3cd、红色#f8d7da），边框1px solid #ccc，单元格padding 8px。'
+caption:
+  zh: 图1-22 实践建议优先级矩阵。每个建议的投入产出和实施难度一目了然，优先从绿色单元格的条目开始。
+  en: Figure 1-22 A priority matrix of practice suggestions. The return and implementation difficulty of each suggestion are clear at a glance — start with the items in the green cells.
+labels:
+  en:
+    图1-22 实践建议优先级矩阵: Figure 1-22 Practice-Suggestion Priority Matrix
+    五条实践建议的优先级矩阵: Priority matrix for the five practice suggestions
+    五条实践建议按投入产出与实施难度两维评估: Five suggestions scored on return vs. difficulty
+    建议: Suggestion
+    投入产出（价值/时间）: Return (value/effort)
+    实施难度（低/中/高）: Difficulty (low/medium/high)
+    建议 1 · 用三次浪潮框架重新定位项目: 1 · Reposition the project with the three-waves frame
+    高 — 半天思考可避免数月技术路线错误: High — half a day's thought avoids months on the wrong track
+    低 — 仅需白板会议与团队讨论: Low — just a whiteboard session with the team
+    建议 2 · 分隔感知值与推理值: 2 · Separate sensed values from inferred values
+    高 — 为未来 AI 引入节省大量数据清洗时间: High — saves heavy data cleaning when AI arrives
+    低-中 — 调整数据库设计即可: Low-medium — a database redesign is enough
+    建议 3 · 评估规则引擎承载极限: 3 · Assess the rule engine's carrying limit
+    中 — 避免规则膨胀失控: Medium — keeps rule sprawl in check
+    中 — 需要理解业务场景复杂度: Medium — requires grasping business complexity
+    建议 4 · 动手搭建最小闭环原型: 4 · Build a minimal closed-loop prototype
+    极高 — 一次实践胜过十篇文档: Very high — one build beats ten documents
+    中 — 需要硬件采购与调试时间: Medium — needs hardware buying and debugging time
+    建议 5 · 预留 AI 接入点: 5 · Reserve AI integration points
+    高 — 一年后低摩擦接入新能力: High — low-friction access to new capabilities a year on
+    低 — 设计 API 遵循 OpenAPI 规范即可: Low — just design APIs to the OpenAPI spec
+    高投入产出 / 低实施难度: High return / low difficulty
+    中等投入产出 / 中等实施难度: Medium return / medium difficulty
+    优先从绿色单元格的条目开始（高价值、低难度）: Start with the green cells (high value, low difficulty)
+    图1-22 实践建议优先级矩阵。每个建议的投入产出和实施难度一目了然，优先从绿色单元格的条目开始。: Figure 1-22 Practice-suggestion priority matrix. Return and difficulty at a glance — start with the green cells.

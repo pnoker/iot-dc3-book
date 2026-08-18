@@ -1,0 +1,117 @@
+type: architecture
+title: 图8-13 智能家居多租户系统架构
+audience_takeaway: 读者应理解网关按 tenant_id 分流：A 共享计算与数据，B 独享 VPC、Pod 与数据库，C 独享 Pod、共享数据库并使用独享 Redis 命名空间。
+purpose: 展示混合隔离策略下不同租户在数据、计算、网络三个维度的隔离方式与资源分配
+visual_focus: 从起点到终点的主链路。
+design_level: logical
+layout: 分层架构图，从上到下依次为：租户边界层（三个租户图标）、网关与认证层（API Gateway + JWT解析）、微服务层（共享Pod池与独享Pod池）、数据存储层（MySQL集群和Redis集群，共享与独享分别标记）、基础设施层（VPC-1与VPC-2）
+elements:
+- 租户边界
+- 网关与认证层
+- 微服务层
+- 数据存储层
+- 基础设施层
+relationships:
+- 箭头从三个租户图标统一指向API Gateway
+- Gateway根据解析到的tenant_id将请求分别路由到对应Pod池
+- B 的流量指向独享 Pod 池、独享 MySQL/Redis 和独享 VPC
+- A 的流量指向共享 Pod 池、共享 Schema 和共享 Redis
+- C 的流量指向独享 Pod 组、共享数据库和独享 Redis 命名空间
+- 虚线框表示共享资源，实线框表示独享资源；C 使用 Kubernetes Namespace + NetworkPolicy 隔离
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c5
+  label: 进入下一判断
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: gateway
+  to: tenant_id_p
+  label: Gateway根据解析到的tena…
+  style: solid
+  direction: request
+callouts:
+- 箭头从三个租户图标统一指向API Gateway
+- Gateway根据解析到的tenant_id将请求分别路由到对应Pod池
+- B的流量同时指向独享Pod池和独享MySQL实例
+legend:
+- 图例：A=蓝色，B=红色，C=绿色；实线框=独享资源，虚线框=共享资源；粗箭头=独享流量，细箭头=共享流量
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 采用分层架构图（参考C4容器图风格）。不同租户以不同色块标识。独享资源使用实线大框（B整租独立VPC），共享资源使用虚线小框。箭头线型区分流量类型和隔离强度。底部加注释：混合隔离策略选择可参照8.6.1的实践清单。
+caption:
+  zh: 图8-13 智能家居多租户系统架构（基于“智家云”假设场景）
+  en: Figure 8-13 Multi-tenant system architecture for a smart-home platform (based on the hypothetical "ZhiJia Cloud" scenario)
+labels:
+  en:
+    图8-13 智能家居多租户系统架构: Figure 8-13 Smart-Home Multi-Tenant Architecture
+    Gateway 按 tenant_id 分流；租户 A 使用共享 Pod，租户 B 独享 VPC、Pod 与数据库，租户 C 独享 Pod 和 Redis 命名空间并共享数据库。: 'The Gateway routes by tenant_id: tenant A uses shared Pods, tenant B has a dedicated VPC, Pods, and database, and tenant C has dedicated Pods and a Redis namespace but shares the database.'
+    混合隔离按租户风险和负载分配资源，C 与正文一致采用独享 Pod。: Hybrid isolation allocates resources by tenant risk and load; C uses dedicated Pods, consistent with the text.
+    租户 A · 共享型: Tenant A · Shared
+    租户 B · 强隔离: Tenant B · Strong Isolation
+    租户 C · 中强度隔离: Tenant C · Medium Isolation
+    统一认证后按租户路由到对应计算资源: After Unified Authentication, Route by Tenant to Compute
+    共享 Pod 池: Shared Pod Pool
+    多租户共享计算: Multi-Tenant Shared Compute
+    （虚线 = 共享资源）: (Dashed = Shared Resources)
+    独享 Pod 池: Dedicated Pod Pool
+    专属计算 · 资源隔离: Dedicated Compute · Resource Isolation
+    （实线 = 独享资源）: (Solid = Dedicated Resources)
+    独享 Pod 组: Dedicated Pod Group
+    + NetworkPolicy 隔离: + NetworkPolicy Isolation
+    共享 Schema · 共享 Redis: Shared Schema · Shared Redis
+    租户键隔离（tenant_id）: Tenant-Key Isolation (tenant_id)
+    逻辑隔离: Logical Isolation
+    独享 MySQL · 独享 Redis: Dedicated MySQL · Dedicated Redis
+    独立数据库实例: Separate Database Instances
+    物理隔离: Physical Isolation
+    共享数据库: Shared Database
+    独享 Redis 命名空间: Dedicated Redis Namespace
+    计算独享 · 缓存独享 · 库共享: Dedicated Compute & Cache · Shared DB
+    VPC-1 · 共享基础设施: VPC-1 · Shared Infrastructure
+    共享网络平面: Shared Network Plane
+    VPC-2 · 独享 VPC: VPC-2 · Dedicated VPC
+    整租独立网络: Fully Dedicated Network
+    虚线框 = 共享资源: Dashed Box = Shared Resources
+    实线框 = 独享资源: Solid Box = Dedicated Resources
+    A = 共享: A = Shared
+    B = 强隔离: B = Strong Isolation
+    C = 中强度隔离: C = Medium Isolation
+    混合隔离策略可参照 8.6.1 实践清单: For Hybrid Isolation See the 8.6.1 Checklist
+    图8-13 A 共享计算与数据；B 全维度独享；C 独享计算与缓存命名空间、共享数据库。: Figure 8-13 A shares compute and data; B is dedicated across all dimensions; C has dedicated compute and a cache namespace but shares the database.

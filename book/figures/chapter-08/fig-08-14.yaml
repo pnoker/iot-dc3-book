@@ -1,0 +1,42 @@
+type: flowchart
+title: 图8-14 后门攻击流程图
+purpose: 从攻击者视角展示数据投毒后门攻击的操作步骤与数据流向。
+layout: 两个并行分支(正常训练流程/攻击者注入流程)在混合训练节点汇合,进入推理判断。
+elements:
+- 正常训练流程:原始训练集(正常样本)→混合训练。
+- 攻击者注入流程:触发器设计→毒化样本生成→标签篡改→混合训练(虚线箭头)。
+- 推理阶段:菱形判断‘输入是否含 Trigger’,否→正常结果(绿),是→后门结果(红)。
+relationships:
+- 正常样本与毒化样本混合训练模型→模型导出→推理阶段。
+- 触发器设计大小位置可调,选择小面积不显眼图案增加隐蔽性。
+render_notes: 标准流程图布局,上下并行分支,混合训练节点汇合;绿/红色区分正常与后门路径。
+caption:
+  zh: 图8-14 后门攻击的关键是触发器设计与毒化样本注入:模型经 OTA 分发到边缘设备后,后门一旦植入清理成本极高,且少量毒化样本常规测试集难以检出。
+  en: 'Figure 8-14 The key to backdoor attacks is trigger design and poisoned-sample injection: once models are distributed via OTA to edge devices, an implanted backdoor is extremely costly to remove, and small amounts of poisoned samples are hard to detect with standard test sets.'
+labels:
+  en:
+    图8-14 后门攻击流程图: Figure 8-14 Backdoor Attack Flow
+    从攻击者视角展示数据投毒后门攻击的操作步骤与数据流向。: The operational steps and data flow of a data-poisoning backdoor attack from the attacker's perspective.
+    正常训练流程: Normal Training Flow
+    攻击者注入流程: Attacker Injection Flow
+    原始训练集: Original Training Set
+    (正常样本): (Normal Samples)
+    触发器设计: Trigger Design
+    毒化样本生成: Poisoned Sample Generation
+    标签篡改: Label Tampering
+    触发器:小面积不显眼图案,大小/位置可调,增强隐蔽性: 'Trigger: small, unobtrusive pattern; size/position tunable for stealth'
+    混合训练: Mixed Training
+    (正常样本 + 毒化样本): (Normal + Poisoned Samples)
+    模型导出: Model Export
+    (经 OTA 分发至边缘设备): (Distributed via OTA to Edge Devices)
+    输入是否含: Does Input Contain
+    是(含Trigger): Yes (With Trigger)
+    后门结果: Backdoor Result
+    输出攻击者预设答案: Outputs the Attacker's Preset Answer
+    否(无Trigger): No (Without Trigger)
+    正常结果: Normal Result
+    按模型正常判断: Follows the Model's Normal Judgment
+    否→正常结果: No → Normal Result
+    是→后门结果: Yes → Backdoor Result
+    虚线=攻击者注入路径: Dashed = Attacker Injection Path
+    图8-14 后门攻击的关键是触发器设计与毒化样本注入:模型经 OTA 分发到边缘设备后,后门一旦植入清理成本极高,且少量毒化样本常规测试集难以检出。: 'Figure 8-14 The key to backdoor attacks is trigger design and poisoned-sample injection: once distributed via OTA to edge devices, an implanted backdoor is extremely costly to remove, and small amounts of poisoned samples are hard to detect with standard test sets.'

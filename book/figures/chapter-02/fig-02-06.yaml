@@ -1,0 +1,164 @@
+type: layered
+title: 图2-6 智能层在闭环中的推理-规划-执行分工
+purpose: 展示智能层内部推理、规划、执行三个环节的职责划分及其与平台层数据/管理中心的交互，并用虚线箭头标注闭环迭代方向。
+audience_takeaway: 读者应理解智能层内的三个环节形成闭环，且只与平台层的数据中心和管理中心交互，不直接连接设备驱动。
+visual_focus: 实线主链路：推理→规划→执行→数据中心→驱动服务；虚线闭环反馈用于验证执行效果。
+design_level: logical
+layout: 垂直分层：顶部为智能层（三个等宽模块：推理、规划、执行），中部为平台层（数据中心、管理中心），底部为设备接入层（驱动服务、现场设备）。模块间用箭头标注。
+elements:
+- 推理、规划与执行模块
+- 数据中心与管理中心
+- 驱动服务与现场设备
+relationships:
+- 数据中心与管理中心 → 推理 → 规划 → 执行：数据、模型和阈值驱动动作生成
+- 执行 → 数据中心 → 驱动服务 → 现场设备：标准指令经协议转换落地
+- 现场设备 → 数据中心 → 推理：遥测反馈用于验证执行效果
+components:
+- id: inf_module
+  label: 推理
+  type: ai
+  subtitle: 状态评估
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: plan_module
+  label: 规划
+  type: ai
+  subtitle: 动作序列
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: exec_module
+  label: 执行
+  type: ai
+  subtitle: 指令下发
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: data_center
+  label: 数据中心
+  type: data
+  subtitle: 时序/命令
+  group: platform_domain
+  priority: primary
+  shape: database
+- id: mgr_center
+  label: 管理中心
+  type: platform
+  subtitle: 设备元数据
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: driver_svc
+  label: 驱动服务
+  type: edge
+  subtitle: 协议转换
+  group: access_domain
+  priority: normal
+  shape: card
+- id: field_device
+  label: 现场设备
+  type: edge
+  subtitle: 传感器/执行器
+  group: access_domain
+  priority: normal
+  shape: card
+connections:
+- from: inf_module
+  to: plan_module
+  label: 状态评估
+  style: dashed
+  direction: left-to-right
+- from: plan_module
+  to: exec_module
+  label: 动作序列
+  style: dashed
+  direction: left-to-right
+- from: exec_module
+  to: data_center
+  label: 指令写入
+  style: solid
+  direction: bottom-to-top
+- from: data_center
+  to: driver_svc
+  label: 命令路由
+  style: solid
+  direction: bottom-to-top
+- from: driver_svc
+  to: field_device
+  label: 协议命令
+  style: solid
+  direction: bottom-to-top
+- from: field_device
+  to: data_center
+  label: 遥测上报
+  style: dashed
+  direction: feedback
+- from: data_center
+  to: inf_module
+  label: 数据拉取
+  style: solid
+  direction: top-to-bottom
+- from: mgr_center
+  to: inf_module
+  label: 模型/阈值
+  style: solid
+  direction: top-to-bottom
+regions:
+- id: intelligence_domain
+  label: 智能决策域
+  role: 认知引擎：推理、规划、执行
+- id: platform_domain
+  label: 平台服务域
+  role: 数据存储与路由
+- id: access_domain
+  label: 设备接入域
+  role: 协议转换与物理接口
+legend:
+- 橙/蓝绿模块：智能层认知能力
+- 蓝色模块：平台层基础设施
+- 青绿色模块：设备接入层
+- 实线箭头：同步调用或强依赖
+- 虚线箭头：异步事件或反馈回路
+visual_constraints:
+- 所有节点label不超过14个汉字，解释性文字放入callouts。
+- 图例置于底部，不遮挡模块连线。
+- 闭环迭代方向用虚线箭头标注，不占用主链路实线。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形模块，层间统一12px间距。智能层内三个模块等宽并排，使用flex布局，模块间用SVG虚线箭头。实线/虚线区分数据流与反馈。整体宽度自适应，最小宽度800px。
+caption:
+  zh: 图2-6 智能层在闭环中的推理-规划-执行分工，展示三个认知环节如何与平台层协同完成数据驱动决策循环。
+  en: 'Figure 2-6 The reasoning–planning–execution division of labor in the intelligence layer, showing how the three cognitive stages work with the platform layer to complete the data-driven decision cycle.'
+labels:
+  en:
+    图2-6 智能层在闭环中的推理-规划-执行分工: Figure 2-6 Reasoning–Planning–Execution Roles in the Closed Loop
+    智能层内的推理、规划、执行三个环节形成闭环，通过平台层的数据中心与管理中心协同，不直接连接设备协议。: Reasoning, planning, and execution form a closed loop inside the intelligence layer, coordinating through the data center and management center of the platform layer without ever touching device protocols directly.
+    智能层经平台层交互，不直接连接设备协议: The intelligence layer works through the platform layer, never device protocols directly
+    智能决策域: Intelligence Domain
+    平台服务域: Platform Service Domain
+    设备接入域: Device Access Domain
+    推理: Reasoning
+    状态评估: State Evaluation
+    规划: Planning
+    动作序列: Action Sequence
+    执行: Execution
+    指令下发: Command Dispatch
+    数据中心: Data Center
+    时序 / 命令: Time Series / Commands
+    管理中心: Management Center
+    设备元数据: Device Metadata
+    驱动服务: Driver Service
+    协议转换: Protocol Conversion
+    现场设备: Field Devices
+    传感器 / 执行器: Sensors / Actuators
+    指令写入: Command Write
+    命令路由: Command Routing
+    协议命令: Protocol Command
+    遥测上报: Telemetry Report
+    数据拉取: Data Pull
+    模型 / 阈值: Models / Thresholds
+    智能层认知能力: Intelligence Layer Cognition
+    平台层基础设施: Platform Layer Infrastructure
+    设备接入层: Device Access Layer
+    实线 = 同步调用/强依赖: Solid = sync call / strong dependency
+    虚线 = 异步事件/反馈: Dashed = async event / feedback
+    图2-6 推理、规划、执行三个认知环节经数据中心与管理中心协同完成数据驱动决策循环，不直接操作设备协议。: Figure 2-6 The three cognitive stages of reasoning, planning, and execution complete the data-driven decision cycle through the data center and management center, never touching device protocols directly.

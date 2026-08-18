@@ -1,0 +1,151 @@
+type: layered
+title: 图9-7 协议适配网关分层架构
+purpose: 展示协议适配网关的通用三层架构，解释每层的职能和消息流转路径。
+audience_takeaway: 读者应理解协议适配网关不是简单的协议转换器，而是具有分层职责边界：适配层负责协议特有收发，路由与转换层做语义映射，统一接口层屏蔽差异。
+visual_focus: 路由与转换层作为核心决策节点，连接上下层；适配层用模块化框强调可扩展性。
+design_level: logical
+layout: 垂直堆叠三层：适配层、路由与转换层、统一接口层。每层内包含多个模块框，模块间用箭头表示消息流。
+elements:
+- MQTT、CoAP、HTTP 与 LwM2M 适配器
+- 转换引擎与消息路由器
+- 统一 API 与标准化 Broker 入口
+relationships:
+- 协议适配器 → 转换引擎：提交协议特有报文进行格式和语义映射
+- 转换引擎 → 消息路由器 → 统一接口：输出路由后的标准化消息
+- 统一接口 → 转换引擎 → 协议适配器：将配置与控制按映射规则下发
+regions:
+- id: adapter_layer
+  label: 适配层
+  role: 协议特有连接管理和字节流收发
+- id: route_layer
+  label: 路由与转换层
+  role: 格式与语义映射、消息路由决策
+- id: interface_layer
+  label: 统一接口层
+  role: 向上层应用屏蔽协议差异
+components:
+- id: mqtt_adapter
+  label: MQTT Adapter
+  type: edge
+  subtitle: TCP长连接/QoS
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: coap_adapter
+  label: CoAP Adapter
+  type: edge
+  subtitle: UDP端/CON/NON
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: http_adapter
+  label: HTTP Adapter
+  type: edge
+  subtitle: 请求-响应/认证
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: lwm2m_adapter
+  label: LwM2M Adapter
+  type: edge
+  subtitle: 对象/资源模型
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: conversion_engine
+  label: 转换引擎
+  type: platform
+  subtitle: 协议映射表/规则
+  group: route_layer
+  priority: primary
+  shape: card
+- id: message_router
+  label: 消息路由器
+  type: platform
+  subtitle: 路由决策/负载
+  group: route_layer
+  priority: primary
+  shape: card
+- id: unified_api
+  label: 统一接口层
+  type: platform
+  subtitle: REST API / Broker
+  group: interface_layer
+  priority: primary
+  shape: card
+connections:
+- from: mqtt_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: coap_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: http_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: lwm2m_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: conversion_engine
+  to: message_router
+  label: 映射后消息
+  style: solid
+  direction: bottom-to-top
+- from: message_router
+  to: unified_api
+  label: 标准化消息
+  style: solid
+  direction: bottom-to-top
+- from: conversion_engine
+  to: mqtt_adapter
+  label: 配置/控制
+  style: dashed
+  direction: top-to-bottom
+callouts:
+- 适配层每个适配器是独立进程，可水平扩展
+- 转换引擎是性能瓶颈，建议独立部署并设置资源限制
+- 统一接口层稳定是上层应用不做协议感知的前提
+legend:
+- 实线=消息流；虚线=配置/控制信号
+- 蓝色=适配层；绿色=路由与转换层；橙色=统一接口层
+render_notes: HTML/SVG 渲染，C4 Container 图风格。三层垂直堆叠，每层用浅灰色背景区域包裹，模块框居中文字 12px，图例右下角圆点标记。
+visual_constraints:
+- 最多 7 个主节点，适配层用四个卡片表示
+- 连接箭头 label 短，解释放入 callouts
+caption:
+  zh: 图9-7 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。
+  en: 'Figure 9-7 The generic three-layer architecture of a protocol adaptation gateway. Abstraction rises layer by layer: the adapter layer manages protocol connections and byte-stream I/O, the routing and conversion layer performs format and semantic mapping, and the unified interface layer hides the differences from upper layers.'
+labels:
+  en:
+    图9-7 协议适配网关分层架构: Figure 9-7 Protocol Adaptation Gateway Layers
+    协议适配层、路由与转换层、统一接口层三层架构，上行消息逐层标准化，下行配置和控制按规则回到协议适配器。: Three layers — adapters, routing & conversion, unified interface; uplink messages are standardized layer by layer, downlink config and control return to the adapters by rule.
+    适配层收发协议报文，核心层执行格式与语义映射，统一接口向上屏蔽设备协议差异: The adapter layer exchanges protocol messages, the core layer maps format and semantics, and the unified interface hides device protocol differences above
+    消息转发: Message forwarding
+    映射后消息: Mapped message
+    标准化消息: Standardized message
+    配置 / 控制（统一接口 → 转换引擎 → 适配器）: Config / control (interface → engine → adapter)
+    统一接口层: Unified interface layer
+    面向上层应用的稳定契约: Stable contract for upper-layer apps
+    统一 API / 消息入口: Unified API / message entry
+    REST API · 标准化 Broker: REST API · standardized broker
+    路由与转换层: Routing & conversion layer
+    格式与语义映射 · 路由决策: Format & semantic mapping · routing decisions
+    转换引擎: Conversion engine
+    消息路由器: Message router
+    路由决策 · 负载分配: Routing decisions · load distribution
+    协议适配层: Protocol adapter layer
+    协议特有连接管理 · 确认重传与字节流收发: Protocol-specific connections · ACK/retransmit & byte-stream I/O
+    请求响应 · 认证: Request-response · authentication
+    对象 · 资源模型: Object · resource model
+    实线：上行消息流: 'Solid: uplink message flow'
+    虚线：下行配置 / 控制流: 'Dashed: downlink config / control flow'
+    适配层: Adapter layer
+    图9-7 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。: 'Figure 9-7 The generic three-layer protocol adaptation gateway. Abstraction rises layer by layer: adapters manage connections and byte-stream I/O, routing & conversion maps format and semantics, and the unified interface hides the differences above.'

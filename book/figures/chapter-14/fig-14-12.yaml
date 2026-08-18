@@ -1,0 +1,54 @@
+type: matrix
+title: 图14-12 扩展性与成本控制的三个决策点
+audience_takeaway: 读者应理解扩展优先水平扩展无状态服务、数据库读写分离与热冷分层、边缘计算降低云端但引入管理成本，成本按计算/存储/带宽采用混合策略。
+purpose: 展示扩展性与成本控制的三个工程决策点
+visual_focus: 三列决策点卡片与成本三维度混合策略。
+design_level: matrix
+layout: 上半三列决策点（水平扩展/读写分离分片/边缘计算），底部成本三维度与方案对比
+elements:
+- 水平扩展：优先无状态服务，有状态服务第二阶段配套会话管理
+- 读写分离与分片：主写从读、按设备/地域/时间分片、热冷分层
+- 边缘计算：减少上行带宽与云端负荷，但引入节点管理成本
+- 成本三维度：计算 / 存储 / 带宽，混合策略最优
+relationships:
+- 三个决策点共同影响扩展上限与成本；混合策略在满足可用性前提下最经济
+render_notes: HTML/SVG 渲染，三列决策点卡片 + 底部成本对比，蓝绿橙三色。
+caption:
+  zh: 图14-12 扩展优先水平扩展无状态服务、数据库读写分离与热冷分层、边缘计算降低云端但引入管理成本；成本按计算/存储/带宽三维度，采用热冷分层、边缘预处理、分级 QoS 的混合策略。
+  en: 'Figure 14-12 For scale, prefer horizontal scaling of stateless services, database read/write splitting with hot-cold tiering, and edge computing that trims the cloud while adding management cost; cost spans compute, storage, and bandwidth, met best with a hybrid of hot-cold tiering, edge preprocessing, and tiered QoS.'
+labels:
+  en:
+    图14-12 扩展性与成本控制的三个决策点: 'Figure 14-12 Three Decision Points for Scalability & Cost Control'
+    水平扩展优先无状态服务，数据库读写分离与热冷分层，边缘计算降低云端但引入管理成本。: 'Scale stateless services horizontally first; split database reads from writes with hot-cold tiering; edge computing trims the cloud but adds management cost.'
+    把“扩展”和“成本”当作设计输入，而不是事后优化: 'Treat "scale" and "cost" as design inputs, not afterthoughts'
+    ① 水平扩展微服务: '1. Horizontally Scale Microservices'
+    优先无状态服务: 'Prefer stateless services'
+    数据清洗、规则匹配、告警计算: 'Data cleansing, rule matching, alert computation'
+    多开实例 + 负载均衡即可摊开流量: 'More instances plus load balancing spreads the traffic'
+    有状态服务第二阶段: 'Stateful services come in phase two'
+    维护长连接（MQTT）需连接亲和性: 'Long-lived MQTT connections need session affinity'
+    会话迁移、心跳保活，配套分布式缓存: 'Session migration and heartbeats, plus a distributed cache'
+    DC3：网关与驱动经 RabbitMQ 解耦，驱动不维持长连接，天然可水平扩展: 'DC3: gateway and drivers are decoupled via RabbitMQ, drivers hold no long-lived connections, so they scale horizontally by nature'
+    ② 读写分离与分片: '2. Read/Write Splitting & Sharding'
+    写入持续大流量，查询间断: 'Sustained heavy writes, sporadic queries'
+    主库写、从库读，缓解冲突: 'Writes to the primary, reads from replicas, easing conflicts'
+    分片按设备 ID / 地域 / 时间区间: 'Shard by device ID / region / time window'
+    代价：查询感知分片键，跨分片聚合复杂: 'Cost: queries must know the shard key; cross-shard aggregation gets complex'
+    热冷分层: 'Hot-Cold Tiering'
+    热数据（最近几小时）单库/少量分片: 'Hot data (last few hours) in one DB / a few shards'
+    冷数据（超一周）迁移低成本归档: 'Cold data (older than a week) moved to cheap archive'
+    ③ 边缘计算: '3. Edge Computing'
+    直接动机：减少上行带宽与云端负荷: 'Direct motive: less uplink bandwidth and cloud load'
+    驱动就近采集，过滤、聚合、规则判断本地做: 'Drivers collect nearby; filtering, aggregation, and rule checks run locally'
+    效益依赖数据筛选率与本地规则复杂度: 'Gains depend on the filtering ratio and local rule complexity'
+    只透传不省带宽；大量预处理显著降开销: 'Pure forwarding saves no bandwidth; heavy preprocessing cuts cost sharply'
+    代价：引入管理成本: 'Cost: management overhead comes in'
+    部署、监控、OTA、故障人工干预: 'Deployment, monitoring, OTA, manual fault response'
+    数百节点分布不同地点，边缘运维本身是工程: 'Hundreds of nodes across sites makes edge ops a project in itself'
+    成本估算：计算 / 存储 / 带宽 三维度，混合策略最优: 'Cost model: compute / storage / bandwidth — the hybrid strategy wins'
+    混合策略（而非单一方案）: 'A hybrid strategy (not a single choice)'
+    热数据高性能存储 + 冷数据低成本对象存储 · 高频规则判断边缘处理 + 复杂推理云端 · 遥测走 QoS 0 + 关键状态走 QoS 1: 'Hot data on fast storage + cold data on cheap object storage · frequent edge rules + complex cloud inference · telemetry on QoS 0 + critical state on QoS 1'
+    全量公有云：计算中/存储中/带宽高/无边缘维护 —— 快速验证: 'All-in public cloud: medium compute / medium storage / high bandwidth / no edge maintenance — rapid validation'
+    混合边缘+公有云：计算低/存储中/带宽低/边缘维护中 —— 数据量大、带宽有限: 'Hybrid edge + public cloud: low compute / medium storage / low bandwidth / medium edge maintenance — large data, limited bandwidth'
+    私有数据中心：计算高/存储高/带宽低/维护高 —— 合规与长期稳定: 'Private data center: high compute / high storage / low bandwidth / high maintenance — compliance and long-term stability'
+    图14-12 扩展优先水平扩展无状态服务、数据库读写分离与热冷分层、边缘计算降低云端但引入管理成本；成本按计算/存储/带宽三维度，采用热冷分层、边缘预处理、分级 QoS 的混合策略。: 'Figure 14-12 For scale, prefer horizontal scaling of stateless services, database read/write splitting with hot-cold tiering, and edge computing that trims the cloud while adding management cost; cost spans compute, storage, and bandwidth, met best with a hybrid of hot-cold tiering, edge preprocessing, and tiered QoS.'

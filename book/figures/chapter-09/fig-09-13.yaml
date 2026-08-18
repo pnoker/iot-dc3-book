@@ -1,0 +1,55 @@
+type: flowchart
+title: 图9-13 MCP 工程原型：AI 控制灯光的受控链路
+audience_takeaway: 读者应理解 AI Agent 不直连设备，经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯。
+purpose: 展示 AI 控制灯光的受控链路与权限、审计边界
+visual_focus: AI Agent → MCP Server → IoT 平台 → 设备的主链路。
+design_level: flowchart
+layout: 上半四段主链路，中部异常处理，底部分层逻辑
+elements:
+- AI Agent：语音解析、命名实体识别、工具匹配，只与 MCP Server 交互
+- MCP Server：tools/call 分发、权限校验、参数越界校验、审计日志
+- IoT 平台：REST 接收、MQTT 下发真实指令
+- 智能灯设备：接收 MQTT 指令，回报状态
+- 异常：设备离线、参数越界、权限不足、超时重试与幂等性键
+relationships:
+- AI Agent 不直连设备；MCP Server 履行转换与管控；设备侧仍是 MQTT
+render_notes: HTML/SVG 渲染，四段受控链路 + 异常边界，蓝绿橙分层，明确权限与审计边界。
+caption:
+  zh: 图9-13 AI Agent 不直连设备：经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯，异常场景返回结构化错误并保留审计记录。
+  en: 'Figure 9-13 The AI Agent does not touch devices directly: tool discovery, permission checks, and parameter validation happen in the MCP Server, and the IoT platform delivers the actual command to the smart light over MQTT; failure paths return structured errors and keep an audit trail.'
+labels:
+  en:
+    图9-13 MCP 工程原型：AI 控制灯光的受控链路: 'Figure 9-13 MCP Prototype: Governed AI Light Control'
+    AI Agent 不直连设备，经 MCP Server 校验权限与参数后，由 IoT 平台通过 MQTT 下发指令到智能灯。: The AI Agent never talks to the device directly; after the MCP Server validates permissions and parameters, the IoT platform sends the MQTT command to the smart light.
+    AI Agent 不直连设备 · 权限、校验、审计在 Server 与平台层落地: No direct device access · permissions, validation, and auditing land in the server and platform layers
+    语音解析：“卧室灯→暖黄→60%”: 'Parse speech: "bedroom light → warm yellow → 60%"'
+    命名实体识别 + 参数提取: Named entity recognition + parameter extraction
+    工具匹配：iot_set_light: 'Tool match: iot_set_light'
+    只与 MCP Server 交互: Talks only to the MCP Server
+    tools/call 解析与分发: tools/call parsing & dispatch
+    权限校验（会话用户是否授权）: Permission check (is the session user authorized)
+    参数越界校验（0~100、颜色枚举）: Parameter bounds check (0~100, color enum)
+    拒绝调用时记录审计日志: Log an audit record on rejection
+    IoT 平台（REST → MQTT）: IoT platform (REST → MQTT)
+    REST 接口接收工具调用: REST endpoint receives the tool call
+    平台侧设备状态管理: Platform-side device state management
+    通过 MQTT 下发真实指令: Real command delivered over MQTT
+    设备注册、能力、状态仍由平台管: Registration, capabilities, and state stay with the platform
+    智能灯设备（light-bedroom-01）: Smart light (light-bedroom-01)
+    接收 MQTT 指令，更新亮度与颜色: Receives the MQTT command, updates brightness and color
+    回报状态：brightness=60, color=暖黄: 'Reports: brightness=60, color=warm yellow'
+    能力集：set_light / get_status: 'Capabilities: set_light / get_status'
+    设备侧仍是 MQTT，不经 MCP: The device side stays MQTT — no MCP involved
+    Server 必须处理的异常与工程边界: Exceptions and engineering edges the server must handle
+    设备离线 / 参数越界: Device offline / parameter out of range
+    返回结构化错误：device offline: 'Return a structured error: device offline'
+    权限不足: Insufficient permission
+    会话用户无权控制该设备: The session user may not control this device
+    拒绝调用并记录审计日志: Reject the call and log an audit record
+    超时与重试: Timeout and retry
+    MQTT 超时执行重试或状态回滚: On MQTT timeout, retry or roll back state
+    tools/call 支持幂等性键，防重复执行: tools/call supports idempotency keys to prevent double execution
+    核心分层逻辑: Core layering
+    设备注册、能力描述、命令执行、状态同步仍由 IoT 平台与 MQTT 完成，MCP Server 仅在 AI 与平台之间履行转换与管控职责: Device registration, capability description, command execution, and state sync stay on the IoT platform and MQTT; the MCP Server only converts and governs between AI and platform
+    这为安全审计、权限控制和工具版本管理提供明确执行点，降低 AI 接入对设备侧协议的感知成本: This gives audit, access control, and tool versioning a clear enforcement point, lowering the protocol burden of AI integration
+    图9-13 AI Agent 不直连设备：经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯，异常场景返回结构化错误并保留审计记录。: 'Figure 9-13 The AI Agent does not touch devices directly: tool discovery, permission checks, and parameter validation happen in the MCP Server, and the IoT platform delivers the actual command to the smart light over MQTT; failure paths return structured errors and keep an audit trail.'

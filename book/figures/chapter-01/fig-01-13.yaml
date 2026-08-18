@@ -1,0 +1,47 @@
+type: framework
+title: 图1-13 成长期：各国战略布局与产业落地
+audience_takeaway: 读者应理解 2009—2019 成长期由政策铺路与产业落地叠加驱动，三条战略路径和两大产业引擎共同把物联网推向工程部署。
+purpose: 对比日本 u-Japan、美国智慧地球、中国感知中国三条战略路径，并展示智能家居与车联网两大产业引擎。
+visual_focus: 三条战略路径向下承接带，再到两大产业引擎的层级关系。
+design_level: logical
+layout: 上排三张战略卡片 + 中间承接带 + 下排两张产业卡片，底部结论条。
+elements:
+- 日本：u-Japan（2004），泛在网络社会，政府规划+产业协同
+- 美国：智慧地球（2009），智能基础设施，产业主导、政策辅助
+- 中国：感知中国（2009），战略新兴产业，顶层设计、行政推动
+- 智能家居：智能温控器自主学习，消费者首次认可「物能省事」
+- 车联网：3G/4G+GPS，OTA 升级支撑自动驾驶数据积累
+relationships:
+- 三条战略路径向下铺路，两大产业引擎向上验证商业逻辑
+- 重复建设与标准不通，把问题指向可规模化复用的平台体系
+render_notes: 战略卡片 + 产业卡片的分层框架，语义色蓝/青/橙。完整 HTML 见 figures/chapter-01/fig-01-13.html。
+caption:
+  zh: 图1-13 成长期：各国战略布局与产业落地。u-Japan、智慧地球、感知中国三条路径向下铺路，智能家居与车联网两大引擎验证商业逻辑——但重复建设与标准不通，把问题指向平台体系。
+  en: 'Figure 1-13 The growth period: national strategies and industrial landing. u-Japan, Smarter Planet, and Sensing China paved the way downward while smart home and connected cars — the two industrial engines — validated the business logic. Yet duplicated construction and incompatible standards point the problem toward a platform system.'
+labels:
+  en:
+    图1-13 成长期：各国战略布局与产业落地: 'Figure 1-13 Growth Period: Strategies and Industrial Landing'
+    成长期战略布局与产业落地的分层关系: How strategies and industrial landing stacked up in the growth period
+    三条战略路径向下铺路，两大产业引擎向上验证商业逻辑: Three strategic paths paved the way; two industrial engines validated the business
+    三条战略路径（政策铺路）: Three strategic paths (policy paving)
+    日本 · u-Japan: Japan · u-Japan
+    泛在网络社会（2004）: Ubiquitous network society (2004)
+    政府规划 + 产业协同: Government planning + industry synergy
+    美国 · 智慧地球: USA · Smarter Planet
+    智能基础设施（2009）: Smart infrastructure (2009)
+    产业主导 · 政策辅助: Industry-led · policy-supported
+    中国 · 感知中国: China · Sensing China
+    战略新兴产业（2009）: Strategic emerging industry (2009)
+    顶层设计 · 行政推动: Top-level design · administrative push
+    战略铺路 ↓ 产业落地（两大产业引擎验证商业逻辑）: Strategy paves ↓ industry lands (two engines validate the business case)
+    智能家居: Smart Home
+    智能温控器自主学习: Smart thermostats learn on their own
+    消费者首次认可「物能省事」: Consumers first accept that "things save effort"
+    车联网: Connected Cars
+    3G/4G + GPS · OTA 升级: 3G/4G + GPS · OTA updates
+    支撑自动驾驶数据积累: Feeding data accumulation for autonomous driving
+    政策铺路之后：重复建设与标准不通: 'After the paving: duplicated builds, incompatible standards'
+    物联网需要的不是更多演示项目，而是可规模化复用的平台体系（第 2 章）: The IoT needs not more demos but a scalable, reusable platform system (Chapter 2)
+    同一城市可能建设多套路灯控制系统，跨品牌互通十年后仍是痛点: One city may build several streetlight control systems; cross-brand interop still hurts a decade later
+    图1-13 成长期：各国战略布局与产业落地。u-Japan、智慧地球、感知中国三条路径向下铺路，智能家居与车联网两大引擎验证商业逻辑——: 'Figure 1-13 Growth period: national strategies and industrial landing. u-Japan, Smarter Planet, and Sensing China paved the way; smart home and connected cars validated the business —'
+    但重复建设与标准不通，把问题指向平台体系。: but duplicated builds and incompatible standards point to a platform system.

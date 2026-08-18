@@ -1,0 +1,172 @@
+type: flowchart
+title: 图2-13 智能层引入决策流程
+purpose: 帮助工程设计人员判断项目是否需要引入智能推理层，基于规则穷尽性与执行路径可编程性两个核心维度。
+audience_takeaway: 读者应理解：规则引擎足以处理所有可穷举的业务规则；只有当规则无法穷尽或需要结合多源上下文时，才考虑引入AI层。
+visual_focus: 两个菱形判断节点的主决策链：从“规则能否穷尽？”到“需引入智能层”的红色路径，以及从“执行路径是否可编程？”到“需引入智能层”的红色路径。
+design_level: conceptual
+layout: 自上而下的流程图，起始菱形节点“需要智能层？”引出两个并列菱形节点“规则能否穷尽？”和“执行路径是否可编程？”。每个菱形产生“是/否”分支，最终导向四个矩形结果节点，并汇聚到底部“按需接入智能层”节点。
+elements:
+- 智能层需求入口
+- 规则穷尽性与执行路径可编程性判断
+- 规则引擎、智能层与按需接入结果
+relationships:
+- 需求入口 → 规则穷尽性、执行路径可编程性：从两个维度评估方案
+- 判断结果为“是” → 规则引擎：固定且可编程逻辑采用确定性规则
+- 判断结果为“否” → 智能层：上下文依赖或无法预定义时引入 AI
+- 规则引擎或智能层 → 按需接入结果：汇总架构选择
+components:
+- id: start_diamond
+  label: 需要智能层？
+  type: decision
+  subtitle: 规则复杂度与上下文依赖性
+  group: ''
+  priority: primary
+  shape: decision
+- id: rule_exhaust
+  label: 规则能否穷尽？
+  type: decision
+  subtitle: 业务逻辑是否固定
+  group: rule_zone
+  priority: primary
+  shape: decision
+- id: path_program
+  label: 执行路径可编程？
+  type: decision
+  subtitle: 逻辑是否可固化为代码
+  group: rule_zone
+  priority: primary
+  shape: decision
+- id: rule_engine_1
+  label: 规则引擎即可
+  type: process
+  subtitle: 固定逻辑
+  group: rule_zone
+  priority: normal
+  shape: card
+- id: ai_need_1
+  label: 需接入智能层
+  type: ai
+  subtitle: 上下文依赖
+  group: ai_zone
+  priority: risk
+  shape: card
+- id: rule_engine_2
+  label: 规则引擎即可
+  type: process
+  subtitle: 可编程路径
+  group: rule_zone
+  priority: normal
+  shape: card
+- id: ai_need_2
+  label: 需接入智能层
+  type: ai
+  subtitle: 无法预定义
+  group: ai_zone
+  priority: risk
+  shape: card
+- id: merge_node
+  label: 按需接入智能层
+  type: process
+  subtitle: 模块独立部署
+  group: ''
+  priority: primary
+  shape: card
+connections:
+- from: start_diamond
+  to: rule_exhaust
+  label: ''
+  style: solid
+  direction: bottom-to-top
+- from: start_diamond
+  to: path_program
+  label: ''
+  style: solid
+  direction: bottom-to-top
+- from: rule_exhaust
+  to: rule_engine_1
+  label: 是
+  style: solid
+  direction: request
+- from: rule_exhaust
+  to: ai_need_1
+  label: 否
+  style: solid
+  direction: request
+- from: path_program
+  to: rule_engine_2
+  label: 是
+  style: solid
+  direction: request
+- from: path_program
+  to: ai_need_2
+  label: 否
+  style: solid
+  direction: request
+- from: rule_engine_1
+  to: merge_node
+  label: ''
+  style: dashed
+  direction: event
+- from: ai_need_1
+  to: merge_node
+  label: ''
+  style: dashed
+  direction: event
+- from: rule_engine_2
+  to: merge_node
+  label: ''
+  style: dashed
+  direction: event
+- from: ai_need_2
+  to: merge_node
+  label: ''
+  style: dashed
+  direction: event
+regions:
+- id: rule_zone
+  label: 规则引擎适用区域
+  role: 所有可穷举的业务规则场景
+- id: ai_zone
+  label: 智能层适用区域
+  role: 规则无法穷尽或需要结合多源上下文的场景
+callouts:
+- 规则引擎适用于所有可穷举的业务规则场景；智能层仅在规则无法穷尽或需要综合上下文时才引入。
+legend:
+- 蓝色菱形 = 决策节点；绿色矩形 = 规则引擎适用结果；红色矩形 = 需引入智能层；
+- 绿色箭头 = 是（规则引擎可用）；红色箭头 = 否（需要AI）。
+visual_constraints:
+- 最多6个主节点，节点标签短。
+- 红色箭头和红色结果节点用于强调需要AI的路径。
+- 底部汇聚节点使用虚线连接，表示多种选择汇总。
+render_notes: HTML/SVG渲染，浅色背景，菱形和矩形圆角，箭头带标签，底部图例和出版级图注。
+caption:
+  zh: 图2-13 智能层引入决策流程：通过规则穷尽性与路径可编程性两条关键轴判断是否需要AI介入，避免为新技术而硬套技术。
+  en: 'Figure 2-13 Decision flow for introducing the intelligence layer: two key axes — rule exhaustiveness and path programmability — determine whether AI is needed, avoiding the trap of forcing in new technology for its own sake.'
+labels:
+  en:
+    图2-13 智能层引入决策流程: Figure 2-13 Decision Flow for Adding the Intelligence Layer
+    通过规则穷尽性与执行路径可编程性两条关键轴判断是否引入智能层，规则可穷举且路径可编程时优先用规则，否则按需接入智能层。: 'Two key axes — rule exhaustiveness and path programmability — decide whether to introduce the intelligence layer: prefer rules when they are enumerable and paths are programmable, otherwise add the intelligence layer on demand.'
+    规则能处理的优先用规则，复杂上下文再引入智能层: Prefer rules wherever they suffice; bring in the intelligence layer only for complex context
+    是: Yes
+    否: No
+    需要智能层？: Need Intelligence Layer?
+    规则复杂度与上下文依赖: Rule Complexity & Context Dependence
+    规则能否穷尽？: Can Rules Be Enumerated?
+    业务逻辑是否固定: Is Business Logic Fixed?
+    执行路径可编程？: Is the Path Programmable?
+    逻辑能否固化为代码: Can Logic Be Coded?
+    规则引擎即可: Rule Engine Suffices
+    固定逻辑: Fixed Logic
+    需接入智能层: Add Intelligence Layer
+    上下文依赖: Context-Dependent
+    可编程路径: Programmable Path
+    无法预定义: Not Predefinable
+    按需接入智能层: Add Intelligence Layer on Demand
+    模块独立部署: Independently Deployed Module
+    决策节点: Decision Node
+    规则引擎适用: Rule Engine Applies
+    需引入智能层: Intelligence Layer Needed
+    是（规则可用）: Yes (Rules Suffice)
+    否（需要 AI）: No (Needs AI)
+    汇总（按需接入）: Merge (On-Demand)
+    图2-13 通过规则穷尽性与执行路径可编程性两条关键轴判断是否引入 AI，避免为新技术而硬套技术。: Figure 2-13 Two key axes — rule exhaustiveness and path programmability — decide whether to bring in AI, avoiding the trap of forcing in new technology for its own sake.

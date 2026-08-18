@@ -1,0 +1,67 @@
+type: layered
+title: 图8-11 物联网平台 JWT 认证与授权架构
+purpose: 展示 JWT 认证与授权在物联网平台中的四层架构与鉴权流程。
+layout: 自下而上四层:基础设施层→认证层→授权层→策略层;租户边界以垂直虚线贯穿。
+elements:
+- 底部基础设施层:数据库(用户凭证、角色映射、策略规则)+ JWT 签发服务。
+- 中部认证层:用户/设备提交身份信息,验证后颁发 JWT(含 user_id、role、tenant_id、exp)。
+- 上部授权层:授权决策点接收 API 网关请求,执行 RBAC/ABAC 策略,决策记录到审计日志。
+- 顶层策略层:运营人员通过管理控制台配置角色、权限与 ABAC 规则表达式。
+relationships:
+- 用户→认证层→JWT→授权层→资源(设备/数据)。
+- 租户边界以垂直虚线屏障贯穿,确保跨租户请求被拒绝。
+- 授权层输出端标注 fail-closed,未明确授予的权限一律拒绝。
+render_notes: 四层自下而上分层绘制,不同背景色区分;成功路径绿色箭头、被拒绝红色箭头;授权层右侧放大镜图标代表审计日志。
+caption:
+  zh: 图8-11 JWT 认证与授权架构:认证层颁发令牌、授权层执行 RBAC/ABAC 决策、审计日志记录上下文,租户边界贯穿始终。
+  en: 'Figure 8-11 The JWT authentication and authorization architecture: the authentication layer issues tokens, the authorization layer enforces RBAC/ABAC decisions, the audit log records context, and the tenant boundary runs throughout.'
+labels:
+  en:
+    图8-11 物联网平台 JWT 认证与授权架构: Figure 8-11 JWT Authentication & Authorization on the IoT Platform
+    展示 JWT 认证与授权在物联网平台中的四层架构与鉴权流程。: The four-layer architecture and authorization flow of JWT authentication and authorization on an IoT platform.
+    展示 JWT 认证与授权在物联网平台中的四层架构与鉴权流程：认证层颁发令牌、授权层执行 RBAC/ABAC 决策、审计日志记录上下文。: 'The four-layer architecture and authorization flow of JWT authentication and authorization: the authentication layer issues tokens, the authorization layer enforces RBAC/ABAC decisions, and the audit log records context.'
+    租户边界: Tenant Boundary
+    租户 A: Tenant A
+    租户 B: Tenant B
+    ① 策略层: ① Policy Layer
+    管理控制台 · 运营人员: Admin Console · Operators
+    配置角色、权限与 ABAC 规则表达式: Configure Roles, Permissions & ABAC Rules
+    角色: Roles
+    权限: Permissions
+    ABAC规则: ABAC Rules
+    策略下发: Policy Delivery
+    ② 授权层: ② Authorization Layer
+    授权决策点 (PDP): Authorization Decision Point (PDP)
+    接收 API 网关请求: Receives API Gateway Requests
+    执行 RBAC / ABAC 策略: Enforces RBAC / ABAC Policies
+    输出：允许 / 拒绝: 'Output: Allow / Deny'
+    资源（设备 / 数据）: Resources (Devices / Data)
+    受保护资源: Protected Resources
+    允许: Allow
+    审计日志: Audit Log
+    记录决策上下文: Records Decision Context
+    记录: Records
+    未明确授予 → 拒绝: Not Explicitly Granted → Denied
+    fail-closed · 拒绝: fail-closed · Deny
+    跨租户请求 → 拒绝: Cross-Tenant Request → Denied
+    携带 JWT: Carries JWT
+    ③ 认证层: ③ Authentication Layer
+    用户 / 设备: User / Device
+    提交身份信息: Submits Identity
+    用户名 / 密钥 / 证书: Username / Key / Certificate
+    认证服务: Authentication Service
+    验证身份 · 颁发 JWT: Verifies Identity · Issues JWT
+    提交身份: Submit Identity
+    颁发 JWT: Issue JWT
+    ④ 基础设施层: ④ Infrastructure Layer
+    数据库: Database
+    · 用户凭证: · User Credentials
+    · 角色映射: · Role Mapping
+    · 策略规则: · Policy Rules
+    JWT 签发服务: JWT Issuing Service
+    签名密钥 · 令牌生成: Signing Key · Token Generation
+    签名密钥: Signing Key
+    用户凭证校验: User Credential Verification
+    策略规则读取: Policy Rule Loading
+    蓝色=策略配置 · 绿色=允许路径 · 红色=拒绝路径 · 虚线=租户边界: Blue = Policy Config · Green = Allow Path · Red = Deny Path · Dashed = Tenant Boundary
+    图8-11 JWT 认证与授权架构：认证层颁发令牌、授权层执行 RBAC/ABAC 决策、审计日志记录上下文，租户边界贯穿始终，未明确授予的权限一律拒绝（fail-closed）。: 'Figure 8-11 The JWT authentication and authorization architecture: the authentication layer issues tokens, the authorization layer enforces RBAC/ABAC decisions, the audit log records context, the tenant boundary runs throughout, and anything not explicitly granted is denied (fail-closed).'

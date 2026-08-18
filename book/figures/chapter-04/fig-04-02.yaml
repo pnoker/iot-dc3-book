@@ -1,0 +1,127 @@
+type: topology
+title: 图4-2 LoRaWAN网络架构示意
+audience_takeaway: 读者应理解LoRaWAN星形拓扑中网关仅做透明转发、不解析帧,去重校验与下行调度全部集中在网络服务器。
+purpose: 展示终端节点、网关、网络服务器和应用服务器之间的连接关系，说明LoRaWAN星形拓扑和网关透明转发特性。
+visual_focus: 从终端到终点的主链路。
+design_level: logical
+layout: 从上到下分为四层——应用服务器层、网络服务器层、网关层、终端节点层。每层用水平矩形框表示，层级间用箭头表示数据流方向（上行用实线，下行用虚线）。网关层包含多个网关矩形，终端层包含多个终端圆形。
+elements:
+- 终端节点 End Devices：圆形，位于最底层，代表各类传感器（水表、温湿度计、资产标签）。每个终端通过单跳LoRa射频连接一个或多个网关。
+- 网关（Gateway）：矩形，位于第二层，数量2～3个。每个网关通过以太网、蜂窝或卫星链路连接到网络服务器，负责透明转发LoRaWAN帧，不做协议解析。
+- 网络服务器（Network Server, NS）：矩形，位于第三层，执行去重、校验、下行时序调度，并连接应用服务器。
+- 应用服务器（Application Server）：矩形，最顶层，处理业务逻辑，接收上行数据或下发控制指令。
+relationships:
+- 终端 → 网关：LoRa调制，双向通信（上行由终端主动发起，下行通过接收窗口）。
+- 网关 → 网络服务器：通过IP协议（UDP或TCP）透明转发LoRaWAN帧。
+- 网络服务器 ↔ 应用服务器：内部API或MQTT协议，将解析后的数据推送给应用。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
+components:
+- id: r1
+  label: 终端
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 网关：LoRa调制，双向通信（上行…
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: 网关
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 网络服务器：通过IP协议（UDP或…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 网络服务器
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: 应用服务器：内部API或MQTT协…
+  type: application
+  subtitle: ''
+  group: application_domain
+  priority: normal
+  shape: bus
+connections:
+- from: r1
+  to: lora
+  label: 终端 → 网关：LoRa调制，双向…
+  style: solid
+  direction: request
+- from: r3
+  to: ip_udp_tcp
+  label: 网关 → 网络服务器：通过IP协议…
+  style: solid
+  direction: request
+- from: r5
+  to: api_mqtt
+  label: 双向
+  style: solid
+  direction: request
+callouts:
+- 终端 → 网关：LoRa调制，双向通信（上行由终端主动发起，下行通过接收窗口）
+- 网关 → 网络服务器：通过IP协议（UDP或TCP）透明转发LoRaWAN帧
+- 网络服务器 ↔ 应用服务器：内部API或MQTT协议，将解析后的数据推送给应用
+legend:
+- 终端：绿色（圆形）
+- 网关：蓝色（矩形）
+- 网络服务器：橙色（矩形）
+- 应用服务器：紫色（矩形）
+- 实线箭头：上行数据
+- 虚线箭头：下行数据
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用SVG或HTML渲染，层级清晰，箭头方向明确。颜色按图例标注，圆角矩形，统一间距。
+caption:
+  zh: 图4-2 LoRaWAN网络架构示意。终端通过LoRa射频连接网关，网关透明转发至网络服务器，应用服务器通过API与NS交互。
+  en: 'Figure 4-2 LoRaWAN network architecture. End devices connect to gateways over LoRa radio, gateways transparently forward frames to the Network Server, and the Application Server interacts with the NS via APIs.'
+labels:
+  en:
+    图4-2 LoRaWAN网络架构示意: 'Figure 4-2 LoRaWAN Network Architecture'
+    终端经 LoRa 射频接入网关，网关透明转发至网络服务器，由网络服务器集中完成去重、校验与调度。: 'End devices reach gateways over LoRa radio; gateways transparently forward to the Network Server, which centrally performs deduplication, validation, and scheduling.'
+    业务应用域: 'Application Domain'
+    平台服务域: 'Platform Domain'
+    设备与边缘域: 'Device & Edge Domain'
+    应用服务器: 'Application Server'
+    业务逻辑与API: 'Business Logic & APIs'
+    网络服务器: 'Network Server'
+    去重、校验、调度: 'Dedup · Check · Schedule'
+    网关1: 'Gateway 1'
+    LoRa转IP: 'LoRa-to-IP'
+    网关2: 'Gateway 2'
+    网关3: 'Gateway 3'
+    终端1: 'Device 1'
+    终端2: 'Device 2'
+    终端3: 'Device 3'
+    终端4: 'Device 4'
+    终端：绿色（圆形）: 'Device: green (circle)'
+    网关：蓝色（矩形）: 'Gateway: blue (rectangle)'
+    网络服务器：橙色（矩形）: 'Network Server: orange (rectangle)'
+    图4-2 LoRaWAN网络架构示意。终端通过LoRa射频连接网关，网关透明转发至网络服务器，应用服务器通过API与NS交互。: 'Figure 4-2 LoRaWAN network architecture. End devices connect to gateways via LoRa radio, gateways transparently forward to the Network Server, and the Application Server interacts with the NS via APIs.'

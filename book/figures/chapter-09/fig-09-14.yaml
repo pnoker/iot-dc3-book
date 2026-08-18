@@ -1,0 +1,58 @@
+type: layered
+title: 图9-14 语义互操作：从语法到语义的层次与路径
+audience_takeaway: 读者应理解互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体，按四步路径推进。
+purpose: 展示语义互操作的三层次与四步实践路径
+visual_focus: 三层次卡片与四步路径。
+design_level: layered
+layout: 上半三层次卡片，下半四步实践路径，底部可选标准
+elements:
+- 语法层：消息格式一致（协议适配网关），成本最低、字段含义须人工对齐
+- 结构层：字段名类型一致（物模型），减少低级错误、跨厂商仍须映射
+- 语义层：含义上下文一致（本体 SSN/SOSA），自动推理、设计复杂
+- 四步路径：语法统一 → 结构绑定 → 语义标注 → 推理联动
+- 可选标准：Matter、WoT TD、OPC UA PubSub、Sparkplug B
+relationships:
+- 三层次映射三种载体，机器理解深度递增；四步路径从语法推进到语义
+render_notes: HTML/SVG 渲染，三层次卡片 + 四步路径，灰蓝绿橙分层。
+caption:
+  zh: 图9-14 互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体；实践按语法统一、结构绑定、语义标注、推理联动四步推进，语义层让机器理解数据真实含义。
+  en: Figure 9-14 Interoperability spans three levels — syntactic, structural, semantic — carried by protocol adaptation gateways, thing models, and ontologies; practice advances in four steps (syntax unification, structure binding, semantic annotation, inference and linkage), and the semantic level lets machines understand what data truly means.
+labels:
+  en:
+    图9-14 语义互操作：从语法到语义的层次与路径: 'Figure 9-14 Semantic Interoperability: Levels and Path'
+    互操作分语法、结构、语义三层次，从语法统一到结构绑定、语义标注、推理联动四步推进。: 'Interoperability spans syntactic, structural, and semantic levels, advancing in four steps: syntax unification, structure binding, semantic annotation, inference & linkage.'
+    不只关心“消息怎么写”，而是“消息真正指代什么”: Not just "how the message is written" but "what it actually means"
+    互操作能力三层次: Three levels of interoperability
+    语法层: Syntactic level
+    消息格式一致：JSON / CBOR / CoAP: 'Consistent message format: JSON / CBOR / CoAP'
+    载体：协议适配网关: 'Carrier: protocol adaptation gateway'
+    优势：实现成本最低，兼容现有网络栈: 'Strength: cheapest to build, works with existing network stacks'
+    局限：字段含义须人工对齐，扩展性差: 'Limit: field meanings need manual alignment, poor extensibility'
+    'temp: 23.5 → 能被正确解码': 'temp: 23.5 → decodes correctly'
+    结构层: Structural level
+    字段名与类型一致: Consistent field names and types
+    载体：物模型（Thing Model）: 'Carrier: thing model'
+    优势：代码生成减少低级错误: 'Strength: code generation cuts trivial errors'
+    局限：跨厂商仍须人工映射，存在语义歧义: 'Limit: cross-vendor mapping still manual, semantic ambiguity remains'
+    temperature 统一字段名，仍不知是℃还是℉: temperature unifies the name, but °C or °F remains unknown
+    语义层: Semantic level
+    含义与上下文一致: Consistent meaning and context
+    载体：本体（Ontology，SSN/SOSA）: 'Carrier: ontology (SSN/SOSA)'
+    优势：自动推理与发现，减少人工维护: 'Strength: automated inference and discovery, less manual upkeep'
+    局限：本体设计复杂，初始投入高: 'Limit: ontology design is complex, high initial cost'
+    自动识别单位不一致，统计前换算: Auto-detects unit mismatch and converts before aggregation
+    从语法适配到语义映射：四步实践路径: 'From syntax adaptation to semantic mapping: a four-step path'
+    ① 语法统一: ① Syntax unification
+    通用传输协议 + 统一消息编码: Common transport protocol + unified message encoding
+    消息能被接收方正确解码: Messages the receiver can decode correctly
+    ② 结构绑定: ② Structure binding
+    引入物模型预定义属性/事件/命令: Thing model introduces predefined properties/events/commands
+    跨厂商对齐依赖人工评审: Cross-vendor alignment relies on manual review
+    ③ 语义标注: ③ Semantic annotation
+    物模型附加本体 URI 标注: Thing model annotated with ontology URIs
+    ④ 推理与联动: ④ Inference & linkage
+    语义推理引擎发现设备间关联: Semantic reasoning engine discovers device relationships
+    同房间均值 / 超阈值聚合告警: Per-room averages / threshold aggregation alarms
+    可选标准（按场景复用，勿重复造轮子）: Optional standards (reuse per scenario, do not reinvent)
+    Matter（智能家居互操作）· W3C WoT TD（机器可读说明书）· OPC UA PubSub（工厂跨车间）· Sparkplug B（MQTT 工业语义）: Matter (smart-home interop) · W3C WoT TD (machine-readable description) · OPC UA PubSub (cross-workshop factories) · Sparkplug B (industrial MQTT semantics)
+    图9-14 互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体；实践按语法统一、结构绑定、语义标注、推理联动四步推进，语义层让机器理解数据真实含义。: Figure 9-14 Interoperability spans three levels — syntactic, structural, semantic — carried by protocol adaptation gateways, thing models, and ontologies; practice advances in four steps (syntax unification, structure binding, semantic annotation, inference and linkage), and the semantic level lets machines understand what data truly means.

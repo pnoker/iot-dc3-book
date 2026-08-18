@@ -1,0 +1,42 @@
+type: dataflow
+title: 图3-14 边缘数据预处理的三个工程目标
+audience_takeaway: 读者应理解边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作，只在边缘执行无需跨设备上下文的操作。
+purpose: 展示边缘数据预处理的三个工程目标
+visual_focus: 三目标自上而下的数据流。
+design_level: dataflow
+layout: 三个目标纵向堆叠（滤除噪声 → 减少数据量 → 独立决策），底部工程准则
+elements:
+- 滤除噪声：滑动平均、IIR 低通、中值滤波
+- 减少数据量：聚合（均值/最大/最小/峰值）、FFT 频谱特征
+- 独立决策：阈值规则触发本地动作 + 事件上下文上报
+relationships:
+- 三目标依次递进，上行流量压缩到原始量一个数量级以下，本地响应压缩到采样周期级
+render_notes: HTML/SVG 渲染，三目标纵向堆叠，蓝绿橙分层，箭头表示数据流方向。
+caption:
+  zh: 图3-14 边缘预处理依次滤除噪声、减少数据量、独立决策，向上传干净数据、向下做快速动作；只在边缘执行无需跨设备上下文的操作，复杂分析留给网关或云平台。
+  en: Figure 3-14 Edge preprocessing filters noise, reduces data volume, and decides independently, in sequence — pushing clean data upward and acting quickly downward; only operations that need no cross-device context run at the edge, while complex analytics are left to gateways or the cloud platform.
+labels:
+  en:
+    图3-14 边缘数据预处理的三个工程目标: Figure 3-14 Three Engineering Goals of Edge Data Preprocessing
+    边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作。: Edge preprocessing centers on filtering noise, reducing data volume, and independent decisions — uploading clean data and acting fast downward.
+    滤除噪声 · 减少数据量 · 独立决策，上行流量压缩到原始量一个数量级以下: Filter noise · reduce volume · decide independently; upstream traffic compressed to under a tenth of raw
+    滤除噪声: Filter Noise
+    从混乱中提取干净信号: Extract clean signals from the noise
+    滑动平均：环形缓冲区，窗口越长平滑越强但响应延迟越大: 'Moving average: ring buffer; longer windows smooth more but delay responses'
+    IIR 低通：通带平坦度好，定点 MCU 上易数值漂移: 'IIR low-pass: flat passband, but prone to numeric drift on fixed-point MCUs'
+    中值滤波：对偶发野点完全不敏感，但每次排序增加开销: 'Median filter: immune to occasional outliers, but each sort adds cost'
+    不滤噪直接判超限，一个电磁尖峰就可能触发误告警: Judge limits without filtering, and one EMI spike can trigger a false alarm
+    减少数据量: Reduce Data Volume
+    上传承结果，而非样本: Upload results, not raw samples
+    聚合：算术平均、最大值、最小值、峰值、累积积分值: 'Aggregation: mean, max, min, peak, cumulative integral'
+    300 个采样点 → 一条均值记录；工频周期 → 有效值 + 峰值两个特征: 300 samples → one mean record; one mains cycle → RMS + peak as two features
+    FFT：本地做频谱分析，只上传频谱特征矢量或主要频段幅值: 'FFT: spectrum analysis on device; upload only feature vectors or main band amplitudes'
+    需要原始波形做边频带诊断时，不能在边缘层压缩掉时域细节: When raw waveforms are needed for sideband diagnosis, edge compression must not discard time-domain detail
+    独立决策: Decide Independently
+    不依赖云平台完成快速控制: Fast control without the cloud
+    阈值规则命中 → 立即驱动继电器 / PWM / 声光告警: Threshold rule hit → instantly drive relays / PWM / audible-visual alarms
+    异常事件上下文（时间戳、带标记原始值快照）上传平台持久化: Anomaly context (timestamp, flagged raw-value snapshot) uploaded for platform persistence
+    本地闭环延迟在采样周期级，远低于云往返的数百毫秒甚至数秒: Local loop latency is sampling-period scale, far below the hundreds of ms or even seconds of a cloud round trip
+    断网时仍独立完成保护动作，恢复后事件日志补推平台: Protection actions complete offline; event logs are pushed once connectivity returns
+    工程准则：只在边缘执行“无需跨设备上下文”的操作；趋势预测、多传感器融合、大数据建模留给边缘网关或云平台: 'Engineering rule: run only operations needing no cross-device context at the edge; trend prediction, multi-sensor fusion, and big-data modeling stay with edge gateways or the cloud'
+    图3-14 边缘预处理依次滤除噪声、减少数据量、独立决策，向上传干净数据、向下做快速动作；只在边缘执行无需跨设备上下文的操作，复杂分析留给网关或云平台。: Figure 3-14 Edge preprocessing filters noise, reduces data volume, and decides independently, in sequence — pushing clean data upward and acting quickly downward; only operations that need no cross-device context run at the edge, while complex analytics are left to gateways or the cloud platform.

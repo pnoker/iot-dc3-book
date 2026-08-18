@@ -1,0 +1,60 @@
+type: flowchart
+title: 图5-14 数据传输的 QoS 分级与容错机制
+audience_takeaway: 读者应理解 QoS 0/1/2 可靠性递增、开销递增，持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序。
+purpose: 展示数据传输的 QoS 分级与容错机制
+visual_focus: QoS 三级与容错三机制。
+design_level: flowchart
+layout: 上半 QoS 三级卡片，下半容错三机制，底部工程判断
+elements:
+- QoS 0：至多一次，高频非关键状态量；QoS 1：至少一次，指令下发；QoS 2：恰好一次，资金交易
+- 持久会话：CleanSession=false，Broker 保存未确认消息
+- 幂等设计：全局唯一 ID + Redis SETNX / 唯一索引
+- 乱序处理：消息内嵌序列号，消费端排序
+relationships:
+- QoS 分级按丢失容忍度选择；持久会话、幂等、序列号补齐协议之外的应用层容错
+render_notes: HTML/SVG 渲染，QoS 三级 + 容错三机制，灰蓝红分层。
+caption:
+  zh: 图5-14 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。
+  en: 'Figure 5-14 QoS 0/1/2 bring rising reliability at rising overhead, each fit for its role; persistent sessions restore broken connections, idempotent design deduplicates at the application layer, and sequence-number ordering fixes reordering — together closing the fault-tolerance loop for data transmission.'
+labels:
+  en:
+    图5-14 数据传输的 QoS 分级与容错机制: Figure 5-14 QoS Levels & Fault Tolerance
+    QoS 0/1/2 三级可靠性递增、开销递增；持久会话、幂等设计、序列号排序补齐容错闭环。: 'QoS 0/1/2: reliability and overhead rise together; persistent sessions, idempotent design, and sequence ordering close the fault-tolerance loop.'
+    报文丢了怎么办？重复了怎么办？断了如何续接？: What if a message is lost? Duplicated? The connection drops?
+    QoS 0 · 至多一次: QoS 0 · At most once
+    发布即完成，不等待应答、不保留副本: 'Fire and forget: no ACK wait, no copy kept'
+    效率最高，开销接近零: Fastest; near-zero overhead
+    适用：高频非关键状态量上报: 'For: frequent non-critical status'
+    例：气象站每分钟报一次温度，丢一条下一条补上: e.g. per-minute temperature; next reading covers loss
+    1 步（发布即完成）: 1 step (fire and forget)
+    QoS 1 · 至少一次: QoS 1 · At least once
+    等待 PUBACK，超时重发原报文: Wait for PUBACK; resend on timeout
+    保证交付，但可能收到重复消息: Guaranteed, but may duplicate
+    适用：指令下发、告警转发: 'For: commands, alarm forwarding'
+    例：充电宝开柜指令，ACK 丢失→重传→重复开锁: 'e.g. locker-open command: lost ACK → resend → double unlock'
+    2 步（发布 + 确认 + 超时重传）: 2 steps (publish + ACK + retry)
+    QoS 2 · 恰好一次: QoS 2 · Exactly once
+    四步握手：PUBLISH → PUBREC → PUBREL → PUBCOMP: 'Four-way: PUBLISH → PUBREC → PUBREL → PUBCOMP'
+    既不丢也不重，交互开销成倍增加: No loss, no duplicates; overhead multiplies
+    适用：资金交易、消防告警等不可重入: 'For: payments, fire alarms — non-reentrant cases'
+    全链路开销最高，吞吐最低: Highest overhead, lowest throughput
+    4 步（发布 + 三次握手）: 4 steps (publish + three handshakes)
+    QoS 之外的容错机制: Fault Tolerance Beyond QoS
+    持久会话（CleanSession=false）: Persistent Session (CleanSession=false)
+    Broker 保存未确认消息与离线订阅消息: Broker stores unacked and offline messages
+    设备再次上线时一次性放行: Released in one batch at reconnect
+    PLC 重启或模块抖动时消息不凭空消失: Messages survive PLC restarts or module glitches
+    网络断开不可怕，开启持久会话即可: Network drops are fine with persistent sessions
+    幂等性设计（应用层去重）: Idempotent Design (app-layer dedup)
+    指令携带全局唯一 ID，如 cmd-1234: Commands carry a global unique ID, e.g. cmd-1234
+    处理前查 Redis SETNX / 数据库唯一索引: Check Redis SETNX / DB unique index before processing
+    处理过则丢弃，未处理则执行并记录 ID: Drop if seen; else execute & record ID
+    QoS 1 管网络语义，幂等管应用层去重: QoS 1 = network; idempotency = app layer
+    数据乱序处理: Handling Reordering
+    QoS 不保证到达顺序: QoS does not guarantee order
+    消息内嵌单调递增序列号 / 时间戳: Messages embed monotonic sequence numbers
+    消费端按序列号排序、丢弃过期、合并: Consumers sort by sequence, drop stale, merge
+    与时间序列写入顺序性设计相关（5.4 节）: Ties into time-series write ordering (Section 5.4)
+    工程判断：不要指望纯协议解决所有问题: 'Judgment: protocols alone won''t fix everything'
+    丢了会死人吗？会 → QoS 2；否则 QoS 1 + 应用层幂等。无状态量用 QoS 0。断线开启持久会话，乱序靠序列号在消费端排序: Life-threatening loss? → QoS 2; else QoS 1 + idempotency. Stateless → QoS 0. Persistent sessions for drops; consumer-side sequence sort for reordering.
+    图5-14 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。: 'Figure 5-14 QoS 0/1/2: reliability and overhead rise together, each fit for its role; persistent sessions restore broken connections, idempotent design deduplicates at the application layer, and sequence numbers fix reordering — closing the fault-tolerance loop for data transport.'

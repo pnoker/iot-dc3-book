@@ -1,0 +1,192 @@
+type: dataflow
+title: 图6-1 物联网REST API端点设计示例（示意）
+audience_takeaway: 读者应理解API以带v1前缀的资源型端点组织，上报与指令下发走写路径(经接入层校验、去重、队列)，历史查询走读路径并按时间窗参数化。
+purpose: 展示物联网后端常见API端点布局，体现读写分离、版本控制、资源型端点设计。
+visual_focus: 从device到终点的主链路。
+design_level: implementation
+layout: 横向泳道图：左侧外部实体（设备、前端、第三方），中间API端点，右侧内部服务。
+elements:
+- 设备
+- 前端/用户
+- 第三方系统
+- POST /api/v1/devices/{id}/data
+- POST /api/v1/devices/{id}/command
+- GET /api/v1/devices
+- GET /api/v1/devices/{id}/points/{pid}/history?startTime=...&endTime=...
+- POST /api/v1/alarms/rules
+- GET /api/v1/alarms/active
+- 接入层（校验、去重、队列）
+- 控制层（指令队列）
+- 数据查询层
+relationships:
+- device → post_data（上报数据）
+- post_data → processing（传入）
+- frontend → get_devices（查询）
+- frontend → get_history（查询）
+- thirdparty → post_rule（创建规则）
+- thirdparty → get_alarms（查询）
+- post_command → command_svc（下发）
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: device
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: post_data
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: processing
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: frontend
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: get_devices
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: get_history
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: thirdparty
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r8
+  label: post_rule
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r9
+  label: get_alarms
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r10
+  label: post_command
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 上报数据
+  style: solid
+  direction: right
+- from: r2
+  to: r3
+  label: 传入
+  style: solid
+  direction: right
+- from: r4
+  to: r5
+  label: 查询
+  style: solid
+  direction: right
+- from: r4
+  to: r6
+  label: 查询
+  style: solid
+  direction: right
+- from: r7
+  to: r8
+  label: 创建规则
+  style: solid
+  direction: right
+- from: r7
+  to: r9
+  label: 查询
+  style: solid
+  direction: right
+- from: r10
+  to: command_svc
+  label: 下发
+  style: solid
+  direction: right
+callouts:
+- device → post_data（上报数据）
+- post_data → processing（传入）
+- frontend → get_devices（查询）
+legend:
+- 外部实体
+- API端点
+- 内部服务逻辑
+- 请求/数据流方向
+- 对应GET/POST/PUT/DELETE HTTP方法
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 整体采用横向泳道布局：左侧外部实体（椭圆形状），中间API端点列（圆角矩形，根据HTTP方法着色：GET绿色，POST蓝色，PUT橙色，DELETE红色），右侧内部服务（虚线圆角矩形）。数据流从左向右流动。端点按功能分组：设备上报数据用POST，指令下发用POST（但语义不同，路径不同），数据查询用GET，告警规则按标准CRUD。所有端点统一前缀/api/v1。图中省略了鉴权和错误处理细节，这些由Spring Security和全局异常处理器实现。本图为示意性设计，非具体项目截图。
+caption:
+  zh: 图6-1 物联网REST API端点设计示例（示意）
+  en: 'Figure 6-1 An illustrative example of REST API endpoint design for an IoT platform.'
+labels:
+  en:
+    图6-1 物联网 REST API 端点设计示例（示意）: Figure 6-1 IoT REST API Endpoint Design (Illustrative)
+    统一版本前缀下，设备写路径与历史读路径按资源语义分离。: Under one version prefix, device write and history read paths split by resource semantics.
+    调用方: Callers
+    统一 /api/v1 资源端点: Unified /api/v1 Resource Endpoints
+    内部服务: Internal Services
+    设备: Device
+    上报 / 指令: Report / Command
+    前端用户: Frontend User
+    查询设备与历史: Query Devices & History
+    第三方系统: Third-Party System
+    规则与告警: Rules & Alarms
+    写路径：校验 · 去重 · 入队: 'Write path: validate · dedupe · enqueue'
+    202 Accepted · 异步下发: 202 Accepted · Async Dispatch
+    规则创建与活动告警查询: Rule Creation & Active Alarms
+    接入层: Access Layer
+    认证 · 校验 · 去重 · 队列: Auth · Validate · Dedupe · Queue
+    控制层: Control Layer
+    指令队列与回执: Command Queue & Receipts
+    查询层: Query Layer
+    时间窗与分页: Time Window & Paging
+    历史数据按时间窗参数化: History Parameterized by Time Window
+    活动告警实时查询: Real-Time Active Alarms
+    上报数据: Report Data
+    下发命令: Send Command
+    历史查询: History Query
+    规则 / 告警: Rules / Alarms
+    写入: Write
+    下发: Dispatch
+    查询: Query
+    路由: Route
+    写路径 / 指令（POST）: 'Write path / commands (POST)'
+    读路径 / 查询（GET）: 'Read path / queries (GET)'
+    图6-1 上报、命令和查询端点共享版本契约，但分别进入接入、控制与查询服务。: 'Figure 6-1 Report, command, and query endpoints share one versioned contract but enter the access, control, and query services separately.'

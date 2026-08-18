@@ -1,0 +1,54 @@
+type: architecture
+title: 图14-2 IoT DC3 系统分层架构
+purpose: 展示 IoT DC3 的四层职责及 REST、gRPC、RabbitMQ 三类真实通信边界。
+audience_takeaway: 当前服务寻址依赖固定服务名、容器 DNS 和环境变量；RabbitMQ 是唯一消息总线。
+visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver。
+design_level: logical
+layout: 自下而上：设备层→Driver 层→平台服务层→应用层；RabbitMQ 横向位于 Data 与 Driver 之间。
+elements:
+- 应用层：Web、第三方应用、API 客户端。
+- 接入层：dc3-gateway。
+- 平台层：Auth、Manager、Data、Agentic。
+- Driver 层：MQTT、Modbus、OPC UA 等独立协议服务，可下沉边缘。
+- 基础设施：RabbitMQ、PostgreSQL、容器网络 DNS、环境变量配置。
+relationships:
+- 应用→Gateway→四中心：同步 REST 路由与认证。
+- Driver→Manager：同步 gRPC 业务注册和元数据查询。
+- Data→RabbitMQ→Driver：异步点位读写与自定义命令。
+- Driver→RabbitMQ→Data：异步回执、位号值、状态与事件。
+callouts:
+- 当前没有独立 Command Service。
+- 当前没有 Kafka 或 Nacos。
+render_notes: 浅色 SVG 分层图。固定服务名与环境变量作为寻址说明，不绘制注册中心；RabbitMQ 作为唯一消息总线突出显示。
+caption:
+  zh: 图14-2 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。
+  en: 'Figure 14-2 The IoT DC3 four-layer architecture: northbound requests enter the four centers through the Gateway, drivers connect to the Manager over gRPC, and commands and data flow asynchronously between Data and drivers via RabbitMQ.'
+labels:
+  en:
+    图14-2 IoT DC3 系统分层架构: 'Figure 14-2 IoT DC3 Layered Architecture'
+    北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。: 'Northbound requests enter the four centers through the Gateway; drivers connect to the Manager over gRPC; commands and data flow asynchronously between Data and drivers via RabbitMQ.'
+    北向 REST/gRPC 同步、南向 RabbitMQ 异步，构成三类真实通信边界: 'Northbound REST/gRPC is synchronous, southbound RabbitMQ asynchronous — three real communication boundaries'
+    应用层: 'Application Layer'
+    Web 控制台: 'Web Console'
+    运维 / 配置界面: 'Ops / Config UI'
+    第三方应用: 'Third-Party Apps'
+    REST API 集成: 'REST API Integration'
+    API 客户端: 'API Clients'
+    dc3-cli / 脚本: 'dc3-cli / Scripts'
+    接入层: 'Access Layer'
+    REST 路由 · Token 校验 · Compose DNS 寻址: 'REST Routing · Token Check · Compose DNS'
+    REST 路由到四中心: 'REST routing to the four centers'
+    平台服务层: 'Platform Service Layer'
+    鉴权与令牌: 'Auth & Tokens'
+    设备与模型元数据: 'Device & Model Metadata'
+    最新值与历史值: 'Latest & Historical Values'
+    对话与受控工具: 'Chat & Controlled Tools'
+    Data → RabbitMQ → Driver：命令: 'Data → RabbitMQ → Driver: commands'
+    Driver → RabbitMQ → Data：数据 / 回执: 'Driver → RabbitMQ → Data: data / receipts'
+    Driver 层: 'Driver Layer'
+    MQTT 发布 / 订阅: 'MQTT Publish / Subscribe'
+    TCP / RTU 轮询与写入: 'TCP / RTU Polling & Writes'
+    OPC UA 订阅采集: 'OPC UA Subscription'
+    Driver → Manager：gRPC 注册 / 元数据查询: 'Driver → Manager: gRPC registration / metadata query'
+    设备层 · 传感器 / 控制器 / 执行器（可下沉边缘）: 'Device Layer · Sensors / Controllers / Actuators (edge-deployable)'
+    图14-2 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。: 'Figure 14-2 The IoT DC3 four-layer architecture: northbound requests enter the four centers through the Gateway, drivers connect to the Manager over gRPC, and commands and data flow asynchronously between Data and drivers via RabbitMQ.'

@@ -1,0 +1,86 @@
+type: layered
+title: 图8-2 物联网纵深防御多层模型
+audience_takeaway: 读者应理解补偿控制只能降低部分剩余风险；链路认证与监测不能替代设备缺失的硬件 Root of Trust。
+purpose: 展示从物理安全到应用安全的多个防御面，以及补偿控制的跨层连接。
+visual_focus: 从补偿控制（灰色虚线）到终点的主链路。
+design_level: logical
+layout: 垂直堆叠的矩形条，自底向上排列。左侧红色箭头标注攻击路径，右侧绿色箭头标注防御阻断路径，灰色虚线表示补偿控制连线。
+elements:
+- 'Layer 1: 物理安全（SE/TEE、防拆开关、JTAG锁定）'
+- 'Layer 2: 设备固件安全（Secure Boot、OTA签名验证）'
+- 'Layer 3: 通信安全（TLS/DTLS、双向认证、防重放）'
+- 'Layer 4: 身份与访问控制（JWT令牌、OAuth 2.0、RBAC）'
+- 'Layer 5: 平台安全（租户隔离、速率限制、审计日志）'
+- 'Layer 6: 数据安全（存储加密、字段级脱敏）'
+- 'Layer 7: 应用与AI安全（模型注入、Prompt威胁分类）'
+relationships:
+- 攻击路径（左侧红色箭头）从底向上穿过所有层
+- 防御阻断（右侧绿色箭头）从顶向下触发
+- 补偿控制（灰色虚线）连接不同层，用于降低部分剩余风险；即使 Layer 3 增加证书锁定与异常流量检测，也不能替代 Layer 2 缺失的硬件 Root of Trust
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 补偿控制（灰色虚线）
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 不同层，例如Layer 2若缺乏硬…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: layer_2
+  label: 补偿控制（灰色虚线）连接不同层，例…
+  style: dashed
+  direction: request
+callouts:
+- 攻击路径（左侧红色箭头）从底向上穿过所有层
+- 防御阻断（右侧绿色箭头）从顶向下触发
+- 补偿控制（灰色虚线）连接不同层，用于降低部分剩余风险；即使 Layer 3 增加证书锁定与异常流量检测，也不能替代 Layer 2 缺失的硬件 Root of Trust
+legend:
+- 蓝色矩形条：防御层，从上到下颜色由浅变深
+- 红色箭头：攻击者逐层突破路径
+- 绿色箭头：防御方反向阻断信号
+- 灰色虚线：补偿控制关系
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG渲染，浅色背景，多层不同深浅蓝色矩形条圆角垂直堆叠，左侧红色箭头贯穿、右侧绿色箭头贯穿，灰色虚线跨层连接。每层矩形条可点击展示详细描述。
+caption:
+  zh: 图8-2 展示了物联网系统中纵深防御的层次结构、攻击面与防御阻断方向，以及补偿控制的跨层连接。
+  en: Figure 8-2 The layered structure of defense in depth in an IoT system, the attack surface and the direction of defensive blocking, and the cross-layer links of compensating controls.
+labels:
+  en:
+    图8-2 物联网纵深防御多层模型: Figure 8-2 IoT Defense-in-Depth Model
+    七层防御逐层拦截攻击；单层能力不足时，相邻层用补偿控制降低剩余风险。: Seven layers intercept attacks level by level; where one layer falls short, adjacent layers use compensating controls to cut residual risk.
+    补偿控制只能降低部分剩余风险，不能替代硬件 Root of Trust 等基础安全能力。: Compensating controls only reduce part of the residual risk and cannot replace foundational capabilities such as a hardware Root of Trust.
+    攻击路径 · 自底向上突破: Attack Path · Bottom-Up Breach
+    防御阻断 · 自顶向下: Defense Blocking · Top-Down
+    Layer 7 · 应用与 AI 安全: Layer 7 · Application & AI Security
+    模型注入防护 · Prompt 威胁分类 · 输出过滤: Model Injection Defense · Prompt Threat Classification · Output Filtering
+    Layer 6 · 数据安全: Layer 6 · Data Security
+    存储加密 · 字段级脱敏 · 密钥生命周期: Storage Encryption · Field-Level Masking · Key Lifecycle
+    Layer 5 · 平台安全: Layer 5 · Platform Security
+    租户隔离 · 速率限制 · 审计日志: Tenant Isolation · Rate Limiting · Audit Logs
+    Layer 4 · 身份与访问控制: Layer 4 · Identity & Access Control
+    Layer 3 · 通信安全: Layer 3 · Communication Security
+    TLS / DTLS · 双向认证 · 防重放: TLS / DTLS · Mutual Authentication · Anti-Replay
+    Layer 2 · 设备固件安全: Layer 2 · Device Firmware Security
+    Secure Boot · OTA 签名验证 · 回滚保护: Secure Boot · OTA Signature Verification · Rollback Protection
+    Layer 1 · 物理安全: Layer 1 · Physical Security
+    SE / TEE · 防拆开关 · JTAG 锁定: SE / TEE · Tamper Switches · JTAG Lockout
+    补偿控制仅降低部分剩余风险: Compensating Controls Reduce Only Part of Residual Risk
+    即使 Layer 3 增加证书锁定与异常流量检测，也不能替代 Layer 2 缺失的硬件 Root of Trust。: Even if Layer 3 adds certificate pinning and anomaly traffic detection, it cannot replace the hardware Root of Trust missing at Layer 2.
+    攻击路径: Attack Path
+    防御阻断: Defense Blocking
+    补偿控制: Compensating Control
+    图8-2 展示了物联网系统中纵深防御的层次结构、攻击面与防御阻断方向，以及补偿控制的跨层连接。: 'Figure 8-2 Defense in depth in an IoT system: the layered structure, the attack surface and blocking direction, and cross-layer compensating controls.'

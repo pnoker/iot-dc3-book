@@ -1,0 +1,101 @@
+type: flowchart
+title: 图11-12 智慧交通系统集成部署工程检查流程
+audience_takeaway: 读者应理解四泳道检查须串行递进:先验设备制式与接口兼容,再验网关压测与QoS,继而PKI证书与签名,最后总线与灾备就绪方可上线。
+purpose: 展示四个检查域在部署流程中的依赖关系与先后顺序，帮助工程师规划执行步骤和风险节点
+visual_focus: 从泳道4两个决策节点顺序通过后到达终点部署上线的主链路。
+design_level: implementation
+layout: 横向泳道图，四条水平泳道，从上到下排布；泳道之间用带箭头的流程线连接
+elements:
+- 泳道1：设备与协议兼容性检查，包含三个决策节点：OBU/RSU通信制式一致？、RSU/信号机接口一致？、感知数据与物模型兼容？
+- 泳道2：通信与一致性检查，包含三个决策节点：跨协议网关压测通过？、加密与认证启用？、QoS等级配置正确？
+- 泳道3：数据安全与认证检查，包含两个决策节点：PKI与数字证书部署完成？、数据签名验证正常？
+- 泳道4：跨部门协同与灾备检查，包含两个决策节点：统一数据总线就绪？、灾备与降级策略已验证？
+- 终端节点：部署上线
+relationships:
+- 泳道1三个决策节点顺序通过后，进入泳道2
+- 泳道2三个决策节点顺序通过后，进入泳道3
+- 泳道3两个决策节点顺序通过后，进入泳道4
+- 泳道4两个决策节点顺序通过后，到达终点部署上线
+- 每个决策节点未通过时，返回本节点重新修正
+regions:
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与 Agent 边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 泳道4两个决策节点顺序通过后
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: primary
+  shape: decision
+- id: r2
+  label: 达终点部署上线
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 泳道4两个决策节点顺序通过后，到达…
+  style: solid
+  direction: request
+callouts:
+- 泳道1三个决策节点顺序通过后，进入泳道2
+- 泳道2三个决策节点顺序通过后，进入泳道3
+- 泳道3两个决策节点顺序通过后，进入泳道4
+legend:
+- 绿色菱形：检查项通过
+- 红色菱形：检查项未通过，需返回上一步调整
+- 蓝色圆角矩形：操作节点或最终状态
+- 实线箭头：流程方向
+- 虚线箭头：返回修正路径（未通过）
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: HTML/SVG渲染。浅色背景，四条横向泳道。通过节点用绿色菱形，未通过用红色菱形。箭头线用实线（通过时绿色、未通过时红色虚线）。终端节点为蓝色圆角矩形。图例以表格形式放在图下方，图11-12标题居中在图上。
+caption:
+  zh: 图11-12 智慧交通系统集成部署工程检查流程
+  en: 'Figure 11-12 Engineering checklist flow for smart transportation system integration and deployment.'
+labels:
+  en:
+    图11-12 智慧交通系统集成部署工程检查流程: 'Figure 11-12 Deployment Checklist Flow for Smart Transportation'
+    读者应理解四泳道检查须串行递进：先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线。: 'Four swimlanes run in series: device compatibility → gateway stress tests & QoS → PKI certificates & signatures → bus and disaster readiness before go-live.'
+    泳道 1: 'Swimlane 1'
+    设备与协议兼容性检查: 'Device & protocol compatibility'
+    泳道 2: 'Swimlane 2'
+    通信与一致性检查: 'Communication & consistency'
+    泳道 3: 'Swimlane 3'
+    数据安全与认证检查: 'Data security & authentication'
+    泳道 4: 'Swimlane 4'
+    跨部门协同与灾备检查: 'Cross-dept coordination & failover'
+    工程检查启动: 'Checklist start'
+    OBU/RSU通信制式一致？: 'OBU/RSU radio consistent?'
+    否·修正: 'No · fix'
+    是: 'Yes'
+    RSU/信号机接口一致？: 'RSU/signal controller aligned?'
+    感知数据与物模型兼容？: 'Sensing data fits the model?'
+    进入泳道2: 'Enter swimlane 2'
+    跨协议网关压测通过？: 'Gateway stress test passed?'
+    加密与认证启用？: 'Encryption & auth enabled?'
+    QoS等级配置正确？: 'QoS levels configured?'
+    进入泳道3: 'Enter swimlane 3'
+    PKI与数字证书部署完成？: 'PKI & certificates deployed?'
+    数据签名验证正常？: 'Data signature verified?'
+    进入泳道4: 'Enter swimlane 4'
+    统一数据总线就绪？: 'Unified data bus ready?'
+    灾备与降级策略已验证？: 'Failover & degradation verified?'
+    通过·上线: 'Pass · go live'
+    部署上线: 'Deploy & go live'
+    全部检查通过: 'All checks passed'
+    绿色菱形·实线箭头：检查通过 → 进入下一项 / 下一泳道: 'Green diamond · solid arrow: pass → next item / next swimlane'
+    红色虚线回环：未通过 → 返回本节点修正: 'Red dashed loop: fail → fix at this node'
+    蓝色圆角矩形：启动 / 部署上线（终态）: 'Blue rounded box: start / go-live (final)'
+    浅色泳道带：四个检查域串行递进: 'Shaded lanes: four check domains in series'
+    图11-12 智慧交通系统集成部署工程检查流程：四条泳道须串行递进——先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线；任一检查未通过即返回本节点修正。: 'Figure 11-12 Four swimlanes run in series — device compatibility, gateway stress & QoS, PKI certificates & signatures, then bus and disaster readiness before go-live; failures loop back for local correction.'

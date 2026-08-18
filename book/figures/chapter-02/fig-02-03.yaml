@@ -1,0 +1,179 @@
+type: layered
+title: 图2-3 五层架构与传统四层架构对比示意
+purpose: 并排对比经典四层与新增智能层后的架构差异，突出数据流方向变化和闭环回路。
+audience_takeaway: 读者应看到智能层如何将单向数据流改为闭环，以及各层之间的标准化接口。
+visual_focus: 右侧五层架构中平台层与智能层之间的双向数据流箭头（向上读取数据、向下命令下发）为视觉高亮，用橙色实线强调；智能层与平台层之间的闭环用虚线包络。
+design_level: logical
+layout: 左右并排双列分层图。左侧4层（感知、网络、平台、应用），右侧5层（感知、网络、平台、智能、应用）。各层用不同颜色标识：感知层（teal）、网络层（slate）、平台层（blue）、智能层（orange）、应用层（gray）。
+elements:
+- 经典四层架构列
+- 含智能层的五层架构列
+relationships:
+- 四层感知层 → 网络层 → 平台层 → 应用层：数据单向上传并展示
+- 五层感知层 → 网络层 → 平台层 → 智能层：数据进入理解与决策环节
+- 五层智能层 → 平台层 → 网络层 → 感知层：命令回写形成闭环
+- 五层智能层 → 应用层：反馈决策结果
+regions:
+- id: four_layer
+  label: 经典四层
+  role: 传统架构边界
+- id: five_layer
+  label: 五层架构
+  role: AI时代演进边界
+components:
+- id: four_perception
+  label: 感知层
+  type: edge
+  subtitle: ''
+  group: four_layer
+  priority: normal
+  shape: card
+- id: four_network
+  label: 网络层
+  type: platform
+  subtitle: ''
+  group: four_layer
+  priority: normal
+  shape: card
+- id: four_platform
+  label: 平台层
+  type: platform
+  subtitle: ''
+  group: four_layer
+  priority: normal
+  shape: card
+- id: four_application
+  label: 应用层
+  type: application
+  subtitle: ''
+  group: four_layer
+  priority: normal
+  shape: card
+- id: five_perception
+  label: 感知层
+  type: edge
+  subtitle: ''
+  group: five_layer
+  priority: normal
+  shape: card
+- id: five_network
+  label: 网络层
+  type: platform
+  subtitle: ''
+  group: five_layer
+  priority: normal
+  shape: card
+- id: five_platform
+  label: 平台层
+  type: platform
+  subtitle: ''
+  group: five_layer
+  priority: primary
+  shape: card
+- id: five_intelligence
+  label: 智能层
+  type: ai
+  subtitle: 新增
+  group: five_layer
+  priority: primary
+  shape: card
+- id: five_application
+  label: 应用层
+  type: application
+  subtitle: ''
+  group: five_layer
+  priority: normal
+  shape: card
+connections:
+- from: four_perception
+  to: four_network
+  label: 数据采集
+  style: solid
+  direction: bottom-to-top
+- from: four_network
+  to: four_platform
+  label: 传输
+  style: solid
+  direction: bottom-to-top
+- from: four_platform
+  to: four_application
+  label: 存储与展示
+  style: solid
+  direction: bottom-to-top
+- from: five_perception
+  to: five_network
+  label: 数据采集
+  style: solid
+  direction: bottom-to-top
+- from: five_network
+  to: five_platform
+  label: 传输
+  style: solid
+  direction: bottom-to-top
+- from: five_platform
+  to: five_intelligence
+  label: 读取数据
+  style: solid
+  direction: bottom-to-top
+- from: five_intelligence
+  to: five_platform
+  label: 命令下发
+  style: solid
+  direction: top-to-bottom
+- from: five_platform
+  to: five_network
+  label: 转发
+  style: dashed
+  direction: top-to-bottom
+- from: five_network
+  to: five_perception
+  label: 执行
+  style: dashed
+  direction: top-to-bottom
+- from: five_intelligence
+  to: five_application
+  label: 决策反馈
+  style: dashed
+  direction: bottom-to-top
+callouts:
+- 经典四层：数据单向向上，无标准化回写路径。
+- 五层架构：智能层统一理解与执行，形成闭环。
+- 橙色箭头高亮智能层与平台层的双向交互。
+legend:
+- teal=感知层；slate=网络层；blue=平台层；orange=智能层（新增）；gray=应用层。
+- 实线=数据/命令正向流；虚线=执行反馈流。
+visual_constraints:
+- 左右两列层数不同，需在列标题处标注'经典四层'和'五层架构'。
+- 智能层使用橙色，与其他层区分。
+- 每列最多5个节点，节点标签统一使用层名称。
+render_notes: SVG渲染，圆角矩形，浅色背景。左右两列间距适当，用虚线边框分别框住两列。每个层级的宽度一致，层之间箭头带短标签。图例放在图底部，字号稍小。
+caption:
+  zh: 图2-3 经典四层架构（左）与五层架构（右）的对比。左列数据流单向向上，右侧五层架构在平台层和智能层之间形成闭环：平台层向上提供数据，智能层向下发回命令。
+  en: 'Figure 2-3 Comparison of the classic four-layer architecture (left) with the five-layer architecture (right). In the left column data flows one way upward; in the five layers on the right, a closed loop forms between the platform layer and the intelligence layer: the platform layer supplies data upward, and the intelligence layer sends commands back down.'
+labels:
+  en:
+    图2-3 五层架构与传统四层架构对比示意: Figure 2-3 Five-Layer vs Classic Four-Layer Architecture
+    经典四层架构数据流单向向上；五层架构在平台层与智能层之间形成双向接口，实现决策回写闭环。: In the classic four layers data flows one way up; the five-layer architecture adds a two-way interface between the platform and intelligence layers to close the decision loop.
+    新增智能层将单向数据管道改造为闭环决策系统: The new intelligence layer turns a one-way data pipeline into a closed-loop decision system
+    经典四层: Classic Four Layers
+    应用层: Application Layer
+    平台层: Platform Layer
+    网络层: Network Layer
+    感知层: Sensing Layer
+    数据采集: Data Collection
+    传输: Transport
+    存储与展示: Store & Display
+    数据单向上行 · 终点是被看见: One-way up · ends at being seen
+    五层架构: Five-Layer Architecture
+    智能层: Intelligence Layer
+    新增: New
+    读取数据: Read Data
+    命令下发: Send Commands
+    转发: Forward
+    执行: Execute
+    决策反馈: Decision Feedback
+    智能层 ⇄ 平台层 · 决策回写闭环: Intelligence ⇄ Platform · decision write-back loop
+    智能层（新增）: Intelligence Layer (New)
+    实线 = 数据/命令正向流: Solid = data / command flow
+    虚线 = 反馈/回写: Dashed = feedback / write-back
+    图2-3 经典四层数据流单向向上；五层架构在平台层与智能层之间形成闭环：平台层提供数据、智能层回写命令。: Figure 2-3 The classic four layers move data one way up; the five-layer architecture closes the loop between the platform and intelligence layers — the platform supplies data, the intelligence layer writes commands back.

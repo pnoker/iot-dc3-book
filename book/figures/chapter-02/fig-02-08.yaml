@@ -1,0 +1,154 @@
+type: sequence
+title: 图2-8 认证流程时序图：用户登录到设备列表访问
+purpose: 展示Auth中心如何与Gateway、Manager协作，完成用户登录、令牌颁发、请求校验和权限判定的完整过程。
+audience_takeaway: 读者应理解认证逻辑集中在Auth中心，Gateway只负责路由和验票，Manager基于已认证的上下文执行业务，不重复判断权限。
+visual_focus: 用户→Gateway→Auth中心的两轮交互：第一轮换取JWT，第二轮验证令牌并转发业务请求；Auth中心为Gateway提供权限判定结果后再将请求发给Manager。
+design_level: logical
+layout: 四列自上而下排列，参与者从左到右：用户、Gateway、Auth中心、Manager中心。消息按时间顺序从上到下标注步骤编号。
+elements:
+- 用户或浏览器
+- Gateway、Auth 中心与 Manager 中心
+relationships:
+- 用户 → Gateway → Auth 中心：提交凭证并请求登录
+- Auth 中心 → Gateway → 用户：签发并返回 JWT
+- 用户 → Gateway ↔ Auth 中心：携带 JWT 请求设备列表并完成令牌、权限和租户校验
+- Gateway → Manager 中心 → Gateway → 用户：按认证上下文查询并返回设备列表
+components:
+- id: user
+  label: 用户/浏览器
+  type: external
+  subtitle: ''
+  group: ''
+  priority: normal
+  shape: actor
+- id: gateway
+  label: Gateway
+  type: platform
+  subtitle: dc3-gateway:8000
+  group: ''
+  priority: primary
+  shape: card
+- id: auth
+  label: Auth中心
+  type: platform
+  subtitle: dc3-center-auth:9000
+  group: ''
+  priority: primary
+  shape: card
+- id: manager
+  label: Manager中心
+  type: platform
+  subtitle: dc3-center-manager:9001
+  group: ''
+  priority: normal
+  shape: card
+connections:
+- from: user
+  to: gateway
+  label: 1. POST /auth/login
+  style: solid
+  direction: left-to-right
+- from: gateway
+  to: auth
+  label: 2. 透传认证请求
+  style: solid
+  direction: left-to-right
+- from: auth
+  to: auth
+  label: 3. 核对密码哈希，生成JWT
+  style: dashed
+  direction: feedback
+- from: auth
+  to: gateway
+  label: 4. 返回access_token + refresh_token
+  style: solid
+  direction: right-to-left
+- from: gateway
+  to: user
+  label: 5. 返回JWT令牌
+  style: solid
+  direction: right-to-left
+- from: user
+  to: gateway
+  label: 6. GET /manager/device/list (Bearer Token)
+  style: solid
+  direction: left-to-right
+- from: gateway
+  to: auth
+  label: 7. 验证Token有效性
+  style: solid
+  direction: left-to-right
+- from: auth
+  to: gateway
+  label: 8. 令牌有效，返回角色+租户
+  style: solid
+  direction: right-to-left
+- from: gateway
+  to: auth
+  label: 9. 校验 device:read 权限+租户
+  style: solid
+  direction: left-to-right
+- from: auth
+  to: gateway
+  label: 10. 权限校验通过
+  style: solid
+  direction: right-to-left
+- from: gateway
+  to: manager
+  label: 11. 转发请求（携带用户上下文）
+  style: solid
+  direction: left-to-right
+- from: manager
+  to: manager
+  label: 12. 查询该租户下的设备列表
+  style: dashed
+  direction: feedback
+- from: manager
+  to: gateway
+  label: 13. 返回设备列表JSON
+  style: solid
+  direction: right-to-left
+- from: gateway
+  to: user
+  label: 14. 200 OK, 设备列表
+  style: solid
+  direction: right-to-left
+callouts:
+- Gateway在转发业务请求前完成Token验证和权限判断，Manager不再参与认证。
+- 步骤3和12是内部操作，用虚线自反馈表示。
+legend:
+- 实线箭头：请求（Request）
+- 虚线箭头：响应（Response）或内部操作
+visual_constraints:
+- 仅四个参与者：用户、Gateway、Auth中心、Manager中心，不要额外增加。
+- 消息标签简洁，不超过15个汉字。
+render_notes: HTML/SVG渲染，自上而下顺序图，参与者生命线为实线，消息箭头带步骤编号和简短标签，内部操作用矩形框标注在生命线旁。浅色背景，圆角矩形生命线。
+caption:
+  zh: 图2-8 用户登录并访问设备列表的完整认证时序。Gateway负责拦截和路由，Auth中心统一处理所有认证和授权判断，Manager只基于用户上下文查询数据。图中展示了两层协作：第一步登录换取令牌，第二步验证令牌和权限并转发业务请求。
+  en: 'Figure 2-8 The complete authentication sequence from user login to device-list access. Gateway intercepts and routes requests, the Auth center handles all authentication and authorization decisions centrally, and Manager only queries data on the basis of the user context. The figure shows two rounds of collaboration: first log in to obtain a token, then verify the token and permissions before forwarding the business request.'
+labels:
+  en:
+    图2-8 认证流程时序图：用户登录到设备列表访问: 'Figure 2-8 Authentication Sequence: Login to Device-List Access'
+    用户经 Gateway 向 Auth 中心登录换取 JWT，再携带令牌请求设备列表，Gateway 完成令牌与权限校验后转发给 Manager 中心查询并返回。: The user logs in through Gateway to obtain a JWT from the Auth center, then requests the device list with the token; Gateway verifies the token and permissions and forwards the request to the Manager center, which queries and returns the list.
+    Auth 集中认证授权，Gateway 验票路由，Manager 只执行业务: Auth centralizes authentication and authorization, Gateway checks tickets and routes, Manager only runs business logic
+    用户/浏览器: User / Browser
+    客户端: Client
+    Auth 中心: Auth Center
+    Manager 中心: Manager Center
+    3 核对凭证并签发 JWT: 3 Verify Credentials, Issue JWT
+    12 查询租户设备列表: 12 Query Tenant Device List
+    1 登录请求: 1 Login Request
+    2 透传认证: 2 Pass-Through Auth
+    4 返回令牌: 4 Return Tokens
+    5 返回 JWT: 5 Return JWT
+    6 请求设备列表: 6 Request Device List
+    7 验证 Token: 7 Verify Token
+    8 返回角色与租户: 8 Return Role & Tenant
+    9 校验权限与租户: 9 Check Permission & Tenant
+    10 权限通过: 10 Permission Granted
+    11 转发（带用户上下文）: 11 Forward (with User Context)
+    13 返回设备列表: 13 Return Device List
+    请求（Request）: Request
+    响应（Response）: Response
+    内部操作（自循环）: Internal Operation (Self-Loop)
+    图2-8 Auth 统一签发并校验令牌，Gateway 拦截与路由，Manager 仅基于认证上下文查询业务数据。: Figure 2-8 Auth issues and verifies tokens centrally, Gateway intercepts and routes, and Manager only queries business data within the authenticated context.

@@ -1,0 +1,56 @@
+type: architecture
+title: 图7-13 Agentic Center 工具生态与写入确认链路
+audience_takeaway: 读者应理解 Agentic Center 当前注册 8 类 Tool（查询为主），PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路。
+purpose: 展示 Tool 生态全貌与写入确认的真实流程，划清模型能力边界
+visual_focus: 8 类 Tool 布局与底部写入确认链路。
+design_level: architecture
+layout: 顶部大模型，中部 8 类 Tool 卡片，底部写入确认四步链路
+elements:
+- 8 类 Tool：TenantTool、UserTool、DeviceTool、DriverTool、ProfileTool、PointTool、PointValueTool、SystemTool
+- DeviceTool / DriverTool / PointTool：只读查询（检索、状态、趋势）
+- PointValueTool.writePointValue：创建 10 分钟有效 PENDING Action，返回 actionId
+- 确认链路：模型调用 → PENDING Action → 用户确认 → submitWrite → EXECUTED/FAILED → 设备
+relationships:
+- 大模型经 Tool 复用平台 Facade；写操作必须经 Action 确认，模型不能绕过
+render_notes: HTML/SVG 渲染，Tool 生态网格 + 底部四步写入确认链路，橙/蓝/绿区分读与写。
+caption:
+  zh: 图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。
+  en: 'Figure 7-13 The Agentic Center currently registers 8 tool classes, mostly queries; PointValueTool writes first create a PENDING Action and enter the device command chain via submitWrite only after user confirmation, splitting "the model proposes a write" and "the platform actually executes" into two explicit steps.'
+labels:
+  en:
+    图7-13 Agentic Center 工具生态与写入确认链路: Figure 7-13 Agentic Center Tool Ecosystem & Write-Confirmation Chain
+    当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，用户确认后才进入设备命令链路。: 8 tools registered, mostly read-only; PointValueTool writes open a PENDING Action first, entering the device chain after user confirmation.
+    工具通过 Facade 复用平台能力 · 租户与用户上下文随请求进入 Tool: Tools reuse Facade capabilities · tenant & user context enter with each call
+    Agentic Center（大模型）: Agentic Center (LLM)
+    Spring AI @Tool 暴露平台能力: Spring AI @Tool exposes platform capabilities
+    当前注册的 8 类 Tool: The 8 registered tool classes
+    租户上下文: Tenant context
+    用户上下文: User context
+    设备检索 / 状态（只读）: Device search / status (read-only)
+    驱动诊断（只读）: Driver diagnostics (read-only)
+    物模型（只读）: Thing model (read-only)
+    位号检索（只读）: Point search (read-only)
+    实时值读 / 写（需确认）: Live values read / write (confirm)
+    系统信息: System info
+    CommandTool 与 EventTool 源码存在但未加入当前 Provider，不能算默认会话能力: CommandTool and EventTool exist in source but are not in the current provider — not default session capabilities
+    写入确认链路（PointValueTool.writePointValue）: Write-confirmation chain (PointValueTool.writePointValue)
+    模型调用 writePointValue: Model calls writePointValue
+    校验 Device/Point/值非空: Validates Device/Point/value non-null
+    取租户、用户、会话上下文: Pulls tenant, user, session context
+    创建 PENDING Action: Creates a PENDING Action
+    10 分钟有效，返回 actionId: Valid 10 minutes, returns actionId
+    模型不能绕过确认直接控制设备: Model cannot bypass confirmation
+    用户通过 Action 接口确认: The user confirms via the Action API
+    原子抢占 PENDING 且未过期的记录: Atomically claims the unexpired PENDING record
+    依据持久化 Action，而非模型自述: 'Based on the persisted Action, not the model''s word'
+    submitWrite → 设备: submitWrite → device
+    状态置为 EXECUTED / FAILED: Status set to EXECUTED / FAILED
+    经 Data、RabbitMQ、Driver 到达设备: Via Data, RabbitMQ, Driver to the device
+    审计可追溯: Audit traceable
+    会话、租户、用户、Action: Session, tenant, user, Action
+    全链路记录，运维合规基础: End-to-end records for compliance
+    只读查询 Tool: Read-only query tool
+    含写操作 Tool（需确认）: Tool with writes (confirm)
+    上下文 / 系统 Tool: Context / system tool
+    ? 图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。
+    : Figure 7-13 The Agentic Center currently registers 8 tool classes, mostly queries; PointValueTool writes first create a PENDING Action and enter the device command chain via submitWrite only after user confirmation, splitting model-proposed writes from platform execution into two explicit steps.

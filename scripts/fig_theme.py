@@ -17,6 +17,26 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 FIGURES_DIR = ROOT / "book" / "figures"
+# 图注册表：book/figures/chapter-XX/{figure_id}.yaml —— 规格(spec) + caption.zh/en + labels.en(图内标注映射)。
+# 图源 HTML、注册表、双语文本聚在一处；手稿里只有 @[fig-XX-YY] 锚点。
+_REGISTRY_CACHE: dict[str, dict] = {}
+
+
+def load_figure_registry(figure_id: str) -> dict:
+    """加载一张图的注册表（spec + 双语 caption + 图内标注映射）；无注册表返回空 dict。"""
+    import yaml
+
+    if figure_id in _REGISTRY_CACHE:
+        return _REGISTRY_CACHE[figure_id]
+    chapter = figure_id.split("-")[1]
+    path = FIGURES_DIR / f"chapter-{chapter}" / f"{figure_id}.yaml"
+    data: dict = {}
+    if path.exists():
+        loaded = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        if isinstance(loaded, dict):
+            data = loaded
+    _REGISTRY_CACHE[figure_id] = data
+    return data
 
 # light → dark 映射。键为小写 hex（含/不含 # 均可），值为小写 hex。
 # 规则：
@@ -336,24 +356,77 @@ def collect_figure_styles() -> str:
     return "\n".join(rules)
 
 
-def load_figure_svg(figure_id: str) -> str | None:
-    """按 figure_id 定位并返回 theme 化的内联 SVG；找不到返回 None。"""
+def load_figure_svg(figure_id: str, lang: str = "zh") -> str | None:
+    """按 figure_id 定位并返回 theme 化的内联 SVG；找不到返回 None。
+
+    lang != "zh" 时应用 figures-i18n 的文本映射（无映射文件则回落中文标注）。
+    """
     chapter = figure_id.split("-")[1]  # fig-03-01 → 03
     src_file = FIGURES_DIR / f"chapter-{chapter}" / f"{figure_id}.html"
     if not src_file.exists():
         return None
     html = src_file.read_text(encoding="utf-8")
     inline = extract_inline_svg(html)
+    # 剥离 HTML 注释（源码分节注释不参与渲染，也避免多语言审计误报）
+    inline = re.sub(r"<!--.*?-->", "", inline, flags=re.DOTALL)
     # 提取并作用域化 <style>（移除标签，规则交给 figures.css）
     inline, _ = _extract_and_scope_style(inline, figure_id)
     # 给最外层 svg 根加类，供作用域化规则匹配
     inline = re.sub(r"<svg\b", f'<svg class="{figure_id}"', inline, count=1, flags=re.IGNORECASE)
     inline = svg_to_theme(inline)
+    if lang != "zh":
+        inline = apply_figure_i18n(inline, figure_id, lang)
     # 唯一化 title/desc id，避免同页多图内联时 id 冲突（正文多图 + 预览页 200+ 图）
     inline = inline.replace('id="title"', f'id="{figure_id}-title"')
     inline = inline.replace('id="desc"', f'id="{figure_id}-desc"')
     inline = inline.replace('aria-labelledby="title desc"', f'aria-labelledby="{figure_id}-title {figure_id}-desc"')
     return inline
+
+
+# ── 插图多语言 ────────────────────────────────────────────────────────────
+
+_CJK_RE = re.compile(r"[\u4e00-\u9fff]")
+# 文本节点：>…< 之间含 CJK 的内容（title/desc/cover 不到 <style>，已提前移除）
+_SVG_TEXT_RE = re.compile(r">([^<>]*[\u4e00-\u9fff][^<>]*)<")
+
+
+def has_cjk(s: str) -> bool:
+    return bool(_CJK_RE.search(s))
+
+
+def load_figure_i18n(figure_id: str, lang: str) -> dict[str, str]:
+    """从注册表读取 {figure_id}.yaml 的 labels.{lang} 文本映射；缺失返回空。"""
+    labels = load_figure_registry(figure_id).get("labels") or {}
+    data = labels.get(lang) or {}
+    return {str(k): str(v) for k, v in data.items()} if isinstance(data, dict) else {}
+
+
+def apply_figure_i18n(svg: str, figure_id: str, lang: str) -> str:
+    """按映射替换 SVG 文本（长串优先，避免子串先替换造成拼接残留）。"""
+    pairs = load_figure_i18n(figure_id, lang)
+    for zh in sorted(pairs, key=len, reverse=True):
+        if pairs[zh]:
+            svg = svg.replace(zh, pairs[zh])
+    return svg
+
+
+def extract_figure_texts(figure_id: str) -> list[str]:
+    """抽取一张图 SVG 内全部含 CJK 的文本（去重、保持出现顺序），供生成翻译桩。"""
+    chapter = figure_id.split("-")[1]
+    src_file = FIGURES_DIR / f"chapter-{chapter}" / f"{figure_id}.html"
+    if not src_file.exists():
+        return []
+    inline, _ = _extract_and_scope_style(
+        extract_inline_svg(src_file.read_text(encoding="utf-8")), figure_id
+    )
+    seen: set[str] = set()
+    texts: list[str] = []
+    for m in _SVG_TEXT_RE.finditer(inline):
+        t = m.group(1).strip()
+        if t and t not in seen:
+            seen.add(t)
+            texts.append(t)
+    return texts
 
 
 def audit_color_coverage() -> dict[str, set[str]]:

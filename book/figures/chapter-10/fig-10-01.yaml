@@ -1,0 +1,102 @@
+type: timeline
+title: 图10-1 工业4.0发展阶段时间线
+purpose: 标注前三次工业革命与工业4.0的关键特征和交汇时间点，帮助读者建立工业演进的历史脉络。
+audience_takeaway: 读者应理解工业4.0不是突然出现的概念，而是在前三次工业革命（机械化、电气化、自动化）基础上的范式跃迁。
+visual_focus: 四个节点从左到右依次排列，工业4.0节点用不同颜色或样式突出显示。
+design_level: conceptual
+layout: 单行横向时间轴，从左至右延伸。箭头下方等距放置四个圆形节点，节点内嵌白色数字1-4。
+elements:
+- 节点1（工业1.0）：蒸汽机示意图标，文字‘蒸汽机、机械化生产’。图注：以瓦特改良蒸汽机投入纺织业为象征起点。
+- 节点2（工业2.0）：流水线示意图标，文字‘电力、流水线、大规模生产’。图注：以福特T型车流水线为代表。
+- 节点3（工业3.0）：PLC机架示意图标，文字‘计算机、PLC、自动化控制’。图注：以PLC在工业现场广泛部署为标志。
+- 节点4（工业4.0）：云与物联网节点示意图标，文字‘信息物理系统（CPS）、IoT、AI、数字孪生、智能工厂’。图注：以德国正式提出‘工业4.0’概念为起点。
+relationships:
+- 四个节点按时间顺序从左到右排列，节点之间用实线箭头连接。
+regions:
+- id: ind_1_3
+  label: 前三次工业革命
+  role: 自动化的演进基础
+- id: ind_4
+  label: 工业4.0
+  role: 数字化与智能化的跃迁
+components:
+- id: ind1
+  label: 工业1.0
+  type: process
+  subtitle: 蒸汽机、机械化
+  group: ind_1_3
+  priority: normal
+  shape: card
+- id: ind2
+  label: 工业2.0
+  type: process
+  subtitle: 电力、流水线
+  group: ind_1_3
+  priority: normal
+  shape: card
+- id: ind3
+  label: 工业3.0
+  type: process
+  subtitle: 计算机、PLC
+  group: ind_1_3
+  priority: normal
+  shape: card
+- id: ind4
+  label: 工业4.0
+  type: edge
+  subtitle: CPS、IoT、AI
+  group: ind_4
+  priority: primary
+  shape: card
+connections:
+- from: ind1
+  to: ind2
+  label: 演进
+  style: solid
+  direction: left-to-right
+- from: ind2
+  to: ind3
+  label: 演进
+  style: solid
+  direction: left-to-right
+- from: ind3
+  to: ind4
+  label: 范式跃迁
+  style: dashed
+  direction: left-to-right
+callouts:
+- 工业4.0与前三次的根本区别在于数据从副产品变成了生产要素。
+legend:
+- 浅灰节点：前三次工业革命；蓝色高亮节点：工业4.0。
+visual_constraints:
+- 最多4个节点，节点标签简短，解释放入callouts。
+- 工业4.0节点使用蓝色高亮，其他节点使用浅灰色。
+render_notes: HTML/SVG渲染，浅色背景，时间轴箭头深色，节点圆形，工业4.0节点使用蓝色填充，其他节点浅灰，底部图例和出版级图注。不标注具体年份，仅示意时间相对位置。
+caption:
+  zh: 图10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。
+  en: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization. Stage divisions follow the evolution path commonly recognized in industry.
+labels:
+  en:
+    图10-1 工业4.0发展阶段时间线: Figure 10-1 Industry 4.0 Development Timeline
+    工业4.0建立在机械化、电气化和自动化基础上，并以数据驱动实现数字化与智能化跃迁。: Industry 4.0 builds on mechanization, electrification, and automation, then adds a data-driven leap to digital intelligence.
+    前三次工业革命构成自动化基础；工业4.0使数据从事后记录转为实时决策要素。: The prior revolutions built automation; Industry 4.0 turns data into a real-time decision factor.
+    前三次工业革命 · 自动化的演进基础: Prior revolutions · automation base
+    工业4.0 · 数字化与智能化的跃迁: Industry 4.0 · digital & intelligent leap
+    演进: Evolve
+    范式跃迁: Paradigm shift
+    工业1.0: Industry 1.0
+    蒸汽机 · 机械化生产: Steam engine · mechanization
+    瓦特改良蒸汽机投入纺织业: Watt's steam engine in textiles
+    工业2.0: Industry 2.0
+    电力 · 流水线 · 大规模生产: Power · assembly line · mass production
+    福特 T 型车流水线为代表: Ford Model T assembly line
+    工业3.0: Industry 3.0
+    计算机 · PLC · 自动化控制: Computers · PLC · automated control
+    PLC 在工业现场广泛部署: PLC deployed plant-wide
+    工业4.0: Industry 4.0
+    CPS · IoT · AI · 数字孪生 · 智能工厂: CPS · IoT · AI · digital twin · smart factory
+    德国正式提出“工业4.0”概念为起点: Germany formally proposes 'Industry 4.0'
+    工业4.0 与前三次的根本区别：数据从副产品变成了生产要素: 'Key difference: data turns from by-product into a production factor'
+    浅灰节点：前三次工业革命: 'Gray nodes: first three revolutions'
+    蓝色高亮节点：工业4.0: 'Blue highlight: Industry 4.0'
+    图10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization; stage divisions follow the evolution path commonly recognized in industry.

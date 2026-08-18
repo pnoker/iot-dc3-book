@@ -1,0 +1,69 @@
+type: framework
+title: 图12-5 精准农业感知三维度与传感器选型权衡
+audience_takeaway: 读者应理解精准农业从土壤、气象、作物生理三个维度感知数据，并在精度、接口、功耗、成本四个维度上同步权衡传感器选型。
+purpose: 建立“天—地—苗”三维感知与四维选型权衡的全局框架，说明数据从哪来、选型看什么
+visual_focus: 三个感知维度自上而下汇聚到四维选型权衡的主链路。
+design_level: framework
+layout: 上半区三张维度卡片（土壤/气象/作物生理），下半区四张选型权衡卡片，蓝色箭头自上而下
+elements:
+- 土壤（地）：体积含水量 VWC、土壤温度、电导率 EC
+- 气象（天）：空气温湿度、光照 PAR / 风速 / 降雨、防辐射罩
+- 作物生理（苗）：茎流、叶面湿度
+- 选型四维：精度、接口（RS-485/SDI-12/I2C）、功耗、成本
+relationships:
+- 三个感知维度共同约束四项选型权衡
+render_notes: HTML/SVG 渲染，浅色背景，绿/蓝/橙三色区分维度，底部图例，箭头自上而下。
+caption:
+  zh: 图12-5 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。
+  en: Figure 12-5 Soil, weather, and crop physiology form the "sky-ground-plant" data sources, jointly constraining sensor selection trade-offs on accuracy, interface, power, and cost.
+labels:
+  en:
+    图12-5 精准农业感知三维度与传感器选型权衡: 'Figure 12-5 Precision Agriculture: Three Sensing Dimensions & Sensor Selection Trade-offs'
+    土壤、气象、作物生理三个感知维度，共同约束精度、接口、功耗、成本四项选型权衡。: 'Soil, weather, and crop physiology jointly constrain four selection trade-offs: accuracy, interface, power, and cost.'
+    三个感知维度供给数据 · 四个维度约束传感器选型 · 数据驱动灌溉与病害决策: Three dimensions supply data · four axes constrain sensor choice · data drives irrigation & disease decisions
+    感知三维度: Three Sensing Dimensions
+    “天 — 地 — 苗”三类数据源，决定监测精度与系统成本: '"Sky–ground–plant" data sources determine monitoring accuracy and system cost'
+    土壤（地）: Soil (ground)
+    体积含水量 VWC: Volumetric water content VWC
+    决定“何时灌溉”，灌溉决策的核心阈值: Sets "when to irrigate" — the core threshold of irrigation decisions
+    土壤温度: Soil temperature
+    影响根系活性与养分吸收效率: Affects root activity and nutrient uptake
+    电导率 EC: Conductivity EC
+    反映可溶性盐分，EC 偏高只补清水: Reflects soluble salts; high EC → clear water only
+    气象（天）: Weather (sky)
+    空气温湿度: Air temp & humidity
+    低温高湿显著提升灰霉病爆发风险: Cold + humid sharply raises gray-mold risk
+    光照 PAR · 风速 · 降雨: Light PAR · wind · rainfall
+    PAR 约束干物质积累；喷药避风、雨后推迟灌溉: PAR limits dry-matter gain; spray in calm, delay irrigation after rain
+    防辐射罩: Radiation shield
+    温湿度探头必检项，避免阳光直射读数偏高: Must-check for temp/humidity probes; blocks sun-inflated readings
+    作物生理（苗）: Crop physiology (plant)
+    茎流传感器: Stem-flow sensor
+    测量茎秆水分上升速率，反映根系吸水受阻: Measures sap-rise rate in stems, revealing blocked root uptake
+    叶面湿度: Leaf wetness
+    叶片水膜是病害预警的核心指标: Leaf water film is a core disease-early-warning indicator
+    分阶段引入: Introduce in phases
+    维护频次与成本高，项目二/三阶段再考虑: High maintenance and cost — defer to project phases 2/3
+    传感器选型四维权衡: Four-Axis Sensor Selection Trade-off
+    四项同步权衡，接口选择最易被低估但工程影响巨大: Weigh all four at once; interface choice is the most underestimated yet the most consequential
+    精度: Accuracy
+    能否满足农艺要求: Meets agronomic needs?
+    灌溉决策需 VWC 误差可控: Irrigation decisions need controlled VWC error
+    FDR 低精度 / TDR 高精度: FDR lower accuracy / TDR higher accuracy
+    接口: Interface
+    RS-485 · 抗干扰，长距离布线: RS-485 · noise-immune, long cable runs
+    SDI-12 · 农业低功耗串行总线: SDI-12 · low-power agricultural serial bus
+    I2C · 板级短距连接: I2C · short on-board links
+    功耗: Power
+    能否支撑电池供电: Supports battery power?
+    间歇唤醒策略延长电池寿命: Intermittent wake extends battery life
+    测量电流几 mA ~ 几十 mA: 'Sense current: a few mA ~ tens of mA'
+    成本: Cost
+    是否在项目预算内: Within the project budget?
+    传感器成本往往超过通信模块: Sensors often cost more than comm modules
+    均匀加密优于高精度稀疏: Evenly spaced low-accuracy beats sparse high-accuracy
+    土壤维度: Soil dimension
+    气象维度: Weather dimension
+    作物生理维度: Crop physiology dimension
+    三维度共同约束选型权衡: Three dimensions jointly constrain the trade-offs
+    图12-5 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。: Figure 12-5 Soil, weather, and crop physiology form the "sky–ground–plant" data sources, jointly constraining sensor selection trade-offs on accuracy, interface, power, and cost.

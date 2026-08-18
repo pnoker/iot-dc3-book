@@ -1,0 +1,83 @@
+type: layered
+title: 图11-9 LSTM交通流预测模型架构图
+audience_takeaway: 读者应理解输入96步×3通道(流量/时刻/星期)经LSTM压缩为64维,Dropout防过拟合,Dense(6)输出未来6步。
+purpose: 直观展示短时交通流预测中单层LSTM网络从输入到输出各阶段的数据变换流程，帮助理解维度和特征在不同层之间的变化。
+visual_focus: 从数据流方向：从左至右，全局标注前向…到(64)→(64)→(6)的主链路。
+design_level: logical
+layout: 从左至右水平流向，共四个主要模块。
+elements:
+- '输入数据块（最左侧）: 浅蓝色圆角矩形，标注 (batch_size, 96, 3)。块下方用底注列出三个输入通道含义：①流量值（实数，已标准化）、②时刻编码（归一化标量，[0,1]）、③星期特征（为简化仅示意星期一的one-hot编码值）。'
+- 'LSTM层（中间）: 浅绿色圆角矩形，内部一行文字：64个LSTM单元。左侧箭头从输入块接入，右侧箭头分两支：上支指向Dropout层，下支用虚线指向块内标注区，区内给出三个门控的数学符号：遗忘门（σ、*）、输入门（σ、tanh、*）、输出门（σ、tanh）。'
+- 'Dropout层（右上）: 浅黄色圆角矩形，标注Dropout(0.2)，箭头从LSTM层引入，输出形状标注(batch_size, 64)。'
+- '全连接层（输出层）（右下）: 浅橙色圆角矩形，标注Dense(6)，表示输出6个连续未来步流量，激活函数为线性。'
+relationships:
+- 数据流方向：从左至右，全局标注前向传播方向标签。各层之间用带箭头实线串联，箭头旁串联标注数据维度变化：(64,3)→(64)→(64)→(6)。
+- 结构分组：输入块外另设一个虚线框包围LSTM层与Dropout层，框内标注特征提取阶段
+- 输出框外标注预测输出。
+regions:
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 数据流方向：从左至右，全局标注前向…
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: primary
+  shape: database
+- id: r2
+  label: (64)→(64)→(6)
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 数据流方向：从左至右，全局标注前向…
+  style: solid
+  direction: left-to-right
+callouts:
+- 数据流方向：从左至右，全局标注前向传播方向标签。各层之间用带箭头实线串联，箭头旁串联标注数据维度变化：(64,3)…
+- 结构分组：输入块外另设一个虚线框包围LSTM层与Dropout层，框内标注特征提取阶段
+- 输出框外标注预测输出
+legend:
+- 圆形+车辆符号=流量值
+- 时钟符号=时刻编码
+- 日历符号=星期编码
+- 齿轮符号=门控机制
+- 背景颜色参考按钮：深灰标注‘LSTM单层架构’
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 使用SVG圆角矩形块，颜色按输入浅蓝、LSTM浅绿、Dropout浅黄、输出浅橙分层。箭头用线性渐变描边。文本居中对齐并使用无衬线字体。块内可嵌入小图标表示特征类别（时钟、日历、交通灯），门控部分使用圆括号标注激活函数。图例位于图形底部居中，带分隔线与主图隔开。
+caption:
+  zh: 图11-9 展示LSTM模型处理交通流量序列的层次结构，从多通道输入经LSTM特征提取后输出未来6步预测。
+  en: 'Figure 11-9 The layered structure of an LSTM model over traffic flow sequences: multi-channel input passes through LSTM feature extraction and produces the next six prediction steps.'
+labels:
+  en:
+    图11-9 LSTM交通流预测模型架构图: 'Figure 11-9 LSTM Traffic Flow Prediction Model'
+    三通道的 96 步历史序列经 LSTM 压缩为 64 维，Dropout 不改变维度，Dense(6) 输出未来六步预测。: 'The 96-step, 3-channel history is LSTM-compressed to 64 dims; Dropout keeps dimensions; Dense(6) outputs six steps.'
+    维度链严格对应 Keras 模型：输入序列 → 隐状态 → 正则化 → 六步预测: 'Dimension chain matches the Keras model: input sequence → hidden state → regularization → six-step prediction'
+    特征提取阶段: 'Feature extraction stage'
+    输入序列: 'Input sequence'
+    流量 · 时刻 · 星期: 'Flow · time-of-day · weekday'
+    过去 96 分钟: 'Past 96 minutes'
+    遗忘门 · 输入门 · 输出门: 'Forget · input · output gates'
+    输出隐藏状态：64 维: 'Hidden state: 64 dims'
+    维度保持 64: 'Dims kept at 64'
+    抑制过拟合: 'Curb overfitting'
+    线性激活: 'Linear activation'
+    未来 6 分钟流量: 'Next 6 min of flow'
+    输入通道（96 步 × 3 通道）: 'Input channels (96 steps × 3 channels)'
+    ① 流量值（实数，已标准化）: '① Flow value (real, standardized)'
+    ② 时刻编码（归一化标量，[0,1]）: '② Time-of-day code (normalized, [0,1])'
+    ③ 星期特征（示意星期一的 one-hot 编码值）: '③ Weekday feature (Monday one-hot shown)'
+    维度契约: 'Dimension contract'
+    Dropout 不改变维度；Dense(6) 用线性激活输出未来六步预测。: 'Dropout keeps dimensions; Dense(6) with linear activation outputs six future steps.'
+    图11-9 三通道的 96 步历史序列经 LSTM 压缩为 64 维，Dropout 不改变维度，Dense(6) 输出未来六步预测。: 'Figure 11-9 The 96-step, 3-channel history is LSTM-compressed to 64 dims; Dropout keeps dimensions; Dense(6) outputs the next six steps.'

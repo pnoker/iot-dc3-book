@@ -1,0 +1,109 @@
+type: architecture
+title: 图13-8 中心化 vs 去中心化物联网架构对比图
+audience_takeaway: 中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。
+purpose: 直观对比两种架构在组件角色、通信模型、信任锚点和故障影响范围上的差异。
+visual_focus: 从左栏顶部到右栏标注的主链路。
+design_level: logical
+layout: 左右两栏对比布局，左栏为中心化架构，右栏为去中心化架构。
+elements:
+- 左栏顶部：中心化云平台（蓝色大块），底部：传感器/设备群（青绿色节点），中心化平台与设备之间为星型连接。
+- 右栏：设备以P2P方式连接到区块链共识网络（六个蓝色节点构成的网状结构），部分设备（青绿色）直接作为轻节点参与。
+- 左栏标注：单点信任、认证中心、全局瓶颈。
+- 右栏标注：分布式共识、P2P通信、无单点失败。
+relationships:
+- 左栏中，所有设备必须通过中心化平台进行认证和消息路由，数据流为汇聚型。
+- 右栏中设备通过与区块链节点交互完成身份注册和交易验证，设备间可直接或通过P2P中继通信。
+- 左栏单一故障点（中心平台）失效则全网不可用，标注红色虚线框
+- 右栏标注前提：故障未超容错阈值且 quorum 可达时，单个共识节点失效不影响全局运行。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: governance_domain
+  label: 治理与安全域
+  role: 风险控制与责任边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 左栏顶部
+  type: edge
+  subtitle: 中心化云平台（蓝色大块），底部：传感器/设备群（青绿色…
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 右栏
+  type: edge
+  subtitle: 设备以P2P方式连接到区块链共识网络（六个蓝色节点构成…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 左栏标注
+  type: security
+  subtitle: 单点信任、认证中心、全局瓶颈
+  group: governance_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 右栏标注
+  type: platform
+  subtitle: 分布式共识、P2P通信、无单点失败
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 左栏中，所有设备必须通过中心化平台…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 右栏中设备通过与区块链节点交互完成…
+  style: solid
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 左栏单一故障点（中心平台）失效则全…
+  style: solid
+  direction: left-to-right
+callouts:
+- 左栏中，所有设备必须通过中心化平台进行认证和消息路由，数据流为汇聚型
+- 右栏中设备通过与区块链节点交互完成身份注册和交易验证，设备间可直接或通过P2P中继通信
+- 左栏单一故障点（中心平台）失效则全网不可用，标注红色虚线框
+legend:
+- 蓝色：服务器/节点；青绿色：物联网终端设备；红色虚线：故障影响边界；绿色高亮：不中断区域。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景，两栏独立容器；设备与节点的连接使用带箭头实线，故障边界使用红色虚线矩形框。字体使用无衬线体，图注置于图下方。
+caption:
+  zh: 图13-8 中心化与去中心化物联网架构的核心差异。中心化模型依赖单一可信中介，去中心化模型通过分布式账本和共识机制将信任分散到网络节点。
+  en: 'Figure 13-8 The core differences between centralized and decentralized IoT architectures. The centralized model depends on a single trusted intermediary, while the decentralized model distributes trust across network nodes through the distributed ledger and consensus mechanisms.'
+labels:
+  en:
+    图13-8 中心化 vs 去中心化物联网架构对比图: Figure 13-8 Centralized vs Decentralized IoT Architecture
+    中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。: 'Centralized: one failure hits the whole network. Decentralized: node failures are harmless below threshold with quorum reachable.'
+    核心差异是信任位置、数据流形态和故障影响域: Trust location, data-flow shape, and failure blast radius
+    中心化架构: Centralized Architecture
+    汇聚数据流 · 单一可信中介: Convergent data flow · single trusted intermediary
+    中心化云平台: Centralized Cloud Platform
+    认证中心 · 消息路由: Authentication center · message routing
+    单点失效 → 全网不可用: Single point fails → network down
+    设备 1: Device 1
+    设备 2: Device 2
+    设备 3: Device 3
+    设备 4: Device 4
+    单点信任 · 集中认证 · 全局瓶颈: Single trust · central auth · global bottleneck
+    去中心化架构: Decentralized Architecture
+    P2P 通信 · 分布式共识: P2P communication · distributed consensus
+    共识节点: Consensus node
+    P2P 设备: P2P device
+    轻节点设备: Light-node device
+    分布式共识 · P2P 通信 · 无单点失败: Distributed consensus · P2P · no single point of failure
+    故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行: Below threshold and with quorum reachable, a node failure is harmless
+    图13-8 去中心化架构以分布式账本和共识分散信任与故障影响，同时引入共识和 P2P 协作成本。: Figure 13-8 Decentralization spreads trust and failure impact via ledger and consensus, adding P2P coordination costs.

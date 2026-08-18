@@ -1,0 +1,69 @@
+type: flowchart
+title: 图10-6 原始数据与清洗后数据对比
+audience_takeaway: 读者应理解清洗须先判异常成因:通信中断的缺失段用前向填充,电磁干扰的毛刺替换为平滑值,两类异常处理手段不同。
+purpose: 展示清洗前后温度序列的变化，说明缺失填充和毛刺过滤的效果。
+visual_focus: 从原始数据到清洗后数据的主链路。
+design_level: implementation
+layout: 上下两段折线图，上段为原始数据，下段为清洗后数据；横轴为时间，纵轴为温度值。
+elements:
+- 原始数据：包含一个空缺段和一个毛刺点，用红色虚线圆圈标出。
+- 清洗后数据：空缺段通过前向填充补平，毛刺点被替换为平滑值。
+relationships:
+- 时间轴对齐，利于对比。
+regions:
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: c1
+  label: 原始数据
+  type: data
+  subtitle: 包含一个空缺段和一个毛刺点，用红色虚线圆圈标出
+  group: data_domain
+  priority: primary
+  shape: database
+- id: c2
+  label: 清洗后数据
+  type: data
+  subtitle: 空缺段通过前向填充补平，毛刺点被替换为平滑值
+  group: data_domain
+  priority: normal
+  shape: database
+connections:
+- from: c1
+  to: c2
+  label: 时间轴对齐，利于对比
+  style: solid
+  direction: left-to-right
+callouts:
+- 时间轴对齐，利于对比
+legend:
+- 蓝色实线：清洗后曲线；灰色虚线：原始曲线；红色圆圈：异常位置。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: HTML/SVG渲染，线条颜色使用全局配色规则，异常位置加红色标注框。
+caption:
+  zh: 图10-6 某产线电机温度数据清洗前后的对比。左侧空白为通信中断导致的缺失，右侧尖峰为电磁干扰导致的毛刺。
+  en: Figure 10-6 Motor temperature data from a production line before and after cleaning. The gap on the left is loss caused by a communication outage; the spike on the right is a glitch caused by electromagnetic interference.
+labels:
+  en:
+    图10-6 原始数据与清洗后数据对比: Figure 10-6 Raw vs. Cleaned Data
+    上下对齐展示原始温度序列的缺失段和毛刺点，以及前向填充和平滑替换后的结果。: Aligned panels show the missing segment and spike in the raw temperature series, and the results after forward fill and smooth replacement.
+    先标记异常成因，再选择处理方法；短时通信中断与单点电磁毛刺不能使用同一策略。: Label the root cause first, then pick the treatment; brief comms outages and single-point EMI spikes need different strategies.
+    原始数据: Raw data
+    包含一个空缺段和一个毛刺点: One missing segment, one spike
+    温度: Temperature
+    时间: Time
+    通信中断 · 缺失段: Comms outage · missing segment
+    电磁干扰 · 毛刺: EMI · spike
+    清洗：缺失填充 + 毛刺平滑: 'Cleaning: gap fill + spike smoothing'
+    清洗后数据: Cleaned data
+    空缺段前向填充补平，毛刺点替换为平滑值: Gap forward-filled; spike replaced with a smooth value
+    短缺失：前向填充: 'Short gap: forward fill'
+    毛刺：替换为平滑值: 'Spike: replace with smooth value'
+    蓝色实线：清洗后曲线: 'Blue solid: cleaned curve'
+    灰色虚线：原始曲线: 'Gray dashed: raw curve'
+    红色圆圈：异常位置: 'Red circle: anomaly location'
+    图10-6 某产线电机温度数据清洗前后的对比。左侧空白为通信中断导致的缺失，右侧尖峰为电磁干扰导致的毛刺。: 'Figure 10-6 Motor temperature data from a production line before and after cleaning: the left gap is loss from a communication outage; the right spike is a glitch from electromagnetic interference.'

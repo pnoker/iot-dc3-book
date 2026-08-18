@@ -1,0 +1,64 @@
+type: matrix
+title: 图3-11 传感器选型四维约束与误差校准
+audience_takeaway: 读者应理解传感器选型在精度、成本、功耗、环境适应性四维之间取舍并预留余量，误差按系统、随机、粗大三类分别校准与抑制。
+purpose: 展示传感器选型的四维约束与误差分类校准方法
+visual_focus: 四维约束卡片与误差分类三列。
+design_level: matrix
+layout: 上半四维约束卡片，下半误差分类三列
+elements:
+- 精度与分辨率：先定容许误差反推精度，检查 ADC 位数，现场精度常低于手册值
+- 成本：看生命周期总成本（更换、维护、停工损失）
+- 功耗：系统层预算，尤其注意休眠电流
+- 环境适应性：防护等级、温度、抗腐蚀振动，现场失效头号原因
+- 误差分类：系统误差（单点/两点校准）、随机误差（滑动平均）、粗大误差（阈值+冗余投票）
+relationships:
+- 四维互相制约，无万能传感器；三类误差对应不同校准与抑制手段
+render_notes: HTML/SVG 渲染，四维约束卡片 + 误差分类三列，蓝绿橙灰分层。
+caption:
+  zh: 图3-11 传感器选型在精度、成本、功耗、环境适应性四维之间取舍，并预留环境余量；误差按系统、随机、粗大三类分别用单点/两点校准、滑动平均、阈值加冗余投票处理。
+  en: 'Figure 3-11 Sensor selection trades off four dimensions — accuracy, cost, power, and environmental adaptability — with environmental margin reserved; errors are handled by class: systematic (one-point/two-point calibration), random (moving average), and gross (thresholds plus redundant voting).'
+labels:
+  en:
+    图3-11 传感器选型四维约束与误差校准: Figure 3-11 Four Constraints of Sensor Selection & Error Calibration
+    选型在精度、成本、功耗、环境适应性四维取舍；误差按系统、随机、粗大三类分别校准与抑制。: Selection trades off accuracy, cost, power, and environmental adaptability; systematic, random, and gross errors are each calibrated and suppressed differently.
+    没有“万能传感器”，只有“匹配场景的传感器”: There is no universal sensor — only sensors that match the scenario
+    精度与分辨率: Accuracy & Resolution
+    精度 = 与真实值的偏差范围: Accuracy = deviation from the true value
+    分辨率 = 可分辨的最小变化: Resolution = smallest detectable change
+    先定容许误差 → 反推精度要求: Set allowed error first → derive accuracy needs
+    再检查 ADC 位数是否足够: Then check whether the ADC has enough bits
+    现场实测精度常低于手册标称值: Field accuracy is often worse than the datasheet value
+    成本（看生命周期）: Cost (lifecycle view)
+    农业传感器几十元 vs 工业探头贵一个量级: Agricultural sensors cost tens of yuan; industrial probes run an order higher
+    把更换成本、维护人工、停工损失算进去: Count replacement, maintenance labor, and downtime losses
+    大规模部署下维护成本往往超过采购成本: At scale, maintenance often exceeds the purchase cost
+    选型是生命周期总成本，而非单价: Selection is about total lifecycle cost, not unit price
+    功耗与供电: Power & Supply
+    电池供电每微安都要精打细算: On battery power, every microamp counts
+    工业产线 24V 供电则敏感度低: On 24 V industrial supplies, sensitivity is low
+    功耗预算在系统层做: Power budgets are set at system level
+    算入 MCU 唤醒 + 射频脉冲电流: Include MCU wake-up + RF pulse current
+    尤其注意休眠电流，忽略它难达续航目标: Watch sleep current especially; ignoring it misses battery-life targets
+    环境适应性: Environmental Adaptability
+    防护等级、工作温度范围: Ingress protection, operating temperature range
+    抗腐蚀、抗振动能力: Corrosion and vibration resistance
+    高湿、粉尘、农药、油污、电磁干扰: Humidity, dust, pesticide, oil, EMI
+    是现场失效的头号原因: The number-one cause of field failures
+    湿敏电容高湿一年后读数明显偏高: Humidity-sensitive capacitors read high after a year in damp air
+    误差分类与校准方法: Error Classification & Calibration
+    系统误差（方向性、重复性）: Systematic error (biased, repeatable)
+    制造公差、老化漂移、安装位置不当: Manufacturing tolerance, aging drift, poor mounting
+    单点校准修正偏移，两点校准修正偏移+增益: One-point calibration fixes offset; two-point fixes offset + gain
+    关键应用每半年返厂校准，或固件自补偿: 'Critical apps: factory recalibration every six months, or firmware self-compensation'
+    校准参数存云端并关联设备 ID: Calibration parameters stored in the cloud, keyed by device ID
+    随机误差（离散抖动）: Random error (scatter/jitter)
+    热噪声、电磁干扰引起: Caused by thermal noise and EMI
+    多次测量取滑动平均抑制: Suppressed by moving average over repeated measurements
+    慢变信号增大窗口，快变信号减小窗口: Widen the window for slow signals, shrink it for fast ones
+    在去噪与响应时效间平衡: Balance denoising against response latency
+    粗大误差（异常点）: Gross error (outliers)
+    瞬时硬件故障、干扰尖峰、环境突变: Transient hardware faults, interference spikes, abrupt environment changes
+    阈值判断 + 冗余传感器二维投票剔除: Rejected by threshold checks + two-way voting across redundant sensors
+    已知干扰源（喷淋）用“喷淋锁定”标记无效: Known interferers (sprinklers) flagged invalid via a spray lock
+    自诊断只覆盖有限故障模式，不可替代物理校准: Self-diagnostics cover limited fault modes and cannot replace physical calibration
+    图3-11 传感器选型在精度、成本、功耗、环境适应性四维之间取舍，并预留环境余量；误差按系统、随机、粗大三类分别用单点/两点校准、滑动平均、阈值加冗余投票处理。: 'Figure 3-11 Sensor selection trades off four dimensions — accuracy, cost, power, and environmental adaptability — with environmental margin reserved; errors are handled by class: systematic (one-point/two-point calibration), random (moving average), and gross (thresholds plus redundant voting).'

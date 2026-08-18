@@ -1,0 +1,48 @@
+type: architecture
+title: 图1-21 未来展望：AIoT 融合的三个方向
+audience_takeaway: 读者应理解 AIoT 未来三方向——AGI 意图理解、数字孪生预测干预、M2M 自主协商——共同把设备从被动连接节点变为主动智能体。
+purpose: 展示 AIoT 融合的三个方向，并用智慧城市闭环示意场景说明「感知→决策→协调→回传」的自治协作。
+visual_focus: 三个方向模块 + 智慧城市四节点闭环（含回传箭头）。
+design_level: logical
+layout: 上排三个方向卡片 + 下排智慧城市闭环四节点，底部结论条。
+elements:
+- AGI 进入物联网：从执行指令到理解意图，多模态中控解析模糊意图
+- 数字孪生预测干预：从状态同步到主动干预，虚拟先推演再物理执行
+- M2M 自主协商：从中心调度到自主协作，故障时相邻机器自动调整
+- 智慧城市闭环：感知（摄像头+地磁）→ 边缘决策 → M2M 协调（信号灯+公交）→ 孪生回传
+relationships:
+- 三方向并列，共同指向「泛在智联」
+- 闭环在数十秒内完成，无需人工触发
+render_notes: 三方向卡片 + 四节点闭环（含虚线回传箭头），语义色蓝/青/橙/紫。完整 HTML 见 figures/chapter-01/fig-01-21.html。
+caption:
+  zh: 图1-21 未来展望：AIoT 融合的三个方向。AGI 意图理解、数字孪生预测干预、M2M 自主协商，共同把设备从被动连接节点变为主动智能体。
+  en: 'Figure 1-21 Outlook: three directions of AIoT convergence. AGI intent understanding, digital-twin predictive intervention, and M2M autonomous negotiation together turn devices from passive connection nodes into active agents.'
+labels:
+  en:
+    图1-21 未来展望：AIoT 融合的三个方向: 'Figure 1-21 Outlook: Three Directions of AIoT Convergence'
+    AIoT 融合三方向与智慧城市自治协作闭环: Three convergence directions and the smart-city autonomy loop
+    三个方向模块 + 智慧城市四节点闭环（含回传）: Three direction cards + a four-node smart-city loop (with feedback)
+    AIoT 融合的三个方向: Three Directions of AIoT Convergence
+    AGI 进入物联网: AGI Enters the IoT
+    从执行指令到理解意图: From executing commands to understanding intent
+    多模态中控解析模糊意图: Multimodal hub parses vague intents
+    数字孪生预测干预: Digital-Twin Predictive Intervention
+    从状态同步到主动干预: From state mirroring to active intervention
+    虚拟先推演再物理执行: Simulate in the twin first, then act physically
+    M2M 自主协商: M2M Autonomous Negotiation
+    从中心调度到自主协作: From central dispatch to autonomous cooperation
+    故障时相邻机器自动调整: Neighboring machines auto-adjust on failure
+    智慧城市闭环示意: Smart-City Loop
+    孪生回传（闭环在数十秒内完成，无需人工触发）: Twin feedback (loop completes in tens of seconds, no human trigger)
+    感知: Sense
+    摄像头 + 地磁: Cameras + geomagnetic sensors
+    边缘决策: Edge Decisions
+    本地推理: Local inference
+    M2M 协调: M2M Coordination
+    信号灯 + 公交: Traffic lights + buses
+    孪生回传: Twin feedback
+    同步数字孪生: Sync the digital twin
+    三方向共同指向「泛在智联」: All three point to ubiquitous intelligence
+    把设备从被动连接节点变为主动智能体——感知 → 决策 → 协调 → 回传的自治协作: Devices become active agents — sense → decide → coordinate → feed back, autonomously
+    图1-21 未来展望：AIoT 融合的三个方向。AGI 意图理解、数字孪生预测干预、M2M 自主协商，: 'Figure 1-21 Outlook: three directions of AIoT convergence. AGI intent understanding, digital-twin predictive intervention, M2M autonomous negotiation —'
+    共同把设备从被动连接节点变为主动智能体。: together they turn devices from passive endpoints into active agents.

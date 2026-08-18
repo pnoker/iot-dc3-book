@@ -1,0 +1,46 @@
+type: layered
+title: 图7-11 RAG Eval 分层评测
+audience_takeaway: 读者应理解 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题，失败分类比单一综合分数更能指导工程改进。
+purpose: 展示 RAG 评测的四层结构与各层指标，强调分层定位问题
+visual_focus: 自上而下的四层评测结构。
+design_level: layered
+layout: 四层横向带（数据集 → 检索 → 生成 → 端到端），底部失败分类说明
+elements:
+- 数据集层：问题、预期证据、答案要点、拒答条件、租户、版本、有效时间
+- 检索层：Recall@k、MRR、nDCG@k、Context Precision/Recall、版本命中率、跨租户误检索率
+- 生成层：Groundedness、Answer Relevance、Citation、无证据回答率、拒答准确率
+- 端到端层：问题解决率、专家复核通过率、P50/P95、token 与成本
+relationships:
+- 四层自上而下：先固定评测集，再依次评检索、生成、端到端
+render_notes: HTML/SVG 渲染，四层纵向堆叠，灰/蓝/绿/橙四色分层，左侧竖排层名。
+caption:
+  zh: 图7-11 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题；失败分类对应不同修复入口，比单一综合分数更能指导工程改进。
+  en: Figure 7-11 RAG evaluation splits into four layers — dataset, retrieval, generation, and end-to-end — each with independent metrics to locate problems; failure classes map to different fix entry points and guide engineering better than a single overall score.
+labels:
+  en:
+    图7-11 RAG Eval 分层评测: Figure 7-11 Layered RAG Evaluation
+    RAG 评测拆为数据集、检索、生成、端到端四层，分层定位问题，失败分类比总分更有行动价值。: RAG evaluation splits into dataset, retrieval, generation, and end-to-end layers; per-layer localization plus failure classes beats a single score.
+    一次回答可能检索错版本、也可能生成不忠实 · 分层定位才能修复: Wrong version or unfaithful generation — only layered localization fixes it
+    数据集层: Dataset layer
+    先固定评测集，而不是先挑指标: Fix the eval set before the metrics
+    样本含：问题 · 预期证据 · 可接受答案要点 · 是否应拒答 · 租户 · 设备型号 · 文档版本 · 有效时间: 'Samples: question · expected evidence · acceptable answer points · refuse-or-not · tenant · device model · doc version · validity window'
+    覆盖六类输入：可回答、库中不存在、新旧版本冲突、过期规程、跨租户相似文档、需组合多段证据: 'Six input classes: answerable, absent, version conflict, outdated procedure, cross-tenant lookalike, multi-evidence'
+    按时间与文档版本切分，避免近重复文本泄漏；评测集本身要版本化: Split by time/doc version to stop near-duplicate leaks; version the eval set too
+    检索层: Retrieval layer
+    是否拿到了正确证据（不评价文风）: Right evidence retrieved? (style not judged)
+    Recall@k · MRR · nDCG@k · Context Precision/Recall · 正确版本命中率 · 跨租户误检索率: Recall@k · MRR · nDCG@k · Context Precision/Recall · right-version hit rate · cross-tenant leakage rate
+    空检索率与 P50/P95 延迟 · 同时报告稀疏、向量、混合、混合+reranker 四类基线: Empty-retrieval rate and P50/P95 latency · report sparse, vector, hybrid, hybrid+reranker baselines
+    任何不属于当前租户的内容进入上下文，都视为安全失败: Any cross-tenant content in context = security failure
+    生成层: Generation layer
+    回答是否忠实于证据: Faithful to the evidence?
+    Groundedness/Faithfulness · Answer Relevance · Citation Precision/Recall · 无证据回答率: Groundedness/Faithfulness · Answer Relevance · Citation Precision/Recall · unsupported-answer rate
+    拒答准确率（本应拒答 / 本可回答） · 操作步骤完整性（停机、确认、回滚、安全条件）: Refusal accuracy (should-refuse / answerable) · step completeness (shutdown, confirm, rollback, safety)
+    自动评分器也可能偏差，高风险样本由领域专家抽检: Auto-judges can be biased; domain experts spot-check high-risk samples
+    端到端层: End-to-end layer
+    是否解决了真实任务: Solved the real task?
+    运维问题解决率 · 专家复核通过率 · 过期 SOP 使用率 · 拒答后转人工比例: O&M resolution rate · expert review pass rate · outdated-SOP usage · refusal-to-human ratio
+    P50/P95 总时延 · token 消耗 · 单次成功任务成本 · 回答建议与实际设备状态一致性: P50/P95 latency · token usage · cost per successful task · advice-vs-state consistency
+    Tool 执行轨迹不与 RAG 指标混评，由 7.5.4 节单独评测: Tool traces are evaluated separately in Section 7.5.4, not with RAG metrics
+    失败分类比总分更有行动价值: Failure classes beat a single score
+    问题理解错误 / 检索不到 / 文档版本错误 / 上下文冲突 / 有证据但不忠实 / 本应拒答却给建议 —— 各自对应扩语料、改切分、调过滤、换 reranker、收紧 Prompt 等不同修复入口: 'Misread intent / nothing retrieved / wrong version / context conflict / unfaithful with evidence / advised when it should refuse — each maps to a different fix: grow corpus, re-chunk, tune filters, swap reranker, tighten prompts'
+    图7-11 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题；失败分类对应不同修复入口，比单一综合分数更能指导工程改进。: Figure 7-11 RAG evaluation splits into dataset, retrieval, generation, and end-to-end layers, each with its own metrics; failure classes map to different fix entry points and guide engineering better than a single overall score.

@@ -1,0 +1,85 @@
+type: layered
+title: 图10-12 本章知识体系图谱
+audience_takeaway: 读者应理解本章四层知识逐级递进且每层落在IoT DC3具体模块上,分析决策经平台层下发设备,形成带返回线的闭环。
+purpose: 展示工业物联网与智能制造四层知识体系的结构化映射：从概念驱动到平台落地。
+visual_focus: 从感知层通过驱动模块向上到平台层，实线箭头的主链路。
+design_level: logical
+layout: 自下而上四层叠加结构，每层包含若干核心关键词，右侧标注与IoT DC3的对应模块。
+elements:
+- 感知层：工业4.0、数字孪生、Modbus/OPC UA、边缘网关，使用青绿色节点。
+- 接入层：时序数据库、规则引擎、数据质量，使用蓝色服务块。
+- 分析层：预测性维护、AI模型、在线推理，使用橙色服务块。
+- 平台层：IoT DC3驱动模块/数据中心/规则引擎/消息队列，使用蓝色服务块。
+relationships:
+- 感知层通过驱动模块向上接入平台层，实线箭头。
+- 接入层向分析层提供特征数据与告警事件，虚线箭头。
+- 分析层的决策结果通过平台层下发给设备，形成闭环，箭头带返回线。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 感知层通过驱动模块向上
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 平台层，实线箭头
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 感知层通过驱动模块向上接入平台层…
+  style: solid
+  direction: request
+callouts:
+- 感知层通过驱动模块向上接入平台层，实线箭头
+- 接入层向分析层提供特征数据与告警事件，虚线箭头
+- 分析层的决策结果通过平台层下发给设备，形成闭环，箭头带返回线
+legend:
+- 蓝色=平台能力；青绿色=设备与协议；橙色=AI与智能决策。
+- 实线箭头表示数据流；虚线箭头表示事件触发或调用。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG渲染，浅色背景，四层横向分区，每层内部使用圆角矩形卡片承载关键词，右侧统一标注对应的IoT DC3模块名称。箭头统一使用12px间距，实线为#2563EB，虚线为#94A3B8。
+caption:
+  zh: 图10-12 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。
+  en: 'Figure 10-12 Outlines the four-layer knowledge system of this chapter: from industrial connectivity technologies and the data platform to intelligent analytics and IoT DC3 practice, advancing layer by layer.'
+labels:
+  en:
+    图10-12 本章知识体系图谱: Figure 10-12 Chapter Knowledge Map
+    主链从感知层向上经过接入层、分析层到平台层；受控决策由平台侧沿独立下行路径返回现场确定性控制系统。: The main chain runs up from perception through access and analytics to the platform layer; governed decisions return along a separate downlink to the deterministic field control systems.
+    数据与能力自下而上汇聚；受控决策沿独立下行链返回 PLC / SIS，不与上行主链混画。: Data and capabilities converge upward; governed decisions return to PLC / SIS on a separate downlink, never mixed into the uplink.
+    平台层: Platform Layer
+    驱动模块 · 数据中心 · 规则引擎 · 消息队列: Drivers · data center · rule engine · message queue
+    统一承载数据、决策编排与业务协同: One place for data, decisions, and collaboration
+    IoT DC3 平台服务域: IoT DC3 Platform Service Domain
+    分析层: Analytics Layer
+    预测性维护 · AI 模型 · 在线推理: Predictive maintenance · AI models · online inference
+    形成健康评估、告警与维护建议: Produces health scores, alarms, and advice
+    规则引擎 + AI 推理: Rule engine + AI inference
+    接入层: Access Layer
+    时序数据库 · 规则引擎 · 数据质量: Time-series DB · rule engine · data quality
+    协议适配、归一为 PointValue、质量治理: Protocol adaptation, PointValue normalization, quality governance
+    数据中心（时序·质量）: Data center (time-series · quality)
+    感知层: Perception Layer
+    工业4.0 · 数字孪生 · Modbus/OPC UA · 边缘网关: Industry 4.0 · digital twin · Modbus/OPC UA · edge gateway
+    现场设备、协议与概念的认知基础: Field devices, protocols, and concepts
+    驱动模块（南向协议适配）: Driver modules (southbound protocols)
+    驱动模块上行主链（实线）: Driver uplink main chain (solid)
+    特征数据 · 告警事件（虚线）: Feature data · alarm events (dashed)
+    决策下发 · 闭环（带返回线）: Decision dispatch · closed loop (return line)
+    实线=数据上行主链: Solid = data uplink main chain
+    虚线=事件/调用: Dashed = events/calls
+    橙色=AI 决策: Orange = AI decisions
+    青绿=设备/协议: Teal = devices/protocols
+    蓝=平台能力: Blue = platform capabilities
+    图10-12 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。: 'Figure 10-12 The chapter''s four-layer knowledge system: from industrial connectivity and the data platform to intelligent analytics and IoT DC3 practice, layer by layer.'

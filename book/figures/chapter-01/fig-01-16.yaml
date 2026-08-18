@@ -1,0 +1,111 @@
+type: flowchart
+title: 图1-16 传统物联网与大模型驱动物联网的对比
+audience_takeaway: 读者应理解传统物联网靠静态规则精确匹配、被动响应,大模型驱动改为上下文概率推理并新增执行前用户二次确认,从被动转向主动。
+purpose: 直观对比两种物联网模式的决策链路与用户交互路径，突出大模型引入推理能力带来的架构变化。
+visual_focus: 从大模型驱动物联网：用户自然语言描述到终点的主链路。
+design_level: implementation
+layout: 左右两列，每列从上到下分三层：用户交互层、决策层、执行层。左侧为传统物联网，右侧为大模型驱动物联网。两列之间用箭头标识转变方向，底部标注关键差异。
+elements:
+- 传统物联网（左侧）从上到下三层：用户交互层为矩形框，标注“手动控制面板或App”；决策层为钻石框，内部写“规则引擎：If CO₂>1000ppm → 开新风”，下方标注“人工编排，静态规则”；执行层为圆形，标注“温度/CO₂传感器 + 新风阀门”；反馈回路为简单闭合的直线箭头。
+- 大模型驱动物联网（右侧）从上到下三层：用户交互层为矩形框，标注“自然语言输入（语音或文本）”；决策层为钻石框，内部写“LLM推理：湿度、温度、用户历史习惯综合决策”，下方标注“上下文理解，概率性输出”；执行层为圆形，标注“设备传感器与执行器”，但增加一个用户确认节点（黄色高亮椭圆框），位于决策与执行之间。
+- 底部对比条：左侧标注“被动响应”，右侧标注“主动推理”。
+relationships:
+- 传统物联网：用户输入固定指令 → 规则引擎精确匹配 → 直接执行或报警（反馈为闭环箭头）。
+- 大模型驱动物联网：用户自然语言描述 → LLM解析意图并查询设备实时状态 → 生成决策序列 → 用户二次确认后执行（虚线箭头表示概率性推荐路径）。
+regions:
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与 Agent 边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: r1
+  label: 传统物联网：用户输入固定指令
+  type: application
+  subtitle: ''
+  group: application_domain
+  priority: primary
+  shape: actor
+- id: r2
+  label: 规则引擎精确匹配 → 直接执行或报…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: 大模型驱动物联网：用户自然语言描述
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: normal
+  shape: actor
+- id: r4
+  label: LLM解析意图并查询设备实时状态…
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+connections:
+- from: r3
+  to: llm
+  label: 大模型驱动物联网：用户自然语言描述…
+  style: dashed
+  direction: request
+callouts:
+- 传统物联网：用户输入固定指令 → 规则引擎精确匹配 → 直接执行或报警（反馈为闭环箭头）
+- 大模型驱动物联网：用户自然语言描述 → LLM解析意图并查询设备实时状态 → 生成决策序列 → 用户二次确认后执行…
+legend:
+- 矩形框：用户交互节点
+- 钻石框：决策节点（规则引擎或LLM）
+- 圆形：设备节点
+- 黄色椭圆：用户确认节点
+- 实线箭头：确定性指令/数据流向
+- 虚线箭头：基于概率的推荐路径
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: 使用SVG绘制，色彩方案：左侧蓝色系，右侧橙色系；用户确认节点用黄色高亮，并在其下方标注“高风险动作确认”；顶部增加“用户输入”入口区域的对比标签；左侧底部加虚线区标注“规则冲突风险随规模增长”，右侧底部加虚线区标注“推理延迟避免用于实时闭环”。字体使用无衬线体，字号：标题14px，其余12px。两列之间用带箭头的渐变弧线连接，弧线上标注“范式转变”。
+caption:
+  zh: 图1-16 传统物联网与大模型驱动物联网的对比示意。左侧为规则驱动的“感知-响应”模式，右侧为推理驱动的“理解-决策-确认”模式。大模型在决策层增加上下文理解和概率推理的能力，同时引入了执行前二次确认的安全机制。
+  en: Figure 1-16 Traditional IoT versus LLM-driven IoT. The left side shows the rule-driven sense–respond mode; the right side shows the reasoning-driven understand–decide–confirm mode. Large models add contextual understanding and probabilistic reasoning at the decision layer, while introducing the safety mechanism of a second confirmation before execution.
+labels:
+  en:
+    图1-16 传统物联网与大模型驱动物联网的对比: Figure 1-16 Traditional IoT vs. LLM-Driven IoT
+    传统物联网与大模型驱动物联网决策链路对比: 'Decision chains compared: traditional IoT vs. LLM-driven IoT'
+    左侧规则驱动「感知-响应」，右侧推理驱动「理解-决策-确认」: 'Left: rule-driven sense–respond. Right: reasoning-driven understand–decide–confirm.'
+    传统物联网（规则驱动）: Traditional IoT (rule-driven)
+    大模型驱动物联网（推理驱动）: LLM-driven IoT (reasoning-driven)
+    反馈: Feedback
+    手动控制面板 / App: Manual panel / app
+    用户输入固定指令: User enters fixed commands
+    规则引擎: Rule Engine
+    If CO₂&gt;1000ppm → 开新风: If CO₂&gt;1000ppm → fresh air on
+    人工编排 · 静态规则: Human-authored · static rules
+    温度/CO₂传感器: Temp/CO₂ sensors
+    + 新风阀门: + fresh-air valve
+    概率推荐路径: Probabilistic recommendation path
+    自然语言输入: Natural-language input
+    语音 / 文本: Voice / text
+    LLM 推理: LLM Reasoning
+    湿度·温度·用户习惯综合决策: Weighs humidity · temperature · user habits
+    上下文理解 · 概率性输出: Context understanding · probabilistic output
+    用户二次确认: Second user confirmation
+    高风险动作确认: High-risk action check
+    设备传感器与执行器: Device sensors and actuators
+    范式转变: Paradigm Shift
+    被动 → 主动: Passive → Active
+    被动响应: Passive response
+    主动推理: Active reasoning
+    矩形=用户交互 · 菱形=决策节点 · 椭圆=执行/确认 · 黄色椭圆=用户二次确认 · 虚线=概率推荐路径: Rect = interaction · diamond = decision · ellipse = execute/confirm · yellow = user confirm · dashed = probabilistic path
+    图1-16 传统物联网与大模型驱动物联网的对比示意。左侧为规则驱动的「感知-响应」模式，右侧为推理驱动的「理解-决策-确认」模式。: 'Figure 1-16 Traditional IoT vs. LLM-driven IoT. Left: the rule-driven sense–respond mode. Right: the reasoning-driven understand–decide–confirm mode.'
+    大模型在决策层增加上下文理解与概率推理，并引入执行前二次确认的安全机制。: Large models add contextual understanding and probabilistic reasoning at the decision layer, plus a pre-execution confirmation safeguard.

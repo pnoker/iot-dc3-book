@@ -1,0 +1,63 @@
+type: architecture
+title: 图6-7 IoT DC3 服务间通信架构图
+purpose: 展示同步管理调用与 RabbitMQ 异步命令、数据流的真实分工。
+audience_takeaway: Gateway 与 gRPC 负责管理和元数据调用；点位命令、自定义命令、执行回执、位号值和状态事件统一经 RabbitMQ 流转。
+visual_focus: Gateway→四中心与 Driver→Manager 为同步实线，Data↔RabbitMQ↔Driver 为异步虚线。
+design_level: logical
+layout: 三层纵向分层：北向接入层、平台服务层、南向 Driver；RabbitMQ 位于 Data 与 Driver 之间。
+elements:
+- 北向接入层：Web/第三方客户端、Spring Cloud Gateway。
+- 平台服务层：Auth、Manager、Data、Agentic。
+- 南向协议层：MQTT Driver、Modbus Driver 与现场设备。
+- 消息总线：RabbitMQ，承载命令、回执、位号值、状态与事件。
+relationships:
+- Gateway→四中心：同步 REST 路由。
+- Driver→Manager：同步 gRPC 业务注册与元数据查询。
+- Data→RabbitMQ→Driver：异步点位读写与自定义命令。
+- Driver→RabbitMQ→Data：异步执行回执、位号值和状态事件。
+callouts:
+- 当前实现没有独立 Command Service，命令入口属于 Data。
+- 当前实现不包含 Kafka 或独立服务注册中心。
+legend:
+- 实线表示同步 REST/gRPC 管理调用；虚线表示 RabbitMQ 异步消息。
+render_notes: SVG 分层绘制，RabbitMQ 作为唯一消息总线突出显示；禁止绘制 Kafka、Nacos 或 Data 到 Driver 的同步命令直连。
+caption:
+  zh: 图6-7 IoT DC3 服务间通信架构：Gateway 与 gRPC 承担同步管理调用，命令、回执和上行数据经 RabbitMQ 异步流转。
+  en: 'Figure 6-7 IoT DC3 inter-service communication: the Gateway and gRPC carry synchronous management calls, while commands, receipts, and uplink data flow asynchronously through RabbitMQ.'
+labels:
+  en:
+    图6-7 IoT DC3 服务间通信架构图: Figure 6-7 IoT DC3 Inter-Service Communication
+    同步链路用于管理查询，异步链路承载设备命令、数据、状态和回执。: Sync links serve management queries; async links carry device commands, data, status, and receipts.
+    同步管理链路: Sync Management Link
+    双向异步设备链路: Bidirectional Async Device Link
+    北向接入层: Northbound Access Layer
+    Web / 第三方客户端: Web / Third-Party Clients
+    固定服务名路由 · 认证: Fixed-Name Routing · Auth
+    平台服务层: Platform Service Layer
+    认证 · 授权 · 租户: Auth · Authorization · Tenants
+    设备与驱动元数据: Device & Driver Metadata
+    gRPC 注册 / 查询: gRPC Register / Query
+    点位读写与命令入口: Point R/W · Command Entry
+    模型 · 会话 · Tools: Models · Sessions · Tools
+    RabbitMQ · 唯一消息总线: RabbitMQ · the only message bus
+    南向 Driver: Southbound Drivers
+    执行 · 去重 · 回执: Execute · Dedupe · Receipts
+    现场设备: Field Devices
+    传感器 · 执行器 · PLC: Sensors · Actuators · PLC
+    协议通信接入: Protocol Access
+    基础设施层: Infrastructure Layer
+    进程内热点缓存: In-Process Hot Cache
+    RabbitMQ：消息总线（见中段）: 'RabbitMQ: message bus (see middle)'
+    业务数据 · 位号历史: Business Data · Point History
+    REST 路由 · 认证: REST Routing · Auth
+    gRPC 注册/查询: gRPC Register/Query
+    命令: Command
+    数据 / 回执: Data / Receipts
+    驱动队列: Driver Queue
+    上报队列: Report Queue
+    协议通信: Protocol Traffic
+    各中心按职责持久化: Each Center Persists Its Data
+    同步 REST 路由: Sync REST Routing
+    同步 gRPC 管理调用: Sync gRPC Management Calls
+    RabbitMQ 异步消息: RabbitMQ Async Messages
+    图6-7 Driver → Manager 使用同步 gRPC；Data ↔ RabbitMQ ↔ Driver 使用双向异步消息。: 'Figure 6-7 Driver → Manager uses synchronous gRPC; Data ↔ RabbitMQ ↔ Driver uses bidirectional async messaging.'

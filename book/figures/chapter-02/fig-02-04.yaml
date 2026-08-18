@@ -1,0 +1,156 @@
+type: flowchart
+title: 图2-4 传统数据模式与智能闭环模式的数据流程对比
+purpose: 直观展示传统单向链路终点是“被看见”，而闭环模式通过理解、决策、执行实现物理状态的自动改变。
+audience_takeaway: 读者应理解传统数据模式的单向线性链路与闭环模式回路结构的根本区别，并识别出“执行”环节是闭环模式的工程核心。
+visual_focus: 左栏为单向线性链，终点标记为“人”；右栏为闭环回路，回路箭头从“执行”返回“采集”，用深绿色加粗虚线强调。
+design_level: implementation
+layout: 并排双栏，左栏为传统模式，右栏为闭环模式。底部统一图例。
+elements:
+- 传统模式的采集、存储、展示与人工操作
+- 闭环模式的采集归一化、理解、决策与执行
+relationships:
+- 传感器采集 → 网络传输与存储 → 大屏展示与告警 → 人工操作：传统链路止于人工响应
+- 采集归一化 → 理解 → 决策 → 执行：自动生成并实施动作
+- 执行 → 采集归一化：设备新状态回流形成持续闭环
+components:
+- id: sensor_collect
+  label: 传感器采集
+  type: edge
+  subtitle: 原始数值上报
+  group: left_flow
+  priority: primary
+  shape: database
+- id: net_store
+  label: 网络传输与存储
+  type: data
+  subtitle: 时序库落库
+  group: left_flow
+  priority: normal
+  shape: database
+- id: display_alarm
+  label: 大屏展示与告警
+  type: application
+  subtitle: 图表与通知
+  group: left_flow
+  priority: normal
+  shape: card
+- id: human_action
+  label: 人工操作
+  type: decision
+  subtitle: 查看→判断→操作
+  group: left_flow
+  priority: normal
+  shape: card
+- id: collect_ng
+  label: 采集归一化
+  type: edge
+  subtitle: 异构数据→PointValue
+  group: right_flow
+  priority: primary
+  shape: database
+- id: understand
+  label: 理解
+  type: ai
+  subtitle: 状态感知与趋势预测
+  group: right_flow
+  priority: primary
+  shape: card
+- id: decide
+  label: 决策
+  type: ai
+  subtitle: 规则引擎与AI规划
+  group: right_flow
+  priority: primary
+  shape: decision
+- id: execute
+  label: 执行
+  type: edge
+  subtitle: 指令调度与协议驱动
+  group: right_flow
+  priority: primary
+  shape: card
+regions:
+- id: left_flow
+  label: 传统数据模式
+  role: 感知到展示的单向链路，终点为人工操作
+- id: right_flow
+  label: 智能闭环模式
+  role: 感知到执行的回路结构，数据驱动设备改变
+connections:
+- from: sensor_collect
+  to: net_store
+  label: 数据上行
+  style: solid
+  direction: left-to-right
+- from: net_store
+  to: display_alarm
+  label: 数据读取
+  style: solid
+  direction: left-to-right
+- from: display_alarm
+  to: human_action
+  label: 人工响应
+  style: dashed
+  direction: left-to-right
+- from: collect_ng
+  to: understand
+  label: 归一化数据
+  style: solid
+  direction: left-to-right
+- from: understand
+  to: decide
+  label: 状态摘要
+  style: solid
+  direction: left-to-right
+- from: decide
+  to: execute
+  label: 动作序列
+  style: solid
+  direction: left-to-right
+- from: execute
+  to: collect_ng
+  label: 闭环回路
+  style: dashed
+  direction: right-to-left
+callouts:
+- 传统模式的终点是“被看见”，数据流终止于人工决策。
+- 闭环模式的终点是“物理状态的自动改变”，回路箭头标示数据驱动设备的持续迭代。
+render_notes: HTML/SVG 渲染，左栏方框使用灰色调，右栏方框使用区分功能类型的填充色（采集蓝、理解浅蓝、决策橙、执行绿）。回路箭头使用深绿色加粗虚线。人工操作区域使用圆角矩形与右栏区分。
+caption:
+  zh: 图2-4 传统数据模式与智能闭环模式的数据流程对比
+  en: 'Figure 2-4 Comparison of data flows between the traditional data pattern and the intelligent closed-loop pattern.'
+labels:
+  en:
+    图2-4 传统数据模式与智能闭环模式的数据流程对比: Figure 2-4 Traditional Data Pattern vs Intelligent Closed Loop
+    传统数据模式是止于展示与人工操作的单向链路；智能闭环模式通过理解、决策、执行形成持续改变物理状态的回路。: The traditional pattern is a one-way chain that ends at display and manual operation; the closed-loop pattern uses understanding, decision, and execution to keep changing the physical state.
+    传统终点是被看见，闭环终点是物理状态被改变: The traditional end point is being seen; the closed loop ends with the physical state changed
+    传统数据模式: Traditional Data Pattern
+    传感器采集: Sensor Acquisition
+    原始数值上报: Raw Value Reporting
+    网络传输与存储: Transport & Storage
+    时序库落库: Written to Time-Series DB
+    大屏展示与告警: Dashboards & Alarms
+    图表与通知: Charts & Notifications
+    人工操作: Manual Operation
+    查看 → 判断 → 操作: View → Judge → Act
+    数据上行: Data Up
+    数据读取: Data Read
+    人工响应: Manual Response
+    终点：被人看见（数据流终止于人工决策）: 'End point: seen by humans (data stops at human decisions)'
+    智能闭环模式: Intelligent Closed Loop
+    采集归一化: Collect & Unify
+    异构数据→PointValue: Heterogeneous Data → PointValue
+    理解: Understanding
+    状态感知与趋势预测: State Awareness & Trend Prediction
+    决策: Decision
+    规则引擎+AI规划: Rule Engine + AI Planning
+    执行: Execution
+    指令调度与协议驱动: Command Scheduling & Protocol Drivers
+    归一化数据: Unified Data
+    状态摘要: State Summary
+    动作序列: Action Sequence
+    闭环回路: Closed-Loop Feedback
+    传统链路: Traditional Chain
+    数据正向流: Forward Data Flow
+    闭环反馈回路: Closed-Loop Feedback Path
+    图2-4 传统链路止于展示与人工操作，智能闭环经理解、决策、执行持续改变物理状态。: Figure 2-4 The traditional chain ends at display and manual operation; the intelligent closed loop keeps changing the physical state through understanding, decision, and execution.

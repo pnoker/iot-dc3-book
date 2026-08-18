@@ -4,11 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "book": "uv run book-builder build",
     "web": "uv run python scripts/build_web.py",
-    "dev": "pnpm book && pnpm web && vitepress dev docs",
+    "dev": "pnpm web && vitepress dev docs",
     "gen:og": "node scripts/gen-og-image.mjs",
-    "build": "pnpm book && pnpm web && vitepress build docs && node scripts/enhance-sitemap.cjs && node scripts/generate-feed.cjs && node scripts/generate-llms-full.cjs",
+    "build": "pnpm web && vitepress build docs && node scripts/enhance-sitemap.cjs && node scripts/generate-feed.cjs && node scripts/generate-llms-full.cjs",
     "preview": "vitepress preview docs"
   },
   "devDependencies": {

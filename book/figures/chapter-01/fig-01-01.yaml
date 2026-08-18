@@ -1,0 +1,56 @@
+type: architecture
+title: 图1-1 工业软件的版图：ISA-95 五层金字塔
+audience_takeaway: 读者应理解 ISA-95 用五层金字塔组织工业软件系统，自底向上时效从毫秒到天，其设计预设是数据由人查看、决策由人做出、指令由人下发。
+purpose: 展示 ISA-95（IEC 62264）五层金字塔：L0 物理过程、L1 基础控制（PLC/DCS）、L2 过程监控（SCADA/HMI）、L3 制造运营管理（MES）、L4 业务规划（ERP），凸显以人为中心的设计预设。
+visual_focus: 自底向上的五层金字塔与右侧"数据/决策/指令由人"的设计预设对照。
+design_level: logical
+layout: 自底向上五层梯形金字塔（L0~L4），每层标关键系统与时效；右侧附设计预设与结构性张力提示。
+elements:
+- L0 物理过程：传感器/执行器/电机，产生和接收信号，时效实时
+- L1 基础控制：PLC/DCS，确定性逻辑，扫描周期毫秒级
+- L2 过程监控：SCADA/HMI，大屏展示与告警，时效秒
+- L3 制造运营管理：MES，排程/工单/质量追溯，时效小时~天
+- L4 业务规划：ERP，采购/财务/销售，时效天~周
+relationships:
+- 数据自底向上逐层流转（L0→L4），时效递增、抽象层级递增
+- 指令自顶向下逐层下发（L4→L0）
+- 层间格式转换、语义映射、时间对齐依赖人工
+render_notes: 自底向上五层梯形金字塔，每层标系统与时效；右侧附"数据/决策/指令由人"的设计预设。完整 HTML 见 figures/chapter-01/fig-01-01.html。
+caption:
+  zh: 图1-1 工业软件的版图：ISA-95 五层金字塔。自底向上为物理过程、基础控制、过程监控、制造运营、业务规划，时效从毫秒到天；这套以人为中心的信息架构正是后续结构性局限的源头。
+  en: 'Figure 1-1 The landscape of industrial software: the ISA-95 five-level pyramid. Bottom-up: physical process, basic control, supervision, manufacturing operations, business planning, with time scales from milliseconds to days. This human-centered information architecture is the very source of the structural limits discussed next.'
+labels:
+  en:
+    图1-1 工业软件的版图：ISA-95 五层金字塔: Figure 1-1 The ISA-95 Five-Level Pyramid
+    ISA-95 五层金字塔与以人为中心的设计预设对照: The ISA-95 pyramid contrasted with its human-centered design assumptions
+    自底向上五层，时效从毫秒到天；设计预设：数据/决策/指令由人: Five levels bottom-up, latency from milliseconds to days; humans view data, decide, and command
+    数据上行 · 时效递增: Data flows up · latency grows
+    指令下行 · 逐层下发: Commands flow down · level by level
+    L4 业务规划: L4 Business Planning
+    ERP · 采购/财务/销售: ERP · Purchasing / Finance / Sales
+    时效：天 ~ 周: 'Latency: days–weeks'
+    L3 制造运营管理: L3 Manufacturing Operations
+    MES · 排程/工单/质量追溯: MES · Scheduling / Work Orders / Traceability
+    时效：小时 ~ 天: 'Latency: hours–days'
+    L2 过程监控: L2 Supervision
+    SCADA / HMI · 大屏展示与告警: SCADA / HMI · Dashboards & Alarms
+    时效：秒级: 'Latency: seconds'
+    L1 基础控制: L1 Basic Control
+    PLC / DCS · 确定性逻辑: PLC / DCS · Deterministic Logic
+    时效：毫秒级: 'Latency: milliseconds'
+    L0 物理过程: L0 Physical Process
+    传感器 / 执行器 / 电机: Sensors / Actuators / Motors
+    时效：实时（产生/接收信号）: 'Latency: real time (signal I/O)'
+    设计预设：以人为中心: 'Design Assumption: Human-Centered'
+    数据由人查看: Data is viewed by people
+    各层数据仅供人阅读，层间靠人流转: Data is read by humans; levels are bridged by humans
+    决策由人做出: Decisions are made by people
+    阈值、规则、排程判断均依赖人工: Thresholds, rules, and scheduling all rely on people
+    指令由人下发: Commands are issued by people
+    控制动作由操作员/管理者发起: Control actions are initiated by operators/managers
+    结构性张力: Structural Tension
+    层间格式转换、语义映射、: Format conversion, semantic mapping,
+    时间对齐全部依赖人工: and time alignment across levels all rely on humans
+    ——数据越层越慢、越抽象: — data gets slower and more abstract crossing levels
+    图1-1 工业软件的版图：ISA-95 五层金字塔。自底向上为物理过程、基础控制、过程监控、制造运营、业务规划，时效从毫秒到天；: 'Figure 1-1 The landscape of industrial software: the ISA-95 five-level pyramid. Bottom-up: physical process, basic control, supervision, manufacturing operations, business planning — latency from milliseconds to days.'
+    这套以人为中心的信息架构正是后续结构性局限的源头。: This human-centered information architecture is the source of the structural limits that follow.

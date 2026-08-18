@@ -1,0 +1,179 @@
+type: flowchart
+title: 图3-7 TinyML模型训练与部署全流程
+purpose: 展示从数据准备、云端训练、模型优化到端侧运行的完整生命线，以及优化阶段的精度验证回退路径。
+audience_takeaway: TinyML流程不是一个单向管道——模型优化环节的精度验收会触发回退迭代，这是工程落地中的关键闭环。
+visual_focus: 阶段3的精度判定节点（菱形），及其到阶段4的绿色分支与回退到阶段2的虚线分支。
+design_level: implementation
+layout: 从左到右横向四阶段，正向流程用粗实线箭头，回退流程用虚线箭头。
+elements:
+- 数据准备与云端训练
+- 模型优化与精度验收
+- 模型转换/代码生成、固件编译与固件集成
+- 烧录部署与端侧运行
+relationships:
+- 数据准备 → 云端训练 → 模型优化 → 精度验收：形成并验证量化、剪枝后的模型
+- 精度验收 → 模型转换/代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行：损失可接受时按构建、部署、运行顺序落地
+- 精度验收 → 云端训练：损失不可接受时回退调优
+components:
+- id: stage1_data
+  label: 数据准备
+  type: process
+  subtitle: 采集、标注、切分
+  group: training_region
+  priority: primary
+  shape: card
+- id: stage2_training
+  label: 云端训练
+  type: process
+  subtitle: 轻量模型训练
+  group: training_region
+  priority: primary
+  shape: card
+- id: stage3_opt
+  label: 模型优化
+  type: process
+  subtitle: 量化+剪枝
+  group: training_region
+  priority: primary
+  shape: card
+- id: stage3_check
+  label: 精度验收
+  type: decision
+  subtitle: 损失可接受？
+  group: training_region
+  priority: risk
+  shape: decision
+- id: stage4_convert
+  label: 模型转换/代码生成
+  type: process
+  subtitle: 生成MCU推理代码
+  group: training_region
+  priority: primary
+  shape: card
+- id: stage4_compile
+  label: 固件编译
+  type: process
+  subtitle: 链接模型与运行时
+  group: training_region
+  priority: primary
+  shape: card
+- id: stage4_integrate
+  label: 固件集成
+  type: process
+  subtitle: 传感器、预处理与推理
+  group: training_region
+  priority: primary
+  shape: card
+- id: stage4_flash
+  label: 烧录部署
+  type: edge
+  subtitle: 完整固件写入MCU
+  group: deployment_region
+  priority: primary
+  shape: card
+- id: stage4_run
+  label: 端侧运行
+  type: edge
+  subtitle: 采集、推理、响应
+  group: deployment_region
+  priority: primary
+  shape: card
+connections:
+- from: stage1_data
+  to: stage2_training
+  label: 训练数据
+  style: solid
+  direction: request
+- from: stage2_training
+  to: stage3_opt
+  label: 全精度模型
+  style: solid
+  direction: request
+- from: stage3_opt
+  to: stage3_check
+  label: 验证
+  style: solid
+  direction: request
+- from: stage3_check
+  to: stage4_convert
+  label: 验收通过
+  style: solid
+  direction: left-to-right
+- from: stage3_check
+  to: stage2_training
+  label: 回退调优
+  style: dashed
+  direction: request
+- from: stage4_convert
+  to: stage4_compile
+  label: 生成代码
+  style: solid
+  direction: left-to-right
+- from: stage4_compile
+  to: stage4_integrate
+  label: 构建固件
+  style: solid
+  direction: left-to-right
+- from: stage4_integrate
+  to: stage4_flash
+  label: 完整固件
+  style: solid
+  direction: left-to-right
+- from: stage4_flash
+  to: stage4_run
+  label: 启动
+  style: solid
+  direction: left-to-right
+regions:
+- id: training_region
+  label: 模型开发域
+  role: 训练与调优（云端/工作站）
+- id: deployment_region
+  label: 端侧运行域
+  role: MCU推理执行
+callouts:
+- 精度验收节点用菱形表示，分支依据是业务定义的可接受偏差阈值（如准确率、误触率）。
+- 虚线回退路径提示：量化+剪枝后精度若不能满足要求，需要重新训练或调整优化策略。QAT在训练阶段模拟量化，往往能提升精度。
+legend:
+- 蓝色：数据准备；紫色：云端训练；橙色：模型优化；绿色：端侧部署。
+- 粗实线箭头：正向数据流；虚线箭头：回退迭代路径。
+- 菱形：判定节点，表示精度验证。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 判定节点写成可判断的问题，分支标签保持短句。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。阶段框颜色按图例，判定节点使用黄色菱形。箭头带文字标签标注方向。
+caption:
+  zh: 图3-7 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。
+  en: Figure 3-7 The complete TinyML engineering flow from data collection to on-device inference; the rollback feedback between model optimization and cloud training is the key loop that secures deployed accuracy.
+labels:
+  en:
+    图3-7 TinyML模型训练与部署全流程: Figure 3-7 TinyML Training & Deployment End to End
+    从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。: The full pipeline from data preparation, cloud training, and model optimization to edge deployment, plus the rollback iteration triggered by accuracy acceptance.
+    模型开发与固件构建域: Model Development & Firmware Build Domain
+    目标设备域: Target Device Domain
+    数据准备: Data Preparation
+    采集 · 标注 · 切分: Collect · label · split
+    云端训练: Cloud Training
+    轻量模型训练: Lightweight model training
+    模型优化: Model Optimization
+    量化 · 剪枝: Quantization · pruning
+    精度验收: Accuracy Acceptance
+    损失可接受？: Loss acceptable?
+    模型转换 / 代码生成: Model Conversion / Codegen
+    生成 MCU 推理代码: Generate MCU inference code
+    固件编译: Firmware Compile
+    链接模型与运行时: Link model & runtime
+    固件集成: Firmware Integration
+    传感器 · 预处理 · 推理: Sensor · preprocessing · inference
+    烧录部署: Flash & Deploy
+    完整固件写入 MCU: Write full firmware to MCU
+    端侧运行: On-Device Run
+    采集 · 推理 · 响应: Sense · infer · respond
+    不通过：回退调优: 'Fail: rollback & retune'
+    通过: Pass
+    顺序约束：模型转换与代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行；部署完成后不再执行编译。: 'Ordering: model conversion/codegen → firmware compile → integration → flash & deploy → on-device run; no compilation after deployment.'
+    蓝色：数据准备；青色：云端训练: 'Blue: data preparation; cyan: cloud training'
+    橙色：模型优化；绿色：端侧部署: 'Orange: model optimization; green: edge deployment'
+    粗实线：正向流程；虚线：回退迭代；菱形：精度验收: 'Bold solid: forward flow; dashed: rollback; diamond: accuracy gate'
+    图3-7 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。: Figure 3-7 The complete TinyML engineering flow from data collection to on-device inference; the rollback feedback between model optimization and cloud training is the key loop that secures deployed accuracy.

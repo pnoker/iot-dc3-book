@@ -1,0 +1,44 @@
+type: flowchart
+title: 图1-17 智能家居：从规则引擎到大模型控制
+audience_takeaway: 读者应理解规则引擎精确但僵化，大模型灵活但需可解释与二次确认，智能家居的直觉式交互让消费者第一次认可「物能省事」。
+purpose: 对比智能家居控制的两条链路，突出从「匹配规则」到「理解意图」的跃迁。
+visual_focus: 左（规则引擎三段）与右（大模型五段）的流程对比，中间对比箭头。
+design_level: implementation
+layout: 左右两列流程，每列自上而下节点 + 箭头，中间对比箭头，底部结论条。
+elements:
+- 传统规则引擎：用户手动设规则 → 规则引擎精确匹配（If CO₂>1000ppm→开新风）→ 设备执行
+- 大模型：用户自然语言「有点闷」→ LLM 理解意图（结合温湿度/CO₂/习惯）→ 生成决策序列（开新风+调百叶窗）→ 用户二次确认 → 设备执行
+relationships:
+- 规则引擎听不懂「闷」，只识别预设阈值
+- 大模型上下文理解、概率推理，新增执行前用户确认
+render_notes: 左右流程对比，左侧灰/红，右侧蓝 + 黄色确认节点。完整 HTML 见 figures/chapter-01/fig-01-17.html。
+caption:
+  zh: 图1-17 智能家居：从规则引擎到大模型控制。规则引擎只识别预设阈值，大模型结合上下文推理并生成决策序列，经用户二次确认后执行。
+  en: 'Figure 1-17 Smart home: from rule engine to LLM control. The rule engine recognizes only preset thresholds; the large model reasons over context to generate a decision sequence, which is executed after a second user confirmation.'
+labels:
+  en:
+    图1-17 智能家居：从规则引擎到大模型控制: 'Figure 1-17 Smart Home: Rule Engine to LLM Control'
+    智能家居从规则引擎到大模型控制的流程对比: 'Smart-home flows compared: rule engine vs. large model'
+    左侧规则引擎三段，右侧大模型五段，中间对比跃迁: 'Left: rule engine in three steps. Right: large model in five.'
+    传统规则引擎（三段）: Traditional Rule Engine (3 steps)
+    大模型（五段）: Large Model (5 steps)
+    用户手动设规则: User sets rules manually
+    编写 If-Then 阈值: Writes If-Then thresholds
+    规则引擎精确匹配: Rule engine matches exactly
+    If CO₂&gt;1000ppm → 开新风: If CO₂&gt;1000ppm → fresh air on
+    设备执行: Device executes
+    只识别预设阈值: Only knows preset thresholds
+    听不懂「闷」: Cannot hear "stuffy"
+    只能识别 CO₂&gt;1000ppm: Only reads CO₂&gt;1000ppm
+    用户自然语言「有点闷」: User says "it's a bit stuffy"
+    语音 / 文本: Voice / text
+    LLM 理解意图: LLM grasps intent
+    结合温湿度 / CO₂ / 习惯: Using temp-humidity / CO₂ / habits
+    生成决策序列: Generates decision sequence
+    开新风 + 调百叶窗: Fresh air on + adjust blinds
+    用户二次确认: Second user confirmation
+    可解释 · 可干预: Explainable · overridable
+    新风 + 百叶窗联动: Fresh air + blinds in concert
+    从匹配规则到理解意图: From matching rules to grasping intent
+    图1-17 智能家居：从规则引擎到大模型控制。规则引擎只识别预设阈值，大模型结合上下文推理并生成决策序列，: 'Figure 1-17 Smart home: rule engine to LLM control. The rule engine only knows preset thresholds; the LLM reasons over context and generates a decision sequence,'
+    经用户二次确认后执行。: executed after a second user confirmation.

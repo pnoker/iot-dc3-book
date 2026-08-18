@@ -1,0 +1,80 @@
+type: timeline
+title: 图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）
+source_note: 来源：本书假设场景，曲线仅用于说明控制策略差异。
+purpose: 示意性对比传统定时照明与 DQN 调光策略在 24 小时内的功率曲线，说明低流量时段的节能空间。
+audience_takeaway: 读者应看到深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。
+visual_focus: 午夜至凌晨时段两条曲线的分离区域（节能示意），以及凌晨环卫作业时 DQN 曲线的短暂抬升。
+design_level: quantitative-schematic
+layout: 横轴 00:00–24:00 共 24 小时，纵轴功率 0–60W。两条曲线：传统（虚线，深灰色）、DQN（实线，蓝色）。差值区域用浅绿色填充。
+elements:
+- 传统照明曲线：18:00 快速升至 50W，恒定至 06:00 骤降至 0W。
+- DQN 曲线：18:00–20:00 高峰段 50W；20:00–22:00 降至 30W；23:00–05:00 深夜段 15W；05:00–06:00 因环卫车短暂升至 30W；06:00 后关灯。
+- 两条曲线之间的面积以半透明浅绿色填充，标注‘节省能耗（示意）’。
+relationships:
+- 传统策略无动态响应，DQN 根据传感器反馈波动。
+- 凌晨时段的功率差值最大，是节能主要来源。
+regions:
+- id: peak_hours
+  label: 晚高峰段
+  role: 需求量大，功率持平
+- id: deep_night
+  label: 深夜低流量段
+  role: 节能核心区间
+- id: early_morning
+  label: 清晨作业时段
+  role: 安全响应测试区
+components:
+- id: traditional_curve
+  label: 传统照明
+  type: process
+  subtitle: 定时全亮
+  group: ''
+  priority: normal
+  shape: card
+- id: dqn_curve
+  label: DQN 智能照明
+  type: ai
+  subtitle: 动态调光
+  group: ''
+  priority: primary
+  shape: card
+connections: []
+callouts:
+- 传统曲线在深夜保持满功率，DQN 可降至 30% 以下。
+- 05:00 功率短暂回升说明 DQN 保留了突发响应机制。
+legend:
+- 蓝色实线 = DQN 策略功率曲线
+- 灰色虚线 = 传统定时策略功率曲线
+- 绿色填充区域 = 节省能耗（示意）
+visual_constraints:
+- 曲线不过度渲染，仅两条主线 + 填充区域。
+- 横轴刻度间隔 2 小时，纵轴 0、15、30、50、60。
+- 填充区域透明度 40%，不遮盖坐标线。
+render_notes: HTML/SVG 渲染，浅色背景，坐标轴带网格线，图例置于右上方，图注置于底部。
+caption:
+  zh: 图11-11 假设场景下 50W LED 路灯在典型工作日的功率曲线示例。传统策略定时全亮；DQN 策略根据实时传感器反馈动态调光。实际节电比例因部署路段车流和天气条件而异，但定性上可表明低流量时段的调光节能效果。
+  en: 'Figure 11-11 Example power curves of a 50 W LED streetlight on a typical working day, in a hypothetical scenario. The conventional strategy is timed full-on; the DQN strategy dims dynamically from real-time sensor feedback. Actual savings vary with traffic and weather at the deployment site, but they qualitatively demonstrate the dimming savings achievable in low-traffic hours.'
+labels:
+  en:
+    图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）: 'Figure 11-11 Energy Comparison: Smart vs Conventional Lighting (Hypothetical)'
+    读者应看到深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。: 'At deep-night low traffic the DQN policy cuts power sharply yet keeps fast safety rebound.'
+    功率 (W): 'Power (W)'
+    晚高峰段: 'Evening peak'
+    需求量大: 'High demand'
+    深夜低: 'Deep-night'
+    流量段: 'low traffic'
+    清晨作业: 'Morning ops'
+    安全响应: 'safety response'
+    节省能耗（示意）: 'Energy saved (illustrative)'
+    传统照明: 'Conventional lighting'
+    （定时全亮）: '(timed full-on)'
+    DQN智能照明: 'DQN smart lighting'
+    （动态调光）: '(dynamic dimming)'
+    传统曲线在深夜保持满功率，: 'The conventional curve stays at full power overnight,'
+    DQN 可降至 30% 以下。: 'DQN can drop below 30%.'
+    05:00 功率短暂回升，: 'The brief 05:00 power rebound'
+    说明 DQN 保留了突发响应机制。: 'shows DQN keeps its burst-response mechanism.'
+    蓝色实线 = DQN 策略功率曲线: 'Blue solid = DQN power curve'
+    灰色虚线 = 传统定时策略功率曲线: 'Gray dashed = conventional timed curve'
+    绿色填充区域 = 节省能耗（示意）: 'Green fill = energy saved (illustrative)'
+    图11-11 假设场景下 50W LED 路灯在典型工作日的功率曲线示例。传统策略定时全亮；DQN 策略根据实时传感器反馈动态调光。实际节电比例因部署路段车流和天气条件而异，但定性上可表明低流量时段的调光节能效果。: 'Figure 11-11 Power curves of a 50 W LED streetlight on a typical working day (hypothetical): conventional timed full-on vs DQN dynamic dimming from sensor feedback; actual savings vary with traffic and weather, but low-traffic dimming savings are qualitatively clear.'

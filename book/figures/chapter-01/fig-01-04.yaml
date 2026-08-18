@@ -1,0 +1,44 @@
+type: architecture
+title: 图1-4 从工业软件到物联网平台：架构跃迁的动力
+audience_takeaway: 读者应理解物联网平台的跃迁动力是三点补足——数据归一、能力开放、闭环自动化——把以人为中心的信息架构升级为以数据-智能为中心。
+purpose: 对照展示工业软件的三条裂缝与物联网平台的三点补足，点明架构跃迁的核心不是「把设备连上网」，而是把以人为中心升级为以数据-智能为中心。
+visual_focus: 左（三条裂缝）与右（三点补足）的严格对照，中间跃迁箭头。
+design_level: logical
+layout: 左右两列对照面板，中间跃迁箭头，底部结论条与图注。
+elements:
+- 裂缝1 数据被层级隔断 ↔ 数据归一：统一物模型与位号值
+- 裂缝2 规则写死在代码里 ↔ 能力开放：REST/gRPC/MQTT 统一接口
+- 裂缝3 系统封闭为孤岛 ↔ 闭环自动化：采集→理解→决策→执行→反馈
+relationships:
+- 三条裂缝与三点补足一一对应
+- 跃迁把以人为中心升级为以数据-智能为中心
+render_notes: 左右对照，左侧裂缝用红/橙/紫，右侧补足用蓝/青/绿，中间蓝色跃迁箭头。完整 HTML 见 figures/chapter-01/fig-01-04.html。
+caption:
+  zh: 图1-4 从工业软件到物联网平台：架构跃迁的动力。三条裂缝驱动的「向前一步」——数据归一、能力开放、闭环自动化，把以人为中心的信息架构升级为以数据-智能为中心。
+  en: 'Figure 1-4 From industrial software to the IoT platform: the force behind the leap. The "step forward" driven by three cracks — unified data, open capabilities, closed-loop automation — upgrading a human-centered information architecture into one centered on data and intelligence.'
+labels:
+  en:
+    图1-4 从工业软件到物联网平台：架构跃迁的动力: Figure 1-4 From Industrial Software to the IoT Platform
+    从工业软件到物联网平台的架构跃迁对照: The architectural leap, before and after
+    左（三条裂缝）与右（三点补足）严格对照，中间跃迁箭头: Cracks (left) vs. remedies (right), with the leap between
+    工业软件 · 三条裂缝: Industrial Software · Three Cracks
+    物联网平台 · 三点补足: IoT Platform · Three Remedies
+    裂缝 1 · 数据被层级隔断: Crack 1 · Data partitioned by levels
+    各层数据格式不一，跨层联动靠人: Per-level formats; humans bridge the levels
+    裂缝 2 · 规则写死在代码里: Crack 2 · Rules hard-coded
+    工况一变，就要重新编程: Every change means reprogramming
+    裂缝 3 · 系统封闭为孤岛: Crack 3 · Closed islands
+    私有协议 / 格式，外部智能难接入: Private protocols / formats bar external intelligence
+    数据归一: Unified Data
+    统一物模型与位号值抽象: One thing model & point value abstraction
+    能力开放: Open Capabilities
+    REST / gRPC / MQTT 统一接口: Uniform REST / gRPC / MQTT APIs
+    闭环自动化: Closed-Loop Automation
+    采集 → 理解 → 决策 → 执行 → 反馈: Collect → Understand → Decide → Execute → Feed back
+    跃迁: THE LEAP
+    三条裂缝 ↔ 三点补足: Three cracks ↔ three remedies
+    一一对应: one-to-one
+    把以人为中心的信息架构，升级为以数据—智能为中心: From a human-centered architecture to one centered on data and intelligence
+    不是「把设备连上网」，而是把数据—智能置于决策中心: Not "getting devices online" — data & intelligence move to the center of decisions
+    图1-4 从工业软件到物联网平台：架构跃迁的动力。三条裂缝驱动的「向前一步」——数据归一、能力开放、闭环自动化，: Figure 1-4 The force behind the leap. The step forward driven by three cracks — unified data, open capabilities, closed-loop automation —
+    把以人为中心的信息架构升级为以数据-智能为中心。: upgrades a human-centered information architecture into one centered on data and intelligence.

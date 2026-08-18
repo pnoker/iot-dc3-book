@@ -1,0 +1,48 @@
+type: flowchart
+title: 图14-11 连接可靠性：MQTT QoS 与消息链路闭环
+audience_takeaway: 读者应理解 MQTT QoS 0/1/2 各司其职，RabbitMQ 链路依靠持久化、TTL 与死信、ack/nack、commandId 去重与设备级串行，形成可靠性闭环。
+purpose: 展示 MQTT QoS 分级与 RabbitMQ 消息链路的可靠性闭环
+visual_focus: QoS 三级卡片与 RabbitMQ 可靠性闭环五要素。
+design_level: flowchart
+layout: 上半 MQTT QoS 三级，下半 RabbitMQ 可靠性要点与闭环五要素
+elements:
+- QoS 0：至多一次，可丢弃高频遥测；QoS 1：至少一次，关键上报需处理重复；QoS 2：恰好一次，成本高
+- RabbitMQ：持久化、TTL + 死信、ack/nack、commandId 去重 + expireAt、设备级串行
+- 可靠性闭环：生产确认 → 路由 → 消费确认 → 幂等 → 结果回执
+relationships:
+- QoS 分级按丢失容忍度选择；RabbitMQ 五要素构成从生产到回执的闭环
+render_notes: HTML/SVG 渲染，QoS 三级卡片 + 可靠性闭环，灰蓝红区分等级，绿色标注闭环。
+caption:
+  zh: 图14-11 MQTT QoS 0/1/2 各司其职；RabbitMQ 链路依靠持久化、TTL 与死信、ack/nack、commandId 去重与设备级串行，形成“生产确认→路由→消费确认→幂等→结果回执”的可靠性闭环。
+  en: 'Figure 14-11 MQTT QoS 0/1/2 each serve their purpose; the RabbitMQ path relies on persistence, TTL with dead letters, ack/nack, commandId deduplication, and per-device serialization, forming the reliability loop of "producer confirm → routing → consumer ack → idempotency → result receipt".'
+labels:
+  en:
+    图14-11 连接可靠性：MQTT QoS 与消息链路闭环: 'Figure 14-11 Connection Reliability: MQTT QoS & the Messaging Loop'
+    MQTT QoS 0/1/2 各司其职，RabbitMQ 链路靠持久化、死信、去重与设备级串行形成闭环。: 'MQTT QoS 0/1/2 each serve their purpose; the RabbitMQ path closes the loop with persistence, dead letters, deduplication, and per-device serialization.'
+    可靠性不是“进了队列就安全”，而是从生产确认到结果回执的闭环: 'Reliability is not "safe once enqueued" — it is a loop from producer confirm to result receipt'
+    MQTT QoS：三种等级各司其职: 'MQTT QoS: three levels, each with a role'
+    QoS 0 · 至多一次: 'QoS 0 · At most once'
+    适合可丢弃的高频遥测: 'Fits droppable high-frequency telemetry'
+    关键状态变更走此级降低带宽消耗: 'Critical state changes use this level to cut bandwidth'
+    QoS 1 · 至少一次: 'QoS 1 · At least once'
+    适合多数关键上报，保证可靠: 'Fits most critical reports; reliable delivery'
+    消费者必须处理重复消息: 'Consumers must handle duplicate messages'
+    QoS 2 · 恰好一次: 'QoS 2 · Exactly once'
+    成本更高，仅业务确实要求“仅一次”: 'Higher cost; only when business truly requires "exactly once"'
+    设备、Broker 都能承受握手开销时采用: 'Use when device and broker can afford the handshake overhead'
+    RabbitMQ 命令与数据可靠性（当前唯一消息链路）: 'RabbitMQ command & data reliability (the only messaging path today)'
+    持久化与路由: 'Persistence & Routing'
+    交换机、队列、消息持久化配置与丢失容忍度匹配: 'Exchange, queue, and message persistence matched to loss tolerance'
+    TTL 与死信: 'TTL & Dead Letters'
+    Driver 专属命令队列设 TTL 与死信交换机，过期命令不长期占用: 'Driver command queues get TTL plus a dead-letter exchange, so expired commands do not linger'
+    成功后 ack，无效 reject，暂时失败按重投条件 nack/requeue: 'Ack on success, reject on invalid, nack/requeue on transient failure per retry rules'
+    可靠性闭环五要素: 'Five Elements of the Reliability Loop'
+    生产确认: 'Producer Confirm'
+    路由: 'Routing'
+    消费确认: 'Consumer Ack'
+    幂等（commandId 去重 + expireAt）: 'Idempotency (commandId dedup + expireAt)'
+    结果回执: 'Result Receipt'
+    同一设备设备级锁串行执行，避免协议帧交错: 'A per-device lock serializes execution, preventing interleaved protocol frames'
+    断线重连用带抖动的指数退避，避免大量设备同时重连形成惊群；退避上限与心跳间隔必须按现场压测，不能写成全平台固定值: 'Reconnection uses exponential backoff with jitter to avoid thundering herds of devices; backoff caps and heartbeat intervals must come from field load tests, never one platform-wide constant'
+    Kafka 的分区/副本/ISR 属于 Kafka 架构知识，不是当前 IoT DC3 部署参数；生产检查围绕 RabbitMQ 队列积压、未确认消息、死信数量、重投与磁盘水位: 'Kafka partitions/replicas/ISR belong to Kafka architecture, not current IoT DC3 deployment parameters; production checks center on RabbitMQ queue backlog, unacked messages, dead-letter counts, redeliveries, and disk watermark'
+    图14-11 MQTT QoS 0/1/2 各司其职；RabbitMQ 链路依靠持久化、TTL 与死信、ack/nack、commandId 去重与设备级串行，形成“生产确认→路由→消费确认→幂等→结果回执”的可靠性闭环。: 'Figure 14-11 MQTT QoS 0/1/2 each serve their purpose; the RabbitMQ path relies on persistence, TTL with dead letters, ack/nack, commandId deduplication, and per-device serialization, forming the reliability loop of "producer confirm → routing → consumer ack → idempotency → result receipt".'

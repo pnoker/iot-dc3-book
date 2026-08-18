@@ -1,0 +1,75 @@
+type: architecture
+title: 图1-6 PC互联网时代连接架构
+purpose: '展示PC互联网时代用户—PC—万维网—信息的连接链路， 突出物设备尚未纳入联网范围，为后续物联网连接范式对比做铺垫。
+
+  '
+layout: '从左至右分四层排列：
+
+  - 最左侧为“用户”图标
+
+  - 中间靠左为“桌面PC”（含浏览器）
+
+  - 核心为“万维网”云团
+
+  - 右侧为“信息内容”页图标
+
+  底层从PC至信息内容标注“TCP/IP协议族”大矩形
+
+  右下角用浅橙色虚线框标注“物（未连接）”区域，框内放置传感器图标与执行器图标
+
+  '
+elements:
+- 用户：一个抽象人体图标
+- 桌面PC：台式机图标，内部标注浏览器图标与文字“Netscape / IE”
+- 万维网：一个灰色半透明圆形云，标注“WWW”
+- 信息内容：多个白色小矩形叠放，代表不同网页
+- TCP/IP协议族：位于底层的大矩形，使用蓝色系渐变，覆盖整个架构范围
+- 搜索引擎/门户：在万维网与信息内容之间标注一个竖框
+- 物（未连接）：一个浅橙色虚线框，位于右下角，框内放置传感器图标与执行器图标
+relationships:
+- 用户 → 桌面PC（实线箭头，用户操作）
+- 桌面PC → 万维网（实线箭头，HTTP请求）
+- 万维网 → 信息内容（实线箭头，检索返回）
+- 搜索引擎/门户置于万维网与信息内容之间
+- 物（未连接）与系统之间画断开线，表示无连接
+legend:
+- →（实线单箭头）：数据请求/响应路径
+- — —（虚线）：表示尚未连接的物理世界
+- 浅橙色填充：待纳入联网范围的区域标签
+render_notes: 'SVG绘制。TCP/IP区域用蓝色系渐变矩形，万维网用浅灰色带阴影的圆形，网页用白色小矩形叠放。
+
+  箭头使用<path>线宽2px，末端带三角形。虚线框stroke-dasharray=5,5，浅橙色填充。中文标注字号不小于14px。'
+caption:
+  zh: '主架构展现“用户—桌面PC（浏览器）—万维网—信息内容”四层关系。底层为TCP/IP协议族，提供通信基础。
+
+    右下角用浅橙色虚线框标注传感器、执行器，用断开线强调它们尚未接入互联网。这与当今物联网场景形成鲜明对比——
+
+    在物联网中，这些物设备通过感知层和网络层成为体系的一部分（见第3章和第4章）。
+
+    '
+  en: The main architecture shows the four-part chain of user — desktop PC (browser) — World Wide Web — information content, with the TCP/IP protocol suite underneath providing the communication base. A dashed light-orange box in the lower right marks sensors and actuators, broken lines stressing that they are not yet connected to the Internet. This stands in sharp contrast to today's IoT, where such things become part of the system through the sensing layer and the network layer (see Chapters 3 and 4).
+labels:
+  en:
+    图1-6 PC互联网时代连接架构: Figure 1-6 Connection Architecture of the PC-Internet Era
+    PC互联网时代的四层连接架构与未连接的物理世界: Four-layer connection architecture of the PC-Internet era, and the unconnected physical world
+    用户—桌面PC—万维网—信息内容四层链路，物尚未接入: User — desktop PC — WWW — content chain; things not yet connected
+    用户: User
+    桌面 PC: Desktop PC
+    浏览器 Netscape / IE: 'Browser: Netscape / IE'
+    万维网: World Wide Web
+    信息内容: Information Content
+    多个网页: Multiple web pages
+    用户操作: User operates
+    HTTP 请求: HTTP request
+    检索返回: Results returned
+    搜索引擎 / 门户（索引与检索）: Search engine / portal (index & search)
+    TCP/IP 协议族: TCP/IP Protocol Suite
+    为信息传输与设备互通提供通信基础: Communication base for content delivery and device interop
+    物（未连接）: Things (not connected)
+    传感器 / 执行器: Sensors / Actuators
+    尚未接入: Not yet connected
+    实线单箭头：数据请求 / 响应路径: 'Solid arrow: data request/response path'
+    虚线：尚未连接的物理世界: 'Dashed: physical world not yet connected'
+    浅橙填充：待纳入联网范围的区域: 'Light orange: area yet to be brought online'
+    图1-6 PC互联网时代连接架构。主链路为「用户—桌面PC（浏览器）—万维网—信息内容」，底层为 TCP/IP 协议族；: 'Figure 1-6 Connection architecture of the PC-Internet era. Main chain: user — desktop PC (browser) — WWW — content, on a base of the TCP/IP protocol suite;'
+    右下角虚线框标注传感器 / 执行器尚未接入互联网，与后续物联网场景形成鲜明对比。: a dashed box marks sensors/actuators as not yet online — a sharp contrast with the IoT scenes that follow.

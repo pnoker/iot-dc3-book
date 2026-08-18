@@ -1,0 +1,98 @@
+type: flowchart
+title: 图8-19 安全应急响应与恢复流程
+purpose: 展示物联网安全事件从准备、检测、遏制、取证和根除到恢复与复盘的完整闭环。
+layout: 自上而下按五个阶段推进；真实攻击判断形成误报归档与事件处置分支，复盘结果反馈到检测规则和预案。
+render_notes: 五个阶段采用浅色分区，判断使用菱形，主流程实线、误报和反馈路径虚线；恢复前的安全验证节点应突出显示。
+elements:
+- 应急团队、预案与取证工具链
+- 安全告警与真实攻击研判节点
+- P0–P3 定级、遏制、取证与根因消除动作
+- 安全验证、业务恢复、复盘报告与规则预案
+relationships:
+- 建立团队与预案 → 准备工具链 → 接收安全告警：完成响应准备并进入检测
+- 安全告警 → 真实攻击研判：确认事件真伪
+- 研判为否 → 记录归档：终结误报流程
+- 研判为是 → 定级 → 遏制 → 取证 → 根因消除：控制影响并清除攻击源
+- 根因消除 → 清除残留 → 验证安全 → 恢复业务：验证通过后恢复运行
+- 恢复业务 → 复盘 → 根因报告 → 更新检测规则与预案：把事件经验反馈到准备阶段
+description: '从安全告警触发到事后复盘的标准处理流程，分5个阶段呈现。
+
+
+  **图元与图例**：
+
+  - 圆角矩形：阶段开始/结束
+
+  - 矩形：处理动作
+
+  - 菱形：判断/分支
+
+  - 箭头：流程方向
+
+  - 颜色：准备阶段（灰）、检测与分析阶段（黄）、遏制与根除阶段（红）、恢复阶段（绿）、事后阶段（蓝）
+
+
+  **流程步骤**：
+
+  1. [准备] 建立团队与预案 → 准备工具链和取证环境
+
+  2. [检测与分析] 日志平台收到告警 → 研判是否为真实攻击 → 若否，记录归档；若是，进入定级
+
+  3. [遏制与根除] 定级（P0–P3）→ P0/P1 立即遏制（切断设备/账号/网络）→ 调用取证工具记录现场快照 → 分析根因并消除攻击源
+
+  4. [恢复] 清除残留影响 → 验证系统安全 → 恢复业务运行
+
+  5. [事后] 召开复盘会议 → 生成根因分析报告 → 更新检测规则与应急预案
+
+
+  **图注**：
+
+  - P0 事件（影响核心业务/涉及大量租户）需第一时间响应，P3 事件走标准流程
+
+  - 遏制与取证应同时或按“先遏制再取证”顺序执行，避免二次损失
+
+  - 恢复阶段必须验证之后再恢复，不允许“先恢复再说”
+
+
+  **HTML/SVG 渲染说明**：
+
+  自上而下的单向布局，不设回环或交叉连线。每个矩形中文字居中；分支箭头旁标注“是”“否”；最终“记录后归档”为终结节点。阶段背景用浅色色带区分。'
+caption:
+  zh: 图8-19 安全事件只有在完成遏制、取证、根因消除和安全验证后才能恢复业务，复盘结论还需回写检测规则与应急预案。
+  en: Figure 8-19 Business can be restored only after containment, forensics, root-cause elimination, and security verification are complete, and post-mortem conclusions must be written back into detection rules and response plans.
+labels:
+  en:
+    图8-19 安全应急响应与恢复流程: Figure 8-19 Security Incident Response & Recovery
+    从安全告警触发到事后复盘的标准处理流程，分 5 个阶段呈现。: The standard flow from security alert to post-mortem, in five phases.
+    阶段 1 · 准备: Phase 1 · Preparation
+    阶段 2 · 检测与分析: Phase 2 · Detection & Analysis
+    阶段 3 · 遏制与根除: Phase 3 · Containment & Eradication
+    阶段 4 · 恢复: Phase 4 · Recovery
+    阶段 5 · 事后: Phase 5 · Post-Incident
+    否: 'No'
+    是: 'Yes'
+    反馈：复盘结论回写检测规则与应急预案: 'Feedback: Post-Mortem Written Back to Detection Rules & Response Plans'
+    建立团队与预案: Build Team & Response Plans
+    准备工具链和取证环境: Prepare Toolchain & Forensic Environment
+    日志平台收到告警: Log Platform Receives Alert
+    研判是否为: Assess Whether It Is a
+    真实攻击？: Real Attack?
+    记录归档: Record & Archive
+    进入定级: Proceed to Classification
+    定级（P0–P3）: Classify (P0–P3)
+    P0 / P1 立即遏制: P0 / P1 Immediate Containment
+    切断设备 / 账号 / 网络: Cut Off Devices / Accounts / Networks
+    调用取证工具记录现场快照: Use Forensic Tools to Snapshot the Scene
+    分析根因并消除攻击源: Analyze Root Cause & Eliminate Attack Source
+    清除残留影响: Clear Residual Effects
+    验证系统安全: Verify System Security
+    恢复业务运行: Restore Business Operations
+    召开复盘会议: Hold Post-Mortem Meeting
+    生成根因分析报告: Produce Root-Cause Report
+    更新检测规则与应急预案: Update Detection Rules & Response Plans
+    圆角矩形 = 开始 / 结束: Rounded Rect = Start / End
+    矩形 = 处理动作: Rectangle = Processing Action
+    菱形 = 判断 / 分支: Diamond = Decision / Branch
+    双框 = 归档终结: Double Box = Archive Termination
+    实线 = 主流程: Solid = Main Flow
+    虚线 = 误报 / 反馈: Dashed = False Positive / Feedback
+    图8-19 安全事件只有在完成遏制、取证、根因消除和安全验证后才能恢复业务，复盘结论还需回写检测规则与应急预案。: Figure 8-19 Business can be restored only after containment, forensics, root-cause elimination, and security verification are complete, and post-mortem conclusions must be written back into detection rules and response plans.

@@ -1,0 +1,54 @@
+type: flowchart
+title: 图14-4 预测性维护扩展示例
+purpose: 展示一个平台外训练和推理、结果作为衍生位号回写 Data 的可选方案；明确不是当前 Compose 默认能力。
+audience_takeaway: AI 模型是外部扩展，平台通过标准 Data API、衍生位号和现有规则链路承接结果。
+visual_focus: Data 历史数据→外部训练→受控推理服务→授权任务→衍生位号写回 Data→规则与通知。
+design_level: conceptual
+layout: 从左到右三阶段：训练、部署、推理回写；顶部标注“工程扩展示例，非当前默认能力”。
+elements:
+- Data 历史与实时查询接口。
+- 特征工程与项目自选模型训练。
+- 独立推理服务，带认证、限流和版本管理。
+- 授权任务或 Agent Tool 编排入口。
+- 衍生位号与现有规则/通知链路。
+relationships:
+- 授权读取 Data→训练/推理。
+- 推理结果→Data 衍生位号。
+- 衍生位号→现有规则与通知。
+callouts:
+- 当前 Compose 不包含训练任务、模型服务或模型卷。
+- 当前 MCP 只暴露 Tools，不承载实时数据订阅。
+render_notes: 浅色三阶段 SVG。推理服务使用通用名称，不绘制为当前内置中心；顶部显著标注“可选扩展”。
+caption:
+  zh: 图14-4 预测性维护扩展示例：模型在平台外训练和部署，授权任务把推理结果作为衍生位号写回 Data，复用已有规则与通知链路。
+  en: 'Figure 14-4 A predictive-maintenance extension example: the model is trained and deployed outside the platform, and an authorized task writes inference results back to Data as derived points, reusing the existing rule and notification paths.'
+labels:
+  en:
+    图14-4 预测性维护扩展示例: 'Figure 14-4 Predictive Maintenance Extension Example'
+    模型在平台外训练和部署，授权任务把推理结果作为衍生位号写回 Data，复用已有规则与通知链路。: 'The model is trained and deployed outside the platform; an authorized task writes inference results back to Data as derived points, reusing existing rules and notifications.'
+    外部模型通过受控读写边界接入，平台继续复用既有数据、规则与通知能力: 'External models plug in through controlled read/write boundaries; the platform keeps reusing its existing data, rule, and notification capabilities'
+    工程扩展示例 · 非当前默认能力（当前 Compose 不含训练任务 / 模型服务 / 模型卷）: 'Engineering extension example · not a current default capability (the current Compose has no training jobs / model services / model volumes)'
+    训练: 'Training'
+    Data 历史与实时查询: 'Data Historical & Real-Time Queries'
+    授权只读接口: 'Authorized Read-Only API'
+    特征工程与模型训练: 'Feature Engineering & Model Training'
+    算法、框架与版本由项目选择: 'Algorithms, frameworks, and versions chosen per project'
+    模型制品: 'Model Artifacts'
+    部署: 'Deployment'
+    独立推理服务: 'Standalone Inference Service'
+    认证 · 限流 · 模型版本管理: 'Auth · Rate Limiting · Model Versioning'
+    与平台服务分开部署: 'Deployed separately from platform services'
+    失败时不影响基础采集链路: 'Failure does not affect the core collection path'
+    推理 API（最小接入边界）: 'Inference API (minimal integration boundary)'
+    受控调用: 'Controlled Call'
+    推理回写: 'Inference Write-Back'
+    授权任务 / Agent Tool: 'Authorized Task / Agent Tool'
+    编排读取、推理与回写: 'Orchestrates read, inference, and write-back'
+    Data 衍生位号: 'Data Derived Points'
+    推理结果按位号模型写回: 'Inference results written back per the point model'
+    现有规则与通知链路: 'Existing Rule & Notification Path'
+    阈值判断 · 告警 · 工单: 'Threshold Checks · Alarms · Tickets'
+    最小接入边界：授权读取 Data → 独立推理 → 衍生位号回写 → 复用规则与通知: 'Minimal boundary: authorized Data reads → standalone inference → derived-point write-back → reuse rules and notifications'
+    模型服务不可用时停止扩展推理，但不阻断设备采集、数据持久化和确定性规则: 'When the model service is down, extended inference stops but device collection, persistence, and deterministic rules are unaffected'
+    当前 MCP 只暴露 Tools，不承载实时数据订阅: 'The current MCP exposes Tools only, not real-time data subscription'
+    图14-4 模型服务不可用时停止扩展推理，但不阻断设备采集、数据持久化和确定性规则。: 'Figure 14-4 When the model service is unavailable, extended inference stops, but device collection, data persistence, and deterministic rules are not blocked.'

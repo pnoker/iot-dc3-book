@@ -1,0 +1,111 @@
+type: architecture
+title: 图11-4 城市应急响应物联网架构
+purpose: 展示城市应急响应系统从感知到指挥的四层结构及各层之间的数据流与指令流关系。
+audience_takeaway: 读者应理解应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。
+visual_focus: 从感知层经处理层到协同层的主链路，强调边缘节点本地判定和协同层事件分发。
+design_level: logical
+layout: 垂直分层，自下而上依次为感知层、处理层、协同层、指挥层。
+elements:
+- 感知层：烟雾传感器、温度传感器、燃气探测仪、安防摄像头，使用青绿色节点。
+- 处理层：边缘计算节点、本地规则引擎，使用青绿色节点。
+- 协同层：数据总线、事件路由引擎、部门系统接口，使用蓝色节点。
+- 指挥层：融合通信网关、GIS态势地图、调度面板，使用蓝色节点。
+relationships:
+- 感知层通过MQTT/LoRa/NB-IoT向处理层上报原始读数，实线箭头。
+- 处理层通过HTTP/MQTT向协同层推送事件摘要，实线箭头。
+- 协同层通过事件路由引擎向各业务系统派发通知，实线箭头。
+- 协同层向指挥层推送综合态势，实线箭头。
+- 指挥层通过数据总线向协同层下发调度指令，实线箭头。
+regions:
+- id: lo_edge
+  label: 现场资源域
+  role: 设备与边缘计算边界
+- id: lo_data
+  label: 数据协同域
+  role: 跨部门数据路由边界
+components:
+- id: sensor_layer
+  label: 感知层
+  type: edge
+  subtitle: 烟雾、温度、燃气、摄像头
+  group: lo_edge
+  priority: primary
+  shape: card
+- id: edge_layer
+  label: 处理层
+  type: platform
+  subtitle: 边缘节点、规则引擎
+  group: lo_edge
+  priority: primary
+  shape: card
+- id: coordination_layer
+  label: 协同层
+  type: platform
+  subtitle: 数据总线、事件路由
+  group: lo_data
+  priority: primary
+  shape: card
+- id: command_layer
+  label: 指挥层
+  type: application
+  subtitle: 融合通信、GIS、调度
+  group: lo_data
+  priority: normal
+  shape: card
+connections:
+- from: sensor_layer
+  to: edge_layer
+  label: 原始数据上报
+  style: solid
+  direction: bottom-to-top
+- from: edge_layer
+  to: coordination_layer
+  label: 事件摘要推送
+  style: solid
+  direction: bottom-to-top
+- from: coordination_layer
+  to: command_layer
+  label: 综合态势推送
+  style: solid
+  direction: bottom-to-top
+- from: command_layer
+  to: coordination_layer
+  label: 指令下传
+  style: solid
+  direction: top-to-bottom
+callouts:
+- 感知层覆盖密度决定探测盲区大小。
+- 处理层边缘计算压缩响应延迟，降低对云端实时性的依赖。
+- 协同层通过事件路由映射表，将事件精准派发至责任部门。
+- 指挥层融合通信是行动同步的最后一道关口。
+legend:
+- 青绿色=设备与边缘；蓝色=平台与服务
+- 实线箭头=数据或指令流
+visual_constraints:
+- 最多5个主节点，标签短。
+- 图例放在底部。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形组件，层间箭头带短标签，底部图例。
+caption:
+  zh: 图11-4 展示城市应急响应系统从感知到指挥的四层职责边界与主数据流向。
+  en: 'Figure 11-4 The four-layer responsibility boundaries and main data flows of a city emergency response system, from sensing to command.'
+labels:
+  en:
+    图11-4 城市应急响应物联网架构: 'Figure 11-4 City Emergency Response IoT Architecture'
+    读者应理解应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。: 'Layered duty boundaries; edge processing and event routing compress response time.'
+    现场资源域: 'Field Resources'
+    数据协同域: 'Data Collaboration'
+    感知层: 'Sensing Layer'
+    烟雾、温度、燃气、摄像头: 'Smoke, temperature, gas, cameras'
+    处理层: 'Processing Layer'
+    边缘节点、规则引擎: 'Edge nodes, rule engine'
+    协同层: 'Coordination Layer'
+    数据总线、事件路由: 'Data bus, event routing'
+    指挥层: 'Command Layer'
+    融合通信、GIS、调度: 'Fused comms, GIS, dispatch'
+    原始数据上报: 'Raw data reporting'
+    事件摘要推送: 'Event summary push'
+    综合态势推送: 'Situation overview push'
+    指令下传: 'Command dispatch'
+    青绿色=设备与边缘；蓝色=平台与服务: 'Teal = devices & edge; blue = platform & services'
+    实线箭头=数据或指令流: 'Solid arrows = data or command flow'
+    图11-4 展示城市应急响应系统从感知到指挥的四层职责边界与主数据流向。: 'Figure 11-4 Four-layer responsibility boundaries and main data flows of a city emergency response system, from sensing to command.'

@@ -1,0 +1,145 @@
+type: architecture
+title: 图3-2 模拟与数字信号路径架构对比
+purpose: 展示两种接口路径的全流程与关键参数，帮助理解工程权衡
+audience_takeaway: 模拟路径需要工程师逐级设计调理，数字路径由传感器厂商封装好，工程师只需处理总线读取。
+visual_focus: 左栏模拟路径的模块串行连接，右栏数字路径直接跳转到MCU，形成鲜明对比。
+design_level: logical
+layout: 水平三栏布局：左栏模拟路径，中栏数字路径，右栏为MCU
+elements:
+- 模拟传感器、仪表放大器、低通滤波器与 ADC
+- 数字传感器与 I²C/SPI 总线
+- MCU
+relationships:
+- 模拟传感器 → 仪表放大器 → 低通滤波器 → ADC → MCU：微弱模拟信号经调理和量化后处理
+- 数字传感器 → I²C/SPI → MCU：已校准数值通过总线直接读取
+regions:
+- id: analog-region
+  label: 模拟信号链域
+  role: 工程师需介入放大、滤波、ADC配置
+- id: digital-region
+  label: 数字信号链域
+  role: 传感器厂商完成调理，工程师只读总线
+- id: mcu-region
+  label: 微控制器域
+  role: 处理数字值和总线协议交互
+components:
+- id: analog-sensor
+  label: 模拟传感器
+  type: edge
+  subtitle: 原始毫伏级信号
+  group: analog-region
+  priority: normal
+  shape: card
+- id: instrumentation-amp
+  label: 仪表放大器
+  type: process
+  subtitle: 共模抑制比高
+  group: analog-region
+  priority: primary
+  shape: card
+- id: low-pass-filter
+  label: 低通滤波器
+  type: process
+  subtitle: 一阶RC
+  group: analog-region
+  priority: normal
+  shape: card
+- id: adc
+  label: ADC
+  type: platform
+  subtitle: 12/16位逐次逼近
+  group: analog-region
+  priority: primary
+  shape: card
+- id: mcu
+  label: MCU
+  type: platform
+  subtitle: 数字处理
+  group: mcu-region
+  priority: primary
+  shape: card
+- id: digital-sensor
+  label: 数字传感器
+  type: edge
+  subtitle: 内置调理+总线接口
+  group: digital-region
+  priority: primary
+  shape: card
+- id: digital-bus
+  label: I²C/SPI
+  type: data
+  subtitle: 总线协议
+  group: digital-region
+  priority: normal
+  shape: bus
+connections:
+- from: analog-sensor
+  to: instrumentation-amp
+  label: 微伏级信号
+  style: solid
+  direction: left-to-right
+- from: instrumentation-amp
+  to: low-pass-filter
+  label: 放大后信号
+  style: solid
+  direction: left-to-right
+- from: low-pass-filter
+  to: adc
+  label: 滤波后模拟
+  style: solid
+  direction: left-to-right
+- from: adc
+  to: mcu
+  label: 数字值
+  style: dashed
+  direction: request
+- from: digital-sensor
+  to: digital-bus
+  label: 已校准值
+  style: solid
+  direction: left-to-right
+- from: digital-bus
+  to: mcu
+  label: 总线读取
+  style: dashed
+  direction: event
+callouts:
+- 模拟路径每个环节的精度都会叠加到最终读数值上
+- 数字路径节省了设计工作量，但失去了调试自由度
+legend:
+- 暖色模块=模拟域；冷色模块=数字域；虚线=数据交互
+visual_constraints:
+- 三栏宽度相等，模块之间留足间距
+- 模拟域用橙色系，数字域用蓝色系，MCU用灰色
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形。模拟路径各模块用实线箭头串接，数字路径用总线符号连接。图例位于底部。
+caption:
+  zh: 图3-2 模拟与数字信号路径对比。左栏模拟路径需要工程师逐级设计放大、滤波和ADC配置；右栏数字路径由传感器厂商封装调理电路，工程师只需通过总线协议读取结果。
+  en: Figure 3-2 Analog versus digital signal paths. The analog path on the left requires engineers to design amplification, filtering, and ADC configuration stage by stage; on the right, the digital path ships with the conditioning circuitry encapsulated by the sensor vendor, and engineers only read results over a bus protocol.
+labels:
+  en:
+    图3-2 模拟与数字信号路径架构对比: Figure 3-2 Analog vs Digital Signal Path Architectures
+    模拟路径需要工程师逐级设计调理，数字路径由传感器厂商封装好，工程师只需处理总线读取。: The analog path must be designed stage by stage by engineers; the digital path comes pre-packaged by the sensor vendor, leaving only bus reads.
+    模拟信号链域: Analog Signal Chain Domain
+    数字信号链域: Digital Signal Chain Domain
+    微控制器域: MCU Domain
+    模拟传感器: Analog Sensor
+    原始毫伏级信号: Raw millivolt signal
+    仪表放大器: Instrumentation Amp
+    共模抑制比高: High CMRR
+    低通滤波器: Low-Pass Filter
+    一阶RC: First-order RC
+    12/16位逐次逼近: 12/16-bit SAR
+    数字传感器: Digital Sensor
+    内置调理+总线接口: Built-in conditioning + bus interface
+    总线协议: Bus Protocol
+    数字处理: Digital Processing
+    微伏级信号: Microvolt-level signal
+    放大后信号: Amplified signal
+    滤波后模拟: Filtered analog
+    已校准值: Calibrated value
+    数字值: Digital value
+    总线读取: Bus read
+    模拟路径每个环节的精度都会叠加到最终读数值上: Errors from every analog stage stack up in the final reading
+    数字路径节省了设计工作量，但失去了调试自由度: The digital path saves design effort but gives up debugging freedom
+    暖色模块=模拟域；冷色模块=数字域；虚线=数据交互: Warm modules = analog domain; cool modules = digital domain; dashed = data exchange
+    图3-2 模拟与数字信号路径对比。左栏模拟路径需要工程师逐级设计放大、滤波和ADC配置；右栏数字路径由传感器厂商封装调理电路，工程师只需通过总线协议读取结果。: Figure 3-2 Analog versus digital signal paths. The left column shows the analog path, where engineers design amplification, filtering, and ADC configuration stage by stage; the right column shows the digital path, where the sensor vendor encapsulates the conditioning circuitry and engineers only read results over a bus protocol.

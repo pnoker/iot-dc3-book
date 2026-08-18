@@ -1,0 +1,85 @@
+type: lifecycle
+title: 图6-4 单体到微服务演进阶段图
+audience_takeaway: 读者应理解微服务演进由团队规模与协作摩擦驱动，每前进一步都要用新架构问题(单点故障、数据一致性、分布式事务成本)换取部署与分工的收益。
+purpose: 展示物联网项目从单体原型到多服务演进的典型路径，标注各阶段关键特征与风险。
+visual_focus: 从阶段节点间用粗箭头到箭头上方标注演进动机：第一支箭 '…的主链路。
+design_level: implementation
+layout: 四个阶段节点沿水平时间轴从左至右排列，节点下方标注关键里程碑，左侧标注时间线示意。
+elements:
+- 阶段一：单体原型，矩形，标签 '模块化包结构、快速验证'；下方注 '团队 <3人'；顶部风险 '部署效率低'。
+- 阶段二：核心模块剥离，梯形，标签 '数据库隔离、接口契约、容器化'；下方注 '团队3-5人'；顶部风险 '单点故障'。
+- 阶段三：事件驱动改造，圆角矩形，标签 'MQTT Broker -> 消息队列 -> 消费端扩容'；下方注 '团队5-8人'；顶部风险 '数据一致性'。
+- 阶段四：持续演进，虚线矩形，标签 '按场景拆分、聚合服务整合'；下方注 '团队8-15人'；顶部风险 '分布式事务成本'。
+relationships:
+- 阶段节点间用粗箭头连接，箭头上方标注演进动机：第一支箭 '单一变更影响全局'，中间箭 '功能耦合加剧'，右侧箭 '团队分工需求'。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 阶段节点间用粗箭头
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 箭头上方标注演进动机：第一支箭 '…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 阶段节点间用粗箭头连接，箭头上方标…
+  style: solid
+  direction: left-to-right
+callouts:
+- 阶段节点间用粗箭头连接，箭头上方标注演进动机：第一支箭 '单一变更影响全局'，中间箭 '功能耦合加剧'，右侧箭 '…
+legend:
+- '时间轴从左至右；虚线矩形代表第四阶段为持续状态；每个阶段顶部标注的关键风险用浅红色底色 #FFCDD2；箭头颜色为深蓝 #1565C0。'
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
+render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，统一 12px 间距。节点颜色从浅灰渐变至深蓝；时间轴线起点标记，终点标记 '持续演进'；鼠标悬停显示该阶段典型挑战描述。
+caption:
+  zh: 图6-4 展示从单体原型到微服务持续演进的四个典型阶段。
+  en: 'Figure 6-4 Shows the four typical stages of evolution from a monolithic prototype to continuously evolving microservices.'
+labels:
+  en:
+    图6-4 单体到微服务演进阶段图: Figure 6-4 Monolith-to-Microservices Evolution Stages
+    每次演进都以真实瓶颈为触发点，并换来新的分布式风险。: Each step is triggered by a real bottleneck and trades in new distributed risks.
+    时间 →: 'Time →'
+    耦合暴露: Coupling Exposed
+    吞吐瓶颈: Throughput Bottleneck
+    团队分工: Team Split
+    风险：全量部署: 'Risk: Full Deployment'
+    风险：单点迁移: 'Risk: Single-Point Migration'
+    风险：最终一致: 'Risk: Eventual Consistency'
+    风险：事务成本: 'Risk: Transaction Cost'
+    单体原型: Monolith Prototype
+    模块化包结构: Modular Packages
+    快速验证业务闭环: Fast Business Validation
+    团队 &lt; 3 人: 'Team &lt; 3'
+    核心剥离: Core Extraction
+    数据库隔离: Database Isolation
+    接口契约 · 容器化: API Contracts · Containerization
+    团队 3-5 人: Team 3-5
+    事件驱动: Event-Driven
+    消息队列解耦: Message-Queue Decoupling
+    消费端独立扩容: Independent Consumer Scaling
+    团队 5-8 人: Team 5-8
+    持续演进: Continuous Evolution
+    按领域拆分: Split by Domain
+    独立部署 · 可回滚: Independent Deploys · Rollback
+    团队 8-15 人: Team 8-15
+    无固定终点 · 持续调整: No Fixed End · Keep Adjusting
+    各阶段关键风险（浅红底）: Stage risks (light red)
+    持续演进（虚线框 · 无终点）: Continuous evolution (dashed, no end)
+    演进动机（真实瓶颈触发）: Drivers (real bottlenecks)
+    团队规模增长与协作摩擦驱动拆分；每前进一步都用新的分布式风险换取部署与分工收益。: Team growth and coordination friction drive splitting; each step trades new distributed risks for deployment and division-of-labor gains.
+    图6-4 微服务不是默认起点；拆分时机、验证周期和可回滚性比拆分数量更重要。: 'Figure 6-4 Microservices are not the default starting point; when to split, validation cycles, and rollback matter more than the number of services.'

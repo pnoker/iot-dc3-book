@@ -1,0 +1,87 @@
+type: architecture
+title: 图3-6 三角测量定位原理示意
+purpose: 说明三点定位的几何原理以及实际测量噪声导致的交叠区域，引出最小二乘修正的必要性。
+audience_takeaway: 读者应理解三点定位的几何原理以及实际测量噪声导致的交叠区域，引出最小二乘修正的必要性。
+visual_focus: 三个参考节点（AP1、AP2、AP3）分别以测距为半径画圆；由于测距误差，三圆不交于一点，形成灰色交叠区域。
+design_level: logical
+layout: 平面网格坐标图：参考点A(0,0)、B(60,0)、C(30,50)，真实目标T(30,20)；三次含误差测距半径分别为36.0m、37.0m、29.0m，三圆形成共同近交叠区，最小二乘估计Q约为(29.4,20.9)。
+elements:
+- AP1、AP2、AP3 三个参考节点
+- 三条含误差的测距半径与圆形覆盖边界
+- 待定位目标点和模糊交叠区域
+relationships:
+- AP1、AP2、AP3 → 目标点：分别提供含测量误差的距离 d1、d2、d3
+- 三个测距圆 → 模糊交叠区域：RSSI 或 ToA 误差使圆周无法精确交于一点
+- 模糊交叠区域 → 目标坐标：最小二乘选择残差平方和最小的位置
+regions:
+- id: triangulation_area
+  label: 三角测量定位区域
+  role: 三个参考节点覆盖范围
+components:
+- id: ap1
+  label: AP1
+  type: edge
+  subtitle: 参考节点
+  group: triangulation_area
+  priority: primary
+  shape: card
+- id: ap2
+  label: AP2
+  type: edge
+  subtitle: 参考节点
+  group: triangulation_area
+  priority: primary
+  shape: card
+- id: ap3
+  label: AP3
+  type: edge
+  subtitle: 参考节点
+  group: triangulation_area
+  priority: primary
+  shape: card
+- id: target
+  label: 目标点
+  type: application
+  subtitle: 待定位设备
+  group: triangulation_area
+  priority: normal
+  shape: decision
+connections:
+- from: ap1
+  to: target
+  label: d1（含误差）
+  style: dashed
+  direction: left-to-right
+- from: ap2
+  to: target
+  label: d2（含误差）
+  style: dashed
+  direction: left-to-right
+- from: ap3
+  to: target
+  label: d3（含误差）
+  style: dashed
+  direction: left-to-right
+callouts:
+- 虚线圆半径根据测距值绘制，实际RSSI或ToA误差导致三圆不交于一点。
+- 灰色区域的大小反映了定位不确定性，最小二乘用于寻找残差最小的坐标。
+legend:
+- 蓝色圆点=参考节点（AP）；红色X=待测设备；灰色区域=测距误差导致的模糊交叠。
+- 虚线箭头=含误差的测距链接。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+- 虚线圆的半径偏移示意由渲染引擎按正态扰动生成，体现工程不确定性。
+render_notes: SVG/HTML渲染，浅色网格背景，三个参考节点坐标固定（如(20,20)、(80,20)、(50,80)），虚线圆半径按预设值高斯随机扰动（幅度约5%‑10%示意），灰色交叠区域半透明填充，底部图注10pt字体。
+caption:
+  zh: 图3-6 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。
+  en: Figure 3-6 Principle of trilateration. Under ideal conditions the three ranging circles would intersect at exactly one point, but real measurements carry RSSI fluctuation or ToA clock error, producing an overlapping region; least squares then picks the point with the minimum sum of squared errors as the final position.
+labels:
+  en:
+    图3-6 三角测量定位原理示意: Figure 3-6 Trilateration Positioning Principle
+    三个测距圆理想下交于一点，实测误差使交点退化为交叠区，最小二乘法在该区取误差平方和最小的点作为坐标。: Ideally the three ranging circles meet at one point; measurement error turns the point into an overlap region, and least squares takes the coordinate with the minimum squared error inside it.
+    Q 最小二乘估计 (29.4, 20.9): Q least-squares estimate (29.4, 20.9)
+    T 真实目标 (30, 20): T true target (30, 20)
+    蓝色=核心能力；橙色=智能/风险路径: Blue = core capability; orange = intelligence/risk path
+    图3-6 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。: Figure 3-6 Principle of trilateration. Under ideal conditions the three ranging circles would intersect at exactly one point, but real measurements carry RSSI fluctuation or ToA clock error, producing an overlapping region; least squares then picks the point with the minimum sum of squared errors as the final position.

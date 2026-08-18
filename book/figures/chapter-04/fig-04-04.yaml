@@ -1,0 +1,89 @@
+type: matrix
+title: 图4-4 主流 IoT 无线技术选型雷达图（示意框架）
+audience_takeaway: 读者应理解雷达图面积大不代表技术更优,LoRa用自建网关换距离与低功耗,NB-IoT则复用运营商基站换部署便捷。
+purpose: 定性展示六种技术在五项工程维度上的相对优势与折中，辅助选型判断。
+visual_focus: 从五根轴对应五项维度到每个技术在五轴上的相对优势用半透明…的主链路。
+design_level: decision
+layout: 五边形雷达图，五轴等角度分布（72°），轴名从正上方顺时针标记：距离、速率、功耗（越低越省电）、成本（越低越省钱）、部署便捷性。
+elements:
+- 五根轴对应五项维度，轴端标示维度名称，不标注具体刻度。
+- 六条彩色连线代表六种技术：BLE-蓝色、Zigbee-青色、WiFi-橙色、LoRa-红色、NB-IoT-紫色、5G-灰色。
+- 每个技术在五轴上的相对优势用半透明色块填充连接，形成多边形区域。
+relationships:
+- BLE：距离近、速率中、功耗极低、成本低、部署容易。
+- Zigbee：距离近、速率低、功耗极低、成本低、部署中等。
+- WiFi：距离中、速率极高、功耗高、成本中等、部署极易。
+- LoRa：距离极远、速率极低、功耗极低、成本中等、部署较难（需自建网关）。
+- NB-IoT：距离远、速率低、功耗低、成本较低、部署容易（复用运营商基站）。
+- 5G：距离远、速率极高、功耗高、成本高、部署较难（需专用基站或切片）。
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 五根轴对应五项维度
+  type: platform
+  subtitle: 轴端标示维度名称，不标注具体刻度
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 六条彩色连线代表六种技术
+  type: platform
+  subtitle: BLE-蓝色、Zigbee-青色、WiFi-橙色、Lo…
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 每个技术在五轴上的相对优势用半透明…
+  type: platform
+  subtitle: 形成多边形区域
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: BLE：距离近、速率中、功耗极低…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: Zigbee：距离近、速率低、功耗…
+  style: solid
+  direction: left-to-right
+callouts:
+- BLE：距离近、速率中、功耗极低、成本低、部署容易
+- Zigbee：距离近、速率低、功耗极低、成本低、部署中等
+- WiFi：距离中、速率极高、功耗高、成本中等、部署极易
+legend:
+- 蓝色 = BLE；青色 = Zigbee；橙色 = WiFi；红色 = LoRa；紫色 = NB-IoT；灰色 = 5G
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 使用<svg>绘制极坐标雷达图，五轴间距72°，坐标轴不标分数等级仅标轴名称；每种技术用不同颜色描边，数据点以直线连接，色块填充透明度0.25，描边线宽2px；图例置于绘图区域右上角，用12×12px色块加文本标注。
+caption:
+  zh: 图4-4 对六种技术基于五项工程约束的定性对比。所有描述基于工程经验归纳，非实测或标准化值。多边形面积越大不代表技术越优，只反映该技术在更多维度上处于高位。
+  en: 'Figure 4-4 A qualitative comparison of six technologies across five engineering constraints. All descriptions are generalized from engineering experience, not measured or standardized values. A larger polygon area does not mean a better technology — it only indicates a higher position on more dimensions.'
+labels:
+  en:
+    图4-4 主流 IoT 无线技术选型雷达图（示意框架）: 'Figure 4-4 IoT Wireless Technology Selection Radar (Illustrative)'
+    六种无线技术在距离、速率、低功耗、低成本和部署便捷性上各有折中，雷达面积不代表绝对优劣。: 'Six wireless technologies trade off range, rate, low power, low cost, and deployment ease; radar area does not indicate absolute superiority.'
+    各轴越靠外表示该维度越有利；功耗和成本轴已转换为“越低越优”: 'Outward on each axis is more favorable; power and cost axes are inverted so lower is better'
+    距离: 'Range'
+    速率: 'Data Rate'
+    低功耗: 'Low Power'
+    低成本: 'Low Cost'
+    部署便捷性: 'Easy Deployment'
+    六种技术的相对工程画像: 'Relative engineering profiles'
+    BLE：部署便捷、低功耗，覆盖距离有限: 'BLE: easy to deploy, low power, limited range'
+    Zigbee：低功耗组网，依赖协调器与 Mesh 规划: 'Zigbee: low-power mesh, needs coordinator & planning'
+    Wi-Fi：速率与部署便利突出，端侧功耗较高: 'Wi-Fi: top speed and easy setup, higher device power'
+    LoRa：以自建网关换取远距离与低功耗: 'LoRa: long range and low power via self-built gateways'
+    NB-IoT：复用运营商基站，部署便捷但依赖覆盖: 'NB-IoT: reuses operator base stations, easy but coverage-dependent'
+    5G：速率与服务能力强，终端成本和功耗较高: '5G: strong speed and services, higher device cost and power'
+    读图边界: 'Caveats'
+    此图为定性选型框架，不是标准化评分或实测结果。: 'A qualitative selection framework, not standardized scores or measured results.'
+    多边形面积越大不代表技术越优，应按场景约束逐轴比较。: 'A larger polygon does not mean better; compare axis by axis against scenario constraints.'
+    图4-4 无线技术选型应先确定场景硬约束，再逐轴比较覆盖、速率、功耗、成本与生态折中。: 'Figure 4-4 Start from hard scenario constraints, then compare coverage, rate, power, cost, and ecosystem trade-offs axis by axis.'

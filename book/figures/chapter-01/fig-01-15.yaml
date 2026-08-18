@@ -1,0 +1,137 @@
+type: flowchart
+title: 图1-15 物联网价值迁移路径
+purpose: 展示物联网价值重心从连接层向智能决策层迁移的路径，以及每层对应的典型产品形态和商业模式。
+audience_takeaway: 读者应看到价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。
+visual_focus: 从左到右逐渐增粗的箭头表明价值占比变化；智能层节点用橙色强调。
+design_level: schematic
+layout: 水平流向，三个主节点从左到右排列，下方通过虚线连接商业模式标签。
+elements:
+- 连接层：通信模组、连接管理，蓝色方框表示低毛利。
+- 平台层：设备管理、规则引擎，蓝色方框，中等毛利，竞争激烈。
+- 智能层：数据分析、AI决策，橙色方框，高毛利，增长快。
+relationships:
+- 连接层→平台层：价值流向上汇聚。
+- 平台层→智能层：数据为智能提供燃料。
+- 箭头宽度从左到右递增，示意价值占比变化。
+regions:
+- id: low_value_region
+  label: 低价值区
+  role: 连接已被商品化，利润薄。
+- id: mid_value_region
+  label: 中价值区
+  role: 平台层由巨头主导，独立厂商空间有限。
+- id: high_value_region
+  label: 高价值区
+  role: 智能层由数据分析和AI驱动，利润率最高。
+components:
+- id: connectivity_layer
+  label: 连接层
+  type: platform
+  subtitle: 模组、SIM、连接管理
+  group: low_value_region
+  priority: normal
+  shape: card
+- id: platform_layer
+  label: 平台层
+  type: platform
+  subtitle: 设备管理、规则引擎
+  group: mid_value_region
+  priority: primary
+  shape: card
+- id: intelligence_layer
+  label: 智能层
+  type: ai
+  subtitle: 数据分析、AI决策
+  group: high_value_region
+  priority: primary
+  shape: card
+- id: connectivity_business
+  label: 按连接计费
+  type: application
+  subtitle: 低毛利
+  group: low_value_region
+  priority: normal
+  shape: decision
+- id: platform_business
+  label: 按设备/消息计费
+  type: application
+  subtitle: 中等毛利
+  group: mid_value_region
+  priority: normal
+  shape: decision
+- id: intelligence_business
+  label: 按决策/效果计费
+  type: application
+  subtitle: 高毛利
+  group: high_value_region
+  priority: primary
+  shape: decision
+connections:
+- from: connectivity_layer
+  to: platform_layer
+  label: 价值汇聚
+  style: solid
+  direction: left-to-right
+- from: platform_layer
+  to: intelligence_layer
+  label: 数据驱动
+  style: solid
+  direction: left-to-right
+- from: connectivity_layer
+  to: connectivity_business
+  label: 对应
+  style: dashed
+  direction: request
+- from: platform_layer
+  to: platform_business
+  label: 对应
+  style: dashed
+  direction: request
+- from: intelligence_layer
+  to: intelligence_business
+  label: 对应
+  style: dashed
+  direction: request
+callouts:
+- 箭头宽度示意价值占比：连接层最细，智能层最粗。
+- 智能层的利润率远高于连接层，这是产业竞相迁移的原因。
+legend:
+- 蓝色方框 = 平台/连接服务；橙色方框 = AI/智能；虚线 = 商业模式映射。
+- 实线箭头 = 价值流向；宽度代表相对价值占比。
+visual_constraints:
+- 三个主节点水平排列，间距均匀。
+- 商业模式标签与主节点用虚线连接，宽度不超过主节点。
+- 箭头宽度体现相对价值，不可夸张。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形，箭头带渐变粗度，图例置于图下方。
+caption:
+  zh: 图1-15 物联网产业价值重心从连接层向平台层、最终向智能决策层迁移的路径。
+  en: Figure 1-15 The path along which the center of value in the IoT industry migrates from the connectivity layer to the platform layer and ultimately to the intelligent decision layer.
+labels:
+  en:
+    图1-15 物联网价值迁移路径: Figure 1-15 IoT Value Migration Path
+    物联网价值重心从连接层向智能决策层迁移: IoT value shifts from connectivity to intelligent decisions
+    从连接层到智能层，价值占比从左到右递增: 'Connectivity to intelligence: value share grows left to right'
+    连接层: Connectivity Layer
+    通信模组 · 连接管理: Modules · connection management
+    低毛利 · 最早成熟 · 价格战: Thin margins · matured first · price wars
+    平台层: Platform Layer
+    设备管理 · 规则引擎: Device management · rule engine
+    中等毛利 · 巨头主导 · 竞争激烈: Mid margins · giant-dominated · fierce competition
+    智能层: Intelligence Layer
+    数据分析 · AI 决策: Data analytics · AI decisions
+    高毛利 · 增长快 · 价值最高: High margins · fast growth · highest value
+    价值汇聚: Value converges
+    数据驱动: Data-driven
+    按连接计费: Per-connection pricing
+    低毛利: Low margin
+    按设备 / 消息计费: Per-device/message pricing
+    中等毛利: Mid margin
+    按决策 / 效果计费: Per-decision/outcome pricing
+    高毛利: High margin
+    低价值区: Low-value zone
+    中价值区: Mid-value zone
+    高价值区: High-value zone
+    价值重心从连接层向平台层、最终向智能决策层迁移: Value shifts from connectivity through platform to intelligent decisions
+    箭头宽度示意价值占比：连接层最细，智能层最粗: Arrow width shows value share — thinnest at connectivity, thickest at intelligence
+    智能层的利润率远高于连接层——这是产业竞相迁移的原因: Intelligence margins far exceed connectivity — hence the migration race
+    图1-15 物联网产业价值重心从连接层向平台层、最终向智能决策层迁移的路径。: Figure 1-15 The IoT value center migrates from connectivity to platform and finally to intelligent decisions.

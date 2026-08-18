@@ -1,0 +1,109 @@
+type: layered
+title: 图6-8 微服务可观测性分层架构
+audience_takeaway: 读者应理解可观测性中服务主动暴露端点、Prometheus以pull模式拉取指标、日志与指标分通道存储(ES/Prometheus)，健康状态并入业务指标统一告警。
+purpose: 展示指标、日志、告警与可视化查询的完整可观测链路。
+visual_focus: Prometheus拉取服务指标、日志经采集器进入ES、Prometheus发送告警到Alertmanager，以及Grafana查询两类存储。
+design_level: logical
+layout: 从左至右三层：服务暴露层、采集与存储层、展示与告警层。
+elements:
+- 服务暴露层：微服务和Driver暴露指标端点，日志服务输出结构化日志。
+- 采集与存储层：Prometheus拉取指标，日志采集器将日志写入Elasticsearch。
+- 展示与告警层：Grafana查询Prometheus和Elasticsearch，Alertmanager接收Prometheus告警并通知外部通道。
+relationships:
+- Prometheus → 微服务与Driver：定期pull metrics
+- 日志服务 → 日志采集器 → Elasticsearch：采集、解析并建立日志索引
+- Prometheus → Alertmanager → 外部通知通道：规则告警与通知路由
+- Grafana → Prometheus：查询指标
+- Grafana → Elasticsearch：查询日志
+regions:
+- id: governance_domain
+  label: 治理与安全域
+  role: 风险控制与责任边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: 进入下一判断
+  type: security
+  subtitle: 可视化指标面板与告警通知，支持钉钉/邮件/Pa…
+  group: governance_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 进入下一判断
+  type: data
+  subtitle: Prometheus pull 模式拉取 me…
+  group: data_domain
+  priority: normal
+  shape: database
+- id: c3
+  label: 进入下一判断
+  type: platform
+  subtitle: 每个微服务暴露 Prometheus 端点和自…
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: Service A 和 Servi…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: Prometheus 将聚合后的数…
+  style: solid
+  direction: left-to-right
+callouts:
+- Service A 和 Service B 的 metrics 被 Prometheus 定期拉取
+- Prometheus 将聚合后的数据供给 Grafana 展示
+- Alertmanager 根据 Prometheus 告警规则发送通知到外部通道
+legend:
+- 红色下层：微服务组件（指标提供方）
+- 绿色中间层：基础设施（采集与存储）
+- 灰色上层：终端展示（仪表盘与告警）
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: 三列分层绘制；Prometheus到服务的pull箭头必须指向服务，日志链路必须经过采集器，Grafana分别连接Prometheus与Elasticsearch，Prometheus连接Alertmanager。
+caption:
+  zh: 图6-8 Prometheus主动拉取服务指标并将告警发送给Alertmanager；日志经采集器进入Elasticsearch，Grafana分别查询Prometheus和Elasticsearch。
+  en: 'Figure 6-8 Prometheus actively pulls service metrics and sends alerts to Alertmanager; logs flow through a collector into Elasticsearch, and Grafana queries Prometheus and Elasticsearch separately.'
+labels:
+  en:
+    图6-8 微服务可观测性分层架构: Figure 6-8 Microservice Observability Architecture
+    指标、日志与告警各走明确链路，Grafana 从两类存储查询展示。: Metrics, logs, and alarms each take a distinct path; Grafana queries both stores for display.
+    服务暴露层: Service Exposure Layer
+    采集与存储层: Collection & Storage Layer
+    展示与告警层: Presentation & Alerting Layer
+    微服务 / Driver: Microservices / Drivers
+    暴露指标端点: Expose Metrics Endpoints
+    日志服务: Log Service
+    结构化日志 · traceId: Structured Logs · traceId
+    时间戳 · 租户 · 错误码: Timestamp · Tenant · Error Code
+    拉取指标 · 规则评估: Pull Metrics · Rule Evaluation
+    pull 模式: pull Mode
+    日志采集器: Log Collector
+    采集 · 解析: Collect · Parse
+    日志索引存储: Log Index Storage
+    分组 · 路由 · 抑制: Group · Route · Suppress
+    接收 Prometheus 告警: Receives Prometheus Alerts
+    钉钉 / 邮件 / 值班: DingTalk / Email / On-Call
+    外部通知通道: External Channels
+    指标与日志查询: Metrics & Log Queries
+    Prometheus pull（拉取指标）: 'Prometheus pull (metrics)'
+    日志采集: Log Collection
+    写入索引: Index Writes
+    告警规则: Alert Rules
+    通知路由: Notification Routing
+    查询指标: Query Metrics
+    查询日志: Query Logs
+    指标拉取（pull）: 'Metric pull (pull)'
+    日志链路: Log Path
+    告警与通知: Alerts & Notifications
+    Grafana 查询（虚线）: 'Grafana queries (dashed)'
+    图6-8 Prometheus 主动拉取指标并驱动告警；日志经采集器入 ES，Grafana 分别查询 Prometheus 与 ES。: 'Figure 6-8 Prometheus actively pulls metrics and drives alerting; logs enter ES via a collector, and Grafana queries Prometheus and ES separately.'

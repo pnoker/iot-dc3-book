@@ -41,21 +41,9 @@ jobs:
       - name: Sync book deps
         run: uv sync --frozen
 
-      # Chrome：book-builder 渲染封面 cover.png 需要
-      - uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
-
-      # 中文字体 + poppler：book-builder 渲染封面/扉页中文需要 CJK 字体；
-      # 封面 cover.png 走 print-to-pdf + pdftoppm 路径才铺满（无 pdftoppm 时回退
-      # Chrome --screenshot，内容只占 25%）
-      - name: Install CJK fonts + poppler
-        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk poppler-utils
-
       - run: pnpm install --frozen-lockfile
 
-      # pnpm build = book-builder build(手稿→output) + build_web(output→docs) + VitePress；
-      # 与本地 pnpm dev/build 同一条链，保证本地预览与线上一致
+      # pnpm build = build_web(手稿→docs) + VitePress；手稿即终稿，无导出中间层
       - run: pnpm build
 
       - uses: actions/configure-pages@v6

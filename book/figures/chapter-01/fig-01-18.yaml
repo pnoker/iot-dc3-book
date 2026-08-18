@@ -1,0 +1,106 @@
+type: architecture
+title: 图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比
+audience_takeaway: 读者应理解传统架构端云直连数据上传、指令下发,AIoT在两者之间插入边缘侧承担实时推理与本地决策,端云改为经边缘间接交互、云侧退居模型训练与知识下推。
+purpose: 直观对比大模型介入前后物联网拓扑结构的演变，突出边缘层作为推理枢纽的角色，以及数据流和信息流方向的变化。
+visual_focus: 从传统架构=name=感知层到AIoT新架构=name=端侧的主链路。
+design_level: logical
+layout: 架构布局，强调边界、组件职责和主链路。
+elements:
+- '传统架构=name=感知层；shape=box；color=#E3F2FD；label=端侧设备
+
+  (传感器/执行器)；name=云平台层；shape=box；color=#E8EAF6；label=云服务器
+
+  (存储、应用、规则引擎)'
+- 'AIoT新架构=name=端侧；shape=box；color=#E3F2FD；label=端侧设备
+
+  (采集、执行、唤醒)；name=边缘侧；shape=box；color=#FFF3E0；label=边缘网关
+
+  (蒸馏模型推理、实时决策)；name=云侧；shape=box；color=#E8EAF6；label=云服务器
+
+  (大模型训练、复杂推理、知识更新)'
+relationships:
+- 传统架构=from=感知层
+- to=云平台层
+- color=#90CAF9
+- style=solid
+- label=数据上传
+- from=云平台层
+- to=感知层
+- color=#90CAF9
+- style=solid
+- label=指令下发
+- AIoT新架构=from=端侧
+- to=边缘侧
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: c1
+  label: 传统架构=name=感知层
+  type: edge
+  subtitle: shape=box；color=#E3F2FD；lab…
+  group: edge_domain
+  priority: primary
+  shape: database
+- id: c2
+  label: AIoT新架构=name=端侧
+  type: edge
+  subtitle: shape=box；color=#E3F2FD；lab…
+  group: edge_domain
+  priority: primary
+  shape: decision
+connections:
+- from: c1
+  to: c2
+  label: 传统架构=from=感知层
+  style: solid
+  direction: left-to-right
+callouts:
+- 传统架构=from=感知层
+- to=云平台层
+- color=#90CAF9
+legend:
+- '端侧设备: 感知、执行、状态上报'
+- '边缘侧节点: 实时推理、本地决策、控制闭环'
+- '云端服务: 大模型、知识库、管理和训练'
+- 数据上传或事件上报
+- 实时控制或指令下发
+- 模型或知识更新
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG实现：左右两列布局。左侧从上到下排列“端侧”和“云侧”，用双向箭头连接。右侧从上到下排列“端侧”、“边缘侧”、“云侧”。边缘侧使用虚线框或不同底色突出其作为推理枢纽的角色。箭头使用不同样式（实线、虚线、点线）和颜色区分数据上传、指令下发和模型更新，并匹配图例说明。
+caption:
+  zh: 图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比。左侧传统架构为两层，数据流和控制流直接往返于端云之间。右侧AIoT新架构引入边缘侧作为实时推理和决策枢纽，端侧与云侧通过边缘侧间接交互，云侧主要负责模型训练与知识更新，并定期将更新下推至边缘侧。
+  en: 'Figure 1-18 Traditional end–cloud IoT architecture versus the AIoT edge–end–cloud collaborative architecture. The traditional architecture on the left has two tiers, with data and control flows passing directly between end and cloud. The AIoT architecture on the right introduces the edge as a hub for real-time inference and decisions: end and cloud interact indirectly through the edge, while the cloud mainly handles model training and knowledge updates, periodically pushing them down to the edge.'
+labels:
+  en:
+    图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比: Figure 1-18 End–Cloud IoT vs. Edge–End–Cloud AIoT
+    传统端-云架构与AIoT边-端-云协同架构对比: Traditional end–cloud vs. AIoT edge–end–cloud collaboration
+    左侧端云直连两层，右侧插入边缘侧作推理枢纽三层协同: 'Left: two direct end–cloud tiers. Right: three tiers with the edge as inference hub.'
+    传统端—云架构: Traditional End–Cloud
+    AIoT 边—端—云协同架构: AIoT Edge–End–Cloud
+    数据上传: Data upload
+    指令下发: Command dispatch
+    云服务器: Cloud Server
+    存储 · 应用 · 规则引擎: Storage · apps · rule engine
+    端侧设备: End Devices
+    传感器 / 执行器: Sensors / actuators
+    端云直连，数据与指令直接往返: Direct end–cloud link; data and commands go straight back and forth
+    数据/事件上报: Data/event reporting
+    实时控制/决策: Real-time control/decisions
+    样本回传: Sample return
+    模型/知识下发: Model/knowledge push
+    云侧: Cloud
+    大模型训练 · 复杂推理 · 知识更新: LLM training · complex reasoning · knowledge updates
+    边缘侧（推理枢纽）: Edge (inference hub)
+    边缘网关 · 蒸馏模型推理 · 实时决策: Edge gateway · distilled-model inference · real-time decisions
+    端侧: End
+    采集 · 执行 · 唤醒: Sense · act · wake
+    端云改为经边缘间接交互，云侧退居训练与知识下推: End and cloud now meet via the edge; the cloud retreats to training and knowledge push
+    实线=数据上传 / 样本回传: Solid = data upload / sample return
+    虚线=控制 / 模型下发: Dashed = control / model push
+    图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比。左侧传统架构两层，数据流与控制流直接往返端云之间；右侧AIoT引入边缘侧: 'Figure 1-18 End–cloud IoT vs. edge–end–cloud AIoT. Left: two tiers with data and control flowing directly between end and cloud. Right: AIoT adds the edge —'
+    作为实时推理与决策枢纽，端侧与云侧通过边缘侧间接交互，云侧主要负责模型训练与知识更新并定期下推。: a hub for real-time inference and decisions; end and cloud interact via the edge, and the cloud trains models and pushes updates on a schedule.

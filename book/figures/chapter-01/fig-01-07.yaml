@@ -1,0 +1,138 @@
+type: topology
+title: 图1-7 移动互联网应用生态示意
+audience_takeaway: 读者应理解移动互联网以用户为唯一中心,应用模块围绕用户辐射,且通过社交内嵌支付等交叉连接实现功能聚合而非各自孤立。
+purpose: 展示移动互联网时代以用户为中心的星形应用生态，突出“人-应用-服务”的连接闭环。
+visual_focus: 从用户到移动支付的主链路。
+design_level: logical
+layout: 星形拓扑布局。中心节点为用户，五个外围节点分别为即时通信、社交媒体、移动支付、地图/出行和短视频应用模块。各外围模块之间存在虚线连接（如社交平台内嵌支付功能）。
+elements:
+- 用户
+- 即时通信
+- 社交媒体
+- 移动支付
+- 地图/出行
+- 短视频
+relationships:
+- 用户 → 即时通信（聊天/红包）
+- 用户 → 社交媒体（分享/点赞）
+- 用户 → 移动支付（扫码支付/转账）
+- 用户 → 地图/出行（导航/约车）
+- 用户 → 短视频（拍摄/发布）
+- 社交媒体 → 移动支付（内嵌支付）
+regions:
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: 用户
+  type: application
+  subtitle: ''
+  group: application_domain
+  priority: primary
+  shape: actor
+- id: r2
+  label: 即时通信
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: 社交媒体
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 移动支付
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 地图/出行
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: 短视频
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 聊天/红包
+  style: solid
+  direction: request
+- from: r1
+  to: r3
+  label: 分享/点赞
+  style: solid
+  direction: request
+- from: r1
+  to: r4
+  label: 扫码支付/转账
+  style: solid
+  direction: request
+- from: r1
+  to: r5
+  label: 导航/约车
+  style: solid
+  direction: request
+- from: r1
+  to: r6
+  label: 拍摄/发布
+  style: solid
+  direction: request
+- from: r3
+  to: r4
+  label: 内嵌支付
+  style: solid
+  direction: request
+callouts:
+- 用户 → 即时通信（聊天/红包）
+- 用户 → 社交媒体（分享/点赞）
+- 用户 → 移动支付（扫码支付/转账）
+legend:
+- 中心节点：用户（圆形，黄色）；外围节点：应用模块（矩形，蓝绿色调）；实线箭头从用户指向各应用模块；虚线表示模块间的交叉连接。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: '采用Flexbox布局实现星形拓扑。中心图标使用FontAwesome fa-user，外围图标分别用 fa-comment-dots、fa-share-alt、fa-credit-card、fa-map-marked-alt、fa-video。连接线使用SVG的path绘制贝塞尔曲线，实现平滑放射状，每条连接线中部添加文本标签。模块间虚线用CSS的border-style: dashed实现。'
+caption:
+  zh: 该图展示移动互联网时代以用户为中心的应用生态。即时通信维系熟人关系，社交媒体扩大社交半径，移动支付将社交关系延伸至交易，地图/出行解决物理移动需求，短视频成为新的内容消费和社交入口。模块间交叉连接的含义是：一个应用内往往集成多种功能（例如社交媒体可以内嵌支付入口）。
+  en: This figure shows the user-centered app ecosystem of the mobile-Internet era. Instant messaging maintains close relationships, social media widens the social radius, mobile payment extends social ties into transactions, maps/mobility meet physical travel needs, and short video becomes a new entry for content consumption and social life. The cross-links between modules mean that one app often bundles several functions (for example, social media can embed a payment entry).
+labels:
+  en:
+    图1-7 移动互联网应用生态示意: Figure 1-7 Mobile-Internet App Ecosystem
+    移动互联网以用户为中心的星形应用生态: The user-centered star-shaped app ecosystem of mobile Internet
+    以用户为中心的星形应用生态，模块间交叉连接: A user-centered star ecosystem with cross-links between modules
+    用户: User
+    即时通信: Instant Messaging
+    社交媒体: Social Media
+    移动支付: Mobile Payment
+    地图 / 出行: Maps / Mobility
+    短视频: Short Video
+    聊天 / 红包: Chat / red packets
+    分享 / 点赞: Share / like
+    扫码支付 / 转账: Scan-to-pay / transfer
+    导航 / 约车: Navigation / ride-hailing
+    拍摄 / 发布: Shoot / post
+    内嵌支付: Embedded payment
+    中心节点：用户: 'Center: the user'
+    外围节点：应用模块: 'Periphery: app modules'
+    实线：用户到应用: 'Solid: user to app'
+    虚线：模块间交叉连接: 'Dashed: cross-links between modules'
+    图1-7 移动互联网应用生态示意。用户为唯一中心，五个应用模块围绕其辐射，模块间通过虚线交叉连接实现功能聚合而非各自孤立。: Figure 1-7 Mobile-Internet app ecosystem. The user is the sole center, five app modules radiate around it, and dashed cross-links aggregate functions instead of leaving modules isolated.

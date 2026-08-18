@@ -1,0 +1,144 @@
+type: topology
+title: 图3-4 RFID在智能仓储中的应用拓扑示意
+purpose: 展示UHF RFID在仓储场景中固定式门禁与手持终端配合使用的典型部署模式，帮助读者建立全局系统认识。
+audience_takeaway: 读者应理解RFID仓储方案由现场标签、固定式读写器、手持终端、RFID中间件和WMS五层组件构成，主链路从标签通过天线经中间件抵达业务系统。
+visual_focus: 从RFID标签到WMS主链路的逐级数据流向；固定式读写器与手持终端作为并行的两种采集入口。
+design_level: physical
+layout: 自上而下三层：云端层（WMS）→ 边缘层（RFID中间件）→ 现场层（读写器与标签）。现场层按功能区分为入库区、出库区和货架区三个虚线框。
+elements:
+- UHF RFID 标签
+- 入库与出库固定式读写器、货架区手持终端
+- RFID 中间件与仓库管理系统
+relationships:
+- RFID 标签 → 固定式读写器、手持终端：通过射频完成批量或移动采集
+- 固定式读写器 → RFID 中间件：经 RJ45 上报读取结果
+- 手持终端 → RFID 中间件：经 Wi-Fi 上报盘点结果
+- RFID 中间件 → WMS：过滤汇聚后通过 API 或事件更新库存台账
+regions:
+- id: field_zone
+  label: 现场层
+  role: 标签与读取设备
+- id: edge_zone
+  label: 边缘层
+  role: 数据预处理与转发
+- id: cloud_zone
+  label: 云端层
+  role: 业务逻辑与存储
+components:
+- id: tag
+  label: RFID标签
+  type: edge
+  subtitle: 无源UHF EPC Gen2
+  group: field_zone
+  priority: normal
+  shape: card
+- id: reader_in
+  label: 固定式读写器（入库）
+  type: edge
+  subtitle: 天线×2
+  group: field_zone
+  priority: primary
+  shape: card
+- id: reader_out
+  label: 固定式读写器（出库）
+  type: edge
+  subtitle: 天线×2
+  group: field_zone
+  priority: primary
+  shape: card
+- id: handheld
+  label: 手持终端
+  type: edge
+  subtitle: 移动式UHF
+  group: field_zone
+  priority: normal
+  shape: card
+- id: middleware
+  label: RFID中间件
+  type: platform
+  subtitle: 过滤·汇聚·上报
+  group: edge_zone
+  priority: primary
+  shape: card
+- id: wms
+  label: 仓库管理系统
+  type: platform
+  subtitle: 库存台账
+  group: cloud_zone
+  priority: primary
+  shape: card
+connections:
+- from: tag
+  to: reader_in
+  label: 射频信号
+  style: solid
+  direction: response
+- from: tag
+  to: reader_out
+  label: 射频信号
+  style: solid
+  direction: response
+- from: tag
+  to: handheld
+  label: 射频信号
+  style: solid
+  direction: response
+- from: reader_in
+  to: middleware
+  label: 有线RJ45
+  style: solid
+  direction: bottom-to-top
+- from: reader_out
+  to: middleware
+  label: 有线RJ45
+  style: solid
+  direction: bottom-to-top
+- from: handheld
+  to: middleware
+  label: Wi-Fi
+  style: dashed
+  direction: bottom-to-top
+- from: middleware
+  to: wms
+  label: API/事件
+  style: solid
+  direction: bottom-to-top
+callouts:
+- 固定式读写器天线安装在门架两侧，货物通过时触发自动批量读取。
+- 手持终端用于日常盘点与异常查找，与固定式读写器形成互补。
+- RFID中间件的关键职责是过滤重复读取、合并多天线数据，减轻WMS负载。
+legend:
+- 现场层：浅绿色背景；边缘层：浅灰色背景；云端层：浅蓝色背景。
+- 实线箭头=有线网络；虚线箭头=无线网络。
+- 读写器元件用主机+天线图标，手持终端用手持设备图标。
+visual_constraints:
+- 最多8个节点，标签使用短名词。
+- 图例放在底部，不遮挡主体。
+- 现场层三个子功能区用虚线方框区分，不额外增加节点。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形，12px间距。箭头带文字标签。现场层内三个功能区不单独作为组件，仅用虚线框表示。
+caption:
+  zh: 图3-4 展示UHF RFID在仓储场景中固定式门禁与手持终端配合使用的典型部署模式。示意场景：固定式读写器在数秒内可批量读取通过门禁的货物标签。
+  en: Figure 3-4 A typical UHF RFID deployment pattern for warehouses, combining fixed portals with handheld terminals. In the illustrated scene, a fixed reader batch-reads the tags of all goods passing through the portal within seconds.
+labels:
+  en:
+    图3-4 RFID在智能仓储中的应用拓扑示意: Figure 3-4 RFID Topology in a Smart Warehouse
+    RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。: RFID tags flow into the middleware via fixed readers or handheld terminals; the three entry points share one WMS inventory ledger.
+    固定式门禁持续采集进出事件，手持终端补充货架盘点，两路数据在边缘层汇聚: Fixed portals continuously capture in/out events while handhelds add shelf counts; both streams converge at the edge layer
+    云端层: Cloud Layer
+    WMS 仓储管理系统: WMS Warehouse Management
+    入出库校验 · 库存台账 · 差异报告: In/out checks · inventory ledger · discrepancy reports
+    API / 事件更新台账: API / event updates ledger
+    边缘层: Edge Layer
+    RFID 中间件: RFID Middleware
+    去重 · 过滤 · EPC 事件聚合 · WMS 接口: Dedup · filter · EPC event aggregation · WMS interface
+    现场层: Field Layer
+    入库区: Inbound Zone
+    固定式读写器: Fixed Reader
+    门禁天线 ×2 ← UHF 标签: Portal antennas ×2 ← UHF tags
+    批量采集进出事件: Batch capture of in/out events
+    出库区: Outbound Zone
+    货架区: Rack Zone
+    手持终端: Handheld Terminal
+    移动盘点 ← 货架 UHF 标签: Mobile counts ← rack UHF tags
+    补充盘点: Supplementary counts
+    图3-4 RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。: Figure 3-4 RFID tags flow into the middleware via fixed readers or handheld terminals; all three entry points share the same WMS inventory ledger.

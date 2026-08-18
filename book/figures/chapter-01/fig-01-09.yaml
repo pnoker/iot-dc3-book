@@ -1,0 +1,43 @@
+type: timeline
+title: 图1-9 物联网定义的演变：从识别到泛在连接
+audience_takeaway: 读者应理解物联网定义经历识别、感知、连接三次扩展，评判系统需要多强识别、多广感知，直接决定架构取舍。
+purpose: 展示 1999 RFID+EPC、2003 WSN、2004 u-Japan 三个节点如何把定义从「识别物」拓宽到「连接万物」。
+visual_focus: 三个阶段的演进箭头与时间轴，识别→感知→连接的能力扩展。
+design_level: logical
+layout: 三列阶段卡片 + 水平时间轴 + 能力扩展阶梯，底部结论条。
+elements:
+- 阶段一 识别物：RFID + EPC，回答「谁、在哪」，1999 MIT Auto-ID Center
+- 阶段二 感知环境：WSN 无线传感网，主动上报温度/湿度/振动，2003《技术评论》十大技术
+- 阶段三 连接万物：u-Japan 泛在网络，人人、人物、物物互联，2004 日本构想
+relationships:
+- 三阶段按时间先后演进，能力从识别扩展到感知再扩展到连接
+- 但此阶段连接仍是被动，主动决策是下一轮演变的起点（1.5 节）
+render_notes: 时间轴与三阶段卡片，语义色蓝/青/橙。完整 HTML 见 figures/chapter-01/fig-01-09.html。
+caption:
+  zh: 图1-9 物联网定义的演变：从识别到泛在连接。RFID+EPC 实现识别，无线传感网补足感知，u-Japan 泛在网络追求连接万物——被动连接的终点，正是主动决策的起点。
+  en: 'Figure 1-9 The evolving definition of the IoT: from identification to ubiquitous connection. RFID+EPC delivered identification, wireless sensor networks added sensing, and the u-Japan ubiquitous network pursued connecting everything — the endpoint of passive connection is precisely the starting point of active decision-making.'
+labels:
+  en:
+    图1-9 物联网定义的演变：从识别到泛在连接: 'Figure 1-9 The IoT Definition Evolves: Identification to Ubiquitous Connection'
+    物联网定义从识别到泛在连接的三次扩展: Three expansions of the IoT definition, from identification to ubiquitous connection
+    1999 RFID+EPC → 2003 WSN → 2004 u-Japan 三次扩展: 1999 RFID+EPC → 2003 WSN → 2004 u-Japan
+    阶段一 · 识别物: Stage 1 · Identify things
+    回答「谁、在哪」: Answers "who and where"
+    阶段二 · 感知环境: Stage 2 · Sense the environment
+    WSN 无线传感网: WSN wireless sensor networks
+    主动上报温度 / 湿度 / 振动: Actively report temperature / humidity / vibration
+    2003 ·《技术评论》十大技术: 2003 · Technology Review Top 10
+    阶段三 · 连接万物: Stage 3 · Connect everything
+    u-Japan 泛在网络: u-Japan ubiquitous network
+    人人 · 人物 · 物物互联: People–people · people–things · things–things
+    2004 · 日本构想: 2004 · Japan's vision
+    识别→感知: Identify → sense
+    感知→连接: Sense → connect
+    识别: Identify
+    感知: Sense
+    连接: Connect
+    能力扩展: Expanding capability
+    三阶段：识别 → 感知 → 连接，能力逐次扩展: Three stages — identify → sense → connect; capability grows each time
+    但此阶段连接仍是被动——被动连接的终点，正是主动决策的起点（1.5 节）: Yet connection is still passive here — the end of passive connection is the start of active decision (Section 1.5)
+    图1-9 物联网定义的演变：从识别到泛在连接。RFID+EPC 实现识别，无线传感网补足感知，u-Japan 泛在网络追求连接万物——: 'Figure 1-9 The evolving definition of the IoT: from identification to ubiquitous connection. RFID+EPC delivered identification, WSN added sensing, u-Japan pursued connecting everything —'
+    被动连接的终点，正是主动决策的起点。: the endpoint of passive connection is the start of active decision-making.

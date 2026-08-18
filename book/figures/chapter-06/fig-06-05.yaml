@@ -1,0 +1,100 @@
+type: layered
+title: 图6-5 物联网微服务容器部署的端-边-云分层架构
+audience_takeaway: 读者应理解边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。
+purpose: 展示从端设备、边缘节点到云端的数据流与控制流，以及各层使用的容器编排工具
+visual_focus: 从云端层到端设备层的主链路。
+design_level: logical
+layout: 自下而上三层架构：端设备层 → 边缘计算层 → 云端中心层
+elements:
+- 云端层：完整 Kubernetes 集群，包含控制平面（API Server, Scheduler, Controller Manager）和中心服务 Pod（manager, data, notify 等），使用蓝色服务块
+- 边缘层：多个边缘节点，每个运行 k3s 集群；节点内包含边缘网关 Pod、协议适配 Pod（Modbus、MQTT Driver）、按需本地缓冲和确定性规则进程，使用青绿色服务块
+- 端设备层：传感器、PLC、执行器，通过现场总线（Modbus RTU, CAN）或无线（Zigbee, LoRa）连接至边缘节点，使用灰色节点
+relationships:
+- 云端中心服务通过 MQTT Broker 与边缘网关异步交换数据，实线双向箭头
+- 边缘节点与端设备之间采用实时采集/控制回路，不经过云端，实线双向箭头
+- 边缘运行时与云端同步可采用 gRPC 或 MQTT QoS 1，虚线箭头
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: c1
+  label: 云端层
+  type: platform
+  subtitle: 完整 Kubernetes 集群，包含控制平面（API…
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: 边缘层
+  type: edge
+  subtitle: 节点内包含：边缘网关 Pod、协议适配 Pod（Mod…
+  group: edge_domain
+  priority: primary
+  shape: bus
+- id: c3
+  label: 端设备层
+  type: edge
+  subtitle: 传感器、PLC、执行器，通过现场总线（Modbus R…
+  group: edge_domain
+  priority: normal
+  shape: bus
+connections:
+- from: c1
+  to: c2
+  label: 云端中心服务通过 MQTT Bro…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 边缘节点与端设备之间采用实时采集/…
+  style: solid
+  direction: left-to-right
+callouts:
+- 云端中心服务通过 MQTT Broker 与边缘网关异步交换数据，实线双向箭头
+- 边缘节点与端设备之间采用实时采集/控制回路，不经过云端，实线双向箭头
+- 边缘运行时与云端同步可采用 gRPC 或 MQTT QoS 1，虚线箭头
+legend:
+- 蓝色=核心平台中心服务；青绿色=边缘计算与设备接入；灰色=端设备与现场总线
+- 实线箭头=同步调用或强依赖；虚线箭头=异步消息或可选同步
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，三层纵列排布。层间连接线标注主要协议类型。边缘 k3s 节点内使用较小尺寸的 Pod 图标以体现资源差异。
+caption:
+  zh: 图6-5 展示物联网微服务从端设备到边缘节点再到云端的容器部署分层架构。边缘层运行 k3s 轻量集群处理协议适配和本地缓存，云端运行完整 K8s 集群承载中心服务。
+  en: 'Figure 6-5 Shows the layered container deployment of IoT microservices from end devices through edge nodes to the cloud. The edge tier runs lightweight k3s clusters for protocol adaptation and local buffering, while the cloud runs a full K8s cluster hosting the central services.'
+labels:
+  en:
+    图6-5 物联网微服务容器部署的端—边—云分层架构: Figure 6-5 Device–Edge–Cloud Container Deployment for IoT Microservices
+    边缘按规模选择运行时，实时采集与控制在本地闭环。: Edge runtimes scale by node size; real-time acquisition and control close locally.
+    云端中心层 · 完整 Kubernetes 集群: Cloud core · full Kubernetes cluster
+    控制平面: Control Plane
+    中心服务 Pod: Central Service Pods
+    边缘计算层 · 按规模选择 k3s / 轻量容器: Edge tier · k3s / lightweight containers by scale
+    边缘节点 1 · k3s: Edge Node 1 · k3s
+    边缘网关 Pod: Edge Gateway Pod
+    协议适配 Pod: Protocol Adapter Pod
+    本地缓冲/规则: Local Buffer / Rules
+    边缘节点 2 · k3s: Edge Node 2 · k3s
+    边缘节点 3 · k3s: Edge Node 3 · k3s
+    端设备层: End Device Layer
+    传感器: Sensors
+    无线 Zigbee / LoRa: Wireless Zigbee / LoRa
+    现场总线 Modbus RTU / CAN: Fieldbus Modbus RTU / CAN
+    执行器: Actuators
+    现场总线 · 无线控制: Fieldbus · Wireless Control
+    数据 / 状态上行: Data / Status Uplink
+    配置 / 模型下发: Config / Model Delivery
+    本地采集: Local Acquisition
+    确定性控制: Deterministic Control
+    实时采集 / 控制回路 · 不经云端: Real-time control loop · not via cloud
+    云端中心（K8s）: 'Cloud core (K8s)'
+    边缘计算（k3s）: 'Edge (k3s)'
+    端设备与现场总线: Devices & Fieldbus
+    实时数据 / 控制（实线）: 'Real-time data / control (solid)'
+    可选同步（虚线）: 'Optional sync (dashed)'
+    图6-5 云端承担集中编排，边缘承担离线自治；是否引入 k3s 取决于节点规模与运维收益。: 'Figure 6-5 The cloud centralizes orchestration while the edge runs offline autonomously; adopting k3s depends on node scale and ops payoff.'

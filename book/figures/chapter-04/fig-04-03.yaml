@@ -1,0 +1,120 @@
+type: layered
+title: 图4-3 5G网络切片IoT应用示意
+audience_takeaway: 读者应理解同一张5G物理网经切片选择功能逻辑隔离出三类SLA业务；NB-IoT/LTE-M复用运营商蜂窝基础设施，作为既有蜂窝IoT接入单列，不是5G NR兼容模式。
+purpose: 展示同一张5G物理网络通过切片技术同时承载uRLLC、eMBB、mMTC三类IoT业务，并将NB-IoT/LTE-M作为既有蜂窝IoT接入单独对照。
+visual_focus: 5G NR与切片的主链路，以及与NB-IoT/LTE-M接入路径的边界。
+design_level: logical
+layout: 左侧为5G NR无线接入、5G核心网与三个逻辑隔离切片；右侧单列NB-IoT/LTE-M既有蜂窝IoT接入，不嵌入mMTC切片。
+elements:
+- 5G底层共享层：5G NR无线接入与5G核心网（网络切片选择、会话管理、用户面功能）。使用灰色横条表示。
+- uRLLC切片：左侧红色胶囊，内部标注终端（工业机器人、AGV）及性能标签（毫秒级时延）。
+- eMBB切片：中间蓝色胶囊，内部标注终端（AI摄像头、高清监控）及性能标签（Gbps级吞吐）。
+- mMTC切片：右侧绿色胶囊，内部标注终端（水表、温湿度传感器、井盖）及性能标签（极高连接密度）。
+- 既有蜂窝IoT接入：NB-IoT/LTE-M独立列在5G NR与切片体系之外。
+relationships:
+- 底层共享层水平承载三个切片，通过网络切片选择功能实现逻辑隔离。
+- NB-IoT/LTE-M作为既有蜂窝IoT接入单独标注，与5G NR无线接入概念区分。
+- 三个切片使用虚线分隔，共享底层资源但逻辑隔离。
+regions:
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与 Agent 边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: c1
+  label: 底层共享层
+  type: application
+  subtitle: 使用灰色横条表示
+  group: application_domain
+  priority: primary
+  shape: actor
+- id: c2
+  label: uRLLC切片
+  type: platform
+  subtitle: 左侧红色胶囊，内部标注终端（工业机器人、AGV）及性能…
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: eMBB切片
+  type: ai
+  subtitle: 中间蓝色胶囊，内部标注终端（AI摄像头、高清监控）及性…
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: c4
+  label: mMTC切片
+  type: edge
+  subtitle: 底部额外标注‘兼容NB-IoT/eMTC’
+  group: edge_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 底层共享层水平承载三个切片，通过网…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: mMTC切片底部与NB-IoT/e…
+  style: solid
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: 三个切片使用虚线分隔，共享底层资源…
+  style: dashed
+  direction: left-to-right
+callouts:
+- 底层共享层水平承载三个切片，通过网络切片选择功能实现逻辑隔离
+- mMTC切片底部与NB-IoT/eMTC兼容模式通过虚线相连，表明继承关系
+- 三个切片使用虚线分隔，共享底层资源但逻辑隔离
+legend:
+- 红色：uRLLC切片。
+- 蓝色：eMBB切片。
+- 绿色：mMTC切片。
+- 灰色：共享基础设施（5G NR + 5G核心网）。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG渲染，底层为深灰色胶囊表示物理共享层，上方左、中、右三栏分别高亮渲染（红、蓝、绿）。终端图标使用简易矢量符号。mMTC切片底部标注“兼容NB-IoT/eMTC”标签。整体浅色背景，圆角矩形，统一间距。
+caption:
+  zh: 图4-3 通过5G网络切片技术，同一物理网络可同时承载不同服务质量需求的IoT场景。uRLLC保障毫秒级时延，mMTC提供极高连接密度，eMBB提供Gbps级吞吐。平台侧仍需协议适配层归一异构终端。
+  en: 'Figure 4-3 With 5G network slicing, a single physical network can carry IoT scenarios with different QoS requirements simultaneously. uRLLC guarantees millisecond-level latency, mMTC delivers extremely high connection density, and eMBB provides Gbps-class throughput. The platform side still needs a protocol adaptation layer to unify heterogeneous devices.'
+labels:
+  en:
+    图4-3 5G网络切片IoT应用示意: 'Figure 4-3 5G Network Slicing for IoT'
+    同一 5G NR 与核心网通过 uRLLC、eMBB、mMTC 三类切片，同时承载毫秒级时延、Gbps 吞吐与极高连接密度三类差异化需求。: 'One 5G NR and core network carries three differentiated needs — millisecond latency, Gbps throughput, and massive connection density — through uRLLC, eMBB, and mMTC slices.'
+    5G NR 与网络切片域: '5G NR & Network Slicing'
+    5G NR 无线接入: '5G NR Radio Access'
+    5G 核心网（切片选择、会话管理、用户面功能）: '5G Core (slicing, session mgmt, user plane)'
+    uRLLC切片: 'uRLLC Slice'
+    毫秒级时延: 'Millisecond Latency'
+    • 工业机器人: '• Industrial robots'
+    eMBB切片: 'eMBB Slice'
+    Gbps级吞吐: 'Gbps Throughput'
+    • AI摄像头: '• AI Cameras'
+    • 高清监控: '• HD Surveillance'
+    mMTC切片: 'mMTC Slice'
+    极高连接密度: 'Massive Density'
+    • 水表: '• Water Meters'
+    • 温湿度传感器: '• Temp/Humidity Sensors'
+    • 井盖: '• Manhole Covers'
+    既有蜂窝 IoT 接入: 'Existing Cellular IoT'
+    复用运营商 LTE 基础设施: 'Reuses operator LTE'
+    可接入演进核心网: 'Connects to EPC'
+    独立接入技术: 'Standalone Access'
+    不嵌入 mMTC 切片: 'Not in mMTC slice'
+    与 5G NR / 切片体系并列对照: 'Alongside 5G NR / slicing'
+    红色：uRLLC切片: 'Red: uRLLC slice'
+    蓝色：eMBB切片: 'Blue: eMBB slice'
+    绿色：mMTC切片: 'Green: mMTC slice'
+    图4-3 通过5G网络切片技术，同一物理网络可同时承载不同服务质量需求的IoT场景。uRLLC保障毫秒级时延，mMTC提供极高连接密度，eMBB提供Gbps级吞吐。平台侧仍需协议适配层归一异构终端。: 'Figure 4-3 With 5G network slicing, one physical network simultaneously carries IoT scenarios with different QoS needs: uRLLC ensures millisecond latency, mMTC delivers massive connection density, and eMBB provides Gbps-class throughput. The platform still needs a protocol adaptation layer to unify heterogeneous devices.'

@@ -1,0 +1,58 @@
+type: matrix
+title: 图14-9 部署形态选择与边缘节点管理
+audience_takeaway: 读者应理解公有云、私有云、边缘三种部署形态对应不同权衡，边缘节点管理需解决状态感知、配置分发、版本管控，OTA 依赖差分、事务与灰度。
+purpose: 对比三种部署形态并展示边缘节点管理与 OTA 要点
+visual_focus: 三列部署形态卡片与边缘管理三件事。
+design_level: matrix
+layout: 上半三列部署形态（公有云/私有云/边缘），下半边缘节点管理三件事 + OTA 三能力
+elements:
+- 公有云：运维低、账单易超预期、典型智慧城市/车联网
+- 私有云：掌控强、需自扛高可用、典型工厂/园区/医疗
+- 边缘部署：可离线自治、引入节点管理成本、典型工业现场/矿山/港口
+- 边缘管理：状态感知（心跳 1.5 倍）、配置分发（中心化）、版本管控（可回滚）
+- OTA：差分升级、升级事务、灰度发布
+relationships:
+- 三种形态对应不同数据主权与运维能力，实际多为组合；边缘管理三件事支撑节点治理
+render_notes: HTML/SVG 渲染，三列对比卡片 + 底部边缘管理与 OTA，蓝绿橙三色。
+caption:
+  zh: 图14-9 公有云、私有云、边缘三种部署形态对应不同权衡；边缘节点管理需解决状态感知、配置分发、版本管控三件事，OTA 升级依赖差分、事务与灰度保证一键回滚。
+  en: 'Figure 14-9 Public cloud, private cloud, and edge are three deployment forms with different trade-offs; edge node management must solve status sensing, configuration distribution, and version control, and OTA upgrades rely on delta updates, transactions, and canary releases to guarantee one-click rollback.'
+labels:
+  en:
+    图14-9 部署形态选择与边缘节点管理: 'Figure 14-9 Deployment Form Selection & Edge Node Management'
+    公有云、私有云、边缘三种部署形态对应不同权衡，边缘节点需解决状态感知、配置分发、版本管控。: 'Public cloud, private cloud, and edge represent different trade-offs; edge nodes must solve status sensing, configuration distribution, and version control.'
+    云、私有、边缘不是线性梯度，而是对应不同的数据主权与运维能力: 'Cloud, private, and edge are not a linear gradient — they map to different data sovereignty and ops capabilities'
+    公有云: 'Public Cloud'
+    运维复杂度低，云厂商兜底: 'Low ops complexity; the cloud vendor carries failures'
+    适合设备分布广、流量标准化: 'Suits widely distributed devices and standard traffic'
+    运维团队规模小的场景: 'with small ops teams'
+    代价：带宽与消息量账单常超预期: 'Cost: bandwidth and message bills often exceed expectations'
+    典型：智慧城市、车联网: 'Typical: smart cities, connected vehicles'
+    私有云: 'Private Cloud'
+    掌控力强，数据主权敏感场景: 'Strong control; data-sovereignty-sensitive scenarios'
+    工厂、园区、医疗: 'Factories, campuses, healthcare'
+    需自己扛高可用: 'High availability is your own burden'
+    单台宕机的交叉损失可能超一年托管费: 'One server down can cost more than a year of hosting fees'
+    多数选择单点加冷备的现实妥协: 'Most settle for the pragmatic single node plus cold standby'
+    边缘部署: 'Edge Deployment'
+    协议驱动下沉到边缘网关: 'Protocol drivers pushed down to edge gateways'
+    广域网抖动消化在消息缓存: 'WAN jitter absorbed in message caches'
+    断网时本地自治: 'Local autonomy when the network is down'
+    降低带宽与存储，引入节点管理成本: 'Less bandwidth and storage, but node-management cost'
+    典型：工业现场、矿山、港口: 'Typical: industrial sites, mines, ports'
+    边缘节点管理：一个被低估的运维负担: 'Edge Node Management: an underrated ops burden'
+    ① 状态感知: '1. Status Sensing'
+    Agent 驻留网关，经 MQTT/HTTP 上报心跳: 'A resident agent on the gateway reports heartbeats over MQTT/HTTP'
+    心跳周期约为数据上报周期 1.5 倍: 'Heartbeat interval ≈ 1.5× the reporting interval'
+    连续多次未收到则标记“离线”: 'A few consecutive misses mark the node "offline"'
+    ② 配置分发: '2. Config Distribution'
+    驱动参数、采集频率、告警阈值修改: 'Driver parameters, collection frequency, alert thresholds'
+    经中心化配置服务 + REST API 下发: 'Pushed via a central config service + REST API'
+    避免运维手动改文件、排查递归增压: 'No manual file edits, no snowballing troubleshooting load'
+    ③ 版本管控: '3. Version Control'
+    驱动、Agent 版本可追溯、可回滚: 'Driver and agent versions are traceable and rollback-ready'
+    保留最近几个驱动版本镜像: 'Keep images of the last few driver versions'
+    驱动容器化，由编排工具管理更新策略: 'Drivers are containerized; the orchestrator manages update policy'
+    OTA 升级三能力：成败在一键回滚: 'Three OTA Capabilities: success hinges on one-click rollback'
+    差分升级（只下发变更部分）· 升级事务（下载→校验签名→写入→切换→上报，失败回退）· 灰度发布（少量设备先升级，看数据量与错误率）: 'Delta updates (only changes are shipped) · upgrade transactions (download→verify signature→write→switch→report, roll back on failure) · canary releases (a few devices first, then watch volume and error rate)'
+    图14-9 公有云、私有云、边缘三种部署形态对应不同权衡；边缘节点管理需解决状态感知、配置分发、版本管控三件事，OTA 升级依赖差分、事务与灰度保证一键回滚。: 'Figure 14-9 Public cloud, private cloud, and edge are three deployment forms with different trade-offs; edge node management must solve status sensing, configuration distribution, and version control, and OTA upgrades rely on delta updates, transactions, and canary releases to guarantee one-click rollback.'

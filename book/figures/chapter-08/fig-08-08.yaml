@@ -1,0 +1,120 @@
+type: architecture
+title: 图8-8 物联网微隔离架构示意图
+audience_takeaway: 读者应理解微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。
+purpose: 展示从设备层到策略编排层的四层分层模型，说明微分段如何通过SDN控制器实现逐设备级别的隔离规则，防止横向移动。
+visual_focus: 从layer1到layer1的主链路。
+design_level: logical
+layout: 四层堆叠分层，自底向上依次为物理设备层、接入网关层、微分段控制层、全局策略编排层，层间用带箭头的实线或虚线连接。
+elements:
+- 物理设备层
+- 接入网关层
+- 微分段控制层
+- 全局策略编排层
+relationships:
+- layer1 → layer2
+- layer2 → layer3
+- layer3 → layer2
+- layer4 → layer3：编排层向微分段控制器下发策略
+- layer3 → layer2：控制器向网关等策略执行点下发规则
+- layer2 → layer1：执行点实施流量隔离，编排层不直达设备
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: r1
+  label: layer1
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: layer2
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: layer3
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: layer4
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 主链路
+  style: solid
+  direction: request
+- from: r2
+  to: r3
+  label: 主链路
+  style: dashed
+  direction: request
+- from: r3
+  to: r2
+  label: 主链路
+  style: solid
+  direction: request
+- from: r4
+  to: r3
+  label: 主链路
+  style: solid
+  direction: request
+- from: r4
+  to: r1
+  label: 主链路
+  style: dashed
+  direction: request
+callouts:
+- layer1 → layer2
+- layer2 → layer3
+- layer3 → layer2
+legend:
+- 分层组件，每个层包含多个功能实体
+- 策略或配置数据的流向
+- 控制咨询或动态调整的流向
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用分层框图，底部为设备层，向上叠加网关、控制器和策略层。层与层之间用带箭头的实线或虚线标注数据流和控制流。每层可以用方框加内部文字表示，不同层用不同背景色区分，重点突出控制层与设备层之间的一对多关系。
+caption:
+  zh: 图8-8 物联网微隔离架构示意图。四层模型从设备到策略编排依次递进，微分段控制层是核心决策点。
+  en: Figure 8-8 A micro-segmentation architecture for IoT. The four-layer model ascends from devices to policy orchestration, with the micro-segmentation control layer as the core decision point.
+labels:
+  en:
+    图8-8 物联网微隔离架构示意图: Figure 8-8 IoT Micro-Segmentation Architecture
+    读者应理解微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。: Micro-segmentation pushes isolation rules down to the SDN control layer and issues per-device policies, so a compromised device cannot move laterally within the network.
+    平台服务域: Platform Service Domain
+    策略下发: Policy Delivery
+    规则下发: Rule Delivery
+    状态上报: Status Reporting
+    设备接入: Device Access
+    全局策略编排层: Global Policy Orchestration Layer
+    统一策略建模 · 全局编排 · 应急隔离决策: Unified Policy Modeling · Global Orchestration · Emergency Isolation
+    微分段控制层: Micro-Segmentation Control Layer
+    SDN 微分段控制器 · 生成逐设备隔离规则: SDN Micro-Segmentation Controller · Per-Device Isolation Rules
+    核心决策点: Core Decision Point
+    接入网关层: Access Gateway Layer
+    策略执行点 · 身份认证 · 流量阻断与转发: Policy Enforcement Point · Authentication · Traffic Blocking & Forwarding
+    物理设备层: Physical Device Layer
+    海量感知/控制终端 · 被隔离保护对象: Massive Sensing/Control Endpoints · Protected Objects
+    智能门锁: Smart Lock
+    环境传感器: Environment Sensor
+    PLC 控制: PLC Control
+    摄像头终端: Camera Terminal
+    分层组件（每个层包含多个功能实体）: Layered Components (Multiple Entities per Layer)
+    策略或配置数据的流向（实线）: Policy/Config Data Flow (Solid)
+    控制咨询或动态调整的流向（虚线）: Control Query / Dynamic Adjustment Flow (Dashed)
+    图8-8 编排层只向微分段控制器下发策略，控制器再由网关等执行点实施隔离；编排不直达设备。: Figure 8-8 The orchestration layer delivers policies only to the micro-segmentation controller, which enforces isolation through gateways and other enforcement points; orchestration never reaches devices directly.
