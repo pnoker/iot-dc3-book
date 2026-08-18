@@ -9,8 +9,8 @@ import {fileURLToPath} from 'node:url'
 import {dirname, join} from 'node:path'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const svg = join(root, 'docs', 'public', 'og-image.svg')
-const png = join(root, 'docs', 'public', 'og-image.png')
+const svg = join(root, 'book', 'public', 'og-image.svg')
+const png = join(root, 'book', 'public', 'og-image.png')
 
 const candidates = [
   process.env.CHROME_BIN,

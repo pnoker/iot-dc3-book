@@ -1,10 +1,15 @@
 import {defineConfig} from 'vitepress'
-import {sidebar} from './sidebar'
-import {sidebarEn} from './sidebar.en'
 import {transformHead} from './seo'
+import {sidebarZh, sidebarEn, rewrite} from './buildkit/site'
+import {bookMarkdownPlugin} from './buildkit/markdown'
+import {prepareAssets, bookAssetsPlugin} from './buildkit/assets'
 
 const BOOK_TITLE = '从工业软件到 AI 智能体'
 const BOOK_TITLE_EN = 'From Industrial Software to AI Agents'
+
+// 手稿即终稿：config 加载期同步产出全部派生资产（figures.css / 图库 JSON /
+// divider.css / cover.css / cover-art.ts / cover.png），并跑色值与双语审计（fail build）
+prepareAssets()
 
 export default defineConfig({
   title: '从工业软件到 AI 智能体',
@@ -12,7 +17,17 @@ export default defineConfig({
   lang: 'zh-CN',
   base: '/',
   cleanUrls: true,
-  srcExclude: ['design/**', 'AGENTS.md', 'CLAUDE.md'],
+  // 手稿树内不独立成页的内容：写作规范、手稿协作文档、章引言（并入章首页渲染）
+  srcExclude: [
+    'WRITING_GUIDE.md',
+    'manuscript/README.md',
+    'manuscript/TRANSLATION_CONTRACT.md',
+    '**/_intro.md',
+    'design/**',
+  ],
+
+  // 手稿/结构页 → 站点路由（唯一映射，URL 与既有线上结构一致）
+  rewrites: rewrite,
 
   sitemap: {hostname: 'https://book.dc3.site'},
 
@@ -90,6 +105,8 @@ export default defineConfig({
 
   markdown: {
     config(md: any) {
+      // 手稿即终稿：页面分型变换（锚点→内联 SVG、扉页注入、标题升降级、byline、节导航）
+      md.use(bookMarkdownPlugin)
       md.core.ruler.before('inline', 'cn_bold_close', (state: any) => {
         for (const tok of state.tokens) {
           if (tok.type === 'inline' && tok.content) {
@@ -103,13 +120,17 @@ export default defineConfig({
     },
   },
 
+  vite: {
+    plugins: [bookAssetsPlugin()],
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     siteTitle: '从工业软件到 AI 智能体',
     outline: {level: [2, 3], label: '本页目录'},
     sidebar: {
-      '/': sidebar,
-      '/en/': sidebarEn,
+      '/': sidebarZh(),
+      '/en/': sidebarEn(),
     },
 
     search: {

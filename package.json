@@ -4,15 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "web": "uv run python scripts/build_web.py",
-    "dev": "pnpm web && vitepress dev docs",
+    "dev": "vitepress dev book",
     "gen:og": "node scripts/gen-og-image.mjs",
-    "build": "pnpm web && vitepress build docs && node scripts/enhance-sitemap.cjs && node scripts/generate-feed.cjs && node scripts/generate-llms-full.cjs",
-    "preview": "vitepress preview docs"
+    "build": "vitepress build book && node scripts/enhance-sitemap.cjs && node scripts/generate-feed.cjs && node scripts/generate-llms-full.mjs",
+    "preview": "vitepress preview book"
   },
   "devDependencies": {
     "medium-zoom": "^1.1.0",
+    "nunjucks": "^3.2.4",
     "vitepress": "^1.6.4",
-    "vue": "^3.5.40"
+    "vue": "^3.5.40",
+    "yaml": "^2.9.0"
   }
 }

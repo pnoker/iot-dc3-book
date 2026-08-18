@@ -1,17 +1,21 @@
-# Python
-__pycache__/
-*.py[oc]
-.mypy_cache/
-.pytest_cache/
-.ruff_cache/
-build/
-dist/
-wheels/
-*.egg-info
-*.egg
+# Node / VitePress
+node_modules/
+pnpm-debug.log*
+book/.vitepress/cache/
 
-# Virtual environments
-.venv
+# 构建产物（dist 由裸模式覆盖任意层级；build 锚定根目录，避免误吞深层同名目录）
+dist/
+/build/
+
+# 构建期派生资产（由 book/.vitepress/buildkit 产出，本地与 CI 重新生成；不进 git）
+book/public/figures.css
+book/public/figures-manifest.json
+book/public/figures-svg.json
+book/public/figures-svg-en.json
+book/public/divider.css
+book/public/cover.css
+book/public/cover.png
+book/.vitepress/theme/cover-art.ts
 
 # IDE
 .idea/
@@ -37,30 +41,3 @@ Thumbs.db
 audit/
 audit0/
 .claude/worktrees/
-
-# Node / VitePress
-node_modules/
-docs/.vitepress/cache/
-pnpm-debug.log*
-
-# web 转换脚本生成物（由 scripts/build_web.py 产出，本地与 CI 重新生成；不进 git）
-docs/public/figures.css
-docs/public/figures-manifest.json
-docs/public/figures-svg.json
-docs/public/divider.css
-docs/public/cover.css
-docs/public/cover.png
-docs/preface/
-docs/foundations/
-docs/technical/
-docs/applications/
-docs/appendix/
-docs/en/preface/
-docs/en/foundations/
-docs/en/technical/
-docs/en/applications/
-docs/en/appendix/
-docs/.vitepress/sidebar.ts
-docs/.vitepress/sidebar.en.ts
-docs/.vitepress/theme/cover-art.ts
-figures-svg-en.json

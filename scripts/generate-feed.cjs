@@ -2,8 +2,8 @@
 /**
  * 生成 Atom / RSS feed — VitePress 原生不支持，此脚本在构建后运行。
  *
- * 输入: docs/.vitepress/dist/sitemap.xml + book/config/parts.yaml
- * 输出: docs/.vitepress/dist/feed.xml (Atom 1.0)
+ * 输入: book/.vitepress/dist/sitemap.xml + book/config/parts.yaml
+ * 输出: book/.vitepress/dist/feed.xml (Atom 1.0)
  *
  * 用途: RSS 阅读器订阅、搜索引擎 feed 发现、内容聚合平台抓取。
  */
@@ -13,7 +13,7 @@ const { join } = require('node:path')
 const { execSync } = require('node:child_process')
 
 const ROOT = join(__dirname, '..')
-const DIST = join(ROOT, 'docs', '.vitepress', 'dist')
+const DIST = join(ROOT, 'book', '.vitepress', 'dist')
 
 const SITE_URL = 'https://book.dc3.site'
 const BOOK_TITLE = '从工业软件到 AI 智能体'

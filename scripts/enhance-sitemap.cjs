@@ -9,7 +9,7 @@
 const { readFileSync, writeFileSync } = require('node:fs')
 const { join } = require('node:path')
 
-const distDir = join(__dirname, '..', 'docs', '.vitepress', 'dist')
+const distDir = join(__dirname, '..', 'book', '.vitepress', 'dist')
 const sitemapPath = join(distDir, 'sitemap.xml')
 
 let xml
