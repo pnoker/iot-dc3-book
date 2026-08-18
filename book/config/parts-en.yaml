@@ -1,6 +1,6 @@
 # English part/chapter structure — mirrors book/config/parts.yaml (same chapter ids, same order).
-# Consumed by scripts/build_web.py to generate the /en/ locale of the web edition.
-# Translate a chapter by adding section files under book/manuscript-en/chapter-XX/.
+# Consumed by book/.vitepress/buildkit at render time to produce the /en/ locale.
+# Translate a chapter by adding section files under book/manuscript/en/chapter-XX/.
 
 - name: "Part I · Foundations: From Industrial Software to the IoT Platform Base"
   prefix: "I"

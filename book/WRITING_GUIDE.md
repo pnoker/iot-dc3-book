@@ -97,7 +97,7 @@ IoT DC3 是贯穿部分章节的工程案例，不是所有结论的唯一依据
 - `elements` 描述图中实体，`relationships` 描述实体间有方向和含义的关系；
 - `caption.zh` / `caption.en` 独立说明图表结论，而不是只复述标题；
 - `render_notes` 说明布局、强调层级和打印可读性；
-- `labels.en` 是图内中文标注 → 英文的映射（`scripts/extract_figure_i18n.py` 生成桩）；
+- `labels.en` 是图内中文标注 → 英文的映射（`node scripts/figure-i18n.mjs` 生成桩）；
 - 颜色以 `style.yaml` 的 `palette` 为权威来源，不自行维护另一套色值。
 - HTML/SVG 成图必须同时保留顶部图标题和底部图注，二者均以规范图号开头；底部图注应独立说明图中结论，不重复顶部标题，具体版式以 `style.yaml` 为准。
 

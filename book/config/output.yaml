@@ -1,3 +1,0 @@
-# 输出配置
-dir: "./output"
-pandoc_bin: "pandoc"
