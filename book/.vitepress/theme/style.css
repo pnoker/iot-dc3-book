@@ -97,6 +97,15 @@ body {
     display: flex;
     align-items: center;
     height: var(--vp-nav-height);
+    /* 英文长标题允许收缩：文本省略号截断，把导航右侧动作区（图库/主题/折叠）完整让出 */
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+}
+.VPNavBar .title {
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
 }
 
 .VPNavBarTitle .title {
@@ -135,7 +144,15 @@ body {
     filter: drop-shadow(0 4px 7px rgba(13, 82, 157, 0.2));
 }
 
+.VPNavBarTitle .title {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .VPNavBarTitle .title > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
     background: linear-gradient(112deg, #07549a, #149ed7 46%, #4f52bf);
     background-clip: text;
     -webkit-background-clip: text;
@@ -1313,9 +1330,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    margin: 0 1px 0 8px;
+    /* 与导航右侧动作按钮（折叠/主题 40×40）等大，紧贴其左，长标题下不被遮挡 */
+    width: 40px;
+    height: 40px;
+    margin: 0 2px 0 0;
     flex-shrink: 0;
     border: 1px solid rgba(var(--clover-glass-rgb), 0.25);
     border-radius: 50%;
@@ -1350,8 +1368,8 @@ body {
 }
 .gallery-nav-icon {
     display: flex;
-    width: 16px;
-    height: 16px;
+    width: 21px;
+    height: 21px;
 }
 .gallery-nav-icon svg {
     width: 100%;
