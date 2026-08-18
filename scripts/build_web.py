@@ -312,7 +312,12 @@ def assemble_chapter(manuscript_dir: Path, cid: int, title: str, h1: str) -> str
 
 
 def gen_figures_manifest(parts: list[dict], chapters_md: dict[int, str]) -> list[dict]:
-    """扫描手稿插图锚点，生成全书插图清单（图库页数据源；条目：id/num/title/chapter/url）。"""
+    """生成全书插图清单（图库页数据源；条目：id/num/title/chapter/url）。
+
+    chapters_md 传入的是锚点已解析为内联插图的章稿，
+    因此扫描 <figure … id="fig-XX-YY"> 而非 @[fig] 锚点。
+    """
+    fig_in_body_re = re.compile(r'<figure[^>]*\bid="(fig-\d{2}-\d{2})"')
     manifest: list[dict] = []
     for part in parts:
         slug, _ = slug_of(part)
@@ -325,7 +330,7 @@ def gen_figures_manifest(parts: list[dict], chapters_md: dict[int, str]) -> list
                 if not sec["stem"]:
                     continue
                 body = "\n".join(sec["body"])
-                for m in FIGURE_ANCHOR_RE.finditer(body):
+                for m in fig_in_body_re.finditer(body):
                     fig_id = m.group(1)
                     reg = load_figure_registry(fig_id)
                     title_src = str(reg.get("title") or "")
