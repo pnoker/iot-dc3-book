@@ -20,8 +20,12 @@ and AI agents in industrial settings. Translation quality bar: the pair
 3. **Figure anchors `@[fig-XX-YY]` are language-neutral placeholders. Copy them
    verbatim, on their own line, at the exact position between the same two
    paragraphs as in the source. Do not translate, move, add, or drop them.**
-4. Fenced code blocks (``` … ```): copy **byte-identical** from the source —
-   including Chinese comments inside code. Never translate code.
+4. Fenced code blocks (``` … ```): code logic, identifiers, API calls and config
+   keys are copied **byte-identical** from the source — never translate code.
+   Human-readable content inside blocks IS translated to English: comments,
+   prompt-template strings, sample inputs/outputs, JSON `title`/`description`
+   fields, pseudocode step lines, and `□` checklist entries. Translating these
+   must not change the code's semantics or line structure.
 5. Inline code spans (`…`): keep as-is.
 6. Tables: same shape (rows/columns), translate header and body cells; keep all
    numbers, units, and product names exact.

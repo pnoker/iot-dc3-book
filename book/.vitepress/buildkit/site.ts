@@ -54,8 +54,8 @@ const PREFACE_ZH: [string, string, string, string][] = [
 const PREFACE_EN: [string, string, string, string][] = [
   ['author.md', 'author', 'About the Author',
     'Zhang Hongyuan, creator of the open-source IoT DC3 platform — architect and IoT specialist with over a decade of industrial IoT platform engineering.'],
-  ['foreword.md', 'foreword', 'Foreword',
-    "The author's foreword to From Industrial Software to AI Agents — why the book was written, what it covers, and the thinking behind its technical choices."],
+  ['foreword.md', 'foreword', "Author's Preface",
+    "The author's preface to From Industrial Software to AI Agents — why the book was written, what it covers, and the thinking behind its technical choices."],
   ['guide.md', 'guide', 'How to Read This Book',
     'A reading guide to From Industrial Software to AI Agents — recommended paths by reader role: newcomers, platform developers, and AI engineers.'],
 ]
