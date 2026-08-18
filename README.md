@@ -1,61 +1,49 @@
-# book-builder
+# iot-dc3-book
 
-纯手工写稿 + 自动组装成书。从 `book/manuscript/` 下的 Markdown 手稿组装层级化出版稿，导出 PDF。构建工具不依赖 Agent/LLM/RAG，也支持按统一写作指南使用 Agent 辅助写作。
+《从工业软件到 AI 智能体》在线书籍站点（https://book.dc3.site）——**手稿即终稿**：没有导出中间层，改完手稿跑一次构建，网站立即反映。中英双语（英文增量翻译中）。
 
 ## 用法
 
 ```bash
-# 组装手稿 → 层级化 MD + 单文件 book.md
-uv run book-builder build
+pnpm install        # Node 依赖
+uv sync             # Python 依赖（pyyaml、jinja2）
 
-# 组装 + 导出 PDF（需要 pandoc + Chrome/Edge）
-uv run book-builder pdf
-uv run book-builder pdf --skip-build   # 跳过组装，直接用已有 book.md
-
-# 生成样稿 PDF（只到第1章，提交编辑社）
-uv run book-builder sample
-uv run book-builder sample --until-chapter 3   # 样稿到第3章
+pnpm web            # 手稿 → docs/（唯一转换入口，或 uv run python scripts/build_web.py）
+pnpm dev            # 本地开发（web + vitepress dev，改手稿后重跑/热更）
+pnpm build          # 生产构建（web + vitepress build + sitemap/feed/llms）
+pnpm preview        # 预览 dist
 ```
 
-## 目录结构
+## 内容结构
 
 ```
-book-builder/
-├── pyproject.toml       # 入口 book_builder.cli:main
-├── src/book_builder/    # 组装导出包
-│   ├── cli.py            # Typer CLI（build / pdf）
-│   ├── config.py         # Pydantic 配置模型与加载
-│   ├── manuscript.py     # 手稿文件系统读取
-│   ├── figures.py        # book-figure 图表扫描与替换
-│   ├── markdown_assets.py# book-figure 块解析
-│   ├── markdown.py       # Markdown 组装
-│   ├── pdf.py            # PDF 生成 + 封面渲染
-│   ├── log.py            # rich 统一日志
-│   ├── pdf_style.css     # PDF 样式
-│   └── templates/        # Jinja2 模板
-├── book/                 # 配置 + 写作指南 + 手稿 + 图表
-│   ├── WRITING_GUIDE.md  # 人工作者与 Agent 共用的写作规范
-│   ├── config/           # 5 个 YAML 配置
-│   ├── assets/           # cover.html + logo.svg
-│   ├── manuscript/       # 14 章手稿 (chapter-01~14/chapter.md)
-│   ├── figures/          # 制图源 HTML (chapter-XX/{figure_id}.html)
-│   └── assets/           # 静态资源 (images/ 渲染图PNG, cover.html, logo.svg)
-└── output/               # 层级 MD + 书名.md/.pdf/—样稿.pdf + cover.png + figures/
+iot-dc3-book/
+├── book/                      # 出版资源（真相源）
+│   ├── WRITING_GUIDE.md       #   写作规范（唯一来源）
+│   ├── config/                #   book/parts(-en)/style/output YAML
+│   ├── manuscript/            #   中文终稿：chapter-XX/X.Y.md + preface/ + appendix.md
+│   ├── manuscript-en/         #   英文终稿：镜像结构，翻多少生成多少（README 有约定与进度）
+│   ├── figures/chapter-XX/    #   {fig-id}.html 图源 + {fig-id}.yaml 图注册表（spec + 双语 caption/labels）
+│   ├── dividers/              #   章/篇扉页模板（web 内联渲染）
+│   └── assets/                #   cover.html / cover.png / logo.svg
+├── scripts/                   # 构建与工具
+│   ├── build_web.py           #   手稿 → VitePress 站点（唯一转换器）
+│   ├── fig_theme.py           #   SVG 主题化（明暗）+ 图注册表 + 色值审计
+│   └── extract_figure_i18n.py #   图内英文标注翻译桩
+├── docs/                      # VitePress 站点源（zh 根路径 + /en/ locale）
+└── .github/workflows/         # Pages 部署（pnpm build → dist）
 ```
+
+## 手稿与插图约定
+
+- 每章一个 `chapter-XX/` 目录，每节一个 `X.Y.md` 文件（H2 节标题 + 节内 H3/H4），可选 `_intro.md` 章引言；
+- 卷首与附录是普通手稿文件：`preface/{author,foreword,guide}.md`、`appendix.md`（中英同构）；
+- 插图在手稿中只用语言无关锚点 `@[fig-XX-YY]`（独立一行）；图的规格、双语图注（`caption.zh/en`）与图内英文标注映射（`labels.en`）在 `book/figures/chapter-XX/{fig-id}.yaml` 注册表管理；
+- 构建时锚点替换为内联 SVG：色值 → CSS 变量（明暗主题），英文页按 `labels.en` 替换图内文本；构建器会告警缺图源或英文页残留中文标注的图；
+- 修改手稿前先读 `book/WRITING_GUIDE.md`；翻译约定见 `book/manuscript-en/README.md`。
 
 ## 系统依赖
 
-- **Python 3.13**（兼容 3.11+），依赖管理用 `uv`
-- **pandoc** — Markdown → HTML（PDF 导出需要）
-- **Chrome/Edge** — HTML → PDF 渲染（PDF 导出需要，无则仅输出 Markdown）
-- **pdftoppm**（可选）— 封面 PNG 生成，缺失时回退 `sips` 或 Chrome 截图
-
-## 手稿写作约定
-
-- 修改手稿前先阅读 `book/WRITING_GUIDE.md`；它是人工写作和 Agent 辅助写作共用的规范
-- 每章一个 `book/manuscript/chapter-XX/` 目录，写 `chapter.md` 作为完整章内容；不存在时可拆分为 `X.Y.Z.md` 节文件，工具按编号排序拼接
-- 图表用 ` ```book-figure` YAML 块描述规格，build 时自动替换为 PNG 图片；字段、类型和配色以 `book/config/style.yaml` 为准，`legend` 选填
-- 图表按 `figure_id` 在 `book/assets/images/chapter-XX/` 找同名 PNG（`{figure_id}.png`）；未匹配的原块保留
-- `book/config/parts.yaml` 定义篇章结构（篇 `name`/`prefix`，章 `id`/`title`），新增章节需同步更新
-- `book/config/book.yaml` 是封面、Pandoc metadata 和输出文件名的书籍元数据来源
-- CLI 未传 `--output` 时使用 `book/config/output.yaml` 的 `dir`，显式参数优先
+- Python 3.11+（`uv` 管理）、Node 24 + pnpm
+- `git-lfs`：首次检出后 `git lfs install && git lfs pull`
+- Chrome/Edge + pdftoppm（可选）：仅手动重渲染封面 `book/assets/cover.png` 时需要

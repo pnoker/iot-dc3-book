@@ -83,14 +83,21 @@ IoT DC3 是贯穿部分章节的工程案例，不是所有结论的唯一依据
 
 需要展示组件关系、时序、数据流、层次或选型矩阵时优先使用图表，不用装饰性图片替代信息表达。
 
-图表按 `book/config/style.yaml` 定义的 `book-figure` 规格编写：
+图表规格不再写进手稿。手稿中只在插图位置放一个语言无关的锚点（独立一行）：
 
-- `type` 必须属于 `allowed_types`；
-- `required_fields` 中的字段必须存在且非空；
+```
+@[fig-01-01]
+```
+
+规格与文本统一在图注册表 `book/figures/chapter-XX/{figure_id}.yaml` 管理
+（同一目录下的 `{figure_id}.html` 是唯一可编辑图源）：
+
+- `type` 必须属于 `book/config/style.yaml` 的 `allowed_types`；
 - `legend` 仅在颜色、线型或符号无法自解释时提供；
 - `elements` 描述图中实体，`relationships` 描述实体间有方向和含义的关系；
-- `caption` 应独立说明图表结论，而不是只复述标题；
+- `caption.zh` / `caption.en` 独立说明图表结论，而不是只复述标题；
 - `render_notes` 说明布局、强调层级和打印可读性；
+- `labels.en` 是图内中文标注 → 英文的映射（`scripts/extract_figure_i18n.py` 生成桩）；
 - 颜色以 `style.yaml` 的 `palette` 为权威来源，不自行维护另一套色值。
 - HTML/SVG 成图必须同时保留顶部图标题和底部图注，二者均以规范图号开头；底部图注应独立说明图中结论，不重复顶部标题，具体版式以 `style.yaml` 为准。
 
