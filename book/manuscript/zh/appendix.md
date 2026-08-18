@@ -22,7 +22,7 @@
 ## B. 参考文献
 
 1. 3GPP TS 22.261 / 36.300 / 38.300 — 移动通信系统架构与服务要求
-2. 3GPP TS 38.875（RedCap）/ TR 38.821（NTN） — 5G 轻量化与非地面网络
+2. 3GPP TR 38.875（RedCap）/ TR 38.821（NTN） — 5G 轻量化与非地面网络
 3. CSA，*Matter Specification* — 智能家居统一应用层标准
 4. OASIS，*MQTT Version 5.0* — 消息队列遥测传输协议
 5. IETF，*RFC 7252（CoAP）* / *draft-ietf-oauth-v2-1（OAuth 2.1 草案）* / *RFC 8628（设备授权流）*
@@ -40,6 +40,6 @@
 
 **AI 与智能体**：大语言模型(LLM) / Agent / RAG / Tool-Calling / MCP / Spring AI / Agentic Center / 自然语言运维 / 异常检测 / 预测性维护 / TSFM / 端侧 SLM
 
-**安全**：OAuth 2.1 / JWT / X.509 证书 / TLS 1.3 / DTLS / RBAC / ABAC / 多租户 / Prompt 注入 / PQC（后量子）
+**安全**：OAuth 2.1（IETF 草案）/ JWT / X.509 证书 / TLS 1.3 / DTLS / RBAC / ABAC / 多租户 / Prompt 注入 / PQC（后量子）
 
 **应用场景**：工业物联网(IIoT) / 数字孪生 / 智慧城市 / 车联网(V2X) / 精准农业 / 区块链+IoT / 供应链溯源

@@ -1,54 +1,199 @@
 type: architecture
-title: 图14-2 IoT DC3 系统分层架构
-purpose: 展示 IoT DC3 的四层职责及 REST、gRPC、RabbitMQ 三类真实通信边界。
-audience_takeaway: 当前服务寻址依赖固定服务名、容器 DNS 和环境变量；RabbitMQ 是唯一消息总线。
-visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver。
+title: 图 14-2 物联网平台分层架构
+purpose: 展示设备层、边缘层、平台层、应用层之间的层次关系和数据流主链路，强调各层的职责边界和异步解耦模式。
+audience_takeaway: RabbitMQ 并行分发给数据中心和智能中心；API Gateway 并行路由鉴权、设备管理和查询服务，平台组件不是串行流水线。
+visual_focus: 从设备层通过MQTT/CoAP接入边缘接入层的协议驱动，再经消息队列进入平台层的主数据链路；强调异步边界。
 design_level: logical
-layout: 自下而上：设备层→Driver 层→平台服务层→应用层；RabbitMQ 横向位于 Data 与 Driver 之间。
+layout: 自下而上四层：设备层（最底部）→ 边缘接入层 → 平台层 → 应用层（最顶部）。层间以水平虚线分隔，标识职责边界。平台层内部用不同颜色区分消息基础设施、数据中心、智能中心。
 elements:
-- 应用层：Web、第三方应用、API 客户端。
-- 接入层：dc3-gateway。
-- 平台层：Auth、Manager、Data、Agentic。
-- Driver 层：MQTT、Modbus、OPC UA 等独立协议服务，可下沉边缘。
-- 基础设施：RabbitMQ、PostgreSQL、容器网络 DNS、环境变量配置。
+- 设备层：传感器、PLC、智能网关，使用青绿色卡片，位于底部。
+- 边缘接入层：协议驱动容器（MQTT/CoAP/Modbus TCP）、本地缓存、协议适配网关，使用青绿色与蓝色混合块。
+- 平台层：包含按场景选择的消息总线、数据中心、鉴权中心、设备管理中心和智能中心（AI Agent）；以 IoT DC3 为例，消息总线是 RabbitMQ，存储是 PostgreSQL。
+- 应用层：监控大屏、移动端 App、业务 API 网关、告警与控制台，使用灰色块。
 relationships:
-- 应用→Gateway→四中心：同步 REST 路由与认证。
-- Driver→Manager：同步 gRPC 业务注册和元数据查询。
-- Data→RabbitMQ→Driver：异步点位读写与自定义命令。
-- Driver→RabbitMQ→Data：异步回执、位号值、状态与事件。
+- 设备层通过 MQTT、CoAP 或私有协议接入边缘接入层的协议驱动，实线箭头，标签：“协议接入”。
+- 边缘接入层将标准化后的位号值数据通过消息队列（RabbitMQ）异步推送到平台层的消息总线，虚线箭头，标签：“异步推送”。
+- 平台层的消息总线并行分发给数据中心的写入服务和智能中心的推理引擎，分叉实线箭头，标签：“消息分发”。
+- 应用层通过 API Gateway 并行调用鉴权服务、设备管理和数据查询服务，分叉实线箭头，标签：“API 路由”。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界，负责协议接入与本地预处理
+- id: platform_domain
+  label: 平台服务域
+  role: 数据资产、鉴权、设备管理、智能分析
+- id: application_domain
+  label: 业务应用域
+  role: 可视化、控制与第三方集成
+components:
+- id: device_layer
+  label: 设备层
+  type: edge
+  subtitle: 传感器、PLC、网关
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: edge_protocol_driver
+  label: 协议驱动
+  type: edge
+  subtitle: MQTT/CoAP/Modbus
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: edge_cache
+  label: 边缘缓存
+  type: edge
+  subtitle: 本地队列与缓冲
+  group: edge_domain
+  priority: normal
+  shape: database
+- id: mqtt_broker
+  label: MQTT Broker
+  type: platform
+  subtitle: EMQX等
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: message_bus
+  label: 消息总线
+  type: platform
+  subtitle: 按场景选型；DC3 当前为 RabbitMQ
+  group: platform_domain
+  priority: primary
+  shape: bus
+- id: data_center
+  label: 数据中心
+  type: data
+  subtitle: 时序库+关系库
+  group: platform_domain
+  priority: primary
+  shape: database
+- id: auth_center
+  label: 鉴权中心
+  type: platform
+  subtitle: 身份与权限
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: device_mgmt
+  label: 设备管理
+  type: platform
+  subtitle: 注册/配置/OTA
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: ai_center
+  label: 智能中心
+  type: ai
+  subtitle: Agent & 模型
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: api_gateway
+  label: API 网关
+  type: application
+  subtitle: 路由/限流
+  group: application_domain
+  priority: normal
+  shape: card
+- id: monitoring
+  label: 监控大屏
+  type: application
+  subtitle: 运营可视化
+  group: application_domain
+  priority: normal
+  shape: card
+- id: mobile_app
+  label: 移动端
+  type: application
+  subtitle: App/小程序
+  group: application_domain
+  priority: normal
+  shape: card
+connections:
+- from: device_layer
+  to: edge_protocol_driver
+  label: 协议接入
+  style: solid
+  direction: bottom-to-top
+- from: edge_protocol_driver
+  to: message_bus
+  label: 异步推送
+  style: dashed
+  direction: bottom-to-top
+- from: message_bus
+  to: data_center
+  label: 写入
+  style: solid
+  direction: request
+- from: message_bus
+  to: ai_center
+  label: 事件分发
+  style: solid
+  direction: request
+- from: api_gateway
+  to: auth_center
+  label: 鉴权
+  style: solid
+  direction: request
+- from: api_gateway
+  to: device_mgmt
+  label: 管理接口
+  style: solid
+  direction: request
+- from: monitoring
+  to: api_gateway
+  label: 查询
+  style: solid
+  direction: bottom-to-top
 callouts:
-- 当前没有独立 Command Service。
-- 当前没有 Kafka 或 Nacos。
-render_notes: 浅色 SVG 分层图。固定服务名与环境变量作为寻址说明，不绘制注册中心；RabbitMQ 作为唯一消息总线突出显示。
+- 设备与边缘域通过协议驱动和边缘缓存实现本地自治，广域网断开时仍可采集和缓存数据。
+- 消息总线是解耦关键：它接住边缘的异步消息，再根据主题分发到不同的消费者（数据中心、智能中心等）。
+- 智能中心不直接调用设备资源，而是通过平台上下文和规则模型进行决策，输出到应用层。
+legend:
+- 蓝色=核心平台服务与消息基础设施；青绿色=设备与边缘接入组件；橙色=AI 智能能力；灰色=业务应用与外部系统。
+- 实线箭头：同步调用或有明确依赖的强制路径；虚线箭头：异步消息、事件驱动或可选依赖。
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG 渲染，浅色背景，四层纵向布局，各层之间用虚线层隔线。层内服务块使用圆角矩形，箭头统一使用
 caption:
-  zh: 图14-2 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。
-  en: 'Figure 14-2 The IoT DC3 four-layer architecture: northbound requests enter the four centers through the Gateway, drivers connect to the Manager over gRPC, and commands and data flow asynchronously between Data and drivers via RabbitMQ.'
+  zh: 图 14-2 物联网平台的四层分层架构，设备层通过边缘接入层的协议驱动与服务层解耦，各层之间以消息队列实现异步隔离。
+  en: 'Figure 14-2 The four-layer architecture of an IoT platform: the device layer is decoupled from the service layer by protocol drivers at the edge access layer, and the layers are isolated asynchronously through message queues.'
 labels:
   en:
-    图14-2 IoT DC3 系统分层架构: 'Figure 14-2 IoT DC3 Layered Architecture'
-    北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。: 'Northbound requests enter the four centers through the Gateway; drivers connect to the Manager over gRPC; commands and data flow asynchronously between Data and drivers via RabbitMQ.'
-    北向 REST/gRPC 同步、南向 RabbitMQ 异步，构成三类真实通信边界: 'Northbound REST/gRPC is synchronous, southbound RabbitMQ asynchronous — three real communication boundaries'
+    图 14-2 物联网平台分层架构: 'Figure 14-2 IoT Platform Layered Architecture'
+    设备经边缘 Driver 协议接入，位号值经 RabbitMQ 异步推送并并行分发给数据中心与智能中心；应用经 API Gateway 并行路由到鉴权、设备管理与数据查询。: 'Devices connect through edge drivers; point values are pushed asynchronously via RabbitMQ and fanned out in parallel to the Data Center and Intelligence Center; applications route through the API Gateway to auth, device management, and data queries.'
+    消息分发与 API 路由形成两组并行扇出，不是组件串行调用: 'Message distribution and API routing form two parallel fan-outs, not serial component calls'
     应用层: 'Application Layer'
-    Web 控制台: 'Web Console'
-    运维 / 配置界面: 'Ops / Config UI'
-    第三方应用: 'Third-Party Apps'
-    REST API 集成: 'REST API Integration'
-    API 客户端: 'API Clients'
-    dc3-cli / 脚本: 'dc3-cli / Scripts'
-    接入层: 'Access Layer'
-    REST 路由 · Token 校验 · Compose DNS 寻址: 'REST Routing · Token Check · Compose DNS'
-    REST 路由到四中心: 'REST routing to the four centers'
-    平台服务层: 'Platform Service Layer'
-    鉴权与令牌: 'Auth & Tokens'
-    设备与模型元数据: 'Device & Model Metadata'
-    最新值与历史值: 'Latest & Historical Values'
-    对话与受控工具: 'Chat & Controlled Tools'
-    Data → RabbitMQ → Driver：命令: 'Data → RabbitMQ → Driver: commands'
-    Driver → RabbitMQ → Data：数据 / 回执: 'Driver → RabbitMQ → Data: data / receipts'
-    Driver 层: 'Driver Layer'
-    MQTT 发布 / 订阅: 'MQTT Publish / Subscribe'
-    TCP / RTU 轮询与写入: 'TCP / RTU Polling & Writes'
-    OPC UA 订阅采集: 'OPC UA Subscription'
-    Driver → Manager：gRPC 注册 / 元数据查询: 'Driver → Manager: gRPC registration / metadata query'
-    设备层 · 传感器 / 控制器 / 执行器（可下沉边缘）: 'Device Layer · Sensors / Controllers / Actuators (edge-deployable)'
-    图14-2 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。: 'Figure 14-2 The IoT DC3 four-layer architecture: northbound requests enter the four centers through the Gateway, drivers connect to the Manager over gRPC, and commands and data flow asynchronously between Data and drivers via RabbitMQ.'
+    监控大屏: 'Monitoring Dashboard'
+    可视化: 'Visualization'
+    移动端 App: 'Mobile App'
+    移动接入: 'Mobile Access'
+    业务客户端: 'Business Clients'
+    第三方集成: 'Third-Party Integration'
+    告警与控制台: 'Alerts & Console'
+    运维操作: 'Ops Actions'
+    API Gateway · 统一入口 · 鉴权 · 路由: 'API Gateway · Single Entry · Auth · Routing'
+    API 路由（并行扇出）: 'API Routing (parallel fan-out)'
+    平台层: 'Platform Layer'
+    RabbitMQ · 异步消息总线: 'RabbitMQ · Async Message Bus'
+    数据中心: 'Data Center'
+    最新值 · 历史值 · 告警: 'Latest · History · Alerts'
+    智能中心: 'Intelligence Center'
+    AI Agent · 任务编排: 'AI Agent · Task Orchestration'
+    消息分发: 'Message Distribution'
+    API 服务组 · 鉴权 · 设备管理 · 数据查询: 'API Group · Auth · Device Mgmt · Data Query'
+    受控工具与审计 · 策略校验 · 人工确认 · 操作留痕: 'Controlled Tools & Audit · Policy Check · Human Confirm · Op Trail'
+    边缘接入层: 'Edge Access Layer'
+    协议适配 · 本地缓存: 'Protocol Adaptation · Local Cache'
+    Modbus / 私有协议 Driver: 'Modbus / Proprietary Driver'
+    协议适配网关: 'Protocol Adapter Gateway'
+    标准化位号值: 'Standardized Point Values'
+    异步推送: 'Async Push'
+    传感器: 'Sensors'
+    智能网关: 'Smart Gateway'
+    现场设备: 'Field Devices'
+    协议接入（MQTT / CoAP / Modbus）: 'Protocol Access (MQTT / CoAP / Modbus)'
+    图 14-2 上行数据经消息总线并行分发，API 与 Agent 分别通过本地能力组完成受控调用。: 'Figure 14-2 Uplink data is fanned out through the message bus; the API and the Agent each complete controlled calls through their local capability groups.'

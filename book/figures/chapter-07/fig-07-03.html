@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图7-3 RAG + Tool-Calling 联合工作流</title>
+  <title>图 7-3 工业 Agent Runtime 四平面架构</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图7-3 RAG + Tool-Calling 联合工作流</title>
-  <desc id="desc">RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；写入只创建待确认 Action，经用户确认与策略校验后才执行。</desc>
+  <title id="title">图 7-3 工业 Agent Runtime 四平面架构</title>
+  <desc id="desc">Agent 提出候选行动，Runtime 把它约束成有状态、可验证、可恢复、可审计的执行；概率性推理经确定性边界后才进入工业系统。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
@@ -22,78 +22,103 @@
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
     <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
   </defs>
 
   <!-- 标题 -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-3 RAG + Tool-Calling 联合工作流</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">模型准备操作意图，平台确认边界决定设备写入是否发生</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 7-3 工业 Agent Runtime 四平面架构</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">Agent 提出候选行动，Runtime 把它约束成有状态、可验证、可恢复、可审计的执行</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 证据与状态准备 ===== -->
-  <rect x="120" y="130" width="1560" height="250" rx="10" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="140" y="160" font-size="14" font-weight="700" fill="#0F766E">证据与状态准备</text>
+  <!-- ===== 任务入口 ===== -->
+  <rect x="200" y="130" width="700" height="54" rx="8" fill="#F8FAFC" stroke="#475569" stroke-width="1.6"/>
+  <text x="230" y="163" font-size="13" font-weight="700" fill="#334155">任务入口</text>
+  <text x="550" y="163" font-size="12.5" fill="#475569" text-anchor="middle">用户意图 · 告警事件 · 定时任务</text>
 
-  <rect x="150" y="185" width="240" height="90" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-  <text x="270" y="222" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">用户任务</text>
-  <text x="270" y="250" font-size="11.5" fill="#475569" text-anchor="middle">重置 3 号泵</text>
+  <!-- 入口 → 上下文 -->
+  <line x1="550" y1="184" x2="270" y2="226" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
 
-  <line x1="392" y1="230" x2="438" y2="230" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="440" y="185" width="240" height="90" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-  <text x="560" y="222" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">LLM 规划</text>
-  <text x="560" y="250" font-size="11.5" fill="#475569" text-anchor="middle">识别所需证据</text>
+  <!-- ===== 上下文平面 ===== -->
+  <rect x="120" y="228" width="300" height="300" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="270" y="262" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">上下文平面</text>
+  <text x="270" y="288" font-size="11" fill="#475569" text-anchor="middle">构建可信工作集</text>
+  <text x="145" y="322" font-size="12" fill="#334155">身份 · 租户 · 目标范围</text>
+  <text x="145" y="350" font-size="12" fill="#334155">设备状态 · 会话 · 任务状态</text>
+  <text x="145" y="378" font-size="12" fill="#334155">RAG 证据 · 领域 Memory</text>
+  <text x="145" y="414" font-size="10.5" fill="#64748B">只提供本次决策需要的信息</text>
 
-  <line x1="682" y1="215" x2="738" y2="205" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="740" y="170" width="230" height="76" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
-  <text x="855" y="200" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">RAG 检索</text>
-  <text x="855" y="226" font-size="11" fill="#475569" text-anchor="middle">版本化 SOP</text>
+  <!-- 上下文 → 决策 -->
+  <line x1="422" y1="350" x2="468" y2="350" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-gray)"/>
 
-  <line x1="682" y1="250" x2="738" y2="260" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="740" y="264" width="230" height="76" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="855" y="294" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">只读 Tool</text>
-  <text x="855" y="320" font-size="11" fill="#475569" text-anchor="middle">读取平台状态</text>
+  <!-- ===== 决策平面 ===== -->
+  <rect x="470" y="228" width="300" height="300" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="620" y="262" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">决策平面</text>
+  <text x="620" y="288" font-size="11" fill="#475569" text-anchor="middle">生成候选行动</text>
+  <text x="495" y="322" font-size="12" fill="#334155">意图理解 · 模型路由</text>
+  <text x="495" y="350" font-size="12" fill="#334155">动态规划 · 下一步选择</text>
+  <text x="495" y="378" font-size="12" fill="#334155">完成判断 · 证据不足回退</text>
+  <text x="495" y="414" font-size="10.5" fill="#64748B">概率性推理 · 不是执行许可</text>
 
-  <line x1="972" y1="225" x2="1028" y2="225" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="1030" y="185" width="280" height="90" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-  <text x="1170" y="222" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">形成操作建议</text>
-  <text x="1170" y="250" font-size="11.5" fill="#475569" text-anchor="middle">证据 + 状态快照</text>
+  <!-- 决策 → 确定性边界 -->
+  <line x1="772" y1="350" x2="818" y2="350" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-red)"/>
 
-  <!-- 准备 → 受控写入 -->
-  <line x1="1170" y1="275" x2="1170" y2="370" stroke="#DC2626" stroke-width="2.3" marker-end="url(#ah-red)"/>
-  <text x="1188" y="326" font-size="11" font-weight="700" fill="#DC2626">进入受控写入边界</text>
+  <!-- ===== 确定性边界 ===== -->
+  <rect x="820" y="228" width="300" height="300" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+  <text x="970" y="262" font-size="15" font-weight="700" fill="#DC2626" text-anchor="middle">确定性边界</text>
+  <text x="970" y="288" font-size="11" fill="#475569" text-anchor="middle">概率性 → 确定性的闸门</text>
+  <rect x="845" y="310" width="250" height="34" rx="6" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.2"/>
+  <text x="970" y="332" font-size="12.5" font-weight="700" fill="#B91C1C" text-anchor="middle">Schema 校验</text>
+  <rect x="845" y="352" width="250" height="34" rx="6" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.2"/>
+  <text x="970" y="374" font-size="12.5" font-weight="700" fill="#B91C1C" text-anchor="middle">策略与权限 · 风险分级</text>
+  <rect x="845" y="394" width="250" height="34" rx="6" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.2"/>
+  <text x="970" y="416" font-size="12.5" font-weight="700" fill="#B91C1C" text-anchor="middle">人工确认</text>
 
-  <!-- ===== 受控写入 ===== -->
-  <rect x="120" y="380" width="1560" height="340" rx="10" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="140" y="410" font-size="14" font-weight="700" fill="#DC2626">受控写入</text>
+  <!-- 确定性边界 → 执行平面 -->
+  <line x1="1122" y1="350" x2="1168" y2="350" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-gray)"/>
 
-  <rect x="150" y="430" width="300" height="90" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
-  <text x="300" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">创建待确认 Action</text>
-  <text x="300" y="494" font-size="11" fill="#475569" text-anchor="middle">只保存参数，不执行设备写入</text>
+  <!-- ===== 执行平面 ===== -->
+  <rect x="1170" y="228" width="300" height="300" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8"/>
+  <text x="1320" y="262" font-size="15" font-weight="700" fill="#D97706" text-anchor="middle">执行平面</text>
+  <text x="1320" y="288" font-size="11" fill="#475569" text-anchor="middle">受控调用能力</text>
+  <text x="1195" y="322" font-size="12" fill="#334155">Workflow · 确定性步骤</text>
+  <text x="1195" y="350" font-size="12" fill="#334155">Skill · 领域能力包</text>
+  <text x="1195" y="378" font-size="12" fill="#334155">Tool · MCP · 业务 API</text>
+  <text x="1195" y="414" font-size="10.5" fill="#64748B">原子能力产生可验证结果</text>
 
-  <line x1="452" y1="475" x2="498" y2="475" stroke="#F97316" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="500" y="430" width="300" height="90" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
-  <text x="650" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">用户确认</text>
-  <text x="650" y="494" font-size="11" fill="#475569" text-anchor="middle">展示目标、参数与影响</text>
+  <!-- 执行 → 工业系统 -->
+  <line x1="1472" y1="350" x2="1518" y2="350" stroke="#F97316" stroke-width="2" marker-end="url(#ah-gray)"/>
 
-  <line x1="802" y1="475" x2="848" y2="475" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="850" y="430" width="300" height="90" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
-  <text x="1000" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">鉴权与策略校验</text>
-  <text x="1000" y="494" font-size="11" fill="#475569" text-anchor="middle">权限 · 参数 · 联锁边界</text>
+  <!-- ===== 工业系统 ===== -->
+  <rect x="1520" y="228" width="240" height="300" rx="10" fill="#F8FAFC" stroke="#475569" stroke-width="1.8"/>
+  <text x="1640" y="262" font-size="14" font-weight="700" fill="#334155" text-anchor="middle">工业系统</text>
+  <text x="1640" y="320" font-size="12" fill="#0F172A" text-anchor="middle">IoT DC3</text>
+  <text x="1640" y="348" font-size="12" fill="#0F172A" text-anchor="middle">MES · ERP</text>
+  <text x="1640" y="376" font-size="12" fill="#0F172A" text-anchor="middle">设备 · PLC</text>
+  <text x="1640" y="414" font-size="10.5" fill="#64748B" text-anchor="middle">结果回流验证</text>
 
-  <line x1="1152" y1="475" x2="1198" y2="475" stroke="#DC2626" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <rect x="1200" y="430" width="300" height="90" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
-  <text x="1350" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">控制器 / 执行点</text>
-  <text x="1350" y="494" font-size="11" fill="#475569" text-anchor="middle">用户确认后才下发</text>
+  <!-- ===== 治理平面 ===== -->
+  <rect x="120" y="590" width="1640" height="130" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.8"/>
+  <text x="150" y="624" font-size="15" font-weight="700" fill="#7C3AED">治理平面</text>
+  <text x="150" y="650" font-size="11" fill="#475569">贯穿每一次状态迁移与副作用</text>
+  <g font-size="12" fill="#334155">
+    <text x="360" y="648">任务状态机 · run_id</text>
+    <text x="360" y="676">超时 · 重试 · 租约</text>
+    <text x="700" y="648">幂等 · 补偿</text>
+    <text x="700" y="676">审计 Trace · 可观测性</text>
+    <text x="1050" y="648">人工接管</text>
+    <text x="1050" y="676">回滚与恢复</text>
+    <text x="1380" y="648">策略评估记录</text>
+    <text x="1380" y="676">副作用留痕</text>
+  </g>
 
-  <!-- 结果与审计 -->
-  <rect x="120" y="560" width="1560" height="60" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="150" y="586" font-size="12.5" font-weight="700" fill="#334155">结果与审计：状态回读 · 全链路留痕</text>
-  <text x="150" y="608" font-size="11" fill="#475569">未确认 / 校验失败：不执行，Action 保持待确认或被拒绝</text>
+  <!-- ===== 安全联锁 ===== -->
+  <rect x="120" y="740" width="1640" height="60" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.8" stroke-dasharray="8 4"/>
+  <text x="150" y="776" font-size="13" font-weight="700" fill="#B91C1C">安全联锁：PLC / SIS 确定性控制，不由大模型替代</text>
 
   <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图7-3 RAG → 读状态 → 创建待确认 Action → 用户确认与策略校验 → 控制器执行；模型无直达设备写权限。</text>
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 7-3 四平面把概率性推理约束成确定性执行，治理平面全程留痕，安全联锁始终独立于 Agent。</text>
   </svg>
 </svg>
   </main>

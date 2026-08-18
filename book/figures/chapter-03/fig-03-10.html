@@ -3,121 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-10 物模型与设备实例的关系：属性、动作、事件的交互模式</title>
+  <title>图 3-10 边缘数据预处理的三个工程目标</title>
   <style>
-    html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图3-10 物模型与设备实例的关系：属性、动作、事件的交互模式</title>
-  <desc id="desc">一份物模型模板被多台设备复用，设备与平台间通过属性上报、动作下发、事件推送三类接口交互。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图 3-10 边缘数据预处理的三个工程目标</title>
+  <desc id="desc">边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
 
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
   </defs>
-  <rect width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图3-10 物模型与设备实例的关系：属性、动作、事件的交互模式</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">一份物模型模板被多台设备复用，设备与平台间通过属性上报、动作下发、事件推送三类接口交互。</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 3-10 边缘数据预处理的三个工程目标</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">滤除噪声 · 减少数据量 · 独立决策，上行流量压缩到原始量一个数量级以下</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="architecture">
-  <!-- 区域边界 -->
-  <rect x="160" y="140" width="1280" height="120" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="180" y="162" font-size="12" fill="#64748B">智能决策域</text>
-  <rect x="160" y="290" width="1280" height="150" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="180" y="312" font-size="12" fill="#64748B">设备与边缘域</text>
-  <rect x="160" y="480" width="400" height="160" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="180" y="502" font-size="12" fill="#64748B">数据资产域</text>
-  <rect x="600" y="480" width="400" height="160" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="620" y="502" font-size="12" fill="#64748B">平台服务域</text>
-  <rect x="1040" y="480" width="400" height="160" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="1060" y="502" font-size="12" fill="#64748B">治理域</text>
+  <!-- 目标1：滤除噪声 -->
+  <rect x="80" y="140" width="1640" height="170" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="110" height="170" rx="12" fill="#2563EB"/>
+  <rect x="135" y="140" width="55" height="170" fill="#2563EB"/>
+  <text x="135" y="232" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 225)">滤除噪声</text>
+  <text x="230" y="176" font-size="14" font-weight="700" fill="#0F172A">从混乱中提取干净信号</text>
+  <text x="230" y="206" font-size="12" fill="#475569">滑动平均：环形缓冲区，窗口越长平滑越强但响应延迟越大</text>
+  <text x="230" y="232" font-size="12" fill="#475569">IIR 低通：通带平坦度好，定点 MCU 上易数值漂移</text>
+  <text x="230" y="258" font-size="12" fill="#475569">中值滤波：对偶发野点完全不敏感，但每次排序增加开销</text>
+  <text x="230" y="284" font-size="11" fill="#64748B">不滤噪直接判超限，一个电磁尖峰就可能触发误告警</text>
 
-  <!-- 连线（先于节点绘制，避免覆盖） -->
-  <!-- 物模型→设备A 虚线 -->
-  <line x1="800" y1="235" x2="430" y2="320" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <rect x="500" y="260" width="40" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="520" y="273" font-size="11" fill="#0F172A" text-anchor="middle">复用</text>
+  <line x1="900" y1="310" x2="900" y2="342" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <!-- 物模型→设备B 虚线 -->
-  <line x1="800" y1="235" x2="970" y2="320" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <rect x="820" y="260" width="40" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="840" y="273" font-size="11" fill="#0F172A" text-anchor="middle">复用</text>
+  <!-- 目标2：减少数据量 -->
+  <rect x="80" y="342" width="1640" height="170" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="80" y="342" width="110" height="170" rx="12" fill="#16A34A"/>
+  <rect x="135" y="342" width="55" height="170" fill="#16A34A"/>
+  <text x="135" y="434" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 427)">减少数据量</text>
+  <text x="230" y="378" font-size="14" font-weight="700" fill="#0F172A">上传承结果，而非样本</text>
+  <text x="230" y="408" font-size="12" fill="#475569">聚合：算术平均、最大值、最小值、峰值、累积积分值</text>
+  <text x="230" y="434" font-size="12" fill="#475569">300 个采样点 → 一条均值记录；工频周期 → 有效值 + 峰值两个特征</text>
+  <text x="230" y="460" font-size="12" fill="#475569">FFT：本地做频谱分析，只上传频谱特征矢量或主要频段幅值</text>
+  <text x="230" y="486" font-size="11" fill="#64748B">需要原始波形做边频带诊断时，不能在边缘层压缩掉时域细节</text>
 
-  <!-- 设备A→数据存储 实线 -->
-  <line x1="430" y1="400" x2="360" y2="520" stroke="#334155" stroke-width="1.5"/>
-  <rect x="310" y="440" width="80" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="350" y="453" font-size="11" fill="#0F172A" text-anchor="middle">上报属性值</text>
+  <line x1="900" y1="512" x2="900" y2="544" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <!-- 设备B→数据存储 实线 -->
-  <line x1="970" y1="400" x2="360" y2="520" stroke="#334155" stroke-width="1.5"/>
-  <rect x="600" y="440" width="80" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="640" y="453" font-size="11" fill="#0F172A" text-anchor="middle">上报属性值</text>
+  <!-- 目标3：独立决策 -->
+  <rect x="80" y="544" width="1640" height="170" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="80" y="544" width="110" height="170" rx="12" fill="#F97316"/>
+  <rect x="135" y="544" width="55" height="170" fill="#F97316"/>
+  <text x="135" y="636" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 629)">独立决策</text>
+  <text x="230" y="580" font-size="14" font-weight="700" fill="#0F172A">不依赖云平台完成快速控制</text>
+  <text x="230" y="610" font-size="12" fill="#475569">阈值规则命中 → 立即驱动继电器 / PWM / 声光告警</text>
+  <text x="230" y="636" font-size="12" fill="#475569">异常事件上下文（时间戳、带标记原始值快照）上传平台持久化</text>
+  <text x="230" y="662" font-size="12" fill="#475569">本地闭环延迟在采样周期级，远低于云往返的数百毫秒甚至数秒</text>
+  <text x="230" y="688" font-size="11" fill="#64748B">断网时仍独立完成保护动作，恢复后事件日志补推平台</text>
 
-  <!-- 远程控制→设备A 实线 -->
-  <line x1="800" y1="520" x2="430" y2="400" stroke="#334155" stroke-width="1.5"/>
-  <rect x="540" y="440" width="80" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="580" y="453" font-size="11" fill="#0F172A" text-anchor="middle">下发动作</text>
+  <!-- 底部准则 -->
+  <rect x="80" y="760" width="1640" height="60" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="796" font-size="12" fill="#475569">工程准则：只在边缘执行“无需跨设备上下文”的操作；趋势预测、多传感器融合、大数据建模留给边缘网关或云平台</text>
 
-  <!-- 远程控制→设备B 实线 -->
-  <line x1="800" y1="520" x2="970" y2="400" stroke="#334155" stroke-width="1.5"/>
-  <rect x="820" y="440" width="80" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="860" y="453" font-size="11" fill="#0F172A" text-anchor="middle">下发动作</text>
-
-  <!-- 设备A→告警服务 虚线 -->
-  <line x1="540" y1="360" x2="1090" y2="555" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <rect x="740" y="440" width="80" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="780" y="453" font-size="11" fill="#0F172A" text-anchor="middle">推送事件</text>
-
-  <!-- 设备B→告警服务 虚线 -->
-  <line x1="1080" y1="360" x2="1090" y2="555" stroke="#334155" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <rect x="1070" y="440" width="80" height="16" fill="#FFFFFF" rx="3"/>
-  <text x="1110" y="453" font-size="11" fill="#0F172A" text-anchor="middle">推送事件</text>
-
-  <!-- 节点矩形 -->
-  <!-- 物模型模板 -->
-  <rect x="640" y="165" width="320" height="70" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="800" y="205" font-size="14" font-weight="600" fill="#0F172A" text-anchor="middle">Model-T-100 物模型</text>
-
-  <!-- 设备A -->
-  <rect x="320" y="320" width="220" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="430" y="365" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">设备A</text>
-
-  <!-- 设备B -->
-  <rect x="860" y="320" width="220" height="80" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="970" y="365" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">设备B</text>
-
-  <!-- 数据存储 -->
-  <rect x="210" y="520" width="300" height="70" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
-  <text x="360" y="560" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">数据存储</text>
-
-  <!-- 远程控制 -->
-  <rect x="650" y="520" width="300" height="70" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="800" y="560" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">远程控制</text>
-
-  <!-- 告警服务 -->
-  <rect x="1090" y="520" width="300" height="70" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="1240" y="560" font-size="13" font-weight="600" fill="#0F172A" text-anchor="middle">告警服务</text>
-</g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">symbols=dashed-line=复用/模板关系</text>
-  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-10 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。</text>
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 3-10 边缘预处理依次滤除噪声、减少数据量、独立决策，向上传干净数据、向下做快速动作；只在边缘执行无需跨设备上下文的操作，复杂分析留给网关或云平台。</text>
   </svg>
 </svg>
-
   </main>
 </body>
 </html>

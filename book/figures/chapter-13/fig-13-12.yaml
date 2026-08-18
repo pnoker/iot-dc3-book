@@ -1,5 +1,5 @@
 type: dataflow
-title: 图13-12 联邦学习与区块链的融合模式
+title: 图 13-12 联邦学习与区块链的融合模式
 audience_takeaway: 读者应理解联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证。
 purpose: 展示联邦学习与区块链融合的参数上链与梯度压缩模式
 visual_focus: 链上哈希 + 链下存储的数据流，梯度压缩三方法。
@@ -14,11 +14,11 @@ relationships:
 - 链上只存摘要与状态，不拖入大块参数；链上可信只覆盖协议执行过程
 render_notes: HTML/SVG 渲染，参数上链数据流 + 梯度压缩三方法，蓝绿橙分层。
 caption:
-  zh: 图13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。
+  zh: 图 13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。
   en: 'Figure 13-12 In federated learning, parameter hashes go on-chain while complete data is stored off-chain under a CID; gradients are compressed via Top-K, quantization, or differential privacy before transmission, and the verifier completes on-chain verification by comparing hashes. Privacy, robustness, and availability must be evaluated jointly.'
 labels:
   en:
-    图13-12 联邦学习与区块链的融合模式: Figure 13-12 Federated Learning Meets Blockchain
+    图 13-12 联邦学习与区块链的融合模式: Figure 13-12 Federated Learning Meets Blockchain
     参数哈希上链、完整数据存链下 CID，梯度经压缩后传输，链上只存摘要与状态。: Hashes on-chain, full data off-chain by CID; gradients compressed in transit; chain keeps digests + state.
     区块链提供提交记录、版本与审计证据，不替代安全聚合与差分隐私: Blockchain supplies commits, versions and audit evidence, not secure aggregation or differential privacy
     模型参数上链：链上存哈希，链下存数据: 'Model parameters: hashes on-chain, data off-chain'
@@ -53,4 +53,4 @@ labels:
     隐私、鲁棒性与可用性必须联合评测: Privacy, robustness & availability evaluated jointly
     安全聚合（聚合方只看到结果）· 差分隐私（报告 epsilon/delta、裁剪阈值）· 非 IID 公平性（最差客户端）· 投毒与后门（ASR）· 通信能耗（每轮字节、掉线率）: Secure aggregation (sees results only) · differential privacy (epsilon/delta, clipping) · non-IID fairness (worst client) · poisoning/backdoor (ASR) · energy (bytes/round, dropout)
     链上哈希只能证明提交未被改写，不能证明更新无毒；区块链审计作为可选变量单独测量: On-chain hashes prove no tampering, not benign updates; audit is an optional, separately measured variable
-    图13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。: Figure 13-12 Hashes on-chain, full data off-chain by CID; gradients compressed via Top-K, quantization or differential privacy; verifiers compare hashes on-chain; privacy, robustness and availability evaluated jointly.
+    图 13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。: Figure 13-12 Hashes on-chain, full data off-chain by CID; gradients compressed via Top-K, quantization or differential privacy; verifiers compare hashes on-chain; privacy, robustness and availability evaluated jointly.

@@ -1,5 +1,5 @@
 type: matrix
-title: 图13-6 供应链核心痛点与区块链价值点映射
+title: 图 13-6 供应链核心痛点与区块链价值点映射
 audience_takeaway: 读者应理解每个痛点都有对应价值点且为线性映射，最粗箭头表明'信息孤岛→多方共享账本'是区块链在供应链中力度最大的解。
 purpose: 展示供应链场景的四个典型困难与区块链技术对应解耦方案的映射关系。
 visual_focus: 从每一条痛点通过虚线箭头指向其直接对…到分布式账本的箭头最粗的主链路。
@@ -44,11 +44,11 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 错位排列，每对映射下方可附加简短文字说明。采用HTML/SVG渲染，圆角矩形，背景浅色。
 caption:
-  zh: 图13-6 供应链协同中‘信任’是核心障碍。区块链通过去中心化共享和不可篡改记录提供解耦方案。
+  zh: 图 13-6 供应链协同中‘信任’是核心障碍。区块链通过去中心化共享和不可篡改记录提供解耦方案。
   en: 'Figure 13-6 In supply-chain collaboration, trust is the core obstacle. Blockchain offers a decoupling solution through decentralized sharing and tamper-proof records.'
 labels:
   en:
-    图13-6 供应链核心痛点与区块链价值点映射: Figure 13-6 Mapping Supply-Chain Pain Points to Blockchain Value
+    图 13-6 供应链核心痛点与区块链价值点映射: Figure 13-6 Mapping Supply-Chain Pain Points to Blockchain Value
     四类供应链痛点分别映射到账本共享、签名存证、事件溯源与合约审计能力，其中信息孤岛到共享账本的解决力度最大。: Four pain points map to shared ledger, signed attestation, event tracing and contract audit; silos → shared ledger is the strongest fix.
     四类供应链痛点分别映射到账本共享、签名存证、事件溯源与合约审计能力: Four pain points map to ledger sharing, attestation, tracing and contract audit
     供应链核心痛点: Supply-Chain Pain Points
@@ -74,4 +74,4 @@ labels:
     全链路追踪，召回精准: Precise end-to-end tracing
     自动化审计，降低成本: Automated audit, lower cost
     左侧橙色为痛点，右侧蓝色为区块链价值点；线宽表示解决力度，信息孤岛 → 分布式账本的力度最大。: Left orange = pain points, right blue = blockchain value; line width = resolving power; silos → ledger is strongest.
-    图13-6 供应链协同中「信任」是核心障碍，区块链通过去中心化共享和不可篡改记录提供解耦方案。: Figure 13-6 Trust is the core supply-chain obstacle; blockchain fixes it with decentralized sharing and tamper-proof records.
+    图 13-6 供应链协同中「信任」是核心障碍，区块链通过去中心化共享和不可篡改记录提供解耦方案。: Figure 13-6 Trust is the core supply-chain obstacle; blockchain fixes it with decentralized sharing and tamper-proof records.

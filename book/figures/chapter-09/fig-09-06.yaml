@@ -1,188 +1,56 @@
-type: sequence
-title: 图9-6 MCP协议交互序列图
-purpose: 展示AI Agent通过MCP与IoT平台及设备的典型交互流程：资源发现、工具调用、状态反馈。
-audience_takeaway: 读者应理解MCP作为AI与IoT平台之间的互操作层，不直接操作设备，而是通过平台封装的安全上下文调用后端服务。
-visual_focus: 从AI Agent发起会话到MCP Server鉴权、工具发现、调用后端设备服务、写入MQTT/CoAP，最终返回结果给AI Agent的完整时间线。
-design_level: logical
-layout: 自上而下时间线，左侧参与者：AI Agent, MCP Server, IoT平台服务, 设备协议适配层, 物理设备。
+type: architecture
+title: 图 9-6 LwM2M 对象树与引导注册
+audience_takeaway: 读者应理解 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐，设备经引导、注册、更新注册接入平台。
+purpose: 展示 LwM2M 对象树三级结构与引导注册流程
+visual_focus: 对象树三级结构与引导注册三步。
+design_level: architecture
+layout: 上半对象树三级卡片，中部路径示例，下半引导注册三步
 elements:
-- AI Agent（发起侧）
-- MCP Server（会话管理、鉴权、工具路由）
-- IoT平台后端（设备管理、数据服务、告警服务）
-- 设备协议适配层（MQTT Broker / CoAP端节点）
-- 物理设备（传感器/执行器）
+- Object 对象：3 设备、3303 温度、6 位置、5 固件更新
+- Instance 实例：同类能力多副本，编号从 0 开始
+- Resource 资源：/5700 读数、/5601 量程，R/W/E 权限
+- 引导注册：引导（Bootstrap）→ 注册（Register）→ 更新注册（Update）
+- 观察/通知：GET + Observe:0 推送式上报
 relationships:
-- 'AI Agent → MCP Server: session init (包括能力协商)'
-- 'MCP Server → AI Agent: 返回session ID, 声明支持版本和能力'
-- 'AI Agent → MCP Server: tools/list'
-- 'MCP Server: 基于用户身份、租户范围聚合工具目录'
-- 'MCP Server → AI Agent: 返回工具列表（每个含JSON Schema）'
-- 'AI Agent → MCP Server: tools/call (选中的工具+参数)'
-- 'MCP Server: 鉴权、白名单校验、风险分级'
-- 'MCP Server → IoT平台后端: REST调用（设备服务/数据服务）'
-- 'IoT平台后端 → 设备协议适配层: 按原链路下发（MQTT Publish / CoAP POST）'
-- '设备协议适配层 → 物理设备: 执行操作'
-- '物理设备 → 设备协议适配层: 响应/遥测上报'
-- '设备协议适配层 → IoT平台后端: 回调结果'
-- 'IoT平台后端 → MCP Server: 返回结果（含状态、数据）'
-- 'MCP Server → AI Agent: tools/call 响应（包含操作结果）'
-regions:
-- id: ai_domain
-  label: AI应用域
-  role: 推理、会话管理、工具调用
-- id: platform_domain
-  label: IoT平台域
-  role: 鉴权、设备管理、数据服务、安全策略
-- id: device_domain
-  label: 设备通信域
-  role: 设备协议适配、物理设备操作
-components:
-- id: ai_agent
-  label: AI Agent
-  type: application
-  subtitle: Claude Desktop等
-  group: ai_domain
-  priority: primary
-  shape: actor
-- id: mcp_server
-  label: MCP Server
-  type: ai
-  subtitle: 会话管理、鉴权路由
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: iot_backend
-  label: IoT平台后端
-  type: platform
-  subtitle: 设备/数据服务
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: protocol_adapt
-  label: 协议适配层
-  type: edge
-  subtitle: MQTT/CoAP网关
-  group: device_domain
-  priority: normal
-  shape: card
-- id: physical_device
-  label: 物理设备
-  type: edge
-  subtitle: 传感器/执行器
-  group: device_domain
-  priority: normal
-  shape: card
-connections:
-- from: ai_agent
-  to: mcp_server
-  label: session init
-  style: solid
-  direction: request
-- from: mcp_server
-  to: ai_agent
-  label: session info
-  style: solid
-  direction: response
-- from: ai_agent
-  to: mcp_server
-  label: tools/list
-  style: solid
-  direction: request
-- from: mcp_server
-  to: ai_agent
-  label: tools list
-  style: solid
-  direction: response
-- from: ai_agent
-  to: mcp_server
-  label: tools/call
-  style: solid
-  direction: request
-- from: mcp_server
-  to: iot_backend
-  label: REST调用
-  style: solid
-  direction: request
-- from: iot_backend
-  to: protocol_adapt
-  label: MQTT/CoAP
-  style: solid
-  direction: request
-- from: protocol_adapt
-  to: physical_device
-  label: 操作指令
-  style: solid
-  direction: request
-- from: physical_device
-  to: protocol_adapt
-  label: 响应/遥测
-  style: solid
-  direction: response
-- from: protocol_adapt
-  to: iot_backend
-  label: 结果回调
-  style: solid
-  direction: response
-- from: iot_backend
-  to: mcp_server
-  label: 操作结果
-  style: solid
-  direction: response
-- from: mcp_server
-  to: ai_agent
-  label: tools/result
-  style: solid
-  direction: response
-callouts:
-- MCP Server 不直接操作设备协议，而是通过 IoT 平台后端的安全链路。
-- tools/list 返回的工具列表是经过鉴权和租户裁剪的。
-- 物理设备侧协议不变（MQTT/CoAP），MCP 增加的是 AI 与平台之间的互操作层。
-legend:
-- 实线箭头 = 同步调用（请求/响应）。
-- 虚线箭头在本文中未出现，保持图例统一。
-visual_constraints:
-- 参与者不超过6个，每条消息带简短标签。
-- 突出显示 MCP Server 的鉴权和聚合，用橙色强调。
-- 图例放在底部，不遮挡时序线。
-render_notes: HTML/SVG 渲染，浅色背景，时间线自上而下，参与者列在左侧，消息线用直角折线段，箭头上标注标签。
+- 对象树三级嵌套，路径 /objectId/instanceId/resourceId 与 CoAP URI 对齐；引导注册三步接入平台
+render_notes: HTML/SVG 渲染，三级对象树卡片 + 引导注册三步流程，蓝绿橙分层。
 caption:
-  zh: 图9-6 MCP协议交互序列示意：AI Agent通过MCP Server与IoT平台及设备进行有状态、安全可控的工具调用。
-  en: 'Figure 9-6 MCP interaction sequence: the AI Agent makes stateful, security-governed tool calls to the IoT platform and devices through the MCP Server.'
+  zh: 图 9-6 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。
+  en: Figure 9-6 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update registration, and the observe/notify mechanism provides push-style reporting.
 labels:
   en:
-    图9-6 MCP协议交互序列图: Figure 9-6 MCP Interaction Sequence
-    AI Agent 通过 MCP Server 发现并调用经身份、租户和风险策略裁剪的 IoT 平台能力，平台再通过原有协议链路访问设备并回传结果。: The AI Agent discovers and calls IoT platform capabilities scoped by identity, tenant, and risk policy through the MCP Server; the platform then reaches devices over the existing protocol path and returns results.
-    MCP 是 AI 与 IoT 平台的互操作层，不绕过平台治理，也不替代 MQTT / CoAP 设备协议: 'MCP is the interop layer between AI and the IoT platform: it bypasses neither platform governance nor the MQTT / CoAP device protocols'
-    身份 + 租户范围裁剪: Identity + tenant scoping
-    鉴权 · 白名单 · 参数校验: Auth · whitelist · parameter checks
-    风险分级 · 必要时人工确认: Risk tiers · human approval when needed
-    session init · 能力协商: session init · capability negotiation
-    session info · 版本与能力: session info · version & capabilities
-    工具列表 · JSON Schema: Tool list · JSON Schema
-    tools/call · 工具 + 参数: tools/call · tool + parameters
-    平台服务调用 (REST): Platform service call (REST)
-    按原链路下发 · MQTT / CoAP: Deliver via existing path · MQTT / CoAP
-    操作指令: Action command
-    响应 / 遥测: Response / telemetry
-    结果回调: Result callback
-    状态 + 数据 + 审计结果: Status + data + audit trail
-    tools/call 响应: tools/call response
-    会话与发现: Session & discovery
-    受控工具调用: Governed tool call
-    设备响应与审计回传: Device response & audit return
-    AI 应用域: AI application domain
-    IoT 平台安全域: IoT platform security domain
-    设备通信域: Device communication domain
-    Claude Desktop 等: Claude Desktop etc.
-    会话 · 策略 · 工具路由: Session · policy · tool routing
-    IoT 平台后端: IoT platform backend
-    设备 / 数据服务: Device / data services
-    协议适配层: Protocol adaptation layer
-    MQTT / CoAP 网关: MQTT / CoAP gateway
-    物理设备: Physical device
-    传感器 / 执行器: Sensors / actuators
-    实线：受控调用与响应: 'Solid: governed calls & responses'
-    绿色：设备响应回传: 'Green: device response return'
-    橙色框：安全决策点: 'Orange box: security decision point'
-    虚线域边界：AI 与设备均不能绕过 IoT 平台安全域: 'Dashed domain boundary: neither AI nor devices bypass the platform security domain'
-    图9-6 MCP 协议交互序列示意：AI Agent 通过 MCP Server 与 IoT 平台及设备进行有状态、安全可控的工具调用。: 'Figure 9-6 MCP interaction sequence: the AI Agent makes stateful, security-governed tool calls to the IoT platform and devices through the MCP Server.'
+    图 9-6 LwM2M 对象树与引导注册: Figure 9-6 LwM2M Object Tree and Bootstrap/Register
+    LwM2M 把设备能力抽象为对象/实例/资源三级对象树，经引导、注册、更新注册接入平台。: LwM2M abstracts device capabilities into an object/instance/resource tree and joins the platform via bootstrap, register, and update.
+    CoAP 管消息收发，LwM2M 管设备能力的抽象、注册、配置与维护: CoAP handles message exchange; LwM2M handles capability abstraction, registration, configuration, and upkeep
+    对象树三级结构：把设备能力变成可寻址路径: 'Three-level object tree: turning device capabilities into addressable paths'
+    Object 对象: Object
+    代表一类能力: One capability class
+    3 设备 · 3303 温度 · 6 位置 · 5 固件更新: 3 Device · 3303 Temperature · 6 Location · 5 Firmware Update
+    同对象 ID = 平台读写接口可复用: Same object ID = reusable platform read/write interface
+    Instance 对象实例: Instance
+    同一能力的多个副本: Multiple copies of one capability
+    三个温度传感器 = 三个 /3303/ 实例: Three temperature sensors = three /3303/ instances
+    编号从 0 开始: Numbering starts at 0
+    Resource 资源: Resource
+    实例里的可读/写/执行项: Readable/writable/executable items in an instance
+    /5700 当前读数 · /5601 最小量程: /5700 current reading · /5601 min range
+    R 只读 / W 可写 / E 可执行: R read / W write / E execute
+    访问路径示例: Path example
+    读第一个温度传感器的当前值：/3303/0/5700: 'Read the first temperature sensor: /3303/0/5700'
+    路径语义与 CoAP URI 天然对齐，客户端固件按路径查表找处理器函数: Path semantics align naturally with CoAP URIs; client firmware dispatches handlers by path lookup
+    引导与注册：设备上平台的标准三步: 'Bootstrap & registration: the standard three steps to onboard'
+    ① 引导（Bootstrap）: ① Bootstrap
+    出厂预置信息联系引导服务器: Contact the bootstrap server with factory presets
+    返回主服务器地址、端口、PSK/证书、初始配置: Returns server address, port, PSK/certificate, initial config
+    仅首次上电 / 恢复出厂 / 证书过期时发生: Only on first power-up / factory reset / certificate expiry
+    ② 注册（Register）: ② Register
+    向 Server 发 CoAP POST: CoAP POST to the server
+    携带对象 ID 列表与端点名: Carries object ID list and endpoint name
+    返回 CoAP 2.01 Created: Returns CoAP 2.01 Created
+    ③ 更新注册（Update）: ③ Update
+    存活时间（Lifetime）到期前周期性 POST 续约: Periodic POST renews registration before Lifetime expiry
+    超时未更新 → 判定离线，释放注册资源: Missed update → marked offline, registration released
+    NB-IoT 水表通电后自动完成全流程: An NB-IoT water meter completes the whole flow on power-up
+    观察/通知：从轮询到推送: 'Observe/Notify: from polling to push'
+    平台发 GET + Observe:0 → 设备加入观察者列表 → 变化阈值 / 最小通知周期触发主动上报 → RST 取消观察，把通信主动权交给设备侧: Platform sends GET + Observe:0 → device joins the observer list → change threshold / minimum notify period triggers reports → RST cancels, handing the initiative to the device
+    图 9-6 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。: Figure 9-6 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update, and the observe/notify mechanism provides push-style reporting.

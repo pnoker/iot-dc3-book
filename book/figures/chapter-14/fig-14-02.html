@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图14-2 IoT DC3 系统分层架构</title>
+  <title>图 14-2 物联网平台分层架构</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图14-2 IoT DC3 系统分层架构</title>
-  <desc id="desc">北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。</desc>
+  <title id="title">图 14-2 物联网平台分层架构</title>
+  <desc id="desc">设备经边缘 Driver 协议接入，位号值经 RabbitMQ 异步推送并并行分发给数据中心与智能中心；应用经 API Gateway 并行路由到鉴权、设备管理与数据查询。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
@@ -29,95 +29,100 @@
 
   <!-- 标题 -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-2 IoT DC3 系统分层架构</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">北向 REST/gRPC 同步、南向 RabbitMQ 异步，构成三类真实通信边界</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 14-2 物联网平台分层架构</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">消息分发与 API 路由形成两组并行扇出，不是组件串行调用</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
   <!-- ===== 应用层 ===== -->
-  <text x="140" y="148" font-size="15" font-weight="700" fill="#334155">应用层</text>
-  <rect x="140" y="164" width="420" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="350" y="190" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Web 控制台</text>
-  <text x="350" y="212" font-size="11" fill="#475569" text-anchor="middle">运维 / 配置界面</text>
-  <rect x="690" y="164" width="420" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="900" y="190" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">第三方应用</text>
-  <text x="900" y="212" font-size="11" fill="#475569" text-anchor="middle">REST API 集成</text>
-  <rect x="1240" y="164" width="420" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="1450" y="190" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">API 客户端</text>
-  <text x="1450" y="212" font-size="11" fill="#475569" text-anchor="middle">dc3-cli / 脚本</text>
+  <text x="140" y="150" font-size="15" font-weight="700" fill="#334155">应用层</text>
+  <rect x="140" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="320" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">监控大屏</text>
+  <text x="320" y="210" font-size="11" fill="#475569" text-anchor="middle">可视化</text>
+  <rect x="530" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="710" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">移动端 App</text>
+  <text x="710" y="210" font-size="11" fill="#475569" text-anchor="middle">移动接入</text>
+  <rect x="920" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="1100" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">业务客户端</text>
+  <text x="1100" y="210" font-size="11" fill="#475569" text-anchor="middle">第三方集成</text>
+  <rect x="1310" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="1490" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">告警与控制台</text>
+  <text x="1490" y="210" font-size="11" fill="#475569" text-anchor="middle">运维操作</text>
 
-  <!-- 应用 → Gateway -->
-  <path d="M350 226 V268" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <path d="M900 226 V268" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <path d="M1450 226 V268" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <text x="362" y="254" font-size="12" font-weight="700" fill="#475569">REST</text>
+  <!-- 应用 → API Gateway -->
+  <line x1="320" y1="224" x2="320" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <line x1="710" y1="224" x2="710" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <line x1="1100" y1="224" x2="1100" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <line x1="1490" y1="224" x2="1490" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
 
-  <!-- ===== 接入层 ===== -->
-  <text x="140" y="300" font-size="15" font-weight="700" fill="#334155">接入层</text>
-  <rect x="140" y="316" width="1520" height="62" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="900" y="342" font-size="16" font-weight="700" fill="#2563EB" text-anchor="middle">dc3-gateway</text>
-  <text x="900" y="364" font-size="11" fill="#475569" text-anchor="middle">REST 路由 · Token 校验 · Compose DNS 寻址</text>
+  <!-- ===== API Gateway ===== -->
+  <rect x="140" y="254" width="1520" height="56" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="900" y="288" font-size="16" font-weight="700" fill="#2563EB" text-anchor="middle">API Gateway · 统一入口 · 鉴权 · 路由</text>
 
-  <!-- Gateway → 四中心 -->
-  <path d="M350 378 V420" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <path d="M900 378 V420" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <path d="M1450 378 V420" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <path d="M900 378 V392 H1450 V420" stroke="#2563EB" stroke-width="2" fill="none"/>
-  <text x="560" y="408" font-size="12" font-weight="700" fill="#2563EB">REST 路由到四中心</text>
+  <!-- Gateway → 平台服务 -->
+  <line x1="400" y1="310" x2="400" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="900" y1="310" x2="900" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1400" y1="310" x2="1400" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="560" y="330" font-size="12" font-weight="700" fill="#2563EB">API 路由（并行扇出）</text>
 
-  <!-- ===== 平台服务层 ===== -->
-  <text x="140" y="452" font-size="15" font-weight="700" fill="#334155">平台服务层</text>
-  <rect x="140" y="468" width="360" height="130" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="320" y="502" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Auth</text>
-  <text x="320" y="532" font-size="12" fill="#475569" text-anchor="middle">鉴权与令牌</text>
-  <text x="320" y="556" font-size="11" fill="#94A3B8" text-anchor="middle">PostgreSQL</text>
-  <rect x="530" y="468" width="360" height="130" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="710" y="502" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Manager</text>
-  <text x="710" y="532" font-size="12" fill="#475569" text-anchor="middle">设备与模型元数据</text>
-  <text x="710" y="556" font-size="11" fill="#94A3B8" text-anchor="middle">PostgreSQL</text>
-  <rect x="920" y="468" width="360" height="130" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="1100" y="502" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Data</text>
-  <text x="1100" y="532" font-size="12" fill="#475569" text-anchor="middle">最新值与历史值</text>
-  <text x="1100" y="556" font-size="11" fill="#94A3B8" text-anchor="middle">Caffeine + PostgreSQL</text>
-  <rect x="1310" y="468" width="360" height="130" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.8"/>
-  <text x="1490" y="502" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Agentic</text>
-  <text x="1490" y="532" font-size="12" fill="#475569" text-anchor="middle">对话与受控工具</text>
-  <text x="1490" y="556" font-size="11" fill="#94A3B8" text-anchor="middle">Facade / gRPC</text>
+  <!-- ===== 平台层 ===== -->
+  <rect x="140" y="342" width="1520" height="250" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="160" y="366" font-size="15" font-weight="700" fill="#2563EB">平台层</text>
 
-  <!-- Data ↔ RabbitMQ -->
-  <path d="M1100 598 V636" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
-  <path d="M1070 636 V598" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <text x="1300" y="608" font-size="12" font-weight="700" fill="#2563EB">Data → RabbitMQ → Driver：命令</text>
-  <text x="1300" y="628" font-size="12" font-weight="700" fill="#0F766E">Driver → RabbitMQ → Data：数据 / 回执</text>
+  <!-- RabbitMQ -->
+  <rect x="160" y="378" width="1480" height="52" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="900" y="410" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">RabbitMQ · 异步消息总线</text>
 
-  <!-- ===== 消息总线 ===== -->
-  <rect x="140" y="636" width="1520" height="56" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="900" y="670" font-size="16" font-weight="700" fill="#2563EB" text-anchor="middle">RabbitMQ · PointValue / Status / Command / Receipt</text>
+  <!-- 数据中心 + 智能中心 -->
+  <rect x="160" y="452" width="720" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+  <text x="520" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据中心</text>
+  <text x="520" y="508" font-size="11" fill="#475569" text-anchor="middle">最新值 · 历史值 · 告警</text>
+  <rect x="920" y="452" width="720" height="74" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.6"/>
+  <text x="1280" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">智能中心</text>
+  <text x="1280" y="508" font-size="11" fill="#475569" text-anchor="middle">AI Agent · 任务编排</text>
 
-  <!-- ===== Driver 层 ===== -->
-  <text x="140" y="730" font-size="15" font-weight="700" fill="#334155">Driver 层</text>
-  <rect x="140" y="746" width="420" height="76" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="350" y="778" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">driver-mqtt</text>
-  <text x="350" y="800" font-size="11" fill="#475569" text-anchor="middle">MQTT 发布 / 订阅</text>
-  <rect x="690" y="746" width="420" height="76" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="900" y="778" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">driver-modbus</text>
-  <text x="900" y="800" font-size="11" fill="#475569" text-anchor="middle">TCP / RTU 轮询与写入</text>
-  <rect x="1240" y="746" width="420" height="76" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="1450" y="778" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">driver-opcua</text>
-  <text x="1450" y="800" font-size="11" fill="#475569" text-anchor="middle">OPC UA 订阅采集</text>
+  <!-- 消息分发：RabbitMQ → 数据中心/智能中心 -->
+  <line x1="520" y1="430" x2="520" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1280" y1="430" x2="1280" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="900" y="444" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">消息分发</text>
 
-  <!-- Driver → Manager（gRPC） -->
-  <path d="M880 746 V718 H710 V600" stroke="#F97316" stroke-width="2" stroke-dasharray="6 4" fill="none" marker-end="url(#ah-orange)"/>
-  <text x="420" y="706" font-size="12" font-weight="700" fill="#D97706">Driver → Manager：gRPC 注册 / 元数据查询</text>
+  <!-- API 服务组 + 受控工具 -->
+  <rect x="160" y="546" width="720" height="34" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
+  <text x="520" y="568" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">API 服务组 · 鉴权 · 设备管理 · 数据查询</text>
+  <rect x="920" y="546" width="720" height="34" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
+  <text x="1280" y="568" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">受控工具与审计 · 策略校验 · 人工确认 · 操作留痕</text>
+
+  <!-- ===== 边缘接入层 ===== -->
+  <text x="140" y="622" font-size="15" font-weight="700" fill="#334155">边缘接入层</text>
+  <rect x="140" y="636" width="500" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="390" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT / CoAP Driver</text>
+  <text x="390" y="692" font-size="11" fill="#475569" text-anchor="middle">协议适配 · 本地缓存</text>
+  <rect x="670" y="636" width="500" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="920" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus / 私有协议 Driver</text>
+  <text x="920" y="692" font-size="11" fill="#475569" text-anchor="middle">协议适配 · 本地缓存</text>
+  <rect x="1200" y="636" width="460" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="1430" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">协议适配网关</text>
+  <text x="1430" y="692" font-size="11" fill="#475569" text-anchor="middle">标准化位号值</text>
+
+  <!-- 异步推送：Driver → RabbitMQ -->
+  <line x1="390" y1="636" x2="390" y2="594" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <line x1="920" y1="636" x2="920" y2="594" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
+  <text x="660" y="620" font-size="11" font-weight="700" fill="#0F766E">异步推送</text>
 
   <!-- ===== 设备层 ===== -->
-  <rect x="140" y="856" width="1520" height="58" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="900" y="891" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">设备层 · 传感器 / 控制器 / 执行器（可下沉边缘）</text>
-  <path d="M350 822 V854" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <path d="M900 822 V854" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <path d="M1450 822 V854" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <rect x="140" y="740" width="1520" height="70" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
+  <text x="320" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">传感器</text>
+  <text x="710" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">PLC</text>
+  <text x="1100" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">智能网关</text>
+  <text x="1490" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">现场设备</text>
+
+  <!-- 协议接入：设备 → Driver -->
+  <line x1="320" y1="740" x2="390" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <line x1="710" y1="740" x2="920" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <line x1="1100" y1="740" x2="1430" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="530" y="732" font-size="11" font-weight="700" fill="#0F766E">协议接入（MQTT / CoAP / Modbus）</text>
 
   <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图14-2 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。</text>
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 14-2 上行数据经消息总线并行分发，API 与 Agent 分别通过本地能力组完成受控调用。</text>
   </svg>
 </svg>
   </main>

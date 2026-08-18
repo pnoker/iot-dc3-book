@@ -1,58 +1,58 @@
-type: matrix
-title: 图14-9 部署形态选择与边缘节点管理
-audience_takeaway: 读者应理解公有云、私有云、边缘三种部署形态对应不同权衡，边缘节点管理需解决状态感知、配置分发、版本管控，OTA 依赖差分、事务与灰度。
-purpose: 对比三种部署形态并展示边缘节点管理与 OTA 要点
-visual_focus: 三列部署形态卡片与边缘管理三件事。
-design_level: matrix
-layout: 上半三列部署形态（公有云/私有云/边缘），下半边缘节点管理三件事 + OTA 三能力
+type: lifecycle
+title: 图 14-9 可复现实验的五个环节与证据包
+audience_takeaway: 读者应理解可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化证据包。
+purpose: 展示可复现实验的五个环节与证据包结构
+visual_focus: 五环节横向流程与证据包目录结构。
+design_level: lifecycle
+layout: 上半五个环节横向流程，底部证据包目录结构
 elements:
-- 公有云：运维低、账单易超预期、典型智慧城市/车联网
-- 私有云：掌控强、需自扛高可用、典型工厂/园区/医疗
-- 边缘部署：可离线自治、引入节点管理成本、典型工业现场/矿山/港口
-- 边缘管理：状态感知（心跳 1.5 倍）、配置分发（中心化）、版本管控（可回滚）
-- OTA：差分升级、升级事务、灰度发布
+- 冻结 manifest：commit/镜像 digest/依赖/模型/Prompt/RAG 版本
+- 工作负载可重放：设备数、上报频率、payload、故障参数固定
+- 指标字典：先定义分母，报告 P50/P95/P99
+- 故障与安全用例：重复遥测、断网、积压、跨租户、超时、回执丢失等
+- 证据包：README/manifest/workload/raw/summary/failures/figures
 relationships:
-- 三种形态对应不同数据主权与运维能力，实际多为组合；边缘管理三件事支撑节点治理
-render_notes: HTML/SVG 渲染，三列对比卡片 + 底部边缘管理与 OTA，蓝绿橙三色。
+- 五环节依次递进：先冻结再重放，先定义分母再报告，最后沉淀证据包
+render_notes: HTML/SVG 渲染，五环节流程 + 证据包目录树，蓝绿橙红灰分层。
 caption:
-  zh: 图14-9 公有云、私有云、边缘三种部署形态对应不同权衡；边缘节点管理需解决状态感知、配置分发、版本管控三件事，OTA 升级依赖差分、事务与灰度保证一键回滚。
-  en: 'Figure 14-9 Public cloud, private cloud, and edge are three deployment forms with different trade-offs; edge node management must solve status sensing, configuration distribution, and version control, and OTA upgrades rely on delta updates, transactions, and canary releases to guarantee one-click rollback.'
+  zh: 图 14-9 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化的出版证据包。
+  en: 'Figure 14-9 A reproducible experiment freezes the environment manifest, pins a replayable workload, defines denominators before reporting per the metric dictionary, covers failure and security cases, and finally deposits a structured publication evidence pack.'
 labels:
   en:
-    图14-9 部署形态选择与边缘节点管理: 'Figure 14-9 Deployment Form Selection & Edge Node Management'
-    公有云、私有云、边缘三种部署形态对应不同权衡，边缘节点需解决状态感知、配置分发、版本管控。: 'Public cloud, private cloud, and edge represent different trade-offs; edge nodes must solve status sensing, configuration distribution, and version control.'
-    云、私有、边缘不是线性梯度，而是对应不同的数据主权与运维能力: 'Cloud, private, and edge are not a linear gradient — they map to different data sovereignty and ops capabilities'
-    公有云: 'Public Cloud'
-    运维复杂度低，云厂商兜底: 'Low ops complexity; the cloud vendor carries failures'
-    适合设备分布广、流量标准化: 'Suits widely distributed devices and standard traffic'
-    运维团队规模小的场景: 'with small ops teams'
-    代价：带宽与消息量账单常超预期: 'Cost: bandwidth and message bills often exceed expectations'
-    典型：智慧城市、车联网: 'Typical: smart cities, connected vehicles'
-    私有云: 'Private Cloud'
-    掌控力强，数据主权敏感场景: 'Strong control; data-sovereignty-sensitive scenarios'
-    工厂、园区、医疗: 'Factories, campuses, healthcare'
-    需自己扛高可用: 'High availability is your own burden'
-    单台宕机的交叉损失可能超一年托管费: 'One server down can cost more than a year of hosting fees'
-    多数选择单点加冷备的现实妥协: 'Most settle for the pragmatic single node plus cold standby'
-    边缘部署: 'Edge Deployment'
-    协议驱动下沉到边缘网关: 'Protocol drivers pushed down to edge gateways'
-    广域网抖动消化在消息缓存: 'WAN jitter absorbed in message caches'
-    断网时本地自治: 'Local autonomy when the network is down'
-    降低带宽与存储，引入节点管理成本: 'Less bandwidth and storage, but node-management cost'
-    典型：工业现场、矿山、港口: 'Typical: industrial sites, mines, ports'
-    边缘节点管理：一个被低估的运维负担: 'Edge Node Management: an underrated ops burden'
-    ① 状态感知: '1. Status Sensing'
-    Agent 驻留网关，经 MQTT/HTTP 上报心跳: 'A resident agent on the gateway reports heartbeats over MQTT/HTTP'
-    心跳周期约为数据上报周期 1.5 倍: 'Heartbeat interval ≈ 1.5× the reporting interval'
-    连续多次未收到则标记“离线”: 'A few consecutive misses mark the node "offline"'
-    ② 配置分发: '2. Config Distribution'
-    驱动参数、采集频率、告警阈值修改: 'Driver parameters, collection frequency, alert thresholds'
-    经中心化配置服务 + REST API 下发: 'Pushed via a central config service + REST API'
-    避免运维手动改文件、排查递归增压: 'No manual file edits, no snowballing troubleshooting load'
-    ③ 版本管控: '3. Version Control'
-    驱动、Agent 版本可追溯、可回滚: 'Driver and agent versions are traceable and rollback-ready'
-    保留最近几个驱动版本镜像: 'Keep images of the last few driver versions'
-    驱动容器化，由编排工具管理更新策略: 'Drivers are containerized; the orchestrator manages update policy'
-    OTA 升级三能力：成败在一键回滚: 'Three OTA Capabilities: success hinges on one-click rollback'
-    差分升级（只下发变更部分）· 升级事务（下载→校验签名→写入→切换→上报，失败回退）· 灰度发布（少量设备先升级，看数据量与错误率）: 'Delta updates (only changes are shipped) · upgrade transactions (download→verify signature→write→switch→report, roll back on failure) · canary releases (a few devices first, then watch volume and error rate)'
-    图14-9 公有云、私有云、边缘三种部署形态对应不同权衡；边缘节点管理需解决状态感知、配置分发、版本管控三件事，OTA 升级依赖差分、事务与灰度保证一键回滚。: 'Figure 14-9 Public cloud, private cloud, and edge are three deployment forms with different trade-offs; edge node management must solve status sensing, configuration distribution, and version control, and OTA upgrades rely on delta updates, transactions, and canary releases to guarantee one-click rollback.'
+    图 14-9 可复现实验的五个环节与证据包: 'Figure 14-9 Five Steps of a Reproducible Experiment & the Evidence Pack'
+    可复现实验依次冻结 manifest、固定工作负载、定义指标字典、覆盖故障用例、沉淀出版证据包。: 'A reproducible experiment freezes the manifest, pins the workload, defines the metric dictionary, covers failure cases, and deposits a publication evidence pack.'
+    没有实测就标记 NA，不用数值冒充结果 · 0 与 NA 含义不同: 'Mark NA when unmeasured; never pass numbers off as results · 0 and NA mean different things'
+    ① 冻结 manifest: '1. Freeze the manifest'
+    commit/tag、镜像 digest、Compose 版本: 'commit/tag, image digest, Compose version'
+    OS/CPU/内存/网络、JDK/Python: 'OS/CPU/RAM/network, JDK/Python'
+    PG/RabbitMQ/Driver 版本: 'PG/RabbitMQ/Driver versions'
+    模型/Prompt/Tool/RAG 版本: 'Model/Prompt/Tool/RAG versions'
+    密钥不入 manifest，用脱敏摘要: 'No secrets in the manifest; use redacted digests'
+    ② 工作负载可重放: '2. Replayable workload'
+    固定设备数、位号数、上报频率: 'Fixed device count, point count, report frequency'
+    payload 大小、读写比、命令比例: 'Payload size, read/write ratio, command ratio'
+    持续时间、预热时间: 'Duration, warm-up time'
+    故障：延迟/丢包、断网窗口、重启时刻: 'Faults: latency/loss, offline windows, restart times'
+    一次比较只改变主要变量: 'Change only the primary variable per comparison'
+    ③ 指标字典: '3. Metric dictionary'
+    先定义分母，再报告数字: 'Define the denominator before reporting numbers'
+    设备接入 / 数据链路 / 命令链路: 'Device access / data path / command path'
+    存储 / 可靠性 / RAG / Agent / 成本: 'Storage / reliability / RAG / Agent / cost'
+    时延起止点必须固定: 'Latency start and end points must be fixed'
+    多次独立运行，报告 P50/P95/P99: 'Multiple independent runs; report P50/P95/P99'
+    ④ 故障与安全用例: '4. Failure & security cases'
+    重复遥测、乱序时间戳: 'Duplicate telemetry, out-of-order timestamps'
+    断开重连、积压恢复、数据库故障: 'Reconnection, backlog recovery, database failures'
+    权限不足、跨租户、模型超时: 'Missing permissions, cross-tenant access, model timeouts'
+    回执丢失、重放、人工接管: 'Lost receipts, replays, human takeover'
+    优先模拟器，不绕过 PLC/SIS 联锁: 'Prefer simulators; never bypass PLC/SIS interlocks'
+    ⑤ 证据包: '5. Evidence pack'
+    正文数字反链实验 ID: 'Figures in the text link back to experiment IDs'
+    出版证据包结构（experiments/EXP-14-E2E-01/）: 'Publication evidence pack layout (experiments/EXP-14-E2E-01/)'
+    复现步骤与已知限制: 'Reproduction steps and known limitations'
+    版本、环境和数据哈希: 'Version, environment, and data hashes'
+    负载与故障参数 / 实际执行命令: 'Workload & fault parameters / actual commands run'
+    原始指标、日志与逐任务 trace: 'Raw metrics, logs, and per-task traces'
+    指标定义和汇总: 'Metric definitions and summaries'
+    失败样本与复盘 / 图表生成方法: 'Failure samples & postmortems / chart generation'
+    图 14-9 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化的出版证据包。: 'Figure 14-9 A reproducible experiment freezes the environment manifest, pins a replayable workload, defines denominators before reporting per the metric dictionary, covers failure and security cases, and finally deposits a structured publication evidence pack.'

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-5 云边协同三大挑战的关联与权衡三角架</title>
+  <title>图 5-5 数据传输的 QoS 分级与容错机制</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,75 +12,78 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图5-5 云边协同三大挑战的关联与权衡三角架</title>
-  <desc id="desc">一致性、安全性和运维相互牵制，不能孤立优化。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
-    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
-    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-5 云边协同三大挑战的关联与权衡三角架</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">一致性、安全性和运维相互牵制，不能孤立优化。</text>
-    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图 5-5 数据传输的 QoS 分级与容错机制</title>
+  <desc id="desc">QoS 0/1/2 三级可靠性递增、开销递增；持久会话、幂等设计、序列号排序补齐容错闭环。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
-    <!-- 三角架（三边实线，先画） -->
-    <polygon points="420,250 1380,250 900,720" fill="#F8FAFC" fill-opacity="0.6" stroke="#64748B" stroke-width="2"/>
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
 
-    <!-- 三条边的牵制关系标签 -->
-    <rect x="780" y="200" width="240" height="30" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-    <text x="900" y="221" font-size="13" fill="#475569" text-anchor="middle">强加密拖慢同步 / 放宽一致引入漏洞</text>
-    <rect x="1015" y="470" width="250" height="30" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-    <text x="1140" y="491" font-size="13" fill="#475569" text-anchor="middle">安全策略加重运维 / 简化运维降低安全</text>
-    <rect x="555" y="470" width="210" height="30" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-    <text x="660" y="491" font-size="13" fill="#475569" text-anchor="middle">强一致加重运维 / 最终一致更简单</text>
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-5 数据传输的 QoS 分级与容错机制</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">报文丢了怎么办？重复了怎么办？断了如何续接？</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- 顶点 -->
-    <circle cx="420" cy="250" r="18" fill="#2563EB"/>
-    <circle cx="1380" cy="250" r="18" fill="#DC2626"/>
-    <circle cx="900" cy="720" r="18" fill="#0F766E"/>
+  <!-- QoS 0 -->
+  <rect x="80" y="140" width="520" height="220" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="340" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 0 · 至多一次</text>
+  <text x="116" y="214" font-size="12" fill="#475569">发布即完成，不等待应答、不保留副本</text>
+  <text x="116" y="240" font-size="12" fill="#475569">效率最高，开销接近零</text>
+  <text x="116" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：高频非关键状态量上报</text>
+  <text x="116" y="304" font-size="11" fill="#64748B">例：气象站每分钟报一次温度，丢一条下一条补上</text>
+  <text x="116" y="338" font-size="11" fill="#64748B">1 步（发布即完成）</text>
 
-    <!-- 中心权衡区 -->
-    <circle cx="900" cy="400" r="92" fill="#FEFCE8" stroke="#D97706" stroke-width="2"/>
-    <text x="900" y="392" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">工程权衡区</text>
-    <text x="900" y="424" font-size="14" fill="#475569" text-anchor="middle">按后果、时延与成本取舍</text>
+  <!-- QoS 1 -->
+  <rect x="640" y="140" width="520" height="220" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 1 · 至少一次</text>
+  <text x="676" y="214" font-size="12" fill="#475569">等待 PUBACK，超时重发原报文</text>
+  <text x="676" y="240" font-size="12" fill="#475569">保证交付，但可能收到重复消息</text>
+  <text x="676" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：指令下发、告警转发</text>
+  <text x="676" y="304" font-size="11" fill="#64748B">例：充电宝开柜指令，ACK 丢失→重传→重复开锁</text>
+  <text x="676" y="338" font-size="11" fill="#64748B">2 步（发布 + 确认 + 超时重传）</text>
 
-    <!-- 数据一致性（左，蓝） -->
-    <line x1="420" y1="250" x2="420" y2="330" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 5"/>
-    <rect x="100" y="140" width="320" height="180" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="260" y="178" font-size="22" font-weight="700" fill="#2563EB" text-anchor="middle">数据一致性</text>
-    <line x1="130" y1="200" x2="390" y2="200" stroke="#BFDBFE" stroke-width="1"/>
-    <circle cx="142" cy="226" r="4" fill="#2563EB"/>
-    <text x="154" y="232" font-size="15" fill="#475569">最终一致性模型</text>
-    <circle cx="142" cy="256" r="4" fill="#2563EB"/>
-    <text x="154" y="262" font-size="15" fill="#475569">版本向量 / 乐观锁</text>
-    <circle cx="142" cy="286" r="4" fill="#2563EB"/>
-    <text x="154" y="292" font-size="15" fill="#475569">冲突合并策略</text>
+  <!-- QoS 2 -->
+  <rect x="1200" y="140" width="520" height="220" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1460" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 2 · 恰好一次</text>
+  <text x="1236" y="214" font-size="12" fill="#475569">四步握手：PUBLISH → PUBREC → PUBREL → PUBCOMP</text>
+  <text x="1236" y="240" font-size="12" fill="#475569">既不丢也不重，交互开销成倍增加</text>
+  <text x="1236" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：资金交易、消防告警等不可重入</text>
+  <text x="1236" y="304" font-size="11" fill="#64748B">全链路开销最高，吞吐最低</text>
+  <text x="1236" y="338" font-size="11" fill="#64748B">4 步（发布 + 三次握手）</text>
 
-    <!-- 安全性（右，红） -->
-    <line x1="1380" y1="250" x2="1380" y2="330" stroke="#DC2626" stroke-width="2" stroke-dasharray="6 5"/>
-    <rect x="1380" y="140" width="320" height="180" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.6"/>
-    <text x="1540" y="178" font-size="22" font-weight="700" fill="#DC2626" text-anchor="middle">安全性</text>
-    <line x1="1410" y1="200" x2="1670" y2="200" stroke="#FECACA" stroke-width="1"/>
-    <circle cx="1422" cy="226" r="4" fill="#DC2626"/>
-    <text x="1434" y="232" font-size="15" fill="#475569">硬件信任根（TPM）</text>
-    <circle cx="1422" cy="256" r="4" fill="#DC2626"/>
-    <text x="1434" y="262" font-size="15" fill="#475569">OTA 签名验签</text>
-    <circle cx="1422" cy="286" r="4" fill="#DC2626"/>
-    <text x="1434" y="292" font-size="15" fill="#475569">安全启动与运行时防护</text>
+  <!-- 容错机制 -->
+  <text x="80" y="420" font-size="15" font-weight="700" fill="#334155">QoS 之外的容错机制</text>
 
-    <!-- 运维（底部，青绿） -->
-    <line x1="900" y1="720" x2="900" y2="780" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 5"/>
-    <rect x="560" y="790" width="680" height="120" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="900" y="826" font-size="22" font-weight="700" fill="#0F766E" text-anchor="middle">运维</text>
-    <line x1="590" y1="845" x2="1210" y2="845" stroke="#BBF7D0" stroke-width="1"/>
-    <circle cx="720" cy="872" r="4" fill="#0F766E"/>
-    <text x="732" y="878" font-size="15" fill="#475569">OTA 批量管理</text>
-    <circle cx="960" cy="872" r="4" fill="#0F766E"/>
-    <text x="972" y="878" font-size="15" fill="#475569">远程配置下发</text>
-    <circle cx="1220" cy="872" r="4" fill="#0F766E"/>
-    <text x="1232" y="878" font-size="15" fill="#475569">可观测性与自动告警</text>
+  <rect x="80" y="442" width="520" height="160" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="340" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">持久会话（CleanSession=false）</text>
+  <text x="116" y="510" font-size="12" fill="#475569">Broker 保存未确认消息与离线订阅消息</text>
+  <text x="116" y="536" font-size="12" fill="#475569">设备再次上线时一次性放行</text>
+  <text x="116" y="562" font-size="12" fill="#475569">PLC 重启或模块抖动时消息不凭空消失</text>
+  <text x="116" y="588" font-size="11" fill="#64748B">网络断开不可怕，开启持久会话即可</text>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-5 云边协同的难点在于三个维度互相牵制：强化安全性可能增加运维复杂度，追求强一致会影响系统弹性，工程设计的核心是找到项目可接受的平衡点。</text>
+  <rect x="640" y="442" width="520" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">幂等性设计（应用层去重）</text>
+  <text x="676" y="510" font-size="12" fill="#475569">指令携带全局唯一 ID，如 cmd-1234</text>
+  <text x="676" y="536" font-size="12" fill="#475569">处理前查 Redis SETNX / 数据库唯一索引</text>
+  <text x="676" y="562" font-size="12" fill="#475569">处理过则丢弃，未处理则执行并记录 ID</text>
+  <text x="676" y="588" font-size="11" fill="#64748B">QoS 1 管网络语义，幂等管应用层去重</text>
+
+  <rect x="1200" y="442" width="520" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">数据乱序处理</text>
+  <text x="1236" y="510" font-size="12" fill="#475569">QoS 不保证到达顺序</text>
+  <text x="1236" y="536" font-size="12" fill="#475569">消息内嵌单调递增序列号 / 时间戳</text>
+  <text x="1236" y="562" font-size="12" fill="#475569">消费端按序列号排序、丢弃过期、合并</text>
+  <text x="1236" y="588" font-size="11" fill="#64748B">与时间序列写入顺序性设计相关（5.4 节）</text>
+
+  <!-- 工程判断 -->
+  <rect x="80" y="660" width="1640" height="80" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="692" font-size="14" font-weight="700" fill="#334155">工程判断：不要指望纯协议解决所有问题</text>
+  <text x="120" y="720" font-size="12" fill="#475569">丢了会死人吗？会 → QoS 2；否则 QoS 1 + 应用层幂等。无状态量用 QoS 0。断线开启持久会话，乱序靠序列号在消费端排序</text>
+
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 5-5 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。</text>
   </svg>
 </svg>
   </main>

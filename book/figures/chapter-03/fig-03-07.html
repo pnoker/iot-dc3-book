@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-7 TinyML模型训练与部署全流程</title>
+  <title>图 3-7 室内外定位技术覆盖与精度光谱（示意）</title>
   <style>
     html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
     .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
@@ -16,63 +16,153 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图3-7 TinyML模型训练与部署全流程</title>
-  <desc id="desc">从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。</desc>
+  <title id="title">图 3-7 室内外定位技术覆盖与精度光谱（示意）</title>
+  <desc id="desc">展示GNSS、Wi-Fi、BLE、UWB等主流定位技术在室外、室内及半室外环境下的典型精度区间，横轴为对数刻度的定位精度（米），从左到右由粗到精，背景色区分室外、半室外过渡与室内三种环境域。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
+  <style>
+    text { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  </style>
+
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
-    <marker id="bp-arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/></marker>
-    <marker id="bp-arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
   </defs>
-  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <rect width="1800" height="900" fill="#F8FAFC"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图3-7 TinyML模型训练与部署全流程</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。</text>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图 3-7 室内外定位技术覆盖与精度光谱（示意）</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">展示GNSS、Wi-Fi、BLE、UWB等主流定位技术在室外、室内及半室外环境下的典型精度区间，帮助读者建立直观的选型直觉。</text>
 
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="flowchart">
-  <rect x="90" y="130" width="1070" height="600" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="115" y="160" fill="#0F172A" font-size="15" font-weight="700">模型开发与固件构建域</text>
-  <rect x="1190" y="130" width="520" height="600" rx="14" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="1215" y="160" fill="#0F172A" font-size="15" font-weight="700">目标设备域</text>
+  <g data-layout="timeline">
 
-  <g font-size="17" font-weight="700" text-anchor="middle" fill="#0F172A">
-    <rect x="120" y="220" width="220" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="230" y="263">数据准备</text><text x="230" y="291" font-size="12" font-weight="400" fill="#475569">采集 · 标注 · 切分</text>
-    <rect x="400" y="220" width="220" height="100" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="510" y="263">云端训练</text><text x="510" y="291" font-size="12" font-weight="400" fill="#475569">轻量模型训练</text>
-    <rect x="680" y="220" width="220" height="100" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><text x="790" y="263">模型优化</text><text x="790" y="291" font-size="12" font-weight="400" fill="#475569">量化 · 剪枝</text>
-    <path d="M1010 210L1110 270L1010 330L910 270Z" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/><text x="1010" y="268">精度验收</text><text x="1010" y="294" font-size="12" font-weight="400" fill="#92400E">损失可接受？</text>
+  <!-- ===== 背景环境分区（对数精度轴：左粗 10m → 右精 0.1m）===== -->
+  <!-- 室外域（≥5m，浅蓝） -->
+  <rect x="120" y="270" width="234.8" height="430" fill="rgba(135,206,250,0.15)" stroke="none" />
+  <!-- 半室外过渡区（1m~5m，浅黄） -->
+  <rect x="354.8" y="270" width="545.2" height="430" fill="rgba(255,255,0,0.10)" stroke="none" />
+  <!-- 室内域（<1m，浅灰） -->
+  <rect x="900" y="270" width="780" height="430" fill="rgba(200,200,200,0.15)" stroke="none" />
 
-    <rect x="160" y="470" width="250" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="285" y="510">模型转换 / 代码生成</text><text x="285" y="540" font-size="12" font-weight="400" fill="#475569">生成 MCU 推理代码</text>
-    <rect x="470" y="470" width="220" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="580" y="510">固件编译</text><text x="580" y="540" font-size="12" font-weight="400" fill="#475569">链接模型与运行时</text>
-    <rect x="750" y="470" width="220" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="860" y="510">固件集成</text><text x="860" y="540" font-size="12" font-weight="400" fill="#475569">传感器 · 预处理 · 推理</text>
-    <rect x="1230" y="300" width="200" height="100" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/><text x="1330" y="342">烧录部署</text><text x="1330" y="372" font-size="12" font-weight="400" fill="#475569">完整固件写入 MCU</text>
-    <rect x="1480" y="300" width="190" height="100" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/><text x="1575" y="342">端侧运行</text><text x="1575" y="372" font-size="12" font-weight="400" fill="#475569">采集 · 推理 · 响应</text>
-  </g>
+  <!-- 环境域交界虚线 -->
+  <line x1="354.8" y1="270" x2="354.8" y2="700" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4" />
+  <line x1="900" y1="270" x2="900" y2="700" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8,4" />
 
-  <g fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-blue)">
-    <line x1="340" y1="270" x2="400" y2="270"/><line x1="620" y1="270" x2="680" y2="270"/><line x1="900" y1="270" x2="910" y2="270"/>
-    <path d="M1010 330V400H285V470"/><line x1="410" y1="520" x2="470" y2="520"/><line x1="690" y1="520" x2="750" y2="520"/>
-    <path d="M970 520H1140V350H1230"/><line x1="1430" y1="350" x2="1480" y2="350"/>
+  <!-- 分区名称与说明 -->
+  <text x="237" y="288" fill="#334155" font-size="13" font-weight="600" text-anchor="middle">室外覆盖域</text>
+  <text x="237" y="306" fill="#64748B" font-size="11" text-anchor="middle">无遮挡开阔，卫星信号稳定接收</text>
+  <text x="627" y="288" fill="#334155" font-size="13" font-weight="600" text-anchor="middle">半室外过渡区</text>
+  <text x="627" y="306" fill="#64748B" font-size="11" text-anchor="middle">街谷、天桥等信号受限，精度显著退化</text>
+  <text x="1290" y="288" fill="#334155" font-size="13" font-weight="600" text-anchor="middle">室内覆盖域</text>
+  <text x="1290" y="306" fill="#64748B" font-size="11" text-anchor="middle">依赖 Wi-Fi / BLE / UWB / 地磁基础设施</text>
+
+  <!-- 半室外要点标记④ -->
+  <circle cx="430" cy="292" r="8" fill="#D97706"/>
+  <text x="430" y="295.5" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">4</text>
+
+  <!-- ===== 对数精度辅助竖线（10m / 5m / 1m / 0.5m / 0.1m）===== -->
+  <line x1="120" y1="270" x2="120" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="354.8" y1="270" x2="354.8" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="900" y1="270" x2="900" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="1134.8" y1="270" x2="1134.8" y2="700" stroke="#CBD5E1" stroke-width="1" />
+  <line x1="1680" y1="270" x2="1680" y2="700" stroke="#CBD5E1" stroke-width="1" />
+
+  <!-- ===== 精度递进连接线 ===== -->
+  <!-- GNSS单频 → GNSS+RTK（精度递进，指向更精一端） -->
+  <path d="M 528 350 H 1580 V 388" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <text x="1050" y="342" fill="#475569" font-size="12" font-weight="600" text-anchor="middle">精度递进</text>
+  <!-- Wi-Fi指纹法 → BLE信标 -->
+  <path d="M 914 470 V 518" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <text x="924" y="494" fill="#475569" font-size="10.5" font-weight="600" text-anchor="start">精度递进</text>
+  <!-- BLE信标 → UWB -->
+  <path d="M 914 540 V 566" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#bp-arrow)"/>
+  <text x="924" y="557" fill="#475569" font-size="10.5" font-weight="600" text-anchor="start">精度递进</text>
+
+  <!-- ===== 技术矩形（宽度=典型精度区间，左≈最粗，右≈最精）===== -->
+  <!-- GNSS单频：室外 3~10m（蓝，卫星族） -->
+  <rect x="120" y="330" width="407.8" height="40" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5" />
+  <text x="324" y="349.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">GNSS单频</text>
+  <text x="324" y="365.5" fill="#475569" font-size="11" text-anchor="middle">室外 · 数米至十米级</text>
+
+  <!-- GNSS+RTK：室外厘米级（超出量程，锚定最精端） -->
+  <text x="1630" y="368" fill="#475569" font-size="10.5" text-anchor="middle">室外 · 厘米级</text>
+  <text x="1630" y="384" fill="#0F172A" font-size="14" font-weight="600" text-anchor="middle">GNSS+RTK</text>
+  <rect x="1580" y="388" width="100" height="40" rx="10" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1.5" />
+  <circle cx="1668" cy="404" r="8" fill="#2563EB"/>
+  <text x="1668" y="407.5" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">1</text>
+
+  <!-- Wi-Fi指纹法：室内 1~10m（绿） -->
+  <rect x="120" y="446" width="780" height="40" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" />
+  <text x="510" y="465.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">Wi-Fi指纹法</text>
+  <text x="510" y="481.5" fill="#475569" font-size="11" text-anchor="middle">室内 · 米至十米级</text>
+  <circle cx="884" cy="478" r="8" fill="#F97316"/>
+  <text x="884" y="481.5" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">3</text>
+
+  <!-- BLE信标：室内 1~3m（橙） -->
+  <rect x="527.8" y="504" width="372.2" height="40" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5" />
+  <text x="714" y="523.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">BLE信标</text>
+  <text x="714" y="539.5" fill="#475569" font-size="11" text-anchor="middle">室内 · 米级</text>
+
+  <!-- UWB：室内 0.1~1m（红，最精） -->
+  <rect x="900" y="562" width="780" height="40" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+  <text x="1290" y="581.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">UWB</text>
+  <text x="1290" y="597.5" fill="#475569" font-size="11" text-anchor="middle">室内 · 分米级</text>
+  <circle cx="1668" cy="572" r="8" fill="#DC2626"/>
+  <text x="1668" y="575.5" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">2</text>
+
+  <!-- 地磁指纹：室内 2~5m（灰，备选） -->
+  <rect x="354.8" y="620" width="310.4" height="40" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5" />
+  <text x="510" y="639.5" fill="#0F172A" font-size="15" font-weight="600" text-anchor="middle">地磁指纹</text>
+  <text x="510" y="655.5" fill="#475569" font-size="11" text-anchor="middle">室内 · 数米级</text>
+
+  <!-- ===== 横轴 ===== -->
+  <line x1="120" y1="705" x2="1680" y2="705" stroke="#64748B" stroke-width="2" />
+  <text x="120" y="724" fill="#64748B" font-size="11" text-anchor="middle">10m</text>
+  <text x="354.8" y="724" fill="#64748B" font-size="11" text-anchor="middle">5m</text>
+  <text x="900" y="724" fill="#64748B" font-size="11" text-anchor="middle">1m</text>
+  <text x="1134.8" y="724" fill="#64748B" font-size="11" text-anchor="middle">0.5m</text>
+  <text x="1680" y="724" fill="#64748B" font-size="11" text-anchor="middle">0.1m</text>
+  <text x="170" y="746" fill="#64748B" font-size="11" text-anchor="start">← 粗精度</text>
+  <text x="1630" y="746" fill="#64748B" font-size="11" text-anchor="end">精精度 →</text>
+  <text x="900" y="746" fill="#475569" font-size="12" font-weight="600" text-anchor="middle">定位精度（米 · 对数刻度）</text>
+
+  <!-- ===== 要点注释面板 ===== -->
+  <rect x="120" y="760" width="1560" height="66" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <circle cx="160" cy="778" r="7" fill="#2563EB"/>
+  <text x="160" y="781" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">1</text>
+  <text x="176" y="786" fill="#334155" font-size="11.5">GNSS+RTK 提供室外最高精度，但基准站部署成本高昂。</text>
+  <circle cx="160" cy="804" r="7" fill="#DC2626"/>
+  <text x="160" y="807" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">2</text>
+  <text x="176" y="812" fill="#334155" font-size="11.5">UWB 是室内精度冠军，但基站网络与标签成本限制覆盖范围与部署密度。</text>
+  <circle cx="960" cy="778" r="7" fill="#F97316"/>
+  <text x="960" y="781" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">3</text>
+  <text x="976" y="786" fill="#334155" font-size="11.5">Wi-Fi 与 BLE 部署成本最低，适合区域级定位，但难支撑精细操作。</text>
+  <circle cx="960" cy="804" r="7" fill="#D97706"/>
+  <text x="960" y="807" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">4</text>
+  <text x="976" y="812" fill="#334155" font-size="11.5">半室外过渡区（如物流月台）常用 GNSS 与 BLE 混合定位做平滑切换。</text>
+
+  <!-- ===== 图例 ===== -->
+  <rect x="150" y="838" width="12" height="12" rx="2" fill="#2563EB"/>
+  <text x="168" y="849" fill="#475569" font-size="10.5" font-weight="600">卫星定位（GNSS）</text>
+  <rect x="350" y="838" width="12" height="12" rx="2" fill="#0F766E"/>
+  <text x="368" y="849" fill="#475569" font-size="10.5" font-weight="600">Wi-Fi</text>
+  <rect x="440" y="838" width="12" height="12" rx="2" fill="#F97316"/>
+  <text x="458" y="849" fill="#475569" font-size="10.5" font-weight="600">BLE</text>
+  <rect x="520" y="838" width="12" height="12" rx="2" fill="#DC2626"/>
+  <text x="538" y="849" fill="#475569" font-size="10.5" font-weight="600">UWB</text>
+  <rect x="600" y="838" width="12" height="12" rx="2" fill="#475569"/>
+  <text x="618" y="849" fill="#475569" font-size="10.5" font-weight="600">地磁（备选）</text>
+
+  <rect x="150" y="860" width="18" height="12" rx="2" fill="rgba(135,206,250,0.5)"/>
+  <text x="176" y="871" fill="#475569" font-size="10.5" font-weight="600">浅蓝＝室外覆盖域</text>
+  <rect x="360" y="860" width="18" height="12" rx="2" fill="rgba(255,255,0,0.35)"/>
+  <text x="386" y="871" fill="#475569" font-size="10.5" font-weight="600">浅黄＝半室外过渡区</text>
+  <rect x="600" y="860" width="18" height="12" rx="2" fill="rgba(200,200,200,0.35)"/>
+  <text x="626" y="871" fill="#475569" font-size="10.5" font-weight="600">浅灰＝室内覆盖域</text>
+  <text x="860" y="871" fill="#475569" font-size="10.5" font-weight="600">矩形宽度＝典型精度区间（左边界≈最粗精度，右边界≈最精精度）</text>
+
+  <text x="900" y="894" fill="#475569" font-size="17" font-weight="600" text-anchor="middle">图 3-7 室内外定位技术覆盖与精度光谱示意。横轴为定位精度（米，对数刻度），各技术以水平矩形表示宽度对应的典型精度区间。背景色区分室外（浅蓝）、半室外过渡（浅黄）和室内（浅灰）三种环境域。</text>
   </g>
-  <path d="M1010 210V175H510V220" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#bp-arrow-red)"/>
-  <g font-size="12" font-weight="600">
-    <rect x="680" y="162" width="156" height="24" rx="5" fill="#FFFFFF"/>
-    <text x="758" y="178" text-anchor="middle" fill="#DC2626">不通过：回退调优</text><text x="1025" y="390" fill="#16A34A">通过</text>
-  </g>
-  <rect x="120" y="650" width="1560" height="54" rx="8" fill="#FFFBEB" stroke="#D97706"/>
-  <text x="145" y="682" font-size="13" fill="#475569">顺序约束：模型转换与代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行；部署完成后不再执行编译。</text>
-</g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：数据准备；青色：云端训练</text>
-  <rect x="480" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
-  <text x="504" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色：模型优化；绿色：端侧部署</text>
-  <rect x="880" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
-  <text x="904" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">粗实线：正向流程；虚线：回退迭代；菱形：精度验收</text>
-  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-7 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。</text>
   </svg>
 </svg>
 

@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-5 精准农业感知三维度与传感器选型权衡</title>
+  <title>图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比</title>
   <style>
-    /* export contract: 1200px logical width; static, offline, no script */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
@@ -14,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">图12-5 精准农业感知三维度与传感器选型权衡</title>
-  <desc id="desc">土壤、气象、作物生理三个感知维度，共同约束精度、接口、功耗、成本四项选型权衡。</desc>
+  <title id="title">图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比</title>
+  <desc id="desc">ARIMA 只利用目标变量历史值，LSTM 融合温度、降水、土壤湿度、生长天数多变量；两条路线最终都以 RMSE、MAE 评估。</desc>
   <rect width="1200" height="720" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="600" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
@@ -23,110 +22,101 @@
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16A34A"/></marker>
   </defs>
 
-  <!-- ===== Title ===== -->
+  <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-5 精准农业感知三维度与传感器选型权衡</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">三个感知维度供给数据 · 四个维度约束传感器选型 · 数据驱动灌溉与病害决策</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">统计模型看自身历史 · 深度学习融合多源环境 · 输出连续产量值（公斤/公顷）</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 感知三维度（上半区） ===== -->
-  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">感知三维度</text>
-  <text x="80" y="170" font-size="11" fill="#64748B">“天 — 地 — 苗”三类数据源，决定监测精度与系统成本</text>
+  <!-- 左：ARIMA -->
+  <rect x="80" y="140" width="800" height="470" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="800" height="44" rx="12" fill="#2563EB"/>
+  <rect x="80" y="164" width="800" height="20" fill="#2563EB"/>
+  <text x="480" y="170" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">统计模型 · ARIMA（自回归积分滑动平均）</text>
+  <text x="120" y="220" font-size="12" fill="#475569">只利用目标变量自身的历史值，结构简单、可解释性强</text>
 
-  <!-- 维度1：土壤 (green) -->
-  <rect x="80" y="192" width="520" height="230" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <rect x="80" y="192" width="520" height="40" rx="12" fill="#16A34A"/>
-  <rect x="80" y="212" width="520" height="20" fill="#16A34A"/>
-  <text x="340" y="219" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">土壤（地）</text>
-  <text x="116" y="270" font-size="14" font-weight="700" fill="#0F172A">体积含水量 VWC</text>
-  <text x="116" y="290" font-size="11" fill="#475569">决定“何时灌溉”，灌溉决策的核心阈值</text>
-  <text x="116" y="330" font-size="14" font-weight="700" fill="#0F172A">土壤温度</text>
-  <text x="116" y="350" font-size="11" fill="#475569">影响根系活性与养分吸收效率</text>
-  <text x="116" y="390" font-size="14" font-weight="700" fill="#0F172A">电导率 EC</text>
-  <text x="116" y="410" font-size="11" fill="#475569">反映可溶性盐分，EC 偏高只补清水</text>
+  <g font-size="13">
+    <circle cx="140" cy="272" r="14" fill="#2563EB"/>
+    <text x="140" y="277" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+    <text x="172" y="270" font-weight="700" fill="#0F172A">平稳性检验</text>
+    <text x="172" y="290" font-size="11" fill="#475569">ADF 检验 · p&gt;0.05 序列非平稳</text>
 
-  <!-- 维度2：气象 (blue) -->
-  <rect x="640" y="192" width="520" height="230" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <rect x="640" y="192" width="520" height="40" rx="12" fill="#2563EB"/>
-  <rect x="640" y="212" width="520" height="20" fill="#2563EB"/>
-  <text x="900" y="219" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">气象（天）</text>
-  <text x="676" y="270" font-size="14" font-weight="700" fill="#0F172A">空气温湿度</text>
-  <text x="676" y="290" font-size="11" fill="#475569">低温高湿显著提升灰霉病爆发风险</text>
-  <text x="676" y="330" font-size="14" font-weight="700" fill="#0F172A">光照 PAR · 风速 · 降雨</text>
-  <text x="676" y="350" font-size="11" fill="#475569">PAR 约束干物质积累；喷药避风、雨后推迟灌溉</text>
-  <text x="676" y="390" font-size="14" font-weight="700" fill="#0F172A">防辐射罩</text>
-  <text x="676" y="410" font-size="11" fill="#475569">温湿度探头必检项，避免阳光直射读数偏高</text>
+    <circle cx="140" cy="338" r="14" fill="#2563EB"/>
+    <text x="140" y="343" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+    <text x="172" y="336" font-weight="700" fill="#0F172A">差分</text>
+    <text x="172" y="356" font-size="11" fill="#475569">一阶差分 y_t − y_{t−1} 消除趋势，d=1</text>
 
-  <!-- 维度3：作物生理 (orange) -->
-  <rect x="1200" y="192" width="520" height="230" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <rect x="1200" y="192" width="520" height="40" rx="12" fill="#F97316"/>
-  <rect x="1200" y="212" width="520" height="20" fill="#F97316"/>
-  <text x="1460" y="219" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">作物生理（苗）</text>
-  <text x="1236" y="270" font-size="14" font-weight="700" fill="#0F172A">茎流传感器</text>
-  <text x="1236" y="290" font-size="11" fill="#475569">测量茎秆水分上升速率，反映根系吸水受阻</text>
-  <text x="1236" y="330" font-size="14" font-weight="700" fill="#0F172A">叶面湿度</text>
-  <text x="1236" y="350" font-size="11" fill="#475569">叶片水膜是病害预警的核心指标</text>
-  <text x="1236" y="390" font-size="14" font-weight="700" fill="#0F172A">分阶段引入</text>
-  <text x="1236" y="410" font-size="11" fill="#475569">维护频次与成本高，项目二/三阶段再考虑</text>
+    <circle cx="140" cy="404" r="14" fill="#2563EB"/>
+    <text x="140" y="409" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+    <text x="172" y="402" font-weight="700" fill="#0F172A">模型识别</text>
+    <text x="172" y="422" font-size="11" fill="#475569">ACF / PACF 拖尾截尾特征定 p、q 阶数</text>
 
-  <!-- ===== 选型权衡（下半区） ===== -->
-  <text x="80" y="510" font-size="15" font-weight="700" fill="#334155">传感器选型四维权衡</text>
-  <text x="80" y="530" font-size="11" fill="#64748B">四项同步权衡，接口选择最易被低估但工程影响巨大</text>
+    <circle cx="140" cy="470" r="14" fill="#2563EB"/>
+    <text x="140" y="475" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+    <text x="172" y="468" font-weight="700" fill="#0F172A">参数估计与诊断</text>
+    <text x="172" y="488" font-size="11" fill="#475569">极大似然估计 · Ljung-Box 检验残差白噪声</text>
 
-  <rect x="80" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="116" cy="596" r="16" fill="#2563EB"/>
-  <text x="116" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-  <text x="150" y="600" font-size="15" font-weight="700" fill="#0F172A">精度</text>
-  <text x="116" y="640" font-size="11" fill="#475569">能否满足农艺要求</text>
-  <text x="116" y="660" font-size="11" fill="#475569">灌溉决策需 VWC 误差可控</text>
-  <text x="116" y="680" font-size="11" fill="#64748B">FDR 低精度 / TDR 高精度</text>
+    <circle cx="140" cy="536" r="14" fill="#2563EB"/>
+    <text x="140" y="541" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+    <text x="172" y="534" font-weight="700" fill="#0F172A">预测</text>
+    <text x="172" y="554" font-size="11" fill="#475569">点预测值 + 置信区间，依赖历史模式延续</text>
+  </g>
+  <line x1="140" y1="286" x2="140" y2="324" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <line x1="140" y1="352" x2="140" y2="390" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <line x1="140" y1="418" x2="140" y2="456" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <line x1="140" y1="484" x2="140" y2="522" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
 
-  <rect x="496" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="532" cy="596" r="16" fill="#2563EB"/>
-  <text x="532" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-  <text x="566" y="600" font-size="15" font-weight="700" fill="#0F172A">接口</text>
-  <text x="532" y="640" font-size="11" fill="#475569">RS-485 · 抗干扰，长距离布线</text>
-  <text x="532" y="660" font-size="11" fill="#475569">SDI-12 · 农业低功耗串行总线</text>
-  <text x="532" y="680" font-size="11" fill="#64748B">I2C · 板级短距连接</text>
+  <!-- 右：LSTM -->
+  <rect x="920" y="140" width="800" height="470" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="920" y="140" width="800" height="44" rx="12" fill="#16A34A"/>
+  <rect x="920" y="164" width="800" height="20" fill="#16A34A"/>
+  <text x="1320" y="170" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">深度学习 · LSTM（长短期记忆网络）</text>
+  <text x="960" y="220" font-size="12" fill="#475569">融合多个外生变量，学习环境与产量的非线性关系</text>
 
-  <rect x="912" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="948" cy="596" r="16" fill="#2563EB"/>
-  <text x="948" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-  <text x="982" y="600" font-size="15" font-weight="700" fill="#0F172A">功耗</text>
-  <text x="948" y="640" font-size="11" fill="#475569">能否支撑电池供电</text>
-  <text x="948" y="660" font-size="11" fill="#475569">间歇唤醒策略延长电池寿命</text>
-  <text x="948" y="680" font-size="11" fill="#64748B">测量电流几 mA ~ 几十 mA</text>
+  <g font-size="13">
+    <rect x="960" y="250" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="980" y="276" font-weight="700" fill="#0F172A">输入：多维环境特征序列</text>
+    <text x="980" y="298" font-size="11" fill="#475569">温度 · 降水 · 土壤湿度 · 生长天数（n_features=4）</text>
 
-  <rect x="1328" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="1364" cy="596" r="16" fill="#2563EB"/>
-  <text x="1364" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-  <text x="1398" y="600" font-size="15" font-weight="700" fill="#0F172A">成本</text>
-  <text x="1364" y="640" font-size="11" fill="#475569">是否在项目预算内</text>
-  <text x="1364" y="660" font-size="11" fill="#475569">传感器成本往往超过通信模块</text>
-  <text x="1364" y="680" font-size="11" fill="#64748B">均匀加密优于高精度稀疏</text>
+    <rect x="960" y="330" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="980" y="356" font-weight="700" fill="#0F172A">滑动窗口：过去 T 天（30～60 天）</text>
+    <text x="980" y="378" font-size="11" fill="#475569">覆盖灌浆期等完整生长期，转为三维张量输入</text>
 
-  <!-- 箭头：三维度 → 选型权衡 -->
-  <line x1="340" y1="422" x2="340" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <line x1="900" y1="422" x2="900" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <line x1="1460" y1="422" x2="1460" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <rect x="960" y="410" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="980" y="436" font-weight="700" fill="#0F172A">LSTM 层 + Dropout</text>
+    <text x="980" y="458" font-size="11" fill="#475569">记忆单元与门控机制解决梯度消失，Dropout 防过拟合</text>
 
-  <!-- ===== Legend ===== -->
-  <line x1="40" y1="760" x2="1760" y2="760" stroke="#E2E8F0" stroke-width="1"/>
+    <rect x="960" y="490" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
+    <text x="980" y="516" font-weight="700" fill="#0F172A">Dense 回归输出</text>
+    <text x="980" y="538" font-size="11" fill="#475569">linear 激活，输出未来产量（公斤/公顷）</text>
+  </g>
+  <line x1="1320" y1="314" x2="1320" y2="330" stroke="#16A34A" stroke-width="1.5" marker-end="url(#ah-green)"/>
+  <line x1="1320" y1="394" x2="1320" y2="410" stroke="#16A34A" stroke-width="1.5" marker-end="url(#ah-green)"/>
+  <line x1="1320" y1="474" x2="1320" y2="490" stroke="#16A34A" stroke-width="1.5" marker-end="url(#ah-green)"/>
+
+  <!-- 底部：评估指标 -->
+  <rect x="80" y="650" width="1640" height="110" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="684" font-size="14" font-weight="700" fill="#334155">共同评估指标</text>
+  <rect x="120" y="700" width="760" height="40" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="140" y="725" font-size="12" font-weight="700" fill="#0F172A">RMSE 均方根误差 · 对大误差惩罚更重</text>
+  <rect x="920" y="700" width="760" height="40" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="940" y="725" font-size="12" font-weight="700" fill="#0F172A">MAE 平均绝对误差 · 反映平均偏离更直观</text>
+
+  <!-- Legend -->
+  <line x1="40" y1="810" x2="1760" y2="810" stroke="#E2E8F0" stroke-width="1"/>
   <g font-size="11" fill="#475569">
-    <rect x="60" y="785" width="16" height="14" rx="2" fill="#16A34A"/>
-    <text x="84" y="794" dominant-baseline="middle">土壤维度</text>
-    <rect x="180" y="785" width="16" height="14" rx="2" fill="#2563EB"/>
-    <text x="204" y="794" dominant-baseline="middle">气象维度</text>
-    <rect x="300" y="785" width="16" height="14" rx="2" fill="#F97316"/>
-    <text x="324" y="794" dominant-baseline="middle">作物生理维度</text>
-    <line x1="460" y1="792" x2="500" y2="792" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-    <text x="508" y="794" dominant-baseline="middle">三维度共同约束选型权衡</text>
+    <rect x="60" y="835" width="16" height="14" rx="2" fill="#2563EB"/>
+    <text x="84" y="844" dominant-baseline="middle">ARIMA · 统计路线</text>
+    <rect x="200" y="835" width="16" height="14" rx="2" fill="#16A34A"/>
+    <text x="224" y="844" dominant-baseline="middle">LSTM · 深度学习路线</text>
+    <text x="400" y="844" dominant-baseline="middle">团队资源有限时先从 ARIMA 建立基线，跨入 LSTM 前需积累 2～3 个完整生长周期数据</text>
   </g>
 
-  <!-- ===== Caption ===== -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图12-5 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。</text>
+  <!-- Caption -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 12-5 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。</text>
   </svg>
 </svg>
   </main>

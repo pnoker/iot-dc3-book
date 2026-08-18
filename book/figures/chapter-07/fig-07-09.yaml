@@ -1,66 +1,67 @@
-type: lifecycle
-title: 图7-9 IoT DC3 工业 Agent Runtime 四级演进路线
-purpose: 展示 IoT DC3 从只读 Copilot、受控 Action、确定性 Workflow 到有界自治 Runtime 的渐进路线，并为每一级设置可验证的准入门槛。
-audience_takeaway: 自主度不是随模型能力自然提升，而是通过权限、状态、恢复、评测和故障演练逐级获得；高风险安全联锁在所有阶段都不向通用 Agent 开放。
-visual_focus: 四个成熟度阶段沿时间轴排列，每级包含能力、治理要求和晋级证据；底部红色安全基线贯穿全程，顶部显示当前 DC3 覆盖 L0 和部分 L1。
-design_level: logical
-layout: 1200×620 水平四阶段路线图：L0 只读 Copilot、L1 受控 Action、L2 Workflow Runtime、L3 有界自治 Runtime。阶段之间设置证据闸门；底部贯穿一条 PLC/SIS 与禁止能力红线。
+type: architecture
+title: 图 7-9 IoT DC3 Agentic Center 的 Runtime 能力映射
+purpose: 把工业 Agent Runtime 四平面映射到 IoT DC3 当前实现，明确已具备、部分具备和尚未具备的能力，避免将目标架构误写为现状。
+audience_takeaway: IoT DC3 已形成受治理的对话式 Tool 运行基础，并具备受控点位写入与 MCP 工具授权；通用 Workflow、长期任务状态机、调度恢复和统一 Skill 注册仍是后续建设项。
+visual_focus: 左侧为四平面能力框架，中间为 DC3 当前组件，右侧用已具备、部分具备、待建设三种状态标记能力成熟度；底部显示 Data、RabbitMQ、Driver 与设备链路。
+design_level: implementation
+layout: 1200×760 分层架构图。自上而下为入口与会话、模型与上下文、Tool 与受控执行、平台与设备四层；右侧为运行时治理旁路。每个组件右上角带状态标签：已具备、部分具备、待建设。
 elements:
-- L0 只读 Copilot：会话、查询 Tool、MCP 发现、租户授权
-- L1 受控 Action：风险分级、人工确认、幂等键、结果验证
-- L2 Workflow Runtime：run_id、状态机、步骤编排、超时重试、补偿、人工接管
-- L3 有界自治 Runtime：事件触发、调度租约、动态规划、跨系统 Skill、持续 Eval
-- 证据闸门：任务成功率、越权率、重复副作用、接管成功率、恢复时间
-- 安全基线：R3 动作、PLC/SIS 联锁、急停与故障保护始终不开放
-- 当前定位：DC3 已具备 L0，并通过点位写 Action 覆盖 L1 的一部分
+- 入口：Web 对话、内部 API、Gateway MCP 客户端
+- 模型适配：ChatClientFactory、Provider/Model 配置
+- 上下文：会话消息、ToolContext、租户/用户/会话
+- 能力：8 个已注册 Tool、Facade、MCP 工具目录与白名单
+- 受控写入：PENDING Action、用户确认、ActionService
+- 平台链路：Manager/Data/Auth、RabbitMQ、Driver、设备
+- 部分具备：调用记录、会话回放、模型与 Tool Eval
+- 待建设：统一 run_id、长期任务状态机、Workflow/Skill 注册、调度租约、恢复补偿、kill switch
 relationships:
-- L0 通过只读正确性与权限隔离验证后进入 L1
-- L1 通过审批、幂等和结果验证后进入 L2
-- L2 通过故障恢复、补偿和人工接管演练后进入 L3
-- 任一级未满足证据门槛时保持当前自主度或降级
-- 安全基线贯穿所有阶段，不随成熟度提高而取消
+- 会话请求经 ChatClientFactory 选择模型并注入可见 Tool
+- ToolContext 将身份与租户上下文带入 Facade 调用
+- 只读 Tool 直接返回经过业务层授权的数据
+- 点位写 Tool 先创建 Action，确认后再进入 Data—RabbitMQ—Driver 命令链路
+- 外部 Agent 经 Gateway MCP 入口发现经过连接授权和白名单裁剪的工具
+- 待建设能力不参与当前主调用链，用虚线表示演进方向
 legend:
-- 绿色：当前已具备或可验证
-- 蓝色：下一阶段运行时能力
-- 橙色：晋级证据闸门
-- 红色：永久禁止越过的控制边界
-render_notes: 遵循 style.yaml 浅色技术出版风格。四阶段等宽排列，阶段间闸门不与箭头重叠。当前覆盖范围使用绿色顶部括号标记，L2/L3 使用蓝色；底部红色安全基线贯穿全图。
+- 绿色标签：当前已具备
+- 橙色标签：已有基础但尚未统一
+- 灰色虚线：目标能力，当前未实现
+render_notes: 遵循 style.yaml 的浅色技术出版风格。状态标签位置统一，已具备用 secondary/success，部分具备用 accent/warning，待建设用 neutral 虚线。当前调用链使用实线，目标演进使用虚线；避免将待建设组件画入当前数据主链路。
 caption:
-  zh: 图7-9 IoT DC3 工业 Agent Runtime 四级演进路线。平台先证明能安全读取，再证明能受控写入，随后补齐 Workflow 与恢复能力，最后才进入有界自治；自主度由证据获得，而不是由模型名称决定。
-  en: 'Figure 7-9 The four-level evolution path of the IoT DC3 industrial AI agent Runtime. The platform first proves it can read safely, then that it can write under control, then completes workflow and recovery capabilities, and only afterward enters bounded autonomy; autonomy is earned through evidence, not decided by a model''s name.'
+  zh: 图 7-9 IoT DC3 Agentic Center 的 Runtime 能力映射。当前系统已经具备会话、模型适配、显式 Tool、租户上下文、MCP 授权和 Action 确认；长期任务编排、状态恢复与统一治理仍需继续建设。
+  en: Figure 7-9 Runtime capability mapping of the IoT DC3 Agentic Center. The system already provides sessions, model adaptation, explicit tools, tenant context, MCP authorization, and Action confirmation; long-horizon task orchestration, state recovery, and unified governance still need further construction.
 labels:
   en:
-    图7-9 IoT DC3 工业 Agent Runtime 四级演进路线: 'Figure 7-9 IoT DC3 Industrial AI Agent Runtime: four-level roadmap'
-    自主度由权限、状态、恢复与评测证据逐级获得，不由模型名称决定；安全联锁在所有阶段都不开放。: Autonomy is earned level by level through permission, state, recovery, and eval evidence — not by model name; safety interlocks never open.
-    自主度由权限、状态、恢复与评测证据逐级获得，不由模型名称决定: Autonomy is earned by permission, state, recovery, and eval evidence — not model names
-    当前 DC3：已具备 L0，并覆盖 L1 的部分关键链路: 'DC3 today: L0 in place, covering key parts of L1'
-    L0 · 只读 Copilot: L0 · Read-Only Copilot
-    先证明系统能安全看对: First prove it reads correctly
-    能力: Capabilities
-    会话 · 查询 Tool · MCP 发现: Sessions · query tools · MCP discovery
-    设备状态解释 · 排查建议: Explain device state · suggest fixes
-    证据门槛: Evidence gate
-    Tool 选择与参数正确: Correct tool & parameter choice
-    跨租户越权 = 0: Cross-tenant violations = 0
-    当前已具备: Available today
-    L1 · 受控 Action: L1 · Controlled Actions
-    再证明系统能在约束下做对: Then prove correct action in bounds
-    风险分级 · 人工确认: Risk tiering · human confirmation
-    幂等键 · 执行后验证: Idempotency keys · post-execution checks
-    无审批高风险执行 = 0: Unapproved high-risk executions = 0
-    重复副作用 = 0: Duplicate side effects = 0
+    图 7-9 IoT DC3 Agentic Center 的 Runtime 能力映射: 'Figure 7-9 IoT DC3 Agentic Center: Runtime Capability Map'
+    DC3 已形成受治理的对话式 Tool 运行基础，通用 Workflow、长期任务状态机、调度恢复和统一 Skill 注册仍是后续建设项。: DC3 already has a governed conversational tool runtime; general workflows, long-task state machines, schedule recovery, and unified Skill registration remain future work.
+    当前实现、已有基础与目标能力分开表达，避免把演进方向误写成现成功能: Implemented vs. foundational vs. target are separated — no roadmap item drawn as shipped
+    入口与会话: Entry & sessions
+    Web 对话 / 内部 API: Web chat / internal API
+    Gateway MCP 客户端入口: Gateway MCP client entry
+    已具备 · 多入口受控接入: Available · controlled multi-entry access
+    决策与上下文: Decision & context
+    Provider / Model 配置与客户端缓存: Provider / model config & client cache
+    已具备: Available
+    会话与消息持久化: Session & message persistence
+    多轮连续 · 消息回放 · 会话范围: Multi-turn · message replay · session scope
+    租户 · 用户 · 会话上下文: Tenant · user · session context
+    能力与平台复用: Capabilities & platform reuse
+    8 类显式注册 Tool: 8 explicitly registered tools
+    Facade / 平台服务: Facade / platform services
+    复用 Auth · Manager · Data 边界: Reuse Auth · Manager · Data boundaries
+    不复制设备协议和业务逻辑: No duplicated protocols or business logic
+    MCP 工具目录与白名单: MCP tool catalog & allowlist
+    OAuth · 连接授权 · 工具裁剪: OAuth · connection auth · tool scoping
+    供外部 Agent 发现平台能力: External agent capability discovery
+    受控写入与平台链路: Controlled writes & platform chain
+    确认后由 ActionService 下发: Issued by ActionService after confirmation
     点位写部分具备: Point writes partially available
-    让任务可恢复、可补偿、可接管: Recoverable, compensable, takeover-ready
-    run_id · 状态机 · 步骤编排: run_id · state machine · step orchestration
-    超时重试 · 补偿 · 人工接管: Timeout retry · compensation · human takeover
-    进程 / MQ / DB 故障恢复: Process / MQ / DB failure recovery
-    副作用状态一致: Consistent side-effect state
+    Driver · 设备: Driver · devices
+    运行时治理旁路: Runtime governance lane
+    部分具备: Partial
+    调用记录 · 会话回放: Call logs · session replay
+    模型与 Tool Eval: Model & tool eval
     待建设: To build
-    L3 · 有界自治 Runtime: L3 · Bounded-Autonomy Runtime
-    在限定范围内持续完成任务: Sustained task completion in bounds
-    事件触发 · 调度租约: Event triggers · scheduling leases
-    动态规划 · 跨系统 Skill · 持续 Eval: Dynamic planning · cross-system Skills · continuous eval
-    任务成功率 · 接管成功率: Task success rate · takeover success rate
-    恢复时间达标: Meets recovery-time targets
-    安全基线（全程贯穿）：R3 动作、PLC / SIS 联锁、急停与故障保护始终不向通用 Agent 开放: 'Safety baseline (always on): R3 actions, PLC/SIS interlocks, e-stops, and fault protection never open to general agents'
-    图7-9 自主度通过权限、状态、恢复、评测与故障演练逐级获得；高风险安全联锁在所有阶段都不开放。: Figure 7-9 Autonomy is earned level by level through permissions, state, recovery, evaluation, and failure drills; high-risk safety interlocks stay closed at every stage.
+    统一 run_id · 长期任务状态机: Unified run_id · long-task state machine
+    Workflow / Skill 注册: Workflow / Skill registration
+    调度租约 · 恢复补偿: Scheduling leases · recovery compensation
+    图 7-9 DC3 已形成受治理的对话式 Tool 运行基础与受控点位写入；通用 Workflow、长期状态机、调度恢复与统一 Skill 注册仍是后续建设项。: Figure 7-9 DC3 already provides a governed conversational tool runtime and controlled point writes; general workflows, long-horizon state machines, schedule recovery, and unified Skill registration remain future work.

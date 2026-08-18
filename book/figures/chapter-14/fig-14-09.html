@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图14-9 部署形态选择与边缘节点管理</title>
+  <title>图 14-9 可复现实验的五个环节与证据包</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,79 +12,95 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
-  <title id="title">图14-9 部署形态选择与边缘节点管理</title>
-  <desc id="desc">公有云、私有云、边缘三种部署形态对应不同权衡，边缘节点需解决状态感知、配置分发、版本管控。</desc>
-  <rect width="1200" height="700" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图 14-9 可复现实验的五个环节与证据包</title>
+  <desc id="desc">可复现实验依次冻结 manifest、固定工作负载、定义指标字典、覆盖故障用例、沉淀出版证据包。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
 
   <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-9 部署形态选择与边缘节点管理</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">云、私有、边缘不是线性梯度，而是对应不同的数据主权与运维能力</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 14-9 可复现实验的五个环节与证据包</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">没有实测就标记 NA，不用数值冒充结果 · 0 与 NA 含义不同</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 三种部署形态 -->
-  <rect x="80" y="140" width="520" height="300" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <rect x="80" y="140" width="520" height="48" rx="12" fill="#2563EB"/>
-  <rect x="80" y="168" width="520" height="20" fill="#2563EB"/>
-  <text x="340" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">公有云</text>
-  <text x="116" y="230" font-size="12" fill="#0F172A">运维复杂度低，云厂商兜底</text>
-  <text x="116" y="258" font-size="12" fill="#475569">适合设备分布广、流量标准化</text>
-  <text x="116" y="284" font-size="12" fill="#475569">运维团队规模小的场景</text>
-  <text x="116" y="322" font-size="12" fill="#64748B">代价：带宽与消息量账单常超预期</text>
-  <text x="116" y="360" font-size="11" fill="#64748B">典型：智慧城市、车联网</text>
+  <!-- 五个环节 -->
+  <rect x="80" y="150" width="320" height="220" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="240" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">① 冻结 manifest</text>
+  <text x="116" y="224" font-size="11" fill="#475569">commit/tag、镜像 digest、Compose 版本</text>
+  <text x="116" y="248" font-size="11" fill="#475569">OS/CPU/内存/网络、JDK/Python</text>
+  <text x="116" y="272" font-size="11" fill="#475569">PG/RabbitMQ/Driver 版本</text>
+  <text x="116" y="296" font-size="11" fill="#475569">模型/Prompt/Tool/RAG 版本</text>
+  <text x="116" y="320" font-size="11" fill="#64748B">密钥不入 manifest，用脱敏摘要</text>
 
-  <rect x="640" y="140" width="520" height="300" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <rect x="640" y="140" width="520" height="48" rx="12" fill="#16A34A"/>
-  <rect x="640" y="168" width="520" height="20" fill="#16A34A"/>
-  <text x="900" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">私有云</text>
-  <text x="676" y="230" font-size="12" fill="#0F172A">掌控力强，数据主权敏感场景</text>
-  <text x="676" y="258" font-size="12" fill="#475569">工厂、园区、医疗</text>
-  <text x="676" y="284" font-size="12" fill="#475569">需自己扛高可用</text>
-  <text x="676" y="322" font-size="12" fill="#64748B">单台宕机的交叉损失可能超一年托管费</text>
-  <text x="676" y="360" font-size="11" fill="#64748B">多数选择单点加冷备的现实妥协</text>
+  <line x1="400" y1="260" x2="432" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <rect x="1200" y="140" width="520" height="300" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <rect x="1200" y="140" width="520" height="48" rx="12" fill="#F97316"/>
-  <rect x="1200" y="168" width="520" height="20" fill="#F97316"/>
-  <text x="1460" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">边缘部署</text>
-  <text x="1236" y="230" font-size="12" fill="#0F172A">协议驱动下沉到边缘网关</text>
-  <text x="1236" y="258" font-size="12" fill="#475569">广域网抖动消化在消息缓存</text>
-  <text x="1236" y="284" font-size="12" fill="#475569">断网时本地自治</text>
-  <text x="1236" y="322" font-size="12" fill="#64748B">降低带宽与存储，引入节点管理成本</text>
-  <text x="1236" y="360" font-size="11" fill="#64748B">典型：工业现场、矿山、港口</text>
+  <rect x="432" y="150" width="320" height="220" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="592" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">② 工作负载可重放</text>
+  <text x="468" y="224" font-size="11" fill="#475569">固定设备数、位号数、上报频率</text>
+  <text x="468" y="248" font-size="11" fill="#475569">payload 大小、读写比、命令比例</text>
+  <text x="468" y="272" font-size="11" fill="#475569">持续时间、预热时间</text>
+  <text x="468" y="296" font-size="11" fill="#475569">故障：延迟/丢包、断网窗口、重启时刻</text>
+  <text x="468" y="320" font-size="11" fill="#64748B">一次比较只改变主要变量</text>
 
-  <!-- 边缘节点管理 -->
-  <text x="80" y="500" font-size="15" font-weight="700" fill="#334155">边缘节点管理：一个被低估的运维负担</text>
+  <line x1="752" y1="260" x2="784" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <rect x="80" y="522" width="520" height="130" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="340" y="554" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">① 状态感知</text>
-  <text x="116" y="586" font-size="12" fill="#475569">Agent 驻留网关，经 MQTT/HTTP 上报心跳</text>
-  <text x="116" y="612" font-size="12" fill="#475569">心跳周期约为数据上报周期 1.5 倍</text>
-  <text x="116" y="636" font-size="11" fill="#64748B">连续多次未收到则标记“离线”</text>
+  <rect x="784" y="150" width="320" height="220" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="944" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">③ 指标字典</text>
+  <text x="820" y="224" font-size="11" fill="#475569">先定义分母，再报告数字</text>
+  <text x="820" y="248" font-size="11" fill="#475569">设备接入 / 数据链路 / 命令链路</text>
+  <text x="820" y="272" font-size="11" fill="#475569">存储 / 可靠性 / RAG / Agent / 成本</text>
+  <text x="820" y="296" font-size="11" fill="#475569">时延起止点必须固定</text>
+  <text x="820" y="320" font-size="11" fill="#64748B">多次独立运行，报告 P50/P95/P99</text>
 
-  <rect x="640" y="522" width="520" height="130" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="900" y="554" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">② 配置分发</text>
-  <text x="676" y="586" font-size="12" fill="#475569">驱动参数、采集频率、告警阈值修改</text>
-  <text x="676" y="612" font-size="12" fill="#475569">经中心化配置服务 + REST API 下发</text>
-  <text x="676" y="636" font-size="11" fill="#64748B">避免运维手动改文件、排查递归增压</text>
+  <line x1="1104" y1="260" x2="1136" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <rect x="1200" y="522" width="520" height="130" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1460" y="554" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">③ 版本管控</text>
-  <text x="1236" y="586" font-size="12" fill="#475569">驱动、Agent 版本可追溯、可回滚</text>
-  <text x="1236" y="612" font-size="12" fill="#475569">保留最近几个驱动版本镜像</text>
-  <text x="1236" y="636" font-size="11" fill="#64748B">驱动容器化，由编排工具管理更新策略</text>
+  <rect x="1136" y="150" width="320" height="220" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1296" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">④ 故障与安全用例</text>
+  <text x="1172" y="224" font-size="11" fill="#475569">重复遥测、乱序时间戳</text>
+  <text x="1172" y="248" font-size="11" fill="#475569">断开重连、积压恢复、数据库故障</text>
+  <text x="1172" y="272" font-size="11" fill="#475569">权限不足、跨租户、模型超时</text>
+  <text x="1172" y="296" font-size="11" fill="#475569">回执丢失、重放、人工接管</text>
+  <text x="1172" y="320" font-size="11" fill="#64748B">优先模拟器，不绕过 PLC/SIS 联锁</text>
 
-  <!-- OTA -->
-  <rect x="80" y="700" width="1640" height="110" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="732" font-size="14" font-weight="700" fill="#334155">OTA 升级三能力：成败在一键回滚</text>
-  <text x="120" y="764" font-size="12" fill="#475569">差分升级（只下发变更部分）· 升级事务（下载→校验签名→写入→切换→上报，失败回退）· 灰度发布（少量设备先升级，看数据量与错误率）</text>
+  <line x1="1456" y1="260" x2="1488" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1488" y="150" width="232" height="220" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1604" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">⑤ 证据包</text>
+  <text x="1524" y="224" font-size="11" fill="#475569">README · manifest</text>
+  <text x="1524" y="248" font-size="11" fill="#475569">workload · commands</text>
+  <text x="1524" y="272" font-size="11" fill="#475569">raw · summary</text>
+  <text x="1524" y="296" font-size="11" fill="#475569">failures · figures</text>
+  <text x="1524" y="320" font-size="11" fill="#64748B">正文数字反链实验 ID</text>
+
+  <!-- 证据包目录 -->
+  <rect x="80" y="430" width="1640" height="220" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="466" font-size="14" font-weight="700" fill="#334155">出版证据包结构（experiments/EXP-14-E2E-01/）</text>
+  <g font-size="12" fill="#475569">
+    <text x="140" y="500">├── README.md</text>
+    <text x="170" y="524">复现步骤与已知限制</text>
+    <text x="140" y="552">├── manifest.json</text>
+    <text x="170" y="576">版本、环境和数据哈希</text>
+    <text x="140" y="604">├── workload.yaml / commands.txt</text>
+    <text x="170" y="628">负载与故障参数 / 实际执行命令</text>
+  </g>
+  <g font-size="12" fill="#475569">
+    <text x="860" y="500">├── raw/</text>
+    <text x="890" y="524">原始指标、日志与逐任务 trace</text>
+    <text x="860" y="552">├── summary.json</text>
+    <text x="890" y="576">指标定义和汇总</text>
+    <text x="860" y="604">├── failures/ + figures/</text>
+    <text x="890" y="628">失败样本与复盘 / 图表生成方法</text>
+  </g>
 
   <!-- Caption -->
-  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图14-9 公有云、私有云、边缘三种部署形态对应不同权衡；边缘节点管理需解决状态感知、配置分发、版本管控三件事，OTA 升级依赖差分、事务与灰度保证一键回滚。</text>
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 14-9 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化的出版证据包。</text>
   </svg>
 </svg>
   </main>

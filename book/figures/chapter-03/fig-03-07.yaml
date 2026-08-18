@@ -1,179 +1,138 @@
-type: flowchart
-title: 图3-7 TinyML模型训练与部署全流程
-purpose: 展示从数据准备、云端训练、模型优化到端侧运行的完整生命线，以及优化阶段的精度验证回退路径。
-audience_takeaway: TinyML流程不是一个单向管道——模型优化环节的精度验收会触发回退迭代，这是工程落地中的关键闭环。
-visual_focus: 阶段3的精度判定节点（菱形），及其到阶段4的绿色分支与回退到阶段2的虚线分支。
-design_level: implementation
-layout: 从左到右横向四阶段，正向流程用粗实线箭头，回退流程用虚线箭头。
+type: timeline
+title: 图 3-7 室内外定位技术覆盖与精度光谱（示意）
+purpose: 展示GNSS、Wi-Fi、BLE、UWB等主流定位技术在室外、室内及半室外环境下的典型精度区间，帮助读者建立直观的选型直觉。
+audience_takeaway: 读者应能通过此图快速判断：给定精度需求和部署环境，应优先考虑哪种定位技术。
+visual_focus: 从粗精度（左）向精精度（右）的连续光谱排列，颜色区分技术族类（蓝=卫星，绿=Wi-Fi，橙=蓝牙，红=UWB，灰=地磁）。
+design_level: logical
+layout: 水平光谱布局，横轴为对数刻度定位精度（0.1m到10m），各技术以水平矩形条表示，矩形宽度对应典型精度区间，左侧为室外域，右侧为室内域，背景色区分环境。
 elements:
-- 数据准备与云端训练
-- 模型优化与精度验收
-- 模型转换/代码生成、固件编译与固件集成
-- 烧录部署与端侧运行
+- GNSS 单频与 GNSS+RTK
+- Wi-Fi 指纹、BLE 信标、UWB 与地磁指纹
+- 室外、半室外和室内精度光谱
 relationships:
-- 数据准备 → 云端训练 → 模型优化 → 精度验收：形成并验证量化、剪枝后的模型
-- 精度验收 → 模型转换/代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行：损失可接受时按构建、部署、运行顺序落地
-- 精度验收 → 云端训练：损失不可接受时回退调优
+- GNSS 单频 → GNSS+RTK：通过差分与载波相位提升室外定位精度
+- Wi-Fi 指纹 → BLE 信标 → UWB：室内方案沿精度轴逐级提高
+- 定位技术 → 环境与精度区间：部署条件和典型误差共同限定选型位置
 components:
-- id: stage1_data
-  label: 数据准备
-  type: process
-  subtitle: 采集、标注、切分
-  group: training_region
+- id: gnss_single
+  label: GNSS单频
+  type: platform
+  subtitle: 室外数米至十米级
+  group: outdoor_zone
   priority: primary
   shape: card
-- id: stage2_training
-  label: 云端训练
-  type: process
-  subtitle: 轻量模型训练
-  group: training_region
-  priority: primary
+- id: gnss_rtk
+  label: GNSS+RTK
+  type: platform
+  subtitle: 室外厘米级
+  group: outdoor_zone
+  priority: normal
   shape: card
-- id: stage3_opt
-  label: 模型优化
-  type: process
-  subtitle: 量化+剪枝
-  group: training_region
-  priority: primary
+- id: wifi_fingerprint
+  label: Wi-Fi指纹法
+  type: platform
+  subtitle: 室内米至十米级
+  group: indoor_zone
+  priority: normal
   shape: card
-- id: stage3_check
-  label: 精度验收
-  type: decision
-  subtitle: 损失可接受？
-  group: training_region
-  priority: risk
-  shape: decision
-- id: stage4_convert
-  label: 模型转换/代码生成
-  type: process
-  subtitle: 生成MCU推理代码
-  group: training_region
-  priority: primary
-  shape: card
-- id: stage4_compile
-  label: 固件编译
-  type: process
-  subtitle: 链接模型与运行时
-  group: training_region
-  priority: primary
-  shape: card
-- id: stage4_integrate
-  label: 固件集成
-  type: process
-  subtitle: 传感器、预处理与推理
-  group: training_region
-  priority: primary
-  shape: card
-- id: stage4_flash
-  label: 烧录部署
+- id: ble_beacon
+  label: BLE信标
   type: edge
-  subtitle: 完整固件写入MCU
-  group: deployment_region
-  priority: primary
+  subtitle: 室内米级
+  group: indoor_zone
+  priority: normal
   shape: card
-- id: stage4_run
-  label: 端侧运行
+- id: uwb
+  label: UWB
   type: edge
-  subtitle: 采集、推理、响应
-  group: deployment_region
+  subtitle: 室内分米级
+  group: indoor_zone
   priority: primary
   shape: card
-connections:
-- from: stage1_data
-  to: stage2_training
-  label: 训练数据
-  style: solid
-  direction: request
-- from: stage2_training
-  to: stage3_opt
-  label: 全精度模型
-  style: solid
-  direction: request
-- from: stage3_opt
-  to: stage3_check
-  label: 验证
-  style: solid
-  direction: request
-- from: stage3_check
-  to: stage4_convert
-  label: 验收通过
-  style: solid
-  direction: left-to-right
-- from: stage3_check
-  to: stage2_training
-  label: 回退调优
-  style: dashed
-  direction: request
-- from: stage4_convert
-  to: stage4_compile
-  label: 生成代码
-  style: solid
-  direction: left-to-right
-- from: stage4_compile
-  to: stage4_integrate
-  label: 构建固件
-  style: solid
-  direction: left-to-right
-- from: stage4_integrate
-  to: stage4_flash
-  label: 完整固件
-  style: solid
-  direction: left-to-right
-- from: stage4_flash
-  to: stage4_run
-  label: 启动
-  style: solid
-  direction: left-to-right
+- id: geomagnetic
+  label: 地磁指纹
+  type: edge
+  subtitle: 室内数米级
+  group: indoor_zone
+  priority: supporting
+  shape: card
 regions:
-- id: training_region
-  label: 模型开发域
-  role: 训练与调优（云端/工作站）
-- id: deployment_region
-  label: 端侧运行域
-  role: MCU推理执行
+- id: outdoor_zone
+  label: 室外覆盖域
+  role: 无遮挡开阔环境，卫星信号可稳定接收
+- id: semi_outdoor
+  label: 半室外过渡区
+  role: 街谷、天桥、敞篷等卫星信号受限区域，精度会显著退化
+- id: indoor_zone
+  label: 室内覆盖域
+  role: 建筑内部，需依赖Wi-Fi/蓝牙/UWB/地磁等基础设施
+connections:
+- from: gnss_single
+  to: gnss_rtk
+  label: 精度递进
+  style: solid
+  direction: left-to-right
+- from: wifi_fingerprint
+  to: ble_beacon
+  label: 精度递进
+  style: solid
+  direction: left-to-right
+- from: ble_beacon
+  to: uwb
+  label: 精度递进
+  style: solid
+  direction: left-to-right
 callouts:
-- 精度验收节点用菱形表示，分支依据是业务定义的可接受偏差阈值（如准确率、误触率）。
-- 虚线回退路径提示：量化+剪枝后精度若不能满足要求，需要重新训练或调整优化策略。QAT在训练阶段模拟量化，往往能提升精度。
+- GNSS+RTK 提供室外最高精度，但基准站部署成本高昂。
+- UWB 是室内精度冠军，但基站网络和标签成本限制了覆盖范围与部署密度。
+- Wi-Fi和BLE的部署成本最低，适合区域级定位需求，无法支撑精细操作。
+- 半室外过渡区（如物流月台）常需要用 GNSS 与 BLE 混合定位做平滑切换。
 legend:
-- 蓝色：数据准备；紫色：云端训练；橙色：模型优化；绿色：端侧部署。
-- 粗实线箭头：正向数据流；虚线箭头：回退迭代路径。
-- 菱形：判定节点，表示精度验证。
+- 蓝色系节点=卫星定位技术；绿色=Wi-Fi；橙色=BLE；红色=UWB；灰色=地磁（备选方案）。
+- 水平矩形宽度表示典型精度区间，矩形左边界对应最佳精度，右边界对应最差精度。
+- 背景浅蓝色竖条区域=室外域；浅灰色区域=室内域；交界处的浅黄色竖条=半室外过渡区。
 visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-- 判定节点写成可判断的问题，分支标签保持短句。
-render_notes: HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。阶段框颜色按图例，判定节点使用黄色菱形。箭头带文字标签标注方向。
+- 最多6个主节点，节点标签控制在14汉字以内。
+- 颜色只用于区分技术族类，不宜超过6种。
+- 图例放在图底部，不遮挡环境背景分区。
+- 矩形宽度严格对应精度区间，不得随意拉伸。
+render_notes: SVG/HTML 渲染，横轴采用对数刻度（0.1m、0.5m、1m、5m、10m处标辅助竖线）。各技术用圆角矩形水平放置，高度统一为40px，宽度按比例映射精度区间。背景：室外域（精度≥5m）涂浅蓝色（rgba(135,206,250,0.15)），半室外过渡区（1m～5m）涂浅黄色（rgba(255,255,0,0.10)），室内域（<1m）涂浅灰色（rgba(200,200,200,0.15)）。图例在底部，包含颜色与背景含义说明。
 caption:
-  zh: 图3-7 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。
-  en: Figure 3-7 The complete TinyML engineering flow from data collection to on-device inference; the rollback feedback between model optimization and cloud training is the key loop that secures deployed accuracy.
+  zh: 图 3-7 室内外定位技术覆盖与精度光谱示意。横轴为定位精度（米，对数刻度），各技术以水平矩形表示宽度对应的典型精度区间。背景色区分室外（浅蓝）、半室外过渡（浅黄）和室内（浅灰）三种环境域。
+  en: 'Figure 3-7 Coverage and accuracy spectrum of indoor/outdoor positioning technologies. The horizontal axis is positioning accuracy in meters (log scale); each technology is a horizontal bar whose width spans its typical accuracy range. Background colors distinguish three environment zones: outdoor (light blue), semi-outdoor transition (light yellow), and indoor (light gray).'
 labels:
   en:
-    图3-7 TinyML模型训练与部署全流程: Figure 3-7 TinyML Training & Deployment End to End
-    从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。: The full pipeline from data preparation, cloud training, and model optimization to edge deployment, plus the rollback iteration triggered by accuracy acceptance.
-    模型开发与固件构建域: Model Development & Firmware Build Domain
-    目标设备域: Target Device Domain
-    数据准备: Data Preparation
-    采集 · 标注 · 切分: Collect · label · split
-    云端训练: Cloud Training
-    轻量模型训练: Lightweight model training
-    模型优化: Model Optimization
-    量化 · 剪枝: Quantization · pruning
-    精度验收: Accuracy Acceptance
-    损失可接受？: Loss acceptable?
-    模型转换 / 代码生成: Model Conversion / Codegen
-    生成 MCU 推理代码: Generate MCU inference code
-    固件编译: Firmware Compile
-    链接模型与运行时: Link model & runtime
-    固件集成: Firmware Integration
-    传感器 · 预处理 · 推理: Sensor · preprocessing · inference
-    烧录部署: Flash & Deploy
-    完整固件写入 MCU: Write full firmware to MCU
-    端侧运行: On-Device Run
-    采集 · 推理 · 响应: Sense · infer · respond
-    不通过：回退调优: 'Fail: rollback & retune'
-    通过: Pass
-    顺序约束：模型转换与代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行；部署完成后不再执行编译。: 'Ordering: model conversion/codegen → firmware compile → integration → flash & deploy → on-device run; no compilation after deployment.'
-    蓝色：数据准备；青色：云端训练: 'Blue: data preparation; cyan: cloud training'
-    橙色：模型优化；绿色：端侧部署: 'Orange: model optimization; green: edge deployment'
-    粗实线：正向流程；虚线：回退迭代；菱形：精度验收: 'Bold solid: forward flow; dashed: rollback; diamond: accuracy gate'
-    图3-7 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。: Figure 3-7 The complete TinyML engineering flow from data collection to on-device inference; the rollback feedback between model optimization and cloud training is the key loop that secures deployed accuracy.
+    图 3-7 室内外定位技术覆盖与精度光谱（示意）: 'Figure 3-7 Indoor/Outdoor Positioning: Coverage & Accuracy Spectrum (Illustrative)'
+    展示GNSS、Wi-Fi、BLE、UWB等主流定位技术在室外、室内及半室外环境下的典型精度区间，横轴为对数刻度的定位精度（米），从左到右由粗到精，背景色区分室外、半室外过渡与室内三种环境域。: Typical accuracy ranges of mainstream positioning technologies — GNSS, Wi-Fi, BLE, UWB — across outdoor, indoor, and semi-outdoor environments. The axis is accuracy in meters on a log scale, coarse on the left to fine on the right; background colors mark outdoor, semi-outdoor transition, and indoor zones.
+    展示GNSS、Wi-Fi、BLE、UWB等主流定位技术在室外、室内及半室外环境下的典型精度区间，帮助读者建立直观的选型直觉。: Typical accuracy ranges of mainstream positioning technologies — GNSS, Wi-Fi, BLE, UWB — across outdoor, indoor, and semi-outdoor environments, to build an intuitive sense for technology selection.
+    室外覆盖域: Outdoor Coverage Zone
+    无遮挡开阔，卫星信号稳定接收: Open and unobstructed; stable satellite reception
+    半室外过渡区: Semi-Outdoor Transition Zone
+    街谷、天桥等信号受限，精度显著退化: Street canyons and overpasses limit signals; accuracy degrades sharply
+    室内覆盖域: Indoor Coverage Zone
+    依赖 Wi-Fi / BLE / UWB / 地磁基础设施: Relies on Wi-Fi / BLE / UWB / geomagnetic infrastructure
+    精度递进: Accuracy progression
+    GNSS单频: GNSS Single-Frequency
+    室外 · 数米至十米级: Outdoor · meters to 10s of meters
+    室外 · 厘米级: Outdoor · centimeter level
+    Wi-Fi指纹法: Wi-Fi Fingerprinting
+    室内 · 米至十米级: Indoor · meters to 10s of meters
+    BLE信标: BLE Beacon
+    室内 · 米级: Indoor · meter level
+    室内 · 分米级: Indoor · decimeter level
+    地磁指纹: Geomagnetic Fingerprint
+    室内 · 数米级: Indoor · several meters
+    ← 粗精度: ← Coarse
+    精精度 →: Fine →
+    定位精度（米 · 对数刻度）: Positioning accuracy (m · log scale)
+    GNSS+RTK 提供室外最高精度，但基准站部署成本高昂。: GNSS+RTK delivers the best outdoor accuracy, but base-station deployment is costly.
+    UWB 是室内精度冠军，但基站网络与标签成本限制覆盖范围与部署密度。: UWB is the indoor accuracy champion, but anchor networks and tag costs limit coverage and density.
+    Wi-Fi 与 BLE 部署成本最低，适合区域级定位，但难支撑精细操作。: Wi-Fi and BLE cost the least to deploy and suit zone-level positioning, but cannot support fine-grained operations.
+    半室外过渡区（如物流月台）常用 GNSS 与 BLE 混合定位做平滑切换。: Semi-outdoor transition zones (e.g. loading docks) often blend GNSS and BLE for smooth handover.
+    卫星定位（GNSS）: Satellite (GNSS)
+    地磁（备选）: Geomagnetic (backup)
+    浅蓝＝室外覆盖域: Light blue = outdoor zone
+    浅黄＝半室外过渡区: Light yellow = semi-outdoor transition
+    浅灰＝室内覆盖域: Light gray = indoor zone
+    矩形宽度＝典型精度区间（左边界≈最粗精度，右边界≈最精精度）: Bar width = typical accuracy range (left edge ≈ coarsest, right edge ≈ finest)
+    图 3-7 室内外定位技术覆盖与精度光谱示意。横轴为定位精度（米，对数刻度），各技术以水平矩形表示宽度对应的典型精度区间。背景色区分室外（浅蓝）、半室外过渡（浅黄）和室内（浅灰）三种环境域。: 'Figure 3-7 Coverage and accuracy spectrum of indoor/outdoor positioning technologies. The horizontal axis is positioning accuracy in meters (log scale); each technology is a horizontal bar whose width spans its typical accuracy range. Background colors distinguish three environment zones: outdoor (light blue), semi-outdoor transition (light yellow), and indoor (light gray).'

@@ -1,52 +1,104 @@
-type: matrix
-title: 图7-12 对话记忆的三种策略
-audience_takeaway: 读者应理解对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入、conversationId 隔离会话，解决无状态 API 与多轮交互的结构性矛盾。
-purpose: 对比三种对话记忆策略的原理、适用场景与运维定位
-visual_focus: 三列策略卡片并列。
-design_level: matrix
-layout: 三列策略卡片（消息历史 / 摘要记忆 / 知识图谱记忆），底部关键实现说明
+type: architecture
+title: 图 7-12 私有化与混合部署架构
+purpose: 展示私有化部署、公有云部署和混合路由三种模式之间的推理路径和边界。
+audience_takeaway: 读者应理解私有化部署不是全量替代公有云，而是根据数据敏感度和任务复杂度分层选择推理后端。
+visual_focus: 从 Agentic Center 出发的两条分支路径：通向本地推理引擎的绿色数据安全路径，和通向云端推理引擎的橙色复杂任务路径。
+design_level: deployment
+layout: 从左到右：左侧为 Agentic Center，中间为路由决策节点，右侧为两个推理后端（本地、云端）。
 elements:
-- 消息历史：完整消息列表附加到请求，短轮次（10 轮内），无信息损失
-- 摘要记忆：历史压缩为摘要避免 token 溢出，长轮次，须保留操作结果与状态码
-- 知识图谱记忆：维护实体关系仅检索相关实体，复杂推理、追溯多设备操作链
-- 关键实现：MessageChatMemoryAdvisor + conversationId；生产对接 Redis 跨进程共享
+- Agentic Center：对话入口与工具编排层，蓝色块。
+- 路由决策节点：根据敏感标签和查询复杂度分流，菱形决策框。
+- 本地推理引擎：Ollama / vLLM / LocalAI + 本地模型，青绿色块。
+- 云端推理引擎：GPT-5 / Claude 4.5 等公有云服务，橙色块。
+- 敏感数据边界虚线：圈住本地推理引擎及企业内部网络。
 relationships:
-- 三种策略同经 ChatMemory 接入，按对话长度与 token 预算选择
-render_notes: HTML/SVG 渲染，三列对比，蓝/绿/橙三色，底部关键实现卡片。
+- Agentic Center → 路由决策：请求带敏感标签或简单查询。
+- 路由决策 → 本地推理引擎：数据安全路径，实线箭头。
+- 路由决策 → 云端推理引擎：复杂任务路径，虚线箭头。
+regions:
+- id: private_network
+  label: 企业内部网络
+  role: 敏感数据不出域的安全边界
+- id: public_network
+  label: 云外网
+  role: 可访问开放 API 的公共网络区域
+components:
+- id: agentic_center
+  label: Agentic Center
+  type: ai
+  subtitle: 对话入口与工具编排
+  group: private_network
+  priority: primary
+  shape: card
+- id: router
+  label: 路由决策
+  type: decision
+  subtitle: 敏感度/复杂度判断
+  group: private_network
+  priority: primary
+  shape: decision
+- id: local_inference
+  label: 本地推理引擎
+  type: edge
+  subtitle: Ollama / vLLM / LocalAI
+  group: private_network
+  priority: primary
+  shape: card
+- id: cloud_inference
+  label: 云端推理引擎
+  type: external
+  subtitle: GPT-5 / Claude 4.5 / 通义千问
+  group: public_network
+  priority: normal
+  shape: card
+connections:
+- from: agentic_center
+  to: router
+  label: 请求分流
+  style: solid
+  direction: left-to-right
+- from: router
+  to: local_inference
+  label: 敏感/简单
+  style: solid
+  direction: left-to-right
+- from: router
+  to: cloud_inference
+  label: 复杂任务
+  style: dashed
+  direction: left-to-right
+callouts:
+- 路由决策在 Agentic Center 内部实现，不引入额外中间件。
+- 本地推理引擎暴露 OpenAI 兼容端点，与云端对接的接口一致。
+legend:
+- 蓝色=Agentic Center 核心；青绿色=本地推理组件；橙色=云端服务。
+- 实线=数据安全路径；虚线=跨网络路径。
+- 企业内部网络边界用虚线表示。
+visual_constraints:
+- 最多 4 个主节点，避免过多细节。
+- 路由决策节点用菱形突出。
+- 企业内部网络边界使用浅色背景区分。
+render_notes: HTML/SVG 渲染，浅色背景从左到右布局，菱形决策节点，实线和虚线箭头分别表示不同路径，底部图例。
 caption:
-  zh: 图7-12 对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入，conversationId 隔离会话，解决无状态 API 与多轮交互之间的结构性矛盾。
-  en: Figure 7-12 Dialogue memory has three strategies — message history, summary memory, and knowledge-graph memory — unified behind the ChatMemory interface, with conversationId isolating sessions, resolving the structural conflict between stateless APIs and multi-turn interaction.
+  zh: 图 7-12 展示私有化部署中 Agentic Center 与本地/云端推理引擎之间的路由关系。
+  en: Figure 7-12 shows the routing relationships between the Agentic Center and local or cloud inference engines in a private deployment.
 labels:
   en:
-    图7-12 对话记忆的三种策略: Figure 7-12 Three Dialogue-Memory Strategies
-    消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口与 conversationId 隔离会话。: Message history, summary, and knowledge-graph memory — sessions isolated by the ChatMemory interface and conversationId.
-    无状态 API 与多轮交互的矛盾，由 ChatMemory 与应用层显式管理解决: ChatMemory plus explicit app-layer management resolves stateless API vs. multi-turn use
-    消息历史: Message history
-    原理: How it works
-    完整消息列表（用户 + 助手）直接: The full message list (user + assistant)
-    附加到每次请求: is appended to every request
-    适用场景: Best for
-    短轮次对话（通常 10 轮以内），: Short conversations (usually ≤10 turns),
-    保留上下文且无信息损失: full context, no information loss
-    运维定位: Ops role
-    围绕有限设备和位号、轮数可控，: Bounded devices and points, controllable turns,
-    最直接的默认选择: the simplest default
-    摘要记忆: Summary memory
-    将历史压缩为一段摘要，: History compressed into one summary
-    避免 token 溢出: to avoid token overflow
-    长轮次对话或 token 预算紧张时，: For long chats or tight token budgets,
-    需保留关键操作结果: key operation results must be kept
-    操作类历史必须保留执行结果与状态码，: Operational history must keep results and status codes,
-    避免模型重复执行相同下发指令: preventing the model from re-issuing commands
-    知识图谱记忆: Knowledge-graph memory
-    维护实体关系，仅检索相关实体: Maintains entity relations, retrieves only relevant entities
-    获得上下文: to obtain context
-    复杂推理，如追溯多台设备的: Complex reasoning — e.g. tracing the
-    历史操作链: operation chains of many devices
-    跨设备、跨会话的关联追溯，: Cross-device, cross-session tracing,
-    适合复杂故障链分析: fits complex fault-chain analysis
-    关键实现：MessageChatMemoryAdvisor + conversationId: 'Key implementation: MessageChatMemoryAdvisor + conversationId'
-    Advisor 每次 call 前从 ChatMemory 取出与 conversationId 关联的历史注入提示词，调用结束后再写回: Before each call the advisor loads the conversationId history from ChatMemory into the prompt and writes it back afterward
-    conversationId 是会话唯一标识，不同会话用不同 ID 隔离上下文 · 生产环境对接 Redis 跨进程共享 · 写入平台表支持会话回放与审计: conversationId uniquely identifies a session; different IDs isolate context · production shares via Redis across processes · platform-table writes enable replay and audit
-    工程折中：保留最近若干轮全量历史，更早历史由摘要器压缩为含关键操作结果与时间戳的结构化摘要: 'Engineering trade-off: keep the last few turns verbatim; older history is compressed into a structured summary with key operation results and timestamps'
-    图7-12 对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入，conversationId 隔离会话，解决无状态 API 与多轮交互之间的结构性矛盾。: Figure 7-12 Dialogue memory has three strategies — message history, summary memory, and knowledge-graph memory — unified behind the ChatMemory interface, with conversationId isolating sessions, resolving the structural conflict between stateless APIs and multi-turn interaction.
+    图 7-12 私有化与混合部署架构: Figure 7-12 Private & Hybrid Deployment Architecture
+    读者应理解私有化部署不是全量替代公有云，而是根据数据敏感度和任务复杂度分层选择推理后端。: Private deployment does not fully replace the public cloud — backends are picked by data sensitivity and task complexity.
+    企业内部网络: Corporate intranet
+    请求分流: Request routing
+    敏感/简单: Sensitive/simple
+    复杂任务: Complex tasks
+    对话入口与工具编排: Chat entry & tool orchestration
+    路由决策: Routing decision
+    敏感度/复杂度判断: Sensitivity/complexity check
+    本地推理引擎: Local inference engine
+    Ollama / vLLM / LocalAI · 数据不出域: Ollama / vLLM / LocalAI · data stays on-site
+    云端推理引擎: Cloud inference engine
+    外部 Provider · 仅发送允许出域的数据: External providers · only export-approved data is sent
+    云外网: Public network
+    蓝色=Agentic Center 核心: Blue = Agentic Center core
+    实线=数据安全路径；虚线=跨网络路径: Solid = data-safe path; dashed = cross-network path
+    企业内部网络边界用虚线表示: The corporate network boundary is dashed
+    图 7-12 私有化与混合部署按敏感度和任务复杂度选择推理后端；当前平台支持按会话选模型，自动策略路由仍需显式实现。: Figure 7-12 Private and hybrid deployments pick inference backends by sensitivity and task complexity; today the platform selects models per session, and automatic policy routing still needs explicit implementation.

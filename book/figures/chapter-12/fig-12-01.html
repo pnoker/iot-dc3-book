@@ -3,166 +3,132 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-1 环境传感网络部署拓扑示意</title>
+  <title>图 12-1 精准农业感知三维度与传感器选型权衡</title>
   <style>
-    * export contract: 1200px logical width; static, offline, no script *
+    /* export contract: 1200px logical width; static, offline, no script */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图12-1 环境传感网络部署拓扑示意</title>
-  <desc id="desc">星型拓扑：终端节点单跳直达 LoRaWAN 网关，网关经 4G/有线回传至云平台。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
-
-
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">图 12-1 精准农业感知三维度与传感器选型权衡</title>
+  <desc id="desc">土壤、气象、作物生理三个感知维度，共同约束精度、接口、功耗、成本四项选型权衡。</desc>
+  <rect width="1200" height="720" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="600" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
   <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
-    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
   </defs>
 
-  <!-- ===== Title area ===== -->
+  <!-- ===== Title ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-1 环境传感网络部署拓扑示意</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">星型拓扑 · 终端节点单跳直达网关 · 数据自下而上汇聚至云平台</text>
-
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 12-1 精准农业感知三维度与传感器选型权衡</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">三个感知维度供给数据 · 四个维度约束传感器选型 · 数据驱动灌溉与病害决策</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== data_domain boundary (purple) ===== -->
-  <rect x="60" y="128" width="1680" height="176" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="80" y="158" font-size="13" font-weight="700" fill="#7C3AED">数据资产域</text>
-  <text x="80" y="176" font-size="11" fill="#64748B">数据沉淀与治理边界</text>
+  <!-- ===== 感知三维度（上半区） ===== -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">感知三维度</text>
+  <text x="80" y="170" font-size="11" fill="#64748B">“天 — 地 — 苗”三类数据源，决定监测精度与系统成本</text>
 
-  <!-- c1: 云平台 / 数据中台 (database cylinder, purple) -->
-  <path d="M 770,176 L 770,256 A 130,13 0 0 0 1030,256 L 1030,176" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <path d="M 770,194 A 130,13 0 0 0 1030,194" fill="none" stroke="#7C3AED" stroke-width="1" opacity="0.35"/>
-  <ellipse cx="900" cy="176" rx="130" ry="13" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="900" y="226" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云平台 / 数据中台</text>
-  <text x="900" y="246" font-size="11" fill="#475569" text-anchor="middle">数据库 · AI模型 · 大屏 · 告警</text>
+  <!-- 维度1：土壤 (green) -->
+  <rect x="80" y="192" width="520" height="230" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="80" y="192" width="520" height="40" rx="12" fill="#16A34A"/>
+  <rect x="80" y="212" width="520" height="20" fill="#16A34A"/>
+  <text x="340" y="219" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">土壤（地）</text>
+  <text x="116" y="270" font-size="14" font-weight="700" fill="#0F172A">体积含水量 VWC</text>
+  <text x="116" y="290" font-size="11" fill="#475569">决定“何时灌溉”，灌溉决策的核心阈值</text>
+  <text x="116" y="330" font-size="14" font-weight="700" fill="#0F172A">土壤温度</text>
+  <text x="116" y="350" font-size="11" fill="#475569">影响根系活性与养分吸收效率</text>
+  <text x="116" y="390" font-size="14" font-weight="700" fill="#0F172A">电导率 EC</text>
+  <text x="116" y="410" font-size="11" fill="#475569">反映可溶性盐分，EC 偏高只补清水</text>
 
-  <!-- ===== edge_domain boundary (green) ===== -->
-  <rect x="60" y="340" width="1680" height="520" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="80" y="370" font-size="13" font-weight="700" fill="#10B981">设备与边缘域</text>
-  <text x="80" y="388" font-size="11" fill="#64748B">现场异构资源边界</text>
+  <!-- 维度2：气象 (blue) -->
+  <rect x="640" y="192" width="520" height="230" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="640" y="192" width="520" height="40" rx="12" fill="#2563EB"/>
+  <rect x="640" y="212" width="520" height="20" fill="#2563EB"/>
+  <text x="900" y="219" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">气象（天）</text>
+  <text x="676" y="270" font-size="14" font-weight="700" fill="#0F172A">空气温湿度</text>
+  <text x="676" y="290" font-size="11" fill="#475569">低温高湿显著提升灰霉病爆发风险</text>
+  <text x="676" y="330" font-size="14" font-weight="700" fill="#0F172A">光照 PAR · 风速 · 降雨</text>
+  <text x="676" y="350" font-size="11" fill="#475569">PAR 约束干物质积累；喷药避风、雨后推迟灌溉</text>
+  <text x="676" y="390" font-size="14" font-weight="700" fill="#0F172A">防辐射罩</text>
+  <text x="676" y="410" font-size="11" fill="#475569">温湿度探头必检项，避免阳光直射读数偏高</text>
 
-  <!-- c2: LoRaWAN 网关 card (green) -->
-  <rect x="750" y="400" width="300" height="88" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-  <line x1="800" y1="466" x2="800" y2="420" stroke="#10B981" stroke-width="2"/>
-  <circle cx="800" cy="417" r="3" fill="#10B981"/>
-  <path d="M 808,426 A 9,9 0 0 0 808,410" fill="none" stroke="#10B981" stroke-width="1.5"/>
-  <path d="M 814,430 A 15,15 0 0 0 814,406" fill="none" stroke="#10B981" stroke-width="1.5"/>
-  <text x="968" y="436" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LoRaWAN 网关</text>
-  <text x="968" y="458" font-size="11" fill="#475569" text-anchor="middle">农田中央立杆 · 4G/有线回传</text>
+  <!-- 维度3：作物生理 (orange) -->
+  <rect x="1200" y="192" width="520" height="230" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="1200" y="192" width="520" height="40" rx="12" fill="#F97316"/>
+  <rect x="1200" y="212" width="520" height="20" fill="#F97316"/>
+  <text x="1460" y="219" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">作物生理（苗）</text>
+  <text x="1236" y="270" font-size="14" font-weight="700" fill="#0F172A">茎流传感器</text>
+  <text x="1236" y="290" font-size="11" fill="#475569">测量茎秆水分上升速率，反映根系吸水受阻</text>
+  <text x="1236" y="330" font-size="14" font-weight="700" fill="#0F172A">叶面湿度</text>
+  <text x="1236" y="350" font-size="11" fill="#475569">叶片水膜是病害预警的核心指标</text>
+  <text x="1236" y="390" font-size="14" font-weight="700" fill="#0F172A">分阶段引入</text>
+  <text x="1236" y="410" font-size="11" fill="#475569">维护频次与成本高，项目二/三阶段再考虑</text>
 
-  <!-- callout: key takeaway -->
-  <rect x="1180" y="400" width="398" height="80" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="1198" y="428" font-size="13" font-weight="700" fill="#334155">星型单跳 = 低功耗根源</text>
-  <text x="1198" y="450" font-size="11" fill="#64748B">终端不维护中继路由，仅与网关一对一通信；</text>
-  <text x="1198" y="468" font-size="11" fill="#64748B">长休眠占空比，故可电池长期运行。</text>
+  <!-- ===== 选型权衡（下半区） ===== -->
+  <text x="80" y="510" font-size="15" font-weight="700" fill="#334155">传感器选型四维权衡</text>
+  <text x="80" y="530" font-size="11" fill="#64748B">四项同步权衡，接口选择最易被低估但工程影响巨大</text>
 
-  <!-- backhaul: c2 -> c1 (solid gray, up) -->
-  <line x1="900" y1="400" x2="900" y2="270" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <text x="960" y="330" font-size="11" font-weight="700" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">4G / 有线回传</text>
+  <rect x="80" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <circle cx="116" cy="596" r="16" fill="#2563EB"/>
+  <text x="116" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="150" y="600" font-size="15" font-weight="700" fill="#0F172A">精度</text>
+  <text x="116" y="640" font-size="11" fill="#475569">能否满足农艺要求</text>
+  <text x="116" y="660" font-size="11" fill="#475569">灌溉决策需 VWC 误差可控</text>
+  <text x="116" y="680" font-size="11" fill="#64748B">FDR 低精度 / TDR 高精度</text>
 
-  <!-- ===== Farmland plane (2D) ===== -->
-  <rect x="110" y="540" width="1580" height="300" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
-  <line x1="130" y1="610" x2="1670" y2="610" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
-  <line x1="130" y1="700" x2="1670" y2="700" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
-  <line x1="130" y1="790" x2="1670" y2="790" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
+  <rect x="496" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <circle cx="532" cy="596" r="16" fill="#2563EB"/>
+  <text x="532" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="566" y="600" font-size="15" font-weight="700" fill="#0F172A">接口</text>
+  <text x="532" y="640" font-size="11" fill="#475569">RS-485 · 抗干扰，长距离布线</text>
+  <text x="532" y="660" font-size="11" fill="#475569">SDI-12 · 农业低功耗串行总线</text>
+  <text x="532" y="680" font-size="11" fill="#64748B">I2C · 板级短距连接</text>
 
-  <!-- c3 cluster label -->
-  <text x="130" y="566" font-size="13" font-weight="700" fill="#10B981">终端节点（多类传感器）</text>
-  <text x="130" y="584" font-size="11" fill="#64748B">土壤水分 · 叶面湿度 · 光照 · 温湿度</text>
+  <rect x="912" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <circle cx="948" cy="596" r="16" fill="#2563EB"/>
+  <text x="948" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="982" y="600" font-size="15" font-weight="700" fill="#0F172A">功耗</text>
+  <text x="948" y="640" font-size="11" fill="#475569">能否支撑电池供电</text>
+  <text x="948" y="660" font-size="11" fill="#475569">间歇唤醒策略延长电池寿命</text>
+  <text x="948" y="680" font-size="11" fill="#64748B">测量电流几 mA ~ 几十 mA</text>
 
-  <!-- ===== LoRa star uplinks (dashed green, all converge on gateway) ===== -->
-  <g stroke="#10B981" stroke-width="1.5" stroke-dasharray="5 4" fill="none">
-    <line x1="320" y1="664" x2="900" y2="488"/>
-    <line x1="470" y1="754" x2="900" y2="488"/>
-    <line x1="620" y1="634" x2="900" y2="488"/>
-    <line x1="770" y1="779" x2="900" y2="488"/>
-    <line x1="1030" y1="779" x2="900" y2="488"/>
-    <line x1="1180" y1="634" x2="900" y2="488"/>
-    <line x1="1330" y1="754" x2="900" y2="488"/>
-    <line x1="1480" y1="664" x2="900" y2="488"/>
-  </g>
+  <rect x="1328" y="552" width="392" height="150" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <circle cx="1364" cy="596" r="16" fill="#2563EB"/>
+  <text x="1364" y="601" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <text x="1398" y="600" font-size="15" font-weight="700" fill="#0F172A">成本</text>
+  <text x="1364" y="640" font-size="11" fill="#475569">是否在项目预算内</text>
+  <text x="1364" y="660" font-size="11" fill="#475569">传感器成本往往超过通信模块</text>
+  <text x="1364" y="680" font-size="11" fill="#64748B">均匀加密优于高精度稀疏</text>
 
-  <!-- ===== Terminal sensor nodes (green) ===== -->
-  <g>
-    <!-- t1 -->
-    <circle cx="320" cy="680" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="320" cy="680" r="5" fill="#10B981"/>
-    <text x="320" y="708" font-size="11" fill="#475569" text-anchor="middle">土壤水分</text>
-    <!-- t2 -->
-    <circle cx="470" cy="770" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="470" cy="770" r="5" fill="#10B981"/>
-    <text x="470" y="798" font-size="11" fill="#475569" text-anchor="middle">温湿度</text>
-    <!-- t3 -->
-    <circle cx="620" cy="650" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="620" cy="650" r="5" fill="#10B981"/>
-    <text x="620" y="678" font-size="11" fill="#475569" text-anchor="middle">叶面湿度</text>
-    <!-- t4 -->
-    <circle cx="770" cy="795" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="770" cy="795" r="5" fill="#10B981"/>
-    <text x="770" y="823" font-size="11" fill="#475569" text-anchor="middle">光照</text>
-    <!-- t5 -->
-    <circle cx="1030" cy="795" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="1030" cy="795" r="5" fill="#10B981"/>
-    <text x="1030" y="823" font-size="11" fill="#475569" text-anchor="middle">土壤水分</text>
-    <!-- t6 -->
-    <circle cx="1180" cy="650" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="1180" cy="650" r="5" fill="#10B981"/>
-    <text x="1180" y="678" font-size="11" fill="#475569" text-anchor="middle">温湿度</text>
-    <!-- t7 -->
-    <circle cx="1330" cy="770" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="1330" cy="770" r="5" fill="#10B981"/>
-    <text x="1330" y="798" font-size="11" fill="#475569" text-anchor="middle">叶面湿度</text>
-    <!-- t8 -->
-    <circle cx="1480" cy="680" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
-    <circle cx="1480" cy="680" r="5" fill="#10B981"/>
-    <text x="1480" y="708" font-size="11" fill="#475569" text-anchor="middle">光照</text>
-  </g>
+  <!-- 箭头：三维度 → 选型权衡 -->
+  <line x1="340" y1="422" x2="340" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="900" y1="422" x2="900" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1460" y1="422" x2="1460" y2="552" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
   <!-- ===== Legend ===== -->
-  <line x1="40" y1="880" x2="1760" y2="880" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="40" y1="760" x2="1760" y2="760" stroke="#E2E8F0" stroke-width="1"/>
   <g font-size="11" fill="#475569">
-    <line x1="60" y1="905" x2="100" y2="905" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5 4"/>
-    <text x="108" y="906" dominant-baseline="middle">虚线 · LoRa 星型上行（终端单跳直达网关）</text>
-
-    <line x1="450" y1="905" x2="490" y2="905" stroke="#64748B" stroke-width="2"/>
-    <text x="498" y="906" dominant-baseline="middle">实线 · 4G / 有线回传（网关→云平台）</text>
-
-    <rect x="820" y="898" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <text x="844" y="906" dominant-baseline="middle">紫 · 数据资产域</text>
-
-    <rect x="980" y="898" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <text x="1004" y="906" dominant-baseline="middle">绿 · 设备与边缘域</text>
-
-    <circle cx="1170" cy="905" r="8" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
-    <circle cx="1170" cy="905" r="2.5" fill="#10B981"/>
-    <text x="1186" y="906" dominant-baseline="middle">绿圆 · 终端节点（传感器）</text>
-
-    <path d="M 1386,906 L 1386,894 A 9,2 0 0 0 1404,894 L 1404,906 A 9,2 0 0 1 1386,906" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
-    <text x="1412" y="906" dominant-baseline="middle">圆柱 · 云平台数据存储</text>
+    <rect x="60" y="785" width="16" height="14" rx="2" fill="#16A34A"/>
+    <text x="84" y="794" dominant-baseline="middle">土壤维度</text>
+    <rect x="180" y="785" width="16" height="14" rx="2" fill="#2563EB"/>
+    <text x="204" y="794" dominant-baseline="middle">气象维度</text>
+    <rect x="300" y="785" width="16" height="14" rx="2" fill="#F97316"/>
+    <text x="324" y="794" dominant-baseline="middle">作物生理维度</text>
+    <line x1="460" y1="792" x2="500" y2="792" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="508" y="794" dominant-baseline="middle">三维度共同约束选型权衡</text>
   </g>
 
   <!-- ===== Caption ===== -->
-  <text x="900" y="970" font-size="17" fill="#475569" text-anchor="middle">图12-1 星型单跳免去终端维护中继路由，终端得以长休眠、电池长期运行；数据经 LoRa 上行至网关后由 4G/有线回传，自下而上汇入云平台数据资产域。</text>
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 12-1 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。</text>
   </svg>
 </svg>
-
   </main>
 </body>
 </html>

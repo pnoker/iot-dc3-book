@@ -3,99 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图10-12 本章知识体系图谱</title>
+  <title>图 10-12 IoT DC3设备接入与数据采集数据流</title>
   <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
-  <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图10-12 本章知识体系图谱</title>
-  <desc id="desc">主链从感知层向上经过接入层、分析层到平台层；受控决策由平台侧沿独立下行路径返回现场确定性控制系统。</desc>
+  <main class="page">
+    <svg data-figure-root="fig-10-12" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 10-12 IoT DC3设备接入与数据采集数据流</title>
+  <desc id="desc">从设备接入、驱动绑定到实时上报与存储的端到端流程：Modbus TCP 位号值 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏展示。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
-    <defs>
-      <marker id="arr-blue" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#2563EB"/></marker>
-      <marker id="arr-orange" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0 0 L11 4 L0 8 Z" fill="#F97316"/></marker>
-    </defs>
-    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
-    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-12 本章知识体系图谱</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">数据与能力自下而上汇聚；受控决策沿独立下行链返回 PLC / SIS，不与上行主链混画。</text>
-    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
 
-    <!-- 连线（先画） -->
-    <!-- 主链路：感知层 → 平台层（实线，左） -->
-    <line x1="160" y1="730" x2="90" y2="730" stroke="#2563EB" stroke-width="2.4"/>
-    <line x1="90" y1="730" x2="90" y2="190" stroke="#2563EB" stroke-width="2.4" marker-end="url(#arr-blue)"/>
-    <line x1="90" y1="190" x2="160" y2="190" stroke="#2563EB" stroke-width="2.4"/>
-    <!-- 接入层 → 分析层（虚线，中） -->
-    <line x1="900" y1="500" x2="900" y2="430" stroke="#2563EB" stroke-width="2" stroke-dasharray="9 6" marker-end="url(#arr-blue)"/>
-    <!-- 决策下发闭环（虚线，右） -->
-    <line x1="1660" y1="190" x2="1720" y2="190" stroke="#F97316" stroke-width="2" stroke-dasharray="9 6"/>
-    <line x1="1720" y1="190" x2="1720" y2="730" stroke="#F97316" stroke-width="2" stroke-dasharray="9 6" marker-end="url(#arr-orange)"/>
-    <line x1="1660" y1="370" x2="1720" y2="370" stroke="#F97316" stroke-width="2" stroke-dasharray="9 6"/>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图 10-12 IoT DC3设备接入与数据采集数据流</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">SMT产线设备经 Modbus TCP 上报位号值 → Modbus驱动归一为 PointValue → 数据中心对齐写入 TimescaleDB → Grafana 大屏实时展示。</text>
 
-    <!-- 平台层 -->
-    <rect x="160" y="140" width="1500" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-    <rect x="160" y="140" width="150" height="100" rx="10" fill="#2563EB"/>
-    <text x="235" y="200" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">平台层</text>
-    <text x="340" y="192" font-size="18" font-weight="700" fill="#0F172A">驱动模块 · 数据中心 · 规则引擎 · 消息队列</text>
-    <text x="340" y="220" font-size="14" fill="#475569">统一承载数据、决策编排与业务协同</text>
-    <rect x="1410" y="168" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.4"/>
-    <text x="1525" y="196" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">IoT DC3 平台服务域</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="dataflow">
+  <!-- ===== 域（Region）泳道 ===== -->
+  <!-- 设备与边缘域 -->
+  <rect x="70" y="120" width="360" height="610" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8,5"/>
+  <text x="250" y="150" fill="#0F766E" font-size="16" font-weight="700" text-anchor="middle">设备与边缘域</text>
+  <text x="250" y="172" fill="#64748B" font-size="12" text-anchor="middle">现场异构资源边界</text>
+  <!-- 数据资产域 -->
+  <rect x="430" y="120" width="1300" height="610" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8,5"/>
+  <text x="1080" y="150" fill="#2563EB" font-size="16" font-weight="700" text-anchor="middle">数据资产域</text>
+  <text x="1080" y="172" fill="#64748B" font-size="12" text-anchor="middle">数据沉淀与治理边界</text>
 
-    <!-- 分析层 -->
-    <rect x="160" y="320" width="1500" height="100" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-    <rect x="160" y="320" width="150" height="100" rx="10" fill="#F97316"/>
-    <text x="235" y="380" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">分析层</text>
-    <text x="340" y="372" font-size="18" font-weight="700" fill="#0F172A">预测性维护 · AI 模型 · 在线推理</text>
-    <text x="340" y="400" font-size="14" fill="#475569">形成健康评估、告警与维护建议</text>
-    <rect x="1410" y="348" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#FDBA74" stroke-width="1.4"/>
-    <text x="1525" y="376" font-size="15" font-weight="700" fill="#C2410C" text-anchor="middle">规则引擎 + AI 推理</text>
+  <!-- ===== ① 设备层（边缘域） ===== -->
+  <rect x="95" y="250" width="310" height="310" rx="10" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="113" y="276" width="4" height="18" fill="#0F766E"/>
+  <text x="127" y="292" fill="#0F172A" font-size="17" font-weight="700">SMT产线设备</text>
+  <rect x="299" y="276" width="90" height="20" rx="10" fill="#ECFDF5" stroke="#0F766E"/><text x="344" y="290" fill="#0F766E" font-size="13" text-anchor="middle">边缘域</text>
+  <text x="127" y="314" fill="#64748B" font-size="12.5">回流焊炉 · 贴片机 · 锡膏印刷机</text>
+  <line x1="115" y1="326" x2="385" y2="326" stroke="#E2E8F0"/>
+  <rect x="120" y="340" width="8" height="8" rx="2" fill="#0F766E"/>
+  <text x="134" y="349" fill="#475569" font-size="13">回流焊炉</text>
+  <text x="378" y="349" fill="#64748B" font-size="13" text-anchor="end">温度 · 链速</text>
+  <rect x="120" y="370" width="8" height="8" rx="2" fill="#0F766E"/>
+  <text x="134" y="379" fill="#475569" font-size="13">贴片机</text>
+  <text x="378" y="379" fill="#64748B" font-size="13" text-anchor="end">吸嘴 · 贴装精度</text>
+  <rect x="120" y="400" width="8" height="8" rx="2" fill="#0F766E"/>
+  <text x="134" y="409" fill="#475569" font-size="13">锡膏印刷机</text>
+  <text x="378" y="409" fill="#64748B" font-size="13" text-anchor="end">锡膏厚度 · 偏移</text>
+  <rect x="130" y="482" width="240" height="30" rx="15" fill="#ECFDF5" stroke="#0F766E"/><text x="250" y="502" fill="#0F766E" font-size="12" font-weight="700" text-anchor="middle">Modbus TCP 输出位号值</text>
 
-    <!-- 接入层 -->
-    <rect x="160" y="500" width="1500" height="100" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-    <rect x="160" y="500" width="150" height="100" rx="10" fill="#2563EB"/>
-    <text x="235" y="560" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">接入层</text>
-    <text x="340" y="552" font-size="18" font-weight="700" fill="#0F172A">时序数据库 · 规则引擎 · 数据质量</text>
-    <text x="340" y="580" font-size="14" fill="#475569">协议适配、归一为 PointValue、质量治理</text>
-    <rect x="1410" y="528" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.4"/>
-    <text x="1525" y="556" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">数据中心（时序·质量）</text>
+  <!-- ===== ② 驱动服务层（数据资产域） ===== -->
+  <rect x="470" y="250" width="290" height="310" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="488" y="276" width="4" height="18" fill="#2563EB"/>
+  <text x="502" y="292" fill="#0F172A" font-size="17" font-weight="700">Modbus驱动</text>
+  <rect x="670" y="276" width="90" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="715" y="290" fill="#2563EB" font-size="13" text-anchor="middle">数据资产域</text>
+  <text x="502" y="314" fill="#64748B" font-size="12.5">dc3-driver-modbus-tcp</text>
+  <line x1="488" y1="326" x2="740" y2="326" stroke="#E2E8F0"/>
+  <text x="502" y="349" fill="#475569" font-size="13">轮询设备寄存器</text>
+  <text x="740" y="349" fill="#64748B" font-size="13" text-anchor="end">2s 周期可配置</text>
+  <text x="502" y="379" fill="#475569" font-size="13">归一为语义 PointValue</text>
+  <text x="502" y="409" fill="#475569" font-size="13">批量读 · 整段连续地址</text>
+  <rect x="500" y="482" width="230" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB"/><text x="615" y="502" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">PointValue 流</text>
 
-    <!-- 感知层 -->
-    <rect x="160" y="680" width="1500" height="100" rx="10" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
-    <rect x="160" y="680" width="150" height="100" rx="10" fill="#0F766E"/>
-    <text x="235" y="740" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">感知层</text>
-    <text x="340" y="732" font-size="18" font-weight="700" fill="#0F172A">工业4.0 · 数字孪生 · Modbus/OPC UA · 边缘网关</text>
-    <text x="340" y="760" font-size="14" fill="#475569">现场设备、协议与概念的认知基础</text>
-    <rect x="1410" y="708" width="230" height="44" rx="8" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1.4"/>
-    <text x="1525" y="736" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">驱动模块（南向协议适配）</text>
+  <!-- ===== ③ 数据中心（数据资产域） ===== -->
+  <rect x="830" y="250" width="290" height="310" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="848" y="276" width="4" height="18" fill="#2563EB"/>
+  <text x="862" y="292" fill="#0F172A" font-size="17" font-weight="700">数据中心</text>
+  <rect x="1030" y="276" width="90" height="20" rx="10" fill="#EFF6FF" stroke="#2563EB"/><text x="1075" y="290" fill="#2563EB" font-size="13" text-anchor="middle">数据资产域</text>
+  <text x="862" y="314" fill="#64748B" font-size="12.5">清洗 · 对齐 · 写入</text>
+  <line x1="848" y1="326" x2="1100" y2="326" stroke="#E2E8F0"/>
+  <text x="862" y="349" fill="#475569" font-size="13">接收 PointValue 流</text>
+  <text x="862" y="379" fill="#475569" font-size="13">时间戳对齐</text>
+  <text x="862" y="409" fill="#475569" font-size="13">单位转换 · 语义校验</text>
+  <rect x="860" y="482" width="230" height="30" rx="15" fill="#EFF6FF" stroke="#2563EB"/><text x="975" y="502" fill="#2563EB" font-size="12" font-weight="700" text-anchor="middle">写入时序库</text>
 
-    <!-- 连线标签 -->
-    <text x="72" y="460" transform="rotate(-90 72 460)" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">驱动模块上行主链（实线）</text>
-    <text x="922" y="460" font-size="14" font-weight="600" fill="#2563EB">特征数据 · 告警事件（虚线）</text>
-    <text x="1745" y="460" transform="rotate(90 1745 460)" font-size="15" font-weight="700" fill="#C2410C" text-anchor="middle">决策下发 · 闭环（带返回线）</text>
+  <!-- ===== ④ 时序存储 TimescaleDB（浅灰数据库） ===== -->
+  <path d="M 1210 295 L 1210 500 A 120 22 0 0 0 1450 500 L 1450 295" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <ellipse cx="1330" cy="295" rx="120" ry="22" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1330" y="345" fill="#0F172A" font-size="17" font-weight="700" text-anchor="middle">TimescaleDB</text>
+  <text x="1330" y="368" fill="#64748B" font-size="12" text-anchor="middle">时序分区存储</text>
+  <line x1="1225" y1="385" x2="1435" y2="385" stroke="#E2E8F0"/>
+  <text x="1330" y="409" fill="#475569" font-size="13" text-anchor="middle">按设备 + 位号分区</text>
+  <text x="1330" y="439" fill="#475569" font-size="13" text-anchor="middle">时间维度 · 按需保留</text>
+  <text x="1330" y="469" fill="#475569" font-size="13" text-anchor="middle">PostgreSQL 兼容</text>
 
-    <!-- 图例 -->
-    <rect x="360" y="812" width="1080" height="58" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"/>
-    <line x1="390" y1="841" x2="422" y2="841" stroke="#2563EB" stroke-width="2.4"/>
-    <text x="432" y="846" font-size="16" fill="#475569">实线=数据上行主链</text>
-    <line x1="610" y1="841" x2="642" y2="841" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="9 6"/>
-    <text x="652" y="846" font-size="16" fill="#475569">虚线=事件/调用</text>
-    <line x1="820" y1="841" x2="852" y2="841" stroke="#F97316" stroke-width="2.2" stroke-dasharray="9 6"/>
-    <text x="862" y="846" font-size="16" fill="#475569">橙色=AI 决策</text>
-    <rect x="1020" y="832" width="18" height="18" rx="4" fill="#0F766E"/>
-    <text x="1048" y="846" font-size="16" fill="#475569">青绿=设备/协议</text>
-    <rect x="1210" y="832" width="18" height="18" rx="4" fill="#2563EB"/>
-    <text x="1238" y="846" font-size="16" fill="#475569">蓝=平台能力</text>
+  <!-- ===== ⑤ Grafana 大屏（可视化层） ===== -->
+  <rect x="1530" y="250" width="200" height="310" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <circle cx="1548" cy="285" r="5" fill="#16A34A"/>
+  <text x="1565" y="292" fill="#0F172A" font-size="17" font-weight="700">Grafana大屏</text>
+  <rect x="1646" y="276" width="72" height="20" rx="10" fill="#FFFFFF" stroke="#94A3B8"/><text x="1682" y="290" fill="#64748B" font-size="13" text-anchor="middle">可视化</text>
+  <text x="1565" y="314" fill="#64748B" font-size="12.5">实时监控面板</text>
+  <line x1="1548" y1="326" x2="1712" y2="326" stroke="#E2E8F0"/>
+  <text x="1565" y="349" fill="#475569" font-size="13">按设备聚合</text>
+  <text x="1565" y="379" fill="#475569" font-size="13">实时曲线</text>
+  <text x="1565" y="409" fill="#475569" font-size="13">刷新间隔 5s</text>
+  <rect x="1550" y="482" width="160" height="30" rx="15" fill="#ECFDF5" stroke="#16A34A"/><text x="1630" y="502" fill="#16A34A" font-size="12" font-weight="700" text-anchor="middle">LIVE · 5s 刷新</text>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图10-12 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。</text>
+  <!-- ===== 主链路：实线箭头（数据流） ===== -->
+  <line x1="405" y1="405" x2="470" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="408" y="382" width="58" height="18" rx="4" fill="#FFFFFF"/><text x="437" y="395" fill="#0F172A" font-size="13" text-anchor="middle">Modbus TCP</text>
+  <text x="437" y="425" fill="#64748B" font-size="13" text-anchor="middle">2s 轮询</text>
+
+  <line x1="760" y1="405" x2="830" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="767" y="382" width="56" height="18" rx="4" fill="#FFFFFF"/><text x="795" y="395" fill="#0F172A" font-size="13" text-anchor="middle">PointValue流</text>
+  <text x="795" y="425" fill="#64748B" font-size="13" text-anchor="middle">带语义</text>
+
+  <line x1="1120" y1="405" x2="1200" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1138" y="382" width="44" height="18" rx="4" fill="#FFFFFF"/><text x="1160" y="395" fill="#0F172A" font-size="13" text-anchor="middle">写入</text>
+  <text x="1160" y="425" fill="#64748B" font-size="13" text-anchor="middle">清洗后</text>
+
+  <line x1="1450" y1="405" x2="1530" y2="405" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="1462" y="382" width="56" height="18" rx="4" fill="#FFFFFF"/><text x="1490" y="395" fill="#0F172A" font-size="13" text-anchor="middle">SQL查询</text>
+  <text x="1490" y="425" fill="#64748B" font-size="13" text-anchor="middle">PostgreSQL</text>
+
+  <!-- ===== 底部注释卡 ===== -->
+  <!-- 接入准备（边缘域） -->
+  <rect x="95" y="610" width="310" height="100" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <circle cx="121" cy="635" r="9" fill="#0F766E"/><text x="121" y="640" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">1</text>
+  <text x="141" y="640" fill="#475569" font-size="13.5" font-weight="700">接入准备 · 设备注册与驱动绑定</text>
+  <line x1="115" y1="652" x2="385" y2="652" stroke="#E2E8F0"/>
+  <text x="121" y="680" fill="#475569" font-size="12.5">设备注册后绑定 Modbus 驱动，</text>
+  <text x="121" y="702" fill="#475569" font-size="12.5">使能数据采集并配置轮询周期。</text>
+
+  <!-- 驱动批量读优化 -->
+  <rect x="470" y="610" width="290" height="100" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <circle cx="496" cy="635" r="9" fill="#D97706"/><text x="496" y="640" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">!</text>
+  <text x="516" y="640" fill="#92400E" font-size="13.5" font-weight="700">驱动批量读优化</text>
+  <line x1="490" y1="652" x2="740" y2="652" stroke="#FDE68A"/>
+  <text x="496" y="680" fill="#475569" font-size="12.5">批量读减少网络往返，每周期</text>
+  <text x="496" y="702" fill="#475569" font-size="12.5">读取整段连续寄存器地址。</text>
+
+  <!-- 数据中心对齐与转换 -->
+  <rect x="830" y="610" width="290" height="100" rx="10" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+  <circle cx="856" cy="635" r="9" fill="#D97706"/><text x="856" y="640" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">!</text>
+  <text x="876" y="640" fill="#92400E" font-size="13.5" font-weight="700">数据中心对齐与转换</text>
+  <line x1="850" y1="652" x2="1100" y2="652" stroke="#FDE68A"/>
+  <text x="856" y="680" fill="#475569" font-size="12.5">处理时间戳对齐与单位转换，</text>
+  <text x="856" y="702" fill="#475569" font-size="12.5">保证下游数据一致性。</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="786" width="16" height="12" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/>
+  <text x="104" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">青绿=设备与边缘</text>
+  <rect x="270" y="786" width="16" height="12" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="294" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">蓝=平台核心服务</text>
+  <rect x="450" y="786" width="16" height="12" rx="2" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="474" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">浅灰=时序数据库</text>
+  <rect x="640" y="786" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="664" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">白=可视化层</text>
+  <line x1="838" y1="792" x2="884" y2="792" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <text x="894" y="799" fill="#64748B" font-size="12" font-weight="600" text-anchor="start">实线箭头=数据流</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-weight="600" text-anchor="middle">图 10-12 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流：原始位号 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏。</text>
   </svg>
 </svg>
+
   </main>
 </body>
 </html>

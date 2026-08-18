@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图9-6 MCP协议交互序列图</title>
+  <title>图 9-6 LwM2M 对象树与引导注册</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,118 +12,83 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图9-6 MCP协议交互序列图</title>
-  <desc id="desc">AI Agent 通过 MCP Server 发现并调用经身份、租户和风险策略裁剪的 IoT 平台能力，平台再通过原有协议链路访问设备并回传结果。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
-    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
-    <defs>
-      <marker id="ar-grey" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#475569"/></marker>
-      <marker id="ar-orange" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#F97316"/></marker>
-      <marker id="ar-green" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#0F766E"/></marker>
-    </defs>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图 9-6 LwM2M 对象树与引导注册</title>
+  <desc id="desc">LwM2M 把设备能力抽象为对象/实例/资源三级对象树，经引导、注册、更新注册接入平台。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
 
-    <!-- 标题区 -->
-    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图9-6 MCP协议交互序列图</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">MCP 是 AI 与 IoT 平台的互操作层，不绕过平台治理，也不替代 MQTT / CoAP 设备协议</text>
-    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
 
-    <!-- 域边界 -->
-    <rect x="180" y="120" width="240" height="700" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.4" stroke-dasharray="7 5"/>
-    <rect x="500" y="120" width="600" height="700" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
-    <rect x="1180" y="120" width="560" height="700" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
 
-    <!-- 生命线 -->
-    <g stroke="#94A3B8" stroke-dasharray="6 5">
-      <line x1="280" y1="205" x2="280" y2="800"/>
-      <line x1="640" y1="205" x2="640" y2="800"/>
-      <line x1="1000" y1="205" x2="1000" y2="800"/>
-      <line x1="1330" y1="205" x2="1330" y2="800"/>
-      <line x1="1620" y1="205" x2="1620" y2="800"/>
-    </g>
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 9-6 LwM2M 对象树与引导注册</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">CoAP 管消息收发，LwM2M 管设备能力的抽象、注册、配置与维护</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- 消息连线 -->
-    <g stroke="#475569" stroke-width="2" marker-end="url(#ar-grey)">
-      <line x1="280" y1="240" x2="640" y2="240"/>
-      <line x1="640" y1="276" x2="280" y2="276"/>
-      <line x1="280" y1="312" x2="640" y2="312"/>
-      <line x1="640" y1="392" x2="280" y2="392"/>
-      <line x1="640" y1="532" x2="1000" y2="532"/>
-      <line x1="1000" y1="570" x2="1330" y2="570"/>
-      <line x1="1330" y1="608" x2="1620" y2="608"/>
-    </g>
-    <line x1="280" y1="452" x2="640" y2="452" stroke="#F97316" stroke-width="2" marker-end="url(#ar-orange)"/>
-    <g stroke="#0F766E" stroke-width="2" marker-end="url(#ar-green)">
-      <line x1="1620" y1="672" x2="1330" y2="672"/>
-      <line x1="1330" y1="710" x2="1000" y2="710"/>
-      <line x1="1000" y1="748" x2="640" y2="748"/>
-      <line x1="640" y1="786" x2="280" y2="786"/>
-    </g>
+  <!-- 对象树 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">对象树三级结构：把设备能力变成可寻址路径</text>
 
-    <!-- 安全决策自循环框 -->
-    <rect x="550" y="335" width="180" height="35" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
-    <text x="640" y="357" font-size="13" fill="#F97316" font-weight="700" text-anchor="middle">身份 + 租户范围裁剪</text>
-    <rect x="520" y="470" width="240" height="50" rx="6" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
-    <text x="640" y="491" font-size="13" fill="#F97316" font-weight="700" text-anchor="middle">鉴权 · 白名单 · 参数校验</text>
-    <text x="640" y="511" font-size="13" fill="#F97316" font-weight="700" text-anchor="middle">风险分级 · 必要时人工确认</text>
+  <rect x="80" y="172" width="520" height="150" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Object 对象</text>
+  <text x="116" y="240" font-size="12" fill="#475569">代表一类能力</text>
+  <text x="116" y="268" font-size="12" fill="#475569">3 设备 · 3303 温度 · 6 位置 · 5 固件更新</text>
+  <text x="116" y="296" font-size="11" fill="#64748B">同对象 ID = 平台读写接口可复用</text>
 
-    <!-- 消息标签 -->
-    <g font-size="13" fill="#0F172A" text-anchor="middle">
-      <text x="460" y="231">session init · 能力协商</text>
-      <text x="460" y="267">session info · 版本与能力</text>
-      <text x="460" y="303">tools/list</text>
-      <text x="460" y="383">工具列表 · JSON Schema</text>
-      <text x="460" y="443">tools/call · 工具 + 参数</text>
-      <text x="820" y="523">平台服务调用 (REST)</text>
-      <text x="1165" y="561">按原链路下发 · MQTT / CoAP</text>
-      <text x="1475" y="599">操作指令</text>
-      <text x="1475" y="663">响应 / 遥测</text>
-      <text x="1165" y="701">结果回调</text>
-      <text x="820" y="739">状态 + 数据 + 审计结果</text>
-      <text x="460" y="777">tools/call 响应</text>
-    </g>
+  <rect x="640" y="172" width="520" height="150" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Instance 对象实例</text>
+  <text x="676" y="240" font-size="12" fill="#475569">同一能力的多个副本</text>
+  <text x="676" y="268" font-size="12" fill="#475569">三个温度传感器 = 三个 /3303/ 实例</text>
+  <text x="676" y="296" font-size="11" fill="#64748B">编号从 0 开始</text>
 
-    <!-- 阶段标签 -->
-    <text x="120" y="228" font-size="16" font-weight="700" fill="#475569">会话与发现</text>
-    <text x="120" y="434" font-size="16" font-weight="700" fill="#475569">受控工具调用</text>
-    <text x="120" y="656" font-size="16" font-weight="700" fill="#475569">设备响应与审计回传</text>
+  <rect x="1200" y="172" width="520" height="150" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Resource 资源</text>
+  <text x="1236" y="240" font-size="12" fill="#475569">实例里的可读/写/执行项</text>
+  <text x="1236" y="268" font-size="12" fill="#475569">/5700 当前读数 · /5601 最小量程</text>
+  <text x="1236" y="296" font-size="11" fill="#64748B">R 只读 / W 可写 / E 可执行</text>
 
-    <!-- 域标签 -->
-    <text x="300" y="140" font-size="14" font-weight="700" fill="#F97316" text-anchor="middle">AI 应用域</text>
-    <text x="800" y="140" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">IoT 平台安全域</text>
-    <text x="1460" y="140" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">设备通信域</text>
+  <!-- 路径示例 -->
+  <rect x="80" y="370" width="1640" height="80" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="402" font-size="13" font-weight="700" fill="#334155">访问路径示例</text>
+  <text x="120" y="430" font-size="14" font-weight="700" fill="#2563EB">读第一个温度传感器的当前值：/3303/0/5700</text>
+  <text x="820" y="430" font-size="12" fill="#475569">路径语义与 CoAP URI 天然对齐，客户端固件按路径查表找处理器函数</text>
 
-    <!-- 参与者头部 -->
-    <rect x="150" y="155" width="260" height="50" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
-    <text x="280" y="177" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AI Agent</text>
-    <text x="280" y="196" font-size="11" fill="#64748B" text-anchor="middle">Claude Desktop 等</text>
-    <rect x="510" y="155" width="260" height="50" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
-    <text x="640" y="177" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">MCP Server</text>
-    <text x="640" y="196" font-size="11" fill="#64748B" text-anchor="middle">会话 · 策略 · 工具路由</text>
-    <rect x="870" y="155" width="260" height="50" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="1000" y="177" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">IoT 平台后端</text>
-    <text x="1000" y="196" font-size="11" fill="#64748B" text-anchor="middle">设备 / 数据服务</text>
-    <rect x="1200" y="155" width="260" height="50" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="1330" y="177" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">协议适配层</text>
-    <text x="1330" y="196" font-size="11" fill="#64748B" text-anchor="middle">MQTT / CoAP 网关</text>
-    <rect x="1490" y="155" width="260" height="50" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="1620" y="177" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">物理设备</text>
-    <text x="1620" y="196" font-size="11" fill="#64748B" text-anchor="middle">传感器 / 执行器</text>
+  <!-- 引导注册三步 -->
+  <text x="80" y="510" font-size="15" font-weight="700" fill="#334155">引导与注册：设备上平台的标准三步</text>
 
-    <!-- 图例 -->
-    <rect x="120" y="838" width="1560" height="44" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-    <line x1="140" y1="860" x2="175" y2="860" stroke="#475569" stroke-width="2"/>
-    <text x="186" y="865" font-size="14" fill="#475569">实线：受控调用与响应</text>
-    <line x1="480" y1="860" x2="515" y2="860" stroke="#0F766E" stroke-width="2"/>
-    <text x="526" y="865" font-size="14" fill="#475569">绿色：设备响应回传</text>
-    <rect x="800" y="852" width="16" height="16" rx="3" fill="#FFF7ED" stroke="#F97316"/>
-    <text x="824" y="865" font-size="14" fill="#475569">橙色框：安全决策点</text>
-    <text x="1060" y="865" font-size="14" fill="#64748B">虚线域边界：AI 与设备均不能绕过 IoT 平台安全域</text>
+  <rect x="80" y="532" width="520" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="566" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">① 引导（Bootstrap）</text>
+  <text x="116" y="600" font-size="12" fill="#475569">出厂预置信息联系引导服务器</text>
+  <text x="116" y="626" font-size="12" fill="#475569">返回主服务器地址、端口、PSK/证书、初始配置</text>
+  <text x="116" y="652" font-size="11" fill="#64748B">仅首次上电 / 恢复出厂 / 证书过期时发生</text>
 
-    <!-- 图注 -->
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图9-6 MCP 协议交互序列示意：AI Agent 通过 MCP Server 与 IoT 平台及设备进行有状态、安全可控的工具调用。</text>
+  <line x1="600" y1="602" x2="640" y2="602" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="640" y="532" width="520" height="140" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="566" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">② 注册（Register）</text>
+  <text x="676" y="600" font-size="12" fill="#475569">向 Server 发 CoAP POST</text>
+  <text x="676" y="626" font-size="12" fill="#475569">携带对象 ID 列表与端点名</text>
+  <text x="676" y="652" font-size="11" fill="#64748B">返回 CoAP 2.01 Created</text>
+
+  <line x1="1160" y1="602" x2="1200" y2="602" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1200" y="532" width="520" height="140" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="566" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">③ 更新注册（Update）</text>
+  <text x="1236" y="600" font-size="12" fill="#475569">存活时间（Lifetime）到期前周期性 POST 续约</text>
+  <text x="1236" y="626" font-size="12" fill="#475569">超时未更新 → 判定离线，释放注册资源</text>
+  <text x="1236" y="652" font-size="11" fill="#64748B">NB-IoT 水表通电后自动完成全流程</text>
+
+  <!-- 观察/通知 -->
+  <rect x="80" y="720" width="1640" height="90" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="752" font-size="13" font-weight="700" fill="#334155">观察/通知：从轮询到推送</text>
+  <text x="120" y="780" font-size="12" fill="#475569">平台发 GET + Observe:0 → 设备加入观察者列表 → 变化阈值 / 最小通知周期触发主动上报 → RST 取消观察，把通信主动权交给设备侧</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 9-6 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。</text>
   </svg>
 </svg>
   </main>

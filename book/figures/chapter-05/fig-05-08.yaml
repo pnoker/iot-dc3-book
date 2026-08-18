@@ -1,182 +1,114 @@
-type: flowchart
-title: 图5-8 从数据采集到告警触发的预测性维护流程
-audience_takeaway: 读者应理解预测性维护靠残差驱动：Prophet预测值与实际值求残差、滑动窗口打分，超阈值才告警，运维确认后回流触发模型增量更新。
-purpose: 展示预测性维护管道的完整阶段，以及数据流、告警流、模型更新流之间的交互关系
-visual_focus: 从设备层到决策层：传递评分结果的主链路。
+type: dataflow
+title: 图 5-8 降采样数据流程与数据量对比（例子）
+purpose: 展示原始高精度数据经过三级降采样后数据量显著减少，说明分层策略的压缩效果。
+audience_takeaway: 读者应理解降采样通过分层聚合将数据量逐步压缩，不同层服务于不同时效性需求。
+visual_focus: 从原始数据桶到天聚合桶的主链路，突出数据量呈量级缩减。
 design_level: implementation
-layout: 从左至右水平布局，进程使用圆角矩形，数据存储使用圆柱，判断使用菱形
+layout: 从左至右的管道式数据流，包含原始数据桶、分钟聚合桶、小时聚合桶、天聚合桶，各桶下方标注相对数据量描述（如“原始数据量基准”、“显著减少”、“大幅降低”、“极小占比”）。
 elements:
-- 设备层：电机电流采集
-- 数据管道：MQTT 传输 + 时序数据库落库
-- 模型层：Prophet 模型训练与周期预测
-- 评分层：预测值与实际值残差计算，滑动窗口异常评分
-- 决策层：评分超过阈值触发告警，通过 Webhook/SMTP 推送到运维系统
-- 反馈回路：运维确认后触发模型增量更新
+- 原始数据桶：10秒级精度，短保留窗口。
+- 分钟聚合桶：每分钟均值，数据量显著减少。
+- 小时聚合桶：每小时均值，数据量进一步大幅降低。
+- 天聚合桶：每天均值，数据量降至极小占比。
 relationships:
-- 设备层 → 数据管道：电流数据上传
-- 数据管道 → 模型层：历史数据供训练
-- 模型层 → 评分层：输出预测区间
-- 评分层 → 决策层：传递评分结果
-- 决策层 → 反馈回路 → 模型层：确认后执行增量更新
+- 原始数据桶通过连续查询（CQ）管道输出至分钟聚合桶，实线箭头标注'CQ：每分钟聚合'。
+- 分钟聚合桶通过下一级连续查询输出至小时聚合桶，实线箭头标注'CQ：每小时聚合'。
+- 小时聚合桶通过下一级连续查询输出至天聚合桶，实线箭头标注'CQ：每天聚合'。
+- 每个聚合桶还有一条虚线箭头指向'查询仪表盘'，表示应用层直接读取聚合数据。
 regions:
-- id: edge_domain
-  label: 设备与边缘域
-  role: 现场异构资源边界
 - id: data_domain
   label: 数据资产域
   role: 数据沉淀与治理边界
-- id: intelligence_domain
-  label: 智能决策域
-  role: 模型、规则与 Agent 边界
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
 components:
-- id: r1
-  label: 设备层
-  type: edge
-  subtitle: ''
-  group: edge_domain
+- id: c1
+  label: 原始数据桶
+  type: data
+  subtitle: 10秒级精度，短保留窗口
+  group: data_domain
   priority: primary
-  shape: card
-- id: r2
-  label: 数据管道：电流数据上传
+  shape: database
+- id: c2
+  label: 分钟聚合桶
   type: data
-  subtitle: ''
+  subtitle: 每分钟均值，数据量显著减少
   group: data_domain
   priority: normal
   shape: database
-- id: r3
-  label: 数据管道
+- id: c3
+  label: 小时聚合桶
   type: data
-  subtitle: ''
+  subtitle: 每小时均值，数据量大幅降低
   group: data_domain
   priority: normal
   shape: database
-- id: r4
-  label: 模型层：历史数据供训练
+- id: c4
+  label: 天聚合桶
   type: data
-  subtitle: ''
+  subtitle: 每天均值，数据量极小占比
   group: data_domain
   priority: normal
   shape: database
-- id: r5
-  label: 模型层
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
-- id: r6
-  label: 评分层：输出预测区间
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r7
-  label: 评分层
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r8
-  label: 决策层：传递评分结果
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: decision
-- id: r9
-  label: 决策层
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: decision
-- id: r10
-  label: 反馈回路 → 模型层：确认后执行增…
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
 connections:
-- from: r1
-  to: r2
-  label: 设备层 → 数据管道：电流数据上传
+- from: c1
+  to: c2
+  label: CQ：每分钟聚合
   style: solid
-  direction: request
-- from: r3
-  to: r4
-  label: 数据管道 → 模型层：历史数据供训练
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: CQ：每小时聚合
   style: solid
-  direction: request
-- from: r5
-  to: r6
-  label: 模型层 → 评分层：输出预测区间
+  direction: left-to-right
+- from: c3
+  to: c4
+  label: CQ：每天聚合
   style: solid
-  direction: request
-- from: r7
-  to: r8
-  label: 评分层 → 决策层：传递评分结果
-  style: solid
-  direction: request
+  direction: left-to-right
 callouts:
-- 设备层 → 数据管道：电流数据上传
-- 数据管道 → 模型层：历史数据供训练
-- 模型层 → 评分层：输出预测区间
+- “原始层”保留窗口通常按天计，用于故障回放；“分钟层”支撑短时趋势；“小时层”服务日报；“天层”服务年度趋势。
 legend:
-- 绿色箭头为数据流，红色箭头为告警流，蓝色箭头为模型更新流
+- 各桶数据量描述基于例子估算，实际项目因设备数、上报频率、字段数量而异。
+- 实线箭头：连续查询驱动自动化聚合。
+- 虚线箭头：应用层查询路径。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
-- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
-render_notes: 使用从左至右布局，进程用圆角矩形，数据存储用圆柱，判断用菱形。流程图应清晰显示反馈回路。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用流程图形式，从左至右排列桶节点，节点间有粗实线箭头连接。每个节点下方显示定性比例描述（如“原始基准”、“显著减少”、“大幅降低”、“极小”）。使用圆角矩形节点，配色按图例。
 caption:
-  zh: 图5-8 预测性维护管道数据流示意
-  en: 'Figure 5-8 Data flow of the predictive maintenance pipeline.'
+  zh: 图 5-8 例子：中等规模工厂设备上报温度和湿度。三级降采样策略：原始数据保留短暂时间，分钟聚合保留中期，小时聚合保留季度级，天聚合保留年。各阶段数据量比例为基于常见压缩比的定性描述，非精确数值。
+  en: 'Figure 5-8 Example: devices in a mid-sized factory report temperature and humidity. The three-level downsampling strategy keeps raw data only briefly, minute aggregates for the mid term, hourly aggregates at quarter scale, and daily aggregates for a year. Data-volume ratios at each stage are qualitative descriptions based on common compression ratios, not exact figures.'
 labels:
   en:
-    图5-8 从数据采集到告警触发的预测性维护流程: 'Figure 5-8 Predictive Maintenance: Collection to Alarm'
-    采集数据经过预测和残差评分，连续异常触发告警，运维确认结果反馈到模型更新。: Collected data goes through forecasting and residual scoring; repeated anomalies trigger an alarm, and confirmed outcomes feed model updates.
-    实际值与预测区间形成残差；连续异常触发告警，确认结果进入反馈闭环。: Actual values and forecast intervals form residuals; repeated anomalies trigger alarms, and confirmed outcomes enter the feedback loop.
-    是: 'Yes'
-    否: 'No'
-    告警处置结果: Alarm outcome
-    影子验证: Shadow validation
-    验证通过后更新: Update after validation
-    电流采集: Current Acquisition
-    设备实际值: Device actual value
-    电机电流: Motor current
-    数据管道: Data Pipeline
-    MQTT · 时序库: MQTT · Time-Series DB
-    落库: Persist to DB
-    Prophet 模型: Prophet Model
-    周期预测: Periodic Forecasting
-    输出预测区间: Output forecast interval
-    残差评分: Residual Scoring
-    实际值 - 预测值: Actual - Forecast
-    滑动窗口打分: Sliding-Window Scoring
-    连续超阈值？: Repeatedly over threshold?
-    且不在静默期: Not in mute window
-    告警推送: Alarm push
-    推送运维系统: Push to ops system
-    继续观测: Keep observing
-    保留评分与上下文: Keep score & context
-    运维确认与标注: Ops confirm & label
-    真故障 / 误报 / 工况变化: True fault / false alarm / condition change
-    模型增量更新: Incremental model update
-    影子验证后切换: Switch after shadow validation
-    数据流与反馈回路: Data Flow & Feedback Loop
-    ① 设备层 → 数据管道：电流数据上传: '① Device → data pipeline: current upload'
-    ② 数据管道 → 模型层：历史数据供训练: '② Pipeline → model: history for training'
-    ③ 模型层 → 评分层：输出预测区间: '③ Model → scoring: forecast interval'
-    ④ 评分层 → 决策层：传递评分结果: '④ Scoring → decision: pass score'
-    图例: Legend
-    数据流: Data flow
-    告警流: Alarm flow
-    模型更新流（反馈回路）: Model update flow (feedback loop)
-    决策判断: Decision
-    图5-8 预测性维护管道由残差评分驱动：评分超过阈值才告警，告警处置结果经运维确认和影子验证后反馈到模型增量更新。: 'Figure 5-8 The predictive maintenance pipeline is residual-score driven: an alarm fires only when the score exceeds a threshold, and confirmed alarm outcomes feed incremental model updates after ops confirmation and shadow validation.'
+    图 5-8 降采样数据流程与数据量对比（例子）: Figure 5-8 Downsampling Pipeline & Data Volume (Example)
+    四级数据桶由连续查询逐级聚合，数据量逐级降低并采用分层保留策略。: Four tiers of buckets aggregate step by step via continuous queries; volume drops level by level with tiered retention.
+    连续查询逐级聚合；粒度变粗，数据量与长期存储成本同步下降。: Continuous queries aggregate level by level; as granularity coarsens, volume and long-term storage cost fall together.
+    CQ：每分钟: 'CQ: per minute'
+    CQ：每小时: 'CQ: hourly'
+    CQ：每天: 'CQ: daily'
+    原始数据桶: Raw Data Bucket
+    10 秒级精度 · 短保留窗口: 10s Precision · Short Retention
+    数据量：原始基准: 'Volume: raw baseline'
+    分钟聚合桶: Minute Aggregate Bucket
+    每分钟均值 · 短时趋势: Per-Minute Avg · Short-Term Trends
+    数据量：显著减少: 'Volume: much reduced'
+    小时聚合桶: Hourly Aggregate Bucket
+    每小时均值 · 日报/周报: Hourly Avg · Daily/Weekly Reports
+    数据量：大幅降低: 'Volume: sharply lower'
+    天聚合桶: Daily Aggregate Bucket
+    每天均值 · 年度趋势: Daily Avg · Yearly Trends
+    数据量：极小占比: 'Volume: tiny fraction'
+    查询仪表盘: Query Dashboards
+    应用层直接读取聚合数据: Apps read aggregates directly
+    分层保留策略: Tiered Retention Policy
+    原始层: Raw Tier
+    短期保留 · 故障回放: Short Retention · Fault Replay
+    分钟层: Minute Tier
+    中期保留 · 短时趋势: Mid-Term · Short-Term Trends
+    小时层: Hourly Tier
+    季度趋势 · 日报/周报: Quarterly Trends · Daily/Weekly Reports
+    天层: Daily Tier
+    长期保留 · 年度趋势: Long Retention · Yearly Trends
+    实线箭头：连续查询驱动自动化聚合: 'Solid arrows: continuous-query auto-aggregation'
+    虚线箭头：应用层查询路径: 'Dashed arrows: application query path'
+    图 5-8 降采样数据流程与数据量对比：三级降采样将数据量逐级压缩，原始层短保留用于故障回放，分钟/小时/天层分别支撑短时趋势、日报与年度趋势。: 'Figure 5-8 Downsampling pipeline and data-volume comparison: three downsampling levels compress data step by step — the raw tier is short-retention for fault replay, while minute/hourly/daily tiers serve short-term trends, daily reports, and yearly trends.'

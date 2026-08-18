@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-3 RFID系统工作示意图</title>
+  <title>图 3-3 传感器选型四维约束与误差校准</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,88 +12,78 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图3-3 RFID系统工作示意图</title>
-  <desc id="desc">上位机与读写器双向通信，读写器经天线发射射频，被动标签反向散射回复，主动标签独立发射。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图 3-3 传感器选型四维约束与误差校准</title>
+  <desc id="desc">选型在精度、成本、功耗、环境适应性四维取舍；误差按系统、随机、粗大三类分别校准与抑制。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
 
-  <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
-  </defs>
-
-  <!-- 标题 -->
+  <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-3 RFID系统工作示意图</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">天线是独立射频性能模块；标签类型决定取能方式与回传机制</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 3-3 传感器选型四维约束与误差校准</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">没有“万能传感器”，只有“匹配场景的传感器”</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 系统域 ===== -->
-  <rect x="120" y="140" width="300" height="470" rx="12" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="270" y="174" font-size="15" font-weight="700" fill="#334155" text-anchor="middle">系统域</text>
-  <rect x="140" y="330" width="260" height="110" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="270" y="374" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">上位机</text>
-  <text x="270" y="404" font-size="12" fill="#475569" text-anchor="middle">边缘节点 / IoT 平台</text>
-  <text x="270" y="426" font-size="11" fill="#94A3B8" text-anchor="middle">数据消费与决策</text>
+  <!-- 四维约束 -->
+  <rect x="80" y="140" width="392" height="210" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="276" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">精度与分辨率</text>
+  <text x="116" y="214" font-size="12" fill="#475569">精度 = 与真实值的偏差范围</text>
+  <text x="116" y="240" font-size="12" fill="#475569">分辨率 = 可分辨的最小变化</text>
+  <text x="116" y="278" font-size="12" fill="#475569">先定容许误差 → 反推精度要求</text>
+  <text x="116" y="304" font-size="12" fill="#475569">再检查 ADC 位数是否足够</text>
+  <text x="116" y="330" font-size="11" fill="#64748B">现场实测精度常低于手册标称值</text>
 
-  <!-- ===== 射频域 ===== -->
-  <rect x="460" y="140" width="520" height="470" rx="12" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="720" y="174" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">射频域</text>
-  <rect x="480" y="330" width="220" height="110" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="590" y="372" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">读写器</text>
-  <text x="590" y="400" font-size="11.5" fill="#475569" text-anchor="middle">射频收发与解析</text>
-  <text x="590" y="420" font-size="11.5" fill="#475569" text-anchor="middle">数据转发</text>
-  <rect x="760" y="330" width="200" height="110" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="860" y="372" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">天线</text>
-  <text x="860" y="400" font-size="11.5" fill="#475569" text-anchor="middle">辐射 / 接收</text>
-  <text x="860" y="420" font-size="11.5" fill="#475569" text-anchor="middle">极化 · 增益</text>
+  <rect x="496" y="140" width="392" height="210" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="692" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">成本（看生命周期）</text>
+  <text x="532" y="214" font-size="12" fill="#475569">农业传感器几十元 vs 工业探头贵一个量级</text>
+  <text x="532" y="252" font-size="12" fill="#475569">把更换成本、维护人工、停工损失算进去</text>
+  <text x="532" y="290" font-size="12" fill="#475569">大规模部署下维护成本往往超过采购成本</text>
+  <text x="532" y="330" font-size="11" fill="#64748B">选型是生命周期总成本，而非单价</text>
 
-  <!-- 上位机 ↔ 读写器 -->
-  <line x1="400" y1="360" x2="478" y2="360" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <line x1="478" y1="400" x2="400" y2="400" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <text x="440" y="348" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">数据上报</text>
-  <text x="440" y="420" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">控制下发</text>
+  <rect x="912" y="140" width="392" height="210" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1108" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">功耗与供电</text>
+  <text x="948" y="214" font-size="12" fill="#475569">电池供电每微安都要精打细算</text>
+  <text x="948" y="240" font-size="12" fill="#475569">工业产线 24V 供电则敏感度低</text>
+  <text x="948" y="278" font-size="12" fill="#475569">功耗预算在系统层做</text>
+  <text x="948" y="304" font-size="12" fill="#475569">算入 MCU 唤醒 + 射频脉冲电流</text>
+  <text x="948" y="330" font-size="11" fill="#64748B">尤其注意休眠电流，忽略它难达续航目标</text>
 
-  <!-- 读写器 → 天线 -->
-  <line x1="702" y1="385" x2="758" y2="385" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="730" y="373" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">射频信号</text>
+  <rect x="1328" y="140" width="392" height="210" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1524" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">环境适应性</text>
+  <text x="1364" y="214" font-size="12" fill="#475569">防护等级、工作温度范围</text>
+  <text x="1364" y="240" font-size="12" fill="#475569">抗腐蚀、抗振动能力</text>
+  <text x="1364" y="278" font-size="12" fill="#475569">高湿、粉尘、农药、油污、电磁干扰</text>
+  <text x="1364" y="304" font-size="12" fill="#475569">是现场失效的头号原因</text>
+  <text x="1364" y="330" font-size="11" fill="#64748B">湿敏电容高湿一年后读数明显偏高</text>
 
-  <!-- ===== 标签域 ===== -->
-  <rect x="1020" y="140" width="660" height="470" rx="12" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="1350" y="174" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">标签域</text>
+  <!-- 误差分类 -->
+  <text x="80" y="410" font-size="15" font-weight="700" fill="#334155">误差分类与校准方法</text>
 
-  <!-- 被动标签 -->
-  <rect x="1050" y="210" width="600" height="86" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="1350" y="246" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">被动标签</text>
-  <text x="1350" y="272" font-size="11" fill="#475569" text-anchor="middle">无源 · 从射频场取能 · 反向散射回复</text>
+  <rect x="80" y="432" width="520" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="340" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">系统误差（方向性、重复性）</text>
+  <text x="116" y="502" font-size="12" fill="#475569">制造公差、老化漂移、安装位置不当</text>
+  <text x="116" y="528" font-size="12" fill="#475569">单点校准修正偏移，两点校准修正偏移+增益</text>
+  <text x="116" y="554" font-size="12" fill="#475569">关键应用每半年返厂校准，或固件自补偿</text>
+  <text x="116" y="580" font-size="11" fill="#64748B">校准参数存云端并关联设备 ID</text>
 
-  <!-- 半主动标签 -->
-  <rect x="1050" y="320" width="600" height="86" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="1350" y="356" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">半主动标签</text>
-  <text x="1350" y="382" font-size="11" fill="#475569" text-anchor="middle">电池为芯片供电 · 通信仍采用反向散射</text>
+  <rect x="640" y="432" width="520" height="160" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="900" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">随机误差（离散抖动）</text>
+  <text x="676" y="502" font-size="12" fill="#475569">热噪声、电磁干扰引起</text>
+  <text x="676" y="528" font-size="12" fill="#475569">多次测量取滑动平均抑制</text>
+  <text x="676" y="554" font-size="12" fill="#475569">慢变信号增大窗口，快变信号减小窗口</text>
+  <text x="676" y="580" font-size="11" fill="#64748B">在去噪与响应时效间平衡</text>
 
-  <!-- 主动标签 -->
-  <rect x="1050" y="430" width="600" height="86" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="1350" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">主动标签</text>
-  <text x="1350" y="492" font-size="11" fill="#475569" text-anchor="middle">有源收发 · 可主动发射射频信号</text>
+  <rect x="1200" y="432" width="520" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="1460" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">粗大误差（异常点）</text>
+  <text x="1236" y="502" font-size="12" fill="#475569">瞬时硬件故障、干扰尖峰、环境突变</text>
+  <text x="1236" y="528" font-size="12" fill="#475569">阈值判断 + 冗余传感器二维投票剔除</text>
+  <text x="1236" y="554" font-size="12" fill="#475569">已知干扰源（喷淋）用“喷淋锁定”标记无效</text>
+  <text x="1236" y="580" font-size="11" fill="#64748B">自诊断只覆盖有限故障模式，不可替代物理校准</text>
 
-  <!-- 天线 → 标签 -->
-  <line x1="960" y1="253" x2="1048" y2="253" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <line x1="1048" y1="253" x2="960" y2="253" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <text x="1004" y="241" font-size="10.5" font-weight="700" fill="#0F766E" text-anchor="middle">耦合能量/散射</text>
-  <line x1="960" y1="363" x2="1048" y2="363" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <line x1="1048" y1="363" x2="960" y2="363" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <text x="1004" y="351" font-size="10.5" font-weight="700" fill="#0F766E" text-anchor="middle">反向散射</text>
-  <line x1="960" y1="473" x2="1048" y2="473" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <line x1="1048" y1="473" x2="960" y2="473" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <text x="1004" y="461" font-size="10.5" font-weight="700" fill="#0F766E" text-anchor="middle">主动发射射频</text>
-
-  <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图3-3 被动标签通过反向散射回复，主动标签则具备独立射频发射能力。</text>
+  <!-- Caption -->
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 3-3 传感器选型在精度、成本、功耗、环境适应性四维之间取舍，并预留环境余量；误差按系统、随机、粗大三类分别用单点/两点校准、滑动平均、阈值加冗余投票处理。</text>
   </svg>
 </svg>
   </main>

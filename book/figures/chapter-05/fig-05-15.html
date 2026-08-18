@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-15 数据生命周期管理：保留策略与冷热分层</title>
+  <title>图 5-15 平台层延伸阅读工具链全景图</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,72 +12,66 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
-  <title id="title">图5-15 数据生命周期管理：保留策略与冷热分层</title>
-  <desc id="desc">保留策略按价值设定过期时长，冷热分层把数据按访问频率放到不同性价比的存储介质。</desc>
-  <rect width="1200" height="680" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 5-15 平台层延伸阅读工具链全景图</title>
+  <desc id="desc">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-15 平台层延伸阅读工具链全景图</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+    <!-- 数据流向（先画） -->
+    <line x1="200" y1="575" x2="200" y2="185" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="188" y="449" font-size="14" font-weight="600" fill="#475569" text-anchor="end">数据上报</text>
+    <text x="188" y="384" font-size="14" font-weight="600" fill="#475569" text-anchor="end">消费落库</text>
+    <text x="188" y="319" font-size="14" font-weight="600" fill="#475569" text-anchor="end">查询/告警</text>
 
-  <!-- Title -->
-  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-15 数据生命周期管理：保留策略与冷热分层</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">让每一字节数据按它的查询价值来付费</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+    <!-- 跨层编排（虚线覆盖消息与时序两层，先画） -->
+    <rect x="320" y="250" width="1180" height="250" rx="14" fill="#7C3AED" fill-opacity="0.06" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="8 4"/>
+    <text x="344" y="282" font-size="16" font-weight="700" fill="#7C3AED">边缘与容器编排：KubeEdge / Kubernetes</text>
 
-  <!-- 保留策略 -->
-  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">保留策略：不同粒度设定独立保留时长</text>
+    <!-- 可视化与监控 -->
+    <rect x="320" y="140" width="1180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="360" y="182" font-size="20" font-weight="700" fill="#0F172A">可视化与监控</text>
+    <text x="360" y="210" font-size="13" fill="#64748B">查询 · 告警 · 看板</text>
+    <text x="760" y="192" font-size="16" fill="#475569">Prometheus · Grafana</text>
 
-  <rect x="80" y="172" width="520" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="340" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">原始 10 秒级数据</text>
-  <text x="116" y="240" font-size="12" fill="#475569">服务实时告警与故障排查</text>
-  <text x="116" y="266" font-size="12" font-weight="700" fill="#2563EB">保留 7 天</text>
+    <!-- 消息与流处理 -->
+    <rect x="320" y="270" width="1180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="360" y="312" font-size="20" font-weight="700" fill="#0F172A">消息与流处理</text>
+    <text x="360" y="340" font-size="13" fill="#64748B">缓冲 · 削峰 · 流处理</text>
+    <text x="760" y="322" font-size="16" fill="#475569">Mosquitto · Kafka · Flink</text>
 
-  <rect x="640" y="172" width="520" height="120" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="900" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">分钟级聚合数据</text>
-  <text x="676" y="240" font-size="12" fill="#475569">用于周报</text>
-  <text x="676" y="266" font-size="12" font-weight="700" fill="#16A34A">保留 30 天</text>
+    <!-- 时序存储 -->
+    <rect x="320" y="400" width="1180" height="90" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="360" y="442" font-size="20" font-weight="700" fill="#0F172A">时序存储</text>
+    <text x="360" y="470" font-size="13" fill="#64748B">高效存储 · 降采样</text>
+    <text x="760" y="452" font-size="16" fill="#475569">InfluxDB · TimescaleDB</text>
 
-  <rect x="1200" y="172" width="520" height="120" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1460" y="204" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">小时级聚合数据</text>
-  <text x="1236" y="240" font-size="12" fill="#475569">用于年度趋势分析</text>
-  <text x="1236" y="266" font-size="12" font-weight="700" fill="#F97316">保留 12 个月</text>
+    <!-- 设备接入 -->
+    <rect x="320" y="530" width="1180" height="90" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="360" y="572" font-size="20" font-weight="700" fill="#0F172A">设备接入</text>
+    <text x="360" y="600" font-size="13" fill="#64748B">协议接入 · 物模型</text>
+    <text x="760" y="582" font-size="16" fill="#475569">IoT DC3 Driver · EdgeX</text>
 
-  <!-- 冷热分层 -->
-  <text x="80" y="350" font-size="15" font-weight="700" fill="#334155">冷热分层：按访问频率放在不同性价比的存储介质</text>
+    <!-- 说明与图例 -->
+    <rect x="320" y="660" width="1180" height="150" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <circle cx="352" cy="700" r="4" fill="#7C3AED"/>
+    <text x="366" y="706" font-size="15" fill="#475569">边缘与容器编排：负责部署、更新与调度，横跨消息与时序两层。</text>
+    <circle cx="352" cy="736" r="4" fill="#7C3AED"/>
+    <text x="366" y="742" font-size="15" fill="#475569">编排不替代消息、存储或设备接入能力，各组件沿数据链路按职责组合。</text>
+    <line x1="760" y1="700" x2="810" y2="700" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="822" y="706" font-size="15" fill="#475569">数据流向（上报 → 落库 → 查询）</text>
+    <rect x="760" y="722" width="50" height="24" rx="4" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 4"/>
+    <text x="822" y="740" font-size="15" fill="#475569">跨层编排范围（虚线框）</text>
 
-  <!-- 热存储 -->
-  <rect x="80" y="372" width="1640" height="150" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
-  <rect x="80" y="372" width="110" height="150" rx="12" fill="#DC2626"/>
-  <rect x="135" y="372" width="55" height="150" fill="#DC2626"/>
-  <text x="135" y="454" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 447)">热存储</text>
-  <text x="230" y="410" font-size="14" font-weight="700" fill="#0F172A">最近 7 天 · 本地 NVMe / SSD</text>
-  <text x="230" y="442" font-size="12" fill="#475569">响应仪表盘毫秒级查询，访问频繁</text>
-  <text x="230" y="468" font-size="12" fill="#475569">时序数据库原生格式，单位成本相对较高</text>
-  <text x="900" y="442" font-size="12" font-weight="700" fill="#DC2626">实时大盘、告警触发</text>
-
-  <!-- 温存储 -->
-  <rect x="80" y="540" width="1640" height="130" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <rect x="80" y="540" width="110" height="130" rx="12" fill="#F97316"/>
-  <rect x="135" y="540" width="55" height="130" fill="#F97316"/>
-  <text x="135" y="612" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 605)">温存储</text>
-  <text x="230" y="578" font-size="14" font-weight="700" fill="#0F172A">8 天～3 个月 · 普通 HDD / SSD</text>
-  <text x="230" y="610" font-size="12" fill="#475569">用于月度报表，访问频度中等</text>
-  <text x="900" y="610" font-size="12" font-weight="700" fill="#F97316">月度报表</text>
-
-  <!-- 冷存储 -->
-  <rect x="80" y="688" width="1640" height="130" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <rect x="80" y="688" width="110" height="130" rx="12" fill="#2563EB"/>
-  <rect x="135" y="688" width="55" height="130" fill="#2563EB"/>
-  <text x="135" y="760" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle" transform="rotate(-90 135 753)">冷存储</text>
-  <text x="230" y="726" font-size="14" font-weight="700" fill="#0F172A">超过 3 个月 · 对象存储（MinIO / S3 兼容）</text>
-  <text x="230" y="758" font-size="12" fill="#475569">Parquet / Avro 列式格式，按时间分区，查询只加载对应分区</text>
-  <text x="230" y="784" font-size="12" fill="#475569">用于季度回顾或算法模型训练，访问极少</text>
-  <text x="900" y="758" font-size="12" font-weight="700" fill="#2563EB">历史分析、批量训练</text>
-
-  <!-- Caption -->
-  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图5-15 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-15 平台层延伸阅读工具链全景图：开源工具沿数据上报、消费落库、查询告警的链路分层，边缘与容器编排横跨消息与存储两层但不替代业务组件。</text>
   </svg>
 </svg>
   </main>

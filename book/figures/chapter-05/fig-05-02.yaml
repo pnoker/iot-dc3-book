@@ -1,149 +1,55 @@
-type: flowchart
-title: 图5-2 设备认证与数据加密流程
-audience_takeaway: 读者应理解证书认证发生在TLS/mTLS握手内；Token路径必须先建立加密通道并完成通道内认证，再签发短期Token和refresh；混合模式按mTLS→Token→API执行。
-purpose: 展示证书路径、Token路径与混合路径各自正确的认证和加密时序。
-visual_focus: 证书在握手内认证、Token在加密通道内认证后签发，以及mTLS→Token→API混合主链路。
-design_level: implementation
-layout: 自上而下三条水平流程：证书路径、Token路径、混合路径。
-regions:
-- id: device_region
-  label: 设备侧
-  role: 设备发起连接，携带证书或Token
-- id: network_region
-  label: 网络
-  role: TLS/DTLS握手，协商加密密钥
-- id: platform_region
-  label: 平台侧
-  role: 验证证书链或Token签名，建立加密通道
-components:
-- id: device_client
-  label: 设备
-  type: edge
-  subtitle: 发起连接
-  group: device_region
-  priority: primary
-  shape: card
-- id: tls_handshake
-  label: TLS/DTLS握手
-  type: process
-  subtitle: 协商加密密钥
-  group: network_region
-  priority: primary
-  shape: decision
-- id: platform_auth
-  label: 认证服务
-  type: platform
-  subtitle: 验证身份
-  group: platform_region
-  priority: primary
-  shape: card
-- id: encrypted_channel
-  label: 加密通道
-  type: data
-  subtitle: 数据流加密传输
-  group: network_region
-  priority: normal
-  shape: database
-- id: platform_backend
-  label: 后端业务
-  type: platform
-  subtitle: 处理解密后数据
-  group: platform_region
-  priority: normal
-  shape: card
-connections:
-- from: device_client
-  to: tls_handshake
-  label: ClientHello / Token请求
-  style: solid
-  direction: request
-- from: tls_handshake
-  to: platform_auth
-  label: 转发握手消息
-  style: solid
-  direction: request
-- from: platform_auth
-  to: tls_handshake
-  label: 握手完成 / Token签发
-  style: dashed
-  direction: response
-- from: tls_handshake
-  to: device_client
-  label: 加密通道建立通知
-  style: dashed
-  direction: response
-- from: device_client
-  to: encrypted_channel
-  label: 加密数据流
-  style: solid
-  direction: request
-- from: encrypted_channel
-  to: platform_backend
-  label: 解密后的数据
-  style: solid
-  direction: request
+type: architecture
+title: 图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎
+audience_takeaway: 读者应理解消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响，通常消息队列最先选型。
+purpose: 展示平台层三个核心组件的作用与选型关系
+visual_focus: 三组件卡片与选型相互影响。
+design_level: architecture
+layout: 上半三组件卡片，底部选型相互影响
 elements:
-- 设备侧：设备携带X.509证书或设备密钥发起连接请求。
-- 网络层：TLS 1.3握手在1RTT内完成，DTLS需额外1次往返。
-- 平台侧：认证服务验证证书链或Token签名，通过后建立加密通道。
+- 消息队列：发布/订阅解耦，MQTT Broker/Kafka/RabbitMQ 三种选型
+- 时序数据库：InfluxDB TSM 引擎 vs TimescaleDB 超表分 Chunk
+- 规则引擎：阈值到 CEP，边缘毫秒级 / 云端历史分析两种形态
 relationships:
-- 证书路径：设备证书与私钥 -> TLS/mTLS握手内验证 -> 加密会话与受保护API
-- Token路径：设备凭据 -> TLS加密通道 -> 通道内认证 -> 短期Token与refresh -> 受保护API
-- 混合路径：mTLS设备认证 -> 短期Token -> 业务API
-callouts:
-- 证书认证是TLS/mTLS握手的一部分，不是握手前后的独立认证请求。
-- Token认证请求必须先由TLS加密通道保护。
-- Token通过通道内认证后签发，并以短有效期和refresh机制限制泄漏影响。
-- 传输解密后的业务数据仍需访问控制与存储保护。
-legend:
-- 青绿色=设备侧；灰色=网络传输层；蓝色=平台核心服务。
-- 实线箭头=请求/数据流；虚线箭头=握手完成/Token返回。
-- 主链路从设备出发，经过TLS握手到达平台认证服务，后建立加密通道。
-visual_constraints:
-- 最多6个主节点，节点标签使用短名词短语，解释性文字放入callouts或正文。
-- 图例放在底部，不遮挡主体结构。
-- 泳道间隔12px，握手消息带序号，箭头文字标注协议类型（TLS 1.3 / DTLS）。
-render_notes: HTML/SVG渲染，浅色背景，圆角矩形，泳道间隔12px，握手消息带序号，箭头文字标注协议类型（TLS 1.3 / DTLS）。
+- 队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，消息队列最先选型
+render_notes: HTML/SVG 渲染，三组件卡片 + 选型关系，蓝绿橙分层。
 caption:
-  zh: 图5-2 证书在TLS/mTLS握手内完成认证；Token在加密通道内认证后签发，混合模式依次使用mTLS、短期Token和业务API。
-  en: 'Figure 5-2 Certificates are authenticated within the TLS/mTLS handshake; tokens are issued only after in-channel authentication over an encrypted channel, and the hybrid mode uses mTLS, short-lived tokens, and business APIs in turn.'
+  zh: 图 5-2 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。
+  en: 'Figure 5-2 The message queue buffers traffic, the time-series DB stores efficiently, and the rule engine makes smart judgments; the three component selections influence each other — queue throughput sets the write pressure on the time-series DB, rule-engine real-time performance depends on queue latency, and the message queue is usually selected first.'
 labels:
   en:
-    图5-2 设备认证与数据加密流程: Figure 5-2 Device Authentication & Data Encryption Flow
-    证书认证属于 TLS/mTLS 握手；Token 必须在加密通道内认证后签发，混合路径依次经过 mTLS、Token 和 API。: Certificate authentication happens inside the TLS/mTLS handshake; tokens are issued only after in-channel authentication, and the hybrid path runs mTLS → Token → API.
-    认证凭据必须在正确的安全边界内使用；传输解密后仍需存储保护。: Credentials must be used within the right security boundary; storage protection is still needed after transport decryption.
-    证书路径: Certificate Path
-    设备证书与私钥在握手内完成身份验证: Device identity verified inside the handshake
-    设备证书与私钥: Device Certificate & Private Key
-    X.509 证书: X.509 Certificate
-    TLS / mTLS 握手: TLS / mTLS Handshake
-    握手内验证证书链与设备身份: Verify chain & identity in handshake
-    加密会话 / 受保护 API: Encrypted Session / Protected API
-    会话密钥保护后续通信: Session keys protect traffic
-    握手完成: Handshake Complete
-    Token 路径: Token Path
-    先建立加密通道，再于通道内认证并签发短期 Token: Encrypt first, authenticate in channel, issue short-lived token
-    设备凭据: Device Credentials
-    预共享密钥等: e.g. pre-shared keys
-    TLS 加密通道: TLS Encrypted Channel
-    先保护认证请求: Protect auth requests first
-    通道内认证: In-Channel Auth
-    验证设备凭据: Verify credentials
-    短期 Token + refresh: Short Token + refresh
-    短有效期限制泄漏影响: Short TTL limits leak impact
-    混合路径（主链路）: Hybrid Path (Main Link)
-    依次使用 mTLS → 短期 Token → 业务 API: mTLS → Short Token → Business API
-    mTLS 设备认证: mTLS Device Auth
-    握手内完成: Done in handshake
-    短期 Token: Short-Lived Token
-    通道内签发: Issued in channel
-    业务 API: Business API
-    受保护调用: Protected calls
-    关键要点: Key Takeaways
-    证书认证是 TLS / mTLS 握手的一部分，不是握手前后的独立认证请求。: Certificate authentication is part of the TLS/mTLS handshake, not a separate request before or after it.
-    Token 认证请求必须先由 TLS 加密通道保护，通过通道内认证后才签发。: Token authentication requests must first be protected by a TLS encrypted channel and are issued only after in-channel authentication.
-    Token 以短有效期 + refresh 机制限制泄漏影响，传输解密后仍需访问控制与存储保护。: Short TTL plus refresh limits token leak impact; access control and storage protection are still needed after transport decryption.
-    实线箭头：请求 / 数据流: 'Solid arrows: requests / data flow'
-    虚线箭头：握手完成 / 返回: 'Dashed arrows: handshake done / return'
-    主链路：mTLS → 短期 Token → 业务 API: 'Main link: mTLS → short-lived token → business API'
-    图5-2 设备认证与数据加密流程：证书在 TLS/mTLS 握手内完成认证，Token 在加密通道内认证后签发，混合模式依次使用 mTLS、短期 Token 与业务 API。: 'Figure 5-2 Device authentication and data encryption flow: certificates are authenticated within the TLS/mTLS handshake, tokens are issued after in-channel authentication over an encrypted channel, and the hybrid mode uses mTLS, short-lived tokens, and business APIs in turn.'
+    图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎: 'Figure 5-2 Platform Core: Message Queue, Time-Series DB, Rule Engine'
+    消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响。: The message queue buffers traffic, the time-series DB stores efficiently, the rule engine judges smartly — their selections influence each other.
+    分别解决数据缓冲、高效存储、智能判决，选型决定吞吐、成本与时效: They solve buffering, efficient storage, and smart decisions; selections set throughput, cost, and timeliness
+    消息队列：数据缓冲带: 'Message queue: data buffer'
+    发布/订阅解耦生产与消费: Pub/sub decoupling
+    设备洪峰时后端不被瞬时冲垮: Backend survives device bursts
+    选型对比: Options Compared
+    MQTT Broker：设备端轻量代理，长连接推模式: 'MQTT Broker: light device agent, persistent push'
+    Kafka：顺序写磁盘 + 分区，海量后端管道: 'Kafka: sequential writes + partitions, bulk pipeline'
+    RabbitMQ：灵活路由 + 确认，业务集成: 'RabbitMQ: flexible routing + acks, business integration'
+    三者不互斥：MQTT 收 → Kafka/RabbitMQ 分发: 'Not exclusive: MQTT in → Kafka/RabbitMQ out'
+    通常最先选型，决定抗洪峰能力: Usually chosen first; sets burst tolerance
+    时序数据库：专为时间印记优化: 'Time-series DB: built for timestamps'
+    数据点 = 时间戳 + 标签 + 数值字段: Data point = timestamp + tag + value field
+    改存储引擎 + 极致写入压缩: Custom engine + write compression
+    两条技术路线: Two Technical Routes
+    InfluxDB：TSM 引擎（LSM 变体）+ WAL: 'InfluxDB: TSM engine (LSM variant) + WAL'
+    差分编码 + delta-of-delta 压缩，TICK 生态: Delta encoding + delta-of-delta, TICK stack
+    TimescaleDB：基于 PostgreSQL，超表按时间分 Chunk: 'TimescaleDB: PostgreSQL-based, hypertables chunked by time'
+    SQL 兼容好，查询只扫涉及分区: SQL-friendly; scans only touched chunks
+    压缩比决定硬件成本与查询性能: Compression sets HW cost & query speed
+    规则引擎：从阈值到 CEP: 'Rule engine: from thresholds to CEP'
+    简单阈值：温度超 80℃ 告警: 'Simple threshold: alarm > 80°C'
+    CEP：时间窗口内多事件模式匹配: 'CEP: multi-event patterns in time windows'
+    两种部署形态: Two Deployment Forms
+    边缘：毫秒级响应（切断危险电源）: 'Edge: ms-level response (cut power)'
+    云端：分析跨度大、依赖历史数据: 'Cloud: wide-span analysis over history'
+    例：5 分钟内三次电流尖峰 + 温度上升 → 轴承故障: e.g. 3 current spikes + rising temp in 5 min → bearing fault
+    规则引擎解决确定性逻辑: Rules handle deterministic logic
+    AI 解决非确定性模式，两者互补: AI handles non-deterministic patterns
+    三组件选型相互影响: The Three Selections Interlock
+    消息队列吞吐 → 决定时序数据库写入压力 · 规则引擎实时性 → 依赖队列延迟: Queue throughput → DB write pressure · rule real-time → queue latency
+    工程顺序：消息队列最先选型（抗洪峰）→ 时序数据库压缩比定硬件成本 → 规则引擎按延迟要求确认是否下放边缘: 'Order: queue first (burst tolerance) → time-series compression sets hardware cost → rules go edge per latency needs'
+    IoT DC3 落地：采集值封装位号值对象 → 写入时序库 → 经消息队列缓冲 → 规则引擎消费: 'IoT DC3: values wrapped as point-value objects → time-series DB → buffered by message queue → consumed by rule engine'
+    组件选型是通用工程决策，与具体平台无关；时序库权衡见 5.4 节，完整落地见第 14 章: Selection is generic engineering, platform-agnostic; time-series trade-offs in 5.4, full build in Chapter 14
+    图 5-2 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。: Figure 5-2 The message queue buffers traffic, the time-series DB stores efficiently, and the rule engine judges smartly; the three selections interlock — queue throughput sets write pressure, rule-engine real-time depends on queue latency, and the message queue is usually selected first.

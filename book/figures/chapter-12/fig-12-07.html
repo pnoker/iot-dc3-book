@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-7 产量预测：ARIMA 与 LSTM 两条路线对比</title>
+  <title>图 12-7 农业场景 LPWAN 选型四维约束</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,111 +12,80 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">图12-7 产量预测：ARIMA 与 LSTM 两条路线对比</title>
-  <desc id="desc">ARIMA 只利用目标变量历史值，LSTM 融合温度、降水、土壤湿度、生长天数多变量；两条路线最终都以 RMSE、MAE 评估。</desc>
-  <rect width="1200" height="720" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="600" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">图 12-7 农业场景 LPWAN 选型四维约束</title>
+  <desc id="desc">农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。</desc>
+  <rect width="1200" height="640" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="520" viewBox="0 0 1800 850" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
-
-  <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16A34A"/></marker>
-  </defs>
+  <rect x="0" y="0" width="1800" height="850" fill="#FFFFFF"/>
 
   <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-7 产量预测：ARIMA 与 LSTM 两条路线对比</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">统计模型看自身历史 · 深度学习融合多源环境 · 输出连续产量值（公斤/公顷）</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 12-7 农业场景 LPWAN 选型四维约束</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">选型之前先厘清约束 · 四个维度共同决定技术取舍</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 左：ARIMA -->
-  <rect x="80" y="140" width="800" height="470" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <rect x="80" y="140" width="800" height="44" rx="12" fill="#2563EB"/>
-  <rect x="80" y="164" width="800" height="20" fill="#2563EB"/>
-  <text x="480" y="170" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">统计模型 · ARIMA（自回归积分滑动平均）</text>
-  <text x="120" y="220" font-size="12" fill="#475569">只利用目标变量自身的历史值，结构简单、可解释性强</text>
+  <!-- 维度1：覆盖 -->
+  <rect x="80" y="140" width="392" height="300" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="392" height="44" rx="12" fill="#2563EB"/>
+  <rect x="80" y="164" width="392" height="20" fill="#2563EB"/>
+  <text x="276" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">覆盖距离</text>
+  <text x="116" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：高</text>
+  <text x="116" y="262" font-size="12" fill="#475569">开阔农田覆盖数公里</text>
+  <text x="116" y="288" font-size="12" fill="#475569">温室金属骨架、薄膜、密植冠层</text>
+  <text x="116" y="314" font-size="12" fill="#475569">对信号有明显阻挡与吸收</text>
+  <text x="116" y="352" font-size="12" fill="#64748B">链路预算需考虑作物冠层衰减</text>
+  <text x="116" y="402" font-size="12" fill="#475569">LoRa 郊野覆盖可达数公里；NB-IoT</text>
+  <text x="116" y="424" font-size="12" fill="#475569">依托运营商基站亦可覆盖空旷地</text>
 
-  <g font-size="13">
-    <circle cx="140" cy="272" r="14" fill="#2563EB"/>
-    <text x="140" y="277" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-    <text x="172" y="270" font-weight="700" fill="#0F172A">平稳性检验</text>
-    <text x="172" y="290" font-size="11" fill="#475569">ADF 检验 · p&gt;0.05 序列非平稳</text>
+  <!-- 维度2：速率 -->
+  <rect x="496" y="140" width="392" height="300" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="496" y="140" width="392" height="44" rx="12" fill="#16A34A"/>
+  <rect x="496" y="164" width="392" height="20" fill="#16A34A"/>
+  <text x="692" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">数据速率</text>
+  <text x="532" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：中</text>
+  <text x="532" y="262" font-size="12" fill="#475569">典型“上行为主”业务模式</text>
+  <text x="532" y="288" font-size="12" fill="#475569">每次上传几十到几百字节</text>
+  <text x="532" y="314" font-size="12" fill="#475569">土壤每小时、气象每 15～30 分钟</text>
+  <text x="532" y="352" font-size="12" fill="#64748B">要求“极低但稳定”</text>
+  <text x="532" y="402" font-size="12" fill="#475569">高清病虫害图像属特殊需求，</text>
+  <text x="532" y="424" font-size="12" fill="#475569">另走 4G/5G 高带宽通道承载</text>
 
-    <circle cx="140" cy="338" r="14" fill="#2563EB"/>
-    <text x="140" y="343" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-    <text x="172" y="336" font-weight="700" fill="#0F172A">差分</text>
-    <text x="172" y="356" font-size="11" fill="#475569">一阶差分 y_t − y_{t−1} 消除趋势，d=1</text>
+  <!-- 维度3：功耗 -->
+  <rect x="912" y="140" width="392" height="300" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="912" y="140" width="392" height="44" rx="12" fill="#F97316"/>
+  <rect x="912" y="164" width="392" height="20" fill="#F97316"/>
+  <text x="1108" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">功耗与电池寿命</text>
+  <text x="948" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：高</text>
+  <text x="948" y="262" font-size="12" fill="#475569">田间供电困难，依赖电池 / 光伏</text>
+  <text x="948" y="288" font-size="12" fill="#475569">目标续航至少 1～2 年，最好 3～5 年</text>
+  <text x="948" y="314" font-size="12" fill="#475569">功耗 = 采集 + 发射 + 休眠</text>
+  <text x="948" y="352" font-size="12" fill="#64748B">能量大头在 MCU 休眠漏电流</text>
+  <text x="948" y="402" font-size="12" fill="#475569">NB-IoT 联网需与基站同步，</text>
+  <text x="948" y="424" font-size="12" fill="#475569">待机电流通常比 LoRa 高一个量级</text>
 
-    <circle cx="140" cy="404" r="14" fill="#2563EB"/>
-    <text x="140" y="409" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-    <text x="172" y="402" font-weight="700" fill="#0F172A">模型识别</text>
-    <text x="172" y="422" font-size="11" fill="#475569">ACF / PACF 拖尾截尾特征定 p、q 阶数</text>
+  <!-- 维度4：成本 -->
+  <rect x="1328" y="140" width="392" height="300" rx="12" fill="#F8FAFC" stroke="#0F766E" stroke-width="1.5"/>
+  <rect x="1328" y="140" width="392" height="44" rx="12" fill="#0F766E"/>
+  <rect x="1328" y="164" width="392" height="20" fill="#0F766E"/>
+  <text x="1524" y="170" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">设备与运维成本</text>
+  <text x="1364" y="230" font-size="13" font-weight="700" fill="#0F172A">重要程度：高</text>
+  <text x="1364" y="262" font-size="12" fill="#475569">大规模、低利润，物料成本须低廉</text>
+  <text x="1364" y="288" font-size="12" fill="#475569">传感器成本往往超过通信模块</text>
+  <text x="1364" y="314" font-size="12" fill="#475569">运维成本关键在于通信费用</text>
+  <text x="1364" y="352" font-size="12" fill="#64748B">LoRa 免授权频段、自建网关无通信费</text>
+  <text x="1364" y="402" font-size="12" fill="#475569">NB-IoT 需 SIM 卡与运营商资费</text>
+  <text x="1364" y="424" font-size="12" fill="#475569">零散农田依托运营商可降低门槛</text>
 
-    <circle cx="140" cy="470" r="14" fill="#2563EB"/>
-    <text x="140" y="475" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-    <text x="172" y="468" font-weight="700" fill="#0F172A">参数估计与诊断</text>
-    <text x="172" y="488" font-size="11" fill="#475569">极大似然估计 · Ljung-Box 检验残差白噪声</text>
-
-    <circle cx="140" cy="536" r="14" fill="#2563EB"/>
-    <text x="140" y="541" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
-    <text x="172" y="534" font-weight="700" fill="#0F172A">预测</text>
-    <text x="172" y="554" font-size="11" fill="#475569">点预测值 + 置信区间，依赖历史模式延续</text>
-  </g>
-  <line x1="140" y1="286" x2="140" y2="324" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-  <line x1="140" y1="352" x2="140" y2="390" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-  <line x1="140" y1="418" x2="140" y2="456" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-  <line x1="140" y1="484" x2="140" y2="522" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-
-  <!-- 右：LSTM -->
-  <rect x="920" y="140" width="800" height="470" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <rect x="920" y="140" width="800" height="44" rx="12" fill="#16A34A"/>
-  <rect x="920" y="164" width="800" height="20" fill="#16A34A"/>
-  <text x="1320" y="170" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">深度学习 · LSTM（长短期记忆网络）</text>
-  <text x="960" y="220" font-size="12" fill="#475569">融合多个外生变量，学习环境与产量的非线性关系</text>
-
-  <g font-size="13">
-    <rect x="960" y="250" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-    <text x="980" y="276" font-weight="700" fill="#0F172A">输入：多维环境特征序列</text>
-    <text x="980" y="298" font-size="11" fill="#475569">温度 · 降水 · 土壤湿度 · 生长天数（n_features=4）</text>
-
-    <rect x="960" y="330" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-    <text x="980" y="356" font-weight="700" fill="#0F172A">滑动窗口：过去 T 天（30～60 天）</text>
-    <text x="980" y="378" font-size="11" fill="#475569">覆盖灌浆期等完整生长期，转为三维张量输入</text>
-
-    <rect x="960" y="410" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-    <text x="980" y="436" font-weight="700" fill="#0F172A">LSTM 层 + Dropout</text>
-    <text x="980" y="458" font-size="11" fill="#475569">记忆单元与门控机制解决梯度消失，Dropout 防过拟合</text>
-
-    <rect x="960" y="490" width="720" height="64" rx="8" fill="#FFFFFF" stroke="#16A34A" stroke-width="1.5"/>
-    <text x="980" y="516" font-weight="700" fill="#0F172A">Dense 回归输出</text>
-    <text x="980" y="538" font-size="11" fill="#475569">linear 激活，输出未来产量（公斤/公顷）</text>
-  </g>
-  <line x1="1320" y1="314" x2="1320" y2="330" stroke="#16A34A" stroke-width="1.5" marker-end="url(#ah-green)"/>
-  <line x1="1320" y1="394" x2="1320" y2="410" stroke="#16A34A" stroke-width="1.5" marker-end="url(#ah-green)"/>
-  <line x1="1320" y1="474" x2="1320" y2="490" stroke="#16A34A" stroke-width="1.5" marker-end="url(#ah-green)"/>
-
-  <!-- 底部：评估指标 -->
-  <rect x="80" y="650" width="1640" height="110" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="684" font-size="14" font-weight="700" fill="#334155">共同评估指标</text>
-  <rect x="120" y="700" width="760" height="40" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="140" y="725" font-size="12" font-weight="700" fill="#0F172A">RMSE 均方根误差 · 对大误差惩罚更重</text>
-  <rect x="920" y="700" width="760" height="40" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="940" y="725" font-size="12" font-weight="700" fill="#0F172A">MAE 平均绝对误差 · 反映平均偏离更直观</text>
-
-  <!-- Legend -->
-  <line x1="40" y1="810" x2="1760" y2="810" stroke="#E2E8F0" stroke-width="1"/>
-  <g font-size="11" fill="#475569">
-    <rect x="60" y="835" width="16" height="14" rx="2" fill="#2563EB"/>
-    <text x="84" y="844" dominant-baseline="middle">ARIMA · 统计路线</text>
-    <rect x="200" y="835" width="16" height="14" rx="2" fill="#16A34A"/>
-    <text x="224" y="844" dominant-baseline="middle">LSTM · 深度学习路线</text>
-    <text x="400" y="844" dominant-baseline="middle">团队资源有限时先从 ARIMA 建立基线，跨入 LSTM 前需积累 2～3 个完整生长周期数据</text>
-  </g>
+  <!-- 结论 callout -->
+  <rect x="80" y="500" width="1640" height="130" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="540" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">选型框架结论</text>
+  <text x="900" y="576" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">远覆盖 · 低速率 · 长续航 · 低成本，且以单向上传为主</text>
+  <text x="900" y="604" font-size="12" fill="#475569" text-anchor="middle">核心问题：在 LoRa 与 NB-IoT 之间，哪一个能同时满足四维约束且生态成熟度最高？</text>
 
   <!-- Caption -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图12-7 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。</text>
+  <text x="900" y="810" font-size="17" fill="#475569" text-anchor="middle">图 12-7 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。</text>
   </svg>
 </svg>
   </main>

@@ -1,69 +1,60 @@
-type: flowchart
-title: 图10-6 原始数据与清洗后数据对比
-audience_takeaway: 读者应理解清洗须先判异常成因:通信中断的缺失段用前向填充,电磁干扰的毛刺替换为平滑值,两类异常处理手段不同。
-purpose: 展示清洗前后温度序列的变化，说明缺失填充和毛刺过滤的效果。
-visual_focus: 从原始数据到清洗后数据的主链路。
-design_level: implementation
-layout: 上下两段折线图，上段为原始数据，下段为清洗后数据；横轴为时间，纵轴为温度值。
+type: matrix
+title: 图 10-6 工业时序数据库选型与 PointValue 数据模型
+audience_takeaway: 读者应理解时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流，PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。
+purpose: 展示工业时序数据库核心特点、主流选型与 PointValue 数据模型
+visual_focus: 核心特点四卡片、三库选型与数据模型。
+design_level: matrix
+layout: 上半核心特点四卡片，中部三库选型，底部 PointValue 数据模型
 elements:
-- 原始数据：包含一个空缺段和一个毛刺点，用红色虚线圆圈标出。
-- 清洗后数据：空缺段通过前向填充补平，毛刺点被替换为平滑值。
+- 高写入吞吐：LSM-Tree 随机写转顺序追加
+- 时间分区：按天/小时切分，查询只扫对应分区
+- 降采样与聚合下推：1s 降 1min 均值，存储层计算
+- 过期与自动删除：保留策略超时分区自动清理
+- 选型：InfluxDB 轻量、TimescaleDB SQL 兼容、TDengine 高压缩
+- PointValue：device_id/point_id/value/event_time/unit/tags
 relationships:
-- 时间轴对齐，利于对比。
-regions:
-- id: data_domain
-  label: 数据资产域
-  role: 数据沉淀与治理边界
-components:
-- id: c1
-  label: 原始数据
-  type: data
-  subtitle: 包含一个空缺段和一个毛刺点，用红色虚线圆圈标出
-  group: data_domain
-  priority: primary
-  shape: database
-- id: c2
-  label: 清洗后数据
-  type: data
-  subtitle: 空缺段通过前向填充补平，毛刺点被替换为平滑值
-  group: data_domain
-  priority: normal
-  shape: database
-connections:
-- from: c1
-  to: c2
-  label: 时间轴对齐，利于对比
-  style: solid
-  direction: left-to-right
-callouts:
-- 时间轴对齐，利于对比
-legend:
-- 蓝色实线：清洗后曲线；灰色虚线：原始曲线；红色圆圈：异常位置。
-visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-- 决策节点必须写成可判断的问题或动作，分支标签保持短句。
-render_notes: HTML/SVG渲染，线条颜色使用全局配色规则，异常位置加红色标注框。
+- 数据模型决定规则引擎与 AI 消费成本；标签控基数、分区按采样频率分主副
+render_notes: HTML/SVG 渲染，核心特点四卡片 + 三库选型 + 数据模型，蓝绿橙灰分层。
 caption:
-  zh: 图10-6 某产线电机温度数据清洗前后的对比。左侧空白为通信中断导致的缺失，右侧尖峰为电磁干扰导致的毛刺。
-  en: Figure 10-6 Motor temperature data from a production line before and after cleaning. The gap on the left is loss caused by a communication outage; the spike on the right is a glitch caused by electromagnetic interference.
+  zh: 图 10-6 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流；PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。
+  en: Figure 10-6 Time-series databases handle industrial data streams with high write throughput, time partitioning, aggregate pushdown, and automatic expiry; PointValue is modeled by device/point/value/time/unit, with tags kept low-cardinality and partitions split into primary and secondary by sampling rate.
 labels:
   en:
-    图10-6 原始数据与清洗后数据对比: Figure 10-6 Raw vs. Cleaned Data
-    上下对齐展示原始温度序列的缺失段和毛刺点，以及前向填充和平滑替换后的结果。: Aligned panels show the missing segment and spike in the raw temperature series, and the results after forward fill and smooth replacement.
-    先标记异常成因，再选择处理方法；短时通信中断与单点电磁毛刺不能使用同一策略。: Label the root cause first, then pick the treatment; brief comms outages and single-point EMI spikes need different strategies.
-    原始数据: Raw data
-    包含一个空缺段和一个毛刺点: One missing segment, one spike
-    温度: Temperature
-    时间: Time
-    通信中断 · 缺失段: Comms outage · missing segment
-    电磁干扰 · 毛刺: EMI · spike
-    清洗：缺失填充 + 毛刺平滑: 'Cleaning: gap fill + spike smoothing'
-    清洗后数据: Cleaned data
-    空缺段前向填充补平，毛刺点替换为平滑值: Gap forward-filled; spike replaced with a smooth value
-    短缺失：前向填充: 'Short gap: forward fill'
-    毛刺：替换为平滑值: 'Spike: replace with smooth value'
-    蓝色实线：清洗后曲线: 'Blue solid: cleaned curve'
-    灰色虚线：原始曲线: 'Gray dashed: raw curve'
-    红色圆圈：异常位置: 'Red circle: anomaly location'
-    图10-6 某产线电机温度数据清洗前后的对比。左侧空白为通信中断导致的缺失，右侧尖峰为电磁干扰导致的毛刺。: 'Figure 10-6 Motor temperature data from a production line before and after cleaning: the left gap is loss from a communication outage; the right spike is a glitch from electromagnetic interference.'
+    图 10-6 工业时序数据库选型与 PointValue 数据模型: Figure 10-6 Industrial TSDB Selection and the PointValue Data Model
+    时序库针对工业数据流优化写入、分区、聚合与过期；PointValue 以设备、点位、值、时间、单位建模。: TSDBs optimize writes, partitioning, aggregation, and expiry for industrial streams; PointValue is modeled by device, point, value, time, and unit.
+    TSDB 专为时序负载优化存储格式与查询引擎，数据模型决定规则引擎与 AI 的消费成本: TSDBs tune storage and query engines for time-series workloads; the data model sets the cost for rule engines and AI
+    时序数据库的核心特点: Core traits of time-series databases
+    高写入吞吐: High write throughput
+    追加为主，很少随机更新: Mostly appends, few random updates
+    LSM-Tree 随机写转顺序追加: LSM-Tree turns random writes into appends
+    写吞吐比传统关系库高 1~2 个数量级: 1–2 orders of magnitude above relational DBs
+    每秒数千点写入挂库 = 断裂时序: Thousands of points/s on a lagging DB = broken series
+    时间分区: Time partitioning
+    按时间窗口（一天/一小时）自动切分: Auto-split by time window (day/hour)
+    查询只扫对应分区，不全表扫描: Queries scan only matching partitions
+    与保留策略直接挂钩: Tied directly to retention policy
+    一周高精度，超一年删除: Fine data for 1 week, delete beyond 1 year
+    降采样与聚合下推: Downsampling & aggregate pushdown
+    1s 分辨率降为 1min 均值: 1s resolution down to 1min means
+    聚合运算下推到存储层: Aggregation pushed down to storage
+    避免拉大量原始数据到应用层: Avoids pulling raw data to the app layer
+    决定趋势图刷新秒数: Sets trend-chart refresh seconds
+    过期与自动删除: Expiry & auto-delete
+    按时间段设保留策略（Retention Policy）: Retention policy per time range
+    超时分区自动清理: Expired partitions auto-cleaned
+    无需手动任务或定期 DELETE: No manual jobs or periodic DELETEs
+    磁盘容量不随运行时间增长: Disk usage flat over runtime
+    主流选型：InfluxDB / TimescaleDB / TDengine: 'Main options: InfluxDB / TimescaleDB / TDengine'
+    独立 TSDB 引擎，InfluxQL/Flux: Standalone TSDB engine · InfluxQL/Flux
+    轻量，适合传感器写→监控看→告警: 'Lightweight: sensor write → view → alert'
+    中小规模监控、IoT 平台: Small/mid monitoring · IoT platforms
+    PostgreSQL 扩展，超表 + 列: PostgreSQL extension · hypertables + columns
+    完整 PostgreSQL SQL，复用 SQL 技能栈: Full PostgreSQL SQL · reuses SQL skills
+    复杂 SQL 分析、与 PG 生态结合: Complex SQL analytics · PG ecosystem
+    超级表 + 标签 + 列，列式存储: Supertables + tags + columns · columnar
+    高吞吐、高压缩率: High throughput · high compression
+    年数十亿点以上的大规模工业测点: Billions+ industrial points per year
+    PointValue 数据模型：tag 用于过滤 · value 用于计算 · time 用于对齐: 'PointValue model: tags filter · value computes · time aligns'
+    device_id（设备）· point_id（点位）· value（工程值）· event_time（采集时间戳）· unit（单位）· tags（可选维度）: device_id (device) · point_id (point) · value (engineering value) · event_time (timestamp) · unit · tags (optional)
+    两个坑：① 标签基数爆炸（主维度标签控 3~5 个，其余外键关联）；② 不分主副的时间分区（高频短窗口、低频长窗口）: 'Two pitfalls: (1) tag cardinality blow-up (cap primary tags at 3–5, foreign-key the rest); (2) no primary/secondary time partitions (high-rate short windows, low-rate long windows)'
+    图 10-6 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流；PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。: Figure 10-6 Time-series databases handle industrial data streams with high write throughput, time partitioning, aggregate pushdown, and automatic expiry; PointValue is modeled by device/point/value/time/unit, with tags kept low-cardinality and partitions split into primary and secondary by sampling rate.

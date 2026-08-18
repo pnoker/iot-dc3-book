@@ -1,64 +1,187 @@
-type: architecture
-title: 图7-4 MCP 在物联网平台中的架构示意
-purpose: 展示外部 AI Agent 通过 IoT DC3 MCP Tools 端点发现和调用平台 REST 能力的真实路径。
-audience_takeaway: 当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。
-visual_focus: Agent→Gateway /mcp→Auth 校验与工具白名单→OpenAPI Tool 目录→REST 后端。
-design_level: logical
-layout: 顶部外部 Agent，中部 Gateway 的 POST /mcp，右侧 Auth，底部 OpenAPI Tool 目录与 Auth/Manager/Data/Agentic REST 后端。
+type: dataflow
+title: 图 7-4 RAG + Tool-Calling 联合工作流
+audience_takeaway: 读者应理解 RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；涉及写入时只创建待确认 Action，用户确认并通过平台校验后才执行。
+purpose: 展示运维任务依次经过 RAG 检索、状态读取、待确认 Action 创建、用户确认和受控执行的完整数据流与职责边界。
+visual_focus: 从 RAG 证据与状态读取到待确认 Action、用户确认和控制器执行的主链路。
+design_level: implementation
+layout: 水平泳道布局，从上到下四条泳道：用户层、AI 推理层、知识检索层、设备执行层。
 elements:
-- 外部 AI Agent：先 initialize，再调用 ping、tools/list、tools/call。
-- Gateway /mcp：JSON-RPC 2.0，只声明 tools capability。
-- Auth：token introspection、连接上下文、工具白名单与调用授权。
-- OpenAPI 聚合：从静态 OpenAPI 规格生成 Tool 目录和输入模式。
-- REST 后端：Auth、Manager、Data、Agentic。
-- 灰色说明框：Resources、Prompts 为协议可选能力，当前未声明。
+- '操作员（用户层）：提出自然语言任务，如“按标准流程重置3号泵”。填充色 #f0f4f8。'
+- 'LLM 推理引擎（AI 推理层）：接收任务，判断需要外部知识，触发 RAG 检索。填充色 #e8f5e9。'
+- '向量知识库（知识检索层）：存储设备 SOP、历史修复记录、参数模板，用 Embeddings 和 VectorStore 两个子节点表示。填充色 #fff3e0。'
+- '只读 Tool（设备执行层）：读取平台中的设备状态快照，不执行设备写入。填充色 #e8f5e9。'
+- '待确认 Action（平台边界）：保存目标、参数、证据和影响范围，创建时不执行。填充色 #fff3e0。'
+- '控制器与执行点（设备执行层）：仅在用户确认且鉴权、参数和策略校验通过后下发，并回读状态。填充色 #ffebee。'
 relationships:
-- Agent→Gateway：MCP JSON-RPC 请求。
-- Gateway↔Auth：token 与 Tool 可见性校验。
-- OpenAPI 规格→工具目录：静态规格聚合，不扫描 @Tool。
-- Gateway→REST 后端：授权后转发 tools/call。
-render_notes: 浅色分层 SVG。Tools 主链路用实线；OpenAPI 汇聚用虚线；Resources/Prompts 放入灰色“协议可选、当前未启用”区域，禁止把所有能力标为 Resource。
+- 操作员 → LLM 推理引擎：发起任务（自然语言），实线箭头
+- LLM 推理引擎 → 向量知识库：检索版本化 SOP 文档，实线箭头
+- 向量知识库 → LLM 推理引擎：返回 SOP 证据，实线箭头
+- LLM 推理引擎 → 只读 Tool：查询设备实时状态，实线箭头
+- 只读 Tool → LLM 推理引擎：返回状态快照，实线箭头
+- LLM 推理引擎 → 待确认 Action：写入目标、参数、证据与影响范围，不执行设备操作
+- 待确认 Action → 操作员：请求确认
+- 操作员 → 平台校验：确认后触发鉴权、参数校验与策略约束
+- 平台校验 → 控制器与执行点：全部通过后才下发设备操作
+- 控制器与执行点 → LLM 推理引擎：返回执行结果与审计记录
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与 Agent 边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+components:
+- id: r1
+  label: 操作员
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: LLM 推理引擎：发起任务（自然语…
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: LLM 推理引擎
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: 向量知识库：检索 SOP 文档，实…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r5
+  label: 向量知识库
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: LLM 推理引擎：返回 SOP 文…
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: Tool-Calling 执行器…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r8
+  label: Tool-Calling 执行器
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r9
+  label: 设备层：下发关泵指令，虚线箭头
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: r10
+  label: 设备层
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: llm
+  label: 操作员 → LLM 推理引擎：发起…
+  style: solid
+  direction: request
+- from: r3
+  to: sop
+  label: LLM 推理引擎 → 向量知识库…
+  style: solid
+  direction: request
+- from: r5
+  to: llm_sop
+  label: 向量知识库 → LLM 推理引擎…
+  style: dashed
+  direction: response
+- from: r3
+  to: tool-calling_so
+  label: LLM 推理引擎 → Tool-C…
+  style: dashed
+  direction: request
+- from: r8
+  to: r9
+  label: Tool-Calling 执行器…
+  style: dashed
+  direction: request
+- from: r10
+  to: tool-calling
+  label: 设备层 → Tool-Callin…
+  style: dashed
+  direction: response
+- from: r8
+  to: llm
+  label: Tool-Calling 执行器…
+  style: dashed
+  direction: request
+callouts:
+- 操作员 → LLM 推理引擎：发起任务（自然语言），实线箭头
+- LLM 推理引擎 → 向量知识库：检索 SOP 文档，实线箭头
+- 向量知识库 → LLM 推理引擎：返回 SOP 文档（步骤 A、B、C），实线箭头
+legend:
+- 蓝色实线箭头：RAG 检索路径（知识获取）
+- 绿色虚线箭头：工具调用路径（操作执行）
+- '水平虚线：泳道分隔线，颜色 #cccccc，描边宽度 1px'
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用 <svg> 标签绘制。泳道用 <rect> 填充不同背景色。节点用圆角矩形 <rect rx="5" ry="5">，文字用 <text> 居中。箭头用 <path> 带 marker-end。整体使用 flexbox 居中对齐，下方加图注区。
 caption:
-  zh: 图7-4 IoT DC3 当前 MCP 边界：外部 Agent 经 initialize 协商后使用 tools/list 与 tools/call；Gateway 每次调用前经 Auth 校验，工具目录由 OpenAPI 规格汇聚，Resources 与 Prompts 当前未启用。
-  en: 'Figure 7-4 The current MCP boundary of IoT DC3: after initialize negotiation, external agents use tools/list and tools/call; the Gateway verifies with Auth before each call, the tool catalog is aggregated from OpenAPI specs, and Resources and Prompts are not yet enabled.'
+  zh: 图 7-4 RAG + Tool-Calling 联合工作流图。操作员发起任务后，LLM 首先通过 RAG 检索设备 SOP 文档，获取操作步骤；随后按步骤依次调用 Tool-Calling 执行具体设备操作，直至任务完成。
+  en: Figure 7-4 The combined RAG + tool-calling workflow. After the operator initiates a task, the LLM first retrieves the device SOP documents through RAG to obtain the operating steps, then calls tools in sequence to perform the specific device operations until the task completes.
 labels:
   en:
-    图7-4 MCP 在物联网平台中的架构示意: Figure 7-4 MCP Architecture in the IoT Platform
-    当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。: The endpoint declares Tools only; Resources and Prompts are protocol knowledge, not yet enabled.
-    当前边界：JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · 仅声明 Tools capability: 'Current boundary: JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · Tools capability only'
-    外部 AI Agent: External AI agent
-    LLM · 自然语言指令 · 单一端点接入: LLM · natural-language commands · one endpoint
-    MCP 端点 · POST /mcp: MCP endpoint · POST /mcp
-    能力握手 · 协议协商: Capability handshake · protocol negotiation
-    发现当前调用者可见 Tools: Discover caller-visible tools
-    工具调用 · 参数校验: Tool calls · parameter validation
-    'capabilities: tools only · Resources / Prompts 当前未声明、未实现': 'capabilities: tools only · Resources / Prompts not declared, not implemented'
-    鉴权中心: Authorization Center
-    OAuth 2.1 · 多租户: OAuth 2.1 · multi-tenant
-    校验 access_token: Validate access_token
-    提取租户上下文: Extract tenant context
-    注入 scope / 权限: Inject scope / permissions
-    高危操作二次确认: Re-confirm high-risk operations
-    ① 校验 token: ① Validate token
-    ② 上下文 + scope: ② Context + scope
-    后端服务层: Backend services
-    静态 OpenAPI · 管理域: Static OpenAPI · management domain
-    Command · Event 定义: Command · Event definitions
-    租户范围内元数据: Tenant-scoped metadata
-    静态 OpenAPI · 数据域: Static OpenAPI · data domain
-    最新值 · 历史值: Latest values · history
-    位号读写命令: Point read/write commands
-    状态 · Dashboard: Status · Dashboard
-    RabbitMQ 设备链路: RabbitMQ device link
-    其他平台 API: Other platform APIs
-    静态 OpenAPI · 按规格汇聚: Static OpenAPI · aggregated from specs
-    实际 REST 后端: Actual REST backend
-    按 token 与白名单过滤: Filtered by token & allowlist
-    工具调用（实线）: Tool call (solid)
-    OpenAPI 自动聚合（虚线）: OpenAPI auto-aggregation (dashed)
-    OAuth 鉴权回传（实线）: OAuth authorization return (solid)
-    MCP 端点: MCP endpoint
-    设备 / 接入域: Device / access domain
-    Auth · 白名单 · 高风险确认: Auth · allowlist · high-risk confirmation
-    图7-4 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，: 'Figure 7-4 The current /mcp declares the Tools capability only: after initialize negotiation it serves tools/list and tools/call,'
-    工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。: the tool catalog is aggregated from static OpenAPI specs and filtered by OAuth connection, allowlist, and risk policy; Resources / Prompts are not yet enabled.
+    图 7-4 RAG + Tool-Calling 联合工作流: Figure 7-4 RAG + Tool-Calling Workflow
+    RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；写入只创建待确认 Action，经用户确认与策略校验后才执行。: RAG supplies versioned SOP evidence; read-only tools fetch platform state; writes only create a pending Action, executed after user confirmation and policy checks.
+    模型准备操作意图，平台确认边界决定设备写入是否发生: The model prepares intent; the platform confirmation boundary decides device writes
+    证据与状态准备: Evidence & state preparation
+    用户任务: User task
+    重置 3 号泵: Reset Pump 3
+    LLM 规划: LLM planning
+    识别所需证据: Identify evidence needed
+    RAG 检索: RAG retrieval
+    版本化 SOP: Versioned SOP
+    只读 Tool: Read-only tool
+    读取平台状态: Read platform state
+    形成操作建议: Draft action proposal
+    证据 + 状态快照: Evidence + state snapshot
+    进入受控写入边界: Enter controlled-write boundary
+    受控写入: Controlled write
+    创建待确认 Action: Create pending Action
+    只保存参数，不执行设备写入: Save params only · no device write
+    用户确认: User confirmation
+    展示目标、参数与影响: Show target · params · impact
+    鉴权与策略校验: Authorization & policy checks
+    权限 · 参数 · 联锁边界: Permissions · params · interlocks
+    控制器 / 执行点: Controller / actuator
+    用户确认后才下发: Issued only after confirmation
+    结果与审计：状态回读 · 全链路留痕: 'Result & audit: state read-back · full trace'
+    未确认 / 校验失败：不执行，Action 保持待确认或被拒绝: 'Unconfirmed / failed checks: not executed; the Action stays pending or is rejected'
+    图 7-4 RAG → 读状态 → 创建待确认 Action → 用户确认与策略校验 → 控制器执行；模型无直达设备写权限。: Figure 7-4 RAG → read state → create pending Action → user confirmation & policy checks → controller execution; the model has no direct device-write path.

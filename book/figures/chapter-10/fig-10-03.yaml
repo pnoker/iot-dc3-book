@@ -1,5 +1,5 @@
 type: architecture
-title: 图10-3 数字孪生五维模型架构图
+title: 图 10-3 数字孪生五维模型架构图
 audience_takeaway: 读者应理解连接层是数字孪生枢纽:传感器值经CN上行、控制指令下行,模型输出沉淀为知识反哺业务,形成自我进化的双向闭环。
 purpose: 展示数字孪生的五个核心维度及它们之间的数据与控制流向，帮助读者理解CPS在工程层面的完整协作关系
 visual_focus: 从PE到Data & Service的主链路。
@@ -109,7 +109,7 @@ caption:
   en: 'The five-dimension model architecture. The connection layer (CN) is the key to whether a digital twin can run in real time: it determines the synchronization accuracy and command reachability between the physical entity and the virtual model. The data & service layer and the knowledge layer provide the capacity to keep evolving from data to decisions.'
 labels:
   en:
-    图10-3 数字孪生五维模型架构图: Figure 10-3 Five-Dimension Digital Twin Architecture
+    图 10-3 数字孪生五维模型架构图: Figure 10-3 Five-Dimension Digital Twin Architecture
     连接层连接物理实体与虚拟模型，承载上行数据和受控下行指令，模型输出沉淀为知识并服务业务。: The connection layer links the physical entity and virtual model, carries uplink data and governed downlink commands, and settles model output into knowledge that serves the business.
     连接层 CN 统一协议、语义、频率与安全，是物理实体和虚拟模型持续同步的枢纽。: The CN unifies protocol, semantics, frequency, and security — the hub that keeps PE and VM in sync.
     数据资产域 · 数据沉淀与治理边界: Data asset domain · data & governance boundary
@@ -132,4 +132,4 @@ labels:
     模型输出 · 异常模式: Model output · anomaly patterns
     安全边界：写请求须经鉴权、值域/变化率校验、策略约束与必要人工确认: 'Safety boundary: writes need auth, range/rate checks, policy limits, and sign-off when required'
     PLC / SIS / 硬联锁承担确定性控制与故障保护，模型不得绕过: PLC / SIS / hard interlocks own deterministic control and protection; models cannot bypass them
-    图10-3 连接层决定物理实体与虚拟模型的同步精度和指令可达性；模型输出沉淀为知识并反哺业务。: Figure 10-3 The connection layer sets the sync accuracy and command reachability between physical entity and virtual model; model output settles into knowledge that feeds the business.
+    图 10-3 连接层决定物理实体与虚拟模型的同步精度和指令可达性；模型输出沉淀为知识并反哺业务。: Figure 10-3 The connection layer sets the sync accuracy and command reachability between physical entity and virtual model; model output settles into knowledge that feeds the business.

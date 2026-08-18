@@ -1,55 +1,188 @@
 type: architecture
-title: 图5-13 平台层核心组件：消息队列、时序数据库、规则引擎
-audience_takeaway: 读者应理解消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响，通常消息队列最先选型。
-purpose: 展示平台层三个核心组件的作用与选型关系
-visual_focus: 三组件卡片与选型相互影响。
-design_level: architecture
-layout: 上半三组件卡片，底部选型相互影响
+title: 图 5-13 工厂设备状态监控系统四层架构图（例子）
+audience_takeaway: 读者应理解边缘两级阈值把安全与智能分流：一级阈值本地GPIO直接停机不经云端，二级及以上才经MQTT/Kafka上云做AI分析。
+purpose: 展示设备层、边缘层、消息层、云层四层架构，以及传感器数据从现场到告警的完整流经路径，包括本地紧急停机路径和云端AI分析路径。
+visual_focus: 从起点到邮件/短信通知后采取行动的主链路。
+design_level: logical
+layout: 自上而下的四层结构，每层用浅色背景矩形框区分。层间箭头表示数据流方向，本地紧急停机路径用橙色粗箭头标出，与云端链路形成对比。
 elements:
-- 消息队列：发布/订阅解耦，MQTT Broker/Kafka/RabbitMQ 三种选型
-- 时序数据库：InfluxDB TSM 引擎 vs TimescaleDB 超表分 Chunk
-- 规则引擎：阈值到 CEP，边缘毫秒级 / 云端历史分析两种形态
+- L1 设备层：30台电机（简化圆形+M），每台下署三轴加速度计和PT100温度传感器，总线为Modbus RTU RS-485。
+- L2 边缘层（x86工控机框）：内含Node-RED图标、Mosquitto图标、SQLite缓存图标、GPIO紧急停机输出图标。
+- L3 消息层：Kafka集群（3节点），Topic分为 factory/vibration, factory/temperature, alarm-command, alarm-events；接入端为EMQX Edge桥接。
+- L4 云层：InfluxDB 3.x、AI异常检测服务（Python scikit-learn）、Grafana仪表盘、告警服务（SMTP+短信API）。
 relationships:
-- 队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，消息队列最先选型
-render_notes: HTML/SVG 渲染，三组件卡片 + 选型关系，蓝绿橙分层。
+- 设备层通过Modbus RTU（9600bps）向边缘层推送传感器数据。
+- 边缘层Node-RED解析并做两级阈值判断：超过一级阈值→GPIO输出紧急停机信号（橙色箭头，不经过消息层和云层）
+- 超过二级阈值或正常→发布MQTT消息至Mosquitto。同时写入SQLite缓存。
+- Mosquitto的MQTT消息通过EMQX Edge桥接转发至Kafka上行Topic。
+- Kafka消费者服务（Python daemon）消费上行Topic，写入InfluxDB热分区
+- InfluxDB持续查询触发降采样写入冷存储。
+- AI服务从InfluxDB拉取最近2小时窗口数据，运行孤立森林模型，输出异常得分，低于阈值时生成告警事件并发布到Kafka的alarm-events Topic。
+- 告警服务消费alarm-events，调用SMTP和短信API发送通知。
+- Grafana从InfluxDB读取数据，绘制仪表盘，显示实时曲线、历史趋势和告警事件列表。
+- 工程师通过Grafana查看仪表盘，或收到邮件/短信通知后采取行动。
+- 云端下行指令（阈值更新、模型参数下发）由管理员发布到Kafka的alarm-command Topic，经MQTT Bridge下发到边缘层。
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: 模型、规则与 Agent 边界
+- id: governance_domain
+  label: 治理与安全域
+  role: 风险控制与责任边界
+components:
+- id: r1
+  label: 边缘层Node-RED解析并做两级…
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: decision
+- id: r2
+  label: GPIO输出紧急停机信号（橙色箭头…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r3
+  label: AI服务从InfluxDB拉取最近…
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: r4
+  label: Kafka的alarm-event…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: bus
+- id: r5
+  label: 告警服务消费alarm-events
+  type: security
+  subtitle: ''
+  group: governance_domain
+  priority: normal
+  shape: card
+- id: r6
+  label: SMTP和短信API发送通知
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r7
+  label: 工程师通过Grafana查看仪表盘…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r8
+  label: 邮件/短信通知后采取行动
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r9
+  label: 云端下行指令（阈值更新、模型参数下…
+  type: ai
+  subtitle: ''
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: r10
+  label: Kafka的alarm-comma…
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: bus
+connections:
+- from: node-red
+  to: gpio
+  label: 橙色箭头，不经过消息层和云层
+  style: solid
+  direction: request
+- from: ai_influxdb_2
+  to: kafka_alarm-events_to
+  label: AI服务从InfluxDB拉取最近…
+  style: dashed
+  direction: event
+- from: r5
+  to: r6
+  label: 告警服务消费alarm-event…
+  style: risk
+  direction: event
+- from: grafana
+  to: r8
+  label: 工程师通过Grafana查看仪表盘…
+  style: solid
+  direction: request
+callouts:
+- 设备层通过Modbus RTU（9600bps）向边缘层推送传感器数据
+- 边缘层Node-RED解析并做两级阈值判断：超过一级阈值→GPIO输出紧急停机信号（橙色箭头，不经过消息层和云层）
+- 超过二级阈值或正常→发布MQTT消息至Mosquitto。同时写入SQLite缓存
+legend:
+- 实线箭头（浅灰）=传感器数据上行流
+- 实线箭头（橙色，加粗）=本地紧急停机控制流（不经过云端）
+- 虚线箭头（深灰）=告警事件下行流（通知工程师）
+- 虚线箭头（蓝色，虚线点划线）=云端指令下行流（远程控制参数）
+- 绿色圆点（在电机图标旁）=设备运行状态：正常
+- 黄色圆点=设备运行状态：预警（二级阈值触发）
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用四层分层布局，每层用浅色背景矩形框（浅蓝、浅绿、浅黄、浅灰）区分。组件框用圆角矩形，内填组件名称和简要功能文字。电机用简化圆形+M图。数据流箭头的颜色和样式严格遵循图例。橙色紧急停机流直接从边缘层指向电机，不可到达消息层和云层。下行指令流用蓝色虚线点画线，与上行实线区分。每层框右下角标注L1~L4层级编号。
 caption:
-  zh: 图5-13 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。
-  en: 'Figure 5-13 The message queue buffers traffic, the time-series DB stores efficiently, and the rule engine makes smart judgments; the three component selections influence each other — queue throughput sets the write pressure on the time-series DB, rule-engine real-time performance depends on queue latency, and the message queue is usually selected first.'
+  zh: 图 5-13 工厂设备状态监控系统四层架构图（例子）
+  en: 'Figure 5-13 Four-layer architecture of a factory equipment condition monitoring system (example).'
 labels:
   en:
-    图5-13 平台层核心组件：消息队列、时序数据库、规则引擎: 'Figure 5-13 Platform Core: Message Queue, Time-Series DB, Rule Engine'
-    消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响。: The message queue buffers traffic, the time-series DB stores efficiently, the rule engine judges smartly — their selections influence each other.
-    分别解决数据缓冲、高效存储、智能判决，选型决定吞吐、成本与时效: They solve buffering, efficient storage, and smart decisions; selections set throughput, cost, and timeliness
-    消息队列：数据缓冲带: 'Message queue: data buffer'
-    发布/订阅解耦生产与消费: Pub/sub decoupling
-    设备洪峰时后端不被瞬时冲垮: Backend survives device bursts
-    选型对比: Options Compared
-    MQTT Broker：设备端轻量代理，长连接推模式: 'MQTT Broker: light device agent, persistent push'
-    Kafka：顺序写磁盘 + 分区，海量后端管道: 'Kafka: sequential writes + partitions, bulk pipeline'
-    RabbitMQ：灵活路由 + 确认，业务集成: 'RabbitMQ: flexible routing + acks, business integration'
-    三者不互斥：MQTT 收 → Kafka/RabbitMQ 分发: 'Not exclusive: MQTT in → Kafka/RabbitMQ out'
-    通常最先选型，决定抗洪峰能力: Usually chosen first; sets burst tolerance
-    时序数据库：专为时间印记优化: 'Time-series DB: built for timestamps'
-    数据点 = 时间戳 + 标签 + 数值字段: Data point = timestamp + tag + value field
-    改存储引擎 + 极致写入压缩: Custom engine + write compression
-    两条技术路线: Two Technical Routes
-    InfluxDB：TSM 引擎（LSM 变体）+ WAL: 'InfluxDB: TSM engine (LSM variant) + WAL'
-    差分编码 + delta-of-delta 压缩，TICK 生态: Delta encoding + delta-of-delta, TICK stack
-    TimescaleDB：基于 PostgreSQL，超表按时间分 Chunk: 'TimescaleDB: PostgreSQL-based, hypertables chunked by time'
-    SQL 兼容好，查询只扫涉及分区: SQL-friendly; scans only touched chunks
-    压缩比决定硬件成本与查询性能: Compression sets HW cost & query speed
-    规则引擎：从阈值到 CEP: 'Rule engine: from thresholds to CEP'
-    简单阈值：温度超 80℃ 告警: 'Simple threshold: alarm > 80°C'
-    CEP：时间窗口内多事件模式匹配: 'CEP: multi-event patterns in time windows'
-    两种部署形态: Two Deployment Forms
-    边缘：毫秒级响应（切断危险电源）: 'Edge: ms-level response (cut power)'
-    云端：分析跨度大、依赖历史数据: 'Cloud: wide-span analysis over history'
-    例：5 分钟内三次电流尖峰 + 温度上升 → 轴承故障: e.g. 3 current spikes + rising temp in 5 min → bearing fault
-    规则引擎解决确定性逻辑: Rules handle deterministic logic
-    AI 解决非确定性模式，两者互补: AI handles non-deterministic patterns
-    三组件选型相互影响: The Three Selections Interlock
-    消息队列吞吐 → 决定时序数据库写入压力 · 规则引擎实时性 → 依赖队列延迟: Queue throughput → DB write pressure · rule real-time → queue latency
-    工程顺序：消息队列最先选型（抗洪峰）→ 时序数据库压缩比定硬件成本 → 规则引擎按延迟要求确认是否下放边缘: 'Order: queue first (burst tolerance) → time-series compression sets hardware cost → rules go edge per latency needs'
-    IoT DC3 落地：采集值封装位号值对象 → 写入时序库 → 经消息队列缓冲 → 规则引擎消费: 'IoT DC3: values wrapped as point-value objects → time-series DB → buffered by message queue → consumed by rule engine'
-    组件选型是通用工程决策，与具体平台无关；时序库权衡见 5.4 节，完整落地见第 14 章: Selection is generic engineering, platform-agnostic; time-series trade-offs in 5.4, full build in Chapter 14
-    图5-13 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。: Figure 5-13 The message queue buffers traffic, the time-series DB stores efficiently, and the rule engine judges smartly; the three selections interlock — queue throughput sets write pressure, rule-engine real-time depends on queue latency, and the message queue is usually selected first.
+    图 5-13 工厂设备状态监控系统四层架构图（例子）: Figure 5-13 Four-Layer Factory Equipment Monitoring (Example)
+    本地硬阈值保障安全，二级告警与常规数据上云进行 AI 分析。: Local hard thresholds keep it safe; level-2 alarms and routine data go to the cloud for AI analysis.
+    数据上行: Data Uplink
+    参数下发: Parameter Push
+    一级阈值触发: Level-1 threshold tripped
+    本地紧急停机（不经云端）: Local emergency stop (no cloud)
+    云层: Cloud Layer
+    时序存储 · 冷热分层: Time-Series Storage · Hot/Cold Tiers
+    AI 异常检测: AI Anomaly Detection
+    scikit-learn 孤立森林: scikit-learn Isolation Forest
+    Grafana 仪表盘: Grafana Dashboards
+    实时曲线 · 历史趋势: Real-Time Curves · Trends
+    告警服务: Alarm Service
+    SMTP + 短信 API: SMTP + SMS API
+    消息层: Message Layer
+    EMQX Edge 桥接: EMQX Edge Bridge
+    MQTT → Kafka 上行: MQTT → Kafka uplink
+    Kafka 集群（3 节点）: Kafka Cluster (3 nodes)
+    下行指令 / 告警事件 Topic: Downlink Command / Alarm-Event Topics
+    边缘层: Edge Layer
+    解析 + 两级阈值判断: Parsing + Two-Level Thresholds
+    SQLite 缓存: SQLite Cache
+    断网本地缓存: Offline local cache
+    GPIO 紧急停机: GPIO Emergency Stop
+    一级阈值本地输出: Level-1 local output
+    设备层: Device Layer
+    ×30 台电机: ×30 Motors
+    三轴加速度计: Triaxial Accelerometer
+    振动采集: Vibration Acquisition
+    PT100 温度传感器: PT100 Temperature Sensor
+    温度采集: Temperature Acquisition
+    9600 bps 总线: 9600 bps Bus
+    传感器数据上行流: Sensor data uplink
+    本地紧急停机控制流（不经云端）: Local emergency-stop flow (no cloud)
+    云端指令下行流: Cloud command downlink
+    正常: Normal
+    预警（二级阈值）: Warning (level-2 threshold)
+    图 5-13 工厂设备状态监控系统四层架构图：安全停机留在边缘确定性链路，云端负责长期分析、告警通知与参数管理。: 'Figure 5-13 Four-layer architecture of a factory equipment monitoring system: safety shutdowns stay on the deterministic edge path, while the cloud handles long-term analysis, alarm notification, and parameter management.'

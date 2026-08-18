@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图14-10 可复现实验的五个环节与证据包</title>
+  <title>图 14-10 连接可靠性：MQTT QoS 与消息链路闭环</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
-  <title id="title">图14-10 可复现实验的五个环节与证据包</title>
-  <desc id="desc">可复现实验依次冻结 manifest、固定工作负载、定义指标字典、覆盖故障用例、沉淀出版证据包。</desc>
+  <title id="title">图 14-10 连接可靠性：MQTT QoS 与消息链路闭环</title>
+  <desc id="desc">MQTT QoS 0/1/2 各司其职，RabbitMQ 链路靠持久化、死信、去重与设备级串行形成闭环。</desc>
   <rect width="1200" height="680" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
@@ -26,81 +26,70 @@
 
   <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-10 可复现实验的五个环节与证据包</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">没有实测就标记 NA，不用数值冒充结果 · 0 与 NA 含义不同</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 14-10 连接可靠性：MQTT QoS 与消息链路闭环</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">可靠性不是“进了队列就安全”，而是从生产确认到结果回执的闭环</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 五个环节 -->
-  <rect x="80" y="150" width="320" height="220" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="240" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">① 冻结 manifest</text>
-  <text x="116" y="224" font-size="11" fill="#475569">commit/tag、镜像 digest、Compose 版本</text>
-  <text x="116" y="248" font-size="11" fill="#475569">OS/CPU/内存/网络、JDK/Python</text>
-  <text x="116" y="272" font-size="11" fill="#475569">PG/RabbitMQ/Driver 版本</text>
-  <text x="116" y="296" font-size="11" fill="#475569">模型/Prompt/Tool/RAG 版本</text>
-  <text x="116" y="320" font-size="11" fill="#64748B">密钥不入 manifest，用脱敏摘要</text>
+  <!-- MQTT QoS -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">MQTT QoS：三种等级各司其职</text>
 
-  <line x1="400" y1="260" x2="432" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="80" y="172" width="520" height="150" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="340" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 0 · 至多一次</text>
+  <text x="116" y="242" font-size="12" fill="#475569">适合可丢弃的高频遥测</text>
+  <text x="116" y="268" font-size="12" fill="#475569">关键状态变更走此级降低带宽消耗</text>
 
-  <rect x="432" y="150" width="320" height="220" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="592" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">② 工作负载可重放</text>
-  <text x="468" y="224" font-size="11" fill="#475569">固定设备数、位号数、上报频率</text>
-  <text x="468" y="248" font-size="11" fill="#475569">payload 大小、读写比、命令比例</text>
-  <text x="468" y="272" font-size="11" fill="#475569">持续时间、预热时间</text>
-  <text x="468" y="296" font-size="11" fill="#475569">故障：延迟/丢包、断网窗口、重启时刻</text>
-  <text x="468" y="320" font-size="11" fill="#64748B">一次比较只改变主要变量</text>
+  <rect x="640" y="172" width="520" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="900" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 1 · 至少一次</text>
+  <text x="676" y="242" font-size="12" fill="#475569">适合多数关键上报，保证可靠</text>
+  <text x="676" y="268" font-size="12" fill="#475569">消费者必须处理重复消息</text>
 
-  <line x1="752" y1="260" x2="784" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <rect x="1200" y="172" width="520" height="150" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1460" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 2 · 恰好一次</text>
+  <text x="1236" y="242" font-size="12" fill="#475569">成本更高，仅业务确实要求“仅一次”</text>
+  <text x="1236" y="268" font-size="12" fill="#475569">设备、Broker 都能承受握手开销时采用</text>
 
-  <rect x="784" y="150" width="320" height="220" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="944" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">③ 指标字典</text>
-  <text x="820" y="224" font-size="11" fill="#475569">先定义分母，再报告数字</text>
-  <text x="820" y="248" font-size="11" fill="#475569">设备接入 / 数据链路 / 命令链路</text>
-  <text x="820" y="272" font-size="11" fill="#475569">存储 / 可靠性 / RAG / Agent / 成本</text>
-  <text x="820" y="296" font-size="11" fill="#475569">时延起止点必须固定</text>
-  <text x="820" y="320" font-size="11" fill="#64748B">多次独立运行，报告 P50/P95/P99</text>
+  <!-- RabbitMQ 可靠性 -->
+  <text x="80" y="380" font-size="15" font-weight="700" fill="#334155">RabbitMQ 命令与数据可靠性（当前唯一消息链路）</text>
 
-  <line x1="1104" y1="260" x2="1136" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-
-  <rect x="1136" y="150" width="320" height="220" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="1296" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">④ 故障与安全用例</text>
-  <text x="1172" y="224" font-size="11" fill="#475569">重复遥测、乱序时间戳</text>
-  <text x="1172" y="248" font-size="11" fill="#475569">断开重连、积压恢复、数据库故障</text>
-  <text x="1172" y="272" font-size="11" fill="#475569">权限不足、跨租户、模型超时</text>
-  <text x="1172" y="296" font-size="11" fill="#475569">回执丢失、重放、人工接管</text>
-  <text x="1172" y="320" font-size="11" fill="#64748B">优先模拟器，不绕过 PLC/SIS 联锁</text>
-
-  <line x1="1456" y1="260" x2="1488" y2="260" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-
-  <rect x="1488" y="150" width="232" height="220" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1604" y="186" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">⑤ 证据包</text>
-  <text x="1524" y="224" font-size="11" fill="#475569">README · manifest</text>
-  <text x="1524" y="248" font-size="11" fill="#475569">workload · commands</text>
-  <text x="1524" y="272" font-size="11" fill="#475569">raw · summary</text>
-  <text x="1524" y="296" font-size="11" fill="#475569">failures · figures</text>
-  <text x="1524" y="320" font-size="11" fill="#64748B">正文数字反链实验 ID</text>
-
-  <!-- 证据包目录 -->
-  <rect x="80" y="430" width="1640" height="220" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="466" font-size="14" font-weight="700" fill="#334155">出版证据包结构（experiments/EXP-14-E2E-01/）</text>
-  <g font-size="12" fill="#475569">
-    <text x="140" y="500">├── README.md</text>
-    <text x="170" y="524">复现步骤与已知限制</text>
-    <text x="140" y="552">├── manifest.json</text>
-    <text x="170" y="576">版本、环境和数据哈希</text>
-    <text x="140" y="604">├── workload.yaml / commands.txt</text>
-    <text x="170" y="628">负载与故障参数 / 实际执行命令</text>
+  <rect x="80" y="402" width="800" height="220" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <g font-size="12" fill="#0F172A">
+    <text x="116" y="434" font-weight="700">持久化与路由</text>
+    <text x="116" y="458" fill="#475569">交换机、队列、消息持久化配置与丢失容忍度匹配</text>
+    <text x="116" y="496" font-weight="700">TTL 与死信</text>
+    <text x="116" y="520" fill="#475569">Driver 专属命令队列设 TTL 与死信交换机，过期命令不长期占用</text>
+    <text x="116" y="558" font-weight="700">ack / nack</text>
+    <text x="116" y="582" fill="#475569">成功后 ack，无效 reject，暂时失败按重投条件 nack/requeue</text>
   </g>
-  <g font-size="12" fill="#475569">
-    <text x="860" y="500">├── raw/</text>
-    <text x="890" y="524">原始指标、日志与逐任务 trace</text>
-    <text x="860" y="552">├── summary.json</text>
-    <text x="890" y="576">指标定义和汇总</text>
-    <text x="860" y="604">├── failures/ + figures/</text>
-    <text x="890" y="628">失败样本与复盘 / 图表生成方法</text>
+
+  <!-- 闭环 -->
+  <rect x="920" y="402" width="800" height="220" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1320" y="434" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">可靠性闭环五要素</text>
+  <g font-size="12">
+    <circle cx="980" cy="480" r="12" fill="#2563EB"/>
+    <text x="980" y="485" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+    <text x="1002" y="485" fill="#0F172A">生产确认</text>
+    <circle cx="980" cy="518" r="12" fill="#2563EB"/>
+    <text x="980" y="523" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+    <text x="1002" y="523" fill="#0F172A">路由</text>
+    <circle cx="980" cy="556" r="12" fill="#2563EB"/>
+    <text x="980" y="561" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+    <text x="1002" y="561" fill="#0F172A">消费确认</text>
+    <circle cx="1310" cy="480" r="12" fill="#2563EB"/>
+    <text x="1310" y="485" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+    <text x="1332" y="485" fill="#0F172A">幂等（commandId 去重 + expireAt）</text>
+    <circle cx="1310" cy="518" r="12" fill="#2563EB"/>
+    <text x="1310" y="523" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+    <text x="1332" y="523" fill="#0F172A">结果回执</text>
+    <text x="980" y="600" font-size="11" fill="#64748B">同一设备设备级锁串行执行，避免协议帧交错</text>
   </g>
+
+  <!-- 底部提示 -->
+  <rect x="80" y="680" width="1640" height="70" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="710" font-size="12" fill="#475569">断线重连用带抖动的指数退避，避免大量设备同时重连形成惊群；退避上限与心跳间隔必须按现场压测，不能写成全平台固定值</text>
+  <text x="120" y="734" font-size="11" fill="#64748B">Kafka 的分区/副本/ISR 属于 Kafka 架构知识，不是当前 IoT DC3 部署参数；生产检查围绕 RabbitMQ 队列积压、未确认消息、死信数量、重投与磁盘水位</text>
 
   <!-- Caption -->
-  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图14-10 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化的出版证据包。</text>
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 14-10 MQTT QoS 0/1/2 各司其职；RabbitMQ 链路依靠持久化、TTL 与死信、ack/nack、commandId 去重与设备级串行，形成“生产确认→路由→消费确认→幂等→结果回执”的可靠性闭环。</text>
   </svg>
 </svg>
   </main>

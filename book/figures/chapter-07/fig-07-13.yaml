@@ -1,56 +1,54 @@
-type: architecture
-title: 图7-13 Agentic Center 工具生态与写入确认链路
-audience_takeaway: 读者应理解 Agentic Center 当前注册 8 类 Tool（查询为主），PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路。
-purpose: 展示 Tool 生态全貌与写入确认的真实流程，划清模型能力边界
-visual_focus: 8 类 Tool 布局与底部写入确认链路。
-design_level: architecture
-layout: 顶部大模型，中部 8 类 Tool 卡片，底部写入确认四步链路
+type: matrix
+title: 图 7-13 MLOps 与 LLMOps 的边界及五道发布门
+audience_takeaway: 读者应理解 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元，发布经五道门逐步放权。
+purpose: 对比 MLOps 与 LLMOps 的治理边界，展示五道发布门
+visual_focus: 五维对比表与底部五道发布门。
+design_level: matrix
+layout: 上半五维对比表（数据/资产/评测/发布/监控），下半五道发布门流程
 elements:
-- 8 类 Tool：TenantTool、UserTool、DeviceTool、DriverTool、ProfileTool、PointTool、PointValueTool、SystemTool
-- DeviceTool / DriverTool / PointTool：只读查询（检索、状态、趋势）
-- PointValueTool.writePointValue：创建 10 分钟有效 PENDING Action，返回 actionId
-- 确认链路：模型调用 → PENDING Action → 用户确认 → submitWrite → EXECUTED/FAILED → 设备
+- MLOps 重点：训练数据、模型、精度召回、模型注册、数据漂移
+- LLMOps 新增：Prompt、RAG 索引、Tool schema、策略、忠实性、越权、成本
+- 五道发布门：离线回归 → 影子流量 → 灰度租户 → 只读先行 → 扩大范围
 relationships:
-- 大模型经 Tool 复用平台 Facade；写操作必须经 Action 确认，模型不能绕过
-render_notes: HTML/SVG 渲染，Tool 生态网格 + 底部四步写入确认链路，橙/蓝/绿区分读与写。
+- MLOps 与 LLMOps 互补而非替代；五道门由严到宽逐步放权
+render_notes: HTML/SVG 渲染，五维对比表 + 底部五道发布门流程，蓝/绿区分新旧重点。
 caption:
-  zh: 图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。
-  en: 'Figure 7-13 The Agentic Center currently registers 8 tool classes, mostly queries; PointValueTool writes first create a PENDING Action and enter the device command chain via submitWrite only after user confirmation, splitting "the model proposes a write" and "the platform actually executes" into two explicit steps.'
+  zh: 图 7-13 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元；发布经离线回归、影子流量、灰度租户、只读先行、扩大范围五道门逐步放权。
+  en: Figure 7-13 MLOps governs data and models, while LLMOps brings prompts, indexes, tool schemas, policies, and evaluation sets into the release unit; releases pass five gates — offline regression, shadow traffic, canary tenants, read-only first, and widening scope — granting autonomy step by step.
 labels:
   en:
-    图7-13 Agentic Center 工具生态与写入确认链路: Figure 7-13 Agentic Center Tool Ecosystem & Write-Confirmation Chain
-    当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，用户确认后才进入设备命令链路。: 8 tools registered, mostly read-only; PointValueTool writes open a PENDING Action first, entering the device chain after user confirmation.
-    工具通过 Facade 复用平台能力 · 租户与用户上下文随请求进入 Tool: Tools reuse Facade capabilities · tenant & user context enter with each call
-    Agentic Center（大模型）: Agentic Center (LLM)
-    Spring AI @Tool 暴露平台能力: Spring AI @Tool exposes platform capabilities
-    当前注册的 8 类 Tool: The 8 registered tool classes
-    租户上下文: Tenant context
-    用户上下文: User context
-    设备检索 / 状态（只读）: Device search / status (read-only)
-    驱动诊断（只读）: Driver diagnostics (read-only)
-    物模型（只读）: Thing model (read-only)
-    位号检索（只读）: Point search (read-only)
-    实时值读 / 写（需确认）: Live values read / write (confirm)
-    系统信息: System info
-    CommandTool 与 EventTool 源码存在但未加入当前 Provider，不能算默认会话能力: CommandTool and EventTool exist in source but are not in the current provider — not default session capabilities
-    写入确认链路（PointValueTool.writePointValue）: Write-confirmation chain (PointValueTool.writePointValue)
-    模型调用 writePointValue: Model calls writePointValue
-    校验 Device/Point/值非空: Validates Device/Point/value non-null
-    取租户、用户、会话上下文: Pulls tenant, user, session context
-    创建 PENDING Action: Creates a PENDING Action
-    10 分钟有效，返回 actionId: Valid 10 minutes, returns actionId
-    模型不能绕过确认直接控制设备: Model cannot bypass confirmation
-    用户通过 Action 接口确认: The user confirms via the Action API
-    原子抢占 PENDING 且未过期的记录: Atomically claims the unexpired PENDING record
-    依据持久化 Action，而非模型自述: 'Based on the persisted Action, not the model''s word'
-    submitWrite → 设备: submitWrite → device
-    状态置为 EXECUTED / FAILED: Status set to EXECUTED / FAILED
-    经 Data、RabbitMQ、Driver 到达设备: Via Data, RabbitMQ, Driver to the device
-    审计可追溯: Audit traceable
-    会话、租户、用户、Action: Session, tenant, user, Action
-    全链路记录，运维合规基础: End-to-end records for compliance
-    只读查询 Tool: Read-only query tool
-    含写操作 Tool（需确认）: Tool with writes (confirm)
-    上下文 / 系统 Tool: Context / system tool
-    ? 图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。
-    : Figure 7-13 The Agentic Center currently registers 8 tool classes, mostly queries; PointValueTool writes first create a PENDING Action and enter the device command chain via submitWrite only after user confirmation, splitting model-proposed writes from platform execution into two explicit steps.
+    图 7-13 MLOps 与 LLMOps 的边界及五道发布门: Figure 7-13 MLOps vs. LLMOps boundaries and the five release gates
+    MLOps 治理模型与数据，LLMOps 新增 Prompt、索引、Tool schema、策略与评测集，经五道发布门逐步放权。: MLOps governs models and data; LLMOps adds prompts, indexes, tool schemas, policies, and eval sets — five gates widen autonomy step by step.
+    AI 应用是一组有依赖关系的资产，而不只是一个模型: An AI app is a set of interdependent assets, not just a model
+    维度: Dimension
+    MLOps 重点: MLOps focus
+    LLMOps 新增重点: LLMOps additions
+    数据: Data
+    训练/验证数据、特征、标签: Training/validation data, features, labels
+    特征流水线: Feature pipelines
+    Prompt、会话、RAG 语料、工具返回、人工反馈: Prompts, sessions, RAG corpora, tool returns, human feedback
+    新增: New
+    资产: Assets
+    模型、训练代码、特征流水线: Models, training code, feature pipelines
+    模型、Prompt、索引、Tool schema、策略、评测集: Models, prompts, indexes, tool schemas, policies, eval sets
+    评测: Evaluation
+    精度、召回、漂移、服务指标: Accuracy, recall, drift, serving metrics
+    忠实性、拒答、轨迹、越权、成本、非确定性波动: Faithfulness, refusals, traces, violations, cost, non-determinism
+    发布: Release
+    模型注册、灰度、回滚: Model registry, canary, rollback
+    组件独立版本、只读先行、自主度分级、策略回退: Per-component versioning, read-only first, autonomy tiers, policy fallback
+    监控: Monitoring
+    数据/概念漂移、预测质量: Data/concept drift, prediction quality
+    无证据回答、工具失败、注入、人工拒绝、上下文污染: Ungrounded answers, tool failures, injection, human rejections, context pollution
+    五道发布门：先证明没有破坏，再逐步放权: 'Five gates: prove no breakage first, then widen autonomy'
+    ① 离线回归: ① Offline regression
+    golden set + 不可回答集 + 攻击集: golden set + unanswerable set + attack set
+    ② 影子流量: ② Shadow traffic
+    读真实请求、无外部副作用: Read real requests, no side effects
+    ③ 灰度租户: ③ Canary tenants
+    仅限定租户、设备、用户开放: Only selected tenants, devices, users
+    ④ 只读先行: ④ Read-only first
+    先查询 Tool，再需确认的写操作: Query tools first, then confirmed writes
+    ⑤ 扩大范围: ⑤ Widen scope
+    指标稳定、演练通过后增加场景: Add scenarios once metrics and drills pass
+    图 7-13 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元；发布经离线回归、影子流量、灰度租户、只读先行、扩大范围五道门逐步放权。: Figure 7-13 MLOps governs data and models, while LLMOps brings prompts, indexes, tool schemas, policies, and evaluation sets into the release unit; releases pass five gates — offline regression, shadow traffic, canary tenants, read-only first, and widening scope — granting autonomy step by step.

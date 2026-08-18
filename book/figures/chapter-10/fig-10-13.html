@@ -3,91 +3,191 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图10-13 工业时序数据库选型与 PointValue 数据模型</title>
+  <title>图 10-13 规则引擎告警触发与预测性维护工单闭环流程</title>
   <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+    body { margin: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { max-width: 1220px; margin: 24px auto; padding: 0 20px 28px; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
-  <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
-  <title id="title">图10-13 工业时序数据库选型与 PointValue 数据模型</title>
-  <desc id="desc">时序库针对工业数据流优化写入、分区、聚合与过期；PointValue 以设备、点位、值、时间、单位建模。</desc>
-  <rect width="1200" height="700" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+  <main class="page">
+    <svg data-figure-root="fig-10-13" xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 10-13 规则引擎告警触发与预测性维护工单闭环流程</title>
+  <desc id="desc">从设备温度数据流入到 AI 推理、工单创建、通知发出，以及工单状态回环的完整闭环链路。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#D97706"/></marker>
+    <marker id="bp-arrow-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
 
-  <!-- Title -->
+  <!-- ===== 顶部标题区 ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图10-13 工业时序数据库选型与 PointValue 数据模型</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">TSDB 专为时序负载优化存储格式与查询引擎，数据模型决定规则引擎与 AI 的消费成本</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图 10-13 规则引擎告警触发与预测性维护工单闭环流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="13">从设备温度数据流入到 AI 推理、工单创建、通知发出，以及工单状态回环的完整闭环链路</text>
 
-  <!-- 核心特点 -->
-  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">时序数据库的核心特点</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
 
-  <rect x="80" y="172" width="392" height="170" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="276" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">高写入吞吐</text>
-  <text x="116" y="242" font-size="12" fill="#475569">追加为主，很少随机更新</text>
-  <text x="116" y="268" font-size="12" fill="#475569">LSM-Tree 随机写转顺序追加</text>
-  <text x="116" y="304" font-size="11" fill="#64748B">写吞吐比传统关系库高 1~2 个数量级</text>
-  <text x="116" y="330" font-size="11" fill="#64748B">每秒数千点写入挂库 = 断裂时序</text>
+  <g data-layout="flowchart">
+  <!-- ===== 三域分区背景 ===== -->
+  <rect x="150" y="125" width="755" height="575" rx="14" fill="#EFF6FF" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8,4" opacity="0.6"/>
+  <rect x="930" y="125" width="330" height="575" rx="14" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8,4" opacity="0.6"/>
+  <rect x="1285" y="125" width="455" height="575" rx="14" fill="#FFF7ED" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="8,4" opacity="0.6"/>
 
-  <rect x="496" y="172" width="392" height="170" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="692" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">时间分区</text>
-  <text x="532" y="242" font-size="12" fill="#475569">按时间窗口（一天/一小时）自动切分</text>
-  <text x="532" y="268" font-size="12" fill="#475569">查询只扫对应分区，不全表扫描</text>
-  <text x="532" y="304" font-size="11" fill="#64748B">与保留策略直接挂钩</text>
-  <text x="532" y="330" font-size="11" fill="#64748B">一周高精度，超一年删除</text>
+  <!-- 域标签徽章 -->
+  <rect x="170" y="115" width="250" height="22" rx="11" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+  <text x="295" y="130" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">事件检测域 · 温度实时评估与条件判定</text>
+  <rect x="940" y="115" width="250" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1"/>
+  <text x="1065" y="130" fill="#475569" font-size="13" font-weight="700" text-anchor="middle">自动执行域 · AI推理 / 工单 / 通知</text>
+  <rect x="1295" y="115" width="250" height="22" rx="11" fill="#FFFFFF" stroke="#D97706" stroke-width="1"/>
+  <text x="1420" y="130" fill="#B45309" font-size="13" font-weight="700" text-anchor="middle">闭环验证域 · 工单状态跟踪与升级</text>
 
-  <rect x="912" y="172" width="392" height="170" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1108" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">降采样与聚合下推</text>
-  <text x="948" y="242" font-size="12" fill="#475569">1s 分辨率降为 1min 均值</text>
-  <text x="948" y="268" font-size="12" fill="#475569">聚合运算下推到存储层</text>
-  <text x="948" y="304" font-size="11" fill="#64748B">避免拉大量原始数据到应用层</text>
-  <text x="948" y="330" font-size="11" fill="#64748B">决定趋势图刷新秒数</text>
+  <!-- ===== ① 数据流入节点 ===== -->
+  <rect x="215" y="300" width="290" height="100" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="248" cy="338" r="13" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="248" y="338" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central">T</text>
+  <text x="274" y="344" fill="#0F172A" font-size="17" font-weight="700">温度数据流入</text>
+  <text x="274" y="368" fill="#475569" font-size="13">位号持续更新 · 电机温度</text>
 
-  <rect x="1328" y="172" width="392" height="170" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1524" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">过期与自动删除</text>
-  <text x="1364" y="242" font-size="12" fill="#475569">按时间段设保留策略（Retention Policy）</text>
-  <text x="1364" y="268" font-size="12" fill="#475569">超时分区自动清理</text>
-  <text x="1364" y="304" font-size="11" fill="#64748B">无需手动任务或定期 DELETE</text>
-  <text x="1364" y="330" font-size="11" fill="#64748B">磁盘容量不随运行时间增长</text>
+  <!-- ===== ② 持续超限判定（菱形决策节点） ===== -->
+  <polygon points="630,350 730,266 830,350 730,434" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="730" y="346" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">持续超限判定</text>
+  <text x="730" y="370" fill="#475569" font-size="13" text-anchor="middle">&gt;80°C 且窗口≥10s</text>
 
-  <!-- 选型对比 -->
-  <text x="80" y="400" font-size="15" font-weight="700" fill="#334155">主流选型：InfluxDB / TimescaleDB / TDengine</text>
+  <!-- ===== ③ 三个并行动作节点 ===== -->
+  <!-- AI 推理 -->
+  <rect x="950" y="145" width="290" height="105" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="982" cy="176" r="13" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="982" y="176" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central">AI</text>
+  <text x="1008" y="182" fill="#0F172A" font-size="17" font-weight="700">调用 AI 推理</text>
+  <text x="1008" y="206" fill="#475569" font-size="13">HTTP POST 请求</text>
+  <circle cx="1228" cy="158" r="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <text x="1228" y="162" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">1</text>
 
-  <rect x="80" y="422" width="520" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="340" y="454" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">InfluxDB</text>
-  <text x="116" y="490" font-size="12" fill="#475569">独立 TSDB 引擎，InfluxQL/Flux</text>
-  <text x="116" y="516" font-size="12" fill="#475569">轻量，适合传感器写→监控看→告警</text>
-  <text x="116" y="552" font-size="11" fill="#64748B">中小规模监控、IoT 平台</text>
+  <!-- 创建维护工单 -->
+  <rect x="950" y="345" width="290" height="105" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="982" cy="376" r="13" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="982" y="376" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central">工</text>
+  <text x="1008" y="382" fill="#0F172A" font-size="17" font-weight="700">创建维护工单</text>
+  <text x="1008" y="406" fill="#475569" font-size="13">高优先级</text>
+  <circle cx="1228" cy="358" r="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <text x="1228" y="362" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">2</text>
 
-  <rect x="640" y="422" width="520" height="150" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="900" y="454" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">TimescaleDB</text>
-  <text x="676" y="490" font-size="12" fill="#475569">PostgreSQL 扩展，超表 + 列</text>
-  <text x="676" y="516" font-size="12" fill="#475569">完整 PostgreSQL SQL，复用 SQL 技能栈</text>
-  <text x="676" y="552" font-size="11" fill="#64748B">复杂 SQL 分析、与 PG 生态结合</text>
+  <!-- 钉钉群通知 -->
+  <rect x="950" y="545" width="290" height="105" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <circle cx="982" cy="576" r="13" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="982" y="576" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central">钉</text>
+  <text x="1008" y="582" fill="#0F172A" font-size="17" font-weight="700">钉钉群通知</text>
+  <text x="1008" y="606" fill="#475569" font-size="13">告警消息</text>
+  <circle cx="1228" cy="558" r="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <text x="1228" y="562" fill="#2563EB" font-size="13" font-weight="700" text-anchor="middle">3</text>
 
-  <rect x="1200" y="422" width="520" height="150" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1460" y="454" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">TDengine</text>
-  <text x="1236" y="490" font-size="12" fill="#475569">超级表 + 标签 + 列，列式存储</text>
-  <text x="1236" y="516" font-size="12" fill="#475569">高吞吐、高压缩率</text>
-  <text x="1236" y="552" font-size="11" fill="#64748B">年数十亿点以上的大规模工业测点</text>
+  <!-- ===== ④ 工单状态回环（菱形决策节点，橙色） ===== -->
+  <polygon points="1310,397 1400,317 1490,397 1400,477" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="1400" y="393" fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">工单超时未关闭？</text>
+  <text x="1400" y="417" fill="#475569" font-size="13" text-anchor="middle">持续订阅状态，直至关闭</text>
 
-  <!-- PointValue 数据模型 -->
-  <rect x="80" y="630" width="1640" height="130" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="662" font-size="14" font-weight="700" fill="#334155">PointValue 数据模型：tag 用于过滤 · value 用于计算 · time 用于对齐</text>
-  <text x="120" y="696" font-size="12" fill="#475569">device_id（设备）· point_id（点位）· value（工程值）· event_time（采集时间戳）· unit（单位）· tags（可选维度）</text>
-  <text x="120" y="730" font-size="11" fill="#64748B">两个坑：① 标签基数爆炸（主维度标签控 3~5 个，其余外键关联）；② 不分主副的时间分区（高频短窗口、低频长窗口）</text>
+  <!-- ⑤ 升级动作（橙色） -->
+  <rect x="1295" y="135" width="210" height="100" rx="10" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <circle cx="1326" cy="166" r="13" fill="#FFF7ED" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1326" y="166" fill="#B45309" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central">升</text>
+  <text x="1352" y="172" fill="#0F172A" font-size="17" font-weight="700">升级通知上级</text>
+  <text x="1352" y="196" fill="#475569" font-size="13">通知后返回状态检查</text>
 
-  <!-- Caption -->
-  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图10-13 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流；PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。</text>
+  <!-- ⑥ 流程终止（圆角矩形，绿色） -->
+  <rect x="1295" y="565" width="210" height="100" rx="24" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="1326" cy="596" r="13" fill="#ECFDF5" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1326" y="596" fill="#15803D" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central">完</text>
+  <text x="1352" y="602" fill="#0F172A" font-size="17" font-weight="700">工单关闭</text>
+  <text x="1352" y="626" fill="#475569" font-size="13">流程结束</text>
+
+  <!-- ===== 连线 ===== -->
+  <!-- 数据流入 → 条件判定 -->
+  <line x1="505" y1="350" x2="626" y2="350" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <text x="566" y="342" fill="#2563EB" font-size="13" font-weight="600" text-anchor="middle">实时评估</text>
+
+  <!-- 条件判定 → 三个并行动作（三条实线箭头） -->
+  <line x1="830" y1="318" x2="946" y2="196" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="842" y="246" width="92" height="22" rx="11" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="888" y="261" fill="#2563EB" font-size="13" font-weight="600" text-anchor="middle">条件满足</text>
+
+  <line x1="830" y1="350" x2="946" y2="350" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="842" y="339" width="92" height="22" rx="11" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="888" y="354" fill="#2563EB" font-size="13" font-weight="600" text-anchor="middle">条件满足</text>
+
+  <line x1="830" y1="382" x2="946" y2="588" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <rect x="842" y="474" width="92" height="22" rx="11" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="888" y="489" fill="#2563EB" font-size="13" font-weight="600" text-anchor="middle">条件满足</text>
+
+  <!-- 创建工单 → 工单状态回环 -->
+  <line x1="1240" y1="397" x2="1306" y2="397" stroke="#2563EB" stroke-width="2.5" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1273" y="389" fill="#2563EB" font-size="13" font-weight="600" text-anchor="middle">待处理状态</text>
+
+  <!-- 工单状态回环 → 升级动作（虚线橙色） -->
+  <line x1="1400" y1="317" x2="1400" y2="240" stroke="#D97706" stroke-width="2.5" stroke-dasharray="8,5" marker-end="url(#bp-arrow-orange)"/>
+  <rect x="1340" y="272" width="120" height="22" rx="11" fill="#FFFFFF" stroke="#FDBA74" stroke-width="1"/>
+  <text x="1400" y="287" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">超时且持续超限</text>
+
+  <!-- 升级动作 → 返回状态检查（持续订阅直到关闭） -->
+  <path d="M1505 185H1728V490H1490V430" fill="none" stroke="#D97706" stroke-width="2.5" stroke-dasharray="8,5" marker-end="url(#bp-arrow-orange)"/>
+  <rect x="1510" y="474" width="178" height="22" rx="11" fill="#FFFFFF" stroke="#FDBA74" stroke-width="1"/>
+  <text x="1599" y="489" fill="#B45309" font-size="13" font-weight="600" text-anchor="middle">返回检查并继续订阅</text>
+
+  <!-- 工单状态回环 → 流程终止（绿色实线） -->
+  <line x1="1400" y1="477" x2="1400" y2="560" stroke="#16A34A" stroke-width="2.5" marker-end="url(#bp-arrow-success)"/>
+  <rect x="1364" y="510" width="72" height="22" rx="11" fill="#FFFFFF" stroke="#86EFAC" stroke-width="1"/>
+  <text x="1400" y="525" fill="#15803D" font-size="13" font-weight="600" text-anchor="middle">正常关闭</text>
+
+  <!-- ===== 闭环控制要点注记（闭环验证域右侧） ===== -->
+  <line x1="1490" y1="360" x2="1526" y2="360" stroke="#FDBA74" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="1530" y="290" width="190" height="140" rx="10" fill="#FFFFFF" stroke="#FDBA74" stroke-width="1.2"/>
+  <text x="1548" y="316" fill="#B45309" font-size="12.5" font-weight="700">闭环控制要点</text>
+  <text x="1548" y="340" fill="#475569" font-size="13">· 规则引擎订阅工单状态</text>
+  <text x="1548" y="358" fill="#475569" font-size="13">· 超时未关闭自动升级</text>
+  <text x="1548" y="376" fill="#475569" font-size="13">· 升级后持续跟踪状态</text>
+  <text x="1548" y="394" fill="#475569" font-size="13">· 关闭后流程终止</text>
+  <text x="1548" y="412" fill="#475569" font-size="13">· 形成闭环而非单向告警</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+
+  <!-- ===== 图注卡片 ===== -->
+  <rect x="150" y="712" width="755" height="48" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <rect x="150" y="712" width="5" height="48" fill="#2563EB"/>
+  <text x="172" y="741" fill="#2563EB" font-size="12.5" font-weight="700">并行动作互不阻塞：</text>
+  <text x="322" y="741" fill="#334155" font-size="12.5" font-weight="600">即使 AI 推理超时，工单与通知仍照常发出</text>
+
+  <rect x="930" y="712" width="810" height="48" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <rect x="930" y="712" width="5" height="48" fill="#D97706"/>
+  <text x="952" y="741" fill="#B45309" font-size="12.5" font-weight="700">工单状态回环：</text>
+  <text x="1106" y="741" fill="#334155" font-size="12.5" font-weight="600">持续订阅工单状态，超时升级后返回检查，直到工单关闭</text>
+
+  <!-- ===== 图例 ===== -->
+  <rect x="140" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="164" y="808" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">核心逻辑 · 主流程</text>
+  <rect x="420" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="444" y="808" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">闭环验证与升级路径</text>
+  <rect x="700" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <text x="724" y="808" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">正常关闭终点</text>
+  <line x1="980" y1="803" x2="998" y2="803" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="1006" y="808" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">稳定执行路径（实线）</text>
+  <line x1="1260" y1="803" x2="1278" y2="803" stroke="#D97706" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <text x="1286" y="808" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">升级触发路径（虚线）</text>
+  <polygon points="1533,803 1540,796 1547,803 1540,810" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1554" y="808" fill="#64748B" font-size="13" font-weight="600" text-anchor="start">决策节点</text>
+
+  <!-- ===== 出版级图注 ===== -->
+  <text x="900" y="852" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图 10-13 展示从温度数据判定到 AI 推理、工单创建、通知发送，以及基于工单状态回环的完整闭环流程。橙色部分表示升级路径，是在等待回复超时后触发的二次决策。</text>
   </svg>
 </svg>
+
   </main>
 </body>
 </html>

@@ -1,5 +1,5 @@
 type: layered
-title: 图3-1 感知层在物联网多层参考架构中的位置
+title: 图 3-1 感知层在物联网多层参考架构中的位置
 purpose: 展示感知层在物联网多层参考架构中的底层位置，及其内部三大类组件（传感器、识别设备、定位模块）与上层网络层/平台层/应用层的接口关系。同时标注感知层的逻辑边界。
 audience_takeaway: 读者应理解感知层是物理世界与数字系统的桥梁，其核心产出是带语义的位号值流，四层架构的数据流与控制流方向相反。
 visual_focus: 感知层内部三大组件（传感器、RFID、定位模块）共同向上输出数据的主链路；平台层内部四等分展示关键服务能力。
@@ -186,11 +186,11 @@ visual_constraints:
 - 平台层内部四个服务节点之间使用横向实线箭头表示处理顺序。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形（半径6px），层间垂直间隔10px。字体参照全书配置。箭头颜色#888，线宽2px。
 caption:
-  zh: 图3-1 感知层在物联网多层参考架构中的位置。感知层包含传感器、识别设备和定位模块三大组件，负责将物理世界信息转换为位号值流、身份码和坐标数据，通过网络层上传至平台层和应用层。实线箭头表示数据流方向，虚线箭头表示控制指令或事件驱动方向。
+  zh: 图 3-1 感知层在物联网多层参考架构中的位置。感知层包含传感器、识别设备和定位模块三大组件，负责将物理世界信息转换为位号值流、身份码和坐标数据，通过网络层上传至平台层和应用层。实线箭头表示数据流方向，虚线箭头表示控制指令或事件驱动方向。
   en: Figure 3-1 Where the sensing layer sits in the multi-layer IoT reference architecture. The sensing layer comprises three component groups — sensors, identification devices, and positioning modules — which convert physical-world information into point-value streams, identity codes, and coordinate data, uploaded through the network layer to the platform and application layers. Solid arrows mark data flow; dashed arrows mark control commands or event-driven flow.
 labels:
   en:
-    图3-1 感知层在物联网多层参考架构中的位置: Figure 3-1 The Sensing Layer in the Multi-Layer IoT Reference Architecture
+    图 3-1 感知层在物联网多层参考架构中的位置: Figure 3-1 The Sensing Layer in the Multi-Layer IoT Reference Architecture
     感知层连接物理世界与数字系统，传感器、识别设备和定位模块共同向上输出数据，控制流反向下行。: 'The sensing layer bridges the physical and digital worlds: sensors, identification devices, and positioning modules feed data upward while control flows back down.'
     物理世界: Physical World
     设备、环境、物品: Devices / Environment / Goods
@@ -219,4 +219,4 @@ labels:
     API 与数据服务: API & Data Services
     控制指令: Control Commands
     实线箭头 = 数据流，虚线箭头 = 控制流: Solid arrows = data flow, dashed = control flow
-    图3-1 感知层在物联网多层参考架构中的位置。感知层包含传感器、识别设备和定位模块三大组件，负责将物理世界信息转换为位号值流、身份码和坐标数据，通过网络层上传至平台层和应用层。箭头方向表示数据流向（自下而上）或控制指令流向（自上而下虚线）。: Figure 3-1 The sensing layer in the multi-layer IoT reference architecture. Its three component groups — sensors, identification devices, and positioning modules — convert physical-world information into point-value streams, identity codes, and coordinate data, uploaded through the network layer to the platform and application layers. Arrows show data flow (bottom-up) and control-command flow (top-down, dashed).
+    图 3-1 感知层在物联网多层参考架构中的位置。感知层包含传感器、识别设备和定位模块三大组件，负责将物理世界信息转换为位号值流、身份码和坐标数据，通过网络层上传至平台层和应用层。箭头方向表示数据流向（自下而上）或控制指令流向（自上而下虚线）。: Figure 3-1 The sensing layer in the multi-layer IoT reference architecture. Its three component groups — sensors, identification devices, and positioning modules — convert physical-world information into point-value streams, identity codes, and coordinate data, uploaded through the network layer to the platform and application layers. Arrows show data flow (bottom-up) and control-command flow (top-down, dashed).

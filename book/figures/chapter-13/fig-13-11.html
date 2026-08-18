@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图13-11 异构区块链网络互联的三种方案</title>
+  <title>图 13-11 AI+区块链+物联网三角范式关系图</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,72 +12,68 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
-  <title id="title">图13-11 异构区块链网络互联的三种方案</title>
-  <desc id="desc">原子交换用哈希锁定做轻量迁移，中继链用轻客户端做通用消息，预言机做联盟链到公链的数据桥。</desc>
-  <rect width="1200" height="680" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 13-11 AI+区块链+物联网三角范式关系图</title>
+  <desc id="desc">IoT 提供可信数据，AI 生成推理结果，区块链完成存证并约束受控执行，构成可审计的可信智能闭环。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
 
-  <!-- Title -->
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+  </defs>
+
+  <!-- 标题 -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图13-11 异构区块链网络互联的三种方案</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">让不同链相互理解并可信传递数据与资产，扩展可信范围</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 13-11 AI+区块链+物联网三角范式关系图</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">数据可信 → 模型可靠 → 决策可审计，形成受控智能闭环</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 原子交换 -->
-  <rect x="80" y="140" width="520" height="340" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <rect x="80" y="140" width="520" height="48" rx="12" fill="#2563EB"/>
-  <rect x="80" y="168" width="520" height="20" fill="#2563EB"/>
-  <text x="340" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">原子交换（哈希锁定）</text>
-  <text x="116" y="236" font-size="12" fill="#475569">链 A 锁定资产/凭证并生成哈希值</text>
-  <text x="116" y="262" font-size="12" fill="#475569">链 B 创建对应哈希的锁定合约</text>
-  <text x="116" y="288" font-size="12" fill="#475569">提供原像才能解兑，超时自动退回</text>
-  <text x="116" y="326" font-size="12" font-weight="700" fill="#0F172A">特点</text>
-  <text x="116" y="352" font-size="11" fill="#475569">不依赖第三方中继，只依赖散列 + 超时</text>
-  <text x="116" y="378" font-size="11" fill="#475569">依赖双方智能合约能力</text>
-  <text x="116" y="404" font-size="11" fill="#475569">不能跨任意数据格式或复杂状态</text>
-  <text x="116" y="440" font-size="11" fill="#64748B">适用：少量跨链代币交换 / 凭证迁移</text>
+  <!-- ===== 三角虚线骨架 ===== -->
+  <polygon points="900,310 360,560 1440,560" fill="none" stroke="#CBD5E1" stroke-width="1.4" stroke-dasharray="8 6"/>
 
-  <!-- 中继链 -->
-  <rect x="640" y="140" width="520" height="340" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <rect x="640" y="140" width="520" height="48" rx="12" fill="#16A34A"/>
-  <rect x="640" y="168" width="520" height="20" fill="#16A34A"/>
-  <text x="900" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">中继链（跨链协议）</text>
-  <text x="676" y="236" font-size="12" fill="#475569">独立区块链，维护参与链的轻节点/状态摘要</text>
-  <text x="676" y="262" font-size="12" fill="#475569">链 A 提交交易 → 验证者跑轻客户端验证</text>
-  <text x="676" y="288" font-size="12" fill="#475569">生成证明 → 链 B 获取证明并执行</text>
-  <text x="676" y="326" font-size="12" font-weight="700" fill="#0F172A">特点</text>
-  <text x="676" y="352" font-size="11" fill="#475569">Cosmos IBC 代表：“提交-确认”两轮握手</text>
-  <text x="676" y="378" font-size="11" fill="#475569">解耦跨链协议与设备资源限制</text>
-  <text x="676" y="404" font-size="11" fill="#475569">参与链需维护轻客户端</text>
-  <text x="676" y="440" font-size="11" fill="#64748B">适用：通用跨链消息、高吞吐场景</text>
+  <!-- ===== AI（顶部） ===== -->
+  <rect x="720" y="170" width="360" height="140" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
+  <text x="900" y="208" font-size="18" font-weight="700" fill="#D97706" text-anchor="middle">AI</text>
+  <text x="900" y="236" font-size="11.5" fill="#475569" text-anchor="middle">推理 · 预测 · 模型训练</text>
+  <text x="900" y="262" font-size="11" fill="#475569" text-anchor="middle">推理引擎 · 联邦聚合 · 模型服务</text>
 
-  <!-- 预言机 -->
-  <rect x="1200" y="140" width="520" height="340" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <rect x="1200" y="140" width="520" height="48" rx="12" fill="#F97316"/>
-  <rect x="1200" y="168" width="520" height="20" fill="#F97316"/>
-  <text x="1460" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">预言机集成（数据桥）</text>
-  <text x="1236" y="236" font-size="12" fill="#475569">读取许可链外部数据（土壤湿度等）</text>
-  <text x="1236" y="262" font-size="12" fill="#475569">生成含背书签名 + 区块哈希的加密证明</text>
-  <text x="1236" y="288" font-size="12" fill="#475569">提交公链接收合约，验证签名与区块头</text>
-  <text x="1236" y="326" font-size="12" font-weight="700" fill="#0F172A">特点</text>
-  <text x="1236" y="352" font-size="11" fill="#475569">适合联盟链到公链的“数据读取跨链”</text>
-  <text x="1236" y="378" font-size="11" fill="#475569">多预言机阈值签名/多数投票降单点风险</text>
-  <text x="1236" y="404" font-size="11" fill="#475569">预言机节点可信度是风险来源</text>
-  <text x="1236" y="440" font-size="11" fill="#64748B">适用：跨链触发合约的外部可验证数据</text>
+  <!-- ===== IoT（左下） ===== -->
+  <rect x="180" y="540" width="360" height="140" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
+  <text x="360" y="578" font-size="18" font-weight="700" fill="#0F766E" text-anchor="middle">IoT</text>
+  <text x="360" y="606" font-size="11.5" fill="#475569" text-anchor="middle">感知 · 连接 · 数据采集</text>
+  <text x="360" y="632" font-size="11" fill="#475569" text-anchor="middle">设备 · 边缘节点 · 上下文</text>
 
-  <!-- 案例 -->
-  <rect x="80" y="540" width="1640" height="170" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="572" font-size="14" font-weight="700" fill="#334155">案例：跨链桥实现设备身份迁移（汽车零部件）</text>
-  <text x="120" y="606" font-size="12" fill="#475569">① 许可链质检完成触发交易（序列号、批次、哈希），多家授权节点背书</text>
-  <text x="120" y="632" font-size="12" fill="#475569">② 中继节点监听通道提取交易并生成 SPV 证明 → ③ 提交公链桥合约</text>
-  <text x="120" y="658" font-size="12" fill="#475569">④ 桥合约验证背书签名与区块哈希，铸造代表零件身份的可信令牌，公链合约可验证来源</text>
-  <text x="120" y="688" font-size="11" fill="#64748B">互联目标：扩展可信范围，而不是用一个链的信任模型替换另一个链</text>
+  <!-- ===== Blockchain（右下） ===== -->
+  <rect x="1260" y="540" width="360" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1440" y="578" font-size="18" font-weight="700" fill="#2563EB" text-anchor="middle">Blockchain</text>
+  <text x="1440" y="606" font-size="11.5" fill="#475569" text-anchor="middle">存证 · 共识 · 去中心化信任</text>
+  <text x="1440" y="632" font-size="11" fill="#475569" text-anchor="middle">账本 · 合约 · 共识节点 · 预言机</text>
 
-  <!-- Caption -->
-  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图13-11 原子交换用哈希锁定做轻量凭证迁移，中继链用轻客户端做通用跨链消息，预言机做联盟链到公链的数据桥；异构互联不应破坏各自链的共识安全边界。</text>
+  <!-- ===== 中心：可信智能闭环 ===== -->
+  <rect x="720" y="400" width="360" height="96" rx="10" fill="#FFFFFF" stroke="#0F766E" stroke-width="2"/>
+  <text x="900" y="440" font-size="16" font-weight="700" fill="#0F766E" text-anchor="middle">可信智能闭环</text>
+  <text x="900" y="470" font-size="11" fill="#475569" text-anchor="middle">可验证数据 · 可追溯推理 · 受控执行</text>
+
+  <!-- ===== 三条边 ===== -->
+  <!-- IoT → AI：数据供给（实线） -->
+  <line x1="540" y1="540" x2="810" y2="312" stroke="#0F766E" stroke-width="2.3" marker-end="url(#ah-teal)"/>
+  <text x="600" y="420" font-size="12" font-weight="700" fill="#0F766E">数据供给</text>
+  <text x="600" y="446" font-size="10.5" fill="#475569">MQTT / HTTP / 边缘网关</text>
+  <!-- AI → Blockchain：推理存证（虚线） -->
+  <line x1="1080" y1="312" x2="1350" y2="538" stroke="#F97316" stroke-width="2.3" stroke-dasharray="7 5" marker-end="url(#ah-orange)"/>
+  <text x="1330" y="420" font-size="12" font-weight="700" fill="#D97706">推理存证</text>
+  <text x="1330" y="446" font-size="10.5" fill="#475569">结果 · 参数哈希 · 训练轮次摘要</text>
+  <!-- Blockchain → IoT：信任执行（虚线） -->
+  <line x1="1260" y1="610" x2="542" y2="610" stroke="#2563EB" stroke-width="2.3" stroke-dasharray="7 5" marker-end="url(#ah-blue)"/>
+  <text x="900" y="688" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">信任执行</text>
+  <text x="900" y="712" font-size="10.5" fill="#475569" text-anchor="middle">预言机与智能合约仅触发经鉴权、策略校验和审计的设备操作</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 13-11 IoT 提供可信数据，AI 生成推理结果，区块链完成存证并约束受控执行。</text>
   </svg>
 </svg>
   </main>

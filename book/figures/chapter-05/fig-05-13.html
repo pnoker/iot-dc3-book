@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-13 平台层核心组件：消息队列、时序数据库、规则引擎</title>
+  <title>图 5-13 工厂设备状态监控系统四层架构图（例子）</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,80 +12,115 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
-  <title id="title">图5-13 平台层核心组件：消息队列、时序数据库、规则引擎</title>
-  <desc id="desc">消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响。</desc>
-  <rect width="1200" height="700" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 5-13 工厂设备状态监控系统四层架构图（例子）</title>
+  <desc id="desc">本地硬阈值保障安全，二级告警与常规数据上云进行 AI 分析。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+    <defs>
+      <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="mk-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+    </defs>
+    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-13 工厂设备状态监控系统四层架构图（例子）</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">本地硬阈值保障安全，二级告警与常规数据上云进行 AI 分析。</text>
+    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+    <!-- 数据上行（青绿实线，先画） -->
+    <line x1="140" y1="755" x2="140" y2="215" stroke="#0F766E" stroke-width="2.4" marker-end="url(#mk-teal)"/>
+    <text x="140" y="505" transform="rotate(-90 140 505)" font-size="18" font-weight="600" fill="#0F766E" text-anchor="middle">数据上行</text>
+    <!-- 参数下发（蓝虚线，先画） -->
+    <line x1="1660" y1="215" x2="1660" y2="755" stroke="#2563EB" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-blue)"/>
+    <text x="1660" y="505" transform="rotate(90 1660 505)" font-size="18" font-weight="600" fill="#2563EB" text-anchor="middle">参数下发</text>
+    <!-- 一级阈值 GPIO 紧急停机（橙粗线，本地确定性链路） -->
+    <path d="M1380 575 L1530 575 L1530 760 L1502 760" fill="none" stroke="#F97316" stroke-width="4" marker-end="url(#mk-orange)"/>
+    <text x="1460" y="560" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">一级阈值触发</text>
+    <text x="1562" y="668" transform="rotate(-90 1562 668)" font-size="14" font-weight="600" fill="#C2410C" text-anchor="middle">本地紧急停机（不经云端）</text>
 
-  <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-  </defs>
+    <!-- L4 云层 -->
+    <rect x="300" y="140" width="1200" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="330" y="175" font-size="22" font-weight="700" fill="#0F172A">云层</text>
+    <text x="1470" y="175" font-size="15" font-weight="700" fill="#94A3B8" text-anchor="end">L4</text>
+    <rect x="340" y="192" width="260" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="470" y="222" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">InfluxDB 3.x</text>
+    <text x="470" y="246" font-size="13" fill="#64748B" text-anchor="middle">时序存储 · 冷热分层</text>
+    <rect x="630" y="192" width="260" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="760" y="222" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">AI 异常检测</text>
+    <text x="760" y="246" font-size="13" fill="#64748B" text-anchor="middle">scikit-learn 孤立森林</text>
+    <rect x="920" y="192" width="260" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="1050" y="222" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Grafana 仪表盘</text>
+    <text x="1050" y="246" font-size="13" fill="#64748B" text-anchor="middle">实时曲线 · 历史趋势</text>
+    <rect x="1210" y="192" width="260" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="1340" y="222" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">告警服务</text>
+    <text x="1340" y="246" font-size="13" fill="#64748B" text-anchor="middle">SMTP + 短信 API</text>
 
-  <!-- Title -->
-  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-13 平台层核心组件：消息队列、时序数据库、规则引擎</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">分别解决数据缓冲、高效存储、智能判决，选型决定吞吐、成本与时效</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+    <!-- L3 消息层 -->
+    <rect x="300" y="310" width="1200" height="150" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="330" y="345" font-size="22" font-weight="700" fill="#0F172A">消息层</text>
+    <text x="1470" y="345" font-size="15" font-weight="700" fill="#94A3B8" text-anchor="end">L3</text>
+    <rect x="340" y="362" width="280" height="74" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+    <text x="480" y="392" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">EMQX Edge 桥接</text>
+    <text x="480" y="416" font-size="13" fill="#64748B" text-anchor="middle">MQTT → Kafka 上行</text>
+    <rect x="650" y="362" width="340" height="74" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+    <text x="820" y="392" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Kafka 集群（3 节点）</text>
+    <text x="820" y="416" font-size="13" fill="#64748B" text-anchor="middle">vibration / temperature Topic</text>
+    <rect x="1020" y="362" width="450" height="74" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+    <text x="1245" y="392" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">alarm-command / alarm-events</text>
+    <text x="1245" y="416" font-size="13" fill="#64748B" text-anchor="middle">下行指令 / 告警事件 Topic</text>
 
-  <!-- 消息队列 -->
-  <rect x="80" y="140" width="520" height="380" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <rect x="80" y="140" width="520" height="48" rx="12" fill="#2563EB"/>
-  <rect x="80" y="168" width="520" height="20" fill="#2563EB"/>
-  <text x="340" y="172" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">消息队列：数据缓冲带</text>
-  <text x="116" y="232" font-size="12" fill="#475569">发布/订阅解耦生产与消费</text>
-  <text x="116" y="258" font-size="12" fill="#475569">设备洪峰时后端不被瞬时冲垮</text>
-  <text x="116" y="296" font-size="12" font-weight="700" fill="#0F172A">选型对比</text>
-  <text x="116" y="322" font-size="11" fill="#475569">MQTT Broker：设备端轻量代理，长连接推模式</text>
-  <text x="116" y="348" font-size="11" fill="#475569">Kafka：顺序写磁盘 + 分区，海量后端管道</text>
-  <text x="116" y="374" font-size="11" fill="#475569">RabbitMQ：灵活路由 + 确认，业务集成</text>
-  <text x="116" y="412" font-size="11" fill="#475569">三者不互斥：MQTT 收 → Kafka/RabbitMQ 分发</text>
-  <text x="116" y="452" font-size="11" fill="#64748B">通常最先选型，决定抗洪峰能力</text>
+    <!-- L2 边缘层 -->
+    <rect x="300" y="480" width="1200" height="170" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="330" y="515" font-size="22" font-weight="700" fill="#0F172A">边缘层</text>
+    <text x="1470" y="515" font-size="15" font-weight="700" fill="#94A3B8" text-anchor="end">L2</text>
+    <rect x="340" y="535" width="230" height="88" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="455" y="570" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Node-RED</text>
+    <text x="455" y="598" font-size="13" fill="#64748B" text-anchor="middle">解析 + 两级阈值判断</text>
+    <rect x="600" y="535" width="230" height="88" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="715" y="570" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">Mosquitto</text>
+    <text x="715" y="598" font-size="13" fill="#64748B" text-anchor="middle">MQTT Broker</text>
+    <rect x="860" y="535" width="230" height="88" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="975" y="570" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">SQLite 缓存</text>
+    <text x="975" y="598" font-size="13" fill="#64748B" text-anchor="middle">断网本地缓存</text>
+    <rect x="1120" y="535" width="260" height="88" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
+    <text x="1250" y="570" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">GPIO 紧急停机</text>
+    <text x="1250" y="598" font-size="13" fill="#C2410C" text-anchor="middle">一级阈值本地输出</text>
 
-  <line x1="600" y1="330" x2="632" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <!-- L1 设备层 -->
+    <rect x="300" y="670" width="1200" height="170" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="330" y="705" font-size="22" font-weight="700" fill="#0F172A">设备层</text>
+    <text x="1470" y="705" font-size="15" font-weight="700" fill="#94A3B8" text-anchor="end">L1</text>
+    <circle cx="375" cy="760" r="20" fill="#0F766E"/>
+    <text x="375" y="766" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">M</text>
+    <circle cx="425" cy="760" r="20" fill="#0F766E"/>
+    <text x="425" y="766" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">M</text>
+    <circle cx="475" cy="760" r="20" fill="#0F766E"/>
+    <text x="475" y="766" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">M</text>
+    <text x="520" y="765" font-size="14" font-weight="700" fill="#0F766E">×30 台电机</text>
+    <rect x="600" y="725" width="230" height="80" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="715" y="760" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">三轴加速度计</text>
+    <text x="715" y="786" font-size="13" fill="#64748B" text-anchor="middle">振动采集</text>
+    <rect x="860" y="725" width="240" height="80" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="980" y="760" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">PT100 温度传感器</text>
+    <text x="980" y="786" font-size="13" fill="#64748B" text-anchor="middle">温度采集</text>
+    <rect x="1130" y="725" width="270" height="80" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.4"/>
+    <text x="1265" y="760" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus RTU RS-485</text>
+    <text x="1265" y="786" font-size="13" fill="#64748B" text-anchor="middle">9600 bps 总线</text>
 
-  <!-- 时序数据库 -->
-  <rect x="632" y="140" width="520" height="380" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <rect x="632" y="140" width="520" height="48" rx="12" fill="#16A34A"/>
-  <rect x="632" y="168" width="520" height="20" fill="#16A34A"/>
-  <text x="892" y="172" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">时序数据库：专为时间印记优化</text>
-  <text x="668" y="232" font-size="12" fill="#475569">数据点 = 时间戳 + 标签 + 数值字段</text>
-  <text x="668" y="258" font-size="12" fill="#475569">改存储引擎 + 极致写入压缩</text>
-  <text x="668" y="296" font-size="12" font-weight="700" fill="#0F172A">两条技术路线</text>
-  <text x="668" y="322" font-size="11" fill="#475569">InfluxDB：TSM 引擎（LSM 变体）+ WAL</text>
-  <text x="668" y="348" font-size="11" fill="#475569">差分编码 + delta-of-delta 压缩，TICK 生态</text>
-  <text x="668" y="374" font-size="11" fill="#475569">TimescaleDB：基于 PostgreSQL，超表按时间分 Chunk</text>
-  <text x="668" y="412" font-size="11" fill="#475569">SQL 兼容好，查询只扫涉及分区</text>
-  <text x="668" y="452" font-size="11" fill="#64748B">压缩比决定硬件成本与查询性能</text>
+    <!-- 图例 -->
+    <line x1="320" y1="896" x2="370" y2="896" stroke="#0F766E" stroke-width="2.4" marker-end="url(#mk-teal)"/>
+    <text x="382" y="902" font-size="15" fill="#475569">传感器数据上行流</text>
+    <line x1="640" y1="896" x2="690" y2="896" stroke="#F97316" stroke-width="4" marker-end="url(#mk-orange)"/>
+    <text x="702" y="902" font-size="15" fill="#475569">本地紧急停机控制流（不经云端）</text>
+    <line x1="1070" y1="896" x2="1120" y2="896" stroke="#2563EB" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-blue)"/>
+    <text x="1132" y="902" font-size="15" fill="#475569">云端指令下行流</text>
+    <circle cx="1450" cy="896" r="7" fill="#16A34A"/>
+    <text x="1464" y="902" font-size="15" fill="#475569">正常</text>
+    <circle cx="1560" cy="896" r="7" fill="#D97706"/>
+    <text x="1574" y="902" font-size="15" fill="#475569">预警（二级阈值）</text>
 
-  <line x1="1152" y1="330" x2="1184" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-
-  <!-- 规则引擎 -->
-  <rect x="1184" y="140" width="536" height="380" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <rect x="1184" y="140" width="536" height="48" rx="12" fill="#F97316"/>
-  <rect x="1184" y="168" width="536" height="20" fill="#F97316"/>
-  <text x="1452" y="172" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">规则引擎：从阈值到 CEP</text>
-  <text x="1220" y="232" font-size="12" fill="#475569">简单阈值：温度超 80℃ 告警</text>
-  <text x="1220" y="258" font-size="12" fill="#475569">CEP：时间窗口内多事件模式匹配</text>
-  <text x="1220" y="296" font-size="12" font-weight="700" fill="#0F172A">两种部署形态</text>
-  <text x="1220" y="322" font-size="11" fill="#475569">边缘：毫秒级响应（切断危险电源）</text>
-  <text x="1220" y="348" font-size="11" fill="#475569">云端：分析跨度大、依赖历史数据</text>
-  <text x="1220" y="374" font-size="11" fill="#475569">例：5 分钟内三次电流尖峰 + 温度上升 → 轴承故障</text>
-  <text x="1220" y="412" font-size="11" fill="#475569">规则引擎解决确定性逻辑</text>
-  <text x="1220" y="452" font-size="11" fill="#64748B">AI 解决非确定性模式，两者互补</text>
-
-  <!-- 选型相互影响 -->
-  <rect x="80" y="590" width="1640" height="160" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="622" font-size="14" font-weight="700" fill="#334155">三组件选型相互影响</text>
-  <text x="120" y="656" font-size="12" fill="#475569">消息队列吞吐 → 决定时序数据库写入压力 · 规则引擎实时性 → 依赖队列延迟</text>
-  <text x="120" y="682" font-size="12" fill="#475569">工程顺序：消息队列最先选型（抗洪峰）→ 时序数据库压缩比定硬件成本 → 规则引擎按延迟要求确认是否下放边缘</text>
-  <text x="120" y="708" font-size="12" fill="#475569">IoT DC3 落地：采集值封装位号值对象 → 写入时序库 → 经消息队列缓冲 → 规则引擎消费</text>
-  <text x="120" y="734" font-size="11" fill="#64748B">组件选型是通用工程决策，与具体平台无关；时序库权衡见 5.4 节，完整落地见第 14 章</text>
-
-  <!-- Caption -->
-  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图5-13 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-13 工厂设备状态监控系统四层架构图：安全停机留在边缘确定性链路，云端负责长期分析、告警通知与参数管理。</text>
   </svg>
 </svg>
   </main>

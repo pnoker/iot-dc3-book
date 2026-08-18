@@ -1,172 +1,163 @@
-type: flowchart
-title: 图10-8 预测性维护闭环数据流（示意）
-purpose: 展示从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式和决策点。
-audience_takeaway: 读者应理解闭环中每层的职责边界与数据形态变化，工单生成不是终点而是反馈起点。
-visual_focus: 从左到右的主链路（采集→特征提取→健康评估→决策→执行），以及从执行返回采集的虚线反馈回路。
-design_level: implementation
-layout: 从左到右流水线，五层模块串联，底部一条虚线反馈回路。
+type: architecture
+title: 图 10-8 AI模型部署架构（从训练到边缘推理）
+audience_takeaway: 读者应理解模型仓库一份模型可同时服务REST与专用推理,边缘只跑裁剪模型且仅上报结果,与云端分工避免重复工单。
+purpose: 展示模型从训练环境产出、导出、部署到推理服务并接入IoT DC3平台的完整链路。
+visual_focus: 从训练阶段经模型仓库到推理服务的主链路，以及边缘推理节点本地推理后上报结果到数据中心的虚线路径。
+design_level: logical
+layout: 从左至右三段式：训练阶段（建模平台）→ 推理阶段（服务层）→ 集成阶段（IoT DC3与边缘层）。
 elements:
-- 采集层：PLC/振动传感器 → 位号值流（PointValue）
-- 特征提取层：时域（RMS、峰值、峭度）+ 频域（FFT包络谱）→ 特征向量（FeatureVector）
-- 健康评估层：健康指数HI + RUL预测（天/小时），含置信区间
-- 决策层：规则引擎 + 人工确认接口 → 维护建议（动作+优先级+窗口）
-- 执行层：工单系统API → MES/ERP → 排程变更 → 现场执行 → 回执
+- 训练阶段：Jupyter/MLflow环境中导出ONNX或PMML模型文件。
+- 模型仓库：存放导出的模型文件及其版本元信息。
+- 推理服务：包括REST端点（Flask/FastAPI）和专用推理服务器（TensorFlow Serving / Triton），接收请求并返回预测。
+- IoT DC3数据中心：存储实时位号值，供推理服务拉取。
+- 边缘推理节点：在设备侧或网关侧运行精简模型，接收实时数据并输出结果。
+- 规则引擎：接收推理结果，触发告警或工单。
 relationships:
-- 采集层 → 特征提取层：流式批处理，窗口大小视采样频率和故障特征频段而定
-- 特征提取层 → 健康评估层：特征向量输入模型（ONNX推理）
-- 健康评估层 → 决策层：HI低于预警线或RUL进入风险窗口时触发规则
-- 决策层 → 执行层：通过工单API创建工单，含设备ID、措施、计划开工时间
-- 执行层 → 采集层（反馈）：执行结果（已完成/未完成/备件缺货）回写设备档案
+- 训练阶段导出模型文件存入模型仓库，实线箭头。
+- 推理服务从模型仓库加载模型版本，实线箭头。
+- IoT DC3数据中心通过消息队列/API向推理服务推送或提供实时数据，虚线箭头。
+- 推理服务将预测结果写回IoT DC3数据中心或直接推送给规则引擎，虚线箭头。
+- 边缘推理节点本地推理后上报结果到数据中心，虚线箭头。
 regions:
-- id: edge_domain
-  label: 设备与边缘域
-  role: 现场异构资源边界
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
-- id: intelligence_domain
-  label: 智能决策域
-  role: 模型、规则与Agent边界
+- id: training_region
+  label: 模型训练域
+  role: 开发与离线训练环境
+- id: serve_region
+  label: 模型推理域
+  role: 在线推理与版本管理
+- id: platform_region
+  label: IoT平台域
+  role: 数据存储与规则编排
+- id: edge_region
+  label: 边缘推理域
+  role: 靠近设备的本地推理
 components:
-- id: acquisition
-  label: 采集层
-  type: edge
-  subtitle: 位号值流
-  group: edge_domain
-  priority: primary
-  shape: card
-- id: feature_extract
-  label: 特征提取层
-  type: platform
-  subtitle: 时域/频域特征
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: health_estimate
-  label: 健康评估层
+- id: dev_env
+  label: 建模与导出
   type: ai
-  subtitle: HI+RUL概率
-  group: intelligence_domain
-  priority: primary
-  shape: card
-- id: decision
-  label: 决策层
-  type: ai
-  subtitle: 规则+人工确认
-  group: intelligence_domain
-  priority: primary
-  shape: decision
-- id: execution
-  label: 执行层
-  type: platform
-  subtitle: 工单API→MES
-  group: platform_domain
+  subtitle: Jupyter / MLflow
+  group: training_region
   priority: normal
   shape: card
-- id: feedback
-  label: 反馈回路
-  type: edge
-  subtitle: 结果回写
-  group: edge_domain
+- id: model_registry
+  label: 模型仓库
+  type: data
+  subtitle: ONNX / PMML
+  group: training_region
   priority: normal
+  shape: database
+- id: inference_rest
+  label: REST端点
+  type: ai
+  subtitle: Flask / FastAPI
+  group: serve_region
+  priority: normal
+  shape: card
+- id: inference_dedicated
+  label: 专用推理
+  type: ai
+  subtitle: TF Serving / Triton
+  group: serve_region
+  priority: primary
+  shape: card
+- id: iotdc3_data
+  label: IoT DC3数据
+  type: data
+  subtitle: 时序 / 状态
+  group: platform_region
+  priority: primary
+  shape: database
+- id: rule_engine
+  label: 规则引擎
+  type: platform
+  subtitle: 告警 / 工单
+  group: platform_region
+  priority: primary
+  shape: card
+- id: edge_inference
+  label: 边缘推理
+  type: edge
+  subtitle: 裁剪模型
+  group: edge_region
+  priority: primary
   shape: card
 connections:
-- from: acquisition
-  to: feature_extract
-  label: PointValue
+- from: dev_env
+  to: model_registry
+  label: 导出
   style: solid
   direction: left-to-right
-- from: feature_extract
-  to: health_estimate
-  label: FeatureVector
+- from: model_registry
+  to: inference_rest
+  label: 加载
   style: solid
   direction: left-to-right
-- from: health_estimate
-  to: decision
-  label: HI+RUL
+- from: model_registry
+  to: inference_dedicated
+  label: 加载
   style: solid
   direction: left-to-right
-- from: decision
-  to: execution
-  label: MaintenanceOrder
-  style: solid
+- from: iotdc3_data
+  to: inference_dedicated
+  label: 上下文输入
+  style: dashed
   direction: left-to-right
-- from: execution
-  to: feedback
-  label: 结果回执
+- from: inference_dedicated
+  to: rule_engine
+  label: 预测结果
+  style: dashed
+  direction: left-to-right
+- from: edge_inference
+  to: iotdc3_data
+  label: 上报结果
+  style: dashed
+  direction: bottom-to-top
+- from: inference_rest
+  to: rule_engine
+  label: 结果
   style: dashed
   direction: left-to-right
 callouts:
-- 决策层的“人工确认”接口是可选项：当HI或RUL处于临界区时，先通知工程师确认再生成工单，避免误报。
-- 反馈回路的价值：工单执行结果用于校准HI阈值和异常度量指标，形成持续改进的闭环。
+- 模型仓库可同时服务多个推理服务，避免重复部署。
+- 边缘推理节点与云端推理服务应避免对同一设备发出重复工单。
 legend:
-- 蓝色：平台服务域；青绿色：设备与边缘域；橙色：AI智能决策域。
-- 实线箭头：确定性数据流；虚线箭头：反馈回路。
+- 蓝色=IoT DC3平台服务层；青绿色=边缘与设备侧；橙色=AI模型与推理能力；灰色=模型仓库与外部依赖。
 visual_constraints:
-- 节点标签用短名词；长解释放入callouts。
-- 图例放在底部，不遮挡主体。
-- 箭头标注数据格式缩写（PointValue、FeatureVector、HI、MaintenanceOrder）。
-render_notes: HTML/SVG渲染，浅色背景，圆角矩形箭头，颜色遵循调色板约定。反馈回路用虚线加粗表示。
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景，三段式布局。训练阶段使用橙色块，推理服务使用蓝色块，边缘层使用青绿色块。数据流使用带标签的虚线箭头。
 caption:
-  zh: 图10-8 预测性维护闭环的典型数据流（示意）：从原始振动信号到维护工单生成，经过五层转换，每层都有明确的输入输出格式和系统边界。图中阈值和窗口为示例，需根据具体设备校准。
-  en: 'Figure 10-8 Typical data flow of the predictive maintenance closed loop (illustrative): from raw vibration signals to maintenance work order generation, through five transformation layers, each with explicit input/output formats and system boundaries. Thresholds and windows in the figure are examples and must be calibrated for each device.'
+  zh: 图 10-8 AI模型部署架构：从训练环境到工业物联网平台的完整链路，涉及模型导出、推理服务化和与IoT DC3的集成。
+  en: 'Figure 10-8 AI model deployment architecture: the complete chain from the training environment to the industrial IoT platform, covering model export, model serving, and integration with IoT DC3.'
 labels:
   en:
-    图10-8 预测性维护闭环数据流（示意）: Figure 10-8 Predictive Maintenance Closed-Loop Data Flow (Illustrative)
-    展示从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式与决策点；执行结果沿虚线反馈回路回写设备档案，形成持续改进的闭环。: The full data transformation path from acquisition to work order execution, with output formats and decision points per hop; results return along the dashed loop into device records, closing a continuous improvement cycle.
-    从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式与决策点；工单生成不是终点，而是反馈起点。: The full path from acquisition to execution with formats and decision points per hop; the work order is not the end, but the start of feedback.
-    设备与边缘域: Device & Edge Domain
-    现场异构资源边界: Heterogeneous field asset boundary
-    平台服务域: Platform Service Domain
-    核心服务能力边界: Core service capability boundary
-    智能决策域: Intelligence Domain
-    模型 · 规则 · Agent: Models · Rules · Agents
-    采集层: Acquisition Layer
-    边缘域: Edge domain
-    位号值流: PointValue stream
-    PLC / 振动传感器: PLC / vibration sensors
-    信号 → 位号值流: Signal → PointValue stream
-    输出格式: Output format
-    特征提取层: Feature Extraction Layer
-    平台域: Platform domain
-    时域 / 频域特征: Time / frequency features
-    时域：RMS · 峰值 · 峭度: 'Time: RMS · peak · kurtosis'
-    频域：FFT 包络谱: 'Frequency: FFT envelope spectrum'
-    健康评估层: Health Assessment Layer
-    智能域: Intelligence domain
-    HI + RUL 概率: HI + RUL probabilities
-    健康指数 HI: Health Index (HI)
-    RUL 预测（天 / 小时）: RUL forecast (days / hours)
-    含置信区间 · 输出格式: With CI · output format
-    决策层: Decision Layer
+    图 10-8 AI模型部署架构（从训练到边缘推理）: Figure 10-8 AI Model Deployment Architecture (Training to Edge Inference)
+    模型仓库中的同一版本可供 REST 与专用推理服务加载；边缘仅运行裁剪模型并上报结果，需避免与平台推理产生重复工单。: The same registry version serves both REST and dedicated inference; the edge runs only a pruned model and reports results, avoiding duplicate work orders with the platform.
+    模型训练域: Model Training Domain
+    模型推理域: Model Inference Domain
+    IoT平台域: IoT Platform Domain
+    边缘推理域: Edge Inference Domain
+    导出: Export
+    加载: Load
+    上下文输入: Context input
+    预测结果: Predictions
+    上报结果: Report results
+    结果: Results
+    建模与导出: Modeling & Export
+    模型仓库: Model Registry
+    REST端点: REST Endpoint
+    专用推理: Dedicated Inference
+    IoT DC3数据: IoT DC3 Data
+    时序 / 状态: Time-series / State
     规则引擎: Rule Engine
-    人工确认（可选）: Human confirmation (optional)
-    → 维护建议: → Maintenance advice
-    执行层: Execution Layer
-    工单 API → MES: Work Order API → MES
-    工单系统 API: Work order system API
-    → MES / ERP → 排程变更: → MES / ERP → reschedule
-    → 现场执行 → 回执: → field execution → receipt
-    工单回执: Work order receipt
-    反馈回路: Feedback Loop
-    结果回写: Result write-back
-    执行结果回写设备档案: Execution results written to device records
-    （已完成 / 未完成 / 备件缺货）: (done / not done / parts shortage)
-    结果回执: Result receipt
-    回写设备档案: Write back to device records
-    采集 → 特征：流式批处理: 'Acquisition → features: streaming windows'
-    窗口大小视采样频率与: Window size is set by sampling rate
-    故障特征频段而定: and fault frequency bands
-    人工确认接口（可选）: Human confirmation (optional)
-    当 HI 或 RUL 处于临界区时，先通知工程师: When HI or RUL nears the critical zone, notify an engineer first;
-    确认后再生成工单，避免误报。: confirm before creating the work order to avoid false alarms.
-    维护建议 = 动作 + 优先级 + 窗口: Advice = action + priority + window
-    反馈回路的价值: Value of the feedback loop
-    执行结果用于校准 HI 阈值: Execution results recalibrate HI thresholds
-    与异常度量指标，形成持续: and anomaly metrics, forming a loop
-    改进的闭环。: of continuous improvement.
-    青绿=设备与边缘域: Teal = device & edge domain
-    蓝=平台服务域: Blue = platform service domain
-    橙=智能决策域: Orange = intelligence domain
-    实线箭头=确定性数据流 · 虚线加粗箭头=反馈回路: Solid arrows = deterministic data flow · thick dashed = feedback loop
-    图10-8 预测性维护闭环的典型数据流（示意）：从原始振动信号到维护工单生成，经过五层转换，每层都有明确的输入输出格式和系统边界。图中阈值和窗口为示例，需根据具体设备校准。: 'Figure 10-8 Typical data flow of the predictive maintenance closed loop (illustrative): from raw vibration signals to maintenance work order generation, through five transformation layers, each with explicit input/output formats and system boundaries. Thresholds and windows in the figure are examples and must be calibrated for each device.'
+    告警 / 工单: Alarms / Work Orders
+    边缘推理: Edge Inference
+    裁剪模型: Pruned model
+    一份模型，多种服务形态: One model, many serving forms
+    模型仓库统一版本，REST 与专用推理服务按部署需要分别加载。: The registry versions once; REST and dedicated servers load per deployment needs.
+    边缘与平台去重: Edge–platform dedup
+    同一设备、同一窗口只允许一个工单决策源，边缘仅上报结果。: One device, one window, one decision source; the edge only reports results.
+    蓝=平台服务　青绿=边缘推理　橙=模型与推理　灰=模型仓库: Blue=platform · teal=edge inference · orange=model & inference · gray=registry
+    实线=模型制品流　虚线=实时上下文或推理结果: Solid=model artifacts · dashed=real-time context or results
+    图 10-8 AI模型部署架构：模型由训练环境导出并进入版本仓库，平台推理服务消费实时上下文，边缘节点仅上报本地推理结果，最终由规则引擎统一触发告警或工单。: 'Figure 10-8 AI model deployment architecture: models are exported from training into a versioned registry, platform inference consumes real-time context, edge nodes only report local results, and the rule engine triggers alarms or work orders.'

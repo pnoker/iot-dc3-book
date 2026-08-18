@@ -1,127 +1,49 @@
-type: dataflow
-title: 图5-9 Kappa架构示意图
-audience_takeaway: 读者应理解Kappa用单一流管道同时覆盖实时与历史：消息总线持久化原始流，历史分析靠Time Travel回放而非另建批管道，省去Lambda双管道维护。
-purpose: 展示Kappa架构如何通过单一流处理管道兼容实时与历史分析
-visual_focus: 从数据源到结果输出：持续输出的主链路。
-design_level: implementation
-layout: 单行流向布局，左中右三列
+type: layered
+title: 图 5-9 数据生命周期管理：保留策略与冷热分层
+audience_takeaway: 读者应理解保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储，分片迁移避免拖慢数据库。
+purpose: 展示数据生命周期管理的保留策略与冷热分层
+visual_focus: 保留策略三级与冷热分层三层。
+design_level: layered
+layout: 上半保留策略三级，下半冷热分层三层
 elements:
-- 左侧 '数据源' 圆角矩形节点（标记'传感器/设备/MQTT代理'），引出两条实线箭头。
-- 第一条实线箭头直接向下连接到 '实时流处理' 菱形节点（标注'Flink / Kafka Streams'）。
-- 第二条实线箭头从数据源出发，先指向一个中间存储（标记'消息总线 / Kafka Topic'），然后从该存储引出实线箭头同样汇入同一菱形节点。
-- 菱形节点下方引出一条虚线箭头回头指向自己，标注'历史回放（Time Travel）'。
-- 菱形节点右侧引出实线箭头指向 '结果输出' 圆角矩形（告警系统 / Dashboard / 时序数据库）。
+- 保留策略：原始 10 秒级 7 天、分钟级 30 天、小时级 12 个月
+- 热存储：最近 7 天 NVMe/SSD，毫秒级，实时大盘
+- 温存储：8 天~3 个月 HDD/SSD，月度报表
+- 冷存储：超 3 个月对象存储，Parquet/Avro 分区，批量训练
 relationships:
-- 数据源→实时流处理：实时数据流
-- 数据源→消息总线→实时流处理：持久化数据流
-- 实时流处理→历史回放：事件时间回溯
-- 实时流处理→结果输出：持续输出
-regions:
-- id: data_domain
-  label: 数据资产域
-  role: 数据沉淀与治理边界
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
-components:
-- id: r1
-  label: 数据源
-  type: data
-  subtitle: ''
-  group: data_domain
-  priority: primary
-  shape: database
-- id: r2
-  label: 实时流处理：实时数据流
-  type: data
-  subtitle: ''
-  group: data_domain
-  priority: normal
-  shape: database
-- id: r3
-  label: 消息总线→实时流处理：持久化数据流
-  type: data
-  subtitle: ''
-  group: data_domain
-  priority: normal
-  shape: database
-- id: r4
-  label: 实时流处理
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r5
-  label: 历史回放：事件时间回溯
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r6
-  label: 结果输出：持续输出
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-connections:
-- from: r1
-  to: r2
-  label: 数据源→实时流处理：实时数据流
-  style: solid
-  direction: request
-- from: r1
-  to: r3
-  label: 数据源→消息总线→实时流处理：持久…
-  style: solid
-  direction: request
-- from: r4
-  to: r5
-  label: 实时流处理→历史回放：事件时间回溯
-  style: dashed
-  direction: event
-- from: r4
-  to: r6
-  label: 实时流处理→结果输出：持续输出
-  style: solid
-  direction: request
-callouts:
-- 数据源→实时流处理：实时数据流
-- 数据源→消息总线→实时流处理：持久化数据流
-- 实时流处理→历史回放：事件时间回溯
-legend:
-- 实线箭头：实时数据流
-- 虚线箭头：历史数据回放
-- 圆角矩形：数据源或数据槽
-- 菱形节点：核心计算引擎
-visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-- 优先表达边界和主链路，不把所有概念塞进一张图。
-render_notes: 菱形节点采用蓝绿色，虚线箭头使用灰色；数据源和输出端用浅色圆角矩形；所有箭头带文字标签。
+- 数据价值随访问频率递减，按价值分层付费；分片迁移在低峰分批执行
+render_notes: HTML/SVG 渲染，保留策略三级 + 冷热分层三层，红橙蓝分层。
 caption:
-  zh: Kappa架构通过单一流处理管道完成所有计算，历史数据的批量分析通过回放流（replay）实现，消除了Lambda架构并行维护两条管道的成本。
-  en: 'The Kappa architecture completes all computation through a single stream-processing pipeline; batch analysis of historical data is achieved by replaying the stream, eliminating the cost of maintaining two parallel pipelines as in the Lambda architecture.'
+  zh: 图 5-9 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。
+  en: 'Figure 5-9 Retention policies set expiry per data granularity, and hot/warm/cold tiering places data by access frequency across three storage tiers; shard migration runs in throttled batches at off-peak hours so it never drags database response down.'
 labels:
   en:
-    图5-9 Kappa 架构示意图: Figure 5-9 Kappa Architecture
-    原始流持久化后，实时与历史计算复用同一处理管道。: Once the raw stream is persisted, real-time and historical computation reuse the same pipeline.
-    单一流处理管道（实时与历史复用同一引擎）: Single pipeline (real-time & history share one engine)
-    实时数据流: Real-time data stream
-    持久化原始流: Persisted raw stream
-    历史回放（Time Travel）: Historical Replay (Time Travel)
-    持续输出: Continuous output
-    数据源: Data Sources
-    传感器 / 设备: Sensors / Devices
-    MQTT 代理: MQTT Broker
-    消息总线: Message Bus
-    实时流处理: Real-Time Stream Processing
-    结果输出: Results
-    告警系统: Alarm System
-    Dashboard · 时序库: Dashboard · Time-Series DB
-    实线箭头：实时数据流: 'Solid arrows: real-time data stream'
-    虚线箭头：历史数据回放（replay）: 'Dashed arrows: historical replay'
-    历史分析靠回放，而非另建批管道: History by replay, no batch pipeline
-    图5-9 Kappa 架构通过单一流处理管道完成所有计算：历史数据经 Time Travel 回放实现，消除了 Lambda 架构并行维护两条管道的成本。: 'Figure 5-9 The Kappa architecture runs all computation in a single stream-processing pipeline: historical data is handled via Time Travel replay, eliminating the cost of maintaining two parallel pipelines as in the Lambda architecture.'
+    图 5-9 数据生命周期管理：保留策略与冷热分层: 'Figure 5-9 Data Lifecycle: Retention & Hot/Cold Tiering'
+    保留策略按价值设定过期时长，冷热分层把数据按访问频率放到不同性价比的存储介质。: Retention sets expiry by value; tiering places data on storage media whose cost matches access frequency.
+    让每一字节数据按它的查询价值来付费: Pay for every byte according to its query value
+    保留策略：不同粒度设定独立保留时长: 'Retention: independent durations per granularity'
+    原始 10 秒级数据: Raw 10-second data
+    服务实时告警与故障排查: Real-time alarms, troubleshooting
+    保留 7 天: Keep 7 days
+    分钟级聚合数据: Minute-level aggregates
+    用于周报: For weekly reports
+    保留 30 天: Keep 30 days
+    小时级聚合数据: Hourly aggregates
+    用于年度趋势分析: For yearly trend analysis
+    保留 12 个月: Keep 12 months
+    冷热分层：按访问频率放在不同性价比的存储介质: 'Tiering: storage media matched to access frequency'
+    热存储: Hot Storage
+    最近 7 天 · 本地 NVMe / SSD: Last 7 Days · Local NVMe / SSD
+    响应仪表盘毫秒级查询，访问频繁: Millisecond dashboard queries, frequent access
+    时序数据库原生格式，单位成本相对较高: Native time-series format, higher unit cost
+    实时大盘、告警触发: Live dashboards, alarm triggers
+    温存储: Warm Storage
+    8 天～3 个月 · 普通 HDD / SSD: 8 Days ~ 3 Months · HDD / SSD
+    用于月度报表，访问频度中等: Monthly reports, medium access frequency
+    月度报表: Monthly reports
+    冷存储: Cold Storage
+    超过 3 个月 · 对象存储（MinIO / S3 兼容）: Over 3 Months · Object Storage (MinIO / S3)
+    Parquet / Avro 列式格式，按时间分区，查询只加载对应分区: Parquet / Avro columnar, time-partitioned; loads only needed partitions
+    用于季度回顾或算法模型训练，访问极少: Quarterly reviews or model training, rarely accessed
+    历史分析、批量训练: Historical analysis, batch training
+    图 5-9 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。: Figure 5-9 Retention policies set expiry per data granularity, and hot/warm/cold tiering places data by access frequency across three storage tiers; shard migration runs in throttled batches at off-peak hours so it never drags database response down.

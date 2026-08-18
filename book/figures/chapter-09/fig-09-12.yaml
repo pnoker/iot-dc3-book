@@ -1,50 +1,151 @@
-type: sequence
-title: 图9-12 MCP 消息模型与能力描述边界
-audience_takeaway: 读者应理解 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。
-purpose: 展示 MCP 消息模型、能力协商与能力描述的责任边界
-visual_focus: initialize 协商与三类能力卡片。
-design_level: sequence
-layout: 上半 Client-Server 能力协商，中部三类能力卡片，底部责任边界
+type: layered
+title: 图 9-12 协议适配网关分层架构
+purpose: 展示协议适配网关的通用三层架构，解释每层的职能和消息流转路径。
+audience_takeaway: 读者应理解协议适配网关不是简单的协议转换器，而是具有分层职责边界：适配层负责协议特有收发，路由与转换层做语义映射，统一接口层屏蔽差异。
+visual_focus: 路由与转换层作为核心决策节点，连接上下层；适配层用模块化框强调可扩展性。
+design_level: logical
+layout: 垂直堆叠三层：适配层、路由与转换层、统一接口层。每层内包含多个模块框，模块间用箭头表示消息流。
 elements:
-- JSON-RPC 2.0 载体，initialize 请求开始能力协商
-- tools：模型可调用动作 + JSON Schema 输入参数
-- resources：client 读取的上下文资源
-- prompts：可参数化提示模板
-- 责任边界：WoT TD 负责属性/单位/协议，MCP 补充权限、风险等级、幂等策略
+- MQTT、CoAP、HTTP 与 LwM2M 适配器
+- 转换引擎与消息路由器
+- 统一 API 与标准化 Broker 入口
 relationships:
-- initialize 协商后进入操作阶段；三类能力由 Server 声明；能力描述是安全代理的接口合约
-render_notes: HTML/SVG 渲染，Client-Server 协商 + 三类能力卡片 + 责任边界，蓝绿橙分层。
+- 协议适配器 → 转换引擎：提交协议特有报文进行格式和语义映射
+- 转换引擎 → 消息路由器 → 统一接口：输出路由后的标准化消息
+- 统一接口 → 转换引擎 → 协议适配器：将配置与控制按映射规则下发
+regions:
+- id: adapter_layer
+  label: 适配层
+  role: 协议特有连接管理和字节流收发
+- id: route_layer
+  label: 路由与转换层
+  role: 格式与语义映射、消息路由决策
+- id: interface_layer
+  label: 统一接口层
+  role: 向上层应用屏蔽协议差异
+components:
+- id: mqtt_adapter
+  label: MQTT Adapter
+  type: edge
+  subtitle: TCP长连接/QoS
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: coap_adapter
+  label: CoAP Adapter
+  type: edge
+  subtitle: UDP端/CON/NON
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: http_adapter
+  label: HTTP Adapter
+  type: edge
+  subtitle: 请求-响应/认证
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: lwm2m_adapter
+  label: LwM2M Adapter
+  type: edge
+  subtitle: 对象/资源模型
+  group: adapter_layer
+  priority: normal
+  shape: card
+- id: conversion_engine
+  label: 转换引擎
+  type: platform
+  subtitle: 协议映射表/规则
+  group: route_layer
+  priority: primary
+  shape: card
+- id: message_router
+  label: 消息路由器
+  type: platform
+  subtitle: 路由决策/负载
+  group: route_layer
+  priority: primary
+  shape: card
+- id: unified_api
+  label: 统一接口层
+  type: platform
+  subtitle: REST API / Broker
+  group: interface_layer
+  priority: primary
+  shape: card
+connections:
+- from: mqtt_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: coap_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: http_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: lwm2m_adapter
+  to: conversion_engine
+  label: 消息转发
+  style: solid
+  direction: bottom-to-top
+- from: conversion_engine
+  to: message_router
+  label: 映射后消息
+  style: solid
+  direction: bottom-to-top
+- from: message_router
+  to: unified_api
+  label: 标准化消息
+  style: solid
+  direction: bottom-to-top
+- from: conversion_engine
+  to: mqtt_adapter
+  label: 配置/控制
+  style: dashed
+  direction: top-to-bottom
+callouts:
+- 适配层每个适配器是独立进程，可水平扩展
+- 转换引擎是性能瓶颈，建议独立部署并设置资源限制
+- 统一接口层稳定是上层应用不做协议感知的前提
+legend:
+- 实线=消息流；虚线=配置/控制信号
+- 蓝色=适配层；绿色=路由与转换层；橙色=统一接口层
+render_notes: HTML/SVG 渲染，C4 Container 图风格。三层垂直堆叠，每层用浅灰色背景区域包裹，模块框居中文字 12px，图例右下角圆点标记。
+visual_constraints:
+- 最多 7 个主节点，适配层用四个卡片表示
+- 连接箭头 label 短，解释放入 callouts
 caption:
-  zh: 图9-12 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力；能力描述本质是安全代理的接口合约，权限、风险等级与幂等策略由平台层补充。
-  en: Figure 9-12 MCP rides on JSON-RPC 2.0 and, after initialize negotiation, exposes three capability types — tools/resources/prompts; a capability description is essentially the interface contract for secure proxying, with permissions, risk levels, and idempotency policy supplied by the platform layer.
+  zh: 图 9-12 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。
+  en: 'Figure 9-12 The generic three-layer architecture of a protocol adaptation gateway. Abstraction rises layer by layer: the adapter layer manages protocol connections and byte-stream I/O, the routing and conversion layer performs format and semantic mapping, and the unified interface layer hides the differences from upper layers.'
 labels:
   en:
-    图9-12 MCP 消息模型与能力描述边界: Figure 9-12 MCP Message Model and Capability Boundary
-    MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。: MCP rides on JSON-RPC 2.0; after initialize negotiation it exposes tools/resources/prompts — capability descriptions are the interface contract for secure proxying.
-    MCP 只解决一个问题：AI 应用如何发现并调用外部能力: 'MCP solves one problem: how AI apps discover and invoke external capabilities'
-    发送协议版本与 capabilities: Sends protocol version and capabilities
-    不持过期清单跨会话复用: No stale lists reused across sessions
-    返回版本 + capabilities + 扩展: Returns version + capabilities + extensions
-    每次新会话重新校验: Re-validated at every new session
-    initialize 请求（JSON-RPC 2.0）: initialize request (JSON-RPC 2.0)
-    响应：protocolVersion + capabilities: 'Response: protocolVersion + capabilities'
-    Server 声明的三类核心能力: Three core capabilities declared by the server
-    tools 工具: tools
-    模型可调用的动作: Actions the model can call
-    声明 name、description、JSON Schema 输入参数: Declares name, description, JSON Schema inputs
-    例：iot_read_point(deviceId, pointId): e.g. iot_read_point(deviceId, pointId)
-    resources 资源: resources
-    client 读取的上下文资源: Context resources read by the client
-    设备说明、历史摘要、文档: Device docs, history summaries, documents
-    支持 URI 模式匹配: Supports URI pattern matching
-    prompts 提示模板: prompts
-    可发现、可参数化的提示模板: Discoverable, parameterizable prompt templates
-    用于引导模型行为: Used to steer model behavior
-    能力描述遵从 JSON Schema: Capability descriptions follow JSON Schema
-    能力描述的责任边界：MCP 与 WoT TD 各管一段: 'Responsibility boundary: MCP and WoT TD each cover their part'
-    WoT TD / OPC UA / LwM2M 对象负责：属性、事件、命令、数据类型、单位、协议绑定: WoT TD / OPC UA / LwM2M objects own properties, events, commands, data types, units, protocol bindings
-    MCP server 基于上述模型适配生成 tools/resources，但必须额外补充三件事：: 'The MCP server derives tools/resources from those models but must add three things:'
-    ① 用户权限（当前主体是否被授权） ② 动作风险等级（写操作是否需二次确认） ③ 幂等策略（重复调用是否安全）: ① user permission (is the principal authorized) ② action risk level (does a write need confirmation) ③ idempotency policy (is a repeat call safe)
-    工具描述是不可信输入：限制 server 来源、审核 tool 名称与 schema 变化，防止诱导模型泄露或越权: 'Tool descriptions are untrusted input: restrict server sources, review tool names and schema changes to prevent leaks or privilege escalation'
-    MCP 只定义 tools 的描述格式，不定义“温度”的单位、枚举范围或生命周期: MCP only defines the tools description format — not the unit, enum range, or lifecycle of "temperature"
-    图9-12 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力；能力描述本质是安全代理的接口合约，权限、风险等级与幂等策略由平台层补充。: Figure 9-12 MCP rides on JSON-RPC 2.0 and, after initialize negotiation, exposes three capability types — tools/resources/prompts; a capability description is essentially the interface contract for secure proxying, with permissions, risk levels, and idempotency policy supplied by the platform layer.
+    图 9-12 协议适配网关分层架构: Figure 9-12 Protocol Adaptation Gateway Layers
+    协议适配层、路由与转换层、统一接口层三层架构，上行消息逐层标准化，下行配置和控制按规则回到协议适配器。: Three layers — adapters, routing & conversion, unified interface; uplink messages are standardized layer by layer, downlink config and control return to the adapters by rule.
+    适配层收发协议报文，核心层执行格式与语义映射，统一接口向上屏蔽设备协议差异: The adapter layer exchanges protocol messages, the core layer maps format and semantics, and the unified interface hides device protocol differences above
+    消息转发: Message forwarding
+    映射后消息: Mapped message
+    标准化消息: Standardized message
+    配置 / 控制（统一接口 → 转换引擎 → 适配器）: Config / control (interface → engine → adapter)
+    统一接口层: Unified interface layer
+    面向上层应用的稳定契约: Stable contract for upper-layer apps
+    统一 API / 消息入口: Unified API / message entry
+    REST API · 标准化 Broker: REST API · standardized broker
+    路由与转换层: Routing & conversion layer
+    格式与语义映射 · 路由决策: Format & semantic mapping · routing decisions
+    转换引擎: Conversion engine
+    消息路由器: Message router
+    路由决策 · 负载分配: Routing decisions · load distribution
+    协议适配层: Protocol adapter layer
+    协议特有连接管理 · 确认重传与字节流收发: Protocol-specific connections · ACK/retransmit & byte-stream I/O
+    请求响应 · 认证: Request-response · authentication
+    对象 · 资源模型: Object · resource model
+    实线：上行消息流: 'Solid: uplink message flow'
+    虚线：下行配置 / 控制流: 'Dashed: downlink config / control flow'
+    适配层: Adapter layer
+    图 9-12 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。: 'Figure 9-12 The generic three-layer protocol adaptation gateway. Abstraction rises layer by layer: adapters manage connections and byte-stream I/O, routing & conversion maps format and semantics, and the unified interface hides the differences above.'

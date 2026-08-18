@@ -1,54 +1,54 @@
 type: architecture
-title: 图14-5 IoT DC3 容器化部署架构
-purpose: 展示 PostgreSQL、RabbitMQ、Gateway、四中心和协议 Driver 的当前 Compose 拓扑。
-audience_takeaway: 服务通过 dc3net 固定服务名和环境变量寻址，Driver 经 RabbitMQ 与 Data 异步通信。
-visual_focus: PostgreSQL/RabbitMQ→平台服务→协议 Driver 与现场设备。
-design_level: deployment
-layout: 三列：基础设施、平台服务、协议 Driver；底部标注 dc3net、卷与 .env 注入。
+title: 图 14-5 IoT DC3 系统分层架构
+purpose: 展示 IoT DC3 的四层职责及 REST、gRPC、RabbitMQ 三类真实通信边界。
+audience_takeaway: 当前服务寻址依赖固定服务名、容器 DNS 和环境变量；RabbitMQ 是唯一消息总线。
+visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver。
+design_level: logical
+layout: 自下而上：设备层→Driver 层→平台服务层→应用层；RabbitMQ 横向位于 Data 与 Driver 之间。
 elements:
-- 基础设施：PostgreSQL、RabbitMQ。
-- 平台：Web、Gateway、Auth、Manager、Data、Agentic。
-- 南向：MQTT、Modbus、OPC UA 等按需启用的 Driver。
-- 配置：dc3net 固定服务名、环境变量、持久化卷。
+- 应用层：Web、第三方应用、API 客户端。
+- 接入层：dc3-gateway。
+- 平台层：Auth、Manager、Data、Agentic。
+- Driver 层：MQTT、Modbus、OPC UA 等独立协议服务，可下沉边缘。
+- 基础设施：RabbitMQ、PostgreSQL、容器网络 DNS、环境变量配置。
 relationships:
-- 外部入口→Gateway：Web/Nginx将北向请求转发到统一入口。
-- Gateway→Auth/Manager/Data/Agentic：通过dc3net固定服务名分别路由到四中心。
-- Driver→Manager：gRPC 业务注册与元数据查询。
-- Data↔RabbitMQ↔Driver：命令、回执、位号值与状态。
-- 平台服务→PostgreSQL：按职责持久化。
+- 应用→Gateway→四中心：同步 REST 路由与认证。
+- Driver→Manager：同步 gRPC 业务注册和元数据查询。
+- Data→RabbitMQ→Driver：异步点位读写与自定义命令。
+- Driver→RabbitMQ→Data：异步回执、位号值、状态与事件。
 callouts:
-- 当前没有 Nacos、Kafka、TDengine、Redis 或模型卷。
-render_notes: 浅色三列 SVG；基础设施灰色、平台蓝色、Agentic 橙色、Driver 青绿。禁止绘制 Nacos、Kafka、TDengine、Redis 或独立模型服务。
+- 当前没有独立 Command Service。
+- 当前没有 Kafka 或 Nacos。
+render_notes: 浅色 SVG 分层图。固定服务名与环境变量作为寻址说明，不绘制注册中心；RabbitMQ 作为唯一消息总线突出显示。
 caption:
-  zh: 图14-5 IoT DC3 当前容器化部署：PostgreSQL 与 RabbitMQ 提供基础设施，Gateway 和四中心组成平台，协议 Driver 按需启用并通过固定服务名与消息契约接入。
-  en: 'Figure 14-5 The current containerized IoT DC3 deployment: PostgreSQL and RabbitMQ provide the infrastructure, the Gateway and four centers form the platform, and protocol drivers are enabled on demand and connect through fixed service names and message contracts.'
+  zh: 图 14-5 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。
+  en: 'Figure 14-5 The IoT DC3 four-layer architecture: northbound requests enter the four centers through the Gateway, drivers connect to the Manager over gRPC, and commands and data flow asynchronously between Data and drivers via RabbitMQ.'
 labels:
   en:
-    图14-5 IoT DC3 容器化部署架构: 'Figure 14-5 IoT DC3 Container Deployment Architecture'
-    外部入口经 Gateway 路由四中心，Data 经 RabbitMQ 与 Driver 双向通信，Driver 向 Manager 注册；PostgreSQL 与 RabbitMQ 使用持久化卷，配置由环境变量注入。: 'External traffic is routed by the Gateway to the four centers, Data talks to drivers bidirectionally via RabbitMQ, and drivers register with the Manager; PostgreSQL and RabbitMQ use persistent volumes, and configuration is injected via environment variables.'
-    Compose 拓扑聚焦入口、平台服务、消息链与持久化边界: 'The Compose topology highlights the entry point, platform services, message path, and persistence boundary'
-    外部入口 · Web / Nginx: 'External Entry · Web / Nginx'
-    暴露 8080 / 8443: 'Exposes 8080 / 8443'
-    内部端口 8000 · 统一路由: 'Internal port 8000 · unified routing'
-    入口请求: 'Incoming Requests'
-    基础设施: 'Infrastructure'
-    用户 · 元数据 · 历史值: 'Users · Metadata · History'
-    位号值 · 命令 · 状态 · 回执: 'Point Values · Commands · Status · Receipts'
-    固定服务名 · 运行时配置: 'Fixed Service Names · Runtime Config'
-    持久化卷（PG / MQ）: 'Persistent Volumes (PG / MQ)'
-    敏感配置由环境变量注入: 'Secrets injected via environment variables'
-    平台服务: 'Platform Services'
-    REST 路由 · Token 校验: 'REST Routing · Token Check'
+    图 14-5 IoT DC3 系统分层架构: 'Figure 14-5 IoT DC3 Layered Architecture'
+    北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。: 'Northbound requests enter the four centers through the Gateway; drivers connect to the Manager over gRPC; commands and data flow asynchronously between Data and drivers via RabbitMQ.'
+    北向 REST/gRPC 同步、南向 RabbitMQ 异步，构成三类真实通信边界: 'Northbound REST/gRPC is synchronous, southbound RabbitMQ asynchronous — three real communication boundaries'
+    应用层: 'Application Layer'
+    Web 控制台: 'Web Console'
+    运维 / 配置界面: 'Ops / Config UI'
+    第三方应用: 'Third-Party Apps'
+    REST API 集成: 'REST API Integration'
+    API 客户端: 'API Clients'
+    dc3-cli / 脚本: 'dc3-cli / Scripts'
+    接入层: 'Access Layer'
+    REST 路由 · Token 校验 · Compose DNS 寻址: 'REST Routing · Token Check · Compose DNS'
+    REST 路由到四中心: 'REST routing to the four centers'
+    平台服务层: 'Platform Service Layer'
     鉴权与令牌: 'Auth & Tokens'
     设备与模型元数据: 'Device & Model Metadata'
     最新值与历史值: 'Latest & Historical Values'
     对话与受控工具: 'Chat & Controlled Tools'
-    Compose DNS 固定服务名路由: 'Compose DNS routing by fixed service name'
-    南向 Driver: 'Southbound Drivers'
+    Data → RabbitMQ → Driver：命令: 'Data → RabbitMQ → Driver: commands'
+    Driver → RabbitMQ → Data：数据 / 回执: 'Driver → RabbitMQ → Data: data / receipts'
+    Driver 层: 'Driver Layer'
     MQTT 发布 / 订阅: 'MQTT Publish / Subscribe'
     TCP / RTU 轮询与写入: 'TCP / RTU Polling & Writes'
     OPC UA 订阅采集: 'OPC UA Subscription'
-    gRPC 注册 / 元数据: 'gRPC Registration / Metadata'
-    Data ↔ RabbitMQ ↔ Driver：命令 / 数据 / 回执（异步）: 'Data ↔ RabbitMQ ↔ Driver: commands / data / receipts (async)'
-    持久化: 'Persistence'
-    图14-5 IoT DC3 当前容器化部署：PostgreSQL 与 RabbitMQ 提供基础设施，Gateway 和四中心组成平台，协议 Driver 按需启用并通过固定服务名与消息契约接入。: 'Figure 14-5 The current containerized IoT DC3 deployment: PostgreSQL and RabbitMQ provide the infrastructure, the Gateway and four centers form the platform, and protocol drivers are enabled on demand and connect through fixed service names and message contracts.'
+    Driver → Manager：gRPC 注册 / 元数据查询: 'Driver → Manager: gRPC registration / metadata query'
+    设备层 · 传感器 / 控制器 / 执行器（可下沉边缘）: 'Device Layer · Sensors / Controllers / Actuators (edge-deployable)'
+    图 14-5 IoT DC3 四层架构：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 与 Driver 之间异步流转。: 'Figure 14-5 The IoT DC3 four-layer architecture: northbound requests enter the four centers through the Gateway, drivers connect to the Manager over gRPC, and commands and data flow asynchronously between Data and drivers via RabbitMQ.'

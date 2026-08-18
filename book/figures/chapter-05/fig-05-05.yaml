@@ -1,44 +1,60 @@
-type: framework
-title: 图5-5 云边协同三大挑战的关联与权衡三角架
-audience_takeaway: 读者应理解数据一致性、安全性、运维三挑战互相牵制：强加密拖慢同步、放宽一致性引入漏洞、强化安全加重运维，工程须取平衡点。
-purpose: 展示云边协同架构中数据一致性、安全性和运维三个核心挑战之间的相互约束关系，以及各层面的应对策略。
-layout: 一个大等边三角形，三个顶点分别标注“数据一致性”、“安全性”、“运维”。三角形内部划分出三个楔形区域，分别对应每个顶点主导的应对策略集。三角形中心标注“工程权衡区”。
+type: flowchart
+title: 图 5-5 数据传输的 QoS 分级与容错机制
+audience_takeaway: 读者应理解 QoS 0/1/2 可靠性递增、开销递增，持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序。
+purpose: 展示数据传输的 QoS 分级与容错机制
+visual_focus: QoS 三级与容错三机制。
+design_level: flowchart
+layout: 上半 QoS 三级卡片，下半容错三机制，底部工程判断
 elements:
-- '顶点1（左）: 数据一致性，下方文字标签“最终一致性模型”、“版本向量/乐观锁”、“冲突合并策略”。用图标表示版本向量。'
-- '顶点2（右）: 安全性，下方文字标签“硬件信任根(TPM)”、“OTA签名验签”、“安全启动与运行时防护”。用图标表示锁和盾。'
-- '顶点3（底部）: 运维，下方文字标签“OTA批量管理”、“远程配置下发”、“可观测性与自动告警”。用图标表示齿轮和仪表盘。'
-- '中心权衡区: 圆形区域，内部文字“工程决策点”，旁边放置一个天平图标。'
+- QoS 0：至多一次，高频非关键状态量；QoS 1：至少一次，指令下发；QoS 2：恰好一次，资金交易
+- 持久会话：CleanSession=false，Broker 保存未确认消息
+- 幂等设计：全局唯一 ID + Redis SETNX / 唯一索引
+- 乱序处理：消息内嵌序列号，消费端排序
 relationships:
-- 三角形的三条边为实线，表示三个挑战相互影响。
-- '顶点1与顶点2: 强化安全性（如强加密）可能增加数据同步延迟，影响一致性实现；反之，放宽一致性要求可能引入安全漏洞（如未校验）。'
-- '顶点2与顶点3: 增加安全策略（如双向认证、频繁证书轮换）会加大运维复杂度；运维简化（如关闭安全更新）会降低安全等级。'
-- '顶点1与顶点3: 追求强一致需要更复杂的同步机制，增加运维负担；接受最终一致性则运维更简单。'
-legend:
-- '颜色: 每个顶点使用不同主色调（C: 蓝色 #4A90E2, S: 红色 #D0021B, O: 绿色 #7ED321）。策略区域使用同色系淡色填充。中心权衡区为浅灰色 #F5F5F5。天平图标为黑色。'
-- '形状: 顶点为圆形，边为实线，中心权衡区为圆形半透明叠加。'
-render_notes: 采用等边三角形布局，顶点颜色鲜明，策略标签使用项目符号列表紧凑排布，避免字体过小。建议使用 SVG 绘制，响应式缩放；若用 HTML Canvas，需保证文字清晰。中心权衡区上方加文字“权衡”。
+- QoS 分级按丢失容忍度选择；持久会话、幂等、序列号补齐协议之外的应用层容错
+render_notes: HTML/SVG 渲染，QoS 三级 + 容错三机制，灰蓝红分层。
 caption:
-  zh: 图5-5 云边协同的难点在于三个维度互相牵制：强化安全性可能增加运维复杂度，追求强一致会影响系统弹性。工程设计的核心是找到项目可接受的平衡点。
-  en: 'Figure 5-5 The difficulty of cloud-edge collaboration is that three dimensions constrain one another: stronger security may add operational complexity, and pursuing strong consistency can hurt system elasticity. The core of engineering design is finding a balance point the project can accept.'
+  zh: 图 5-5 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。
+  en: 'Figure 5-5 QoS 0/1/2 bring rising reliability at rising overhead, each fit for its role; persistent sessions restore broken connections, idempotent design deduplicates at the application layer, and sequence-number ordering fixes reordering — together closing the fault-tolerance loop for data transmission.'
 labels:
   en:
-    图5-5 云边协同三大挑战的关联与权衡三角架: Figure 5-5 Trade-off Triangle of Three Cloud-Edge Challenges
-    一致性、安全性和运维相互牵制，不能孤立优化。: Consistency, security, and operations constrain each other; none can be optimized alone.
-    强加密拖慢同步 / 放宽一致引入漏洞: Strong crypto slows sync / lax consistency adds risk
-    安全策略加重运维 / 简化运维降低安全: Security adds ops burden / simple ops lowers security
-    强一致加重运维 / 最终一致更简单: Strong consistency adds ops; eventual is simpler
-    工程权衡区: Engineering Trade-off Zone
-    按后果、时延与成本取舍: Weigh impact, latency, and cost
-    数据一致性: Data Consistency
-    最终一致性模型: Eventual Consistency Model
-    版本向量 / 乐观锁: Version Vectors / Optimistic Locks
-    冲突合并策略: Conflict Merge Strategies
-    安全性: Security
-    硬件信任根（TPM）: Hardware Root of Trust (TPM)
-    OTA 签名验签: OTA Signature Verification
-    安全启动与运行时防护: Secure Boot & Runtime Protection
-    运维: Operations
-    OTA 批量管理: OTA Batch Management
-    远程配置下发: Remote Config Push
-    可观测性与自动告警: Observability & Auto-Alarms
-    图5-5 云边协同的难点在于三个维度互相牵制：强化安全性可能增加运维复杂度，追求强一致会影响系统弹性，工程设计的核心是找到项目可接受的平衡点。: 'Figure 5-5 The difficulty of cloud-edge collaboration: three dimensions constrain one another — stronger security may add operational complexity, and pursuing strong consistency hurts elasticity; engineering design is about finding a balance the project can accept.'
+    图 5-5 数据传输的 QoS 分级与容错机制: Figure 5-5 QoS Levels & Fault Tolerance
+    QoS 0/1/2 三级可靠性递增、开销递增；持久会话、幂等设计、序列号排序补齐容错闭环。: 'QoS 0/1/2: reliability and overhead rise together; persistent sessions, idempotent design, and sequence ordering close the fault-tolerance loop.'
+    报文丢了怎么办？重复了怎么办？断了如何续接？: What if a message is lost? Duplicated? The connection drops?
+    QoS 0 · 至多一次: QoS 0 · At most once
+    发布即完成，不等待应答、不保留副本: 'Fire and forget: no ACK wait, no copy kept'
+    效率最高，开销接近零: Fastest; near-zero overhead
+    适用：高频非关键状态量上报: 'For: frequent non-critical status'
+    例：气象站每分钟报一次温度，丢一条下一条补上: e.g. per-minute temperature; next reading covers loss
+    1 步（发布即完成）: 1 step (fire and forget)
+    QoS 1 · 至少一次: QoS 1 · At least once
+    等待 PUBACK，超时重发原报文: Wait for PUBACK; resend on timeout
+    保证交付，但可能收到重复消息: Guaranteed, but may duplicate
+    适用：指令下发、告警转发: 'For: commands, alarm forwarding'
+    例：充电宝开柜指令，ACK 丢失→重传→重复开锁: 'e.g. locker-open command: lost ACK → resend → double unlock'
+    2 步（发布 + 确认 + 超时重传）: 2 steps (publish + ACK + retry)
+    QoS 2 · 恰好一次: QoS 2 · Exactly once
+    四步握手：PUBLISH → PUBREC → PUBREL → PUBCOMP: 'Four-way: PUBLISH → PUBREC → PUBREL → PUBCOMP'
+    既不丢也不重，交互开销成倍增加: No loss, no duplicates; overhead multiplies
+    适用：资金交易、消防告警等不可重入: 'For: payments, fire alarms — non-reentrant cases'
+    全链路开销最高，吞吐最低: Highest overhead, lowest throughput
+    4 步（发布 + 三次握手）: 4 steps (publish + three handshakes)
+    QoS 之外的容错机制: Fault Tolerance Beyond QoS
+    持久会话（CleanSession=false）: Persistent Session (CleanSession=false)
+    Broker 保存未确认消息与离线订阅消息: Broker stores unacked and offline messages
+    设备再次上线时一次性放行: Released in one batch at reconnect
+    PLC 重启或模块抖动时消息不凭空消失: Messages survive PLC restarts or module glitches
+    网络断开不可怕，开启持久会话即可: Network drops are fine with persistent sessions
+    幂等性设计（应用层去重）: Idempotent Design (app-layer dedup)
+    指令携带全局唯一 ID，如 cmd-1234: Commands carry a global unique ID, e.g. cmd-1234
+    处理前查 Redis SETNX / 数据库唯一索引: Check Redis SETNX / DB unique index before processing
+    处理过则丢弃，未处理则执行并记录 ID: Drop if seen; else execute & record ID
+    QoS 1 管网络语义，幂等管应用层去重: QoS 1 = network; idempotency = app layer
+    数据乱序处理: Handling Reordering
+    QoS 不保证到达顺序: QoS does not guarantee order
+    消息内嵌单调递增序列号 / 时间戳: Messages embed monotonic sequence numbers
+    消费端按序列号排序、丢弃过期、合并: Consumers sort by sequence, drop stale, merge
+    与时间序列写入顺序性设计相关（5.4 节）: Ties into time-series write ordering (Section 5.4)
+    工程判断：不要指望纯协议解决所有问题: 'Judgment: protocols alone won''t fix everything'
+    丢了会死人吗？会 → QoS 2；否则 QoS 1 + 应用层幂等。无状态量用 QoS 0。断线开启持久会话，乱序靠序列号在消费端排序: Life-threatening loss? → QoS 2; else QoS 1 + idempotency. Stateless → QoS 0. Persistent sessions for drops; consumer-side sequence sort for reordering.
+    图 5-5 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。: 'Figure 5-5 QoS 0/1/2: reliability and overhead rise together, each fit for its role; persistent sessions restore broken connections, idempotent design deduplicates at the application layer, and sequence numbers fix reordering — closing the fault-tolerance loop for data transport.'

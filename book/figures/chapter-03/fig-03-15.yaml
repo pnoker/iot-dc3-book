@@ -1,5 +1,5 @@
 type: dataflow
-title: 图3-15 物模型在数据互通中的三层角色
+title: 图 3-15 物模型在数据互通中的三层角色
 audience_takeaway: 读者应理解物模型三层角色：语义适配层把异构数据归一、设备影子拆解同步耦合、平台无关应用实现一次编写多处部署。
 purpose: 展示物模型在数据互通中的三层工程角色
 visual_focus: 异构数据归一与三层角色。
@@ -13,11 +13,11 @@ relationships:
 - 适配层归一异构数据，影子拆解同步耦合，统一语义空间催生平台无关应用
 render_notes: HTML/SVG 渲染，异构数据归一 + 三层角色，蓝绿橙分层。
 caption:
-  zh: 图3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。
+  zh: 图 3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。
   en: 'Figure 3-15 The three roles of the thing model in data interop: the semantic adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow decouples synchronous coupling, and platform-independent applications are written once and deployed anywhere — making it the semantic anchor for data from the sensing layer to the intelligence layer.'
 labels:
   en:
-    图3-15 物模型在数据互通中的三层角色: Figure 3-15 Three Roles of the Thing Model in Data Interop
+    图 3-15 物模型在数据互通中的三层角色: Figure 3-15 Three Roles of the Thing Model in Data Interop
     物模型把异构协议归一为统一语义空间，设备影子拆解同步耦合，催生平台无关应用。: The thing model unifies heterogeneous protocols into one semantic space; the device shadow decouples synchronization and enables platform-independent apps.
     让来源各异的物理量汇入同一个语义空间: Bring physical quantities of every origin into one semantic space
     语义适配层：消弭协议鸿沟: 'Semantic Adaptation Layer: Bridging Protocol Gaps'
@@ -46,4 +46,4 @@ labels:
     开发只依赖物模型属性与指令，不关心设备品牌或总线类型，业务逻辑与基础设施彻底解耦: Development depends only on thing-model properties and commands — not device brands or bus types — fully decoupling business logic from infrastructure
     实时监控面板、告警规则、能源报表在统一语义空间直接对话，AI 层同样通过物模型读写能力: Dashboards, alarm rules, and energy reports converse in one semantic space; the AI layer also reads and writes capabilities through the thing model
     IoT DC3 经 /profile 系列 REST API 管理物模型：一设备一物模型，多同型号设备复用一个物模型: 'IoT DC3 manages thing models via the /profile REST APIs: one thing model per device, reused across devices of the same model'
-    图3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。: 'Figure 3-15 The three roles of the thing model in data interop: the semantic adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow decouples synchronous coupling, and platform-independent applications are written once and deployed anywhere — making it the semantic anchor for data from the sensing layer to the intelligence layer.'
+    图 3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。: 'Figure 3-15 The three roles of the thing model in data interop: the semantic adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow decouples synchronous coupling, and platform-independent applications are written once and deployed anywhere — making it the semantic anchor for data from the sensing layer to the intelligence layer.'

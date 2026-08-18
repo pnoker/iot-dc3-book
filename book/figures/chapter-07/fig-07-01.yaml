@@ -1,5 +1,5 @@
 type: timeline
-title: 图7-1 AIoT 演进阶段示意
+title: 图 7-1 AIoT 演进阶段示意
 purpose: 展示 AIoT 从连接到自主决策的跃迁，突出每个阶段的核心特征与智能化水平。
 audience_takeaway: AIoT 不是一蹴而就的技术堆叠，而是逐步将智能注入数据管道的系统工程。
 visual_focus: 从“连接采集”到“自主决策”的主链路，以及“智能化程度曲线”的提升趋势。
@@ -119,11 +119,11 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 三个 .stage 水平 flex 布局，时间轴用 ::before 伪元素。特征框内可选用图标示意。智能化曲线用 SVG path。驱动力文字用 .driver 高亮。
 caption:
-  zh: 图7-1 AIoT 从连接到受约束决策的演进示意。第一阶段设备上网，数据汇聚，人看仪表盘做判断；第二阶段 LLM 理解语义，通过受控工具查询设备并提出操作；第三阶段 Agent 主动监测、诊断与规划，Runtime 经策略、Workflow 或人工确认后执行，人类从逐步操作转向监督与接管。驱动因素包括算力下沉、大模型突破和边缘智能普及。
+  zh: 图 7-1 AIoT 从连接到受约束决策的演进示意。第一阶段设备上网，数据汇聚，人看仪表盘做判断；第二阶段 LLM 理解语义，通过受控工具查询设备并提出操作；第三阶段 Agent 主动监测、诊断与规划，Runtime 经策略、Workflow 或人工确认后执行，人类从逐步操作转向监督与接管。驱动因素包括算力下沉、大模型突破和边缘智能普及。
   en: Figure 7-1 The evolution of AIoT from connectivity to bounded decision-making. In stage one, devices come online and data converges while people judge from dashboards; in stage two, the LLM understands semantics and queries devices and proposes actions through controlled tools; in stage three, the AI agent proactively monitors, diagnoses, and plans while the Runtime executes after policy, workflow, or human confirmation, and humans shift from step-by-step operation to supervision and takeover. Drivers include compute moving to the edge, LLM breakthroughs, and pervasive edge intelligence.
 labels:
   en:
-    图7-1 AIoT 演进阶段示意: Figure 7-1 AIoT Evolution Stages
+    图 7-1 AIoT 演进阶段示意: Figure 7-1 AIoT Evolution Stages
     AIoT 从连接采集经智能分析到受约束决策逐步演进，智能化程度随时间持续升高。: From connectivity to analytics to bounded decision-making — intelligence rises over time.
     AIoT 不是一蹴而就的技术堆叠，而是逐步将智能注入数据管道的系统工程: Not a one-shot stack, but intelligence injected into data pipelines step by step
     连接采集: Connect & Collect
@@ -150,4 +150,4 @@ labels:
     LLM 工具调用能力: LLM tool-calling ability
     边缘智能普及: Edge intelligence spreads
     端侧推理与受控执行: On-device inference · controlled execution
-    图7-1 连接是起点，分析是跃迁，受约束决策才是面向真实现场的下一阶段。: Figure 7-1 Connectivity is the start and analytics the leap; bounded decision-making is the next stage for real-world sites.
+    图 7-1 连接是起点，分析是跃迁，受约束决策才是面向真实现场的下一阶段。: Figure 7-1 Connectivity is the start and analytics the leap; bounded decision-making is the next stage for real-world sites.

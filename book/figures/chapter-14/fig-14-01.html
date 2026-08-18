@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图14-1 物联网平台分层架构</title>
+  <title>图 14-1 需求分析的四个来源与资产生命周期检视</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,117 +12,107 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图14-1 物联网平台分层架构</title>
-  <desc id="desc">设备经边缘 Driver 协议接入，位号值经 RabbitMQ 异步推送并并行分发给数据中心与智能中心；应用经 API Gateway 并行路由到鉴权、设备管理与数据查询。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图 14-1 需求分析的四个来源与资产生命周期检视</title>
+  <desc id="desc">需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法推导功能需求。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
   </defs>
 
-  <!-- 标题 -->
+  <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图14-1 物联网平台分层架构</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">消息分发与 API 路由形成两组并行扇出，不是组件串行调用</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 14-1 需求分析的四个来源与资产生命周期检视</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">有效产出是可执行的需求基线，和明确的“不做什么”清单</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 应用层 ===== -->
-  <text x="140" y="150" font-size="15" font-weight="700" fill="#334155">应用层</text>
-  <rect x="140" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="320" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">监控大屏</text>
-  <text x="320" y="210" font-size="11" fill="#475569" text-anchor="middle">可视化</text>
-  <rect x="530" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="710" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">移动端 App</text>
-  <text x="710" y="210" font-size="11" fill="#475569" text-anchor="middle">移动接入</text>
-  <rect x="920" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="1100" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">业务客户端</text>
-  <text x="1100" y="210" font-size="11" fill="#475569" text-anchor="middle">第三方集成</text>
-  <rect x="1310" y="162" width="360" height="62" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="1490" y="188" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">告警与控制台</text>
-  <text x="1490" y="210" font-size="11" fill="#475569" text-anchor="middle">运维操作</text>
+  <!-- 四个来源 -->
+  <text x="80" y="150" font-size="15" font-weight="700" fill="#334155">需求获取的四个来源</text>
 
-  <!-- 应用 → API Gateway -->
-  <line x1="320" y1="224" x2="320" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <line x1="710" y1="224" x2="710" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <line x1="1100" y1="224" x2="1100" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
-  <line x1="1490" y1="224" x2="1490" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <rect x="80" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="276" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">用户与业务方访谈</text>
+  <text x="116" y="240" font-size="12" fill="#475569">运营、运维、业务决策者</text>
+  <text x="116" y="266" font-size="12" fill="#475569">产出场景级需求</text>
+  <text x="116" y="296" font-size="11" fill="#64748B">“设备离线 5 分钟内必须告警”</text>
 
-  <!-- ===== API Gateway ===== -->
-  <rect x="140" y="254" width="1520" height="56" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="900" y="288" font-size="16" font-weight="700" fill="#2563EB" text-anchor="middle">API Gateway · 统一入口 · 鉴权 · 路由</text>
+  <rect x="496" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="692" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">设备与现场勘查</text>
+  <text x="532" y="240" font-size="12" fill="#475569">物理约束：金属遮挡、供电方式</text>
+  <text x="532" y="266" font-size="12" fill="#475569">直接决定协议选型与采集策略</text>
+  <text x="532" y="296" font-size="11" fill="#64748B">纯软件项目不会出现这类约束</text>
 
-  <!-- Gateway → 平台服务 -->
-  <line x1="400" y1="310" x2="400" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <line x1="900" y1="310" x2="900" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <line x1="1400" y1="310" x2="1400" y2="340" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="560" y="330" font-size="12" font-weight="700" fill="#2563EB">API 路由（并行扇出）</text>
+  <rect x="912" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1108" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">存量系统分析</text>
+  <text x="948" y="240" font-size="12" fill="#475569">ERP / MES / SCADA 数据接口</text>
+  <text x="948" y="266" font-size="12" fill="#475569">字段映射与历史数据迁移</text>
+  <text x="948" y="296" font-size="11" fill="#64748B">接口文档常与实际不匹配</text>
 
-  <!-- ===== 平台层 ===== -->
-  <rect x="140" y="342" width="1520" height="250" rx="10" fill="#F8FAFC" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="160" y="366" font-size="15" font-weight="700" fill="#2563EB">平台层</text>
+  <rect x="1328" y="172" width="392" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1524" y="206" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">行业规范与合规</text>
+  <text x="1364" y="240" font-size="12" fill="#475569">轨迹保存期限、安全等级认证</text>
+  <text x="1364" y="266" font-size="12" fill="#475569">医疗数据隐私合规</text>
+  <text x="1364" y="296" font-size="11" fill="#64748B">不是“能不能做”，而是“不做不能上线”</text>
 
-  <!-- RabbitMQ -->
-  <rect x="160" y="378" width="1480" height="52" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="900" y="410" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">RabbitMQ · 异步消息总线</text>
+  <!-- 资产生命周期检视 -->
+  <text x="80" y="380" font-size="15" font-weight="700" fill="#334155">资产生命周期检视法：从设备出厂到退役逐阶段推导用例</text>
 
-  <!-- 数据中心 + 智能中心 -->
-  <rect x="160" y="452" width="720" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-  <text x="520" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">数据中心</text>
-  <text x="520" y="508" font-size="11" fill="#475569" text-anchor="middle">最新值 · 历史值 · 告警</text>
-  <rect x="920" y="452" width="720" height="74" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.6"/>
-  <text x="1280" y="484" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">智能中心</text>
-  <text x="1280" y="508" font-size="11" fill="#475569" text-anchor="middle">AI Agent · 任务编排</text>
+  <rect x="80" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="230" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">部署</text>
+  <text x="230" y="468" font-size="11" fill="#475569" text-anchor="middle">批量注册 · 网关自动发现</text>
+  <text x="230" y="488" font-size="11" fill="#475569" text-anchor="middle">固件版本校验</text>
 
-  <!-- 消息分发：RabbitMQ → 数据中心/智能中心 -->
-  <line x1="520" y1="430" x2="520" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <line x1="1280" y1="430" x2="1280" y2="450" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-  <text x="900" y="444" font-size="11" font-weight="700" fill="#2563EB" text-anchor="middle">消息分发</text>
+  <line x1="380" y1="457" x2="412" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <!-- API 服务组 + 受控工具 -->
-  <rect x="160" y="546" width="720" height="34" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
-  <text x="520" y="568" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">API 服务组 · 鉴权 · 设备管理 · 数据查询</text>
-  <rect x="920" y="546" width="720" height="34" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
-  <text x="1280" y="568" font-size="13" font-weight="700" fill="#334155" text-anchor="middle">受控工具与审计 · 策略校验 · 人工确认 · 操作留痕</text>
+  <rect x="412" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="562" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">运行</text>
+  <text x="562" y="468" font-size="11" fill="#475569" text-anchor="middle">实时采集 · 在线状态监控</text>
+  <text x="562" y="488" font-size="11" fill="#475569" text-anchor="middle">远程开关控制</text>
 
-  <!-- ===== 边缘接入层 ===== -->
-  <text x="140" y="622" font-size="15" font-weight="700" fill="#334155">边缘接入层</text>
-  <rect x="140" y="636" width="500" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="390" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">MQTT / CoAP Driver</text>
-  <text x="390" y="692" font-size="11" fill="#475569" text-anchor="middle">协议适配 · 本地缓存</text>
-  <rect x="670" y="636" width="500" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="920" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Modbus / 私有协议 Driver</text>
-  <text x="920" y="692" font-size="11" fill="#475569" text-anchor="middle">协议适配 · 本地缓存</text>
-  <rect x="1200" y="636" width="460" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="1430" y="668" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">协议适配网关</text>
-  <text x="1430" y="692" font-size="11" fill="#475569" text-anchor="middle">标准化位号值</text>
+  <line x1="712" y1="457" x2="744" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <!-- 异步推送：Driver → RabbitMQ -->
-  <line x1="390" y1="636" x2="390" y2="594" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <line x1="920" y1="636" x2="920" y2="594" stroke="#0F766E" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-teal)"/>
-  <text x="660" y="620" font-size="11" font-weight="700" fill="#0F766E">异步推送</text>
+  <rect x="744" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="894" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">告警</text>
+  <text x="894" y="468" font-size="11" fill="#475569" text-anchor="middle">温度超限 · 设备离线</text>
+  <text x="894" y="488" font-size="11" fill="#475569" text-anchor="middle">告警分级与推送</text>
 
-  <!-- ===== 设备层 ===== -->
-  <rect x="140" y="740" width="1520" height="70" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="320" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">传感器</text>
-  <text x="710" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">PLC</text>
-  <text x="1100" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">智能网关</text>
-  <text x="1490" y="781" font-size="14" font-weight="700" fill="#0F766E" text-anchor="middle">现场设备</text>
+  <line x1="1044" y1="457" x2="1076" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <!-- 协议接入：设备 → Driver -->
-  <line x1="320" y1="740" x2="390" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <line x1="710" y1="740" x2="920" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <line x1="1100" y1="740" x2="1430" y2="712" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
-  <text x="530" y="732" font-size="11" font-weight="700" fill="#0F766E">协议接入（MQTT / CoAP / Modbus）</text>
+  <rect x="1076" y="402" width="300" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1226" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">维护</text>
+  <text x="1226" y="468" font-size="11" fill="#475569" text-anchor="middle">OTA 固件升级 · 参数下发</text>
+  <text x="1226" y="488" font-size="11" fill="#475569" text-anchor="middle">日志远程拉取</text>
 
-  <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图14-1 上行数据经消息总线并行分发，API 与 Agent 分别通过本地能力组完成受控调用。</text>
+  <line x1="1376" y1="457" x2="1408" y2="457" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <rect x="1408" y="402" width="312" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1564" y="440" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">退役</text>
+  <text x="1564" y="468" font-size="11" fill="#475569" text-anchor="middle">设备注销 · 数据归档</text>
+  <text x="1564" y="488" font-size="11" fill="#475569" text-anchor="middle">安全擦除</text>
+
+  <!-- 底部：MoSCoW + 非功能 -->
+  <rect x="80" y="560" width="1640" height="180" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="592" font-size="14" font-weight="700" fill="#334155">优先级划分（MoSCoW）与非功能需求</text>
+  <g font-size="12">
+    <text x="120" y="622" font-weight="700" fill="#0F172A">Must have</text>
+    <text x="240" y="622" fill="#475569">缺则无法上线：设备身份认证、数据持久化、在线状态</text>
+    <text x="120" y="648" font-weight="700" fill="#0F172A">Should have</text>
+    <text x="240" y="648" fill="#475569">重要可延迟：告警规则灵活配置、设备分组管理</text>
+    <text x="120" y="674" font-weight="700" fill="#0F172A">Could / Won't</text>
+    <text x="240" y="674" fill="#475569">锦上添花 / 本次明确排除，把 Must 列表收窄到最少</text>
+  </g>
+  <line x1="900" y1="585" x2="900" y2="715" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="12">
+    <text x="940" y="622" fill="#0F172A">非功能需求（隐形杀手）</text>
+    <text x="940" y="648" fill="#475569">可靠性 · 安全性 · 可扩展性 · 实时性</text>
+    <text x="940" y="674" fill="#64748B">决定架构选型与成本结构，需量化定义</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 14-1 需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。</text>
   </svg>
 </svg>
   </main>

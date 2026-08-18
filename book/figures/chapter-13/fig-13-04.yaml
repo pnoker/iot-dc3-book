@@ -1,5 +1,5 @@
 type: flowchart
-title: 图13-4 数据上链流程图
+title: 图 13-4 数据上链流程图
 audience_takeaway: 读者应理解存证是'链下存原文、链上存指纹'的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。
 purpose: 展示从传感器采样到链上存证、链下存储、验证的完整流程，说明链下存储与链上指纹的协作关系。
 visual_focus: 从传感器到终点的主链路。
@@ -118,11 +118,11 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: HTML/SVG渲染，浅色背景，流程穿越表示使用折线，避免交叉。关键节点加粗边框，箭头带文字标签。
 caption:
-  zh: 图13-4 展示数据从传感器采样到链下存储和链上存证，最终验证方通过两侧数据比对确认完整性的典型流程。
+  zh: 图 13-4 展示数据从传感器采样到链下存储和链上存证，最终验证方通过两侧数据比对确认完整性的典型流程。
   en: 'Figure 13-4 The typical flow in which data sampled by sensors goes to off-chain storage and on-chain attestation, and the verifier finally confirms integrity by comparing data from both sides.'
 labels:
   en:
-    图13-4 数据上链流程图: Figure 13-4 Data On-Chain Flow
+    图 13-4 数据上链流程图: Figure 13-4 Data On-Chain Flow
     数据从传感器采样，经边缘节点分两路：原始数据存入链下存储，哈希与元数据写入链上；验证方重算哈希与链上比对确认完整性。: 'Sensor data splits at the edge: raw data off-chain, hash + metadata on-chain; the verifier re-hashes and compares on-chain to confirm integrity.'
     存证是“链下存原文、链上存指纹”的分工，兼顾存储成本与不可篡改性: Originals off-chain, fingerprints on-chain — balancing cost and tamper resistance
     传感器: Sensor
@@ -148,4 +148,4 @@ labels:
     蓝 = 核心处理 / 链上: Blue = Core Processing / On-chain
     灰 = 外部存储 / 链下: Gray = External Storage / Off-chain
     实线 = 同步推送 · 虚线 = 查询 / 读取: Solid = push · Dashed = query / read
-    图13-4 数据从传感器采样后，原始数据存链下、哈希指纹存链上，验证方通过两侧数据比对确认完整性。: Figure 13-4 Raw data off-chain, hash fingerprints on-chain; the verifier compares both to confirm integrity.
+    图 13-4 数据从传感器采样后，原始数据存链下、哈希指纹存链上，验证方通过两侧数据比对确认完整性。: Figure 13-4 Raw data off-chain, hash fingerprints on-chain; the verifier compares both to confirm integrity.

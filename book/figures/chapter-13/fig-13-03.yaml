@@ -1,5 +1,5 @@
 type: sequence
-title: 图13-3 设备DID注册与验证流程
+title: 图 13-3 设备DID注册与验证流程
 audience_takeaway: 验证方生成一次性nonce，身份设备签名回复；验证方结合最新DID状态校验并消费nonce，防止重放。
 purpose: 展示从设备出厂、注册到被另一设备验证的完整身份生命周期。
 visual_focus: 设备2生成nonce→设备1签名回复→查询最新DID状态→校验并消费nonce的主链路。
@@ -157,11 +157,11 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 标准时序图布局，参与者列于顶部，生命线垂直向下。按步骤编号+描述标注箭头。可选步骤10处增加回退分支（验证失败时显示握手终止）。
 caption:
-  zh: 图13-3 展示设备从硬件密钥生成、DID注册到挑战验证的完整身份生命周期；验证方以一次性nonce发起挑战，收到签名后查询最新DID状态并消费nonce，从而阻断重放。
+  zh: 图 13-3 展示设备从硬件密钥生成、DID注册到挑战验证的完整身份生命周期；验证方以一次性nonce发起挑战，收到签名后查询最新DID状态并消费nonce，从而阻断重放。
   en: 'Figure 13-3 The complete device identity lifecycle, from hardware key generation and DID registration to challenge-based verification. The verifier issues a one-time nonce challenge, then queries the latest DID state upon receiving the signature and consumes the nonce, thereby blocking replay.'
 labels:
   en:
-    图13-3 设备DID注册与验证流程: Figure 13-3 Device DID Registration & Verification
+    图 13-3 设备DID注册与验证流程: Figure 13-3 Device DID Registration & Verification
     设备注册 DID 与公钥哈希后，验证方结合一次性 nonce、签名和最新链上状态完成身份验证。: Device registers DID + key hash; verifier checks one-time nonce, signature and on-chain state.
     验证方发起一次性挑战，签名回复须结合最新 DID 状态验证: One-time challenge; reply verified against latest DID state
     设备 1 · 身份主体: Device 1 · Identity Subject
@@ -185,4 +185,4 @@ labels:
     13 验证通过 / 失败: 13 Verification pass / fail
     链下操作：密钥生成、nonce 生成与签名: 'Off-chain: key generation, nonce creation & signing'
     链上操作 / 查询：注册交易、状态写入、DID 文档查询: 'On-chain ops / queries: registration tx, state writes, DID doc lookup'
-    图13-3 设备注册 DID 与公钥哈希后，验证方结合一次性 nonce、签名和最新链上状态完成身份验证。: Figure 13-3 Device registers DID + key hash; verifier uses one-time nonce, signature and on-chain state.
+    图 13-3 设备注册 DID 与公钥哈希后，验证方结合一次性 nonce、签名和最新链上状态完成身份验证。: Figure 13-3 Device registers DID + key hash; verifier uses one-time nonce, signature and on-chain state.

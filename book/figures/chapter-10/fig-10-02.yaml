@@ -1,5 +1,5 @@
 type: matrix
-title: 图10-2 工业4.0与传统制造的核心特征对比
+title: 图 10-2 工业4.0与传统制造的核心特征对比
 purpose: 通过六个维度的并列对比，直观展示传统制造与工业4.0在不同层面的根本差异，帮助读者建立辨别标准。
 audience_takeaway: 读者应能明确区分传统制造（经验驱动、事后记录、刚性产线）与工业4.0（数据驱动、实时生产要素、柔性产线）的本质差异。
 visual_focus: 第一行‘驱动要素’和第四行‘系统架构’是区分两种模式的根本标尺，应予以视觉强调。
@@ -75,11 +75,11 @@ visual_constraints:
 - 关键行（驱动要素、系统架构）使用浅蓝底色。
 render_notes: HTML表格结构，无边框；列宽比例20/40/40；行高60px；第二、三列中的关键字使用加粗字体；行间使用浅灰交替底色。
 caption:
-  zh: 图10-2 展示传统制造与工业4.0在关键维度上的本质差异。驱动要素和系统架构的转变是根本。
+  zh: 图 10-2 展示传统制造与工业4.0在关键维度上的本质差异。驱动要素和系统架构的转变是根本。
   en: Figure 10-2 The essential differences between traditional manufacturing and Industry 4.0 across key dimensions. The shifts in driving factors and system architecture are fundamental.
 labels:
   en:
-    图10-2 工业4.0与传统制造的核心特征对比: Figure 10-2 Industry 4.0 vs. Traditional Manufacturing
+    图 10-2 工业4.0与传统制造的核心特征对比: Figure 10-2 Industry 4.0 vs. Traditional Manufacturing
     六个维度并列比较传统制造与工业4.0，重点突出驱动要素和系统架构两个根本标尺。: 'Six dimensions compare traditional manufacturing with Industry 4.0, spotlighting the two fundamental yardsticks: driving factors and system architecture.'
     驱动要素与系统架构是根本标尺，其他差异由二者变化引发。: Driving factors and system architecture are the fundamental yardsticks; other differences follow from them.
     对比维度: Dimension
@@ -118,4 +118,4 @@ labels:
     数字孪生模拟换型: Digital twin simulates changeover
     试错在虚拟空间完成，实际停机时间大幅缩短: Trial and error in virtual space; far less real downtime
     标尺行（驱动要素、系统架构）以浅蓝底强调: Yardstick rows (drivers, architecture) tinted light blue
-    图10-2 展示传统制造与工业4.0在关键维度上的本质差异。驱动要素和系统架构的转变是根本。: Figure 10-2 The essential differences between traditional manufacturing and Industry 4.0 across key dimensions; the shifts in driving factors and system architecture are fundamental.
+    图 10-2 展示传统制造与工业4.0在关键维度上的本质差异。驱动要素和系统架构的转变是根本。: Figure 10-2 The essential differences between traditional manufacturing and Industry 4.0 across key dimensions; the shifts in driving factors and system architecture are fundamental.

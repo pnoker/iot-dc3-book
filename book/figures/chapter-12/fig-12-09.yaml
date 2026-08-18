@@ -1,57 +1,56 @@
-type: framework
-title: 图12-9 农业场景 LPWAN 选型四维约束
-audience_takeaway: 读者应理解农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。
-purpose: 梳理农业场景对 LPWAN 的具体约束，为后续技术比选建立框架
-visual_focus: 四维约束卡片并列，底部结论。
-design_level: framework
-layout: 横向四张约束卡片（覆盖 / 速率 / 功耗 / 成本），底部选型框架结论
+type: dataflow
+title: 图 12-9 节点功耗组成与电池寿命估算
+audience_takeaway: 读者应掌握平均电流法：把节点功耗拆为采样处理、无线发射、休眠三阶段，由“电流×时间”积分得到日均耗电，再按寿命公式估算电池寿命。
+purpose: 展示节点功耗拆解与电池寿命估算的完整计算链
+visual_focus: 左功耗组成、右寿命估算的双栏结构。
+design_level: dataflow
+layout: 左栏功耗三阶段分解与单周期合计，右栏寿命公式、算例与不同上报间隔对比
 elements:
-- 覆盖距离：数公里 + 穿透冠层，重要程度高
-- 数据速率：极低但稳定、上行为主，重要程度中
-- 功耗与电池寿命：1～5 年，重要程度高
-- 设备与运维成本：模块 + 传感器 + 通信费，重要程度高
+- 传感器采样 + MCU 处理：15 mA × 0.3 s = 0.00125 mAh
+- 无线发射：120 mA × 0.5 s = 0.01667 mAh
+- 休眠：10 μA × 3599.2 s ≈ 0.01000 mAh
+- 单周期总计：0.02792 mAh → 日均耗电 0.670 mAh
+- 寿命公式：寿命(天) = (标称容量 × 降额因子) / 日均耗电
+- 算例：(3000 × 0.75) / 0.670 ≈ 3358 天 ≈ 9.2 年
+- 间隔对比：10min → 0.94 年、1h → 9.2 年、2h → 18.3 年、6h → 51.3 年
 relationships:
-- 四维约束共同归结为“远覆盖、低速率、长续航、低成本、上行为主”
-render_notes: HTML/SVG 渲染，横向四张卡片，蓝/绿/橙/青四色区分维度，底部蓝色结论框。
+- 三阶段功耗相加得单周期耗电 → 乘 24 得日均耗电 → 代入寿命公式
+render_notes: HTML/SVG 渲染，左右双栏，左功耗分解、右寿命估算，底部工程注意事项。
 caption:
-  zh: 图12-9 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。
-  en: Figure 12-9 Agricultural scenarios constrain LPWAN selection from four dimensions — coverage distance, data rate, power and battery life, device and O&M cost — boiling down to "long range, low rate, long battery life, low cost, and uplink-dominant traffic".
+  zh: 图 12-9 节点功耗拆为采样处理、无线发射与休眠三阶段，由“电流×时间”积分得到日均耗电 0.670 mAh，再按寿命公式估算出每小时上报约 9.2 年、每 10 分钟上报仅 0.94 年。
+  en: Figure 12-9 Node power is split into three phases — sampling/processing, radio transmit, and sleep; integrating current × time gives a daily drain of 0.670 mAh, and the lifetime formula then estimates about 9.2 years at hourly reporting but only 0.94 years at 10-minute reporting.
 labels:
   en:
-    图12-9 农业场景 LPWAN 选型四维约束: Figure 12-9 Four Constraints on LPWAN Selection in Agriculture
-    农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。: Agriculture imposes four constraints on LPWAN — coverage, rate, power, cost — summing up to long range, low rate, long battery life, low cost, and uplink-dominant traffic.
-    选型之前先厘清约束 · 四个维度共同决定技术取舍: Clarify constraints before choosing · four dimensions drive the trade-off
-    覆盖距离: Coverage distance
-    重要程度：高: 'Importance: high'
-    开阔农田覆盖数公里: Several kilometers over open fields
-    温室金属骨架、薄膜、密植冠层: Greenhouse steel frames, film, and dense canopies
-    对信号有明显阻挡与吸收: markedly block and absorb signals
-    链路预算需考虑作物冠层衰减: Link budgets must count canopy attenuation
-    LoRa 郊野覆盖可达数公里；NB-IoT: LoRa reaches several km in the countryside; NB-IoT
-    依托运营商基站亦可覆盖空旷地: rides carrier base stations to cover open land
-    数据速率: Data rate
-    重要程度：中: 'Importance: medium'
-    典型“上行为主”业务模式: Typical "uplink-dominant" traffic pattern
-    每次上传几十到几百字节: Tens to hundreds of bytes per upload
-    土壤每小时、气象每 15～30 分钟: Soil hourly, weather every 15–30 min
-    要求“极低但稳定”: Must be "very low but stable"
-    高清病虫害图像属特殊需求，: HD pest-and-disease images are a special case,
-    另走 4G/5G 高带宽通道承载: carried instead on 4G/5G broadband channels
-    功耗与电池寿命: Power & battery life
-    田间供电困难，依赖电池 / 光伏: Field power is scarce; rely on battery / solar
-    目标续航至少 1～2 年，最好 3～5 年: 'Target life: at least 1–2 years, ideally 3–5'
-    功耗 = 采集 + 发射 + 休眠: Power = sense + transmit + sleep
-    能量大头在 MCU 休眠漏电流: The biggest drain is MCU sleep leakage
-    NB-IoT 联网需与基站同步，: NB-IoT must sync with the base station to attach,
-    待机电流通常比 LoRa 高一个量级: standby current typically an order above LoRa
-    设备与运维成本: Device & O&M cost
-    大规模、低利润，物料成本须低廉: Large scale, thin margins — BOM must be cheap
-    传感器成本往往超过通信模块: Sensors often cost more than comm modules
-    运维成本关键在于通信费用: O&M hinges on connectivity fees
-    LoRa 免授权频段、自建网关无通信费: 'LoRa: unlicensed band, own gateway, no fees'
-    NB-IoT 需 SIM 卡与运营商资费: NB-IoT needs SIM cards and carrier plans
-    零散农田依托运营商可降低门槛: Scattered fields lower the barrier via carriers
-    选型框架结论: Selection Framework Conclusion
-    远覆盖 · 低速率 · 长续航 · 低成本，且以单向上传为主: Long range · low rate · long battery life · low cost, mostly one-way uplink
-    核心问题：在 LoRa 与 NB-IoT 之间，哪一个能同时满足四维约束且生态成熟度最高？: 'Core question: between LoRa and NB-IoT, which meets all four constraints with the most mature ecosystem?'
-    图12-9 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。: Figure 12-9 Agricultural scenarios constrain LPWAN selection from four dimensions — coverage distance, data rate, power and battery life, device and O&M cost — boiling down to "long range, low rate, long battery life, low cost, and uplink-dominant traffic".
+    图 12-9 节点功耗组成与电池寿命估算: Figure 12-9 Node Power Breakdown & Battery Life Estimation
+    节点功耗拆为采样处理、无线发射、休眠三阶段；由占空比计算日均耗电，再按寿命公式估算电池寿命。: Node power splits into sampling/processing, radio transmit, and sleep; duty-cycle math yields the daily drain, and the lifetime formula estimates battery life.
+    平均电流法 · 电流×时间积分求和，再除以日均耗电估算寿命: Average-current method · integrate current×time, divide by daily drain for life
+    功耗组成（每小时唤醒发送一次）: Power breakdown (wake & send once per hour)
+    ① 传感器采样 + MCU 处理: ① Sensor sampling + MCU processing
+    15 mA × 0.3 s = 0.00125 mAh（覆盖预热到采集完成）: 15 mA × 0.3 s = 0.00125 mAh (from warm-up to sampling done)
+    ② 无线发射（+20 dBm）: ② Radio transmit (+20 dBm)
+    120 mA × 0.5 s = 0.01667 mAh（含前导码与有效载荷）: 120 mA × 0.5 s = 0.01667 mAh (preamble + payload)
+    ③ 休眠: ③ Sleep
+    10 μA × 3599.2 s ≈ 0.01000 mAh（MCU + 模组待机，占时最长）: 10 μA × 3599.2 s ≈ 0.01000 mAh (MCU + module standby, longest share)
+    单周期总计（活跃 + 休眠）: Total per cycle (active + sleep)
+    0.01792 + 0.01000 = 0.02792 mAh → 日均耗电 = 0.02792 × 24 = 0.670 mAh: 0.01792 + 0.01000 = 0.02792 mAh → daily drain = 0.02792 × 24 = 0.670 mAh
+    电池寿命估算（平均电流法）: Battery Life Estimation (average-current method)
+    寿命公式: Lifetime formula
+    寿命(天) = (电池标称容量 × 降额因子) / 日均耗电: Life (days) = (rated capacity × derating factor) / daily drain
+    降额因子吸收温度、放电率与自放电影响，算例取 0.75: Derating absorbs temperature, discharge rate, and self-discharge; the example uses 0.75
+    算例（AA 碱性电池 3000 mAh）: Example (AA alkaline, 3000 mAh)
+    (3000 × 0.75) / 0.670 ≈ 3358 天 ≈ 9.2 年: (3000 × 0.75) / 0.670 ≈ 3358 days ≈ 9.2 years
+    覆盖典型项目周期 3～5 年，无需中途换电池: Covers the typical 3–5 year project cycle without a battery swap
+    不同上报间隔的理论寿命对比: Theoretical life by reporting interval
+    10 分钟: 10 min
+    0.94 年（高实时 · 灌溉阀门反馈）: 0.94 years (near-real-time · valve feedback)
+    1 小时: 1 hour
+    9.2 年（工程平衡点）: 9.2 years (engineering sweet spot)
+    2 小时: 2 hours
+    18.3 年: 18.3 years
+    6 小时: 6 hours
+    51.3 年（存储类数据）: 51.3 years (archival data)
+    工程注意事项: Engineering Notes
+    • 低温降额：北方冬季碱性电池容量显著下降，应使用低温锂电池并加大降额系数: '• Cold derating: alkaline capacity drops sharply in northern winters — use low-temp lithium cells and a larger derating factor'
+    • 休眠电流陷阱：稳压器/DC-DC 漏电流可能使实测休眠电流超过 50 μA，寿命直接打五折: '• Sleep-current trap: regulator/DC-DC leakage can push measured sleep current past 50 μA, halving battery life'
+    • 实际寿命 &lt; 理论值：自放电、高低温循环、传感器漂移都会缩短寿命，理论值 × 0.6～0.8 作运维依据: '• Actual life < theoretical: self-discharge, thermal cycling, and sensor drift shorten it — plan O&M on theory × 0.6–0.8'
+    图 12-9 节点功耗拆为采样处理、无线发射与休眠三阶段，由“电流×时间”积分得到日均耗电 0.670 mAh，再按寿命公式估算出每小时上报约 9.2 年、每 10 分钟上报仅 0.94 年。: Figure 12-9 Node power is split into three phases — sampling/processing, radio transmit, and sleep; integrating current × time gives a daily drain of 0.670 mAh, and the lifetime formula then estimates about 9.2 years at hourly reporting but only 0.94 years at 10-minute reporting.

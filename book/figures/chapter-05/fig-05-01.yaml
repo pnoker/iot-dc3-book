@@ -1,5 +1,5 @@
 type: layered
-title: 图5-1 物联网平台分层架构示意
+title: 图 5-1 物联网平台分层架构示意
 purpose: 展示从感知层到应用层的标准四层模型，并明确平台层在这一模型中的桥梁位置
 audience_takeaway: 读者应理解物联网的四层职责边界，以及数据流和控制流的方向差异。
 visual_focus: 数据流的绿色箭头从感知层向上贯穿至应用层，控制流的蓝色箭头反向；平台层内部组件顺序关系用水平箭头表示。
@@ -85,11 +85,11 @@ connections:
   style: solid
   direction: top-to-bottom
 caption:
-  zh: 图5-1 物联网平台分层架构示意。感知层采集物理信号并数字化，经网络层传输至平台层；平台层完成协议转换、消息缓冲、规则判断与存储，最后通过API暴露给应用层；应用层提供人机交互与决策支持。
+  zh: 图 5-1 物联网平台分层架构示意。感知层采集物理信号并数字化，经网络层传输至平台层；平台层完成协议转换、消息缓冲、规则判断与存储，最后通过API暴露给应用层；应用层提供人机交互与决策支持。
   en: 'Figure 5-1 Layered architecture of an IoT platform. The sensing layer digitizes physical signals and transports them through the network layer to the platform layer; the platform layer performs protocol conversion, message buffering, rule evaluation, and storage, then exposes everything to the application layer through APIs; the application layer provides human-machine interaction and decision support.'
 labels:
   en:
-    图5-1 物联网平台分层架构示意: Figure 5-1 Layered IoT Platform Architecture
+    图 5-1 物联网平台分层架构示意: Figure 5-1 Layered IoT Platform Architecture
     平台层承上启下：数据向上汇聚，控制指令向下传递。: 'The platform layer bridges: data converges upward, commands pass downward.'
     数据上行: Data up
     控制下行: Control down
@@ -111,4 +111,4 @@ labels:
     数据流（上行感知数据）: Data flow (upstream data)
     控制流（下行命令）: Control flow (downlink commands)
     平台层内部处理顺序: Platform-layer processing order
-    图5-1 物联网平台分层架构示意：感知层采集物理信号并数字化，经网络层传输至平台层完成协议转换、消息缓冲、规则判断与存储，再通过 API 暴露给应用层提供人机交互与决策支持。: 'Figure 5-1 Layered IoT platform architecture: the sensing layer digitizes physical signals and sends them through the network layer to the platform, which performs protocol conversion, message buffering, rule evaluation, and storage, then exposes them via APIs to the application layer for human-machine interaction and decision support.'
+    图 5-1 物联网平台分层架构示意：感知层采集物理信号并数字化，经网络层传输至平台层完成协议转换、消息缓冲、规则判断与存储，再通过 API 暴露给应用层提供人机交互与决策支持。: 'Figure 5-1 Layered IoT platform architecture: the sensing layer digitizes physical signals and sends them through the network layer to the platform, which performs protocol conversion, message buffering, rule evaluation, and storage, then exposes them via APIs to the application layer for human-machine interaction and decision support.'

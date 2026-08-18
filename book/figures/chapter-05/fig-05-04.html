@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-4 边缘-云协同典型架构</title>
+  <title>图 5-4 消息队列缓冲削峰示意</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,77 +13,85 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图5-4 边缘-云协同典型架构</title>
-  <desc id="desc">实时任务靠近现场，全局训练与长期分析留在云端。</desc>
+  <title id="title">图 5-4 消息队列缓冲削峰示意</title>
+  <desc id="desc">洪峰先转化为队列积压，消费者按自身能力稳定处理，后端不直接承压。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <defs>
       <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
-      <marker id="mk-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
-      <marker id="mk-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="mk-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
     </defs>
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-4 边缘-云协同典型架构</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">实时任务靠近现场，全局训练与长期分析留在云端。</text>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-4 消息队列缓冲削峰示意</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">洪峰先转化为队列积压，消费者按自身能力稳定处理。</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- 双向协同主链路（先画） -->
-    <line x1="150" y1="533" x2="150" y2="188" stroke="#0F766E" stroke-width="2.4" marker-end="url(#mk-teal)"/>
-    <text x="150" y="360" transform="rotate(-90 150 360)" font-size="18" font-weight="600" fill="#0F766E" text-anchor="middle">聚合上报</text>
-    <line x1="1650" y1="188" x2="1650" y2="533" stroke="#F97316" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-orange)"/>
-    <text x="1650" y="360" transform="rotate(90 1650 360)" font-size="18" font-weight="600" fill="#F97316" text-anchor="middle">规则 / 模型下发</text>
+    <!-- 域边界（虚线） -->
+    <rect x="90" y="150" width="300" height="360" rx="14" fill="#FFFFFF" fill-opacity="0.55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="106" y="178" font-size="16" font-weight="700" fill="#475569">设备与边缘域</text>
+    <rect x="420" y="150" width="580" height="360" rx="14" fill="#FFFFFF" fill-opacity="0.55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="436" y="178" font-size="16" font-weight="700" fill="#475569">平台服务域</text>
+    <rect x="1030" y="150" width="680" height="360" rx="14" fill="#FFFFFF" fill-opacity="0.55" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="1046" y="178" font-size="16" font-weight="700" fill="#475569">数据资产域</text>
 
-    <!-- 边缘框架标注（左列，紫） -->
-    <line x1="250" y1="300" x2="268" y2="300" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 5"/>
-    <rect x="110" y="270" width="140" height="60" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
-    <text x="180" y="296" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">KubeEdge</text>
-    <text x="180" y="318" font-size="12" fill="#64748B" text-anchor="middle">容器编排</text>
-    <line x1="250" y1="415" x2="268" y2="415" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 5"/>
-    <rect x="110" y="385" width="140" height="60" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
-    <text x="180" y="411" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">EdgeX Foundry</text>
-    <text x="180" y="433" font-size="12" fill="#64748B" text-anchor="middle">设备接入框架</text>
+    <!-- 主链路连线（先画） -->
+    <line x1="350" y1="305" x2="466" y2="305" stroke="#2563EB" stroke-width="3" marker-end="url(#mk-blue)"/>
+    <line x1="700" y1="305" x2="736" y2="305" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
+    <line x1="960" y1="305" x2="1096" y2="305" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <rect x="360" y="276" width="96" height="26" rx="6" fill="#FFFFFF"/>
+    <text x="408" y="294" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">突发上报</text>
+    <rect x="668" y="276" width="96" height="26" rx="6" fill="#FFFFFF"/>
+    <text x="716" y="294" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">负载均衡</text>
+    <rect x="974" y="276" width="96" height="26" rx="6" fill="#FFFFFF"/>
+    <text x="1022" y="294" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">稳定拉取</text>
 
-    <!-- 云端平台 -->
-    <rect x="270" y="140" width="1260" height="95" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="900" y="178" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">云端平台</text>
-    <text x="900" y="210" font-size="15" fill="#475569" text-anchor="middle">全局分析 · AI 模型训练 · 时序存储 · 规则下发</text>
+    <!-- 设备群 -->
+    <rect x="130" y="250" width="220" height="110" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="240" y="292" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">设备群</text>
+    <text x="240" y="322" font-size="14" fill="#475569" text-anchor="middle">传感器 / PLC 等数据源</text>
+    <text x="240" y="346" font-size="13" fill="#64748B" text-anchor="middle">正常流量 + 补报洪峰</text>
 
-    <!-- 区域边缘 MEC -->
-    <rect x="270" y="255" width="1260" height="95" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="900" y="293" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">区域边缘（MEC）</text>
-    <text x="900" y="325" font-size="15" fill="#475569" text-anchor="middle">KubeEdge · 容器化 AI 推理</text>
-    <rect x="1280" y="272" width="150" height="40" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-    <text x="1355" y="298" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">容器化推理</text>
+    <!-- Topic 分区 -->
+    <rect x="466" y="230" width="234" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="583" y="266" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">Topic 分区</text>
+    <text x="583" y="296" font-size="14" fill="#475569" text-anchor="middle">P0 ▮▮▮▮▮</text>
+    <text x="583" y="322" font-size="14" fill="#475569" text-anchor="middle">P1 ▮▮▮</text>
+    <text x="583" y="348" font-size="14" fill="#475569" text-anchor="middle">P2 ▮▮</text>
 
-    <!-- 网关边缘 -->
-    <rect x="270" y="370" width="1260" height="95" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="900" y="408" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">网关边缘</text>
-    <text x="900" y="440" font-size="15" fill="#475569" text-anchor="middle">EdgeX · 协议转换 · 本地规则执行</text>
-    <rect x="1280" y="387" width="150" height="40" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-    <text x="1355" y="413" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">本地规则引擎</text>
+    <!-- 消费者组 -->
+    <rect x="736" y="250" width="224" height="110" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="848" y="292" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">消费者组</text>
+    <text x="848" y="322" font-size="14" fill="#475569" text-anchor="middle">C1 · C2 · C3 实例</text>
+    <text x="848" y="346" font-size="13" fill="#64748B" text-anchor="middle">按能力拉取</text>
 
-    <!-- 设备边缘 -->
-    <rect x="270" y="485" width="1260" height="95" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="900" y="523" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">设备边缘</text>
-    <text x="900" y="555" font-size="15" fill="#475569" text-anchor="middle">MCU · PLC · 传感器 / 执行器（Modbus / OPC UA / CoAP）</text>
+    <!-- 后端服务 -->
+    <rect x="1096" y="230" width="280" height="150" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="1236" y="266" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">后端服务</text>
+    <text x="1236" y="296" font-size="14" fill="#475569" text-anchor="middle">告警引擎</text>
+    <text x="1236" y="322" font-size="14" fill="#475569" text-anchor="middle">时序库写入 · 降采样</text>
+    <text x="1236" y="348" font-size="13" fill="#64748B" text-anchor="middle">不受瞬时冲击</text>
+
+    <!-- 水位变化图 -->
+    <text x="130" y="580" font-size="20" font-weight="700" fill="#0F172A">队列水位随洪峰变化</text>
+    <polygon points="130,750 430,750 570,640 770,650 950,730 1600,740 1600,775 130,775" fill="#EFF6FF"/>
+    <path d="M130 750 L430 750 L570 640 L770 650 L950 730 L1600 740" fill="none" stroke="#2563EB" stroke-width="3"/>
+    <line x1="130" y1="775" x2="1600" y2="775" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="280" y="802" font-size="15" fill="#0F172A" text-anchor="middle">正常</text>
+    <text x="670" y="802" font-size="15" font-weight="600" fill="#2563EB" text-anchor="middle">洪峰：水位上升</text>
+    <text x="1120" y="802" font-size="15" fill="#0F172A" text-anchor="middle">持续消费后回落</text>
+    <text x="1430" y="802" font-size="15" fill="#0F172A" text-anchor="middle">后端按能力处理</text>
 
     <!-- 图例 -->
-    <line x1="300" y1="636" x2="360" y2="636" stroke="#0F766E" stroke-width="2.4" marker-end="url(#mk-teal)"/>
-    <text x="372" y="642" font-size="15" fill="#475569">实线：聚合上报（数据流）</text>
-    <line x1="700" y1="636" x2="760" y2="636" stroke="#F97316" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-orange)"/>
-    <text x="772" y="642" font-size="15" fill="#475569">虚线：规则 / 模型下发（配置与指令）</text>
-    <line x1="1240" y1="636" x2="1300" y2="636" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#mk-purple)"/>
-    <text x="1312" y="642" font-size="15" fill="#475569">边缘框架部署位置</text>
+    <line x1="300" y1="856" x2="360" y2="856" stroke="#2563EB" stroke-width="3" marker-end="url(#mk-blue)"/>
+    <text x="372" y="862" font-size="15" fill="#475569">实线粗箭头：高流量数据上报</text>
+    <line x1="760" y1="856" x2="820" y2="856" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
+    <text x="832" y="862" font-size="15" fill="#475569">虚线箭头：调度 / 分配关系</text>
+    <line x1="1240" y1="856" x2="1300" y2="856" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+    <text x="1312" y="862" font-size="15" fill="#475569">消费输出</text>
 
-    <!-- 说明 -->
-    <rect x="270" y="700" width="1260" height="130" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-    <circle cx="302" cy="734" r="4" fill="#0F766E"/>
-    <text x="316" y="740" font-size="15" fill="#475569">规则下发仅在初始或规则更新时触发，执行过程中不依赖回云。</text>
-    <circle cx="302" cy="772" r="4" fill="#2563EB"/>
-    <text x="316" y="778" font-size="15" fill="#475569">聚合上报保留趋势信息，减少原始数据带宽消耗；边缘断网时仍可执行本地规则。</text>
-
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-4 边缘-云协同典型架构：展示从设备边缘到云端的层次与协同模式，左侧标注 EdgeX/KubeEdge 的典型部署位置，规则下发与聚合上报构成双向协同。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-4 消息队列缓冲削峰示意：洪峰到达时消息在 Topic 分区中暂存、水位升高，消费者组按自身能力逐步消费，后端服务不直接承受瞬时冲击。</text>
   </svg>
 </svg>
   </main>

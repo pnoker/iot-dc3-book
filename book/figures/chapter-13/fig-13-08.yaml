@@ -1,5 +1,5 @@
 type: architecture
-title: 图13-8 中心化 vs 去中心化物联网架构对比图
+title: 图 13-8 中心化 vs 去中心化物联网架构对比图
 audience_takeaway: 中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。
 purpose: 直观对比两种架构在组件角色、通信模型、信任锚点和故障影响范围上的差异。
 visual_focus: 从左栏顶部到右栏标注的主链路。
@@ -82,11 +82,11 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，两栏独立容器；设备与节点的连接使用带箭头实线，故障边界使用红色虚线矩形框。字体使用无衬线体，图注置于图下方。
 caption:
-  zh: 图13-8 中心化与去中心化物联网架构的核心差异。中心化模型依赖单一可信中介，去中心化模型通过分布式账本和共识机制将信任分散到网络节点。
+  zh: 图 13-8 中心化与去中心化物联网架构的核心差异。中心化模型依赖单一可信中介，去中心化模型通过分布式账本和共识机制将信任分散到网络节点。
   en: 'Figure 13-8 The core differences between centralized and decentralized IoT architectures. The centralized model depends on a single trusted intermediary, while the decentralized model distributes trust across network nodes through the distributed ledger and consensus mechanisms.'
 labels:
   en:
-    图13-8 中心化 vs 去中心化物联网架构对比图: Figure 13-8 Centralized vs Decentralized IoT Architecture
+    图 13-8 中心化 vs 去中心化物联网架构对比图: Figure 13-8 Centralized vs Decentralized IoT Architecture
     中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。: 'Centralized: one failure hits the whole network. Decentralized: node failures are harmless below threshold with quorum reachable.'
     核心差异是信任位置、数据流形态和故障影响域: Trust location, data-flow shape, and failure blast radius
     中心化架构: Centralized Architecture
@@ -106,4 +106,4 @@ labels:
     轻节点设备: Light-node device
     分布式共识 · P2P 通信 · 无单点失败: Distributed consensus · P2P · no single point of failure
     故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行: Below threshold and with quorum reachable, a node failure is harmless
-    图13-8 去中心化架构以分布式账本和共识分散信任与故障影响，同时引入共识和 P2P 协作成本。: Figure 13-8 Decentralization spreads trust and failure impact via ledger and consensus, adding P2P coordination costs.
+    图 13-8 去中心化架构以分布式账本和共识分散信任与故障影响，同时引入共识和 P2P 协作成本。: Figure 13-8 Decentralization spreads trust and failure impact via ledger and consensus, adding P2P coordination costs.

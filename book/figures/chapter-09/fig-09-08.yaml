@@ -1,139 +1,178 @@
-type: timeline
-title: 图9-8 物联网标准化演进时间线
-purpose: 展示物联网标准化从垂直协议独立演进，到水平平台收敛，再到语义互操作和AI交互接口扩展的四个关键阶段（节点均为示意性引用，不代表官方标准化路径）。
-audience_takeaway: 标准化的趋势是语义统一和AI交互接口预留，这决定了平台架构演进的长期方向。
-visual_focus: 从早期阶段到深水区再到MCP的阶段推进，用箭头标注每一个关键阶段的核心成果。
+type: layered
+title: 图 9-8 BLE GATT协议栈与服务-特征层次
+purpose: 展示BLE协议栈从PHY到GATT Profile的层次关系，以及Service-Characteristic-Descriptor嵌套结构。左下方叠加Notification与Indication的路径分支。
+audience_takeaway: 读者应看到GATT Profile是属性数据库的访问模型，Characteristic是数据点，Descriptor控制订阅行为。Notification无确认、功耗低但可能丢包；Indication有ACK、高可靠但功耗大。
+visual_focus: 从PHY/Link Layer向上到GATT Profile的主链路。从CCCD分叉成两条水平路径：实线Notification与虚线Indication。
 design_level: logical
-layout: 水平时间线，从左至右分为四个阶段：早期、中间层、深水区、当前节点。每个阶段下方列出代表性标准组织/项目。
+layout: 垂直分层。底部为PHY+Link，向上依次为L2CAP、Attribute Protocol（ATT）、GATT Profile。顶部右侧用嵌套方块展示Device→Service→Characteristic→Descriptor的包含关系。从CCCD向右引出两条水平路径。
 elements:
-- 工业、消费与电信垂直标准群
-- oneM2M 水平平台
-- IETF CoRE 资源目录与 W3C WoT 能力描述
-- MCP AI 交互接口扩展
+- PHY、Link Layer、L2CAP、ATT 与 GATT Profile
+- Device、Heart Rate Service、HRM Characteristic 与 CCCD
+- Notification 与 Indication 推送路径
 relationships:
-- 垂直标准群 → oneM2M：通过水平资源抽象降低跨领域适配成本
-- oneM2M → IETF CoRE、W3C WoT：从结构统一推进到资源与能力语义描述
-- IETF CoRE、W3C WoT → MCP：为工具和资源发现提供设计参考
-- oneM2M → MCP：以资源和订阅模型补充 AI 交互设计
-- MCP → 既有设备协议：扩展 AI 调用接口而不替代设备通信栈
-regions:
-- id: phase_early
-  label: 早期阶段
-  role: 垂直标准群，各自独立演进
-- id: phase_mid
-  label: 中间层阶段
-  role: 水平平台收敛，oneM2M示意
-- id: phase_deep
-  label: 深水区阶段
-  role: 语义描述与本体映射
-- id: phase_now
-  label: 当前节点
-  role: AI交互语义接口扩展
+- PHY/Link Layer → L2CAP → ATT → GATT Profile：逐层承载、复用并组织属性访问
+- Device → Service → Characteristic → Descriptor：由设备到订阅配置逐级包含
+- CCCD → Notification：启用无确认、低开销推送
+- CCCD → Indication：启用逐包确认的可靠推送
 components:
-- id: vertical_standards
-  label: 垂直标准
-  type: external
-  subtitle: 工业/消费/电信
-  group: phase_early
+- id: phy_link
+  label: PHY+Link
+  type: edge
+  subtitle: 射频与链路
+  group: hardware_layer
   priority: normal
   shape: card
-- id: oneM2M
-  label: oneM2M
-  type: standard
-  subtitle: 水平平台（示意）
-  group: phase_mid
+- id: l2cap
+  label: L2CAP
+  type: platform
+  subtitle: 通道复用
+  group: protocol_stack
+  priority: normal
+  shape: card
+- id: att
+  label: Attribute Protocol
+  type: platform
+  subtitle: 属性数据库
+  group: protocol_stack
   priority: primary
   shape: card
-- id: coRE
-  label: IETF CoRE
-  type: standard
-  subtitle: 资源目录（示意）
-  group: phase_deep
-  priority: normal
-  shape: card
-- id: wot
-  label: W3C WoT
-  type: standard
-  subtitle: Thing Description（示意）
-  group: phase_deep
-  priority: normal
-  shape: card
-- id: mcp
-  label: MCP
-  type: ai
-  subtitle: 设备-Agent交互
-  group: phase_now
+- id: gatt_profile
+  label: GATT Profile
+  type: platform
+  subtitle: 服务-特征-描述符
+  group: protocol_stack
   priority: primary
   shape: card
+- id: service_hr
+  label: Heart Rate
+  type: application
+  subtitle: 服务：心率功能组
+  group: application_model
+  priority: primary
+  shape: card
+- id: char_hrm
+  label: HRM
+  type: application
+  subtitle: 特征：心率数值
+  group: application_model
+  priority: primary
+  shape: card
+- id: desc_cccd
+  label: CCCD
+  type: application
+  subtitle: 推送使能
+  group: application_model
+  priority: normal
+  shape: card
+- id: notification_path
+  label: Notification
+  type: decision
+  subtitle: 无确认
+  group: application_model
+  priority: normal
+  shape: decision
+- id: indication_path
+  label: Indication
+  type: decision
+  subtitle: 带确认
+  group: application_model
+  priority: normal
+  shape: decision
 connections:
-- from: vertical_standards
-  to: oneM2M
-  label: 水平整合
+- from: phy_link
+  to: l2cap
+  label: 承载
+  style: solid
+  direction: bottom-to-top
+- from: l2cap
+  to: att
+  label: 复用
+  style: solid
+  direction: bottom-to-top
+- from: att
+  to: gatt_profile
+  label: 属性读写
+  style: solid
+  direction: bottom-to-top
+- from: gatt_profile
+  to: service_hr
+  label: 暴露服务
+  style: solid
+  direction: bottom-to-top
+- from: service_hr
+  to: char_hrm
+  label: 包含
+  style: solid
+  direction: bottom-to-top
+- from: char_hrm
+  to: desc_cccd
+  label: 关联
+  style: dashed
+  direction: bottom-to-top
+- from: desc_cccd
+  to: notification_path
+  label: 订阅
   style: solid
   direction: left-to-right
-- from: oneM2M
-  to: coRE
-  label: 语义描述
-  style: solid
-  direction: left-to-right
-- from: coRE
-  to: mcp
-  label: 资源目录复用
+- from: desc_cccd
+  to: indication_path
+  label: 订阅
   style: dashed
   direction: left-to-right
-- from: wot
-  to: mcp
-  label: 能力描述参考
-  style: dashed
-  direction: left-to-right
-- from: oneM2M
-  to: mcp
-  label: 订阅模型参考
-  style: dashed
-  direction: left-to-right
+regions:
+- id: hardware_layer
+  label: 硬件链路
+  role: 射频收发与连接管理
+- id: protocol_stack
+  label: 协议栈核心
+  role: 通道复用与属性数据库操作
+- id: application_model
+  label: 应用数据模型
+  role: 数据点抽象与事件订阅分发
 callouts:
-- oneM2M的水平平台是收敛起点，但语义层互操作仍是鸿沟。
-- MCP在设计思路上融合了已有成果，但并非取代它们，而是作为AI交互的补充层。
+- Service是功能组，Characteristic是数据点，Descriptor配置订阅行为。
+- Notification无ACK，适合周期性数据；Indication有ACK，适合指令执行结果。
+- 图中仅展示一个Service/Characteristic示例，实际设备通常包含多个Service。
 legend:
-- 蓝色节点=核心标准化节点；虚线箭头=补充关系或设计参考关系；实线箭头=主要演进路线。
+- 青绿色：硬件与链路层
+- 蓝色：协议栈核心
+- 橙色：应用层模型
+- 实线箭头：主执行路径
+- 虚线箭头：配置或可选路径
 visual_constraints:
-- 最多6个节点，标签短，解释放入callouts。
-- MCP用橙色强调，代表AI交互层。
-- 图例放在图底部，不遮挡时间线。
-render_notes: HTML/SVG渲染，浅色背景，水平时间线布局，箭头带短标签，底部图例和出版级图注。
+- 最多9个主节点，标签简短，解释放入callouts。
+- 图例位于图底部，不遮挡边界。
+- 蓝色用于协议栈，橙色用于模型，青绿色用于硬件。
+- Connection label不超过12个汉字。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形。Characteristic节点标注Properties（如Read|Notify）。Notification和Indication为菱形节点。底部图例。
 caption:
-  zh: 图9-8 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和AI交互接口的四个阶段。MCP在工程实践中融合了oneM2M和WoT的设计思路，而不是另起炉灶。
-  en: 'Figure 9-8 Four stages of IoT standardization: independent vertical standards, convergence on horizontal platforms, semantic description, and AI interaction interfaces. In practice MCP builds on the design ideas of oneM2M and WoT rather than starting from scratch.'
+  zh: 图 9-8 BLE GATT协议栈层次及Service-Characteristic-Descriptor嵌套结构，右半部分展示Notification与Indication的执行路径分叉。
+  en: Figure 9-8 The BLE GATT stack layers and the Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication execution paths.
 labels:
   en:
-    图9-8 物联网标准化演进时间线: Figure 9-8 IoT Standardization Timeline
-    示意性的四阶段演进：垂直标准、水平平台、语义描述与本体映射、AI 交互接口扩展；MCP 是补充层而非替代既有标准。: 'A four-stage sketch: vertical standards, horizontal platforms, semantic description & ontology mapping, AI interface extension; MCP is a complementary layer, not a replacement.'
-    概念阶段示意，不代表官方标准化路径或精确年代划分: Conceptual stages only; not an official standardization path or exact dating
-    能力描述参考 / 资源目录复用: Capability description / resource directory reuse
-    订阅 / 通知模型参考: Subscribe / notify model reference
-    水平整合: Horizontal convergence
-    语义描述: Semantic description
-    AI 接口扩展: AI interface extension
-    早期阶段: Early stage
-    垂直标准群: Vertical standards
-    工业 / 消费 / 电信: Industrial / consumer / telecom
-    各自独立演进: Each evolves independently
-    适配成本随品类增长: Adaptation cost grows with variety
-    中间层阶段: Middleware stage
-    水平平台（示意）: Horizontal platform (illustrative)
-    统一资源抽象与 API: Unified resource abstraction & APIs
-    仍需消除语义歧义: Semantic ambiguity remains
-    深水区阶段: Deep-water stage
-    资源目录与能力描述: Resource directory & capability description
-    语义标注与本体映射: Semantic annotation & ontology mapping
-    机器可读的共享含义: Machine-readable shared meaning
-    当前节点: Current stage
-    AI 交互接口扩展: AI interaction interface extension
-    工具与资源发现: Tool & resource discovery
-    补充层，不替代设备协议: A complement, not a device-protocol replacement
-    实线主轴：概念阶段推进: 'Solid spine: stage progression'
-    虚线：补充关系或设计参考（不表示标准继承或官方归属）: 'Dashed: complement or design reference (not standard inheritance or endorsement)'
-    橙色：AI 交互层: 'Orange: AI interaction layer'
-    长期方向: Long-term direction
-    从「消息可传」推进到「含义可共享」，再为 AI 提供经过治理的能力发现与调用接口。: From "messages deliverable" to "meaning shareable", then governed capability discovery and invocation for AI.
-    图9-8 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和 AI 交互接口的四个阶段。MCP 在工程实践中融合了 oneM2M 和 WoT 的设计思路，而不是另起炉灶。: 'Figure 9-8 Four stages of IoT standardization: independent vertical standards, horizontal platform convergence, semantic description, and AI interaction interfaces. MCP builds on oneM2M and WoT design ideas rather than starting from scratch.'
+    图 9-8 BLE GATT协议栈与服务-特征层次: Figure 9-8 BLE GATT Stack and Service-Characteristic Hierarchy
+    ? BLE 从 PHY 和 Link Layer 经 L2CAP、ATT 到 GATT，右侧展示 Service、Characteristic、Descriptor 嵌套及 CCCD 控制的 Notification 和 Indication 分支。
+    : BLE runs from PHY and Link Layer through L2CAP and ATT up to GATT; the right side shows Service, Characteristic, Descriptor nesting and the CCCD-controlled Notification and Indication branches.
+    ATT 提供属性访问，GATT 组织服务数据模型；CCCD 选择无确认或带确认的推送路径: ATT provides attribute access and GATT organizes the service data model; CCCD selects the unconfirmed or confirmed push path
+    承载: Carries
+    复用: Multiplexes
+    属性读写: Attribute R/W
+    订阅 · 无确认: Subscribe · no ACK
+    订阅 · 带确认: Subscribe · with ACK
+    协议栈主链路: Main stack path
+    服务 · 特征 · 描述符数据模型: Service · Characteristic · Descriptor data model
+    属性数据库读写与通知承载: Attribute database R/W & notification transport
+    逻辑通道复用: Logical channel multiplexing
+    射频与链路管理: Radio & link management
+    应用数据模型: Application data model
+    服务：心率功能组: 'Service: heart-rate function group'
+    Value：心率数值  Properties：Read | Notify: 'Value: heart rate  Properties: Read | Notify'
+    推送使能配置: Push enable config
+    包含关系：Device → Service → Characteristic → Descriptor: 'Nesting: Device → Service → Characteristic → Descriptor'
+    无 ACK · 周期数据 · 低开销: No ACK · periodic data · low overhead
+    逐包确认 · 关键结果 · 较高开销: Per-packet ACK · critical results · higher overhead
+    硬件链路: Hardware link
+    协议栈核心: Stack core
+    实线：主路径: 'Solid: main path'
+    虚线：配置 / 带确认路径: 'Dashed: config / confirmed path'
+    图 9-8 BLE GATT 协议栈层次及 Service-Characteristic-Descriptor 嵌套结构，右半部分展示 Notification 与 Indication 的执行路径分叉。: Figure 9-8 BLE GATT stack layers and Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication paths.

@@ -1,85 +1,157 @@
-type: layered
-title: 图10-12 本章知识体系图谱
-audience_takeaway: 读者应理解本章四层知识逐级递进且每层落在IoT DC3具体模块上,分析决策经平台层下发设备,形成带返回线的闭环。
-purpose: 展示工业物联网与智能制造四层知识体系的结构化映射：从概念驱动到平台落地。
-visual_focus: 从感知层通过驱动模块向上到平台层，实线箭头的主链路。
-design_level: logical
-layout: 自下而上四层叠加结构，每层包含若干核心关键词，右侧标注与IoT DC3的对应模块。
+type: dataflow
+title: 图 10-12 IoT DC3设备接入与数据采集数据流
+audience_takeaway: 读者应理解原始位号到展示曲线需三层改造:驱动归一为语义PointValue、数据中心对齐时间戳与单位、时序库按设备+位号分区。
+purpose: 展示从设备注册、驱动绑定到实时上报和存储的端到端流程。
+visual_focus: 从设备驱动绑定到Grafana大屏的主链路。
+design_level: implementation
+layout: 从左至右流向：设备层→IoT DC3驱动服务→数据中心→时序库→Grafana大屏。
 elements:
-- 感知层：工业4.0、数字孪生、Modbus/OPC UA、边缘网关，使用青绿色节点。
-- 接入层：时序数据库、规则引擎、数据质量，使用蓝色服务块。
-- 分析层：预测性维护、AI模型、在线推理，使用橙色服务块。
-- 平台层：IoT DC3驱动模块/数据中心/规则引擎/消息队列，使用蓝色服务块。
+- 设备层：SMT产线设备（回流焊炉、贴片机、锡膏印刷机），通过Modbus TCP输出位号值。
+- 驱动服务：dc3-driver-modbus-tcp实例，轮询设备寄存器，将值归一为带语义标签的PointValue。
+- 数据中心：接收PointValue流，做时间戳对齐和单位转换后写入时序库。
+- 时序存储：TimescaleDB，按设备+位号分区存储。
+- Grafana大屏：从TimescaleDB查询数据，按设备聚合，刷新间隔可配置（示例中设为5秒）。
 relationships:
-- 感知层通过驱动模块向上接入平台层，实线箭头。
-- 接入层向分析层提供特征数据与告警事件，虚线箭头。
-- 分析层的决策结果通过平台层下发给设备，形成闭环，箭头带返回线。
+- 设备层通过Modbus TCP向驱动服务上报位号值（轮询周期可配置，示例中为2秒）。
+- 驱动服务将Modbus寄存器值转成IoT DC3内部PointValue格式（含设备编号、位号、语义标签、单位、时间戳、租户ID），发往数据中心。
+- 数据中心将PointValue写入TimescaleDB。
+- Grafana通过PostgreSQL数据源连接TimescaleDB，按设备分组展示实时曲线。
 regions:
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
 components:
-- id: r1
-  label: 感知层通过驱动模块向上
+- id: device_layer
+  label: SMT产线设备
+  type: edge
+  subtitle: 回流焊炉/贴片机
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: driver_service
+  label: Modbus驱动
   type: platform
-  subtitle: ''
-  group: platform_domain
+  subtitle: 轮询、归一、上报
+  group: data_domain
   priority: primary
   shape: card
-- id: r2
-  label: 平台层，实线箭头
+- id: data_center
+  label: 数据中心
   type: platform
-  subtitle: ''
-  group: platform_domain
+  subtitle: 清洗、对齐、写入
+  group: data_domain
+  priority: primary
+  shape: card
+- id: timescaledb
+  label: TimescaleDB
+  type: data
+  subtitle: 时序分区存储
+  group: data_domain
+  priority: primary
+  shape: database
+- id: grafana
+  label: Grafana大屏
+  type: application
+  subtitle: 实时监控面板
+  group: data_domain
   priority: normal
   shape: card
 connections:
-- from: r1
-  to: r2
-  label: 感知层通过驱动模块向上接入平台层…
+- from: device_layer
+  to: driver_service
+  label: Modbus TCP
   style: solid
-  direction: request
+  direction: left-to-right
+- from: driver_service
+  to: data_center
+  label: PointValue流
+  style: solid
+  direction: left-to-right
+- from: data_center
+  to: timescaledb
+  label: 写入
+  style: solid
+  direction: left-to-right
+- from: timescaledb
+  to: grafana
+  label: SQL查询
+  style: solid
+  direction: left-to-right
 callouts:
-- 感知层通过驱动模块向上接入平台层，实线箭头
-- 接入层向分析层提供特征数据与告警事件，虚线箭头
-- 分析层的决策结果通过平台层下发给设备，形成闭环，箭头带返回线
+- 驱动服务通过批量读减少网络往返，每周期读整段连续地址。
+- 数据中心处理时间戳对齐和单位转换，保证下游数据一致性。
 legend:
-- 蓝色=平台能力；青绿色=设备与协议；橙色=AI与智能决策。
-- 实线箭头表示数据流；虚线箭头表示事件触发或调用。
+- 青绿色：设备与边缘；蓝色：平台核心服务；浅灰：时序数据库；白色：可视化层。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
-render_notes: HTML/SVG渲染，浅色背景，四层横向分区，每层内部使用圆角矩形卡片承载关键词，右侧统一标注对应的IoT DC3模块名称。箭头统一使用12px间距，实线为#2563EB，虚线为#94A3B8。
+render_notes: HTML/SVG渲染，水平流向布局，各层节点按颜色区分，流线上标注协议类型和数据格式。
 caption:
-  zh: 图10-12 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。
-  en: 'Figure 10-12 Outlines the four-layer knowledge system of this chapter: from industrial connectivity technologies and the data platform to intelligent analytics and IoT DC3 practice, advancing layer by layer.'
+  zh: 图 10-12 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流。
+  en: Figure 10-12 Illustrates the IoT DC3 data flow from device access to the monitoring dashboard in an SMT production line scenario.
 labels:
   en:
-    图10-12 本章知识体系图谱: Figure 10-12 Chapter Knowledge Map
-    主链从感知层向上经过接入层、分析层到平台层；受控决策由平台侧沿独立下行路径返回现场确定性控制系统。: The main chain runs up from perception through access and analytics to the platform layer; governed decisions return along a separate downlink to the deterministic field control systems.
-    数据与能力自下而上汇聚；受控决策沿独立下行链返回 PLC / SIS，不与上行主链混画。: Data and capabilities converge upward; governed decisions return to PLC / SIS on a separate downlink, never mixed into the uplink.
-    平台层: Platform Layer
-    驱动模块 · 数据中心 · 规则引擎 · 消息队列: Drivers · data center · rule engine · message queue
-    统一承载数据、决策编排与业务协同: One place for data, decisions, and collaboration
-    IoT DC3 平台服务域: IoT DC3 Platform Service Domain
-    分析层: Analytics Layer
-    预测性维护 · AI 模型 · 在线推理: Predictive maintenance · AI models · online inference
-    形成健康评估、告警与维护建议: Produces health scores, alarms, and advice
-    规则引擎 + AI 推理: Rule engine + AI inference
-    接入层: Access Layer
-    时序数据库 · 规则引擎 · 数据质量: Time-series DB · rule engine · data quality
-    协议适配、归一为 PointValue、质量治理: Protocol adaptation, PointValue normalization, quality governance
-    数据中心（时序·质量）: Data center (time-series · quality)
-    感知层: Perception Layer
-    工业4.0 · 数字孪生 · Modbus/OPC UA · 边缘网关: Industry 4.0 · digital twin · Modbus/OPC UA · edge gateway
-    现场设备、协议与概念的认知基础: Field devices, protocols, and concepts
-    驱动模块（南向协议适配）: Driver modules (southbound protocols)
-    驱动模块上行主链（实线）: Driver uplink main chain (solid)
-    特征数据 · 告警事件（虚线）: Feature data · alarm events (dashed)
-    决策下发 · 闭环（带返回线）: Decision dispatch · closed loop (return line)
-    实线=数据上行主链: Solid = data uplink main chain
-    虚线=事件/调用: Dashed = events/calls
-    橙色=AI 决策: Orange = AI decisions
-    青绿=设备/协议: Teal = devices/protocols
-    蓝=平台能力: Blue = platform capabilities
-    图10-12 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。: 'Figure 10-12 The chapter''s four-layer knowledge system: from industrial connectivity and the data platform to intelligent analytics and IoT DC3 practice, layer by layer.'
+    图 10-12 IoT DC3设备接入与数据采集数据流: Figure 10-12 IoT DC3 Device Access and Data Acquisition Flow
+    从设备接入、驱动绑定到实时上报与存储的端到端流程：Modbus TCP 位号值 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏展示。: 'End to end from device registration and driver binding to live reporting and storage: Modbus TCP raw values → driver-normalized semantic PointValues → aligned writes in the data center → partitioned TimescaleDB storage → Grafana dashboard.'
+    SMT产线设备经 Modbus TCP 上报位号值 → Modbus驱动归一为 PointValue → 数据中心对齐写入 TimescaleDB → Grafana 大屏实时展示。: SMT devices report raw values over Modbus TCP → the Modbus driver normalizes them into PointValues → the data center aligns and writes to TimescaleDB → Grafana shows live curves.
+    设备与边缘域: Device & Edge Domain
+    现场异构资源边界: Heterogeneous field asset boundary
+    数据资产域: Data Asset Domain
+    数据沉淀与治理边界: Data & governance boundary
+    SMT产线设备: SMT Line Devices
+    边缘域: Edge domain
+    回流焊炉 · 贴片机 · 锡膏印刷机: Reflow oven · pick-and-place · stencil printer
+    回流焊炉: Reflow Oven
+    温度 · 链速: Temperature · chain speed
+    贴片机: Pick-and-Place
+    吸嘴 · 贴装精度: Nozzles · placement accuracy
+    锡膏印刷机: Stencil Printer
+    锡膏厚度 · 偏移: Paste height · offset
+    Modbus TCP 输出位号值: Modbus TCP raw values out
+    Modbus驱动: Modbus Driver
+    轮询设备寄存器: Polls device registers
+    2s 周期可配置: 2s cycle, configurable
+    归一为语义 PointValue: Normalized to semantic PointValues
+    批量读 · 整段连续地址: Batch reads · contiguous blocks
+    PointValue 流: PointValue stream
+    数据中心: Data Center
+    清洗 · 对齐 · 写入: Clean · align · write
+    接收 PointValue 流: Receives PointValue stream
+    时间戳对齐: Timestamp alignment
+    单位转换 · 语义校验: Unit conversion · semantic checks
+    写入时序库: Write to TSDB
+    时序分区存储: Partitioned time-series storage
+    按设备 + 位号分区: Partitioned by device + point
+    时间维度 · 按需保留: Time dimension · retention on demand
+    PostgreSQL 兼容: PostgreSQL compatible
+    Grafana大屏: Grafana Dashboard
+    可视化: Visualization
+    实时监控面板: Live monitoring panel
+    按设备聚合: Grouped by device
+    实时曲线: Live curves
+    刷新间隔 5s: Refresh 5s
+    LIVE · 5s 刷新: LIVE · 5s refresh
+    2s 轮询: 2s polling
+    PointValue流: PointValue stream
+    带语义: With semantics
+    写入: Write
+    清洗后: Cleaned
+    SQL查询: SQL query
+    接入准备 · 设备注册与驱动绑定: Setup · device registration & driver binding
+    设备注册后绑定 Modbus 驱动，: After registration, bind the Modbus driver,
+    使能数据采集并配置轮询周期。: enable acquisition, and set the polling cycle.
+    驱动批量读优化: Driver batch-read optimization
+    批量读减少网络往返，每周期: Batch reads cut network round trips;
+    读取整段连续寄存器地址。: each cycle reads one contiguous block.
+    数据中心对齐与转换: Data-center alignment & conversion
+    处理时间戳对齐与单位转换，: Aligns timestamps, converts units,
+    保证下游数据一致性。: keeping downstream data consistent.
+    青绿=设备与边缘: Teal = device & edge
+    蓝=平台核心服务: Blue = core platform services
+    浅灰=时序数据库: Light gray = time-series DB
+    白=可视化层: White = visualization
+    实线箭头=数据流: Solid arrows = data flow
+    图 10-12 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流：原始位号 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏。: 'Figure 10-12 IoT DC3 data flow in an SMT line scenario, from device access to the monitoring dashboard: raw values → driver-normalized semantic PointValues → aligned writes in the data center → partitioned TimescaleDB storage → Grafana dashboard.'

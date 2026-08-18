@@ -1,5 +1,5 @@
 type: layered
-title: 图13-7 基于区块链的供应链溯源系统分层架构
+title: 图 13-7 基于区块链的供应链溯源系统分层架构
 audience_takeaway: 读者应理解应用层无权直连感知层与边缘层，任何数据查询都须经区块链网络层中转，链上成为唯一可信数据出口。
 purpose: 展示从物理感知到业务展示的四层结构，以及数据在各层间的流动方向。
 visual_focus: 从边缘层将计算出的数据哈希、数字签名…到应用层，实线箭头；应用层发起的查询…的主链路。
@@ -83,11 +83,11 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，浅色背景。四层自下而上堆叠，每层使用不同底色（青绿→蓝色→橙色），层名使用粗体白色字体。层间箭头用粗细区分，实线箭头表示数据推送，虚线箭头表示查询请求。
 caption:
-  zh: 图13-7 展示四层结构的职责边界和数据流向。边缘层将原始传感器数据哈希化后上链，原始数据保留在边缘存储或IPFS中。区块链网络层负责记录、共识与智能合约执行。
+  zh: 图 13-7 展示四层结构的职责边界和数据流向。边缘层将原始传感器数据哈希化后上链，原始数据保留在边缘存储或IPFS中。区块链网络层负责记录、共识与智能合约执行。
   en: 'Figure 13-7 The responsibility boundaries and data flows of the four-layer structure. The edge layer hashes raw sensor data and puts it on-chain, while the raw data stays in edge storage or IPFS. The blockchain network layer is responsible for recording, consensus, and smart-contract execution.'
 labels:
   en:
-    图13-7 基于区块链的供应链溯源系统分层架构: Figure 13-7 Layered Architecture of a Blockchain-Based Supply-Chain Traceability System
+    图 13-7 基于区块链的供应链溯源系统分层架构: Figure 13-7 Layered Architecture of a Blockchain-Based Supply-Chain Traceability System
     原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录，不直接绕过信任层访问设备。: Raw data stays off-chain; hash, signature and metadata on-chain; apps query trusted records via the chain, never bypassing the trust layer.
     应用只能经区块链网络查询可信记录，不直接绕过信任层访问设备: Apps query trusted records only via the chain, never bypassing the trust layer
     应用层: Application Layer
@@ -113,4 +113,4 @@ labels:
     RFID 读写器: RFID reader
     GPS 模块: GPS module
     工业采集设备: Industrial acquisition devices
-    图13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。: Figure 13-7 Raw data off-chain, hash + signature + metadata on-chain; apps query trusted records via the chain.
+    图 13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。: Figure 13-7 Raw data off-chain, hash + signature + metadata on-chain; apps query trusted records via the chain.

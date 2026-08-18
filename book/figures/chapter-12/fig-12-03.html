@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
+  <title>图 12-3 农业数据分层采集与三道清洗流程</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,90 +12,105 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
-  <desc id="desc">三种技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六维度的相对强弱（1–5 刻度，1 最弱、5 最强）。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图 12-3 农业数据分层采集与三道清洗流程</title>
+  <desc id="desc">传感器数据经分层采集、MQTT 传输后，依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，再供 AI 模型消费。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
 
-  <!-- 标题 -->
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+  </defs>
+
+  <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">六个维度采用同一 1–5 相对刻度，辅助识别各技术优势与短板</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 12-3 农业数据分层采集与三道清洗流程</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">分层采集 → MQTT 传输 → 三道清洗 → AI 模型 · “够用”覆盖关键变化拐点</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 雷达图（中心 720,470，R=250，刻度 1–5） ===== -->
-  <g transform="translate(720 470)">
-    <!-- 同心圆网格 -->
-    <circle r="50" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    <circle r="100" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    <circle r="150" fill="none" stroke="#CBD5E1" stroke-width="1"/>
-    <circle r="200" fill="none" stroke="#CBD5E1" stroke-width="1"/>
-    <circle r="250" fill="none" stroke="#94A3B8" stroke-width="1.4"/>
-    <!-- 六轴辐射线 -->
-    <line x1="0" y1="0" x2="0" y2="-250" stroke="#94A3B8" stroke-width="1"/>
-    <line x1="0" y1="0" x2="216.5" y2="-125" stroke="#94A3B8" stroke-width="1"/>
-    <line x1="0" y1="0" x2="216.5" y2="125" stroke="#94A3B8" stroke-width="1"/>
-    <line x1="0" y1="0" x2="0" y2="250" stroke="#94A3B8" stroke-width="1"/>
-    <line x1="0" y1="0" x2="-216.5" y2="125" stroke="#94A3B8" stroke-width="1"/>
-    <line x1="0" y1="0" x2="-216.5" y2="-125" stroke="#94A3B8" stroke-width="1"/>
+  <!-- 阶段1：传感器节点 -->
+  <rect x="80" y="150" width="300" height="210" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="230" y="184" font-size="15" font-weight="700" fill="#16A34A" text-anchor="middle">传感器节点</text>
+  <circle cx="120" cy="224" r="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="120" cy="224" r="4" fill="#16A34A"/>
+  <text x="144" y="228" font-size="12" fill="#0F172A">土壤湿度 / 温度 / EC</text>
+  <circle cx="120" cy="266" r="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="120" cy="266" r="4" fill="#16A34A"/>
+  <text x="144" y="270" font-size="12" fill="#0F172A">空气温湿度 / 光照 / CO₂</text>
+  <circle cx="120" cy="308" r="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <circle cx="120" cy="308" r="4" fill="#16A34A"/>
+  <text x="144" y="312" font-size="12" fill="#0F172A">风速 / 降雨量</text>
+  <text x="230" y="344" font-size="11" fill="#64748B" text-anchor="middle">低功耗 MCU · 深度休眠</text>
 
-    <!-- 三种技术多边形 -->
-    <polygon points="0,-200 129.9,-75 129.9,75 0,200 -216.5,125 -173.2,-100" fill="#F97316" fill-opacity=".12" stroke="#F97316" stroke-width="2.4"/>
-    <polygon points="0,-200 173.2,-100 86.6,50 0,150 -86.6,50 -129.9,-75" fill="#2563EB" fill-opacity=".10" stroke="#2563EB" stroke-width="2.4"/>
-    <polygon points="0,-200 43.3,-25 173.2,100 0,200 -43.3,25 -173.2,-100" fill="#0F766E" fill-opacity=".10" stroke="#0F766E" stroke-width="2.4"/>
+  <!-- 阶段2：分层采集 -->
+  <rect x="420" y="150" width="300" height="210" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="570" y="184" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">分层采集策略</text>
+  <rect x="452" y="206" width="236" height="54" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="570" y="228" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">土壤参数 · 每 1 小时</text>
+  <text x="570" y="248" font-size="11" fill="#475569" text-anchor="middle">变化分钟~小时级</text>
+  <rect x="452" y="276" width="236" height="54" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="570" y="298" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">气象参数 · 每 15 分钟</text>
+  <text x="570" y="318" font-size="11" fill="#475569" text-anchor="middle">风速/光照/CO₂ 变化更快</text>
 
-    <!-- 顶点圆点（LoRa 橙） -->
-    <g fill="#F97316" stroke="#FFFFFF" stroke-width="1.6">
-      <circle cx="0" cy="-200" r="6"/><circle cx="129.9" cy="-75" r="6"/><circle cx="129.9" cy="75" r="6"/><circle cx="0" cy="200" r="6"/><circle cx="-216.5" cy="125" r="6"/><circle cx="-173.2" cy="-100" r="6"/>
-    </g>
-    <!-- 顶点圆点（NB-IoT 蓝） -->
-    <g fill="#2563EB" stroke="#FFFFFF" stroke-width="1.6">
-      <circle cx="0" cy="-200" r="6"/><circle cx="173.2" cy="-100" r="6"/><circle cx="86.6" cy="50" r="6"/><circle cx="0" cy="150" r="6"/><circle cx="-86.6" cy="50" r="6"/><circle cx="-129.9" cy="-75" r="6"/>
-    </g>
-    <!-- 顶点圆点（Sigfox 青绿） -->
-    <g fill="#0F766E" stroke="#FFFFFF" stroke-width="1.6">
-      <circle cx="0" cy="-200" r="6"/><circle cx="43.3" cy="-25" r="6"/><circle cx="173.2" cy="100" r="6"/><circle cx="0" cy="200" r="6"/><circle cx="-43.3" cy="25" r="6"/><circle cx="-173.2" cy="-100" r="6"/>
-    </g>
+  <!-- 阶段3：MQTT -->
+  <rect x="760" y="150" width="280" height="210" rx="12" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="900" y="184" font-size="15" font-weight="700" fill="#0F766E" text-anchor="middle">MQTT 传输</text>
+  <text x="900" y="224" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">发布 / 订阅 · 最小报文头 2 字节</text>
+  <text x="820" y="254" font-size="12" fill="#0F172A">QoS 0 · 至多一次</text>
+  <text x="820" y="276" font-size="11" fill="#475569">定期采集的土壤温度</text>
+  <text x="820" y="306" font-size="12" fill="#0F172A">QoS 1 · 至少一次</text>
+  <text x="820" y="328" font-size="11" fill="#475569">阈值告警确保不丢包</text>
 
-    <!-- 轴名 + 三技术值 -->
-    <text x="0" y="-278" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">覆盖</text>
-    <text x="0" y="-258" text-anchor="middle" font-size="10.5" fill="#64748B">(4/4/4)</text>
-    <text x="238" y="-137" font-size="14" font-weight="700" fill="#0F172A">速率</text>
-    <text x="238" y="-117" font-size="10.5" fill="#64748B">(3/4/1)</text>
-    <text x="238" y="160" font-size="14" font-weight="700" fill="#0F172A">功耗</text>
-    <text x="238" y="180" font-size="10.5" fill="#64748B">(3/2/4)</text>
-    <text x="0" y="302" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">成本</text>
-    <text x="0" y="322" text-anchor="middle" font-size="10.5" fill="#64748B">(4/3/4)</text>
-    <text x="-238" y="160" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">生态</text>
-    <text x="-238" y="180" text-anchor="end" font-size="10.5" fill="#64748B">(5/2/1)</text>
-    <text x="-238" y="-137" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">穿透</text>
-    <text x="-238" y="-117" text-anchor="end" font-size="10.5" fill="#64748B">(4/3/4)</text>
+  <!-- 阶段4：三道清洗 -->
+  <rect x="1080" y="150" width="400" height="210" rx="12" fill="#FFF7ED" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="184" font-size="15" font-weight="700" fill="#D97706" text-anchor="middle">三道清洗</text>
+  <rect x="1108" y="202" width="344" height="44" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="219" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">① 异常值检测</text>
+  <text x="1280" y="237" font-size="11" fill="#475569" text-anchor="middle">滑动窗口 3σ · 上下限过滤</text>
+  <rect x="1108" y="254" width="344" height="44" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="271" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">② 缺失值插补</text>
+  <text x="1280" y="289" font-size="11" fill="#475569" text-anchor="middle">线性插值 · 前向填充</text>
+  <rect x="1108" y="306" width="344" height="44" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1280" y="323" font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">③ 时间戳对齐</text>
+  <text x="1280" y="341" font-size="11" fill="#475569" text-anchor="middle">重采样到固定锚点</text>
+
+  <!-- 阶段5：AI 模型 -->
+  <rect x="1520" y="150" width="200" height="210" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1620" y="184" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">AI 模型</text>
+  <text x="1620" y="224" font-size="12" fill="#0F172A" text-anchor="middle">病害识别</text>
+  <text x="1620" y="248" font-size="12" fill="#0F172A" text-anchor="middle">产量预测</text>
+  <text x="1620" y="272" font-size="12" fill="#0F172A" text-anchor="middle">灌溉决策</text>
+
+  <!-- 箭头 -->
+  <line x1="380" y1="255" x2="420" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="720" y1="255" x2="760" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1040" y1="255" x2="1080" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <line x1="1480" y1="255" x2="1520" y2="255" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 关键点 callout -->
+  <rect x="420" y="420" width="960" height="96" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="440" y="448" font-size="13" font-weight="700" fill="#334155">关键要点：事件驱动 + 定期采样</text>
+  <text x="440" y="472" font-size="12" fill="#475569">端侧 AI 在本地做简单趋势识别，仅在检测到异常波动时提高上传频率；</text>
+  <text x="440" y="494" font-size="12" fill="#475569">“够用”原则——覆盖关键变化拐点，同时不给现场供电和回传通道造成压力。</text>
+
+  <!-- Legend -->
+  <line x1="40" y1="580" x2="1760" y2="580" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <rect x="60" y="605" width="16" height="14" rx="2" fill="#16A34A"/>
+    <text x="84" y="614" dominant-baseline="middle">采集 / 传输</text>
+    <rect x="180" y="605" width="16" height="14" rx="2" fill="#D97706"/>
+    <text x="204" y="614" dominant-baseline="middle">数据清洗</text>
+    <rect x="300" y="605" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="324" y="614" dominant-baseline="middle">模型消费</text>
+    <line x1="450" y1="612" x2="490" y2="612" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+    <text x="498" y="614" dominant-baseline="middle">数据流向</text>
   </g>
 
-  <!-- ===== 右侧图例 ===== -->
-  <text x="1390" y="200" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">技术对比图例</text>
-  <line x1="1030" y1="250" x2="1090" y2="250" stroke="#F97316" stroke-width="3"/>
-  <text x="1110" y="255" font-size="13" font-weight="700" fill="#0F172A">LoRa / LoRaWAN</text>
-  <text x="1110" y="276" font-size="11" fill="#475569">覆盖4 · 速率3 · 功耗3 · 成本4 · 生态5 · 穿透4</text>
-  <line x1="1030" y1="320" x2="1090" y2="320" stroke="#2563EB" stroke-width="3"/>
-  <text x="1110" y="325" font-size="13" font-weight="700" fill="#0F172A">NB-IoT</text>
-  <text x="1110" y="346" font-size="11" fill="#475569">覆盖4 · 速率4 · 功耗2 · 成本3 · 生态2 · 穿透3</text>
-  <line x1="1030" y1="390" x2="1090" y2="390" stroke="#0F766E" stroke-width="3"/>
-  <text x="1110" y="395" font-size="13" font-weight="700" fill="#0F172A">Sigfox</text>
-  <text x="1110" y="416" font-size="11" fill="#475569">覆盖4 · 速率1 · 功耗4 · 成本4 · 生态1 · 穿透4</text>
-
-  <!-- 读图要点 -->
-  <rect x="1030" y="460" width="700" height="130" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="1060" y="494" font-size="14" font-weight="700" fill="#334155">读图要点</text>
-  <text x="1060" y="522" font-size="12" fill="#475569">1–5 相对刻度，1=最弱、5=最强；功耗与成本轴已转换为「越低越优」。</text>
-  <text x="1060" y="548" font-size="12" fill="#475569">NB-IoT 速率最高(4)但功耗最差(2)；Sigfox 功耗最优(4)但速率最低(1)。</text>
-  <text x="1060" y="574" font-size="12" fill="#475569">LoRa 生态开放性最强(5)，覆盖、成本、穿透均衡，属居中平衡选择。</text>
-
-  <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图12-3 三项技术在覆盖与成本上接近，主要差异在速率、功耗与生态开放性：LoRa 生态开放居中，NB-IoT 速率优先，Sigfox 功耗优先。</text>
+  <!-- Caption -->
+  <text x="900" y="850" font-size="17" fill="#475569" text-anchor="middle">图 12-3 传感器数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供下游 AI 模型消费。</text>
   </svg>
 </svg>
   </main>

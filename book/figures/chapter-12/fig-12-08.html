@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈</title>
+  <title>图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,78 +12,90 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
-  <title id="title">图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈</title>
-  <desc id="desc">湿度低于下限时先查降水预报：预报有雨则推迟灌溉，无雨才计算灌溉量并开阀；高于上限则缩短采样间隔。</desc>
-  <rect width="1200" height="700" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</title>
+  <desc id="desc">三种技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六维度的相对强弱（1–5 刻度，1 最弱、5 最强）。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
 
-  <defs>
-    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#D97706"/></marker>
-    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-  </defs>
-
-  <!-- Title -->
+  <!-- 标题 -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">从“看到历史再反应”升级为“预判未来再决策”的混合控制</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">六个维度采用同一 1–5 相对刻度，辅助识别各技术优势与短板</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 开始 -->
-  <rect x="790" y="140" width="220" height="52" rx="10" fill="#2563EB"/>
-  <text x="900" y="172" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">传感器回传实时湿度值</text>
+  <!-- ===== 雷达图（中心 720,470，R=250，刻度 1–5） ===== -->
+  <g transform="translate(720 470)">
+    <!-- 同心圆网格 -->
+    <circle r="50" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    <circle r="100" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+    <circle r="150" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+    <circle r="200" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+    <circle r="250" fill="none" stroke="#94A3B8" stroke-width="1.4"/>
+    <!-- 六轴辐射线 -->
+    <line x1="0" y1="0" x2="0" y2="-250" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="0" y1="0" x2="216.5" y2="-125" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="0" y1="0" x2="216.5" y2="125" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="0" y1="0" x2="0" y2="250" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="0" y1="0" x2="-216.5" y2="125" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="0" y1="0" x2="-216.5" y2="-125" stroke="#94A3B8" stroke-width="1"/>
 
-  <!-- 判断1：湿度 < 下限 -->
-  <polygon points="900,222 1010,262 900,302 790,262" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="900" y="268" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">湿度 &lt; 下限？</text>
-  <line x1="900" y1="192" x2="900" y2="222" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+    <!-- 三种技术多边形 -->
+    <polygon points="0,-200 129.9,-75 129.9,75 0,200 -216.5,125 -173.2,-100" fill="#F97316" fill-opacity=".12" stroke="#F97316" stroke-width="2.4"/>
+    <polygon points="0,-200 173.2,-100 86.6,50 0,150 -86.6,50 -129.9,-75" fill="#2563EB" fill-opacity=".10" stroke="#2563EB" stroke-width="2.4"/>
+    <polygon points="0,-200 43.3,-25 173.2,100 0,200 -43.3,25 -173.2,-100" fill="#0F766E" fill-opacity=".10" stroke="#0F766E" stroke-width="2.4"/>
 
-  <!-- 否：等待 -->
-  <rect x="1160" y="240" width="300" height="52" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1310" y="272" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">否 · 等待下次采样</text>
-  <line x1="1010" y1="262" x2="1160" y2="266" stroke="#64748B" stroke-width="1.5" marker-end="url(#ah-gray)"/>
-  <text x="1085" y="252" font-size="11" fill="#64748B">否</text>
+    <!-- 顶点圆点（LoRa 橙） -->
+    <g fill="#F97316" stroke="#FFFFFF" stroke-width="1.6">
+      <circle cx="0" cy="-200" r="6"/><circle cx="129.9" cy="-75" r="6"/><circle cx="129.9" cy="75" r="6"/><circle cx="0" cy="200" r="6"/><circle cx="-216.5" cy="125" r="6"/><circle cx="-173.2" cy="-100" r="6"/>
+    </g>
+    <!-- 顶点圆点（NB-IoT 蓝） -->
+    <g fill="#2563EB" stroke="#FFFFFF" stroke-width="1.6">
+      <circle cx="0" cy="-200" r="6"/><circle cx="173.2" cy="-100" r="6"/><circle cx="86.6" cy="50" r="6"/><circle cx="0" cy="150" r="6"/><circle cx="-86.6" cy="50" r="6"/><circle cx="-129.9" cy="-75" r="6"/>
+    </g>
+    <!-- 顶点圆点（Sigfox 青绿） -->
+    <g fill="#0F766E" stroke="#FFFFFF" stroke-width="1.6">
+      <circle cx="0" cy="-200" r="6"/><circle cx="43.3" cy="-25" r="6"/><circle cx="173.2" cy="100" r="6"/><circle cx="0" cy="200" r="6"/><circle cx="-43.3" cy="25" r="6"/><circle cx="-173.2" cy="-100" r="6"/>
+    </g>
 
-  <!-- 是：检查天气 -->
-  <line x1="900" y1="302" x2="900" y2="348" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-  <text x="912" y="328" font-size="11" fill="#64748B">是</text>
-  <rect x="790" y="348" width="220" height="52" rx="10" fill="#0F766E"/>
-  <text x="900" y="380" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">获取未来 12～24h 降水</text>
+    <!-- 轴名 + 三技术值 -->
+    <text x="0" y="-278" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">覆盖</text>
+    <text x="0" y="-258" text-anchor="middle" font-size="10.5" fill="#64748B">(4/4/4)</text>
+    <text x="238" y="-137" font-size="14" font-weight="700" fill="#0F172A">速率</text>
+    <text x="238" y="-117" font-size="10.5" fill="#64748B">(3/4/1)</text>
+    <text x="238" y="160" font-size="14" font-weight="700" fill="#0F172A">功耗</text>
+    <text x="238" y="180" font-size="10.5" fill="#64748B">(3/2/4)</text>
+    <text x="0" y="302" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">成本</text>
+    <text x="0" y="322" text-anchor="middle" font-size="10.5" fill="#64748B">(4/3/4)</text>
+    <text x="-238" y="160" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">生态</text>
+    <text x="-238" y="180" text-anchor="end" font-size="10.5" fill="#64748B">(5/2/1)</text>
+    <text x="-238" y="-137" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">穿透</text>
+    <text x="-238" y="-117" text-anchor="end" font-size="10.5" fill="#64748B">(4/3/4)</text>
+  </g>
 
-  <!-- 判断2：降水概率 -->
-  <polygon points="900,430 1010,470 900,510 790,470" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-  <text x="900" y="476" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">降水概率 &gt; 阈值？</text>
-  <line x1="900" y1="400" x2="900" y2="430" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
+  <!-- ===== 右侧图例 ===== -->
+  <text x="1390" y="200" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">技术对比图例</text>
+  <line x1="1030" y1="250" x2="1090" y2="250" stroke="#F97316" stroke-width="3"/>
+  <text x="1110" y="255" font-size="13" font-weight="700" fill="#0F172A">LoRa / LoRaWAN</text>
+  <text x="1110" y="276" font-size="11" fill="#475569">覆盖4 · 速率3 · 功耗3 · 成本4 · 生态5 · 穿透4</text>
+  <line x1="1030" y1="320" x2="1090" y2="320" stroke="#2563EB" stroke-width="3"/>
+  <text x="1110" y="325" font-size="13" font-weight="700" fill="#0F172A">NB-IoT</text>
+  <text x="1110" y="346" font-size="11" fill="#475569">覆盖4 · 速率4 · 功耗2 · 成本3 · 生态2 · 穿透3</text>
+  <line x1="1030" y1="390" x2="1090" y2="390" stroke="#0F766E" stroke-width="3"/>
+  <text x="1110" y="395" font-size="13" font-weight="700" fill="#0F172A">Sigfox</text>
+  <text x="1110" y="416" font-size="11" fill="#475569">覆盖4 · 速率1 · 功耗4 · 成本4 · 生态1 · 穿透4</text>
 
-  <!-- 是：推迟灌溉 -->
-  <rect x="1160" y="448" width="300" height="52" rx="10" fill="#FFF7ED" stroke="#D97706" stroke-width="1.5"/>
-  <text x="1310" y="480" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">是 · 推迟灌溉并记录决策依据</text>
-  <line x1="1010" y1="470" x2="1160" y2="474" stroke="#D97706" stroke-width="1.5" marker-end="url(#ah-orange)"/>
-  <text x="1085" y="460" font-size="11" fill="#D97706">是</text>
+  <!-- 读图要点 -->
+  <rect x="1030" y="460" width="700" height="130" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+  <text x="1060" y="494" font-size="14" font-weight="700" fill="#334155">读图要点</text>
+  <text x="1060" y="522" font-size="12" fill="#475569">1–5 相对刻度，1=最弱、5=最强；功耗与成本轴已转换为「越低越优」。</text>
+  <text x="1060" y="548" font-size="12" fill="#475569">NB-IoT 速率最高(4)但功耗最差(2)；Sigfox 功耗最优(4)但速率最低(1)。</text>
+  <text x="1060" y="574" font-size="12" fill="#475569">LoRa 生态开放性最强(5)，覆盖、成本、穿透均衡，属居中平衡选择。</text>
 
-  <!-- 否：计算灌溉量 -->
-  <line x1="900" y1="510" x2="900" y2="556" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-  <text x="912" y="536" font-size="11" fill="#64748B">否</text>
-  <rect x="650" y="556" width="500" height="86" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="900" y="586" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">计算灌溉量（水分平衡公式）</text>
-  <text x="900" y="612" font-size="12" fill="#475569" text-anchor="middle">灌溉量(mm) = (田间持水量 − 当前含水量) × 根系深度(m) × 1000 × 计划湿润比</text>
-  <text x="900" y="632" font-size="11" fill="#64748B" text-anchor="middle">计划湿润比取 0.3～0.8，视作物与灌溉方式而定</text>
-
-  <!-- 开阀 -->
-  <line x1="900" y1="642" x2="900" y2="688" stroke="#2563EB" stroke-width="1.5" marker-end="url(#ah-blue)"/>
-  <rect x="790" y="688" width="220" height="52" rx="10" fill="#2563EB"/>
-  <text x="900" y="720" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">开阀灌溉 → 渗水休止</text>
-
-  <!-- 关键点 callout -->
-  <rect x="80" y="800" width="1640" height="80" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="830" font-size="13" font-weight="700" fill="#334155">工程要点：天气 API 的可靠性是前馈方案成败关键</text>
-  <text x="120" y="856" font-size="12" fill="#475569">免费 API 在高纬度或山区偏差较大，应架设本地小型气象站补充；先跑裸阈值控制积累数据，再逐步开启前馈部分；天气 API 离线时降级回退到纯阈值控制。</text>
-
-  <!-- Caption -->
-  <text x="900" y="920" font-size="17" fill="#475569" text-anchor="middle">图12-8 灌溉决策先判断湿度是否跌破下限，再查询降水预报：预报有雨则推迟灌溉，无雨才按水分平衡公式计算灌溉量并开阀，从而避免“浇完就下雨”的浪费。</text>
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 12-8 三项技术在覆盖与成本上接近，主要差异在速率、功耗与生态开放性：LoRa 生态开放居中，NB-IoT 速率优先，Sigfox 功耗优先。</text>
   </svg>
 </svg>
   </main>

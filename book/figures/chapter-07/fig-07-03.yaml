@@ -1,187 +1,78 @@
-type: dataflow
-title: 图7-3 RAG + Tool-Calling 联合工作流
-audience_takeaway: 读者应理解 RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；涉及写入时只创建待确认 Action，用户确认并通过平台校验后才执行。
-purpose: 展示运维任务依次经过 RAG 检索、状态读取、待确认 Action 创建、用户确认和受控执行的完整数据流与职责边界。
-visual_focus: 从 RAG 证据与状态读取到待确认 Action、用户确认和控制器执行的主链路。
-design_level: implementation
-layout: 水平泳道布局，从上到下四条泳道：用户层、AI 推理层、知识检索层、设备执行层。
+type: architecture
+title: 图 7-3 工业 Agent Runtime 四平面架构
+purpose: 建立工业 Agent Runtime 的统一概念模型，说明决策、上下文、执行与治理四个平面的职责，以及概率性推理如何经过确定性边界进入工业系统。
+audience_takeaway: Agent 只是运行时中的决策主体；真正可进入生产环境的是由上下文、状态机、Workflow、Tool、权限、审批、恢复和审计共同构成的受治理 Runtime。
+visual_focus: 中央主链路从任务入口依次经过上下文构建、Agent 决策、策略闸门、Workflow/Skill、Tool/MCP 和工业系统；治理平面以横向底座覆盖全链路，并突出概率性与确定性边界。
+design_level: logical
+layout: 1200×760 横向架构图。上部为任务入口；中部从左到右排列上下文平面、决策平面、执行平面，决策与执行之间设置醒目的确定性边界；底部为贯穿全宽的治理平面。右侧连接 IoT DC3、MES、ERP 和设备/PLC，PLC/SIS 实时联锁单独标为不可越过边界。
 elements:
-- '操作员（用户层）：提出自然语言任务，如“按标准流程重置3号泵”。填充色 #f0f4f8。'
-- 'LLM 推理引擎（AI 推理层）：接收任务，判断需要外部知识，触发 RAG 检索。填充色 #e8f5e9。'
-- '向量知识库（知识检索层）：存储设备 SOP、历史修复记录、参数模板，用 Embeddings 和 VectorStore 两个子节点表示。填充色 #fff3e0。'
-- '只读 Tool（设备执行层）：读取平台中的设备状态快照，不执行设备写入。填充色 #e8f5e9。'
-- '待确认 Action（平台边界）：保存目标、参数、证据和影响范围，创建时不执行。填充色 #fff3e0。'
-- '控制器与执行点（设备执行层）：仅在用户确认且鉴权、参数和策略校验通过后下发，并回读状态。填充色 #ffebee。'
+- 任务入口：用户意图、告警事件、定时任务
+- 上下文平面：身份与租户、设备状态、会话、RAG 证据、任务记忆
+- 决策平面：意图理解、规划、模型路由、完成判断
+- 确定性边界：Schema 校验、策略判断、风险分级、人工确认
+- 执行平面：Workflow、Skill、Tool、MCP、业务 API
+- 工业系统：IoT DC3、MES/WMS/ERP、设备与 PLC
+- 治理平面：任务状态机、超时重试、幂等补偿、审计 Trace、可观测性、人工接管
+- 安全联锁：PLC/SIS 确定性控制，不由大模型替代
 relationships:
-- 操作员 → LLM 推理引擎：发起任务（自然语言），实线箭头
-- LLM 推理引擎 → 向量知识库：检索版本化 SOP 文档，实线箭头
-- 向量知识库 → LLM 推理引擎：返回 SOP 证据，实线箭头
-- LLM 推理引擎 → 只读 Tool：查询设备实时状态，实线箭头
-- 只读 Tool → LLM 推理引擎：返回状态快照，实线箭头
-- LLM 推理引擎 → 待确认 Action：写入目标、参数、证据与影响范围，不执行设备操作
-- 待确认 Action → 操作员：请求确认
-- 操作员 → 平台校验：确认后触发鉴权、参数校验与策略约束
-- 平台校验 → 控制器与执行点：全部通过后才下发设备操作
-- 控制器与执行点 → LLM 推理引擎：返回执行结果与审计记录
-regions:
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
-- id: intelligence_domain
-  label: 智能决策域
-  role: 模型、规则与 Agent 边界
-- id: edge_domain
-  label: 设备与边缘域
-  role: 现场异构资源边界
-components:
-- id: r1
-  label: 操作员
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: r2
-  label: LLM 推理引擎：发起任务（自然语…
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
-- id: r3
-  label: LLM 推理引擎
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
-- id: r4
-  label: 向量知识库：检索 SOP 文档，实…
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r5
-  label: 向量知识库
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r6
-  label: LLM 推理引擎：返回 SOP 文…
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
-- id: r7
-  label: Tool-Calling 执行器…
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r8
-  label: Tool-Calling 执行器
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r9
-  label: 设备层：下发关泵指令，虚线箭头
-  type: edge
-  subtitle: ''
-  group: edge_domain
-  priority: normal
-  shape: card
-- id: r10
-  label: 设备层
-  type: edge
-  subtitle: ''
-  group: edge_domain
-  priority: normal
-  shape: card
-connections:
-- from: r1
-  to: llm
-  label: 操作员 → LLM 推理引擎：发起…
-  style: solid
-  direction: request
-- from: r3
-  to: sop
-  label: LLM 推理引擎 → 向量知识库…
-  style: solid
-  direction: request
-- from: r5
-  to: llm_sop
-  label: 向量知识库 → LLM 推理引擎…
-  style: dashed
-  direction: response
-- from: r3
-  to: tool-calling_so
-  label: LLM 推理引擎 → Tool-C…
-  style: dashed
-  direction: request
-- from: r8
-  to: r9
-  label: Tool-Calling 执行器…
-  style: dashed
-  direction: request
-- from: r10
-  to: tool-calling
-  label: 设备层 → Tool-Callin…
-  style: dashed
-  direction: response
-- from: r8
-  to: llm
-  label: Tool-Calling 执行器…
-  style: dashed
-  direction: request
-callouts:
-- 操作员 → LLM 推理引擎：发起任务（自然语言），实线箭头
-- LLM 推理引擎 → 向量知识库：检索 SOP 文档，实线箭头
-- 向量知识库 → LLM 推理引擎：返回 SOP 文档（步骤 A、B、C），实线箭头
+- 任务入口触发上下文构建，再交给 Agent 生成候选计划
+- 候选计划必须通过确定性边界，才可进入 Workflow、Skill 或 Tool
+- MCP 用于发现和调用外部能力，不替代 Workflow、Tool 或设备协议
+- 执行结果回到上下文平面，驱动验证、下一步决策或任务结束
+- 治理平面记录和约束每一次状态迁移与副作用
+- 高风险或不可逆动作转人工确认；实时联锁始终留在 PLC/SIS
 legend:
-- 蓝色实线箭头：RAG 检索路径（知识获取）
-- 绿色虚线箭头：工具调用路径（操作执行）
-- '水平虚线：泳道分隔线，颜色 #cccccc，描边宽度 1px'
-visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-- 优先表达边界和主链路，不把所有概念塞进一张图。
-render_notes: 使用 <svg> 标签绘制。泳道用 <rect> 填充不同背景色。节点用圆角矩形 <rect rx="5" ry="5">，文字用 <text> 居中。箭头用 <path> 带 marker-end。整体使用 flexbox 居中对齐，下方加图注区。
+- 蓝色：上下文与同步信息
+- 紫色：概率性决策
+- 青绿色：受控执行
+- 橙色：策略闸门与人工确认
+- 红色：不可越过的安全边界
+render_notes: 遵循 style.yaml 的浅色技术出版风格，使用直角连线并先绘制连接线。四个平面边界清晰，文字以中文为主；Tool、Skill、Workflow、MCP 保留英文术语。确定性边界使用橙色竖向闸门，PLC/SIS 使用红色边界；避免线条穿过文字和卡片。
 caption:
-  zh: 图7-3 RAG + Tool-Calling 联合工作流图。操作员发起任务后，LLM 首先通过 RAG 检索设备 SOP 文档，获取操作步骤；随后按步骤依次调用 Tool-Calling 执行具体设备操作，直至任务完成。
-  en: Figure 7-3 The combined RAG + tool-calling workflow. After the operator initiates a task, the LLM first retrieves the device SOP documents through RAG to obtain the operating steps, then calls tools in sequence to perform the specific device operations until the task completes.
+  zh: 图 7-3 工业 Agent Runtime 四平面架构。大模型负责提出候选决策，Runtime 负责把决策约束为有状态、可验证、可恢复、可审计的执行；PLC/SIS 继续承担确定性实时控制。
+  en: Figure 7-3 The four-plane architecture of the industrial AI agent Runtime. The LLM proposes candidate decisions, and the Runtime constrains them into stateful, verifiable, recoverable, and auditable execution; PLC/SIS continues to carry deterministic real-time control.
 labels:
   en:
-    图7-3 RAG + Tool-Calling 联合工作流: Figure 7-3 RAG + Tool-Calling Workflow
-    RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；写入只创建待确认 Action，经用户确认与策略校验后才执行。: RAG supplies versioned SOP evidence; read-only tools fetch platform state; writes only create a pending Action, executed after user confirmation and policy checks.
-    模型准备操作意图，平台确认边界决定设备写入是否发生: The model prepares intent; the platform confirmation boundary decides device writes
-    证据与状态准备: Evidence & state preparation
-    用户任务: User task
-    重置 3 号泵: Reset Pump 3
-    LLM 规划: LLM planning
-    识别所需证据: Identify evidence needed
-    RAG 检索: RAG retrieval
-    版本化 SOP: Versioned SOP
-    只读 Tool: Read-only tool
-    读取平台状态: Read platform state
-    形成操作建议: Draft action proposal
-    证据 + 状态快照: Evidence + state snapshot
-    进入受控写入边界: Enter controlled-write boundary
-    受控写入: Controlled write
-    创建待确认 Action: Create pending Action
-    只保存参数，不执行设备写入: Save params only · no device write
-    用户确认: User confirmation
-    展示目标、参数与影响: Show target · params · impact
-    鉴权与策略校验: Authorization & policy checks
-    权限 · 参数 · 联锁边界: Permissions · params · interlocks
-    控制器 / 执行点: Controller / actuator
-    用户确认后才下发: Issued only after confirmation
-    结果与审计：状态回读 · 全链路留痕: 'Result & audit: state read-back · full trace'
-    未确认 / 校验失败：不执行，Action 保持待确认或被拒绝: 'Unconfirmed / failed checks: not executed; the Action stays pending or is rejected'
-    图7-3 RAG → 读状态 → 创建待确认 Action → 用户确认与策略校验 → 控制器执行；模型无直达设备写权限。: Figure 7-3 RAG → read state → create pending Action → user confirmation & policy checks → controller execution; the model has no direct device-write path.
+    图 7-3 工业 Agent Runtime 四平面架构: Figure 7-3 Four-Plane Industrial AI Agent Runtime Architecture
+    Agent 提出候选行动，Runtime 把它约束成有状态、可验证、可恢复、可审计的执行；概率性推理经确定性边界后才进入工业系统。: AI agents propose candidate actions; the Runtime constrains them into stateful, verifiable, recoverable, auditable execution — probabilistic reasoning enters industrial systems only past the deterministic boundary.
+    Agent 提出候选行动，Runtime 把它约束成有状态、可验证、可恢复、可审计的执行: AI agents propose candidate actions; the Runtime constrains them into stateful, verifiable, recoverable, auditable execution
+    任务入口: Task entry
+    用户意图 · 告警事件 · 定时任务: User intent · alert events · scheduled jobs
+    上下文平面: Context Plane
+    构建可信工作集: Build a trusted working set
+    身份 · 租户 · 目标范围: Identity · tenant · target scope
+    设备状态 · 会话 · 任务状态: Device state · session · task state
+    RAG 证据 · 领域 Memory: RAG evidence · domain memory
+    只提供本次决策需要的信息: Only info needed for this decision
+    决策平面: Decision Plane
+    生成候选行动: Generate candidate actions
+    意图理解 · 模型路由: Intent understanding · model routing
+    动态规划 · 下一步选择: Dynamic planning · next-step choice
+    完成判断 · 证据不足回退: Completion check · fallback on weak evidence
+    概率性推理 · 不是执行许可: Probabilistic reasoning · not execution permission
+    确定性边界: Deterministic Boundary
+    概率性 → 确定性的闸门: 'Gate: probabilistic → deterministic'
+    Schema 校验: Schema validation
+    策略与权限 · 风险分级: Policy & permissions · risk tiers
+    人工确认: Human confirmation
+    执行平面: Execution Plane
+    受控调用能力: Controlled invocation
+    Workflow · 确定性步骤: Workflow · deterministic steps
+    Skill · 领域能力包: Skill · domain capability packs
+    Tool · MCP · 业务 API: Tool · MCP · business APIs
+    原子能力产生可验证结果: Atomic calls yield verifiable results
+    工业系统: Industrial Systems
+    设备 · PLC: Devices · PLC
+    结果回流验证: Results loop back for verification
+    治理平面: Governance Plane
+    贯穿每一次状态迁移与副作用: Spans every transition and side effect
+    任务状态机 · run_id: Task state machine · run_id
+    超时 · 重试 · 租约: Timeout · retry · leases
+    幂等 · 补偿: Idempotency · compensation
+    审计 Trace · 可观测性: Audit trace · observability
+    人工接管: Human takeover
+    回滚与恢复: Rollback & recovery
+    策略评估记录: Policy evaluation records
+    副作用留痕: Side effects logged
+    安全联锁：PLC / SIS 确定性控制，不由大模型替代: Safety interlocks stay in PLC/SIS — not replaced by LLMs
+    图 7-3 四平面把概率性推理约束成确定性执行，治理平面全程留痕，安全联锁始终独立于 Agent。: Figure 7-3 Four planes constrain probabilistic reasoning into deterministic execution, governance logs every step, and safety interlocks stay independent of the AI agent.

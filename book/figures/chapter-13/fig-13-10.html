@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图13-10 物联网环境下的轻量级共识机制对比</title>
+  <title>图 13-10 异构区块链网络互联的三种方案</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,90 +12,72 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
-  <title id="title">图13-10 物联网环境下的轻量级共识机制对比</title>
-  <desc id="desc">PoW 算力开销不可行，PoA 用身份替代算力，Tangle 免交易费但稀疏网络难起跑，PBFT 变体适合封闭网络。</desc>
-  <rect width="1200" height="660" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="540" viewBox="0 0 1800 870" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图 13-10 异构区块链网络互联的三种方案</title>
+  <desc id="desc">原子交换用哈希锁定做轻量迁移，中继链用轻客户端做通用消息，预言机做联盟链到公链的数据桥。</desc>
+  <rect width="1200" height="680" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="870" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
 
   <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图13-10 物联网环境下的轻量级共识机制对比</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">在计算、存储、能量三重约束下，共识要维持分布式信任而非烧光设备资源</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 13-10 异构区块链网络互联的三种方案</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">让不同链相互理解并可信传递数据与资产，扩展可信范围</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 对比表 -->
-  <rect x="80" y="140" width="1640" height="46" fill="#94A3B8"/>
-  <text x="285" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">PoW</text>
-  <text x="695" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">PoA</text>
-  <text x="1105" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">Tangle（DAG）</text>
-  <text x="1515" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">PBFT 变体</text>
+  <!-- 原子交换 -->
+  <rect x="80" y="140" width="520" height="340" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="520" height="48" rx="12" fill="#2563EB"/>
+  <rect x="80" y="168" width="520" height="20" fill="#2563EB"/>
+  <text x="340" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">原子交换（哈希锁定）</text>
+  <text x="116" y="236" font-size="12" fill="#475569">链 A 锁定资产/凭证并生成哈希值</text>
+  <text x="116" y="262" font-size="12" fill="#475569">链 B 创建对应哈希的锁定合约</text>
+  <text x="116" y="288" font-size="12" fill="#475569">提供原像才能解兑，超时自动退回</text>
+  <text x="116" y="326" font-size="12" font-weight="700" fill="#0F172A">特点</text>
+  <text x="116" y="352" font-size="11" fill="#475569">不依赖第三方中继，只依赖散列 + 超时</text>
+  <text x="116" y="378" font-size="11" fill="#475569">依赖双方智能合约能力</text>
+  <text x="116" y="404" font-size="11" fill="#475569">不能跨任意数据格式或复杂状态</text>
+  <text x="116" y="440" font-size="11" fill="#64748B">适用：少量跨链代币交换 / 凭证迁移</text>
 
-  <rect x="80" y="186" width="1640" height="56" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="210" font-size="12" font-weight="700" fill="#0F172A">能耗</text>
-  <text x="285" y="222" font-size="12" fill="#DC2626" text-anchor="middle">极高</text>
-  <text x="695" y="222" font-size="12" fill="#16A34A" text-anchor="middle">低</text>
-  <text x="1105" y="222" font-size="12" fill="#16A34A" text-anchor="middle">极低</text>
-  <text x="1515" y="222" font-size="12" fill="#D97706" text-anchor="middle">中等</text>
+  <!-- 中继链 -->
+  <rect x="640" y="140" width="520" height="340" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="640" y="140" width="520" height="48" rx="12" fill="#16A34A"/>
+  <rect x="640" y="168" width="520" height="20" fill="#16A34A"/>
+  <text x="900" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">中继链（跨链协议）</text>
+  <text x="676" y="236" font-size="12" fill="#475569">独立区块链，维护参与链的轻节点/状态摘要</text>
+  <text x="676" y="262" font-size="12" fill="#475569">链 A 提交交易 → 验证者跑轻客户端验证</text>
+  <text x="676" y="288" font-size="12" fill="#475569">生成证明 → 链 B 获取证明并执行</text>
+  <text x="676" y="326" font-size="12" font-weight="700" fill="#0F172A">特点</text>
+  <text x="676" y="352" font-size="11" fill="#475569">Cosmos IBC 代表：“提交-确认”两轮握手</text>
+  <text x="676" y="378" font-size="11" fill="#475569">解耦跨链协议与设备资源限制</text>
+  <text x="676" y="404" font-size="11" fill="#475569">参与链需维护轻客户端</text>
+  <text x="676" y="440" font-size="11" fill="#64748B">适用：通用跨链消息、高吞吐场景</text>
 
-  <rect x="80" y="242" width="1640" height="56" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="266" font-size="12" font-weight="700" fill="#0F172A">确认延迟</text>
-  <text x="285" y="278" font-size="12" fill="#475569" text-anchor="middle">通常 10 分钟以上</text>
-  <text x="695" y="278" font-size="12" fill="#475569" text-anchor="middle">秒级</text>
-  <text x="1105" y="278" font-size="12" fill="#475569" text-anchor="middle">秒到分级</text>
-  <text x="1515" y="278" font-size="12" fill="#475569" text-anchor="middle">秒级</text>
+  <!-- 预言机 -->
+  <rect x="1200" y="140" width="520" height="340" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="1200" y="140" width="520" height="48" rx="12" fill="#F97316"/>
+  <rect x="1200" y="168" width="520" height="20" fill="#F97316"/>
+  <text x="1460" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">预言机集成（数据桥）</text>
+  <text x="1236" y="236" font-size="12" fill="#475569">读取许可链外部数据（土壤湿度等）</text>
+  <text x="1236" y="262" font-size="12" fill="#475569">生成含背书签名 + 区块哈希的加密证明</text>
+  <text x="1236" y="288" font-size="12" fill="#475569">提交公链接收合约，验证签名与区块头</text>
+  <text x="1236" y="326" font-size="12" font-weight="700" fill="#0F172A">特点</text>
+  <text x="1236" y="352" font-size="11" fill="#475569">适合联盟链到公链的“数据读取跨链”</text>
+  <text x="1236" y="378" font-size="11" fill="#475569">多预言机阈值签名/多数投票降单点风险</text>
+  <text x="1236" y="404" font-size="11" fill="#475569">预言机节点可信度是风险来源</text>
+  <text x="1236" y="440" font-size="11" fill="#64748B">适用：跨链触发合约的外部可验证数据</text>
 
-  <rect x="80" y="298" width="1640" height="56" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="322" font-size="12" font-weight="700" fill="#0F172A">吞吐量</text>
-  <text x="285" y="334" font-size="12" fill="#475569" text-anchor="middle">低（约 7 TPS）</text>
-  <text x="695" y="334" font-size="12" fill="#475569" text-anchor="middle">数百至数千 TPS</text>
-  <text x="1105" y="334" font-size="12" fill="#475569" text-anchor="middle">数千 TPS（足够活跃时）</text>
-  <text x="1515" y="334" font-size="12" fill="#475569" text-anchor="middle">数千 TPS（节点少时）</text>
-
-  <rect x="80" y="354" width="1640" height="56" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="378" font-size="12" font-weight="700" fill="#0F172A">资源开销</text>
-  <text x="285" y="390" font-size="12" fill="#DC2626" text-anchor="middle">极高</text>
-  <text x="695" y="390" font-size="12" fill="#16A34A" text-anchor="middle">低</text>
-  <text x="1105" y="390" font-size="12" fill="#16A34A" text-anchor="middle">极低</text>
-  <text x="1515" y="390" font-size="12" fill="#D97706" text-anchor="middle">中</text>
-
-  <rect x="80" y="410" width="1640" height="56" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="434" font-size="12" font-weight="700" fill="#0F172A">Token 依赖</text>
-  <text x="285" y="446" font-size="12" fill="#475569" text-anchor="middle">是</text>
-  <text x="695" y="446" font-size="12" fill="#475569" text-anchor="middle">是（或抵押机制）</text>
-  <text x="1105" y="446" font-size="12" fill="#475569" text-anchor="middle">否（零交易费）</text>
-  <text x="1515" y="446" font-size="12" fill="#475569" text-anchor="middle">否</text>
-
-  <rect x="80" y="466" width="1640" height="70" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="496" font-size="12" font-weight="700" fill="#0F172A">典型场景</text>
-  <text x="285" y="506" font-size="11" fill="#475569" text-anchor="middle">数字货币</text>
-  <text x="695" y="506" font-size="11" fill="#475569" text-anchor="middle">联盟链、多边治理</text>
-  <text x="1105" y="506" font-size="11" fill="#475569" text-anchor="middle">高密度微交易传感器网络</text>
-  <text x="1515" y="506" font-size="11" fill="#475569" text-anchor="middle">工业联盟链、高一致性</text>
-
-  <!-- 关键机制说明 -->
-  <rect x="80" y="590" width="520" height="140" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="340" y="622" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">PoA：用身份替代算力</text>
-  <text x="116" y="656" font-size="11" fill="#475569">预先选定验证者锁定声誉/抵押物，轮流出块</text>
-  <text x="116" y="680" font-size="11" fill="#475569">身份公开、受监督，作恶被驱逐并损失抵押</text>
-  <text x="116" y="706" font-size="11" fill="#64748B">ARM 边缘网关可跑数十到数百 TPS</text>
-
-  <rect x="640" y="590" width="520" height="140" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="900" y="622" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">Tangle：零交易费</text>
-  <text x="676" y="656" font-size="11" fill="#475569">每笔新交易主动验证之前两笔，DAG 链接</text>
-  <text x="676" y="680" font-size="11" fill="#475569">越活跃越安全，无矿工故无手续费</text>
-  <text x="676" y="706" font-size="11" fill="#64748B">稀疏网络/启动初期安全性妥协，离线无法交易</text>
-
-  <rect x="1200" y="590" width="520" height="140" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1460" y="622" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">PBFT 变体与安全芯片</text>
-  <text x="1236" y="656" font-size="11" fill="#475569">标准 PBFT 通信复杂度 O(n²)，节点多性能下降</text>
-  <text x="1236" y="680" font-size="11" fill="#475569">动态分片 + TEE 加速节点缩短确认时延</text>
-  <text x="1236" y="706" font-size="11" fill="#64748B">私钥保护靠 TPM/安全元件，验证节点侧部署</text>
+  <!-- 案例 -->
+  <rect x="80" y="540" width="1640" height="170" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="572" font-size="14" font-weight="700" fill="#334155">案例：跨链桥实现设备身份迁移（汽车零部件）</text>
+  <text x="120" y="606" font-size="12" fill="#475569">① 许可链质检完成触发交易（序列号、批次、哈希），多家授权节点背书</text>
+  <text x="120" y="632" font-size="12" fill="#475569">② 中继节点监听通道提取交易并生成 SPV 证明 → ③ 提交公链桥合约</text>
+  <text x="120" y="658" font-size="12" fill="#475569">④ 桥合约验证背书签名与区块哈希，铸造代表零件身份的可信令牌，公链合约可验证来源</text>
+  <text x="120" y="688" font-size="11" fill="#64748B">互联目标：扩展可信范围，而不是用一个链的信任模型替换另一个链</text>
 
   <!-- Caption -->
-  <text x="900" y="830" font-size="17" fill="#475569" text-anchor="middle">图13-10 PoW 算力开销在物联网不可行；PoA 用身份替代算力、Tangle 免交易费但稀疏网络难起跑、PBFT 变体适合封闭网络。共识选型先识别信任模型再匹配，无通用方案。</text>
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 13-10 原子交换用哈希锁定做轻量凭证迁移，中继链用轻客户端做通用跨链消息，预言机做联盟链到公链的数据桥；异构互联不应破坏各自链的共识安全边界。</text>
   </svg>
 </svg>
   </main>

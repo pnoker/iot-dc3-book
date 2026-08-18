@@ -3,82 +3,90 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-8 振动传感器自适应采样状态机（示意）</title>
+  <title>图 3-8 三角测量定位原理示意</title>
   <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+    html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图3-8 振动传感器自适应采样状态机（示意）</title>
-  <desc id="desc">预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态。</desc>
+  <title id="title">图 3-8 三角测量定位原理示意</title>
+  <desc id="desc">三个测距圆理想下交于一点，实测误差使交点退化为交叠区，最小二乘法在该区取误差平方和最小的点作为坐标。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
 
   <defs>
-    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
-    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#DC2626"/></marker>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
   </defs>
-
-  <!-- 标题 -->
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-8 振动传感器自适应采样状态机（示意）</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图 3-8 三角测量定位原理示意</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">三个测距圆理想下交于一点，实测误差使交点退化为交叠区，最小二乘法在该区取误差平方和最小的点作为坐标。</text>
 
-  <!-- 设备侧感知域 -->
-  <rect x="120" y="140" width="1560" height="330" rx="12" fill="none" stroke="#0F766E" stroke-width="1.5" stroke-dasharray="8 4"/>
-  <text x="140" y="172" font-size="15" font-weight="700" fill="#0F766E">设备侧感知域 · 现场传感器节点的状态管理边界</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="architecture" transform="translate(250 65) scale(.76)">
+  <!-- 同一坐标系：1 m = 8 px；参考点 A(0,0)、B(60,0)、C(30,50)，真实目标 T(30,20) -->
+  <g stroke="#E2E8F0" stroke-width="0.7">
+    <path d="M450 160V650 M530 160V650 M610 160V650 M690 160V650 M770 160V650 M850 160V650 M930 160V650"/>
+    <path d="M400 200H980 M400 280H980 M400 360H980 M400 440H980 M400 520H980 M400 600H980"/>
+  </g>
+  <g stroke="#64748B" stroke-width="1.5" fill="none">
+    <path d="M410 600H1000" marker-end="url(#bp-arrow)"/>
+    <path d="M450 650V135" marker-end="url(#bp-arrow)"/>
+  </g>
+  <g fill="#64748B" font-size="12" text-anchor="middle">
+    <text x="450" y="622">0</text><text x="530" y="622">10</text><text x="610" y="622">20</text><text x="690" y="622">30</text><text x="770" y="622">40</text><text x="850" y="622">50</text><text x="930" y="622">60</text>
+    <text x="1018" y="605">X (m)</text>
+  </g>
+  <g fill="#64748B" font-size="12" text-anchor="end">
+    <text x="438" y="604">0</text><text x="438" y="524">10</text><text x="438" y="444">20</text><text x="438" y="364">30</text><text x="438" y="284">40</text><text x="438" y="204">50</text><text x="440" y="140">Y (m)</text>
+  </g>
 
-  <!-- ===== 稳态低功率 ===== -->
-  <rect x="170" y="250" width="340" height="160" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="340" y="288" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">稳态低功率</text>
-  <text x="340" y="318" font-size="11.5" fill="#475569" text-anchor="middle">长间隔采样 · 频段能量计算</text>
-  <text x="340" y="340" font-size="11.5" fill="#475569" text-anchor="middle">模型预测 · 射频关闭</text>
-  <rect x="200" y="356" width="280" height="30" rx="6" fill="#DCFCE7"/>
-  <text x="340" y="376" font-size="12" font-weight="700" fill="#15803D" text-anchor="middle">最低功耗</text>
+  <!-- 三次测距均指向同一目标；测量半径 d1=36.0 m、d2=37.0 m、d3=29.0 m -->
+  <g fill="rgba(249,115,22,0.07)" stroke="#F97316" stroke-width="2" stroke-dasharray="8,8">
+    <circle cx="450" cy="600" r="288"/>
+    <circle cx="930" cy="600" r="296"/>
+    <circle cx="690" cy="200" r="232"/>
+  </g>
+  <g stroke="#F97316" stroke-width="1.5" stroke-dasharray="5,4" fill="none">
+    <line x1="450" y1="600" x2="685" y2="433"/>
+    <line x1="930" y1="600" x2="685" y2="433"/>
+    <line x1="690" y1="200" x2="685" y2="433"/>
+  </g>
+  <g fill="#F97316" font-size="12" font-weight="600">
+    <text x="535" y="515">d1 = 36.0 m</text><text x="785" y="515">d2 = 37.0 m</text><text x="705" y="320">d3 = 29.0 m</text>
+  </g>
 
-  <!-- ===== 加速监听 ===== -->
-  <rect x="730" y="250" width="340" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.8"/>
-  <text x="900" y="288" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">加速监听</text>
-  <text x="900" y="318" font-size="11.5" fill="#475569" text-anchor="middle">短间隔高频采样</text>
-  <text x="900" y="340" font-size="11.5" fill="#475569" text-anchor="middle">持续检查多轮残差</text>
-  <rect x="760" y="356" width="280" height="30" rx="6" fill="#FFEDD5"/>
-  <text x="900" y="376" font-size="12" font-weight="700" fill="#C2410C" text-anchor="middle">暂不上传</text>
+  <!-- 参考点 -->
+  <g fill="#EFF6FF" stroke="#2563EB" stroke-width="2">
+    <circle cx="450" cy="600" r="9"/><circle cx="930" cy="600" r="9"/><circle cx="690" cy="200" r="9"/>
+  </g>
+  <g fill="#0F172A" font-size="13" font-weight="600">
+    <text x="465" y="596">A (0, 0)</text><text x="945" y="596">B (60, 0)</text><text x="705" y="196">C (30, 50)</text>
+  </g>
 
-  <!-- ===== 数据上传 ===== -->
-  <rect x="1290" y="250" width="340" height="160" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.8"/>
-  <text x="1460" y="288" font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">数据上传</text>
-  <text x="1460" y="318" font-size="11.5" fill="#475569" text-anchor="middle">确认异常 · 唤醒射频</text>
-  <text x="1460" y="340" font-size="11.5" fill="#475569" text-anchor="middle">上传累积原始波形</text>
-  <rect x="1320" y="356" width="280" height="30" rx="6" fill="#FEE2E2"/>
-  <text x="1460" y="376" font-size="12" font-weight="700" fill="#B91C1C" text-anchor="middle">最高功耗</text>
-
-  <!-- ===== 状态转移 ===== -->
-  <!-- 稳态 → 加速监听 -->
-  <line x1="512" y1="330" x2="728" y2="330" stroke="#F97316" stroke-width="2.3" marker-end="url(#ah-orange)"/>
-  <text x="620" y="316" font-size="12" font-weight="700" fill="#D97706" text-anchor="middle">预测误差连续放大</text>
-  <!-- 加速监听 → 数据上传 -->
-  <line x1="1072" y1="330" x2="1288" y2="330" stroke="#DC2626" stroke-width="2.3" marker-end="url(#ah-red)"/>
-  <text x="1180" y="316" font-size="12" font-weight="700" fill="#DC2626" text-anchor="middle">多轮残差持续越阈</text>
-  <!-- 数据上传 → 稳态（复位回环） -->
-  <path d="M1460 410 V452 H340 V412" stroke="#0F766E" stroke-width="2.3" fill="none" marker-end="url(#ah-teal)"/>
-  <text x="900" y="444" font-size="12" font-weight="700" fill="#0F766E" text-anchor="middle">上传完成 / 复位</text>
-
-  <!-- 阈值说明 -->
-  <rect x="120" y="500" width="1560" height="58" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="900" y="534" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">阈值说明：图中转移条件均为示意；基线阈值应依据正常工况离线数据与现场噪声重新标定。</text>
-
-  <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图3-8 状态机以逐级升高的能耗换取更完整的异常窗口，确认异常后才开启射频上传。</text>
+  <!-- 三圆的共同近交叠区与最小二乘估计 Q≈(29.4,20.9) -->
+  <ellipse cx="685" cy="433" rx="18" ry="14" fill="rgba(100,116,139,0.28)" stroke="#64748B" stroke-width="1"/>
+  <circle cx="685" cy="433" r="6" fill="#2563EB"/>
+  <path d="M690 440l8 8m0-8l-8 8" stroke="#DC2626" stroke-width="2"/>
+  <text x="708" y="428" fill="#2563EB" font-size="12" font-weight="700">Q 最小二乘估计 (29.4, 20.9)</text>
+  <text x="708" y="450" fill="#DC2626" font-size="12" font-weight="600">T 真实目标 (30, 20)</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心能力；橙色=智能/风险路径</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图 3-8 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
   </svg>
 </svg>
+
   </main>
 </body>
 </html>

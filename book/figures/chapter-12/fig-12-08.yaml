@@ -1,40 +1,83 @@
-type: flowchart
-title: 图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈
-audience_takeaway: 读者应理解灌溉决策从纯阈值反馈升级为“阈值 + 天气预报前馈”的混合控制：湿度低于下限时先查降水预报，有雨推迟灌溉、无雨才按水分平衡公式计算灌溉量。
-purpose: 展示智能灌溉的决策流程，突出天气预报前馈对纯阈值控制的改进
-visual_focus: 主决策链（湿度判断 → 降水判断 → 灌溉量计算 → 开阀）。
-design_level: flowchart
-layout: 纵向决策流程，两个菱形判断节点，右侧“否 / 是”分支
+type: matrix
+title: 图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图
+audience_takeaway: 读者应理解三项技术功耗与速率反向取舍——NB-IoT速率最高(4)而功耗最差(2),Sigfox功耗最优(4)但速率最低(1),LoRa生态最开放(5)居中平衡。
+purpose: 在同一坐标系下展示三项技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六个维度的相对强弱，辅助选型决策
+visual_focus: 从LoRa到Sigfox的主链路。
+design_level: decision
+layout: 六轴雷达图，同心圆刻度 1–5（1=最弱，5=最强）
 elements:
-- 传感器回传实时湿度值
-- 判断 1：湿度 < 下限？（否 → 等待下次采样）
-- 获取未来 12～24h 降水
-- 判断 2：降水概率 > 阈值？（是 → 推迟灌溉并记录决策依据）
-- 计算灌溉量：灌溉量 = (田间持水量 − 当前含水量) × 根系深度 × 1000 × 计划湿润比
-- 开阀灌溉 → 渗水休止
+- LoRa：覆盖4、速率3、功耗3、成本4、生态5、穿透4
+- NB-IoT：覆盖4、速率4、功耗2、成本3、生态2、穿透3
+- Sigfox：覆盖4、速率1、功耗4、成本4、生态1、穿透4
 relationships:
-- 湿度 < 下限 → 查降水 → 有雨推迟 / 无雨计算灌溉量 → 开阀
-render_notes: HTML/SVG 渲染，纵向决策流程，菱形判断、矩形动作，蓝色主链、橙色前馈分支。
+- 三个系列在同一份刻度坐标上对比，便于目视识别优势短板
+regions:
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+components:
+- id: c1
+  label: LoRa
+  type: platform
+  subtitle: 覆盖4、速率3、功耗3、成本4、生态5、穿透4
+  group: platform_domain
+  priority: primary
+  shape: card
+- id: c2
+  label: NB-IoT
+  type: platform
+  subtitle: 覆盖4、速率4、功耗2、成本3、生态2、穿透3
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: Sigfox
+  type: platform
+  subtitle: 覆盖4、速率1、功耗4、成本4、生态1、穿透4
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: c1
+  to: c2
+  label: 三个系列在同一份刻度坐标上对比，便…
+  style: solid
+  direction: left-to-right
+- from: c2
+  to: c3
+  label: 三个系列在同一份刻度坐标上对比，便…
+  style: solid
+  direction: left-to-right
+callouts:
+- 三个系列在同一份刻度坐标上对比，便于目视识别优势短板
+legend:
+- LoRa/LoRaWAN：橙色
+- NB-IoT：蓝色
+- Sigfox：绿色
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+render_notes: HTML/SVG 渲染，浅色背景，半透明网格，图例位于右上角，支持 hover 显示具体评分说明。
 caption:
-  zh: 图12-8 灌溉决策先判断湿度是否跌破下限，再查询降水预报：预报有雨则推迟灌溉，无雨才按水分平衡公式计算灌溉量并开阀，从而避免“浇完就下雨”的浪费。
-  en: 'Figure 12-8 Irrigation decisions first check whether moisture has fallen below the lower limit, then consult the rainfall forecast: if rain is forecast, irrigation is deferred; only otherwise is the irrigation amount computed with the water-balance formula and the valve opened, avoiding the waste of watering right before it rains.'
+  zh: 图 12-8 六维度雷达图对比，各轴评分为定性相对值，非绝对性能指标。
+  en: Figure 12-8 A six-dimension radar comparison; scores on each axis are qualitative relative ratings, not absolute performance metrics.
 labels:
   en:
-    图12-8 智能灌溉控制逻辑：阈值控制与天气预报前馈: 'Figure 12-8 Smart Irrigation Control: Threshold + Weather Feedforward'
-    湿度低于下限时先查降水预报：预报有雨则推迟灌溉，无雨才计算灌溉量并开阀；高于上限则缩短采样间隔。: 'When moisture falls below the lower limit, check the rain forecast first: defer irrigation if rain is coming, otherwise compute the amount and open the valve; above the upper limit, shorten the sampling interval.'
-    从“看到历史再反应”升级为“预判未来再决策”的混合控制: 'Hybrid control: from reacting to history to deciding on forecast'
-    传感器回传实时湿度值: Sensor reports live moisture
-    湿度 &lt; 下限？: Moisture < lower limit?
-    否 · 等待下次采样: No · wait for next sample
-    否: 'No'
-    是: 'Yes'
-    获取未来 12～24h 降水: Fetch 12–24 h rain forecast
-    降水概率 &gt; 阈值？: Rain probability > threshold?
-    是 · 推迟灌溉并记录决策依据: Yes · defer irrigation and log the reason
-    计算灌溉量（水分平衡公式）: Compute irrigation amount (water balance)
-    灌溉量(mm) = (田间持水量 − 当前含水量) × 根系深度(m) × 1000 × 计划湿润比: Irrigation (mm) = (field capacity − current moisture) × root depth (m) × 1000 × planned wetting fraction
-    计划湿润比取 0.3～0.8，视作物与灌溉方式而定: Planned wetting fraction 0.3–0.8, by crop and irrigation type
-    开阀灌溉 → 渗水休止: Open valve → irrigate → stop after infiltration
-    工程要点：天气 API 的可靠性是前馈方案成败关键: 'Engineering note: weather API reliability makes or breaks feedforward'
-    免费 API 在高纬度或山区偏差较大，应架设本地小型气象站补充；先跑裸阈值控制积累数据，再逐步开启前馈部分；天气 API 离线时降级回退到纯阈值控制。: Free APIs drift at high latitudes and in mountains — add a local mini weather station; run bare threshold control first to collect data, then enable feedforward gradually; fall back to pure threshold control when the API is offline.
-    图12-8 灌溉决策先判断湿度是否跌破下限，再查询降水预报：预报有雨则推迟灌溉，无雨才按水分平衡公式计算灌溉量并开阀，从而避免“浇完就下雨”的浪费。: 'Figure 12-8 Irrigation decisions first check whether moisture has fallen below the lower limit, then consult the rainfall forecast: if rain is forecast, irrigation is deferred; only otherwise is the irrigation amount computed with the water-balance formula and the valve opened, avoiding the waste of watering right before it rains.'
+    图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图: Figure 12-8 LoRa / NB-IoT / Sigfox Radar Comparison
+    三种技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六维度的相对强弱（1–5 刻度，1 最弱、5 最强）。: Relative strength of the three technologies across coverage, rate, power, cost, ecosystem openness, and penetration (1–5 scale; 1 weakest, 5 strongest).
+    六个维度采用同一 1–5 相对刻度，辅助识别各技术优势与短板: One shared 1–5 relative scale across six dimensions to reveal strengths and gaps
+    覆盖: Coverage
+    速率: Rate
+    功耗: Power
+    成本: Cost
+    生态: Ecosystem
+    穿透: Penetration
+    技术对比图例: Technology Legend
+    覆盖4 · 速率3 · 功耗3 · 成本4 · 生态5 · 穿透4: Coverage 4 · rate 3 · power 3 · cost 4 · eco 5 · penetration 4
+    覆盖4 · 速率4 · 功耗2 · 成本3 · 生态2 · 穿透3: Coverage 4 · rate 4 · power 2 · cost 3 · eco 2 · penetration 3
+    覆盖4 · 速率1 · 功耗4 · 成本4 · 生态1 · 穿透4: Coverage 4 · rate 1 · power 4 · cost 4 · eco 1 · penetration 4
+    读图要点: How to read
+    1–5 相对刻度，1=最弱、5=最强；功耗与成本轴已转换为「越低越优」。: 1–5 relative scale, 1 = weakest, 5 = strongest; power and cost axes are flipped so higher is better.
+    NB-IoT 速率最高(4)但功耗最差(2)；Sigfox 功耗最优(4)但速率最低(1)。: NB-IoT tops rate (4) but lags on power (2); Sigfox tops power (4) but bottoms on rate (1).
+    LoRa 生态开放性最强(5)，覆盖、成本、穿透均衡，属居中平衡选择。: LoRa leads ecosystem openness (5) with balanced coverage, cost, and penetration — the middle-ground choice.
+    图 12-8 三项技术在覆盖与成本上接近，主要差异在速率、功耗与生态开放性：LoRa 生态开放居中，NB-IoT 速率优先，Sigfox 功耗优先。: 'Figure 12-8 The three technologies are close on coverage and cost; they differ mainly in rate, power, and ecosystem openness: LoRa is open and balanced, NB-IoT prioritizes rate, Sigfox prioritizes power.'

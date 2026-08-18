@@ -1,5 +1,5 @@
 type: architecture
-title: 图13-5 数据验证与溯源机制时序图
+title: 图 13-5 数据验证与溯源机制时序图
 audience_takeaway: 读者应理解溯源依赖事件日志的链下索引：合约只存哈希与所有权映射，历史查询由监听器从DataStored事件重建而不重扫区块。
 purpose: 展示数据从传感器产生到链上验证的完整流程，重点突出事件日志的索引作用和验证函数的调用路径。
 visual_focus: 从1. 传感器到边缘节点：推送原始数据的主链路。
@@ -57,7 +57,7 @@ caption:
   en: 'Data verification and traceability sequence diagram. Data flows from the sensor through the edge node onto the chain, where the contract records the fingerprint and emits events; the verifier confirms integrity by comparing hashes and uses the events to trace historical operations.'
 labels:
   en:
-    图13-5 数据验证与溯源机制时序图: Figure 13-5 Data Verification & Traceability Sequence
+    图 13-5 数据验证与溯源机制时序图: Figure 13-5 Data Verification & Traceability Sequence
     数据经边缘节点生成指纹并上链，验证者通过哈希比对确认完整性，并沿事件日志追溯历史操作。: Edge node fingerprints data on-chain; verifier confirms integrity by hash and traces history via events.
     哈希验证确认数据完整性，事件索引串联历史操作: Hash checks confirm integrity; event indexes link history
     传感器: Sensor
@@ -78,4 +78,4 @@ labels:
     5 验证请求 verifyData(dataId, rawData): 5 Verify request verifyData(dataId, rawData)
     6 结果广播 DataVerified: 6 Result broadcast DataVerified
     7 历史查询: 7 History query
-    图13-5 数据经边缘节点生成指纹并上链，验证者通过哈希比对确认完整性并沿事件追溯历史操作。: Figure 13-5 Edge node fingerprints data on-chain; verifier checks hashes and traces history via events.
+    图 13-5 数据经边缘节点生成指纹并上链，验证者通过哈希比对确认完整性并沿事件追溯历史操作。: Figure 13-5 Edge node fingerprints data on-chain; verifier checks hashes and traces history via events.

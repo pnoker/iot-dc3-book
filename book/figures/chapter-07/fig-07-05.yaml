@@ -1,175 +1,64 @@
-type: sequence
-title: 图7-5 Function Calling 交互流程：从自然语言到设备操作
-audience_takeaway: 读者应理解 LLM 全程不执行设备操作，只输出 JSON 函数调用请求，实际调用与结果回填都由 ChatClient 中转。
-purpose: 展示 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例，说明操作员、ChatClient、LLM、LightTool 之间的消息交换顺序。
-visual_focus: 从操作员到终点的主链路。
-design_level: implementation
-layout: 纵向顺序排列参与者，箭头从上至下表示时序。
+type: architecture
+title: 图 7-5 MCP 在物联网平台中的架构示意
+purpose: 展示外部 AI Agent 通过 IoT DC3 MCP Tools 端点发现和调用平台 REST 能力的真实路径。
+audience_takeaway: 当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。
+visual_focus: Agent→Gateway /mcp→Auth 校验与工具白名单→OpenAPI Tool 目录→REST 后端。
+design_level: logical
+layout: 顶部外部 Agent，中部 Gateway 的 POST /mcp，右侧 Auth，底部 OpenAPI Tool 目录与 Auth/Manager/Data/Agentic REST 后端。
 elements:
-- 参与者：操作员、ChatClient、LLM、LightTool Bean
-- 操作员首先发送自然语言请求 '帮我把A区灯关了'
-- ChatClient将用户消息和Tool定义发送给LLM
-- LLM返回结构化JSON表示函数调用
-- ChatClient调用LightTool的toggleLight方法
-- 工具执行结果回填给LLM生成最终回复
+- 外部 AI Agent：先 initialize，再调用 ping、tools/list、tools/call。
+- Gateway /mcp：JSON-RPC 2.0，只声明 tools capability。
+- Auth：token introspection、连接上下文、工具白名单与调用授权。
+- OpenAPI 聚合：从静态 OpenAPI 规格生成 Tool 目录和输入模式。
+- REST 后端：Auth、Manager、Data、Agentic。
+- 灰色说明框：Resources、Prompts 为协议可选能力，当前未声明。
 relationships:
-- '操作员 -> ChatClient: 发送请求'
-- 'ChatClient -> LLM: 发送消息+Tool定义'
-- 'LLM -> ChatClient: 返回JSON函数调用'
-- 'ChatClient -> LightTool: 调用toggleLight方法'
-- 'LightTool -> ChatClient: 返回执行结果'
-- 'ChatClient -> LLM: 发送结果'
-- 'LLM -> ChatClient: 返回自然语言回复'
-- 'ChatClient -> 操作员: 显示最终回复'
-regions:
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
-- id: intelligence_domain
-  label: 智能决策域
-  role: 模型、规则与 Agent 边界
-components:
-- id: r1
-  label: 操作员
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: r2
-  label: 'ChatClient: 发送请求'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r3
-  label: ChatClient
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r4
-  label: 'LLM: 发送消息+Tool定义'
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: bus
-- id: r5
-  label: LLM
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
-- id: r6
-  label: 'ChatClient: 返回JSO…'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r7
-  label: 'LightTool: 调用togg…'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r8
-  label: LightTool
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r9
-  label: 'ChatClient: 返回执行结果'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r10
-  label: 'LLM: 发送结果'
-  type: ai
-  subtitle: ''
-  group: intelligence_domain
-  priority: normal
-  shape: card
-connections:
-- from: r1
-  to: r2
-  label: 操作员 -> ChatClient…
-  style: solid
-  direction: request
-- from: r3
-  to: r4
-  label: ChatClient -> LLM…
-  style: solid
-  direction: request
-- from: r5
-  to: chatclient_json
-  label: LLM -> ChatClient…
-  style: dashed
-  direction: response
-- from: r3
-  to: lighttool_toggleli
-  label: ChatClient -> Lig…
-  style: solid
-  direction: request
-- from: r8
-  to: r9
-  label: LightTool -> Chat…
-  style: dashed
-  direction: response
-- from: r3
-  to: r10
-  label: ChatClient -> LLM…
-  style: solid
-  direction: request
-- from: r5
-  to: chatclient
-  label: LLM -> ChatClient…
-  style: dashed
-  direction: response
-callouts:
-- '操作员 -> ChatClient: 发送请求'
-- 'ChatClient -> LLM: 发送消息+Tool定义'
-- 'LLM -> ChatClient: 返回JSON函数调用'
-legend:
-- 实线箭头：同步请求/调用
-- 虚线箭头：同步返回/响应
-- 左上方参与者为操作员，左中心为ChatClient，中心为LLM，右侧为LightTool Bean
-visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-render_notes: HTML/SVG 渲染，浅色背景，标准 UML 序列图风格，纵向排列，操作员在左侧，ChatClient 在左中，LLM 在中心，LightTool 在右侧。左上角添加图例，宽度适配单栏排版约 500px。
+- Agent→Gateway：MCP JSON-RPC 请求。
+- Gateway↔Auth：token 与 Tool 可见性校验。
+- OpenAPI 规格→工具目录：静态规格聚合，不扫描 @Tool。
+- Gateway→REST 后端：授权后转发 tools/call。
+render_notes: 浅色分层 SVG。Tools 主链路用实线；OpenAPI 汇聚用虚线；Resources/Prompts 放入灰色“协议可选、当前未启用”区域，禁止把所有能力标为 Resource。
 caption:
-  zh: 图7-5 展示了 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例。操作员的自然语言请求首先到达 ChatClient，ChatClient 将消息连同 LightTool 的工具描述发送给 LLM。LLM 推理后返回 JSON 格式的函数调用请求，ChatClient 解析并调用对应的 @Tool 方法，将执行结果回填给 LLM 后，LLM 生成最终的自然语言回复返回给操作员。
-  en: 'Figure 7-5 shows the complete call chain of Spring AI Function Calling, using "turn off the zone-A lights" as the example. The operator''s natural-language request first reaches the ChatClient, which sends the message together with the LightTool description to the LLM. After reasoning, the LLM returns a JSON function-call request; the ChatClient parses it, invokes the corresponding @Tool method, and feeds the execution result back to the LLM, which then generates the final natural-language reply for the operator.'
+  zh: 图 7-5 IoT DC3 当前 MCP 边界：外部 Agent 经 initialize 协商后使用 tools/list 与 tools/call；Gateway 每次调用前经 Auth 校验，工具目录由 OpenAPI 规格汇聚，Resources 与 Prompts 当前未启用。
+  en: 'Figure 7-5 The current MCP boundary of IoT DC3: after initialize negotiation, external agents use tools/list and tools/call; the Gateway verifies with Auth before each call, the tool catalog is aggregated from OpenAPI specs, and Resources and Prompts are not yet enabled.'
 labels:
   en:
-    图7-5 Function Calling 交互流程：从自然语言到设备操作: 'Figure 7-5 Function Calling: from natural language to device operations'
-    LLM 只生成函数名和参数，业务 Tool 与平台安全边界负责实际执行，高风险写入必须等待用户确认。: The LLM only emits function names and parameters; business tools and the platform safety boundary do the execution; high-risk writes must await user confirmation.
-    模型不执行代码；实际副作用由业务 Tool 和平台安全边界共同控制: The model runs no code; side effects are controlled by tools and the platform safety boundary
-    操作员: Operator
-    自然语言: Natural language
-    模型: Model
-    业务 Tool: Business tool
-    平台安全边界: Platform safety boundary
-    鉴权 · 校验 · Action: Authorization · checks · Action
-    1 “将 A 区灯设为关闭”: '1 "Set zone-A lights to off"'
-    2 用户消息 + Tool schema: 2 User message + tool schema
-    3 结构化调用：toggleLight(A区,false): '3 Structured call: toggleLight(zone A, false)'
-    4 解析后调用；LLM 不执行代码: 4 Parsed then invoked; the LLM runs no code
-    5 主体、资源、参数与风险检查: 5 Principal, resource, parameter & risk checks
-    6 只读：执行；写入：待确认 Action: '6 Read-only: run; write: pending Action'
-    7 返回待确认 / 执行结果: 7 Returns pending / executed result
-    8 将真实结果回填模型: 8 Feed real results back to the model
-    9 基于结果生成回复: 9 Generate reply from results
-    10 展示状态，不虚构成功: 10 Show status; no faked success
-    实时联锁与紧急控制不进入此对话链；它们继续由 PLC、边缘控制器和确定性规则承担。: Real-time interlocks and emergency control stay out of this chat chain, remaining with PLCs, edge controllers, and deterministic rules.
-    图7-5 LLM 只生成函数名和参数；业务 Tool 与平台安全边界负责实际执行，高风险写入必须等待用户确认。: Figure 7-5 The LLM only generates function names and parameters; business tools and the platform safety boundary perform the execution; high-risk writes must await user confirmation.
+    图 7-5 MCP 在物联网平台中的架构示意: Figure 7-5 MCP Architecture in the IoT Platform
+    当前端点只声明 Tools；Resources 与 Prompts 属于协议知识边界，尚未启用。: The endpoint declares Tools only; Resources and Prompts are protocol knowledge, not yet enabled.
+    当前边界：JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · 仅声明 Tools capability: 'Current boundary: JSON-RPC 2.0 · initialize / ping / tools/list / tools/call · Tools capability only'
+    外部 AI Agent: External AI agent
+    LLM · 自然语言指令 · 单一端点接入: LLM · natural-language commands · one endpoint
+    MCP 端点 · POST /mcp: MCP endpoint · POST /mcp
+    能力握手 · 协议协商: Capability handshake · protocol negotiation
+    发现当前调用者可见 Tools: Discover caller-visible tools
+    工具调用 · 参数校验: Tool calls · parameter validation
+    'capabilities: tools only · Resources / Prompts 当前未声明、未实现': 'capabilities: tools only · Resources / Prompts not declared, not implemented'
+    鉴权中心: Authorization Center
+    OAuth 2.1 · 多租户: OAuth 2.1 · multi-tenant
+    校验 access_token: Validate access_token
+    提取租户上下文: Extract tenant context
+    注入 scope / 权限: Inject scope / permissions
+    高危操作二次确认: Re-confirm high-risk operations
+    ① 校验 token: ① Validate token
+    ② 上下文 + scope: ② Context + scope
+    后端服务层: Backend services
+    静态 OpenAPI · 管理域: Static OpenAPI · management domain
+    Command · Event 定义: Command · Event definitions
+    租户范围内元数据: Tenant-scoped metadata
+    静态 OpenAPI · 数据域: Static OpenAPI · data domain
+    最新值 · 历史值: Latest values · history
+    位号读写命令: Point read/write commands
+    状态 · Dashboard: Status · Dashboard
+    RabbitMQ 设备链路: RabbitMQ device link
+    其他平台 API: Other platform APIs
+    静态 OpenAPI · 按规格汇聚: Static OpenAPI · aggregated from specs
+    实际 REST 后端: Actual REST backend
+    按 token 与白名单过滤: Filtered by token & allowlist
+    工具调用（实线）: Tool call (solid)
+    OpenAPI 自动聚合（虚线）: OpenAPI auto-aggregation (dashed)
+    OAuth 鉴权回传（实线）: OAuth authorization return (solid)
+    MCP 端点: MCP endpoint
+    设备 / 接入域: Device / access domain
+    Auth · 白名单 · 高风险确认: Auth · allowlist · high-risk confirmation
+    图 7-5 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，: 'Figure 7-5 The current /mcp declares the Tools capability only: after initialize negotiation it serves tools/list and tools/call,'
+    工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。: the tool catalog is aggregated from static OpenAPI specs and filtered by OAuth connection, allowlist, and risk policy; Resources / Prompts are not yet enabled.

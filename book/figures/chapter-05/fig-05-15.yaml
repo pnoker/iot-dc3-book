@@ -1,49 +1,109 @@
-type: layered
-title: 图5-15 数据生命周期管理：保留策略与冷热分层
-audience_takeaway: 读者应理解保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储，分片迁移避免拖慢数据库。
-purpose: 展示数据生命周期管理的保留策略与冷热分层
-visual_focus: 保留策略三级与冷热分层三层。
-design_level: layered
-layout: 上半保留策略三级，下半冷热分层三层
+type: architecture
+title: 图 5-15 平台层延伸阅读工具链全景图
+audience_takeaway: 读者应理解开源工具沿数据上报→消费落库→查询告警的数据流链条分层，且边缘与容器编排层以虚框横跨消息与时序两层。
+purpose: 展示本节推荐的开源工具在物联网平台层中各层级的分布
+visual_focus: 从设备接入到可视化与监控的主链路。
+design_level: logical
+layout: 水平方向分层排列，每层一个矩形条，从上到下依次为“可视化与监控”“消息与流处理”“边缘与容器编排”“时序存储”和“设备接入”
 elements:
-- 保留策略：原始 10 秒级 7 天、分钟级 30 天、小时级 12 个月
-- 热存储：最近 7 天 NVMe/SSD，毫秒级，实时大盘
-- 温存储：8 天~3 个月 HDD/SSD，月度报表
-- 冷存储：超 3 个月对象存储，Parquet/Avro 分区，批量训练
+- 可视化与监控
+- 消息与流处理
+- 边缘与容器编排
+- 时序存储
+- 设备接入
 relationships:
-- 数据价值随访问频率递减，按价值分层付费；分片迁移在低峰分批执行
-render_notes: HTML/SVG 渲染，保留策略三级 + 冷热分层三层，红橙蓝分层。
+- 设备接入 → 消息与流处理（数据上报）
+- 消息与流处理 → 时序存储（消费落库）
+- 时序存储 → 可视化与监控（查询/告警）
+regions:
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
+- id: platform_domain
+  label: 平台服务域
+  role: 核心服务能力边界
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+components:
+- id: r1
+  label: 设备接入
+  type: edge
+  subtitle: ''
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: r2
+  label: 消息与流处理
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: bus
+- id: r3
+  label: 时序存储
+  type: data
+  subtitle: ''
+  group: data_domain
+  priority: normal
+  shape: database
+- id: r4
+  label: 可视化与监控
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+connections:
+- from: r1
+  to: r2
+  label: 数据上报
+  style: solid
+  direction: request
+- from: r2
+  to: r3
+  label: 消费落库
+  style: solid
+  direction: request
+- from: r3
+  to: r4
+  label: 查询/告警
+  style: risk
+  direction: event
+callouts:
+- 设备接入 → 消息与流处理（数据上报）
+- 消息与流处理 → 时序存储（消费落库）
+- 时序存储 → 可视化与监控（查询/告警）
+legend:
+- 数据流向
+- 跨层编排（边缘与容器编排层）
+- 独立组件或功能模块
+visual_constraints:
+- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
+- 图例放在底部，不遮挡主体结构。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: 使用 SVG 绘制5个水平矩形条作为层，由上至下排列；在“边缘与容器编排”层用半透明虚线矩形覆盖其下方的“消息与流处理”和“时序存储”层，表示编排范围；每层内用圆角矩形放置组件名称；箭头带标签从设备接入层指向消息与流处理层，再到时序存储层，最后从时序存储层双向连接到可视化与监控层；整体加上浅灰色背景和边框。
 caption:
-  zh: 图5-15 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。
-  en: 'Figure 5-15 Retention policies set expiry per data granularity, and hot/warm/cold tiering places data by access frequency across three storage tiers; shard migration runs in throttled batches at off-peak hours so it never drags database response down.'
+  zh: 图中每个方框对应正文推荐的开源项目或功能模块；“设备接入”层延伸自5.1节网关层。
+  en: 'Each box corresponds to an open-source project or functional module recommended in the text; the "Device Access" layer extends the gateway layer from Section 5.1.'
 labels:
   en:
-    图5-15 数据生命周期管理：保留策略与冷热分层: 'Figure 5-15 Data Lifecycle: Retention & Hot/Cold Tiering'
-    保留策略按价值设定过期时长，冷热分层把数据按访问频率放到不同性价比的存储介质。: Retention sets expiry by value; tiering places data on storage media whose cost matches access frequency.
-    让每一字节数据按它的查询价值来付费: Pay for every byte according to its query value
-    保留策略：不同粒度设定独立保留时长: 'Retention: independent durations per granularity'
-    原始 10 秒级数据: Raw 10-second data
-    服务实时告警与故障排查: Real-time alarms, troubleshooting
-    保留 7 天: Keep 7 days
-    分钟级聚合数据: Minute-level aggregates
-    用于周报: For weekly reports
-    保留 30 天: Keep 30 days
-    小时级聚合数据: Hourly aggregates
-    用于年度趋势分析: For yearly trend analysis
-    保留 12 个月: Keep 12 months
-    冷热分层：按访问频率放在不同性价比的存储介质: 'Tiering: storage media matched to access frequency'
-    热存储: Hot Storage
-    最近 7 天 · 本地 NVMe / SSD: Last 7 Days · Local NVMe / SSD
-    响应仪表盘毫秒级查询，访问频繁: Millisecond dashboard queries, frequent access
-    时序数据库原生格式，单位成本相对较高: Native time-series format, higher unit cost
-    实时大盘、告警触发: Live dashboards, alarm triggers
-    温存储: Warm Storage
-    8 天～3 个月 · 普通 HDD / SSD: 8 Days ~ 3 Months · HDD / SSD
-    用于月度报表，访问频度中等: Monthly reports, medium access frequency
-    月度报表: Monthly reports
-    冷存储: Cold Storage
-    超过 3 个月 · 对象存储（MinIO / S3 兼容）: Over 3 Months · Object Storage (MinIO / S3)
-    Parquet / Avro 列式格式，按时间分区，查询只加载对应分区: Parquet / Avro columnar, time-partitioned; loads only needed partitions
-    用于季度回顾或算法模型训练，访问极少: Quarterly reviews or model training, rarely accessed
-    历史分析、批量训练: Historical analysis, batch training
-    图5-15 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。: Figure 5-15 Retention policies set expiry per data granularity, and hot/warm/cold tiering places data by access frequency across three storage tiers; shard migration runs in throttled batches at off-peak hours so it never drags database response down.
+    图 5-15 平台层延伸阅读工具链全景图: Figure 5-15 Platform-Layer Toolchain Panorama
+    开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。: Open-source tools are layered along the device-access, messaging, time-series storage, and visualization chain.
+    数据上报: Data upload
+    消费落库: Consume & store
+    查询/告警: Query/Alarm
+    边缘与容器编排：KubeEdge / Kubernetes: 'Edge & Orchestration: KubeEdge / Kubernetes'
+    可视化与监控: Visualization & Monitoring
+    查询 · 告警 · 看板: Query · Alarm · Dashboards
+    消息与流处理: Messaging & Stream Processing
+    缓冲 · 削峰 · 流处理: Buffering · Peak Shaving · Streaming
+    时序存储: Time-Series Storage
+    高效存储 · 降采样: Efficient Storage · Downsampling
+    设备接入: Device Access
+    协议接入 · 物模型: Protocol Access · Thing Model
+    边缘与容器编排：负责部署、更新与调度，横跨消息与时序两层。: 'Edge & orchestration: deployment, updates, and scheduling across the messaging and storage layers.'
+    编排不替代消息、存储或设备接入能力，各组件沿数据链路按职责组合。: Orchestration does not replace messaging, storage, or device access; components combine by responsibility along the data path.
+    数据流向（上报 → 落库 → 查询）: Data flow (upload → store → query)
+    跨层编排范围（虚线框）: Cross-layer orchestration scope (dashed)
+    图 5-15 平台层延伸阅读工具链全景图：开源工具沿数据上报、消费落库、查询告警的链路分层，边缘与容器编排横跨消息与存储两层但不替代业务组件。: 'Figure 5-15 Platform-layer toolchain panorama: open-source tools layered along the upload-consume-query chain; edge and container orchestration spans the messaging and storage layers without replacing business components.'

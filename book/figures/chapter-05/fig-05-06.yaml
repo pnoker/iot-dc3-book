@@ -1,114 +1,150 @@
-type: dataflow
-title: 图5-6 降采样数据流程与数据量对比（例子）
-purpose: 展示原始高精度数据经过三级降采样后数据量显著减少，说明分层策略的压缩效果。
-audience_takeaway: 读者应理解降采样通过分层聚合将数据量逐步压缩，不同层服务于不同时效性需求。
-visual_focus: 从原始数据桶到天聚合桶的主链路，突出数据量呈量级缩减。
-design_level: implementation
-layout: 从左至右的管道式数据流，包含原始数据桶、分钟聚合桶、小时聚合桶、天聚合桶，各桶下方标注相对数据量描述（如“原始数据量基准”、“显著减少”、“大幅降低”、“极小占比”）。
+type: architecture
+title: 图 5-6 边缘-云协同典型架构
+purpose: 展示从设备边缘到云端的三层边缘节点、两种协同模式以及边缘计算框架的放置位置。
+audience_takeaway: 读者应理解设备边缘、网关边缘、区域边缘的边界以及规则下发和聚合上报两条数据主链路。
+visual_focus: 从设备层向上经网关边缘、区域边缘到云端的两条数据流（规则下发用虚线、聚合上报用实线）；规则引擎和AI推理框用橙色强调。
+design_level: logical
+layout: 自下而上分层：设备边缘→网关边缘→区域边缘→云端；左侧标注边缘框架选项。
 elements:
-- 原始数据桶：10秒级精度，短保留窗口。
-- 分钟聚合桶：每分钟均值，数据量显著减少。
-- 小时聚合桶：每小时均值，数据量进一步大幅降低。
-- 天聚合桶：每天均值，数据量降至极小占比。
+- 设备边缘层：传感器、执行器、PLC，采用MCU形态，青绿色卡片。
+- 网关边缘层：工控机或智能网关，运行EdgeX Foundry，蓝色卡片。
+- 区域边缘层：MEC服务器或汇聚节点，运行KubeEdge，蓝色卡片。
+- 云端层：云服务器或中心机房，运行AI模型与时序数据库，蓝色卡片。
+- 规则下发流：从云端→区域边缘→网关边缘→设备，虚线橙色。
+- 聚合上报流：从设备→网关边缘→区域边缘→云端，实线绿色。
 relationships:
-- 原始数据桶通过连续查询（CQ）管道输出至分钟聚合桶，实线箭头标注'CQ：每分钟聚合'。
-- 分钟聚合桶通过下一级连续查询输出至小时聚合桶，实线箭头标注'CQ：每小时聚合'。
-- 小时聚合桶通过下一级连续查询输出至天聚合桶，实线箭头标注'CQ：每天聚合'。
-- 每个聚合桶还有一条虚线箭头指向'查询仪表盘'，表示应用层直接读取聚合数据。
+- 设备边缘通过Modbus/OPC UA/CoAP上报网关边缘。
+- 网关边缘运行EdgeX的Core Data与规则引擎，对设备执行规则。
+- 网关边缘将聚合数据通过MQTT报区域边缘（MEC）或直接上报云端。
+- 区域边缘运行KubeEdge，从云端接收容器化AI模型部署。
+- 云端训练AI模型，通过KubeEdge的云端组件下发给区域边缘节点。
 regions:
-- id: data_domain
-  label: 数据资产域
-  role: 数据沉淀与治理边界
+- id: device_region
+  label: 现场设备域
+  role: 异构传感器与执行器边界
+- id: gateway_region
+  label: 网关边界
+  role: 协议转换与本地实时控制
+- id: regional_region
+  label: 区域MEC域
+  role: 低时延决策与容器化推理
+- id: cloud_region
+  label: 云端域
+  role: 全局分析、模型训练与存储
 components:
-- id: c1
-  label: 原始数据桶
+- id: device_edge_node
+  label: 设备边缘
+  type: edge
+  subtitle: MCU传感器/PLC
+  group: device_region
+  priority: normal
+  shape: card
+- id: gateway_edge
+  label: 网关边缘
+  type: edge
+  subtitle: EdgeX + 规则引擎
+  group: gateway_region
+  priority: primary
+  shape: card
+- id: regional_edge
+  label: 区域边缘 (MEC)
+  type: edge
+  subtitle: KubeEdge + 容器推理
+  group: regional_region
+  priority: primary
+  shape: card
+- id: cloud_platform
+  label: 云端平台
+  type: platform
+  subtitle: AI训练 + 时序库 + 规则下发
+  group: cloud_region
+  priority: primary
+  shape: card
+- id: rule_push
+  label: 规则下发
+  type: ai
+  subtitle: 云端→边缘
+  group: cloud_region
+  priority: normal
+  shape: decision
+- id: data_upload
+  label: 聚合上报
   type: data
-  subtitle: 10秒级精度，短保留窗口
-  group: data_domain
+  subtitle: 边缘→云端
+  group: gateway_region
   priority: primary
   shape: database
-- id: c2
-  label: 分钟聚合桶
-  type: data
-  subtitle: 每分钟均值，数据量显著减少
-  group: data_domain
-  priority: normal
-  shape: database
-- id: c3
-  label: 小时聚合桶
-  type: data
-  subtitle: 每小时均值，数据量大幅降低
-  group: data_domain
-  priority: normal
-  shape: database
-- id: c4
-  label: 天聚合桶
-  type: data
-  subtitle: 每天均值，数据量极小占比
-  group: data_domain
-  priority: normal
-  shape: database
 connections:
-- from: c1
-  to: c2
-  label: CQ：每分钟聚合
+- from: device_edge_node
+  to: gateway_edge
+  label: Modbus/OPC UA
   style: solid
+  direction: bottom-to-top
+- from: gateway_edge
+  to: device_edge_node
+  label: 执行指令
+  style: dashed
+  direction: top-to-bottom
+- from: rule_push
+  to: regional_edge
+  label: 规则容器
+  style: dashed
   direction: left-to-right
-- from: c2
-  to: c3
-  label: CQ：每小时聚合
+- from: regional_edge
+  to: gateway_edge
+  label: 代理下发
+  style: dashed
+  direction: bottom-to-top
+- from: gateway_edge
+  to: data_upload
+  label: 聚合值
   style: solid
-  direction: left-to-right
-- from: c3
-  to: c4
-  label: CQ：每天聚合
+  direction: bottom-to-top
+- from: data_upload
+  to: regional_edge
+  label: MQTT桥接
   style: solid
-  direction: left-to-right
+  direction: bottom-to-top
+- from: regional_edge
+  to: cloud_platform
+  label: 长期存储
+  style: solid
+  direction: bottom-to-top
 callouts:
-- “原始层”保留窗口通常按天计，用于故障回放；“分钟层”支撑短时趋势；“小时层”服务日报；“天层”服务年度趋势。
+- 规则下发仅在初始或规则更新时触发，执行过程中不依赖回云。
+- 聚合上报保留趋势信息，减少原始数据带宽消耗。
 legend:
-- 各桶数据量描述基于例子估算，实际项目因设备数、上报频率、字段数量而异。
-- 实线箭头：连续查询驱动自动化聚合。
-- 虚线箭头：应用层查询路径。
+- 青绿色=设备与边缘节点；蓝色=网关与云平台；橙色=规则/智能流。
+- 实线=数据或执行流；虚线=配置或指令下发。
 visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-- 优先表达边界和主链路，不把所有概念塞进一张图。
-render_notes: 使用流程图形式，从左至右排列桶节点，节点间有粗实线箭头连接。每个节点下方显示定性比例描述（如“原始基准”、“显著减少”、“大幅降低”、“极小”）。使用圆角矩形节点，配色按图例。
+- 最多7个主节点，节点标签短。
+- 虚线箭头只用于规则下发路径。
+- 分组边界用虚线圆角矩形。
+render_notes: HTML/SVG渲染，浅色背景，圆角矩形，箭头带短标签，底部图例和出版级图注。
 caption:
-  zh: 图5-6 例子：中等规模工厂设备上报温度和湿度。三级降采样策略：原始数据保留短暂时间，分钟聚合保留中期，小时聚合保留季度级，天聚合保留年。各阶段数据量比例为基于常见压缩比的定性描述，非精确数值。
-  en: 'Figure 5-6 Example: devices in a mid-sized factory report temperature and humidity. The three-level downsampling strategy keeps raw data only briefly, minute aggregates for the mid term, hourly aggregates at quarter scale, and daily aggregates for a year. Data-volume ratios at each stage are qualitative descriptions based on common compression ratios, not exact figures.'
+  zh: 图 5-6 展示从设备边缘到云端的层次与协同模式，左侧标注EdgeX/KubeEdge的典型部署位置。
+  en: 'Figure 5-6 Layers and collaboration modes from device edge to cloud, with the typical deployment positions of EdgeX/KubeEdge annotated on the left.'
 labels:
   en:
-    图5-6 降采样数据流程与数据量对比（例子）: Figure 5-6 Downsampling Pipeline & Data Volume (Example)
-    四级数据桶由连续查询逐级聚合，数据量逐级降低并采用分层保留策略。: Four tiers of buckets aggregate step by step via continuous queries; volume drops level by level with tiered retention.
-    连续查询逐级聚合；粒度变粗，数据量与长期存储成本同步下降。: Continuous queries aggregate level by level; as granularity coarsens, volume and long-term storage cost fall together.
-    CQ：每分钟: 'CQ: per minute'
-    CQ：每小时: 'CQ: hourly'
-    CQ：每天: 'CQ: daily'
-    原始数据桶: Raw Data Bucket
-    10 秒级精度 · 短保留窗口: 10s Precision · Short Retention
-    数据量：原始基准: 'Volume: raw baseline'
-    分钟聚合桶: Minute Aggregate Bucket
-    每分钟均值 · 短时趋势: Per-Minute Avg · Short-Term Trends
-    数据量：显著减少: 'Volume: much reduced'
-    小时聚合桶: Hourly Aggregate Bucket
-    每小时均值 · 日报/周报: Hourly Avg · Daily/Weekly Reports
-    数据量：大幅降低: 'Volume: sharply lower'
-    天聚合桶: Daily Aggregate Bucket
-    每天均值 · 年度趋势: Daily Avg · Yearly Trends
-    数据量：极小占比: 'Volume: tiny fraction'
-    查询仪表盘: Query Dashboards
-    应用层直接读取聚合数据: Apps read aggregates directly
-    分层保留策略: Tiered Retention Policy
-    原始层: Raw Tier
-    短期保留 · 故障回放: Short Retention · Fault Replay
-    分钟层: Minute Tier
-    中期保留 · 短时趋势: Mid-Term · Short-Term Trends
-    小时层: Hourly Tier
-    季度趋势 · 日报/周报: Quarterly Trends · Daily/Weekly Reports
-    天层: Daily Tier
-    长期保留 · 年度趋势: Long Retention · Yearly Trends
-    实线箭头：连续查询驱动自动化聚合: 'Solid arrows: continuous-query auto-aggregation'
-    虚线箭头：应用层查询路径: 'Dashed arrows: application query path'
-    图5-6 降采样数据流程与数据量对比：三级降采样将数据量逐级压缩，原始层短保留用于故障回放，分钟/小时/天层分别支撑短时趋势、日报与年度趋势。: 'Figure 5-6 Downsampling pipeline and data-volume comparison: three downsampling levels compress data step by step — the raw tier is short-retention for fault replay, while minute/hourly/daily tiers serve short-term trends, daily reports, and yearly trends.'
+    图 5-6 边缘-云协同典型架构: Figure 5-6 Typical Edge-Cloud Collaboration Architecture
+    实时任务靠近现场，全局训练与长期分析留在云端。: Real-time tasks stay near the field; global training and long-term analysis stay in the cloud.
+    聚合上报: Aggregated Upload
+    规则 / 模型下发: Rule / Model Push
+    容器编排: Container Orchestration
+    设备接入框架: Device Access Framework
+    云端平台: Cloud Platform
+    全局分析 · AI 模型训练 · 时序存储 · 规则下发: Global Analysis · AI Training · Time-Series · Rule Push
+    区域边缘（MEC）: Regional Edge (MEC)
+    KubeEdge · 容器化 AI 推理: KubeEdge · Containerized AI Inference
+    容器化推理: Containerized Inference
+    网关边缘: Gateway Edge
+    EdgeX · 协议转换 · 本地规则执行: EdgeX · Protocol Conversion · Local Rules
+    本地规则引擎: Local Rule Engine
+    设备边缘: Device Edge
+    MCU · PLC · 传感器 / 执行器（Modbus / OPC UA / CoAP）: MCU · PLC · Sensors / Actuators (Modbus / OPC UA / CoAP)
+    实线：聚合上报（数据流）: 'Solid: aggregated upload (data flow)'
+    虚线：规则 / 模型下发（配置与指令）: 'Dashed: rule / model push (config & commands)'
+    边缘框架部署位置: Edge Framework Deployment
+    规则下发仅在初始或规则更新时触发，执行过程中不依赖回云。: Rule push fires only on init or rule updates; execution never depends on the cloud.
+    聚合上报保留趋势信息，减少原始数据带宽消耗；边缘断网时仍可执行本地规则。: Aggregated uploads keep trend information and cut raw-data bandwidth; local rules keep running when the edge is offline.
+    图 5-6 边缘-云协同典型架构：展示从设备边缘到云端的层次与协同模式，左侧标注 EdgeX/KubeEdge 的典型部署位置，规则下发与聚合上报构成双向协同。: 'Figure 5-6 Typical edge-cloud collaboration architecture: layers and collaboration modes from device edge to cloud, with the typical EdgeX/KubeEdge deployment positions annotated on the left; rule push and aggregated upload form the two-way collaboration.'

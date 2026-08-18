@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-12 平台层延伸阅读工具链全景图</title>
+  <title>图 5-12 Kappa 架构示意图</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,65 +13,66 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图5-12 平台层延伸阅读工具链全景图</title>
-  <desc id="desc">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</desc>
+  <title id="title">图 5-12 Kappa 架构示意图</title>
+  <desc id="desc">原始流持久化后，实时与历史计算复用同一处理管道。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <defs>
       <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+      <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
     </defs>
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-12 平台层延伸阅读工具链全景图</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">开源工具沿设备接入、消息处理、时序存储和可视化链路分层放置。</text>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-12 Kappa 架构示意图</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">原始流持久化后，实时与历史计算复用同一处理管道。</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- 数据流向（先画） -->
-    <line x1="200" y1="575" x2="200" y2="185" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
-    <text x="188" y="449" font-size="14" font-weight="600" fill="#475569" text-anchor="end">数据上报</text>
-    <text x="188" y="384" font-size="14" font-weight="600" fill="#475569" text-anchor="end">消费落库</text>
-    <text x="188" y="319" font-size="14" font-weight="600" fill="#475569" text-anchor="end">查询/告警</text>
+    <!-- 单一流处理管道边界 -->
+    <rect x="90" y="170" width="1620" height="650" rx="16" fill="#FFFFFF" fill-opacity="0.5" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="8 4"/>
+    <text x="110" y="200" font-size="17" font-weight="700" fill="#475569">单一流处理管道（实时与历史复用同一引擎）</text>
 
-    <!-- 跨层编排（虚线覆盖消息与时序两层，先画） -->
-    <rect x="320" y="250" width="1180" height="250" rx="14" fill="#7C3AED" fill-opacity="0.06" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="8 4"/>
-    <text x="344" y="282" font-size="16" font-weight="700" fill="#7C3AED">边缘与容器编排：KubeEdge / Kubernetes</text>
+    <!-- 主链路连线（先画） -->
+    <line x1="390" y1="435" x2="613" y2="435" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="500" y="418" font-size="14" font-weight="600" fill="#475569" text-anchor="middle">实时数据流</text>
+    <line x1="265" y1="510" x2="265" y2="648" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="286" y="585" font-size="14" font-weight="600" fill="#475569">持久化原始流</text>
+    <path d="M390 725 L720 725 L720 542" fill="none" stroke="#0F766E" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-teal)"/>
+    <text x="555" y="748" font-size="14" font-weight="600" fill="#0F766E" text-anchor="middle">历史回放（Time Travel）</text>
+    <line x1="825" y1="435" x2="988" y2="435" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="906" y="418" font-size="14" font-weight="600" fill="#475569" text-anchor="middle">持续输出</text>
 
-    <!-- 可视化与监控 -->
-    <rect x="320" y="140" width="1180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="360" y="182" font-size="20" font-weight="700" fill="#0F172A">可视化与监控</text>
-    <text x="360" y="210" font-size="13" fill="#64748B">查询 · 告警 · 看板</text>
-    <text x="760" y="192" font-size="16" fill="#475569">Prometheus · Grafana</text>
+    <!-- 数据源 -->
+    <rect x="140" y="360" width="250" height="150" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="265" y="410" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">数据源</text>
+    <text x="265" y="442" font-size="14" fill="#475569" text-anchor="middle">传感器 / 设备</text>
+    <text x="265" y="468" font-size="14" fill="#475569" text-anchor="middle">MQTT 代理</text>
 
-    <!-- 消息与流处理 -->
-    <rect x="320" y="270" width="1180" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="360" y="312" font-size="20" font-weight="700" fill="#0F172A">消息与流处理</text>
-    <text x="360" y="340" font-size="13" fill="#64748B">缓冲 · 削峰 · 流处理</text>
-    <text x="760" y="322" font-size="16" fill="#475569">Mosquitto · Kafka · Flink</text>
+    <!-- 消息总线 -->
+    <rect x="140" y="650" width="250" height="150" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="265" y="700" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">消息总线</text>
+    <text x="265" y="732" font-size="14" fill="#475569" text-anchor="middle">Kafka Topic</text>
+    <text x="265" y="758" font-size="14" fill="#475569" text-anchor="middle">持久化原始流</text>
 
-    <!-- 时序存储 -->
-    <rect x="320" y="400" width="1180" height="90" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
-    <text x="360" y="442" font-size="20" font-weight="700" fill="#0F172A">时序存储</text>
-    <text x="360" y="470" font-size="13" fill="#64748B">高效存储 · 降采样</text>
-    <text x="760" y="452" font-size="16" fill="#475569">InfluxDB · TimescaleDB</text>
+    <!-- 实时流处理（菱形） -->
+    <polygon points="720,330 825,435 720,540 615,435" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.8"/>
+    <text x="720" y="430" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">实时流处理</text>
+    <text x="720" y="458" font-size="13" fill="#475569" text-anchor="middle">Flink / Kafka Streams</text>
 
-    <!-- 设备接入 -->
-    <rect x="320" y="530" width="1180" height="90" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="360" y="572" font-size="20" font-weight="700" fill="#0F172A">设备接入</text>
-    <text x="360" y="600" font-size="13" fill="#64748B">协议接入 · 物模型</text>
-    <text x="760" y="582" font-size="16" fill="#475569">IoT DC3 Driver · EdgeX</text>
+    <!-- 结果输出 -->
+    <rect x="990" y="360" width="250" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="1115" y="410" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">结果输出</text>
+    <text x="1115" y="442" font-size="14" fill="#475569" text-anchor="middle">告警系统</text>
+    <text x="1115" y="468" font-size="14" fill="#475569" text-anchor="middle">Dashboard · 时序库</text>
 
     <!-- 说明与图例 -->
-    <rect x="320" y="660" width="1180" height="150" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-    <circle cx="352" cy="700" r="4" fill="#7C3AED"/>
-    <text x="366" y="706" font-size="15" fill="#475569">边缘与容器编排：负责部署、更新与调度，横跨消息与时序两层。</text>
-    <circle cx="352" cy="736" r="4" fill="#7C3AED"/>
-    <text x="366" y="742" font-size="15" fill="#475569">编排不替代消息、存储或设备接入能力，各组件沿数据链路按职责组合。</text>
-    <line x1="760" y1="700" x2="810" y2="700" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
-    <text x="822" y="706" font-size="15" fill="#475569">数据流向（上报 → 落库 → 查询）</text>
-    <rect x="760" y="722" width="50" height="24" rx="4" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-dasharray="6 4"/>
-    <text x="822" y="740" font-size="15" fill="#475569">跨层编排范围（虚线框）</text>
+    <rect x="90" y="845" width="1620" height="80" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <line x1="300" y1="885" x2="350" y2="885" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
+    <text x="362" y="891" font-size="15" fill="#475569">实线箭头：实时数据流</text>
+    <line x1="680" y1="885" x2="730" y2="885" stroke="#0F766E" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-teal)"/>
+    <text x="742" y="891" font-size="15" fill="#475569">虚线箭头：历史数据回放（replay）</text>
+    <text x="1120" y="891" font-size="15" fill="#475569">历史分析靠回放，而非另建批管道</text>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-12 平台层延伸阅读工具链全景图：开源工具沿数据上报、消费落库、查询告警的链路分层，边缘与容器编排横跨消息与存储两层但不替代业务组件。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-12 Kappa 架构通过单一流处理管道完成所有计算：历史数据经 Time Travel 回放实现，消除了 Lambda 架构并行维护两条管道的成本。</text>
   </svg>
 </svg>
   </main>

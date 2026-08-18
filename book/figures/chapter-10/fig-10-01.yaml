@@ -1,5 +1,5 @@
 type: timeline
-title: 图10-1 工业4.0发展阶段时间线
+title: 图 10-1 工业4.0发展阶段时间线
 purpose: 标注前三次工业革命与工业4.0的关键特征和交汇时间点，帮助读者建立工业演进的历史脉络。
 audience_takeaway: 读者应理解工业4.0不是突然出现的概念，而是在前三次工业革命（机械化、电气化、自动化）基础上的范式跃迁。
 visual_focus: 四个节点从左到右依次排列，工业4.0节点用不同颜色或样式突出显示。
@@ -73,11 +73,11 @@ visual_constraints:
 - 工业4.0节点使用蓝色高亮，其他节点使用浅灰色。
 render_notes: HTML/SVG渲染，浅色背景，时间轴箭头深色，节点圆形，工业4.0节点使用蓝色填充，其他节点浅灰，底部图例和出版级图注。不标注具体年份，仅示意时间相对位置。
 caption:
-  zh: 图10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。
+  zh: 图 10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。
   en: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization. Stage divisions follow the evolution path commonly recognized in industry.
 labels:
   en:
-    图10-1 工业4.0发展阶段时间线: Figure 10-1 Industry 4.0 Development Timeline
+    图 10-1 工业4.0发展阶段时间线: Figure 10-1 Industry 4.0 Development Timeline
     工业4.0建立在机械化、电气化和自动化基础上，并以数据驱动实现数字化与智能化跃迁。: Industry 4.0 builds on mechanization, electrification, and automation, then adds a data-driven leap to digital intelligence.
     前三次工业革命构成自动化基础；工业4.0使数据从事后记录转为实时决策要素。: The prior revolutions built automation; Industry 4.0 turns data into a real-time decision factor.
     前三次工业革命 · 自动化的演进基础: Prior revolutions · automation base
@@ -99,4 +99,4 @@ labels:
     工业4.0 与前三次的根本区别：数据从副产品变成了生产要素: 'Key difference: data turns from by-product into a production factor'
     浅灰节点：前三次工业革命: 'Gray nodes: first three revolutions'
     蓝色高亮节点：工业4.0: 'Blue highlight: Industry 4.0'
-    图10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization; stage divisions follow the evolution path commonly recognized in industry.
+    图 10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization; stage divisions follow the evolution path commonly recognized in industry.

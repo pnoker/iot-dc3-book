@@ -1,60 +1,189 @@
-type: matrix
-title: 图10-13 工业时序数据库选型与 PointValue 数据模型
-audience_takeaway: 读者应理解时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流，PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。
-purpose: 展示工业时序数据库核心特点、主流选型与 PointValue 数据模型
-visual_focus: 核心特点四卡片、三库选型与数据模型。
-design_level: matrix
-layout: 上半核心特点四卡片，中部三库选型，底部 PointValue 数据模型
+type: flowchart
+title: 图 10-13 规则引擎告警触发与预测性维护工单闭环流程
+purpose: 展示从设备温度数据流入到AI推理、工单创建、通知发出，以及工单状态回环的完整链路。
+audience_takeaway: 读者应看到规则引擎在事件触发环节的可靠性价值，以及如何通过工单状态回环形成闭环控制，而非单向告警。
+visual_focus: 从条件判定到三个并行动作的决策分支；工单状态回环升级路径用橙色强调。
+design_level: logical
+layout: 从左至右的流程图，起点为数据流入，终点为工单关闭。
 elements:
-- 高写入吞吐：LSM-Tree 随机写转顺序追加
-- 时间分区：按天/小时切分，查询只扫对应分区
-- 降采样与聚合下推：1s 降 1min 均值，存储层计算
-- 过期与自动删除：保留策略超时分区自动清理
-- 选型：InfluxDB 轻量、TimescaleDB SQL 兼容、TDengine 高压缩
-- PointValue：device_id/point_id/value/event_time/unit/tags
+- 数据流入：电机温度位号值持续更新，方形节点。
+- 条件判定：温度>80°C持续10秒，菱形决策节点。
+- 三个并行动作：AI推理（HTTP调用）、创建工单、钉钉通知，三个矩形节点并列。
+- 工单状态回环：工单超时未关闭，触发升级路径，菱形节点。
+- 升级动作：通知上级管理员，矩形节点。
+- 流程终止：工单关闭，圆角矩形节点。
 relationships:
-- 数据模型决定规则引擎与 AI 消费成本；标签控基数、分区按采样频率分主副
-render_notes: HTML/SVG 渲染，核心特点四卡片 + 三库选型 + 数据模型，蓝绿橙灰分层。
+- 数据流入 → 条件判定，实线箭头。
+- 条件满足 → 三个并行动作，实线箭头从条件判定分出三条。
+- 创建工单 → 工单状态回环，实线箭头。
+- 工单状态回环：工单未关闭且持续超限 → 升级动作，虚线箭头。
+- 升级动作 → 返回工单状态检查并继续订阅，直至工单关闭，虚线回环箭头。
+- 工单状态回环：工单关闭 → 流程终止，实线箭头。
+regions:
+- id: event_detection
+  label: 事件检测域
+  role: 温度数据实时评估与条件判定
+- id: auto_action
+  label: 自动执行域
+  role: AI推理、工单创建、通知分发
+- id: closed_loop
+  label: 闭环验证域
+  role: 工单状态跟踪与升级
+components:
+- id: data_inflow
+  label: 温度数据流入
+  type: process
+  subtitle: 位号持续更新
+  group: event_detection
+  priority: normal
+  shape: card
+- id: condition_check
+  label: 持续超限判定
+  type: decision
+  subtitle: '>80°C且窗口≥10s'
+  group: event_detection
+  priority: primary
+  shape: decision
+- id: ai_inference
+  label: 调用AI推理
+  type: process
+  subtitle: HTTP POST请求
+  group: auto_action
+  priority: primary
+  shape: card
+- id: create_work_order
+  label: 创建维护工单
+  type: process
+  subtitle: 高优先级
+  group: auto_action
+  priority: primary
+  shape: card
+- id: send_notification
+  label: 钉钉群通知
+  type: process
+  subtitle: 告警消息
+  group: auto_action
+  priority: normal
+  shape: card
+- id: wo_timeout_check
+  label: 工单超时未关闭？
+  type: decision
+  subtitle: 规则引擎订阅状态
+  group: closed_loop
+  priority: primary
+  shape: decision
+- id: escalate
+  label: 升级通知上级
+  type: process
+  subtitle: 升级告警级别
+  group: closed_loop
+  priority: supporting
+  shape: card
+- id: wo_closed
+  label: 工单关闭
+  type: process
+  subtitle: 流程结束
+  group: closed_loop
+  priority: normal
+  shape: card
+connections:
+- from: data_inflow
+  to: condition_check
+  label: 实时评估
+  style: solid
+  direction: left-to-right
+- from: condition_check
+  to: ai_inference
+  label: 条件满足
+  style: solid
+  direction: bottom-to-top
+- from: condition_check
+  to: create_work_order
+  label: 条件满足
+  style: solid
+  direction: left-to-right
+- from: condition_check
+  to: send_notification
+  label: 条件满足
+  style: solid
+  direction: top-to-bottom
+- from: create_work_order
+  to: wo_timeout_check
+  label: 待处理状态
+  style: solid
+  direction: left-to-right
+- from: wo_timeout_check
+  to: escalate
+  label: 超时且持续超限
+  style: dashed
+  direction: left-to-right
+- from: wo_timeout_check
+  to: wo_closed
+  label: 正常关闭
+  style: solid
+  direction: bottom-to-top
+callouts:
+- 三个并行动作不互相阻塞：即使AI推理超时，工单和通知仍会发出。
+- 工单状态回环形成闭环控制，避免单向告警被遗忘。
+legend:
+- 蓝色=核心逻辑节点和主流程；橙色=闭环验证与升级路径；实线=稳定执行路径；虚线=有条件触发的升级路径。
+- 菱形=决策节点；圆角矩形=流程终止节点。
+visual_constraints:
+- 最多7个主节点，节点标签保持简短。
+- 三个并行动作节点应垂直对齐或水平均匀分布，避免连线交叉。
+- 闭环升级路径使用虚线，从'创建工单'节点的右侧引出。
+render_notes: 采用从左至右流程图布局，节点使用圆角矩形，决策节点使用菱形。颜色按图例对应，虚线路径使用箭头的虚线样式。底图例和出版级图注。
 caption:
-  zh: 图10-13 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流；PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。
-  en: Figure 10-13 Time-series databases handle industrial data streams with high write throughput, time partitioning, aggregate pushdown, and automatic expiry; PointValue is modeled by device/point/value/time/unit, with tags kept low-cardinality and partitions split into primary and secondary by sampling rate.
+  zh: 图 10-13 展示了从温度数据判定到AI推理、工单创建、通知发送，以及基于工单状态回环的完整闭环流程。橙色部分表示升级路径，是在等待回复超时后触发的二次决策。
+  en: Figure 10-13 The complete closed loop from temperature data evaluation to AI inference, work order creation, and notification dispatch, plus the work order state loop. The orange part marks the escalation path — a second decision triggered after an acknowledgment times out.
 labels:
   en:
-    图10-13 工业时序数据库选型与 PointValue 数据模型: Figure 10-13 Industrial TSDB Selection and the PointValue Data Model
-    时序库针对工业数据流优化写入、分区、聚合与过期；PointValue 以设备、点位、值、时间、单位建模。: TSDBs optimize writes, partitioning, aggregation, and expiry for industrial streams; PointValue is modeled by device, point, value, time, and unit.
-    TSDB 专为时序负载优化存储格式与查询引擎，数据模型决定规则引擎与 AI 的消费成本: TSDBs tune storage and query engines for time-series workloads; the data model sets the cost for rule engines and AI
-    时序数据库的核心特点: Core traits of time-series databases
-    高写入吞吐: High write throughput
-    追加为主，很少随机更新: Mostly appends, few random updates
-    LSM-Tree 随机写转顺序追加: LSM-Tree turns random writes into appends
-    写吞吐比传统关系库高 1~2 个数量级: 1–2 orders of magnitude above relational DBs
-    每秒数千点写入挂库 = 断裂时序: Thousands of points/s on a lagging DB = broken series
-    时间分区: Time partitioning
-    按时间窗口（一天/一小时）自动切分: Auto-split by time window (day/hour)
-    查询只扫对应分区，不全表扫描: Queries scan only matching partitions
-    与保留策略直接挂钩: Tied directly to retention policy
-    一周高精度，超一年删除: Fine data for 1 week, delete beyond 1 year
-    降采样与聚合下推: Downsampling & aggregate pushdown
-    1s 分辨率降为 1min 均值: 1s resolution down to 1min means
-    聚合运算下推到存储层: Aggregation pushed down to storage
-    避免拉大量原始数据到应用层: Avoids pulling raw data to the app layer
-    决定趋势图刷新秒数: Sets trend-chart refresh seconds
-    过期与自动删除: Expiry & auto-delete
-    按时间段设保留策略（Retention Policy）: Retention policy per time range
-    超时分区自动清理: Expired partitions auto-cleaned
-    无需手动任务或定期 DELETE: No manual jobs or periodic DELETEs
-    磁盘容量不随运行时间增长: Disk usage flat over runtime
-    主流选型：InfluxDB / TimescaleDB / TDengine: 'Main options: InfluxDB / TimescaleDB / TDengine'
-    独立 TSDB 引擎，InfluxQL/Flux: Standalone TSDB engine · InfluxQL/Flux
-    轻量，适合传感器写→监控看→告警: 'Lightweight: sensor write → view → alert'
-    中小规模监控、IoT 平台: Small/mid monitoring · IoT platforms
-    PostgreSQL 扩展，超表 + 列: PostgreSQL extension · hypertables + columns
-    完整 PostgreSQL SQL，复用 SQL 技能栈: Full PostgreSQL SQL · reuses SQL skills
-    复杂 SQL 分析、与 PG 生态结合: Complex SQL analytics · PG ecosystem
-    超级表 + 标签 + 列，列式存储: Supertables + tags + columns · columnar
-    高吞吐、高压缩率: High throughput · high compression
-    年数十亿点以上的大规模工业测点: Billions+ industrial points per year
-    PointValue 数据模型：tag 用于过滤 · value 用于计算 · time 用于对齐: 'PointValue model: tags filter · value computes · time aligns'
-    device_id（设备）· point_id（点位）· value（工程值）· event_time（采集时间戳）· unit（单位）· tags（可选维度）: device_id (device) · point_id (point) · value (engineering value) · event_time (timestamp) · unit · tags (optional)
-    两个坑：① 标签基数爆炸（主维度标签控 3~5 个，其余外键关联）；② 不分主副的时间分区（高频短窗口、低频长窗口）: 'Two pitfalls: (1) tag cardinality blow-up (cap primary tags at 3–5, foreign-key the rest); (2) no primary/secondary time partitions (high-rate short windows, low-rate long windows)'
-    图10-13 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流；PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。: Figure 10-13 Time-series databases handle industrial data streams with high write throughput, time partitioning, aggregate pushdown, and automatic expiry; PointValue is modeled by device/point/value/time/unit, with tags kept low-cardinality and partitions split into primary and secondary by sampling rate.
+    图 10-13 规则引擎告警触发与预测性维护工单闭环流程: Figure 10-13 Rule Engine Alarm and Predictive Maintenance Work Order Closed Loop
+    从设备温度数据流入到 AI 推理、工单创建、通知发出，以及工单状态回环的完整闭环链路。: The complete closed loop from temperature data inflow to AI inference, work order creation, notification dispatch, and work order state looping.
+    从设备温度数据流入到 AI 推理、工单创建、通知发出，以及工单状态回环的完整闭环链路: The complete closed loop from temperature data inflow to AI inference, work order creation, notification dispatch, and work order state looping
+    事件检测域 · 温度实时评估与条件判定: Event detection · live temperature checks
+    自动执行域 · AI推理 / 工单 / 通知: Automated action · AI / work orders / alerts
+    闭环验证域 · 工单状态跟踪与升级: Closed loop · order tracking & escalation
+    温度数据流入: Temperature data in
+    位号持续更新 · 电机温度: Live point values · motor temperature
+    持续超限判定: Sustained overlimit check
+    '&gt;80°C 且窗口≥10s': '>80°C for ≥10s'
+    调用 AI 推理: Call AI inference
+    HTTP POST 请求: HTTP POST request
+    工: WO
+    创建维护工单: Create work order
+    高优先级: High priority
+    钉: Ding
+    钉钉群通知: DingTalk group notice
+    告警消息: Alarm message
+    工单超时未关闭？: Work order timed out?
+    持续订阅状态，直至关闭: Subscribes until closed
+    升: Esc
+    升级通知上级: Escalate to manager
+    通知后返回状态检查: Notify, then resume checks
+    完: OK
+    工单关闭: Work order closed
+    流程结束: End of flow
+    实时评估: Live evaluation
+    条件满足: Condition met
+    待处理状态: Pending
+    超时且持续超限: Timed out + overlimit
+    返回检查并继续订阅: Re-check, keep subscribing
+    正常关闭: Normal close
+    闭环控制要点: Closed-loop control points
+    · 规则引擎订阅工单状态: · Rule engine subscribes to order status
+    · 超时未关闭自动升级: · Auto-escalate if left open
+    · 升级后持续跟踪状态: · Keep tracking after escalation
+    · 关闭后流程终止: · Flow ends once closed
+    · 形成闭环而非单向告警: · A closed loop, not one-way alarms
+    并行动作互不阻塞：: 'Parallel actions never block:'
+    即使 AI 推理超时，工单与通知仍照常发出: Even if AI times out, work orders and notices still fire
+    工单状态回环：: 'Work order state loop:'
+    持续订阅工单状态，超时升级后返回检查，直到工单关闭: Subscribes to status; escalates on timeout and re-checks until closed
+    核心逻辑 · 主流程: Core logic · main flow
+    闭环验证与升级路径: Closed-loop verification & escalation
+    正常关闭终点: Normal-close endpoint
+    稳定执行路径（实线）: Stable path (solid)
+    升级触发路径（虚线）: Escalation path (dashed)
+    决策节点: Decision node
+    图 10-13 展示从温度数据判定到 AI 推理、工单创建、通知发送，以及基于工单状态回环的完整闭环流程。橙色部分表示升级路径，是在等待回复超时后触发的二次决策。: Figure 10-13 The complete closed loop from temperature data evaluation to AI inference, work order creation, and notification dispatch, plus work order state looping. The orange part marks the escalation path — a second decision triggered after an acknowledgment times out.

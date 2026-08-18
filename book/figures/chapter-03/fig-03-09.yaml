@@ -1,204 +1,56 @@
 type: architecture
-title: 图3-9 物模型驱动设备互操作的示意图
-purpose: 展示物模型作为中间抽象层，如何屏蔽异构设备的协议差异，为上层应用提供统一的数据和服务接口。
-audience_takeaway: 读者应理解物模型的价值核心在于‘能力抽象’：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。
-visual_focus: 从dev-ax4（A公司温度传感器）和dev-bx4（B公司温度传感器）两条不同源的数据流，分别映射到物模型层中‘温度’属性节点，再汇聚为统一数据流到达应用层的这条主链路。
-design_level: logical
-layout: 垂直三层架构：顶部为应用层（两个应用节点），中部为物模型抽象层（属性、服务、事件三列），底部为设备层（四个不同协议/厂商的设备节点）。
+title: 图 3-9 多源融合定位：单一技术边界与 AGV 融合
+audience_takeaway: 读者应理解单一定位技术各有边界，AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为推算源，卡尔曼滤波按观测噪声 R 加权。
+purpose: 展示单一定位技术边界与 AGV 多源融合方案
+visual_focus: 单一技术边界与 AGV 三源融合。
+design_level: architecture
+layout: 上半单一技术边界卡片，下半 AGV 三源融合，底部卡尔曼滤波
 elements:
-- 能源管理与楼宇自控应用
-- 物模型的属性、服务与事件
-- JSON、Modbus、MQTT、二进制协议设备
+- 单一技术边界：GPS 室内失锁、UWB 遮挡恶化、Wi-Fi 指纹需重采、BLE 电池有限、IMU 漂移累积
+- AGV 三源：UWB 主源（10Hz）、BLE 校正（事件型观测）、IMU+编码器连续推算
+- 卡尔曼滤波：观测噪声 R 控制权重，UWB R=0.5、BLE R=3.0
 relationships:
-- 异构设备 → 物模型属性、服务、事件：将厂商协议映射为统一能力语义
-- A、B 公司温度传感器 → 温度属性：不同数据源汇聚到同一标准属性
-- 属性、服务、事件 → 上层应用：提供标准属性值、服务调用与事件推送
-regions:
-- id: app_domain
-  label: 应用消费域
-  role: 消费标准化能力的边界
-- id: thing_model_domain
-  label: 物模型抽象域
-  role: 将设备能力语义化的核心边界，屏蔽底层差异
-- id: device_domain
-  label: 物理设备域
-  role: 异构设备与协议的存在边界
-components:
-- id: energy_app
-  label: 能源管理应用
-  type: application
-  subtitle: 统一消费物模型数据
-  group: app_domain
-  priority: primary
-  shape: card
-- id: building_app
-  label: 楼宇自控应用
-  type: application
-  subtitle: 不关心底层设备厂商
-  group: app_domain
-  priority: normal
-  shape: card
-- id: properties
-  label: 属性 (Property)
-  type: platform
-  subtitle: 温度、湿度、功率
-  group: thing_model_domain
-  priority: primary
-  shape: card
-- id: actions
-  label: 服务 (Action)
-  type: platform
-  subtitle: 校准、重启、设定阈值
-  group: thing_model_domain
-  priority: normal
-  shape: card
-- id: events
-  label: 事件 (Event)
-  type: platform
-  subtitle: 温度越界、设备离线
-  group: thing_model_domain
-  priority: normal
-  shape: card
-- id: dev_ax4
-  label: 温度传感器(A公司,JSON)
-  type: edge
-  subtitle: HTTP上报
-  group: device_domain
-  priority: primary
-  shape: card
-- id: dev_bx4
-  label: 温度传感器(B公司,Modbus)
-  type: edge
-  subtitle: RTU寄存器
-  group: device_domain
-  priority: primary
-  shape: card
-- id: dev_cx4
-  label: 振动监测仪(C公司,MQTT)
-  type: edge
-  subtitle: Topic 订阅
-  group: device_domain
-  priority: normal
-  shape: card
-- id: dev_dx4
-  label: RFID读写器(D公司,二进制)
-  type: edge
-  subtitle: Socket 报文
-  group: device_domain
-  priority: normal
-  shape: card
-connections:
-- from: dev_ax4
-  to: properties
-  label: 映射到‘温度’属性
-  style: solid
-  direction: bottom-to-top
-- from: dev_bx4
-  to: properties
-  label: 映射到‘温度’属性
-  style: solid
-  direction: bottom-to-top
-- from: dev_cx4
-  to: properties
-  label: 映射到‘振动频率’属性
-  style: solid
-  direction: bottom-to-top
-- from: dev_dx4
-  to: actions
-  label: 映射到‘读取标签’服务
-  style: solid
-  direction: bottom-to-top
-- from: dev_dx4
-  to: events
-  label: 映射到‘标签碰撞’事件
-  style: dashed
-  direction: bottom-to-top
-- from: properties
-  to: energy_app
-  label: 提供标准属性值
-  style: solid
-  direction: bottom-to-top
-- from: properties
-  to: building_app
-  label: 提供标准属性值
-  style: solid
-  direction: bottom-to-top
-- from: actions
-  to: energy_app
-  label: 触发标准服务
-  style: solid
-  direction: bottom-to-top
-- from: events
-  to: building_app
-  label: 推送标准事件
-  style: dashed
-  direction: event
-callouts:
-- 核心矛盾：dev-ax4与dev-bx4都代表‘温度’，但因协议不同，应用层无法直接消费。
-- 物模型层引入后，两条数据流在‘temperature’属性节点上统一，应用层不再接触底层协议。
-legend:
-- 蓝色=物模型抽象层元素，用统一色调表示标准化接口
-- 青绿色=物理设备层元素，用不同色相表示协议差异
-- 实线箭头=数据映射或服务调用，虚线箭头=事件推送
-- 设备层到物模型层的箭头为‘能力映射’，物模型层到应用层的箭头为‘统一输出’
-visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts。
-- 图例放在底部，不遮挡分组边界。
-- 优先表达‘温度属性’的主汇聚链路，其他节点作为支撑。
-render_notes: HTML/SVG渲染，浅色背景，设备层使用圆角矩形（颜色差异表示异构协议），物模型层使用圆角矩形加虚线边框（强调抽象），应用层使用圆角矩形。汇聚箭头在‘温度’属性节点处合并为一条粗箭头指向上方。底部图例和出版级图注。
+- 三源互补，融合输出带不确定性的位置；R 越小观测权重越高
+render_notes: HTML/SVG 渲染，单一技术边界 + AGV 三源融合 + 卡尔曼滤波，蓝绿橙分层。
 caption:
-  zh: 图3-9 物模型作为中间抽象层，将异构设备的能力映射到标准的属性、服务和事件，使上层应用可统一消费数据。
-  en: 'Figure 3-9 The thing model as an intermediate abstraction layer: it maps heterogeneous device capabilities onto standard properties, services, and events so upper-layer applications can consume data uniformly.'
+  zh: 图 3-9 单一定位技术各有边界；AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为连续推算源，卡尔曼滤波按观测噪声 R 加权，输出带不确定性的位置供上层安全决策。
+  en: Figure 3-9 Every single positioning technology has its limits; the AGV uses UWB as primary source, BLE as correction source, and IMU + wheel encoders for continuous dead reckoning, with a Kalman filter weighting observations by noise R and outputting positions with uncertainty for upper-layer safety decisions.
 labels:
   en:
-    图3-9 物模型驱动设备互操作的示意图: Figure 3-9 Thing-Model-Driven Device Interoperability
-    读者应理解物模型的价值核心在于能力抽象：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。: 'The core value of the thing model is capability abstraction: applications talk only to the thing model, never caring whether the device underneath speaks Modbus RTU, MQTT, or a binary protocol.'
-    应用消费域: Application Consumption Domain
-    · 消费标准化能力的边界: · boundary where standardized capabilities are consumed
-    物模型抽象域: Thing Model Abstraction Domain
-    · 将设备能力语义化，屏蔽底层差异: · turns device capabilities into semantics and hides underlying differences
-    物理设备域: Physical Device Domain
-    · 异构设备与协议的存在边界: · boundary where heterogeneous devices and protocols live
-    能源管理应用: Energy Management App
-    统一消费物模型数据: Consumes thing-model data uniformly
-    楼宇自控应用: Building Automation App
-    不关心底层设备厂商: Indifferent to device vendors
-    属性汇聚: Property Aggregation
-    属性 (Property): Property
-    温度、湿度、功率: Temperature, humidity, power
-    服务 (Action): Action
-    校准、重启、设定阈值: Calibrate, restart, set thresholds
-    事件 (Event): Event
-    温度越界、设备离线: Temperature out of range, device offline
-    温度传感器: Temperature Sensor
-    (A公司 · JSON): (Vendor A · JSON)
-    HTTP 上报: HTTP reporting
-    (B公司 · Modbus): (Vendor B · Modbus)
-    RTU 寄存器: RTU registers
-    振动监测仪: Vibration Monitor
-    (C公司 · MQTT): (Vendor C · MQTT)
-    Topic 订阅: Topic subscription
-    RFID 读写器: RFID Reader
-    (D公司 · 二进制): (Vendor D · binary)
-    Socket 报文: Socket messages
-    温度: Temperature
-    振动频率: Vibration frequency
-    读取标签: Read tag
-    标签碰撞: Tag collision
-    统一输出 · 标准属性值: Unified output · standard property values
-    标准属性值: Standard property values
-    标准服务: Standard service
-    事件推送: Event push
-    核心矛盾: Core Tension
-    dev-ax4 与 dev-bx4 都代表: dev-ax4 and dev-bx4 both
-    温度属性，但因协议不同，: 'mean "temperature"; protocol gaps'
-    应用层无法直接消费。: block direct app consumption.
-    统一抽象: Unified Abstraction
-    物模型层将两条数据流在: The thing model unifies both
-    temperature 属性节点统一，: streams at the temperature node;
-    应用层不再接触底层协议。: apps never touch protocols.
-    蓝色＝物模型抽象层元素，统一色调表示标准化接口: Blue = thing-model abstraction elements; one hue for standardized interfaces
-    青绿/紫/琥珀＝设备层元素，不同色相表示协议差异: Teal/purple/amber = device-layer elements; different hues for protocol differences
-    实线＝能力映射与服务调用 · 虚线＝事件推送: Solid = capability mapping & service calls · dashed = event push
-    粗箭头＝温度属性汇聚后的统一输出: Bold arrow = unified output after temperature aggregation
-    图3-9 物模型作为中间抽象层，将异构设备的能力映射到标准的属性、服务和事件，使上层应用可统一消费数据。: 'Figure 3-9 The thing model as an intermediate abstraction layer: it maps heterogeneous device capabilities onto standard properties, services, and events so upper-layer applications can consume data uniformly.'
+    图 3-9 多源融合定位：单一技术边界与 AGV 融合: 'Figure 3-9 Multi-Source Fusion Positioning: Single-Technology Limits & AGV Fusion'
+    单一定位技术各有边界，AGV 用 UWB 主源、BLE 校正、IMU 推算融合，卡尔曼滤波按观测噪声加权。: Each positioning technology has limits; the AGV fuses UWB primary, BLE correction, and IMU dead reckoning, weighted by observation noise in the Kalman filter.
+    目标不是单点精度纪录，而是任意时刻至少一条可信源在工作: The goal is not record-setting point accuracy, but at least one trusted source working at all times
+    单一技术的工程边界: Engineering Limits of Single Technologies
+    室外米级，室内失锁: Meter-level outdoors, lost indoors
+    高楼峡谷多径误差数十米: 'Urban-canyon multipath: tens of meters'
+    视距厘米级，室内首选: Centimeter-level with LOS; indoor first choice
+    金属遮挡 NLOS 误差恶化: Metal blockage worsens NLOS error
+    Wi-Fi 指纹: Wi-Fi Fingerprinting
+    成本低、覆盖广: Low cost, wide coverage
+    环境变化后需重采指纹库: The fingerprint map must be recollected after changes
+    BLE 信标: BLE Beacon
+    低功耗低成本，区域级: Low power and cost, zone-level
+    电池寿命有限，维护被低估: Battery life is finite; maintenance is underestimated
+    IMU+编码器: IMU + Encoders
+    短时相对精度好: Good short-term relative accuracy
+    零偏漂移随时间累积: Bias drift accumulates over time
+    AGV 仓库多源融合：主源 + 校正 + 推算: 'AGV Warehouse Fusion: Primary + Correction + Dead Reckoning'
+    主定位源：UWB（约 10 Hz）: 'Primary source: UWB (~10 Hz)'
+    屋顶锚点覆盖主干通道: Roof anchors cover main aisles
+    卡尔曼滤波用 UWB 观测校正: Kalman filter corrects with UWB observations
+    遮挡时自动增大观测噪声协方差、降权重: Under blockage, inflates observation covariance and lowers weight
+    正常模式主力: Workhorse in normal mode
+    辅助校正源：BLE 信标: 'Auxiliary correction: BLE beacons'
+    货架底部与地面，经过时触发事件: At rack bases and on the floor; triggers events when passed
+    位置强制校正至信标坐标: Position snap-corrected to beacon coordinates
+    观测噪声标准差设为 3 m，滤波加权融合: Observation noise SD set to 3 m, fused by filter weighting
+    每经过一个信标大幅压缩累计漂移: Each beacon pass greatly shrinks accumulated drift
+    连续推算源：IMU + 轮式编码器: 'Continuous dead reckoning: IMU + wheel encoders'
+    维持短时相对精度: Maintains short-term relative accuracy
+    弥补 UWB 遮挡间隙: Fills UWB blockage gaps
+    无观测时纯推算，不确定性持续增长: Pure dead reckoning without observations; uncertainty keeps growing
+    UWB 遮挡时切换为主: Becomes primary when UWB is blocked
+    卡尔曼滤波：观测噪声 R 控制权重: 'Kalman Filter: Observation Noise R Controls Weight'
+    R 越小，卡尔曼增益 K 越大，观测权重越高；UWB 的 R=0.5，BLE 的 R=3.0，BLE 仅在不可用时起压漂移作用: Smaller R gives larger Kalman gain K and higher observation weight; UWB has R=0.5, BLE has R=3.0 — BLE only suppresses drift when UWB is unavailable
+    时间戳对齐（硬件时间戳 + 线性插值）· 残差超 3 倍标准差则丢弃观测 · 4×4 矩阵求逆在 M4 上 50~100 Hz 稳定运行: Timestamp alignment (hardware timestamps + linear interpolation) · observations discarded when residuals exceed 3σ · 4×4 matrix inversion runs steadily at 50–100 Hz on an M4
+    图 3-9 单一定位技术各有边界；AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为连续推算源，卡尔曼滤波按观测噪声 R 加权，输出带不确定性的位置供上层安全决策。: Figure 3-9 Every single positioning technology has its limits; the AGV uses UWB as primary source, BLE as correction source, and IMU + wheel encoders for continuous dead reckoning, with a Kalman filter weighting observations by noise R and outputting positions with uncertainty for upper-layer safety decisions.

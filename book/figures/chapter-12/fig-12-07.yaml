@@ -1,51 +1,57 @@
-type: matrix
-title: 图12-7 产量预测：ARIMA 与 LSTM 两条路线对比
-audience_takeaway: 读者应理解产量预测有统计模型（ARIMA 只用目标变量历史值、可解释性强）与深度学习（LSTM 融合多源环境变量、能捕捉非线性关系）两条路线，并以 RMSE、MAE 评估。
-purpose: 对比两条产量预测路线的输入、建模步骤与评估指标
-visual_focus: 左右并列的两条建模路线。
-design_level: matrix
-layout: 左右并列：左侧 ARIMA 五步流程，右侧 LSTM 四层结构，底部共同评估指标
+type: framework
+title: 图 12-7 农业场景 LPWAN 选型四维约束
+audience_takeaway: 读者应理解农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。
+purpose: 梳理农业场景对 LPWAN 的具体约束，为后续技术比选建立框架
+visual_focus: 四维约束卡片并列，底部结论。
+design_level: framework
+layout: 横向四张约束卡片（覆盖 / 速率 / 功耗 / 成本），底部选型框架结论
 elements:
-- ARIMA：平稳性检验（ADF）、差分、模型识别（ACF/PACF）、参数估计与诊断（Ljung-Box）、预测
-- LSTM：多维特征输入（温度/降水/土壤湿度/生长天数）、滑动窗口（30～60 天）、LSTM 层 + Dropout、Dense 回归输出
-- 评估：RMSE（对大误差惩罚更重）、MAE（反映平均偏离更直观）
+- 覆盖距离：数公里 + 穿透冠层，重要程度高
+- 数据速率：极低但稳定、上行为主，重要程度中
+- 功耗与电池寿命：1～5 年，重要程度高
+- 设备与运维成本：模块 + 传感器 + 通信费，重要程度高
 relationships:
-- 两条路线独立并列，最终都以 RMSE、MAE 评估
-render_notes: HTML/SVG 渲染，左右并列对比，蓝/绿区分两条路线，底部评估指标卡片。
+- 四维约束共同归结为“远覆盖、低速率、长续航、低成本、上行为主”
+render_notes: HTML/SVG 渲染，横向四张卡片，蓝/绿/橙/青四色区分维度，底部蓝色结论框。
 caption:
-  zh: 图12-7 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。
-  en: 'Figure 12-7 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables such as temperature, rainfall, soil moisture, and growing days and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'
+  zh: 图 12-7 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。
+  en: Figure 12-7 Agricultural scenarios constrain LPWAN selection from four dimensions — coverage distance, data rate, power and battery life, device and O&M cost — boiling down to "long range, low rate, long battery life, low cost, and uplink-dominant traffic".
 labels:
   en:
-    图12-7 产量预测：ARIMA 与 LSTM 两条路线对比: 'Figure 12-7 Yield Prediction: ARIMA vs. LSTM'
-    ARIMA 只利用目标变量历史值，LSTM 融合温度、降水、土壤湿度、生长天数多变量；两条路线最终都以 RMSE、MAE 评估。: ARIMA uses only the history of the target variable; LSTM fuses temperature, rainfall, soil moisture, and growing days; both are scored by RMSE and MAE.
-    统计模型看自身历史 · 深度学习融合多源环境 · 输出连续产量值（公斤/公顷）: Statistics reads its own history · deep learning fuses multi-source environment · continuous yield output (kg/ha)
-    统计模型 · ARIMA（自回归积分滑动平均）: Statistical · ARIMA (autoregressive integrated moving average)
-    只利用目标变量自身的历史值，结构简单、可解释性强: Uses only the history of the target itself; simple and highly interpretable
-    平稳性检验: Stationarity test
-    ADF 检验 · p&gt;0.05 序列非平稳: ADF test · p>0.05 means non-stationary
-    差分: Differencing
-    一阶差分 y_t − y_{t−1} 消除趋势，d=1: First difference y_t − y_{t−1} removes trend, d=1
-    模型识别: Model identification
-    ACF / PACF 拖尾截尾特征定 p、q 阶数: ACF/PACF tailing and cutoffs set orders p and q
-    参数估计与诊断: Estimation & diagnostics
-    极大似然估计 · Ljung-Box 检验残差白噪声: Maximum likelihood · Ljung-Box tests residual white noise
-    预测: Forecast
-    点预测值 + 置信区间，依赖历史模式延续: Point forecast + confidence interval, assuming history repeats
-    深度学习 · LSTM（长短期记忆网络）: Deep learning · LSTM (long short-term memory)
-    融合多个外生变量，学习环境与产量的非线性关系: Fuses exogenous variables to learn nonlinear environment–yield relations
-    输入：多维环境特征序列: 'Input: multivariate environment sequences'
-    温度 · 降水 · 土壤湿度 · 生长天数（n_features=4）: Temperature · rainfall · soil moisture · growing days (n_features=4)
-    滑动窗口：过去 T 天（30～60 天）: 'Sliding window: past T days (30–60 days)'
-    覆盖灌浆期等完整生长期，转为三维张量输入: Covers full stages like grain filling; reshaped into 3-D tensors
-    LSTM 层 + Dropout: LSTM layer + Dropout
-    记忆单元与门控机制解决梯度消失，Dropout 防过拟合: Memory cells and gates fix vanishing gradients; Dropout prevents overfitting
-    Dense 回归输出: Dense regression output
-    linear 激活，输出未来产量（公斤/公顷）: linear activation, outputs future yield (kg/ha)
-    共同评估指标: Shared Evaluation Metrics
-    RMSE 均方根误差 · 对大误差惩罚更重: RMSE root mean square error · penalizes large errors more
-    MAE 平均绝对误差 · 反映平均偏离更直观: MAE mean absolute error · a more intuitive average deviation
-    ARIMA · 统计路线: ARIMA · statistical route
-    LSTM · 深度学习路线: LSTM · deep-learning route
-    团队资源有限时先从 ARIMA 建立基线，跨入 LSTM 前需积累 2～3 个完整生长周期数据: Start with an ARIMA baseline under tight resources; gather 2–3 full growing seasons before moving to LSTM
-    图12-7 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。: 'Figure 12-7 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables — temperature, rainfall, soil moisture, and growing days — and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'
+    图 12-7 农业场景 LPWAN 选型四维约束: Figure 12-7 Four Constraints on LPWAN Selection in Agriculture
+    农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。: Agriculture imposes four constraints on LPWAN — coverage, rate, power, cost — summing up to long range, low rate, long battery life, low cost, and uplink-dominant traffic.
+    选型之前先厘清约束 · 四个维度共同决定技术取舍: Clarify constraints before choosing · four dimensions drive the trade-off
+    覆盖距离: Coverage distance
+    重要程度：高: 'Importance: high'
+    开阔农田覆盖数公里: Several kilometers over open fields
+    温室金属骨架、薄膜、密植冠层: Greenhouse steel frames, film, and dense canopies
+    对信号有明显阻挡与吸收: markedly block and absorb signals
+    链路预算需考虑作物冠层衰减: Link budgets must count canopy attenuation
+    LoRa 郊野覆盖可达数公里；NB-IoT: LoRa reaches several km in the countryside; NB-IoT
+    依托运营商基站亦可覆盖空旷地: rides carrier base stations to cover open land
+    数据速率: Data rate
+    重要程度：中: 'Importance: medium'
+    典型“上行为主”业务模式: Typical "uplink-dominant" traffic pattern
+    每次上传几十到几百字节: Tens to hundreds of bytes per upload
+    土壤每小时、气象每 15～30 分钟: Soil hourly, weather every 15–30 min
+    要求“极低但稳定”: Must be "very low but stable"
+    高清病虫害图像属特殊需求，: HD pest-and-disease images are a special case,
+    另走 4G/5G 高带宽通道承载: carried instead on 4G/5G broadband channels
+    功耗与电池寿命: Power & battery life
+    田间供电困难，依赖电池 / 光伏: Field power is scarce; rely on battery / solar
+    目标续航至少 1～2 年，最好 3～5 年: 'Target life: at least 1–2 years, ideally 3–5'
+    功耗 = 采集 + 发射 + 休眠: Power = sense + transmit + sleep
+    能量大头在 MCU 休眠漏电流: The biggest drain is MCU sleep leakage
+    NB-IoT 联网需与基站同步，: NB-IoT must sync with the base station to attach,
+    待机电流通常比 LoRa 高一个量级: standby current typically an order above LoRa
+    设备与运维成本: Device & O&M cost
+    大规模、低利润，物料成本须低廉: Large scale, thin margins — BOM must be cheap
+    传感器成本往往超过通信模块: Sensors often cost more than comm modules
+    运维成本关键在于通信费用: O&M hinges on connectivity fees
+    LoRa 免授权频段、自建网关无通信费: 'LoRa: unlicensed band, own gateway, no fees'
+    NB-IoT 需 SIM 卡与运营商资费: NB-IoT needs SIM cards and carrier plans
+    零散农田依托运营商可降低门槛: Scattered fields lower the barrier via carriers
+    选型框架结论: Selection Framework Conclusion
+    远覆盖 · 低速率 · 长续航 · 低成本，且以单向上传为主: Long range · low rate · long battery life · low cost, mostly one-way uplink
+    核心问题：在 LoRa 与 NB-IoT 之间，哪一个能同时满足四维约束且生态成熟度最高？: 'Core question: between LoRa and NB-IoT, which meets all four constraints with the most mature ecosystem?'
+    图 12-7 农业场景从覆盖距离、数据速率、功耗与电池寿命、设备与运维成本四个维度约束 LPWAN 选型，归结为“远覆盖、低速率、长续航、低成本、上行为主”。: Figure 12-7 Agricultural scenarios constrain LPWAN selection from four dimensions — coverage distance, data rate, power and battery life, device and O&M cost — boiling down to "long range, low rate, long battery life, low cost, and uplink-dominant traffic".

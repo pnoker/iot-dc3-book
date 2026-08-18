@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-2 设备认证与数据加密流程</title>
+  <title>图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -12,95 +12,80 @@
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图5-2 设备认证与数据加密流程</title>
-  <desc id="desc">证书认证属于 TLS/mTLS 握手；Token 必须在加密通道内认证后签发，混合路径依次经过 mTLS、Token 和 API。</desc>
-  <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
-    <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
-    <defs>
-      <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
-      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-      <marker id="mk-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
-      <marker id="mk-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
-    </defs>
-    <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-2 设备认证与数据加密流程</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">认证凭据必须在正确的安全边界内使用；传输解密后仍需存储保护。</text>
-    <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎</title>
+  <desc id="desc">消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响。</desc>
+  <rect width="1200" height="700" fill="#F8FAFC"/>
+  <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
 
-    <!-- 证书路径（青绿） -->
-    <rect x="120" y="140" width="1560" height="150" rx="12" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.5"/>
-    <text x="150" y="172" font-size="18" font-weight="700" fill="#0F766E">证书路径</text>
-    <text x="150" y="196" font-size="13" fill="#475569">设备证书与私钥在握手内完成身份验证</text>
-    <rect x="280" y="185" width="290" height="78" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
-    <text x="425" y="218" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">设备证书与私钥</text>
-    <text x="425" y="244" font-size="13" fill="#64748B" text-anchor="middle">X.509 证书</text>
-    <rect x="670" y="185" width="370" height="78" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="855" y="218" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">TLS / mTLS 握手</text>
-    <text x="855" y="244" font-size="13" fill="#64748B" text-anchor="middle">握手内验证证书链与设备身份</text>
-    <rect x="1140" y="185" width="380" height="78" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="1330" y="218" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">加密会话 / 受保护 API</text>
-    <text x="1330" y="244" font-size="13" fill="#64748B" text-anchor="middle">会话密钥保护后续通信</text>
-    <line x1="570" y1="224" x2="668" y2="224" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
-    <line x1="1040" y1="224" x2="1138" y2="224" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
-    <line x1="570" y1="262" x2="668" y2="262" stroke="#64748B" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#mk-gray)"/>
-    <text x="619" y="276" font-size="13" fill="#64748B" text-anchor="middle">握手完成</text>
+  <rect x="0" y="0" width="1800" height="950" fill="#FFFFFF"/>
 
-    <!-- Token 路径（蓝） -->
-    <rect x="120" y="310" width="1560" height="150" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="150" y="342" font-size="18" font-weight="700" fill="#2563EB">Token 路径</text>
-    <text x="150" y="366" font-size="13" fill="#475569">先建立加密通道，再于通道内认证并签发短期 Token</text>
-    <rect x="280" y="355" width="250" height="78" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-    <text x="405" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">设备凭据</text>
-    <text x="405" y="414" font-size="13" fill="#64748B" text-anchor="middle">预共享密钥等</text>
-    <rect x="600" y="355" width="260" height="78" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="730" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">TLS 加密通道</text>
-    <text x="730" y="414" font-size="13" fill="#64748B" text-anchor="middle">先保护认证请求</text>
-    <rect x="930" y="355" width="260" height="78" rx="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
-    <text x="1060" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">通道内认证</text>
-    <text x="1060" y="414" font-size="13" fill="#64748B" text-anchor="middle">验证设备凭据</text>
-    <rect x="1260" y="355" width="280" height="78" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
-    <text x="1400" y="388" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">短期 Token + refresh</text>
-    <text x="1400" y="414" font-size="13" fill="#64748B" text-anchor="middle">短有效期限制泄漏影响</text>
-    <line x1="530" y1="394" x2="598" y2="394" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
-    <line x1="860" y1="394" x2="928" y2="394" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
-    <line x1="1190" y1="394" x2="1258" y2="394" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+  <defs>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+  </defs>
 
-    <!-- 混合路径（橙） -->
-    <rect x="120" y="480" width="1560" height="140" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-    <text x="150" y="512" font-size="18" font-weight="700" fill="#C2410C">混合路径（主链路）</text>
-    <text x="150" y="536" font-size="13" fill="#475569">依次使用 mTLS → 短期 Token → 业务 API</text>
-    <rect x="280" y="540" width="290" height="70" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
-    <text x="425" y="572" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">mTLS 设备认证</text>
-    <text x="425" y="596" font-size="13" fill="#64748B" text-anchor="middle">握手内完成</text>
-    <rect x="700" y="540" width="250" height="70" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
-    <text x="825" y="572" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">短期 Token</text>
-    <text x="825" y="596" font-size="13" fill="#64748B" text-anchor="middle">通道内签发</text>
-    <rect x="1080" y="540" width="300" height="70" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
-    <text x="1230" y="572" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">业务 API</text>
-    <text x="1230" y="596" font-size="13" fill="#64748B" text-anchor="middle">受保护调用</text>
-    <line x1="570" y1="575" x2="698" y2="575" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
-    <line x1="950" y1="575" x2="1078" y2="575" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
+  <!-- Title -->
+  <circle cx="64" cy="40" r="6" fill="#2563EB"/>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">分别解决数据缓冲、高效存储、智能判决，选型决定吞吐、成本与时效</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- 关键要点 -->
-    <rect x="120" y="650" width="1560" height="190" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-    <text x="150" y="686" font-size="18" font-weight="700" fill="#334155">关键要点</text>
-    <circle cx="168" cy="712" r="4" fill="#0F766E"/>
-    <text x="182" y="717" font-size="15" fill="#475569">证书认证是 TLS / mTLS 握手的一部分，不是握手前后的独立认证请求。</text>
-    <circle cx="168" cy="744" r="4" fill="#2563EB"/>
-    <text x="182" y="749" font-size="15" fill="#475569">Token 认证请求必须先由 TLS 加密通道保护，通过通道内认证后才签发。</text>
-    <circle cx="168" cy="776" r="4" fill="#F97316"/>
-    <text x="182" y="781" font-size="15" fill="#475569">Token 以短有效期 + refresh 机制限制泄漏影响，传输解密后仍需访问控制与存储保护。</text>
+  <!-- 消息队列 -->
+  <rect x="80" y="140" width="520" height="380" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="80" y="140" width="520" height="48" rx="12" fill="#2563EB"/>
+  <rect x="80" y="168" width="520" height="20" fill="#2563EB"/>
+  <text x="340" y="172" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">消息队列：数据缓冲带</text>
+  <text x="116" y="232" font-size="12" fill="#475569">发布/订阅解耦生产与消费</text>
+  <text x="116" y="258" font-size="12" fill="#475569">设备洪峰时后端不被瞬时冲垮</text>
+  <text x="116" y="296" font-size="12" font-weight="700" fill="#0F172A">选型对比</text>
+  <text x="116" y="322" font-size="11" fill="#475569">MQTT Broker：设备端轻量代理，长连接推模式</text>
+  <text x="116" y="348" font-size="11" fill="#475569">Kafka：顺序写磁盘 + 分区，海量后端管道</text>
+  <text x="116" y="374" font-size="11" fill="#475569">RabbitMQ：灵活路由 + 确认，业务集成</text>
+  <text x="116" y="412" font-size="11" fill="#475569">三者不互斥：MQTT 收 → Kafka/RabbitMQ 分发</text>
+  <text x="116" y="452" font-size="11" fill="#64748B">通常最先选型，决定抗洪峰能力</text>
 
-    <!-- 图例 -->
-    <line x1="300" y1="868" x2="360" y2="868" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
-    <text x="372" y="874" font-size="15" fill="#475569">实线箭头：请求 / 数据流</text>
-    <line x1="700" y1="868" x2="760" y2="868" stroke="#64748B" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#mk-gray)"/>
-    <text x="772" y="874" font-size="15" fill="#475569">虚线箭头：握手完成 / 返回</text>
-    <text x="1130" y="874" font-size="15" fill="#475569">主链路：mTLS → 短期 Token → 业务 API</text>
+  <line x1="600" y1="330" x2="632" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-2 设备认证与数据加密流程：证书在 TLS/mTLS 握手内完成认证，Token 在加密通道内认证后签发，混合模式依次使用 mTLS、短期 Token 与业务 API。</text>
+  <!-- 时序数据库 -->
+  <rect x="632" y="140" width="520" height="380" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <rect x="632" y="140" width="520" height="48" rx="12" fill="#16A34A"/>
+  <rect x="632" y="168" width="520" height="20" fill="#16A34A"/>
+  <text x="892" y="172" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">时序数据库：专为时间印记优化</text>
+  <text x="668" y="232" font-size="12" fill="#475569">数据点 = 时间戳 + 标签 + 数值字段</text>
+  <text x="668" y="258" font-size="12" fill="#475569">改存储引擎 + 极致写入压缩</text>
+  <text x="668" y="296" font-size="12" font-weight="700" fill="#0F172A">两条技术路线</text>
+  <text x="668" y="322" font-size="11" fill="#475569">InfluxDB：TSM 引擎（LSM 变体）+ WAL</text>
+  <text x="668" y="348" font-size="11" fill="#475569">差分编码 + delta-of-delta 压缩，TICK 生态</text>
+  <text x="668" y="374" font-size="11" fill="#475569">TimescaleDB：基于 PostgreSQL，超表按时间分 Chunk</text>
+  <text x="668" y="412" font-size="11" fill="#475569">SQL 兼容好，查询只扫涉及分区</text>
+  <text x="668" y="452" font-size="11" fill="#64748B">压缩比决定硬件成本与查询性能</text>
+
+  <line x1="1152" y1="330" x2="1184" y2="330" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+  <!-- 规则引擎 -->
+  <rect x="1184" y="140" width="536" height="380" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <rect x="1184" y="140" width="536" height="48" rx="12" fill="#F97316"/>
+  <rect x="1184" y="168" width="536" height="20" fill="#F97316"/>
+  <text x="1452" y="172" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">规则引擎：从阈值到 CEP</text>
+  <text x="1220" y="232" font-size="12" fill="#475569">简单阈值：温度超 80℃ 告警</text>
+  <text x="1220" y="258" font-size="12" fill="#475569">CEP：时间窗口内多事件模式匹配</text>
+  <text x="1220" y="296" font-size="12" font-weight="700" fill="#0F172A">两种部署形态</text>
+  <text x="1220" y="322" font-size="11" fill="#475569">边缘：毫秒级响应（切断危险电源）</text>
+  <text x="1220" y="348" font-size="11" fill="#475569">云端：分析跨度大、依赖历史数据</text>
+  <text x="1220" y="374" font-size="11" fill="#475569">例：5 分钟内三次电流尖峰 + 温度上升 → 轴承故障</text>
+  <text x="1220" y="412" font-size="11" fill="#475569">规则引擎解决确定性逻辑</text>
+  <text x="1220" y="452" font-size="11" fill="#64748B">AI 解决非确定性模式，两者互补</text>
+
+  <!-- 选型相互影响 -->
+  <rect x="80" y="590" width="1640" height="160" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="120" y="622" font-size="14" font-weight="700" fill="#334155">三组件选型相互影响</text>
+  <text x="120" y="656" font-size="12" fill="#475569">消息队列吞吐 → 决定时序数据库写入压力 · 规则引擎实时性 → 依赖队列延迟</text>
+  <text x="120" y="682" font-size="12" fill="#475569">工程顺序：消息队列最先选型（抗洪峰）→ 时序数据库压缩比定硬件成本 → 规则引擎按延迟要求确认是否下放边缘</text>
+  <text x="120" y="708" font-size="12" fill="#475569">IoT DC3 落地：采集值封装位号值对象 → 写入时序库 → 经消息队列缓冲 → 规则引擎消费</text>
+  <text x="120" y="734" font-size="11" fill="#64748B">组件选型是通用工程决策，与具体平台无关；时序库权衡见 5.4 节，完整落地见第 14 章</text>
+
+  <!-- Caption -->
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 5-2 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。</text>
   </svg>
 </svg>
   </main>

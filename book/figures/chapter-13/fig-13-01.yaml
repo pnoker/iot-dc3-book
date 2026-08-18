@@ -1,5 +1,5 @@
 type: architecture
-title: 图13-1 中心化物联网架构的信任困境
+title: 图 13-1 中心化物联网架构的信任困境
 audience_takeaway: 读者应理解星型拓扑把信任全部压向唯一云平台，三个困境沿'问题蔓延'层层叠加，根因是单一信任锚点。
 purpose: 展示中心化架构下三个信任困境——单点故障、数据篡改、跨主体互信成本高——之间的关联，以及它们最终都指向信任缺失的根因。
 visual_focus: 从左栏到右栏最下方的主链路。
@@ -94,11 +94,11 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形。左栏动画：设备依次出现并连接云平台。右栏动画：困境区块依次淡入，箭头带闪烁效果。右上角提供高亮/原始配色切换按钮。
 caption:
-  zh: 图13-1 中心化物联网架构的信任困境。三个问题相互关联，共同指向单一信任锚点的结构性缺陷。
+  zh: 图 13-1 中心化物联网架构的信任困境。三个问题相互关联，共同指向单一信任锚点的结构性缺陷。
   en: 'Figure 13-1 The trust dilemma of the centralized IoT architecture. The three problems are interrelated and together point to the structural flaw of a single trust anchor.'
 labels:
   en:
-    图13-1 中心化物联网架构的信任困境: Figure 13-1 Trust Dilemmas of Centralized IoT
+    图 13-1 中心化物联网架构的信任困境: Figure 13-1 Trust Dilemmas of Centralized IoT
     星型拓扑把信任全部压向唯一云平台，单点故障、数据篡改与跨主体互信成本沿问题蔓延层层叠加，根因是单一信任锚点。: 'A star topology pushes all trust onto one cloud; failure, tampering and cross-party trust costs pile up — root cause: one trust anchor.'
     唯一信任锚点使技术故障逐步演化为跨主体信任问题: 'One anchor: technical failure becomes cross-party distrust'
     中心化星型拓扑: Centralized Star Topology
@@ -120,4 +120,4 @@ labels:
     问题蔓延: Problem Spread
     ？ 谁为数据可信性背书: '? Who vouches for data trustworthiness'
     结构根因：单一信任锚点: 'Root Cause: A Single Trust Anchor'
-    图13-1 单一信任锚点会把中心故障、数据篡改与跨主体互信成本连续放大。: Figure 13-1 A single trust anchor amplifies failure, tampering and trust costs.
+    图 13-1 单一信任锚点会把中心故障、数据篡改与跨主体互信成本连续放大。: Figure 13-1 A single trust anchor amplifies failure, tampering and trust costs.

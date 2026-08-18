@@ -1,83 +1,59 @@
-type: matrix
-title: 图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图
-audience_takeaway: 读者应理解三项技术功耗与速率反向取舍——NB-IoT速率最高(4)而功耗最差(2),Sigfox功耗最优(4)但速率最低(1),LoRa生态最开放(5)居中平衡。
-purpose: 在同一坐标系下展示三项技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六个维度的相对强弱，辅助选型决策
-visual_focus: 从LoRa到Sigfox的主链路。
-design_level: decision
-layout: 六轴雷达图，同心圆刻度 1–5（1=最弱，5=最强）
+type: dataflow
+title: 图 12-3 农业数据分层采集与三道清洗流程
+audience_takeaway: 读者应理解农业数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供 AI 模型消费。
+purpose: 展示从传感器到 AI 模型的完整数据链路，突出分层采集策略与三道清洗的先后顺序
+visual_focus: 横向数据流主链路（传感器 → 分层采集 → MQTT → 三道清洗 → AI 模型）。
+design_level: dataflow
+layout: 横向五阶段数据流，左至右，三道清洗用三步编号卡片展开
 elements:
-- LoRa：覆盖4、速率3、功耗3、成本4、生态5、穿透4
-- NB-IoT：覆盖4、速率4、功耗2、成本3、生态2、穿透3
-- Sigfox：覆盖4、速率1、功耗4、成本4、生态1、穿透4
+- 传感器节点：土壤湿度/温度/EC、空气温湿度/光照/CO₂、风速/降雨
+- 分层采集：土壤参数每 1 小时、气象参数每 15 分钟
+- MQTT 传输：QoS 0（至多一次）、QoS 1（至少一次）
+- 三道清洗：异常值检测（滑动窗口 3σ / 上下限过滤）、缺失值插补（线性插值 / 前向填充）、时间戳对齐（重采样）
+- AI 模型：病害识别、产量预测、灌溉决策
 relationships:
-- 三个系列在同一份刻度坐标上对比，便于目视识别优势短板
-regions:
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
-components:
-- id: c1
-  label: LoRa
-  type: platform
-  subtitle: 覆盖4、速率3、功耗3、成本4、生态5、穿透4
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: c2
-  label: NB-IoT
-  type: platform
-  subtitle: 覆盖4、速率4、功耗2、成本3、生态2、穿透3
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: c3
-  label: Sigfox
-  type: platform
-  subtitle: 覆盖4、速率1、功耗4、成本4、生态1、穿透4
-  group: platform_domain
-  priority: normal
-  shape: card
-connections:
-- from: c1
-  to: c2
-  label: 三个系列在同一份刻度坐标上对比，便…
-  style: solid
-  direction: left-to-right
-- from: c2
-  to: c3
-  label: 三个系列在同一份刻度坐标上对比，便…
-  style: solid
-  direction: left-to-right
-callouts:
-- 三个系列在同一份刻度坐标上对比，便于目视识别优势短板
-legend:
-- LoRa/LoRaWAN：橙色
-- NB-IoT：蓝色
-- Sigfox：绿色
-visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-render_notes: HTML/SVG 渲染，浅色背景，半透明网格，图例位于右上角，支持 hover 显示具体评分说明。
+- 传感器 → 分层采集 → MQTT → 三道清洗 → AI 模型，单向数据流
+render_notes: HTML/SVG 渲染，横向五阶段数据流，箭头左至右，三道清洗用①②③编号卡片区分顺序。
 caption:
-  zh: 图12-3 六维度雷达图对比，各轴评分为定性相对值，非绝对性能指标。
-  en: Figure 12-3 A six-dimension radar comparison; scores on each axis are qualitative relative ratings, not absolute performance metrics.
+  zh: 图 12-3 传感器数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供下游 AI 模型消费。
+  en: Figure 12-3 Sensor data are collected in tiers by rate of change (soil hourly, weather every 15 minutes); after MQTT transport they go through three cleaning steps — outlier detection, missing-value imputation, and timestamp alignment — before downstream AI models can consume them.
 labels:
   en:
-    图12-3 LoRa / NB-IoT / Sigfox 技术维度对比雷达图: Figure 12-3 LoRa / NB-IoT / Sigfox Radar Comparison
-    三种技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六维度的相对强弱（1–5 刻度，1 最弱、5 最强）。: Relative strength of the three technologies across coverage, rate, power, cost, ecosystem openness, and penetration (1–5 scale; 1 weakest, 5 strongest).
-    六个维度采用同一 1–5 相对刻度，辅助识别各技术优势与短板: One shared 1–5 relative scale across six dimensions to reveal strengths and gaps
-    覆盖: Coverage
-    速率: Rate
-    功耗: Power
-    成本: Cost
-    生态: Ecosystem
-    穿透: Penetration
-    技术对比图例: Technology Legend
-    覆盖4 · 速率3 · 功耗3 · 成本4 · 生态5 · 穿透4: Coverage 4 · rate 3 · power 3 · cost 4 · eco 5 · penetration 4
-    覆盖4 · 速率4 · 功耗2 · 成本3 · 生态2 · 穿透3: Coverage 4 · rate 4 · power 2 · cost 3 · eco 2 · penetration 3
-    覆盖4 · 速率1 · 功耗4 · 成本4 · 生态1 · 穿透4: Coverage 4 · rate 1 · power 4 · cost 4 · eco 1 · penetration 4
-    读图要点: How to read
-    1–5 相对刻度，1=最弱、5=最强；功耗与成本轴已转换为「越低越优」。: 1–5 relative scale, 1 = weakest, 5 = strongest; power and cost axes are flipped so higher is better.
-    NB-IoT 速率最高(4)但功耗最差(2)；Sigfox 功耗最优(4)但速率最低(1)。: NB-IoT tops rate (4) but lags on power (2); Sigfox tops power (4) but bottoms on rate (1).
-    LoRa 生态开放性最强(5)，覆盖、成本、穿透均衡，属居中平衡选择。: LoRa leads ecosystem openness (5) with balanced coverage, cost, and penetration — the middle-ground choice.
-    图12-3 三项技术在覆盖与成本上接近，主要差异在速率、功耗与生态开放性：LoRa 生态开放居中，NB-IoT 速率优先，Sigfox 功耗优先。: 'Figure 12-3 The three technologies are close on coverage and cost; they differ mainly in rate, power, and ecosystem openness: LoRa is open and balanced, NB-IoT prioritizes rate, Sigfox prioritizes power.'
+    图 12-3 农业数据分层采集与三道清洗流程: Figure 12-3 Tiered Agricultural Data Collection & Three-Step Cleaning
+    传感器数据经分层采集、MQTT 传输后，依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，再供 AI 模型消费。: After tiered collection and MQTT transport, sensor data pass outlier detection, missing-value imputation, and timestamp alignment before AI models consume them.
+    分层采集 → MQTT 传输 → 三道清洗 → AI 模型 · “够用”覆盖关键变化拐点: Tiered collection → MQTT → three-step cleaning → AI models · "good enough" covers key inflection points
+    传感器节点: Sensor node
+    土壤湿度 / 温度 / EC: Soil moisture / temp / EC
+    空气温湿度 / 光照 / CO₂: Air temp & humidity / light / CO₂
+    风速 / 降雨量: Wind speed / rainfall
+    低功耗 MCU · 深度休眠: Low-power MCU · deep sleep
+    分层采集策略: Tiered collection strategy
+    土壤参数 · 每 1 小时: Soil · every 1 hour
+    变化分钟~小时级: Changes over minutes~hours
+    气象参数 · 每 15 分钟: Weather · every 15 min
+    风速/光照/CO₂ 变化更快: Wind/light/CO₂ change faster
+    MQTT 传输: MQTT Transport
+    发布 / 订阅 · 最小报文头 2 字节: Pub/sub · 2-byte minimum header
+    QoS 0 · 至多一次: QoS 0 · at most once
+    定期采集的土壤温度: Periodic soil temperature reads
+    QoS 1 · 至少一次: QoS 1 · at least once
+    阈值告警确保不丢包: Threshold alerts must not be lost
+    三道清洗: Three-Step Cleaning
+    ① 异常值检测: ① Outlier detection
+    滑动窗口 3σ · 上下限过滤: Sliding-window 3σ · limit filtering
+    ② 缺失值插补: ② Missing-value imputation
+    线性插值 · 前向填充: Linear interpolation · forward fill
+    ③ 时间戳对齐: ③ Timestamp alignment
+    重采样到固定锚点: Resample to fixed anchors
+    AI 模型: AI Models
+    病害识别: Disease recognition
+    产量预测: Yield prediction
+    灌溉决策: Irrigation decisions
+    关键要点：事件驱动 + 定期采样: 'Key point: event-driven + periodic sampling'
+    端侧 AI 在本地做简单趋势识别，仅在检测到异常波动时提高上传频率；: On-device AI spots simple trends locally and raises the upload rate only on anomalous swings;
+    “够用”原则——覆盖关键变化拐点，同时不给现场供电和回传通道造成压力。: the "good enough" principle — cover key inflection points without straining field power or the backhaul.
+    采集 / 传输: Collection / transport
+    数据清洗: Data cleaning
+    模型消费: Model consumption
+    数据流向: Data flow
+    图 12-3 传感器数据按参数变化速率分层采集（土壤每小时、气象每15分钟），经 MQTT 传输后依次完成异常值检测、缺失值插补、时间戳对齐三道清洗，方可供下游 AI 模型消费。: Figure 12-3 Sensor data are collected in tiers by rate of change (soil hourly, weather every 15 minutes); after MQTT transport they go through three cleaning steps — outlier detection, missing-value imputation, and timestamp alignment — before downstream AI models can consume them.

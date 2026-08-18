@@ -1,50 +1,97 @@
-type: flowchart
-title: 图3-12 RFID 防碰撞两条路线与标签存储结构
-audience_takeaway: 读者应理解帧时隙 ALOHA 用概率换取吞吐、二进制搜索树用确定性换取按序识别，EPC Gen2 标签分 Reserved/EPC/TID/User 四存储体。
-purpose: 展示 RFID 防碰撞两条路线与标签四存储体
-visual_focus: 概率路线与确定路线对比，标签四存储体。
-design_level: flowchart
-layout: 上半两条防碰撞路线卡片，下半标签四存储体，底部工程权衡
+type: architecture
+title: 图 3-12 振动传感器自适应采样状态机（示意）
+purpose: 展示振动传感器在三种工作模式下的切换逻辑，解释如何通过状态转移平衡功耗与异常检测能力。
+audience_takeaway: 振动传感器通过预测误差连续放大驱动状态切换，从稳态低功耗模式逐步跃迁到高速上传模式，从而在电池受限条件下捕捉早期故障窗口。
+visual_focus: 从稳态经加速到上传的主转发路径，以及上传完复位回稳态的回环。
+design_level: logical
+layout: 三个圆角矩形状态框横向排列，箭头标注转移条件，底部图例说明阈值含义。
 elements:
-- 帧时隙 ALOHA：帧长 2^Q、标签随机选时隙、自适应 Q 值，适合标签量大场景
-- 二进制搜索树：前缀掩码、对半拆分搜索，适合严格按序识别场景
-- 四存储体：Reserved（口令）、EPC（唯一代码）、TID（厂商标识）、User（应用数据）
+- 稳态低功率状态
+- 加速监听状态
+- 原始波形上传状态
 relationships:
-- 两条路线分别以概率与确定性解决碰撞；四存储体各司安全、身份、厂商与应用
-render_notes: HTML/SVG 渲染，两条路线对比 + 四存储体，蓝绿灰橙分层。
+- 稳态低功率 → 加速监听：预测误差连续超过示意倍数阈值后提高采样频率
+- 加速监听 → 数据上传：残差连续高于阈值后上传全速波形
+- 数据上传 → 稳态低功率：上传完成后复位并恢复长间隔采样
+regions:
+- id: sensor_domain
+  label: 设备侧感知域
+  role: 现场传感器节点的状态管理边界
+components:
+- id: steady_state
+  label: 稳态低功率
+  type: edge
+  subtitle: 长间隔采样+模型预测
+  group: sensor_domain
+  priority: primary
+  shape: card
+- id: fast_monitor
+  label: 加速监听
+  type: edge
+  subtitle: 短间隔采样+残差检查
+  group: sensor_domain
+  priority: normal
+  shape: card
+- id: upload_state
+  label: 数据上传
+  type: edge
+  subtitle: 全速原始波形
+  group: sensor_domain
+  priority: normal
+  shape: card
+connections:
+- from: steady_state
+  to: fast_monitor
+  label: 连续多次超过示意倍数阈值
+  style: solid
+  direction: request
+- from: fast_monitor
+  to: upload_state
+  label: 连续多次高于阈值
+  style: solid
+  direction: request
+- from: upload_state
+  to: steady_state
+  label: 上传完成复位
+  style: dashed
+  direction: event
+callouts:
+- 基线阈值需根据离线振动数据标定，正常工况最大残差倍数范围为示意值。
+- 稳态下射频模块完全关闭，只有MCU以低时钟运行模型预测，功耗降至微瓦级示意值。
+- 加速监听阶段只计算不发射，能耗仍远低于全速上传模式。
+- 稳态内循环：残差小于阈值则继续保持低功率采样（图中未画出自环箭头）。
+legend:
+- 青绿色：设备侧状态节点
+- 实线箭头：条件驱动转移；虚线箭头：复位事件
+- 阈值为示意值，实际需实测标定
+visual_constraints:
+- 最多三个主状态节点，节点标签8汉字以内，副标题用于细化解释。
+- 箭头label不超过14汉字。
+- 图例放在图底部，与主体分离。
+render_notes: 'SVG渲染，浅色背景。状态框使用圆角矩形，边框2px，底色#E3F2FD、#1565C0。箭头黑色实线1.5px，label宋体11px #666。复位箭头虚线。底部图例宋体10px。按出版级图注输出。'
 caption:
-  zh: 图3-12 帧时隙 ALOHA 用概率换取高吞吐，二进制搜索树用确定性换取按序识别；EPC Gen2 标签分 Reserved/EPC/TID/User 四存储体，各司安全、身份、厂商与应用数据。
-  en: Figure 3-12 Framed slotted ALOHA trades probability for high throughput, while the binary search tree trades determinism for ordered identification; EPC Gen2 tags have four memory banks — Reserved, EPC, TID, and User — handling security, identity, vendor, and application data respectively.
+  zh: 图 3-12 振动传感器自适应采样状态机（示意）。状态转移由模型预测误差的连续放大驱动，混合了事件驱动与变化率策略。
+  en: Figure 3-12 Adaptive sampling state machine of a vibration sensor (illustrative). Transitions are driven by consecutive growth of the model prediction error, blending event-driven and rate-of-change strategies.
 labels:
   en:
-    图3-12 RFID 防碰撞两条路线与标签存储结构: Figure 3-12 Two RFID Anti-Collision Routes & Tag Memory Layout
-    帧时隙 ALOHA 用概率换取吞吐，二进制搜索树用确定性换取按序识别；标签分 Reserved/EPC/TID/User 四存储体。: Framed slotted ALOHA trades probability for throughput; the binary search tree trades determinism for ordered identification. Tags have Reserved/EPC/TID/User banks.
-    防碰撞协议为大量标签在共享信道上制定有序发言规则: Anti-collision protocols give many tags orderly turns on a shared channel
-    概率路线：帧时隙 ALOHA（FSA）: 'Probabilistic route: Framed Slotted ALOHA (FSA)'
-    读写器设帧长 2^Q 个时隙，Q ∈ [0,15]: Reader sets frame length 2^Q slots, Q ∈ [0,15]
-    标签随机选时隙回复：独占时隙 = 成功识别，多标签 = 碰撞: 'Tags reply in randomly chosen slots: sole occupant = success, multiple tags = collision'
-    自适应 Q 值机制按碰撞/空闲比例估算标签量，动态调帧长: Adaptive Q estimates tag count from the collision/idle ratio and tunes frame length
-    适合：仓库、物流等标签量大、动态性强的场景: 'Fits: warehouses, logistics — many tags, high dynamics'
-    标签量接近帧长时吞吐率最高；远超帧长时碰撞时隙非线性上升: Throughput peaks when tag count ≈ frame length; far beyond it, collision slots rise non-linearly
-    确定路线：二进制搜索树: 'Deterministic route: Binary Search Tree'
-    查询指令携带前缀比特掩码，只邀请 ID 前缀匹配的标签回复: The query carries a prefix bit mask, inviting only tags whose IDs match to reply
-    某比特位碰撞 → 对半拆分搜索空间，缩小前缀再问: A bit collision → halve the search space, narrow the prefix, ask again
-    直至只剩唯一匹配标签，每张标签需多次往返通信: Until one tag remains; each tag needs many round trips
-    适合：门禁、资产盘点等标签少但要求严格按序识别: 'Fits: access control, asset audit — few tags, strict ordering'
-    标签量大时总耗时通常超过 FSA 方案: With many tags, total time usually exceeds FSA
-    EPC Gen2 标签四存储体: Four Memory Banks of an EPC Gen2 Tag
-    Reserved 区: Reserved Bank
-    销毁口令 + 访问口令，各 32 位: Kill + access passwords, 32 bits each
-    Kill 命令使标签永久失效，防隐私泄露: The Kill command permanently disables the tag against privacy leaks
-    EPC 区: EPC Bank
-    物品唯一电子产品代码，常见 96 位: Globally unique electronic product code, typically 96 bits
-    标头/划分号/对象分类/序列号 + CRC-16: Header / partition / object class / serial + CRC-16
-    TID 区: TID Bank
-    芯片制造商预置全球唯一标识符: Globally unique ID preset by the chip maker
-    64~96 位，出厂写入不可修改: 64–96 bits, written at the factory, read-only
-    User 区（可选）: User Bank (optional)
-    应用自定义数据：产品批号、生产日期: 'App-defined data: batch number, production date'
-    工艺参数，长度由芯片制造商定义: Process parameters; length set by the chip maker
-    读取速率与标签数量呈“先升后降”非线性关系；隐藏终端效应（强信号压制弱信号）使实测速率低于理论值: Read rate vs tag count is non-linear, first rising then falling; the hidden-terminal effect (strong signals masking weak ones) keeps measured rates below theory
-    优化：设恰当 Q 初值、用 Session 机制分散负载、控制标签经过天线速度、适当倾斜标签分散天线方向: 'Optimizations: set a good initial Q, spread load with Sessions, control tag speed past the antenna, tilt tags to spread antenna direction'
-    图3-12 帧时隙 ALOHA 用概率换取高吞吐，二进制搜索树用确定性换取按序识别；EPC Gen2 标签分 Reserved/EPC/TID/User 四存储体，各司安全、身份、厂商与应用数据。: Figure 3-12 Framed slotted ALOHA trades probability for high throughput, while the binary search tree trades determinism for ordered identification; EPC Gen2 tags have four memory banks — Reserved, EPC, TID, and User — handling security, identity, vendor, and application data respectively.
+    图 3-12 振动传感器自适应采样状态机（示意）: Figure 3-12 Vibration Sensor Adaptive Sampling State Machine (Illustrative)
+    预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态。: As prediction residuals keep rising, sampling and communication cost step up level by level; once the anomalous waveform is uploaded, the sensor returns to low power.
+    预测残差连续升高时逐级提升采样与通信开销，异常波形上传后回到低功耗状态: As prediction residuals keep rising, sampling and communication cost step up level by level; once the anomalous waveform is uploaded, the sensor returns to low power
+    设备侧感知域 · 现场传感器节点的状态管理边界: Device-side sensing domain · state management boundary of the field sensor node
+    稳态低功率: Steady Low Power
+    长间隔采样 · 频段能量计算: Long-interval sampling · band energy
+    模型预测 · 射频关闭: Model prediction · radio off
+    最低功耗: Lowest power
+    加速监听: Accelerated Listening
+    短间隔高频采样: Short-interval fast sampling
+    持续检查多轮残差: Check residuals over rounds
+    暂不上传: No upload yet
+    数据上传: Data Upload
+    确认异常 · 唤醒射频: Anomaly confirmed · radio wakes
+    上传累积原始波形: Upload buffered raw waveform
+    最高功耗: Highest power
+    预测误差连续放大: Prediction error keeps growing
+    多轮残差持续越阈: Residuals stay above threshold
+    上传完成 / 复位: Upload done / reset
+    阈值说明：图中转移条件均为示意；基线阈值应依据正常工况离线数据与现场噪声重新标定。: 'Thresholds: transitions shown are illustrative; baseline thresholds must be recalibrated from offline data of normal conditions and on-site noise.'
+    图 3-12 状态机以逐级升高的能耗换取更完整的异常窗口，确认异常后才开启射频上传。: Figure 3-12 The state machine trades stepwise higher energy for a fuller anomaly window, and only turns on the radio to upload once an anomaly is confirmed.

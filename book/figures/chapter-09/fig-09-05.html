@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图9-5 BLE GATT协议栈与服务-特征层次</title>
+  <title>图 9-5 CoAP消息格式与选项示意</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,91 +13,103 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图9-5 BLE GATT协议栈与服务-特征层次</title>
-  <desc id="desc">BLE 从 PHY 和 Link Layer 经 L2CAP、ATT 到 GATT，右侧展示 Service、Characteristic、Descriptor 嵌套及 CCCD 控制的 Notification 和 Indication 分支。</desc>
+  <title id="title">图 9-5 CoAP消息格式与选项示意</title>
+  <desc id="desc">HTTP 文本请求与 CoAP 紧凑二进制报文的等效语义对比。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <defs>
-      <marker id="ar-grey" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#475569"/></marker>
-      <marker id="ar-green" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#0F766E"/></marker>
-      <marker id="ar-orange" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#F97316"/></marker>
+      <marker id="ar-blue" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#2563EB"/></marker>
     </defs>
 
     <!-- 标题区 -->
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图9-5 BLE GATT协议栈与服务-特征层次</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">ATT 提供属性访问，GATT 组织服务数据模型；CCCD 选择无确认或带确认的推送路径</text>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 9-5 CoAP消息格式与选项示意</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">等效 GET 语义下，CoAP 以 4 字节固定头和可变字段降低受限网络开销</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- 连线（先画） -->
-    <path d="M490 530V480" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ar-grey)"/>
-    <path d="M490 400V350" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ar-grey)"/>
-    <path d="M490 270V220" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ar-grey)"/>
-    <text x="500" y="510" font-size="14" fill="#475569">承载</text>
-    <text x="500" y="380" font-size="14" fill="#475569">复用</text>
-    <text x="500" y="250" font-size="14" fill="#475569">属性读写</text>
+    <!-- 对比箭头 -->
+    <line x1="900" y1="350" x2="900" y2="392" stroke="#2563EB" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ar-blue)"/>
+    <text x="918" y="376" font-size="15" fill="#2563EB" font-weight="700">等效语义，体积显著更小</text>
 
-    <path d="M1085 370V520" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#ar-green)"/>
-    <path d="M1545 370V520" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ar-orange)"/>
-    <text x="1095" y="450" font-size="14" fill="#0F766E">订阅 · 无确认</text>
-    <text x="1555" y="450" font-size="14" fill="#F97316">订阅 · 带确认</text>
+    <!-- HTTP 请求头部 -->
+    <rect x="140" y="140" width="1600" height="200" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
+    <text x="168" y="172" font-size="20" font-weight="700" fill="#0F172A">HTTP 请求头部</text>
+    <text x="168" y="194" font-size="15" fill="#64748B">文本格式，典型请求头通常远大于 CoAP 固定头</text>
+    <rect x="168" y="212" width="1544" height="108" rx="6" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+    <g font-family="Consolas, Menlo, monospace" font-size="16" fill="#0F172A">
+      <text x="196" y="244">GET /temperature HTTP/1.1</text>
+      <text x="196" y="272">Host: device.example   Accept: text/plain</text>
+      <text x="196" y="300">Content-Type: text/plain   User-Agent: ...</text>
+    </g>
+    <text x="1712" y="300" font-size="14" fill="#94A3B8" text-anchor="end">典型可达数百字节</text>
 
-    <!-- 左面板：协议栈主链路 -->
-    <rect x="130" y="120" width="720" height="560" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
-    <text x="150" y="150" font-size="20" font-weight="700" fill="#0F172A">协议栈主链路</text>
-    <rect x="220" y="140" width="540" height="80" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="490" y="175" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">GATT Profile</text>
-    <text x="490" y="198" font-size="13" fill="#64748B" text-anchor="middle">服务 · 特征 · 描述符数据模型</text>
-    <rect x="220" y="270" width="540" height="80" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="490" y="305" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">Attribute Protocol · ATT</text>
-    <text x="490" y="328" font-size="13" fill="#64748B" text-anchor="middle">属性数据库读写与通知承载</text>
-    <rect x="220" y="400" width="540" height="80" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
-    <text x="490" y="435" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">L2CAP</text>
-    <text x="490" y="458" font-size="13" fill="#64748B" text-anchor="middle">逻辑通道复用</text>
-    <rect x="220" y="530" width="540" height="80" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="490" y="565" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">PHY + Link Layer</text>
-    <text x="490" y="588" font-size="13" fill="#64748B" text-anchor="middle">射频与链路管理</text>
+    <!-- CoAP 二进制布局 -->
+    <rect x="140" y="400" width="1600" height="300" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="168" y="432" font-size="20" font-weight="700" fill="#0F172A">CoAP CON GET 二进制布局</text>
+    <text x="168" y="454" font-size="15" fill="#64748B">固定头 4 B + Token + Options + 可选 Payload（字段定义参考 RFC 7252）</text>
 
-    <!-- 右面板：应用数据模型 -->
-    <rect x="890" y="120" width="850" height="560" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"/>
-    <text x="915" y="150" font-size="20" font-weight="700" fill="#0F172A">应用数据模型</text>
-    <rect x="930" y="175" width="770" height="300" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
-    <text x="955" y="200" font-size="18" font-weight="700" fill="#0F172A">Device</text>
-    <rect x="975" y="210" width="680" height="255" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6"/>
-    <text x="1000" y="235" font-size="17" font-weight="700" fill="#0F172A">Service · Heart Rate</text>
-    <text x="1000" y="256" font-size="13" fill="#64748B">服务：心率功能组</text>
-    <rect x="1020" y="250" width="590" height="200" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
-    <text x="1045" y="275" font-size="16" font-weight="700" fill="#0F172A">Characteristic · HRM</text>
-    <text x="1045" y="296" font-size="13" fill="#64748B">Value：心率数值  Properties：Read | Notify</text>
-    <rect x="1065" y="290" width="500" height="80" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6" stroke-dasharray="7 5"/>
-    <text x="1090" y="315" font-size="16" font-weight="700" fill="#0F172A">Descriptor · CCCD</text>
-    <text x="1090" y="338" font-size="13" fill="#64748B">推送使能配置</text>
-    <text x="955" y="465" font-size="14" fill="#475569">包含关系：Device → Service → Characteristic → Descriptor</text>
+    <!-- 分段 -->
+    <rect x="370" y="480" width="60" height="90" fill="#2563EB"/>
+    <rect x="430" y="480" width="60" height="90" fill="#2563EB"/>
+    <rect x="490" y="480" width="70" height="90" fill="#2563EB"/>
+    <rect x="560" y="480" width="90" height="90" fill="#2563EB"/>
+    <rect x="650" y="480" width="130" height="90" fill="#2563EB"/>
+    <rect x="780" y="480" width="130" height="90" fill="#16A34A"/>
+    <rect x="910" y="480" width="260" height="90" fill="#F97316"/>
+    <rect x="1170" y="480" width="60" height="90" fill="#475569"/>
+    <rect x="1230" y="480" width="200" height="90" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.4"/>
 
-    <!-- 分支卡片 -->
-    <rect x="930" y="520" width="310" height="80" rx="8" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <text x="1085" y="552" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">Notification</text>
-    <text x="1085" y="576" font-size="13" fill="#475569" text-anchor="middle">无 ACK · 周期数据 · 低开销</text>
-    <rect x="1390" y="520" width="310" height="80" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.6" stroke-dasharray="7 5"/>
-    <text x="1545" y="552" font-size="18" font-weight="700" fill="#0F172A" text-anchor="middle">Indication</text>
-    <text x="1545" y="576" font-size="13" fill="#475569" text-anchor="middle">逐包确认 · 关键结果 · 较高开销</text>
+    <g text-anchor="middle" fill="#FFFFFF">
+      <text x="400" y="515" font-size="16" font-weight="700">Ver</text>
+      <text x="400" y="540" font-size="13">2 b</text>
+      <text x="460" y="515" font-size="16" font-weight="700">T</text>
+      <text x="460" y="540" font-size="13">2 b</text>
+      <text x="525" y="515" font-size="16" font-weight="700">TKL</text>
+      <text x="525" y="540" font-size="13">4 b</text>
+      <text x="605" y="515" font-size="16" font-weight="700">Code</text>
+      <text x="605" y="540" font-size="13">GET=0.01</text>
+      <text x="715" y="515" font-size="16" font-weight="700">Message ID</text>
+      <text x="715" y="540" font-size="13">16 b</text>
+      <text x="845" y="515" font-size="16" font-weight="700">Token</text>
+      <text x="845" y="540" font-size="13">可变长度</text>
+      <text x="1040" y="515" font-size="16" font-weight="700">Options · Uri-Path</text>
+      <text x="1040" y="540" font-size="13">路由与内容协商</text>
+      <text x="1200" y="515" font-size="16" font-weight="700">0xFF</text>
+      <text x="1200" y="540" font-size="13">分隔</text>
+    </g>
+    <g text-anchor="middle" fill="#0F172A">
+      <text x="1330" y="515" font-size="16" font-weight="700">Payload</text>
+      <text x="1330" y="540" font-size="13">实际载荷（可选）</text>
+    </g>
+
+    <!-- 字段注释 -->
+    <g font-size="14" fill="#475569">
+      <text x="370" y="610">Ver：版本号，当前固定 01</text>
+      <text x="700" y="610">T：CON=0 / NON=1</text>
+      <text x="1060" y="610">Code：请求方法（GET=0.01）</text>
+      <text x="370" y="642">Message ID：报文去重与匹配</text>
+      <text x="700" y="642">Token：关联请求与响应</text>
+      <text x="1060" y="642">Options：路径与内容协商</text>
+      <text x="370" y="674">0xFF：仅在存在 Payload 时作为分隔标记</text>
+      <text x="900" y="674">Payload：实际载荷，可选</text>
+    </g>
 
     <!-- 图例 -->
-    <rect x="130" y="730" width="1610" height="46" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-    <rect x="150" y="745" width="16" height="16" rx="3" fill="#0F766E"/>
-    <text x="174" y="758" font-size="14" fill="#475569">硬件链路</text>
-    <rect x="320" y="745" width="16" height="16" rx="3" fill="#2563EB"/>
-    <text x="344" y="758" font-size="14" fill="#475569">协议栈核心</text>
-    <rect x="490" y="745" width="16" height="16" rx="3" fill="#F97316"/>
-    <text x="514" y="758" font-size="14" fill="#475569">应用数据模型</text>
-    <line x1="720" y1="753" x2="755" y2="753" stroke="#475569" stroke-width="2"/>
-    <text x="766" y="758" font-size="14" fill="#475569">实线：主路径</text>
-    <line x1="940" y1="753" x2="975" y2="753" stroke="#F97316" stroke-width="2" stroke-dasharray="7 5"/>
-    <text x="986" y="758" font-size="14" fill="#475569">虚线：配置 / 带确认路径</text>
+    <rect x="140" y="720" width="1600" height="46" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+    <rect x="160" y="735" width="16" height="16" rx="3" fill="#2563EB"/>
+    <text x="184" y="748" font-size="14" fill="#475569">固定头 / 元数据</text>
+    <rect x="380" y="735" width="16" height="16" rx="3" fill="#16A34A"/>
+    <text x="404" y="748" font-size="14" fill="#475569">Token / 上下文关联</text>
+    <rect x="660" y="735" width="16" height="16" rx="3" fill="#F97316"/>
+    <text x="684" y="748" font-size="14" fill="#475569">Options / 路由与内容协商</text>
+    <rect x="980" y="735" width="16" height="16" rx="3" fill="#475569"/>
+    <text x="1004" y="748" font-size="14" fill="#475569">0xFF 分隔标记</text>
+    <rect x="1210" y="735" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#94A3B8"/>
+    <text x="1234" y="748" font-size="14" fill="#475569">Payload / 实际数据</text>
 
     <!-- 图注 -->
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图9-5 BLE GATT 协议栈层次及 Service-Characteristic-Descriptor 嵌套结构，右半部分展示 Notification 与 Indication 的执行路径分叉。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 9-5 CoAP 消息格式与 HTTP 文本头部的体积对比，突出 CoAP 的紧凑二进制设计对受限设备的价值。</text>
   </svg>
 </svg>
   </main>

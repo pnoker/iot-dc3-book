@@ -1,178 +1,81 @@
-type: layered
-title: 图9-5 BLE GATT协议栈与服务-特征层次
-purpose: 展示BLE协议栈从PHY到GATT Profile的层次关系，以及Service-Characteristic-Descriptor嵌套结构。左下方叠加Notification与Indication的路径分支。
-audience_takeaway: 读者应看到GATT Profile是属性数据库的访问模型，Characteristic是数据点，Descriptor控制订阅行为。Notification无确认、功耗低但可能丢包；Indication有ACK、高可靠但功耗大。
-visual_focus: 从PHY/Link Layer向上到GATT Profile的主链路。从CCCD分叉成两条水平路径：实线Notification与虚线Indication。
+type: architecture
+title: 图 9-5 CoAP消息格式与选项示意
+purpose: 展示CoAP消息的紧凑二进制格式，与HTTP冗长的文本头部形成对比，直观解释CoAP如何实现轻量级传输。
+audience_takeaway: 读者应理解等效的GET请求，HTTP的文本头部大小通常远超CoAP的二进制头部，由此理解CoAP在受限网络中的核心优势。
+visual_focus: 上半部分展示HTTP请求头部示例（文本格式），下半部分展示CoAP CON GET请求的二进制分段布局（Ver/T/TKL/Code/Message ID/Token/Options/Payload）。用连线和标注突出二者完成相同语义时的大小差异。
 design_level: logical
-layout: 垂直分层。底部为PHY+Link，向上依次为L2CAP、Attribute Protocol（ATT）、GATT Profile。顶部右侧用嵌套方块展示Device→Service→Characteristic→Descriptor的包含关系。从CCCD向右引出两条水平路径。
+layout: 从上到下分为两个并行区域：上方为HTTP请求头部，下方为CoAP CON GET请求的二进制分段布局。
 elements:
-- PHY、Link Layer、L2CAP、ATT 与 GATT Profile
-- Device、Heart Rate Service、HRM Characteristic 与 CCCD
-- Notification 与 Indication 推送路径
+- HTTP文本头部：包含请求行（GET /temperature HTTP/1.1）、Host、Content-Type等头部字段。
+- CoAP二进制布局（按RFC 7252）：固定头（Ver 2b + T 2b + TKL 4b + Code 8b + Message ID 16b）、Token（可变长度）、Options（如Uri-Path）、Payload标记（0xFF）+ 载荷。
+- 一条连线和标注：'等效语义，体积显著更小'。
+- CoAP字段注释，说明关键字段的功能：Ver（版本号，当前固定为01）、T（消息类型，CON=0/NON=1）、Code（请求方法如GET=0.01）、MID（消息ID用于去重与匹配）。
+- 底图注和图例，说明颜色方案：固定头（蓝色）、Token（绿色）、Options（橙色）、Payload（浅灰）。
 relationships:
-- PHY/Link Layer → L2CAP → ATT → GATT Profile：逐层承载、复用并组织属性访问
-- Device → Service → Characteristic → Descriptor：由设备到订阅配置逐级包含
-- CCCD → Notification：启用无确认、低开销推送
-- CCCD → Indication：启用逐包确认的可靠推送
+- HTTP 请求头部 → CoAP 二进制布局：用等效 GET 语义对比报文体积
+- CoAP 固定头 → Token → Options → Payload：按解析顺序组织固定与可变字段
+- Token → 请求与响应：关联同一交互
+- Message ID → 报文处理：用于去重与匹配
+regions: []
 components:
-- id: phy_link
-  label: PHY+Link
-  type: edge
-  subtitle: 射频与链路
-  group: hardware_layer
+- id: http_block
+  label: HTTP请求头部
+  type: external
+  subtitle: 文本格式，通常数百字节
+  group: ''
   priority: normal
   shape: card
-- id: l2cap
-  label: L2CAP
+- id: coap_block
+  label: CoAP二进制布局
   type: platform
-  subtitle: 通道复用
-  group: protocol_stack
-  priority: normal
-  shape: card
-- id: att
-  label: Attribute Protocol
-  type: platform
-  subtitle: 属性数据库
-  group: protocol_stack
+  subtitle: 4字节固定头 + Token + Options + Payload
+  group: ''
   priority: primary
   shape: card
-- id: gatt_profile
-  label: GATT Profile
-  type: platform
-  subtitle: 服务-特征-描述符
-  group: protocol_stack
-  priority: primary
-  shape: card
-- id: service_hr
-  label: Heart Rate
-  type: application
-  subtitle: 服务：心率功能组
-  group: application_model
-  priority: primary
-  shape: card
-- id: char_hrm
-  label: HRM
-  type: application
-  subtitle: 特征：心率数值
-  group: application_model
-  priority: primary
-  shape: card
-- id: desc_cccd
-  label: CCCD
-  type: application
-  subtitle: 推送使能
-  group: application_model
-  priority: normal
-  shape: card
-- id: notification_path
-  label: Notification
-  type: decision
-  subtitle: 无确认
-  group: application_model
-  priority: normal
-  shape: decision
-- id: indication_path
-  label: Indication
-  type: decision
-  subtitle: 带确认
-  group: application_model
-  priority: normal
-  shape: decision
 connections:
-- from: phy_link
-  to: l2cap
-  label: 承载
-  style: solid
-  direction: bottom-to-top
-- from: l2cap
-  to: att
-  label: 复用
-  style: solid
-  direction: bottom-to-top
-- from: att
-  to: gatt_profile
-  label: 属性读写
-  style: solid
-  direction: bottom-to-top
-- from: gatt_profile
-  to: service_hr
-  label: 暴露服务
-  style: solid
-  direction: bottom-to-top
-- from: service_hr
-  to: char_hrm
-  label: 包含
-  style: solid
-  direction: bottom-to-top
-- from: char_hrm
-  to: desc_cccd
-  label: 关联
-  style: dashed
-  direction: bottom-to-top
-- from: desc_cccd
-  to: notification_path
-  label: 订阅
-  style: solid
-  direction: left-to-right
-- from: desc_cccd
-  to: indication_path
-  label: 订阅
+- from: http_block
+  to: coap_block
+  label: 等效语义，体积显著更小
   style: dashed
   direction: left-to-right
-regions:
-- id: hardware_layer
-  label: 硬件链路
-  role: 射频收发与连接管理
-- id: protocol_stack
-  label: 协议栈核心
-  role: 通道复用与属性数据库操作
-- id: application_model
-  label: 应用数据模型
-  role: 数据点抽象与事件订阅分发
 callouts:
-- Service是功能组，Characteristic是数据点，Descriptor配置订阅行为。
-- Notification无ACK，适合周期性数据；Indication有ACK，适合指令执行结果。
-- 图中仅展示一个Service/Characteristic示例，实际设备通常包含多个Service。
+- CoAP固定头仅4字节，典型请求头远小于HTTP；HTTP即使最简请求也远超过这个量级。
+- CoAP头部各字段：Ver（2b）、T（2b）、TKL（4b）、Code（8b）、Message ID（16b）。
 legend:
-- 青绿色：硬件与链路层
-- 蓝色：协议栈核心
-- 橙色：应用层模型
-- 实线箭头：主执行路径
-- 虚线箭头：配置或可选路径
+- 蓝色=固定头/元数据；绿色=Token/上下文关联；橙色=Options/路由与内容协商；浅灰=Payload/实际数据。
 visual_constraints:
-- 最多9个主节点，标签简短，解释放入callouts。
-- 图例位于图底部，不遮挡边界。
-- 蓝色用于协议栈，橙色用于模型，青绿色用于硬件。
-- Connection label不超过12个汉字。
-render_notes: HTML/SVG渲染，浅色背景，圆角矩形。Characteristic节点标注Properties（如Read|Notify）。Notification和Indication为菱形节点。底部图例。
+- 节点标签和subtitle简练，解释性文字放入callouts。
+- 图例放置在底部，不应遮挡主体区域。
+- 主要内容对比链路用一条带有标签的箭头强调。
+render_notes: 采用上下两个并行条块布局，CoAP侧以分段着色表示字段，底部附图例和简短的RFC 7252参考标注。
 caption:
-  zh: 图9-5 BLE GATT协议栈层次及Service-Characteristic-Descriptor嵌套结构，右半部分展示Notification与Indication的执行路径分叉。
-  en: Figure 9-5 The BLE GATT stack layers and the Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication execution paths.
+  zh: 图 9-5 CoAP消息格式与HTTP文本头部的体积对比，突出CoAP的紧凑二进制设计对受限设备的价值。
+  en: Figure 9-5 Size comparison between the CoAP message format and HTTP text headers, highlighting the value of CoAP's compact binary design for constrained devices.
 labels:
   en:
-    图9-5 BLE GATT协议栈与服务-特征层次: Figure 9-5 BLE GATT Stack and Service-Characteristic Hierarchy
-    ? BLE 从 PHY 和 Link Layer 经 L2CAP、ATT 到 GATT，右侧展示 Service、Characteristic、Descriptor 嵌套及 CCCD 控制的 Notification 和 Indication 分支。
-    : BLE runs from PHY and Link Layer through L2CAP and ATT up to GATT; the right side shows Service, Characteristic, Descriptor nesting and the CCCD-controlled Notification and Indication branches.
-    ATT 提供属性访问，GATT 组织服务数据模型；CCCD 选择无确认或带确认的推送路径: ATT provides attribute access and GATT organizes the service data model; CCCD selects the unconfirmed or confirmed push path
-    承载: Carries
-    复用: Multiplexes
-    属性读写: Attribute R/W
-    订阅 · 无确认: Subscribe · no ACK
-    订阅 · 带确认: Subscribe · with ACK
-    协议栈主链路: Main stack path
-    服务 · 特征 · 描述符数据模型: Service · Characteristic · Descriptor data model
-    属性数据库读写与通知承载: Attribute database R/W & notification transport
-    逻辑通道复用: Logical channel multiplexing
-    射频与链路管理: Radio & link management
-    应用数据模型: Application data model
-    服务：心率功能组: 'Service: heart-rate function group'
-    Value：心率数值  Properties：Read | Notify: 'Value: heart rate  Properties: Read | Notify'
-    推送使能配置: Push enable config
-    包含关系：Device → Service → Characteristic → Descriptor: 'Nesting: Device → Service → Characteristic → Descriptor'
-    无 ACK · 周期数据 · 低开销: No ACK · periodic data · low overhead
-    逐包确认 · 关键结果 · 较高开销: Per-packet ACK · critical results · higher overhead
-    硬件链路: Hardware link
-    协议栈核心: Stack core
-    实线：主路径: 'Solid: main path'
-    虚线：配置 / 带确认路径: 'Dashed: config / confirmed path'
-    图9-5 BLE GATT 协议栈层次及 Service-Characteristic-Descriptor 嵌套结构，右半部分展示 Notification 与 Indication 的执行路径分叉。: Figure 9-5 BLE GATT stack layers and Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication paths.
+    图 9-5 CoAP消息格式与选项示意: Figure 9-5 CoAP Message Format and Options
+    HTTP 文本请求与 CoAP 紧凑二进制报文的等效语义对比。: Equivalent semantics of an HTTP text request and a compact CoAP binary message.
+    等效 GET 语义下，CoAP 以 4 字节固定头和可变字段降低受限网络开销: For an equivalent GET, CoAP cuts constrained-network overhead with a 4-byte fixed header and variable fields
+    等效语义，体积显著更小: Same semantics, far smaller
+    HTTP 请求头部: HTTP request header
+    文本格式，典型请求头通常远大于 CoAP 固定头: Text format; a typical header far exceeds the CoAP fixed header
+    典型可达数百字节: Typically hundreds of bytes
+    CoAP CON GET 二进制布局: CoAP CON GET binary layout
+    固定头 4 B + Token + Options + 可选 Payload（字段定义参考 RFC 7252）: 4 B fixed header + Token + Options + optional Payload (RFC 7252)
+    可变长度: Variable length
+    路由与内容协商: Routing & content negotiation
+    分隔: Separator
+    实际载荷（可选）: Actual payload (optional)
+    Ver：版本号，当前固定 01: 'Ver: version, currently 01'
+    Code：请求方法（GET=0.01）: 'Code: request method (GET=0.01)'
+    Message ID：报文去重与匹配: 'Message ID: deduplication & matching'
+    Token：关联请求与响应: 'Token: pairs request and response'
+    Options：路径与内容协商: 'Options: path & content negotiation'
+    0xFF：仅在存在 Payload 时作为分隔标记: '0xFF: payload marker only when a payload exists'
+    Payload：实际载荷，可选: 'Payload: actual data, optional'
+    固定头 / 元数据: Fixed header / metadata
+    Token / 上下文关联: Token / context pairing
+    Options / 路由与内容协商: Options / routing & negotiation
+    0xFF 分隔标记: 0xFF separator
+    Payload / 实际数据: Payload / actual data
+    图 9-5 CoAP 消息格式与 HTTP 文本头部的体积对比，突出 CoAP 的紧凑二进制设计对受限设备的价值。: Figure 9-5 Size comparison of the CoAP message format versus HTTP text headers, highlighting the value of CoAP's compact binary design for constrained devices.

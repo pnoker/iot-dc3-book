@@ -1,144 +1,102 @@
-type: flowchart
-title: 图12-2 作物病害识别CNN处理流程（架构示意）
-purpose: 展示一张作物叶片图像从输入到输出病害分类概率的完整CNN推理流程。
-audience_takeaway: 读者应理解CNN推理的主链路——从输入图像经多次卷积池化、展平到全连接分类，以及各层的数据尺寸变化。
-visual_focus: 从输入图像经过三个卷积池化模块流向展平层，再经全连接层到输出概率条，实线箭头方向清晰。
-design_level: implementation
-layout: 从左至右七个方框，依次为输入图像、三个卷积池化模块、展平层、全连接层、输出概率条。框间带箭头实线连接，框下方标注特征图尺寸变化。
+type: topology
+title: 图 12-2 环境传感网络部署拓扑示意
+audience_takeaway: 读者应理解终端节点与云端不直连——大量LoRa传感器先星型汇聚到单一网关,再由网关经4G/有线回传上云,网关承担隔离与汇聚中继角色。
+purpose: 显示农业环境传感网络的星型拓扑结构，涵盖终端节点、网关与云平台之间的通信关系。
+visual_focus: 从顶层（云平台层）到底层（终端节点层）的主链路。
+design_level: logical
+layout: 自下而上分层布局：底层为终端节点层，中层为网关层，顶层为云平台层。
 elements:
-- 输入图像框（224×224×3 RGB）。
-- 三个卷积池化模块框，标注“Conv2D + ReLU + MaxPool2D”，框下分别标注输出尺寸：16×112×112、32×56×56、64×28×28。
-- 展平层框，宽矩形，标注“展平（Flatten）”。
-- 全连接层框，标注“128神经元 (ReLU)”。
-- 输出层框，标注“C个节点 (Softmax)”，C=病害类别数+1。
-- '输出概率条，垂直堆叠条，示例内容：“健康: 0.01, 白粉病: 0.88, 锈病: 0.05, 叶斑病: 0.06”。'
+- 顶层（云平台层）：蓝色圆角矩形，标注‘云平台 / 数据中台’。内部包含四个小图标：数据库、AI模型、可视化大屏、告警通知。此层负责数据汇聚、存储、分析与下发。
+- 中层（网关层）：橙色矩形，标注‘LoRaWAN网关 (Gateway)’，带天线图标。固定安装于农田中央立杆或温室顶部，通过4G/5G或有线回传与云平台通信。
+- 底层（终端节点层）：多个绿色圆点，每个圆点内带不同传感器符号——水滴（土壤水分）、树叶（叶面湿度）、太阳（光照）、温度计（空气温湿度）。圆点附着在波形虚线上，表示无线连接。此层由大量低功耗传感器节点构成。
 relationships:
-- 输入图像 → 第一个卷积池化模块（实线箭头）。
-- 第一个卷积池化模块 → 第二个卷积池化模块（实线箭头）。
-- 第二个卷积池化模块 → 第三个卷积池化模块（实线箭头）。
-- 第三个卷积池化模块 → 展平层（实线箭头）。
-- 展平层 → 全连接层（实线箭头）。
-- 全连接层 → 输出层（实线箭头）。
-- 输出层 → 概率条（实线箭头）。
+- 底层终端节点与中层网关之间用‘虚线’表示LoRa星型上行链路。
+- 中层网关与顶层云平台之间用‘实线+箭头’表示4G/有线回传链路。
 regions:
-- id: processing_pipeline
-  label: 模型推理流水线
-  role: 从图像输入到分类输出的线性处理链。
+- id: data_domain
+  label: 数据资产域
+  role: 数据沉淀与治理边界
+- id: edge_domain
+  label: 设备与边缘域
+  role: 现场异构资源边界
 components:
-- id: input_img
-  label: 输入图像 (224×224×3)
-  type: process
-  subtitle: ''
-  group: processing_pipeline
-  priority: normal
-  shape: card
-- id: conv1
-  label: Conv+Pool (16×112×112)
-  type: process
-  subtitle: ''
-  group: processing_pipeline
-  priority: normal
-  shape: card
-- id: conv2
-  label: Conv+Pool (32×56×56)
-  type: process
-  subtitle: ''
-  group: processing_pipeline
-  priority: normal
-  shape: card
-- id: conv3
-  label: Conv+Pool (64×28×28)
-  type: process
-  subtitle: ''
-  group: processing_pipeline
-  priority: normal
-  shape: card
-- id: flatten
-  label: 展平层 (Flatten)
-  type: process
-  subtitle: ''
-  group: processing_pipeline
-  priority: normal
-  shape: card
-- id: fc1
-  label: 全连接层 (128)
-  type: process
-  subtitle: ''
-  group: processing_pipeline
-  priority: normal
-  shape: card
-- id: output
-  label: 输出层 (C类别)
-  type: decision
-  subtitle: Softmax
-  group: processing_pipeline
+- id: c1
+  label: 顶层（云平台层）
+  type: data
+  subtitle: 内部包含四个小图标：数据库、AI模型、可视化大屏、告警…
+  group: data_domain
   priority: primary
-  shape: decision
+  shape: database
+- id: c2
+  label: 中层（网关层）
+  type: edge
+  subtitle: 固定安装于农田中央立杆或温室顶部，通过4G/5G或有线…
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: c3
+  label: 底层（终端节点层）
+  type: edge
+  subtitle: 水滴（土壤水分）、树叶（叶面湿度）、太阳（光照）、温度…
+  group: edge_domain
+  priority: normal
+  shape: card
 connections:
-- from: input_img
-  to: conv1
-  label: 前向传播
-  style: solid
+- from: c1
+  to: c2
+  label: 底层终端节点与中层网关之间用‘虚线…
+  style: dashed
   direction: left-to-right
-- from: conv1
-  to: conv2
-  label: 前向传播
-  style: solid
-  direction: left-to-right
-- from: conv2
-  to: conv3
-  label: 前向传播
-  style: solid
-  direction: left-to-right
-- from: conv3
-  to: flatten
-  label: 展平
-  style: solid
-  direction: left-to-right
-- from: flatten
-  to: fc1
-  label: 前向传播
-  style: solid
-  direction: left-to-right
-- from: fc1
-  to: output
-  label: 前向传播
+- from: c2
+  to: c3
+  label: 中层网关与顶层云平台之间用‘实线+…
   style: solid
   direction: left-to-right
 callouts:
-- 卷积核数量递增（16→32→64）对应特征抽象层次加深，空间分辨率递减（112→56→28）由池化操作实现。
-- MobileNet、EfficientNet等轻量化架构可大幅压缩此通用结构的参数量与推理延时，具体选型见下文。
+- 底层终端节点与中层网关之间用‘虚线’表示LoRa星型上行链路
+- 中层网关与顶层云平台之间用‘实线+箭头’表示4G/有线回传链路
 legend:
-- 方框：处理步骤或网络层。
-- 实线箭头：数据流向（前向推理）。
+- 虚线：LoRa星型上行链路
+- 实线+箭头：4G/有线回传链路
+- 绿色圆点（水滴）：土壤水分传感器
+- 绿色圆点（树叶）：叶面湿度传感器
+- 绿色圆点（太阳）：光照强度传感器
+- 绿色圆点（温度计）：空气温湿度传感器
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
-- 输出概率条用垂直堆叠条表示，最高概率项颜色加深。
-render_notes: SVG渲染：浅色背景，圆角矩形框，统一6px间距。箭头带文字标签'前向传播'。输出概率条示意三个病害概率。
+- 优先表达边界和主链路，不把所有概念塞进一张图。
+render_notes: HTML/SVG渲染，浅色背景。底层所有绿色圆点分布在二维平面（代表农田）上，各圆点与中心橙色网关的物理距离不完全相等，以模拟真实地形。每根虚线从节点出发均指向同一个网关，确保‘星型’关系可视化。点击某个终端节点或网关，可弹出提示框，显示其ID、最近一次上报时间、电池电压。图例置入左下角浮动的半透明灰框内。图题置于图片正下方居中加粗显示。
 caption:
-  zh: 图12-2 展示作物病害识别CNN从输入到输出的主要网络层与数据变换过程。工程实践中，卷积核数量与网络深度依据训练数据集规模和计算资源调整。
-  en: Figure 12-2 The main network layers and data transformations of a crop disease recognition CNN from input to output. In engineering practice, the number of convolution kernels and the network depth are tuned to the training dataset size and the compute budget.
+  zh: 图 12-2 环境传感网络部署拓扑示意，展示了从终端节点到云平台的星型连接关系。
+  en: Figure 12-2 Deployment topology of an environmental sensor network, showing the star-shaped connection between end nodes and the cloud platform.
 labels:
   en:
-    图12-2 作物病害识别CNN处理流程（架构示意）: Figure 12-2 Crop Disease Recognition CNN Pipeline (Architecture)
-    叶片图像经三级卷积池化提取层次特征、逐级降采样，展平后进入全连接层，Softmax 输出健康与各病害概率。: Leaf images go through three conv-pool stages for hierarchical features and progressive downsampling, then flatten into dense layers; Softmax outputs health and disease probabilities.
-    卷积提取层次特征，池化逐级降采样，全连接层输出病害概率: Convolution extracts hierarchical features, pooling downsamples stage by stage, dense layers output disease probabilities
-    叶片图像: Leaf image
-    卷积 + 池化 ①: Conv + Pool ①
-    卷积 + 池化 ②: Conv + Pool ②
-    卷积 + 池化 ③: Conv + Pool ③
-    展平为一维: Flatten to 1-D
-    128 神经元 · ReLU: 128 units · ReLU
-    病害概率: Disease probabilities
-    Softmax · C 类: Softmax · C classes
-    健康 0.01: Healthy 0.01
-    白粉病 0.88: Powdery mildew 0.88
-    锈病 0.05 · 叶斑 0.06: Rust 0.05 · leaf spot 0.06
-    输入: Input
-    特征提取与降采样: Feature extraction & downsampling
-    分类决策: Classification decision
-    概率输出: Probability output
-    三级特征提取：边缘 → 纹理 → 形状: 'Three feature stages: edges → texture → shape'
-    空间分辨率逐级降低、通道数逐级增加；C = 病害类别数 + 健康类别: Spatial resolution falls and channels rise stage by stage; C = disease classes + healthy
-    图12-2 三级卷积池化把空间分辨率从 224 逐级压缩到 28、通道数由 3 增至 64，特征由边缘、纹理过渡到形状；Softmax 输出健康与各病害概率，取最大者为识别结果。: Figure 12-2 Three conv-pool stages shrink spatial resolution from 224 to 28 while channels grow from 3 to 64, moving features from edges and texture to shape; Softmax outputs health and disease probabilities, and the largest wins as the recognition result.
+    图 12-2 环境传感网络部署拓扑示意: Figure 12-2 Environmental Sensor Network Deployment Topology
+    星型拓扑：终端节点单跳直达 LoRaWAN 网关，网关经 4G/有线回传至云平台。: 'Star topology: end nodes reach the LoRaWAN gateway in one hop, and the gateway backhauls to the cloud via 4G/wired links.'
+    星型拓扑 · 终端节点单跳直达网关 · 数据自下而上汇聚至云平台: Star topology · end nodes one hop to the gateway · data converges upward to the cloud
+    数据资产域: Data Asset Domain
+    数据沉淀与治理边界: Data retention & governance boundary
+    云平台 / 数据中台: Cloud Platform / Data Hub
+    数据库 · AI模型 · 大屏 · 告警: DB · AI models · dashboards · alerts
+    设备与边缘域: Device & Edge Domain
+    现场异构资源边界: Field heterogeneous resource boundary
+    LoRaWAN 网关: LoRaWAN Gateway
+    农田中央立杆 · 4G/有线回传: Field-center pole · 4G/wired backhaul
+    星型单跳 = 低功耗根源: Star one-hop = the root of low power
+    终端不维护中继路由，仅与网关一对一通信；: End nodes keep no relay routes and talk only to the gateway;
+    长休眠占空比，故可电池长期运行。: long sleep duty cycles let batteries run for years.
+    4G / 有线回传: 4G / Wired Backhaul
+    终端节点（多类传感器）: End nodes (multi-sensor)
+    土壤水分 · 叶面湿度 · 光照 · 温湿度: Soil moisture · leaf wetness · light · temp & humidity
+    土壤水分: Soil moisture
+    温湿度: Temp & humidity
+    叶面湿度: Leaf wetness
+    光照: Light
+    虚线 · LoRa 星型上行（终端单跳直达网关）: Dashed · LoRa star uplink (one hop to gateway)
+    实线 · 4G / 有线回传（网关→云平台）: Solid · 4G/wired backhaul (gateway→cloud)
+    紫 · 数据资产域: Purple · data asset domain
+    绿 · 设备与边缘域: Green · device & edge domain
+    绿圆 · 终端节点（传感器）: Green dot · end node (sensor)
+    圆柱 · 云平台数据存储: Cylinder · cloud data storage
+    图 12-2 星型单跳免去终端维护中继路由，终端得以长休眠、电池长期运行；数据经 LoRa 上行至网关后由 4G/有线回传，自下而上汇入云平台数据资产域。: Figure 12-2 The star one-hop design frees end nodes from relay routing, enabling long sleep and multi-year battery life; data rises over LoRa to the gateway, is backhauled via 4G/wired links, and converges upward into the cloud data asset domain.

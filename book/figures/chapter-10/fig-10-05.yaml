@@ -1,5 +1,5 @@
 type: topology
-title: 图10-5 OPC UA地址空间树状结构
+title: 图 10-5 OPC UA地址空间树状结构
 audience_takeaway: 读者应区分Variable Attributes与Property节点：NodeId、DataType、Description属于变量节点属性，仅EngineeringUnits等附加属性通过HasProperty引用。
 purpose: 展示OPC UA服务端以对象模型组织的节点树结构，说明变量节点、对象节点和方法节点的层次关系。
 visual_focus: 从根节点到方法节点的主链路。
@@ -81,11 +81,11 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，矩形节点，统一12px间距，文字可读，避免重叠。
 caption:
-  zh: 图10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过HasProperty关联的附加属性必须区分。
+  zh: 图 10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过HasProperty关联的附加属性必须区分。
   en: Figure 10-5 The OPC UA address space organizes nodes through references; a variable's own attributes must be distinguished from the additional properties linked through HasProperty.
 labels:
   en:
-    图10-5 OPC UA地址空间树状结构: Figure 10-5 OPC UA Address Space Tree
+    图 10-5 OPC UA地址空间树状结构: Figure 10-5 OPC UA Address Space Tree
     OPC UA以Organizes组织设备、以HasComponent包含变量和方法；NodeId、DataType、Description属于变量节点属性，仅EngineeringUnits等附加属性通过HasProperty引用。: OPC UA organizes devices with Organizes and contains variables and methods with HasComponent; NodeId, DataType, and Description are variable attributes; only extra properties like EngineeringUnits are referenced via HasProperty.
     NodeId、DataType、Description 是 Variable Attributes；仅 EngineeringUnits 等附加属性使用 HasProperty: NodeId, DataType, and Description are Variable Attributes; only extra properties like EngineeringUnits use HasProperty
     所有对象的容器: Container of all objects
@@ -114,4 +114,4 @@ labels:
     实线=HasComponent: Solid = HasComponent
     虚线=HasProperty: Dashed = HasProperty
     蓝色实线=Organizes: Blue solid = Organizes
-    图10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过 HasProperty 关联的附加属性必须区分。: Figure 10-5 The OPC UA address space organizes nodes via references; a variable's own attributes must be distinguished from extra properties linked through HasProperty.
+    图 10-5 OPC UA地址空间以引用组织节点；变量自身属性与通过 HasProperty 关联的附加属性必须区分。: Figure 10-5 The OPC UA address space organizes nodes via references; a variable's own attributes must be distinguished from extra properties linked through HasProperty.

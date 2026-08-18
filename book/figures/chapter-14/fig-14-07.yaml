@@ -1,64 +1,54 @@
-type: framework
-title: 图14-7 需求分析的四个来源与资产生命周期检视
-audience_takeaway: 读者应理解需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。
-purpose: 展示需求获取的四个来源与资产生命周期检视法
-visual_focus: 四个来源卡片与资产生命周期五阶段。
-design_level: framework
-layout: 上半四个来源卡片，中部生命周期五阶段流程，底部 MoSCoW 与非功能需求
+type: flowchart
+title: 图 14-7 预测性维护扩展示例
+purpose: 展示一个平台外训练和推理、结果作为衍生位号回写 Data 的可选方案；明确不是当前 Compose 默认能力。
+audience_takeaway: AI 模型是外部扩展，平台通过标准 Data API、衍生位号和现有规则链路承接结果。
+visual_focus: Data 历史数据→外部训练→受控推理服务→授权任务→衍生位号写回 Data→规则与通知。
+design_level: conceptual
+layout: 从左到右三阶段：训练、部署、推理回写；顶部标注“工程扩展示例，非当前默认能力”。
 elements:
-- 四个来源：用户访谈（场景级需求）、现场勘查（物理约束）、存量系统（接口/字段映射）、行业规范（合规底线）
-- 资产生命周期：部署 → 运行 → 告警 → 维护 → 退役，逐阶段推导用例
-- MoSCoW：Must / Should / Could / Won't，把 Must 收窄到最少
-- 非功能需求：可靠性、安全性、可扩展性、实时性，决定架构与成本
+- Data 历史与实时查询接口。
+- 特征工程与项目自选模型训练。
+- 独立推理服务，带认证、限流和版本管理。
+- 授权任务或 Agent Tool 编排入口。
+- 衍生位号与现有规则/通知链路。
 relationships:
-- 四来源产出需求条目；生命周期法逐阶段推导用例；MoSCoW 划分优先级
-render_notes: HTML/SVG 渲染，四来源卡片 + 生命周期五阶段流程 + 底部 MoSCoW 与非功能对比，蓝绿主色。
+- 授权读取 Data→训练/推理。
+- 推理结果→Data 衍生位号。
+- 衍生位号→现有规则与通知。
+callouts:
+- 当前 Compose 不包含训练任务、模型服务或模型卷。
+- 当前 MCP 只暴露 Tools，不承载实时数据订阅。
+render_notes: 浅色三阶段 SVG。推理服务使用通用名称，不绘制为当前内置中心；顶部显著标注“可选扩展”。
 caption:
-  zh: 图14-7 需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。
-  en: 'Figure 14-7 Requirements come from four sources — interviews, site surveys, existing systems, and industry regulations; the asset-lifecycle review derives use cases stage by stage from deployment to retirement, MoSCoW then sets priorities, and non-functional requirements are quantified.'
+  zh: 图 14-7 预测性维护扩展示例：模型在平台外训练和部署，授权任务把推理结果作为衍生位号写回 Data，复用已有规则与通知链路。
+  en: 'Figure 14-7 A predictive-maintenance extension example: the model is trained and deployed outside the platform, and an authorized task writes inference results back to Data as derived points, reusing the existing rule and notification paths.'
 labels:
   en:
-    图14-7 需求分析的四个来源与资产生命周期检视: 'Figure 14-7 Four Requirement Sources & the Asset Lifecycle Review'
-    需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法推导功能需求。: 'Requirements come from interviews, site surveys, existing systems, and industry regulations; the asset-lifecycle review derives functional requirements.'
-    有效产出是可执行的需求基线，和明确的“不做什么”清单: 'The effective output is an actionable requirements baseline plus an explicit not-to-do list'
-    需求获取的四个来源: 'Four Sources of Requirements'
-    用户与业务方访谈: 'User & Business Interviews'
-    运营、运维、业务决策者: 'Operations, ops staff, and business decision-makers'
-    产出场景级需求: 'Yield scenario-level requirements'
-    “设备离线 5 分钟内必须告警”: '"An offline device must alert within 5 minutes"'
-    设备与现场勘查: 'Device & Site Surveys'
-    物理约束：金属遮挡、供电方式: 'Physical constraints: metal shielding, power supply'
-    直接决定协议选型与采集策略: 'Directly drive protocol and collection strategy'
-    纯软件项目不会出现这类约束: 'Pure-software projects never face such constraints'
-    存量系统分析: 'Existing-System Analysis'
-    ERP / MES / SCADA 数据接口: 'ERP / MES / SCADA Data Interfaces'
-    字段映射与历史数据迁移: 'Field mapping & historical data migration'
-    接口文档常与实际不匹配: 'Interface docs often mismatch reality'
-    行业规范与合规: 'Industry Regulations & Compliance'
-    轨迹保存期限、安全等级认证: 'Trace retention periods, security certification'
-    医疗数据隐私合规: 'Medical data privacy compliance'
-    不是“能不能做”，而是“不做不能上线”: 'Not "can we do it" but "no launch without it"'
-    资产生命周期检视法：从设备出厂到退役逐阶段推导用例: 'Asset lifecycle review: derive use cases stage by stage, from factory shipment to retirement'
+    图 14-7 预测性维护扩展示例: 'Figure 14-7 Predictive Maintenance Extension Example'
+    模型在平台外训练和部署，授权任务把推理结果作为衍生位号写回 Data，复用已有规则与通知链路。: 'The model is trained and deployed outside the platform; an authorized task writes inference results back to Data as derived points, reusing existing rules and notifications.'
+    外部模型通过受控读写边界接入，平台继续复用既有数据、规则与通知能力: 'External models plug in through controlled read/write boundaries; the platform keeps reusing its existing data, rule, and notification capabilities'
+    工程扩展示例 · 非当前默认能力（当前 Compose 不含训练任务 / 模型服务 / 模型卷）: 'Engineering extension example · not a current default capability (the current Compose has no training jobs / model services / model volumes)'
+    训练: 'Training'
+    Data 历史与实时查询: 'Data Historical & Real-Time Queries'
+    授权只读接口: 'Authorized Read-Only API'
+    特征工程与模型训练: 'Feature Engineering & Model Training'
+    算法、框架与版本由项目选择: 'Algorithms, frameworks, and versions chosen per project'
+    模型制品: 'Model Artifacts'
     部署: 'Deployment'
-    批量注册 · 网关自动发现: 'Bulk Registration · Gateway Auto-Discovery'
-    固件版本校验: 'Firmware Version Check'
-    运行: 'Operation'
-    实时采集 · 在线状态监控: 'Real-Time Collection · Online Status'
-    远程开关控制: 'Remote On/Off Control'
-    告警: 'Alerting'
-    温度超限 · 设备离线: 'Temperature Limits · Device Offline'
-    告警分级与推送: 'Alert Grading & Push'
-    维护: 'Maintenance'
-    OTA 固件升级 · 参数下发: 'OTA Firmware Upgrades · Parameter Push'
-    日志远程拉取: 'Remote Log Pull'
-    退役: 'Retirement'
-    设备注销 · 数据归档: 'Device Deregistration · Data Archiving'
-    安全擦除: 'Secure Erasure'
-    优先级划分（MoSCoW）与非功能需求: 'Prioritization (MoSCoW) & Non-Functional Requirements'
-    缺则无法上线：设备身份认证、数据持久化、在线状态: 'Must-have or no launch: device identity auth, data persistence, online status'
-    重要可延迟：告警规则灵活配置、设备分组管理: 'Important but deferrable: flexible alert rules, device grouping'
-    锦上添花 / 本次明确排除，把 Must 列表收窄到最少: 'Nice-to-have / explicitly excluded this round; keep the Must list minimal'
-    非功能需求（隐形杀手）: 'Non-Functional Requirements (the silent killer)'
-    可靠性 · 安全性 · 可扩展性 · 实时性: 'Reliability · Security · Scalability · Real-Time'
-    决定架构选型与成本结构，需量化定义: 'They drive architecture choices and cost structure, and must be quantified'
-    图14-7 需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。: 'Figure 14-7 Requirements come from four sources — interviews, site surveys, existing systems, and industry regulations; the asset-lifecycle review derives use cases stage by stage from deployment to retirement, MoSCoW then sets priorities, and non-functional requirements are quantified.'
+    独立推理服务: 'Standalone Inference Service'
+    认证 · 限流 · 模型版本管理: 'Auth · Rate Limiting · Model Versioning'
+    与平台服务分开部署: 'Deployed separately from platform services'
+    失败时不影响基础采集链路: 'Failure does not affect the core collection path'
+    推理 API（最小接入边界）: 'Inference API (minimal integration boundary)'
+    受控调用: 'Controlled Call'
+    推理回写: 'Inference Write-Back'
+    授权任务 / Agent Tool: 'Authorized Task / Agent Tool'
+    编排读取、推理与回写: 'Orchestrates read, inference, and write-back'
+    Data 衍生位号: 'Data Derived Points'
+    推理结果按位号模型写回: 'Inference results written back per the point model'
+    现有规则与通知链路: 'Existing Rule & Notification Path'
+    阈值判断 · 告警 · 工单: 'Threshold Checks · Alarms · Tickets'
+    最小接入边界：授权读取 Data → 独立推理 → 衍生位号回写 → 复用规则与通知: 'Minimal boundary: authorized Data reads → standalone inference → derived-point write-back → reuse rules and notifications'
+    模型服务不可用时停止扩展推理，但不阻断设备采集、数据持久化和确定性规则: 'When the model service is down, extended inference stops but device collection, persistence, and deterministic rules are unaffected'
+    当前 MCP 只暴露 Tools，不承载实时数据订阅: 'The current MCP exposes Tools only, not real-time data subscription'
+    图 14-7 模型服务不可用时停止扩展推理，但不阻断设备采集、数据持久化和确定性规则。: 'Figure 14-7 When the model service is unavailable, extended inference stops, but device collection, data persistence, and deterministic rules are not blocked.'

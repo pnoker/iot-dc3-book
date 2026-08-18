@@ -1,46 +1,46 @@
-type: layered
-title: 图7-11 RAG Eval 分层评测
-audience_takeaway: 读者应理解 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题，失败分类比单一综合分数更能指导工程改进。
-purpose: 展示 RAG 评测的四层结构与各层指标，强调分层定位问题
-visual_focus: 自上而下的四层评测结构。
-design_level: layered
-layout: 四层横向带（数据集 → 检索 → 生成 → 端到端），底部失败分类说明
+type: architecture
+title: 图 7-11 Agentic Center 当前能力与知识对齐边界
+audience_takeaway: 读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。
+purpose: 区分当前已实现的 Tools、Web/HTTP 与 MCP Tools 端点，以及仅用于知识对齐的 Skills 和 CLI 概念。
+layout: 左侧“当前已实现”区域包含 Agentic @Tool、Web/HTTP 对话和 MCP Tools；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧用虚线关系箭头连接。
 elements:
-- 数据集层：问题、预期证据、答案要点、拒答条件、租户、版本、有效时间
-- 检索层：Recall@k、MRR、nDCG@k、Context Precision/Recall、版本命中率、跨租户误检索率
-- 生成层：Groundedness、Answer Relevance、Citation、无证据回答率、拒答准确率
-- 端到端层：问题解决率、专家复核通过率、P50/P95、token 与成本
+- Agentic @Tool、Web/HTTP 对话与 MCP Tools 端点
+- Skills 编排概念与 CLI 客户端概念
+- 当前已实现边界与知识对齐边界
 relationships:
-- 四层自上而下：先固定评测集，再依次评检索、生成、端到端
-render_notes: HTML/SVG 渲染，四层纵向堆叠，灰/蓝/绿/橙四色分层，左侧竖排层名。
+- Web/HTTP 对话 → Agentic @Tool：当前通过对话触发服务内工具
+- MCP 客户端 → MCP Tools 端点：当前通过协议发现和调用网关工具
+- Skills 概念 → 已实现 Tools：可作为未来编排参照，但当前未落地
+- CLI 概念 → Web/HTTP 或 MCP 入口：可作为未来客户端参照，但当前未实现
+render_notes: 左侧绿色实线框标“当前已实现”，右侧灰蓝虚线框标“知识对齐（非现有功能）”；禁止使用三层金字塔或未来路线措辞暗示三者均已上线。
 caption:
-  zh: 图7-11 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题；失败分类对应不同修复入口，比单一综合分数更能指导工程改进。
-  en: Figure 7-11 RAG evaluation splits into four layers — dataset, retrieval, generation, and end-to-end — each with independent metrics to locate problems; failure classes map to different fix entry points and guide engineering better than a single overall score.
+  zh: 图 7-11 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为实现边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。
+  en: Figure 7-11 The current implementation boundary covers Tools, the Web/HTTP chat, and the MCP Tools endpoint; Skills and CLI serve only to align general agent-engineering knowledge and are not yet implemented IoT DC3 features.
 labels:
   en:
-    图7-11 RAG Eval 分层评测: Figure 7-11 Layered RAG Evaluation
-    RAG 评测拆为数据集、检索、生成、端到端四层，分层定位问题，失败分类比总分更有行动价值。: RAG evaluation splits into dataset, retrieval, generation, and end-to-end layers; per-layer localization plus failure classes beats a single score.
-    一次回答可能检索错版本、也可能生成不忠实 · 分层定位才能修复: Wrong version or unfaithful generation — only layered localization fixes it
-    数据集层: Dataset layer
-    先固定评测集，而不是先挑指标: Fix the eval set before the metrics
-    样本含：问题 · 预期证据 · 可接受答案要点 · 是否应拒答 · 租户 · 设备型号 · 文档版本 · 有效时间: 'Samples: question · expected evidence · acceptable answer points · refuse-or-not · tenant · device model · doc version · validity window'
-    覆盖六类输入：可回答、库中不存在、新旧版本冲突、过期规程、跨租户相似文档、需组合多段证据: 'Six input classes: answerable, absent, version conflict, outdated procedure, cross-tenant lookalike, multi-evidence'
-    按时间与文档版本切分，避免近重复文本泄漏；评测集本身要版本化: Split by time/doc version to stop near-duplicate leaks; version the eval set too
-    检索层: Retrieval layer
-    是否拿到了正确证据（不评价文风）: Right evidence retrieved? (style not judged)
-    Recall@k · MRR · nDCG@k · Context Precision/Recall · 正确版本命中率 · 跨租户误检索率: Recall@k · MRR · nDCG@k · Context Precision/Recall · right-version hit rate · cross-tenant leakage rate
-    空检索率与 P50/P95 延迟 · 同时报告稀疏、向量、混合、混合+reranker 四类基线: Empty-retrieval rate and P50/P95 latency · report sparse, vector, hybrid, hybrid+reranker baselines
-    任何不属于当前租户的内容进入上下文，都视为安全失败: Any cross-tenant content in context = security failure
-    生成层: Generation layer
-    回答是否忠实于证据: Faithful to the evidence?
-    Groundedness/Faithfulness · Answer Relevance · Citation Precision/Recall · 无证据回答率: Groundedness/Faithfulness · Answer Relevance · Citation Precision/Recall · unsupported-answer rate
-    拒答准确率（本应拒答 / 本可回答） · 操作步骤完整性（停机、确认、回滚、安全条件）: Refusal accuracy (should-refuse / answerable) · step completeness (shutdown, confirm, rollback, safety)
-    自动评分器也可能偏差，高风险样本由领域专家抽检: Auto-judges can be biased; domain experts spot-check high-risk samples
-    端到端层: End-to-end layer
-    是否解决了真实任务: Solved the real task?
-    运维问题解决率 · 专家复核通过率 · 过期 SOP 使用率 · 拒答后转人工比例: O&M resolution rate · expert review pass rate · outdated-SOP usage · refusal-to-human ratio
-    P50/P95 总时延 · token 消耗 · 单次成功任务成本 · 回答建议与实际设备状态一致性: P50/P95 latency · token usage · cost per successful task · advice-vs-state consistency
-    Tool 执行轨迹不与 RAG 指标混评，由 7.5.4 节单独评测: Tool traces are evaluated separately in Section 7.5.4, not with RAG metrics
-    失败分类比总分更有行动价值: Failure classes beat a single score
-    问题理解错误 / 检索不到 / 文档版本错误 / 上下文冲突 / 有证据但不忠实 / 本应拒答却给建议 —— 各自对应扩语料、改切分、调过滤、换 reranker、收紧 Prompt 等不同修复入口: 'Misread intent / nothing retrieved / wrong version / context conflict / unfaithful with evidence / advised when it should refuse — each maps to a different fix: grow corpus, re-chunk, tune filters, swap reranker, tighten prompts'
-    图7-11 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题；失败分类对应不同修复入口，比单一综合分数更能指导工程改进。: Figure 7-11 RAG evaluation splits into dataset, retrieval, generation, and end-to-end layers, each with its own metrics; failure classes map to different fix entry points and guide engineering better than a single overall score.
+    图 7-11 Agentic Center 当前能力与知识对齐边界: 'Figure 7-11 Agentic Center: implemented vs. knowledge-alignment boundary'
+    读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。: Only @Tool, Web/HTTP, and MCP Tools are implemented today; Skills and CLI are knowledge-alignment concepts only.
+    Tools 是当前实现；Skills 与 CLI 用于对齐通用 Agent 工程概念，不代表 IoT DC3 已上线对应产品能力: Tools are implemented; Skills and CLI align general agent-engineering concepts and are not shipped IoT DC3 capabilities
+    当前已实现: Currently implemented
+    8 类 Tool 显式注册: 8 explicitly registered tools
+    Device / Driver / PointValue 等: Device / Driver / PointValue, etc.
+    Web / HTTP 对话: Web / HTTP chat
+    OpenAI-compatible 接口: OpenAI-compatible API
+    会话 · 消息 · 模型 Provider: Sessions · messages · model providers
+    点位写 Action 确认: Point-write Action confirmation
+    工具目录来自静态 OpenAPI 规格汇聚，不扫描 Agentic @Tool: Tool catalog from static OpenAPI specs, no @Tool scanning
+    'capabilities: tools only · Resources / Prompts 当前未启用': 'capabilities: tools only · Resources / Prompts not enabled'
+    知识对齐（非现有功能）: Knowledge alignment (not a feature)
+    复合编排概念: Composite orchestration concept
+    固定 Tool 顺序 + 提示模板: Fixed tool order + prompt templates
+    输入输出契约 + 风险边界: I/O contracts + risk boundaries
+    当前无 Skill 类型 / 注册器 / 执行器: No Skill type / registry / executor yet
+    客户端形态概念: Client-form concept
+    参数解析 · 认证 · 流式输出: Argument parsing · auth · streaming
+    复用 HTTP 或 MCP Tools: Reuse HTTP or MCP Tools
+    当前没有 dc3 agent 命令: No dc3 agent command today
+    概念关系：CLI 调用服务端，Skills 编排原子 Tools: 'Concept: CLI calls the server; Skills orchestrate atomic tools'
+    不复制业务逻辑 · 不绕过租户与 Action 确认: No duplicated logic · no tenant/Action bypass
+    准确关系: Exact relationship
+    Tools = 当前原子能力 · Skills = 知识对齐的复合编排概念 · CLI = 知识对齐的客户端形态: Tools = current atomic capabilities · Skills = knowledge-alignment orchestration concept · CLI = knowledge-alignment client form
+    图 7-11 左侧为当前源码可验证能力；右侧仅用于知识对齐。虚线不表示已上线，也不表示项目路线承诺。: Figure 7-11 The left side is verifiable in current source; the right side is knowledge alignment only. Dashed lines imply neither shipping nor roadmap commitment.

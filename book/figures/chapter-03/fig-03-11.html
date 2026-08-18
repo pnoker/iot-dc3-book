@@ -3,89 +3,79 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-11 传感器选型四维约束与误差校准</title>
+  <title>图 3-11 TinyML模型训练与部署全流程</title>
   <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+    html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
-  <title id="title">图3-11 传感器选型四维约束与误差校准</title>
-  <desc id="desc">选型在精度、成本、功耗、环境适应性四维取舍；误差按系统、随机、粗大三类分别校准与抑制。</desc>
-  <rect width="1200" height="680" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图 3-11 TinyML模型训练与部署全流程</title>
+  <desc id="desc">从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。</desc>
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
-  <rect x="0" y="0" width="1800" height="900" fill="#FFFFFF"/>
-
-  <!-- Title -->
+  <defs>
+    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+    <marker id="bp-arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="bp-arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/></marker>
+    <marker id="bp-arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/></marker>
+  </defs>
+  <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图3-11 传感器选型四维约束与误差校准</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">没有“万能传感器”，只有“匹配场景的传感器”</text>
-  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图 3-11 TinyML模型训练与部署全流程</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">从数据准备、云端训练、模型优化到端侧部署的完整生命线，以及模型优化阶段精度验收的回退迭代路径。</text>
 
-  <!-- 四维约束 -->
-  <rect x="80" y="140" width="392" height="210" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="276" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">精度与分辨率</text>
-  <text x="116" y="214" font-size="12" fill="#475569">精度 = 与真实值的偏差范围</text>
-  <text x="116" y="240" font-size="12" fill="#475569">分辨率 = 可分辨的最小变化</text>
-  <text x="116" y="278" font-size="12" fill="#475569">先定容许误差 → 反推精度要求</text>
-  <text x="116" y="304" font-size="12" fill="#475569">再检查 ADC 位数是否足够</text>
-  <text x="116" y="330" font-size="11" fill="#64748B">现场实测精度常低于手册标称值</text>
+  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
+  <g data-layout="flowchart">
+  <rect x="90" y="130" width="1070" height="600" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="115" y="160" fill="#0F172A" font-size="15" font-weight="700">模型开发与固件构建域</text>
+  <rect x="1190" y="130" width="520" height="600" rx="14" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="1215" y="160" fill="#0F172A" font-size="15" font-weight="700">目标设备域</text>
 
-  <rect x="496" y="140" width="392" height="210" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="692" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">成本（看生命周期）</text>
-  <text x="532" y="214" font-size="12" fill="#475569">农业传感器几十元 vs 工业探头贵一个量级</text>
-  <text x="532" y="252" font-size="12" fill="#475569">把更换成本、维护人工、停工损失算进去</text>
-  <text x="532" y="290" font-size="12" fill="#475569">大规模部署下维护成本往往超过采购成本</text>
-  <text x="532" y="330" font-size="11" fill="#64748B">选型是生命周期总成本，而非单价</text>
+  <g font-size="17" font-weight="700" text-anchor="middle" fill="#0F172A">
+    <rect x="120" y="220" width="220" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="230" y="263">数据准备</text><text x="230" y="291" font-size="12" font-weight="400" fill="#475569">采集 · 标注 · 切分</text>
+    <rect x="400" y="220" width="220" height="100" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="2"/><text x="510" y="263">云端训练</text><text x="510" y="291" font-size="12" font-weight="400" fill="#475569">轻量模型训练</text>
+    <rect x="680" y="220" width="220" height="100" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/><text x="790" y="263">模型优化</text><text x="790" y="291" font-size="12" font-weight="400" fill="#475569">量化 · 剪枝</text>
+    <path d="M1010 210L1110 270L1010 330L910 270Z" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/><text x="1010" y="268">精度验收</text><text x="1010" y="294" font-size="12" font-weight="400" fill="#92400E">损失可接受？</text>
 
-  <rect x="912" y="140" width="392" height="210" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1108" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">功耗与供电</text>
-  <text x="948" y="214" font-size="12" fill="#475569">电池供电每微安都要精打细算</text>
-  <text x="948" y="240" font-size="12" fill="#475569">工业产线 24V 供电则敏感度低</text>
-  <text x="948" y="278" font-size="12" fill="#475569">功耗预算在系统层做</text>
-  <text x="948" y="304" font-size="12" fill="#475569">算入 MCU 唤醒 + 射频脉冲电流</text>
-  <text x="948" y="330" font-size="11" fill="#64748B">尤其注意休眠电流，忽略它难达续航目标</text>
+    <rect x="160" y="470" width="250" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="285" y="510">模型转换 / 代码生成</text><text x="285" y="540" font-size="12" font-weight="400" fill="#475569">生成 MCU 推理代码</text>
+    <rect x="470" y="470" width="220" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="580" y="510">固件编译</text><text x="580" y="540" font-size="12" font-weight="400" fill="#475569">链接模型与运行时</text>
+    <rect x="750" y="470" width="220" height="100" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/><text x="860" y="510">固件集成</text><text x="860" y="540" font-size="12" font-weight="400" fill="#475569">传感器 · 预处理 · 推理</text>
+    <rect x="1230" y="300" width="200" height="100" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/><text x="1330" y="342">烧录部署</text><text x="1330" y="372" font-size="12" font-weight="400" fill="#475569">完整固件写入 MCU</text>
+    <rect x="1480" y="300" width="190" height="100" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/><text x="1575" y="342">端侧运行</text><text x="1575" y="372" font-size="12" font-weight="400" fill="#475569">采集 · 推理 · 响应</text>
+  </g>
 
-  <rect x="1328" y="140" width="392" height="210" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1524" y="178" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">环境适应性</text>
-  <text x="1364" y="214" font-size="12" fill="#475569">防护等级、工作温度范围</text>
-  <text x="1364" y="240" font-size="12" fill="#475569">抗腐蚀、抗振动能力</text>
-  <text x="1364" y="278" font-size="12" fill="#475569">高湿、粉尘、农药、油污、电磁干扰</text>
-  <text x="1364" y="304" font-size="12" fill="#475569">是现场失效的头号原因</text>
-  <text x="1364" y="330" font-size="11" fill="#64748B">湿敏电容高湿一年后读数明显偏高</text>
-
-  <!-- 误差分类 -->
-  <text x="80" y="410" font-size="15" font-weight="700" fill="#334155">误差分类与校准方法</text>
-
-  <rect x="80" y="432" width="520" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="340" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">系统误差（方向性、重复性）</text>
-  <text x="116" y="502" font-size="12" fill="#475569">制造公差、老化漂移、安装位置不当</text>
-  <text x="116" y="528" font-size="12" fill="#475569">单点校准修正偏移，两点校准修正偏移+增益</text>
-  <text x="116" y="554" font-size="12" fill="#475569">关键应用每半年返厂校准，或固件自补偿</text>
-  <text x="116" y="580" font-size="11" fill="#64748B">校准参数存云端并关联设备 ID</text>
-
-  <rect x="640" y="432" width="520" height="160" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="900" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">随机误差（离散抖动）</text>
-  <text x="676" y="502" font-size="12" fill="#475569">热噪声、电磁干扰引起</text>
-  <text x="676" y="528" font-size="12" fill="#475569">多次测量取滑动平均抑制</text>
-  <text x="676" y="554" font-size="12" fill="#475569">慢变信号增大窗口，快变信号减小窗口</text>
-  <text x="676" y="580" font-size="11" fill="#64748B">在去噪与响应时效间平衡</text>
-
-  <rect x="1200" y="432" width="520" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1460" y="466" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">粗大误差（异常点）</text>
-  <text x="1236" y="502" font-size="12" fill="#475569">瞬时硬件故障、干扰尖峰、环境突变</text>
-  <text x="1236" y="528" font-size="12" fill="#475569">阈值判断 + 冗余传感器二维投票剔除</text>
-  <text x="1236" y="554" font-size="12" fill="#475569">已知干扰源（喷淋）用“喷淋锁定”标记无效</text>
-  <text x="1236" y="580" font-size="11" fill="#64748B">自诊断只覆盖有限故障模式，不可替代物理校准</text>
-
-  <!-- Caption -->
-  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图3-11 传感器选型在精度、成本、功耗、环境适应性四维之间取舍，并预留环境余量；误差按系统、随机、粗大三类分别用单点/两点校准、滑动平均、阈值加冗余投票处理。</text>
+  <g fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#bp-arrow-blue)">
+    <line x1="340" y1="270" x2="400" y2="270"/><line x1="620" y1="270" x2="680" y2="270"/><line x1="900" y1="270" x2="910" y2="270"/>
+    <path d="M1010 330V400H285V470"/><line x1="410" y1="520" x2="470" y2="520"/><line x1="690" y1="520" x2="750" y2="520"/>
+    <path d="M970 520H1140V350H1230"/><line x1="1430" y1="350" x2="1480" y2="350"/>
+  </g>
+  <path d="M1010 210V175H510V220" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#bp-arrow-red)"/>
+  <g font-size="12" font-weight="600">
+    <rect x="680" y="162" width="156" height="24" rx="5" fill="#FFFFFF"/>
+    <text x="758" y="178" text-anchor="middle" fill="#DC2626">不通过：回退调优</text><text x="1025" y="390" fill="#16A34A">通过</text>
+  </g>
+  <rect x="120" y="650" width="1560" height="54" rx="8" fill="#FFFBEB" stroke="#D97706"/>
+  <text x="145" y="682" font-size="13" fill="#475569">顺序约束：模型转换与代码生成 → 固件编译 → 固件集成 → 烧录部署 → 端侧运行；部署完成后不再执行编译。</text>
+</g>
+  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
+  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色：数据准备；青色：云端训练</text>
+  <rect x="480" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#F97316" stroke-width="2"/>
+  <text x="504" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">橙色：模型优化；绿色：端侧部署</text>
+  <rect x="880" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#D97706" stroke-width="2"/>
+  <text x="904" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">粗实线：正向流程；虚线：回退迭代；菱形：精度验收</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图 3-11 展示了TinyML从数据采集到端侧推理的完整工程流程，其中模型优化与云端训练之间的回退反馈是保证落地精度的关键环节。</text>
   </svg>
 </svg>
+
   </main>
 </body>
 </html>

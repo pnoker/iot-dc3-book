@@ -1,69 +1,51 @@
-type: framework
-title: 图12-5 精准农业感知三维度与传感器选型权衡
-audience_takeaway: 读者应理解精准农业从土壤、气象、作物生理三个维度感知数据，并在精度、接口、功耗、成本四个维度上同步权衡传感器选型。
-purpose: 建立“天—地—苗”三维感知与四维选型权衡的全局框架，说明数据从哪来、选型看什么
-visual_focus: 三个感知维度自上而下汇聚到四维选型权衡的主链路。
-design_level: framework
-layout: 上半区三张维度卡片（土壤/气象/作物生理），下半区四张选型权衡卡片，蓝色箭头自上而下
+type: matrix
+title: 图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比
+audience_takeaway: 读者应理解产量预测有统计模型（ARIMA 只用目标变量历史值、可解释性强）与深度学习（LSTM 融合多源环境变量、能捕捉非线性关系）两条路线，并以 RMSE、MAE 评估。
+purpose: 对比两条产量预测路线的输入、建模步骤与评估指标
+visual_focus: 左右并列的两条建模路线。
+design_level: matrix
+layout: 左右并列：左侧 ARIMA 五步流程，右侧 LSTM 四层结构，底部共同评估指标
 elements:
-- 土壤（地）：体积含水量 VWC、土壤温度、电导率 EC
-- 气象（天）：空气温湿度、光照 PAR / 风速 / 降雨、防辐射罩
-- 作物生理（苗）：茎流、叶面湿度
-- 选型四维：精度、接口（RS-485/SDI-12/I2C）、功耗、成本
+- ARIMA：平稳性检验（ADF）、差分、模型识别（ACF/PACF）、参数估计与诊断（Ljung-Box）、预测
+- LSTM：多维特征输入（温度/降水/土壤湿度/生长天数）、滑动窗口（30～60 天）、LSTM 层 + Dropout、Dense 回归输出
+- 评估：RMSE（对大误差惩罚更重）、MAE（反映平均偏离更直观）
 relationships:
-- 三个感知维度共同约束四项选型权衡
-render_notes: HTML/SVG 渲染，浅色背景，绿/蓝/橙三色区分维度，底部图例，箭头自上而下。
+- 两条路线独立并列，最终都以 RMSE、MAE 评估
+render_notes: HTML/SVG 渲染，左右并列对比，蓝/绿区分两条路线，底部评估指标卡片。
 caption:
-  zh: 图12-5 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。
-  en: Figure 12-5 Soil, weather, and crop physiology form the "sky-ground-plant" data sources, jointly constraining sensor selection trade-offs on accuracy, interface, power, and cost.
+  zh: 图 12-5 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。
+  en: 'Figure 12-5 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables such as temperature, rainfall, soil moisture, and growing days and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'
 labels:
   en:
-    图12-5 精准农业感知三维度与传感器选型权衡: 'Figure 12-5 Precision Agriculture: Three Sensing Dimensions & Sensor Selection Trade-offs'
-    土壤、气象、作物生理三个感知维度，共同约束精度、接口、功耗、成本四项选型权衡。: 'Soil, weather, and crop physiology jointly constrain four selection trade-offs: accuracy, interface, power, and cost.'
-    三个感知维度供给数据 · 四个维度约束传感器选型 · 数据驱动灌溉与病害决策: Three dimensions supply data · four axes constrain sensor choice · data drives irrigation & disease decisions
-    感知三维度: Three Sensing Dimensions
-    “天 — 地 — 苗”三类数据源，决定监测精度与系统成本: '"Sky–ground–plant" data sources determine monitoring accuracy and system cost'
-    土壤（地）: Soil (ground)
-    体积含水量 VWC: Volumetric water content VWC
-    决定“何时灌溉”，灌溉决策的核心阈值: Sets "when to irrigate" — the core threshold of irrigation decisions
-    土壤温度: Soil temperature
-    影响根系活性与养分吸收效率: Affects root activity and nutrient uptake
-    电导率 EC: Conductivity EC
-    反映可溶性盐分，EC 偏高只补清水: Reflects soluble salts; high EC → clear water only
-    气象（天）: Weather (sky)
-    空气温湿度: Air temp & humidity
-    低温高湿显著提升灰霉病爆发风险: Cold + humid sharply raises gray-mold risk
-    光照 PAR · 风速 · 降雨: Light PAR · wind · rainfall
-    PAR 约束干物质积累；喷药避风、雨后推迟灌溉: PAR limits dry-matter gain; spray in calm, delay irrigation after rain
-    防辐射罩: Radiation shield
-    温湿度探头必检项，避免阳光直射读数偏高: Must-check for temp/humidity probes; blocks sun-inflated readings
-    作物生理（苗）: Crop physiology (plant)
-    茎流传感器: Stem-flow sensor
-    测量茎秆水分上升速率，反映根系吸水受阻: Measures sap-rise rate in stems, revealing blocked root uptake
-    叶面湿度: Leaf wetness
-    叶片水膜是病害预警的核心指标: Leaf water film is a core disease-early-warning indicator
-    分阶段引入: Introduce in phases
-    维护频次与成本高，项目二/三阶段再考虑: High maintenance and cost — defer to project phases 2/3
-    传感器选型四维权衡: Four-Axis Sensor Selection Trade-off
-    四项同步权衡，接口选择最易被低估但工程影响巨大: Weigh all four at once; interface choice is the most underestimated yet the most consequential
-    精度: Accuracy
-    能否满足农艺要求: Meets agronomic needs?
-    灌溉决策需 VWC 误差可控: Irrigation decisions need controlled VWC error
-    FDR 低精度 / TDR 高精度: FDR lower accuracy / TDR higher accuracy
-    接口: Interface
-    RS-485 · 抗干扰，长距离布线: RS-485 · noise-immune, long cable runs
-    SDI-12 · 农业低功耗串行总线: SDI-12 · low-power agricultural serial bus
-    I2C · 板级短距连接: I2C · short on-board links
-    功耗: Power
-    能否支撑电池供电: Supports battery power?
-    间歇唤醒策略延长电池寿命: Intermittent wake extends battery life
-    测量电流几 mA ~ 几十 mA: 'Sense current: a few mA ~ tens of mA'
-    成本: Cost
-    是否在项目预算内: Within the project budget?
-    传感器成本往往超过通信模块: Sensors often cost more than comm modules
-    均匀加密优于高精度稀疏: Evenly spaced low-accuracy beats sparse high-accuracy
-    土壤维度: Soil dimension
-    气象维度: Weather dimension
-    作物生理维度: Crop physiology dimension
-    三维度共同约束选型权衡: Three dimensions jointly constrain the trade-offs
-    图12-5 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。: Figure 12-5 Soil, weather, and crop physiology form the "sky–ground–plant" data sources, jointly constraining sensor selection trade-offs on accuracy, interface, power, and cost.
+    图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比: 'Figure 12-5 Yield Prediction: ARIMA vs. LSTM'
+    ARIMA 只利用目标变量历史值，LSTM 融合温度、降水、土壤湿度、生长天数多变量；两条路线最终都以 RMSE、MAE 评估。: ARIMA uses only the history of the target variable; LSTM fuses temperature, rainfall, soil moisture, and growing days; both are scored by RMSE and MAE.
+    统计模型看自身历史 · 深度学习融合多源环境 · 输出连续产量值（公斤/公顷）: Statistics reads its own history · deep learning fuses multi-source environment · continuous yield output (kg/ha)
+    统计模型 · ARIMA（自回归积分滑动平均）: Statistical · ARIMA (autoregressive integrated moving average)
+    只利用目标变量自身的历史值，结构简单、可解释性强: Uses only the history of the target itself; simple and highly interpretable
+    平稳性检验: Stationarity test
+    ADF 检验 · p&gt;0.05 序列非平稳: ADF test · p>0.05 means non-stationary
+    差分: Differencing
+    一阶差分 y_t − y_{t−1} 消除趋势，d=1: First difference y_t − y_{t−1} removes trend, d=1
+    模型识别: Model identification
+    ACF / PACF 拖尾截尾特征定 p、q 阶数: ACF/PACF tailing and cutoffs set orders p and q
+    参数估计与诊断: Estimation & diagnostics
+    极大似然估计 · Ljung-Box 检验残差白噪声: Maximum likelihood · Ljung-Box tests residual white noise
+    预测: Forecast
+    点预测值 + 置信区间，依赖历史模式延续: Point forecast + confidence interval, assuming history repeats
+    深度学习 · LSTM（长短期记忆网络）: Deep learning · LSTM (long short-term memory)
+    融合多个外生变量，学习环境与产量的非线性关系: Fuses exogenous variables to learn nonlinear environment–yield relations
+    输入：多维环境特征序列: 'Input: multivariate environment sequences'
+    温度 · 降水 · 土壤湿度 · 生长天数（n_features=4）: Temperature · rainfall · soil moisture · growing days (n_features=4)
+    滑动窗口：过去 T 天（30～60 天）: 'Sliding window: past T days (30–60 days)'
+    覆盖灌浆期等完整生长期，转为三维张量输入: Covers full stages like grain filling; reshaped into 3-D tensors
+    LSTM 层 + Dropout: LSTM layer + Dropout
+    记忆单元与门控机制解决梯度消失，Dropout 防过拟合: Memory cells and gates fix vanishing gradients; Dropout prevents overfitting
+    Dense 回归输出: Dense regression output
+    linear 激活，输出未来产量（公斤/公顷）: linear activation, outputs future yield (kg/ha)
+    共同评估指标: Shared Evaluation Metrics
+    RMSE 均方根误差 · 对大误差惩罚更重: RMSE root mean square error · penalizes large errors more
+    MAE 平均绝对误差 · 反映平均偏离更直观: MAE mean absolute error · a more intuitive average deviation
+    ARIMA · 统计路线: ARIMA · statistical route
+    LSTM · 深度学习路线: LSTM · deep-learning route
+    团队资源有限时先从 ARIMA 建立基线，跨入 LSTM 前需积累 2～3 个完整生长周期数据: Start with an ARIMA baseline under tight resources; gather 2–3 full growing seasons before moving to LSTM
+    图 12-5 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。: 'Figure 12-5 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables — temperature, rainfall, soil moisture, and growing days — and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'

@@ -1,164 +1,147 @@
 type: sequence
-title: 图9-3 MQTT智能家居监控系统交互序列
-purpose: 展示MQTT在智能家居温湿度监控场景中的完整交互时序，包括连接建立、数据发布、告警触发以及断连后遗嘱消息的发布流程。
-audience_takeaway: 读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。
-visual_focus: 设备到Broker到订阅端的数据发布链路（蓝色虚线），以及断连后Broker发布的遗嘱消息（红色虚线）。
-design_level: detailed
-layout: 水平泳道，时间轴自上而下，分三个Phase阶段。
+title: 图 9-3 MQTT会话连接与心跳交互示意
+purpose: 展示客户端与Broker之间会话建立、心跳保活、断线检测、遗嘱执行、重连与会话恢复的完整流程。
+audience_takeaway: 理解会话持久化、心跳超时判定以及重连策略如何配合恢复已缓存的消息。
+visual_focus: 从Client重连到Broker推送离线缓存消息的主链路。
+design_level: implementation
+layout: 自上而下时间轴，左侧Client生命线，右侧Broker生命线，底部示意重连恢复。
 elements:
-- MQTT 传感器与 Broker
-- 云订阅端与手机 App
-- 网络故障事件
+- MQTT Client sensor01
+- MQTT Broker
+- 遗嘱消息订阅者
 relationships:
-- 传感器 ↔ Broker：连接时注册遗嘱并完成 CONNACK
-- 传感器 → Broker → 云订阅端：依次以 QoS 1 上报温度、分发温度、上报湿度、分发湿度
-- 云订阅端 → Broker → 手机 App：以 QoS 2 发布并分发关键告警
-- 网络故障 → Broker → 云订阅端：心跳超时后发布 retained 遗嘱消息
+- Client → Broker：以持久会话参数连接、订阅、发布并发送心跳
+- Broker → Client：确认连接、订阅、发布和心跳请求
+- Broker → Subscriber：心跳超时后代发遗嘱消息
+- Client → Broker → Client：以相同 Client ID 重连并恢复会话与缓存消息
+regions:
+- id: client_domain
+  label: 客户端域
+  role: 发起连接与上报数据
+- id: broker_domain
+  label: Broker域
+  role: 路由消息、管理会话与心跳
 components:
-- id: sensor
-  label: 传感器
+- id: client
+  label: Client (sensor01)
   type: edge
-  subtitle: MQTT Client
-  group: ''
+  subtitle: MQTT客户端设备
+  group: client_domain
   priority: primary
-  shape: card
+  shape: actor
 - id: broker
-  label: MQTT Broker
+  label: Broker
   type: platform
-  subtitle: 消息路由
-  group: ''
+  subtitle: MQTT代理服务器
+  group: broker_domain
   priority: primary
   shape: card
-- id: cloud_sub
-  label: 云订阅端
-  type: application
-  subtitle: MQTT Client
-  group: ''
-  priority: normal
-  shape: card
-- id: phone_app
-  label: 手机App
-  type: application
-  subtitle: 告警接收
-  group: ''
-  priority: normal
-  shape: card
-- id: network_fail
-  label: 网络故障
+- id: subscriber
+  label: Subscriber
   type: external
-  subtitle: 中断事件
+  subtitle: 遗嘱消息接收者
   group: ''
-  priority: risk
-  shape: boundary
+  priority: normal
+  shape: actor
 connections:
-- from: sensor
+- from: client
   to: broker
-  label: CONNECT (含遗嘱)
+  label: CONNECT (CleanSess=false, KA=60s)
   style: solid
   direction: request
 - from: broker
-  to: sensor
-  label: CONNACK
+  to: client
+  label: CONNACK (SessionPresent=false)
   style: solid
   direction: response
-- from: sensor
+- from: client
   to: broker
-  label: PUBLISH 温度 (qos=1)
-  style: dashed
-  direction: request
-- from: broker
-  to: cloud_sub
-  label: 分发温度
-  style: dashed
-  direction: event
-- from: sensor
-  to: broker
-  label: PUBLISH 湿度 (qos=1)
-  style: dashed
-  direction: request
-- from: broker
-  to: cloud_sub
-  label: 分发湿度
-  style: dashed
-  direction: event
-- from: cloud_sub
-  to: broker
-  label: PUBLISH 告警 (qos=2)
-  style: dashed
-  direction: request
-- from: broker
-  to: phone_app
-  label: 分发告警
-  style: dashed
-  direction: event
-- from: sensor
-  to: network_fail
-  label: TCP中断
+  label: SUBSCRIBE (temp/room1)
   style: solid
   direction: request
-- from: network_fail
+- from: broker
+  to: client
+  label: SUBACK
+  style: solid
+  direction: response
+- from: client
   to: broker
-  label: 心跳超时
+  label: PUBLISH (25.3°C, QoS1)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: PUBACK
+  style: solid
+  direction: response
+- from: client
+  to: broker
+  label: PINGREQ (每60s)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: PINGRESP
+  style: solid
+  direction: response
+- from: broker
+  to: broker
+  label: 1.5倍KA超时 (90s)
   style: dashed
   direction: event
 - from: broker
-  to: cloud_sub
-  label: PUBLISH 遗嘱 (retain=true)
+  to: subscriber
+  label: PUBLISH (Will Message)
   style: dashed
   direction: event
-regions:
-- id: phase_i
-  label: 连接建立 Phase I
-  role: 传感器连接并设置遗嘱消息
-- id: phase_ii
-  label: 正常运行 Phase II
-  role: 周期数据上报与告警触发
-- id: phase_iii
-  label: 断连处理 Phase III
-  role: 心跳超时与遗嘱发布
+- from: client
+  to: broker
+  label: CONNECT (重连, 相同ClientID)
+  style: solid
+  direction: request
+- from: broker
+  to: client
+  label: CONNACK (SessionPresent=true)
+  style: solid
+  direction: response
+- from: broker
+  to: client
+  label: 推送缓存消息 (QoS1/2)
+  style: solid
+  direction: request
 callouts:
-- 遗嘱消息在连接建立时通过 will_set 设置，Broker 只在非正常断开时发布。
-- QoS 2 告警保证精确一次送达，适用于关键通知场景。
+- 心跳超时（90s）不销毁会话。只要Session未过期，重连即可恢复。
+- 连接恢复后，Broker自动推送缓存消息，客户端无需重新订阅。
 legend:
-- 蓝色（实线/虚线）= 正常消息流（CONNECT/PUBLISH）
-- 红色虚线 = 遗嘱消息流（断连处理）
-- 橙色虚线 = 告警消息流（QoS 2）
-- 灰色节点 = 外部系统/第三方应用
+- 青绿色：客户端；蓝色：Broker；灰色：外部订阅者
+- 实线箭头：网络消息；虚线箭头：内部事件或超时自触发
+- 绿色箭头：恢复会话后的缓存消息推送路径
 visual_constraints:
-- 最多5个节点，节点标签短，解释放入 callouts。
-- 图例放在图底部，不遮挡分组边界。
-- 断连后的遗嘱发布用红色虚线强调。
-- 时间轴自上而下，标注Phase I/II/III分隔线。
-render_notes: HTML/SVG渲染，水平泳道布局。传感器在左，Broker在左中，云订阅在右中，手机App在右。时间轴自上而下。每条消息的箭头颜色和线型符合图例（CONNECT/ACK实线灰色，周期数据蓝色虚线，告警橙色虚线，遗嘱红色虚线）。图底部有图例说明。
+- 最多5个主节点，节点标签用短英文。
+- 超时和遗嘱广播用虚线。
+- 恢复会话后的消息推送用绿色高亮。
+- 图例放在图底部。
+render_notes: HTML/SVG渲染，浅色背景。Client用青绿色框，Broker用蓝色框。消息箭头带短标签。超时事件用broker自指向虚线节点。恢复会话后的推送箭头用绿色。底部图例。
 caption:
-  zh: 图9-3 展示了一个完整的MQTT智能家居监控交互序列。序列分三个阶段：Phase I连接建立与遗嘱设置，Phase II正常运行与告警触发，Phase III断连处理与遗嘱发布。重点突出QoS 1的周期数据、QoS 2的告警消息以及断连后的遗嘱消息三者的时序与角色差异。
-  en: 'Figure 9-3 A complete MQTT smart-home monitoring sequence in three phases: Phase I connection setup with Last Will registration, Phase II normal operation and alarm triggering, and Phase III disconnect handling and Last Will publishing. It highlights how QoS 1 periodic data, QoS 2 alarm messages, and the post-disconnect Last Will differ in timing and role.'
+  zh: 图 9-3 MQTT会话连接与心跳交互示意。Client（sensor01）向Broker发起持久会话连接，完成订阅并与Broker维持60秒间隔的心跳。网络中断后Broker在90秒（1.5倍KA）超时后判定Client离线，执行遗嘱消息。Client通过指数退避策略重连，Broker识别出相同ClientID并恢复会话，随后推送断开期间缓存的消息。
+  en: Figure 9-3 MQTT session connection and heartbeat interaction. The Client (sensor01) opens a persistent session with the Broker, subscribes, and keeps a 60-second heartbeat. After the network drops, the Broker marks the Client offline at the 90 s (1.5×KA) timeout and publishes its Last Will. The Client reconnects with exponential backoff; the Broker recognizes the same Client ID, restores the session, and pushes the messages buffered during the outage.
 labels:
   en:
-    图9-3 MQTT智能家居监控系统交互序列: Figure 9-3 MQTT Smart-Home Monitoring Sequence
-    连接、周期温湿度上报、QoS 2 告警及非正常断开后的遗嘱发布。: Connect, periodic temperature/humidity reports, QoS 2 alarms, and Last Will publishing after an unclean disconnect.
-    周期数据、告警与设备状态采用不同可靠性路径，Broker 负责路由与遗嘱代发: Periodic data, alarms, and device status take different reliability paths; the Broker routes and publishes the Last Will
-    CONNECT · 含 Will 配置: CONNECT · with Will config
-    ① 上报温度 · PUBLISH QoS 1: ① Report temperature · PUBLISH QoS 1
-    ② 分发温度至云订阅端: ② Deliver temperature to cloud subscriber
-    ③ 上报湿度 · PUBLISH QoS 1: ③ Report humidity · PUBLISH QoS 1
-    ④ 分发湿度至云订阅端: ④ Deliver humidity to cloud subscriber
-    PUBLISH 告警 · QoS 2: PUBLISH alarm · QoS 2
-    Broker 分发关键通知: Broker delivers critical notice
-    TCP 中断 · Broker 心跳超时: TCP drop · Broker heartbeat timeout
-    PUBLISH 遗嘱 · retain=true: PUBLISH Will · retain=true
-    阈值判断：湿度 &gt; 75%: 'Threshold check: humidity > 75%'
-    Phase I · 连接建立与遗嘱注册: Phase I · connect & register Will
-    Phase II · 正常运行与告警触发: Phase II · normal run & alarm trigger
-    Phase III · 断连处理与遗嘱发布: Phase III · disconnect & Will publish
-    传感器 · Client: Sensor · Client
-    MQTT 设备端: MQTT device side
-    消息路由: Message routing
-    云订阅端: Cloud subscriber
-    手机 App: Phone App
-    告警接收: Alarm receiver
-    蓝色虚线：周期数据（QoS 1）: 'Blue dashed: periodic data (QoS 1)'
-    橙色虚线：关键告警（QoS 2）: 'Orange dashed: critical alarm (QoS 2)'
-    红色虚线：异常断连后的遗嘱: 'Red dashed: Last Will after unclean disconnect'
-    遗嘱在 CONNECT 时注册，仅由 Broker 在检测到非正常断开后发布；正常 DISCONNECT 不触发。: The Will is registered at CONNECT and published only by the Broker on unclean disconnect; a normal DISCONNECT does not trigger it.
-    图9-3 周期数据、QoS 2 告警和遗嘱消息分别承担采集、关键通知与离线状态感知职责。: Figure 9-3 Periodic data, QoS 2 alarms, and the Last Will each serve collection, critical notification, and offline-state sensing.
+    图 9-3 MQTT会话连接与心跳交互示意: Figure 9-3 MQTT Session, Connection and Heartbeat
+    持久会话建立、心跳保活、超时触发遗嘱、指数退避重连与缓存消息恢复。: Persistent session setup, heartbeat keep-alive, timeout-triggered Last Will, exponential-backoff reconnect, and buffered message recovery.
+    心跳超时清理连接但不必销毁会话；相同 Client ID 重连后可恢复订阅与离线缓存消息: Heartbeat timeout clears the connection but need not destroy the session; reconnecting with the same Client ID restores subscriptions and offline buffered messages
+    PINGREQ · 最长 60 s 无其他控制报文时发送: PINGREQ · sent when no control message for 60 s
+    CONNECT · 重连 · 相同 Client ID: CONNECT · reconnect · same Client ID
+    推送断线期间缓存消息 · QoS 1/2: Push buffered messages · QoS 1/2
+    1.5×KA 超时 (90 s) 断开连接: 1.5×KA timeout (90 s) disconnects
+    指数退避 + 随机抖动: Exponential backoff + jitter
+    建立持久会话: Persistent session setup
+    心跳与断线检测: Heartbeat & outage detection
+    指数退避重连与恢复: Backoff reconnect & recovery
+    MQTT 客户端设备: MQTT client device
+    代理服务器 · 会话管理: Broker · session management
+    遗嘱消息接收者: Last Will receiver
+    实线：网络消息: 'Solid: network messages'
+    虚线：超时 / 本地策略: 'Dashed: timeout / local policy'
+    绿色：会话恢复后的缓存推送: 'Green: buffered push after session restore'
+    图 9-3 Broker 在心跳超时后执行遗嘱；持久会话未过期时，重连可恢复订阅并接收缓存消息。: Figure 9-3 The Broker executes the Last Will after a heartbeat timeout; while the persistent session has not expired, reconnecting restores subscriptions and delivers buffered messages.

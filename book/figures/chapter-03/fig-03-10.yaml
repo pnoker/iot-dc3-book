@@ -1,146 +1,42 @@
-type: architecture
-title: 图3-10 物模型与设备实例的关系：属性、动作、事件的交互模式
-purpose: 直观说明物模型作为“模板”如何被实例化，以及属性、动作、事件在平台侧的三种典型交互方式。
-audience_takeaway: 读者应理解物模型是一类设备的能力契约，多个设备实例共享同一模板，平台无需关心设备内部差异。
-visual_focus: 从物模型模板到告警服务的主链路。
-design_level: logical
-layout: 三层架构：顶部为“物模型模板”，中间为“设备实例层”，底部为“平台应用层”。
+type: dataflow
+title: 图 3-10 边缘数据预处理的三个工程目标
+audience_takeaway: 读者应理解边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作，只在边缘执行无需跨设备上下文的操作。
+purpose: 展示边缘数据预处理的三个工程目标
+visual_focus: 三目标自上而下的数据流。
+design_level: dataflow
+layout: 三个目标纵向堆叠（滤除噪声 → 减少数据量 → 独立决策），底部工程准则
 elements:
-- T-100 温度传感器物模型模板
-- 设备 A 与设备 B 实例
-- 时序数据存储、远程控制与告警服务
+- 滤除噪声：滑动平均、IIR 低通、中值滤波
+- 减少数据量：聚合（均值/最大/最小/峰值）、FFT 频谱特征
+- 独立决策：阈值规则触发本地动作 + 事件上下文上报
 relationships:
-- T-100 模板 → 设备 A、设备 B：同一能力契约被多个实例复用
-- 设备 A、设备 B → 数据存储：按模板上报属性值
-- 远程控制 → 设备 A、设备 B：按模板下发动作
-- 设备 A、设备 B → 告警服务：按模板推送事件
-regions:
-- id: model_domain
-  label: 物模型域
-  role: 能力契约与模板定义边界
-- id: device_domain
-  label: 设备实例域
-  role: 现场设备实例集合
-- id: platform_domain
-  label: 平台应用域
-  role: 数据处理与控制能力边界
-components:
-- id: thing_model_template
-  label: 模版T-100
-  type: platform
-  subtitle: 温度传感器物模型
-  group: model_domain
-  priority: primary
-  shape: card
-- id: device_a
-  label: 设备A
-  type: edge
-  subtitle: '实例ID: t-100-001'
-  group: device_domain
-  priority: normal
-  shape: card
-- id: device_b
-  label: 设备B
-  type: edge
-  subtitle: '实例ID: t-100-002'
-  group: device_domain
-  priority: normal
-  shape: card
-- id: data_storage
-  label: 数据存储
-  type: data
-  subtitle: 时序库
-  group: platform_domain
-  priority: primary
-  shape: database
-- id: remote_control
-  label: 远程控制
-  type: platform
-  subtitle: 动作下发
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: alarm_service
-  label: 告警服务
-  type: security
-  subtitle: 事件处理
-  group: platform_domain
-  priority: normal
-  shape: card
-connections:
-- from: thing_model_template
-  to: device_a
-  label: 复用
-  style: dashed
-  direction: bottom-to-top
-- from: thing_model_template
-  to: device_b
-  label: 复用
-  style: dashed
-  direction: bottom-to-top
-- from: device_a
-  to: data_storage
-  label: 上报属性
-  style: solid
-  direction: bottom-to-top
-- from: device_b
-  to: data_storage
-  label: 上报属性
-  style: solid
-  direction: bottom-to-top
-- from: remote_control
-  to: device_a
-  label: 下发动作
-  style: solid
-  direction: top-to-bottom
-- from: remote_control
-  to: device_b
-  label: 下发动作
-  style: solid
-  direction: top-to-bottom
-- from: device_a
-  to: alarm_service
-  label: 推送事件
-  style: dashed
-  direction: event
-- from: device_b
-  to: alarm_service
-  label: 推送事件
-  style: dashed
-  direction: event
-callouts:
-- 物模型模板被多个设备实例复用，模板定义一次，实例各自履行。
-- 平台侧的三个应用模块分别对应属性、动作、事件三种交互类型。
-- 动作下发方向是从平台到设备，属性上报和事件推送是从设备到平台。
-legend:
-- 橙色=物模型模板；灰色=设备实例；蓝色=平台服务。
-- 实线=同步或异步请求/响应；虚线=模板关联或事件推送。
-visual_constraints:
-- 最多6个主节点，节点标签短，解释放入 callouts。
-- 图例放在图底部，不遮挡分组边界。
-- 橙色只用于物模型模板，不扩散到设备实例。
-render_notes: HTML/SVG 渲染，浅色背景，圆角矩形。三行布局，顶部一个橙色宽矩形（模版T-100），中间两个灰色窄矩形并列（设备A、设备B），底部三个蓝色窄矩形并列（数据存储、远程控制、告警服务）。底部图例和出版级图注。
+- 三目标依次递进，上行流量压缩到原始量一个数量级以下，本地响应压缩到采样周期级
+render_notes: HTML/SVG 渲染，三目标纵向堆叠，蓝绿橙分层，箭头表示数据流方向。
 caption:
-  zh: 图3-10 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。
-  en: Figure 3-10 A thing model template reused by multiple device instances; devices talk to platform applications through three standard interface types. The platform never needs to care about internal device differences — it only interacts using the data formats and protocols defined by the thing model.
+  zh: 图 3-10 边缘预处理依次滤除噪声、减少数据量、独立决策，向上传干净数据、向下做快速动作；只在边缘执行无需跨设备上下文的操作，复杂分析留给网关或云平台。
+  en: Figure 3-10 Edge preprocessing filters noise, reduces data volume, and decides independently, in sequence — pushing clean data upward and acting quickly downward; only operations that need no cross-device context run at the edge, while complex analytics are left to gateways or the cloud platform.
 labels:
   en:
-    图3-10 物模型与设备实例的关系：属性、动作、事件的交互模式: 'Figure 3-10 Thing Model and Device Instances: Property, Action, and Event Interactions'
-    一份物模型模板被多台设备复用，设备与平台间通过属性上报、动作下发、事件推送三类接口交互。: One thing-model template is reused across many devices; device and platform interact through three interface types — property reporting, action delivery, and event push.
-    智能决策域: Intelligent Decision Domain
-    设备与边缘域: Device & Edge Domain
-    数据资产域: Data Asset Domain
-    平台服务域: Platform Service Domain
-    治理域: Governance Domain
-    复用: Reuse
-    上报属性值: Report property
-    下发动作: Deliver action
-    推送事件: Push event
-    Model-T-100 物模型: Model-T-100 Thing Model
-    设备A: Device A
-    设备B: Device B
-    数据存储: Data Storage
-    远程控制: Remote Control
-    告警服务: Alarm Service
-    symbols=dashed-line=复用/模板关系: 'Legend: dashed line = reuse / template relation'
-    图3-10 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。: Figure 3-10 A thing model template reused by multiple device instances; devices talk to platform applications through three standard interface types. The platform never needs to care about internal device differences — it only interacts using the data formats and protocols defined by the thing model.
+    图 3-10 边缘数据预处理的三个工程目标: Figure 3-10 Three Engineering Goals of Edge Data Preprocessing
+    边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作。: Edge preprocessing centers on filtering noise, reducing data volume, and independent decisions — uploading clean data and acting fast downward.
+    滤除噪声 · 减少数据量 · 独立决策，上行流量压缩到原始量一个数量级以下: Filter noise · reduce volume · decide independently; upstream traffic compressed to under a tenth of raw
+    滤除噪声: Filter Noise
+    从混乱中提取干净信号: Extract clean signals from the noise
+    滑动平均：环形缓冲区，窗口越长平滑越强但响应延迟越大: 'Moving average: ring buffer; longer windows smooth more but delay responses'
+    IIR 低通：通带平坦度好，定点 MCU 上易数值漂移: 'IIR low-pass: flat passband, but prone to numeric drift on fixed-point MCUs'
+    中值滤波：对偶发野点完全不敏感，但每次排序增加开销: 'Median filter: immune to occasional outliers, but each sort adds cost'
+    不滤噪直接判超限，一个电磁尖峰就可能触发误告警: Judge limits without filtering, and one EMI spike can trigger a false alarm
+    减少数据量: Reduce Data Volume
+    上传承结果，而非样本: Upload results, not raw samples
+    聚合：算术平均、最大值、最小值、峰值、累积积分值: 'Aggregation: mean, max, min, peak, cumulative integral'
+    300 个采样点 → 一条均值记录；工频周期 → 有效值 + 峰值两个特征: 300 samples → one mean record; one mains cycle → RMS + peak as two features
+    FFT：本地做频谱分析，只上传频谱特征矢量或主要频段幅值: 'FFT: spectrum analysis on device; upload only feature vectors or main band amplitudes'
+    需要原始波形做边频带诊断时，不能在边缘层压缩掉时域细节: When raw waveforms are needed for sideband diagnosis, edge compression must not discard time-domain detail
+    独立决策: Decide Independently
+    不依赖云平台完成快速控制: Fast control without the cloud
+    阈值规则命中 → 立即驱动继电器 / PWM / 声光告警: Threshold rule hit → instantly drive relays / PWM / audible-visual alarms
+    异常事件上下文（时间戳、带标记原始值快照）上传平台持久化: Anomaly context (timestamp, flagged raw-value snapshot) uploaded for platform persistence
+    本地闭环延迟在采样周期级，远低于云往返的数百毫秒甚至数秒: Local loop latency is sampling-period scale, far below the hundreds of ms or even seconds of a cloud round trip
+    断网时仍独立完成保护动作，恢复后事件日志补推平台: Protection actions complete offline; event logs are pushed once connectivity returns
+    工程准则：只在边缘执行“无需跨设备上下文”的操作；趋势预测、多传感器融合、大数据建模留给边缘网关或云平台: 'Engineering rule: run only operations needing no cross-device context at the edge; trend prediction, multi-sensor fusion, and big-data modeling stay with edge gateways or the cloud'
+    图 3-10 边缘预处理依次滤除噪声、减少数据量、独立决策，向上传干净数据、向下做快速动作；只在边缘执行无需跨设备上下文的操作，复杂分析留给网关或云平台。: Figure 3-10 Edge preprocessing filters noise, reduces data volume, and decides independently, in sequence — pushing clean data upward and acting quickly downward; only operations that need no cross-device context run at the edge, while complex analytics are left to gateways or the cloud platform.

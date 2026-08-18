@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图7-13 Agentic Center 工具生态与写入确认链路</title>
+  <title>图 7-13 MLOps 与 LLMOps 的边界及五道发布门</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">图7-13 Agentic Center 工具生态与写入确认链路</title>
-  <desc id="desc">当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，用户确认后才进入设备命令链路。</desc>
+  <title id="title">图 7-13 MLOps 与 LLMOps 的边界及五道发布门</title>
+  <desc id="desc">MLOps 治理模型与数据，LLMOps 新增 Prompt、索引、Tool schema、策略与评测集，经五道发布门逐步放权。</desc>
   <rect width="1200" height="720" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="600" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
@@ -22,104 +22,101 @@
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-    <marker id="ah-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
   </defs>
 
   <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图7-13 Agentic Center 工具生态与写入确认链路</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">工具通过 Facade 复用平台能力 · 租户与用户上下文随请求进入 Tool</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 7-13 MLOps 与 LLMOps 的边界及五道发布门</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">AI 应用是一组有依赖关系的资产，而不只是一个模型</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- 大模型 -->
-  <rect x="690" y="140" width="420" height="76" rx="12" fill="#2563EB"/>
-  <text x="900" y="172" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Agentic Center（大模型）</text>
-  <text x="900" y="196" font-size="11" fill="#DBEAFE" text-anchor="middle">Spring AI @Tool 暴露平台能力</text>
+  <!-- 对比表头 -->
+  <rect x="80" y="140" width="180" height="46" rx="0" fill="#94A3B8"/>
+  <text x="170" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">维度</text>
+  <rect x="260" y="140" width="760" height="46" rx="0" fill="#2563EB"/>
+  <text x="640" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">MLOps 重点</text>
+  <rect x="1020" y="140" width="700" height="46" rx="0" fill="#0F766E"/>
+  <text x="1370" y="170" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">LLMOps 新增重点</text>
 
-  <!-- Tool 生态：8 个 Tool -->
-  <text x="80" y="270" font-size="14" font-weight="700" fill="#334155">当前注册的 8 类 Tool</text>
+  <!-- 行：数据 -->
+  <rect x="80" y="186" width="180" height="70" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="170" y="228" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">数据</text>
+  <rect x="260" y="186" width="760" height="70" fill="#EFF6FF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="640" y="214" font-size="12" fill="#0F172A" text-anchor="middle">训练/验证数据、特征、标签</text>
+  <text x="640" y="236" font-size="11" fill="#475569" text-anchor="middle">特征流水线</text>
+  <rect x="1020" y="186" width="700" height="70" fill="#F0FDF4" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1370" y="214" font-size="12" fill="#0F172A" text-anchor="middle">Prompt、会话、RAG 语料、工具返回、人工反馈</text>
+  <text x="1370" y="236" font-size="11" fill="#475569" text-anchor="middle">新增</text>
 
-  <rect x="80" y="290" width="200" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="180" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">TenantTool</text>
-  <text x="180" y="338" font-size="11" fill="#475569" text-anchor="middle">租户上下文</text>
+  <!-- 行：资产 -->
+  <rect x="80" y="256" width="180" height="70" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="170" y="298" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">资产</text>
+  <rect x="260" y="256" width="760" height="70" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="640" y="284" font-size="12" fill="#0F172A" text-anchor="middle">模型、训练代码、特征流水线</text>
+  <rect x="1020" y="256" width="700" height="70" fill="#F0FDF4" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1370" y="284" font-size="12" fill="#0F172A" text-anchor="middle">模型、Prompt、索引、Tool schema、策略、评测集</text>
+  <text x="1370" y="306" font-size="11" fill="#475569" text-anchor="middle">新增</text>
 
-  <rect x="296" y="290" width="200" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="396" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">UserTool</text>
-  <text x="396" y="338" font-size="11" fill="#475569" text-anchor="middle">用户上下文</text>
+  <!-- 行：评测 -->
+  <rect x="80" y="326" width="180" height="70" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="170" y="368" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">评测</text>
+  <rect x="260" y="326" width="760" height="70" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="640" y="354" font-size="12" fill="#0F172A" text-anchor="middle">精度、召回、漂移、服务指标</text>
+  <rect x="1020" y="326" width="700" height="70" fill="#F0FDF4" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1370" y="354" font-size="12" fill="#0F172A" text-anchor="middle">忠实性、拒答、轨迹、越权、成本、非确定性波动</text>
+  <text x="1370" y="376" font-size="11" fill="#475569" text-anchor="middle">新增</text>
 
-  <rect x="512" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="612" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">DeviceTool</text>
-  <text x="612" y="338" font-size="11" fill="#475569" text-anchor="middle">设备检索 / 状态（只读）</text>
+  <!-- 行：发布 -->
+  <rect x="80" y="396" width="180" height="70" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="170" y="438" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">发布</text>
+  <rect x="260" y="396" width="760" height="70" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="640" y="424" font-size="12" fill="#0F172A" text-anchor="middle">模型注册、灰度、回滚</text>
+  <rect x="1020" y="396" width="700" height="70" fill="#F0FDF4" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1370" y="424" font-size="12" fill="#0F172A" text-anchor="middle">组件独立版本、只读先行、自主度分级、策略回退</text>
+  <text x="1370" y="446" font-size="11" fill="#475569" text-anchor="middle">新增</text>
 
-  <rect x="728" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="828" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">DriverTool</text>
-  <text x="828" y="338" font-size="11" fill="#475569" text-anchor="middle">驱动诊断（只读）</text>
+  <!-- 行：监控 -->
+  <rect x="80" y="466" width="180" height="70" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="170" y="508" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">监控</text>
+  <rect x="260" y="466" width="760" height="70" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="640" y="494" font-size="12" fill="#0F172A" text-anchor="middle">数据/概念漂移、预测质量</text>
+  <rect x="1020" y="466" width="700" height="70" fill="#F0FDF4" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1370" y="494" font-size="12" fill="#0F172A" text-anchor="middle">无证据回答、工具失败、注入、人工拒绝、上下文污染</text>
+  <text x="1370" y="516" font-size="11" fill="#475569" text-anchor="middle">新增</text>
 
-  <rect x="944" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="1044" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">ProfileTool</text>
-  <text x="1044" y="338" font-size="11" fill="#475569" text-anchor="middle">物模型（只读）</text>
+  <!-- 五道发布门 -->
+  <text x="80" y="610" font-size="14" font-weight="700" fill="#334155">五道发布门：先证明没有破坏，再逐步放权</text>
 
-  <rect x="1160" y="290" width="200" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="1260" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">PointTool</text>
-  <text x="1260" y="338" font-size="11" fill="#475569" text-anchor="middle">位号检索（只读）</text>
+  <rect x="80" y="630" width="300" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="230" y="662" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">① 离线回归</text>
+  <text x="230" y="688" font-size="11" fill="#475569" text-anchor="middle">golden set + 不可回答集 + 攻击集</text>
 
-  <rect x="1376" y="290" width="200" height="64" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="1476" y="318" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">PointValueTool</text>
-  <text x="1476" y="338" font-size="11" fill="#475569" text-anchor="middle">实时值读 / 写（需确认）</text>
+  <line x1="380" y1="675" x2="412" y2="675" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <rect x="80" y="370" width="200" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="180" y="398" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">SystemTool</text>
-  <text x="180" y="418" font-size="11" fill="#475569" text-anchor="middle">系统信息</text>
+  <rect x="412" y="630" width="300" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="562" y="662" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">② 影子流量</text>
+  <text x="562" y="688" font-size="11" fill="#475569" text-anchor="middle">读真实请求、无外部副作用</text>
 
-  <text x="80" y="470" font-size="11" fill="#64748B">CommandTool 与 EventTool 源码存在但未加入当前 Provider，不能算默认会话能力</text>
+  <line x1="712" y1="675" x2="744" y2="675" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <!-- 写入确认链路 -->
-  <line x1="40" y1="510" x2="1760" y2="510" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="80" y="550" font-size="14" font-weight="700" fill="#334155">写入确认链路（PointValueTool.writePointValue）</text>
+  <rect x="744" y="630" width="300" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="894" y="662" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">③ 灰度租户</text>
+  <text x="894" y="688" font-size="11" fill="#475569" text-anchor="middle">仅限定租户、设备、用户开放</text>
 
-  <rect x="80" y="572" width="300" height="90" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="230" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">模型调用 writePointValue</text>
-  <text x="230" y="628" font-size="11" fill="#475569" text-anchor="middle">校验 Device/Point/值非空</text>
-  <text x="230" y="646" font-size="11" fill="#475569" text-anchor="middle">取租户、用户、会话上下文</text>
+  <line x1="1044" y1="675" x2="1076" y2="675" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <line x1="380" y1="617" x2="436" y2="617" stroke="#F97316" stroke-width="2" marker-end="url(#ah-orange)"/>
+  <rect x="1076" y="630" width="300" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="1226" y="662" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">④ 只读先行</text>
+  <text x="1226" y="688" font-size="11" fill="#475569" text-anchor="middle">先查询 Tool，再需确认的写操作</text>
 
-  <rect x="436" y="572" width="300" height="90" rx="10" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
-  <text x="586" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">创建 PENDING Action</text>
-  <text x="586" y="628" font-size="11" fill="#475569" text-anchor="middle">10 分钟有效，返回 actionId</text>
-  <text x="586" y="646" font-size="11" fill="#475569" text-anchor="middle">模型不能绕过确认直接控制设备</text>
+  <line x1="1376" y1="675" x2="1408" y2="675" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
 
-  <line x1="736" y1="617" x2="792" y2="617" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-
-  <rect x="792" y="572" width="300" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="942" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">用户通过 Action 接口确认</text>
-  <text x="942" y="628" font-size="11" fill="#475569" text-anchor="middle">原子抢占 PENDING 且未过期的记录</text>
-  <text x="942" y="646" font-size="11" fill="#475569" text-anchor="middle">依据持久化 Action，而非模型自述</text>
-
-  <line x1="1092" y1="617" x2="1148" y2="617" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
-
-  <rect x="1148" y="572" width="280" height="90" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="1288" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">submitWrite → 设备</text>
-  <text x="1288" y="628" font-size="11" fill="#475569" text-anchor="middle">状态置为 EXECUTED / FAILED</text>
-  <text x="1288" y="646" font-size="11" fill="#475569" text-anchor="middle">经 Data、RabbitMQ、Driver 到达设备</text>
-
-  <rect x="1448" y="572" width="272" height="90" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="1584" y="604" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">审计可追溯</text>
-  <text x="1584" y="628" font-size="11" fill="#475569" text-anchor="middle">会话、租户、用户、Action</text>
-  <text x="1584" y="646" font-size="11" fill="#475569" text-anchor="middle">全链路记录，运维合规基础</text>
-
-  <!-- Legend -->
-  <g font-size="11" fill="#475569">
-    <rect x="80" y="710" width="16" height="14" rx="2" fill="#F0FDF4" stroke="#16A34A" stroke-width="1"/>
-    <text x="104" y="719" dominant-baseline="middle">只读查询 Tool</text>
-    <rect x="210" y="710" width="16" height="14" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1"/>
-    <text x="234" y="719" dominant-baseline="middle">含写操作 Tool（需确认）</text>
-    <rect x="370" y="710" width="16" height="14" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1"/>
-    <text x="394" y="719" dominant-baseline="middle">上下文 / 系统 Tool</text>
-  </g>
+  <rect x="1408" y="630" width="312" height="90" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1564" y="662" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">⑤ 扩大范围</text>
+  <text x="1564" y="688" font-size="11" fill="#475569" text-anchor="middle">指标稳定、演练通过后增加场景</text>
 
   <!-- Caption -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图7-13 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。</text>
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 7-13 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元；发布经离线回归、影子流量、灰度租户、只读先行、扩大范围五道门逐步放权。</text>
   </svg>
 </svg>
   </main>

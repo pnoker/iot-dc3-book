@@ -1,58 +1,139 @@
-type: layered
-title: 图9-14 语义互操作：从语法到语义的层次与路径
-audience_takeaway: 读者应理解互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体，按四步路径推进。
-purpose: 展示语义互操作的三层次与四步实践路径
-visual_focus: 三层次卡片与四步路径。
-design_level: layered
-layout: 上半三层次卡片，下半四步实践路径，底部可选标准
+type: timeline
+title: 图 9-14 物联网标准化演进时间线
+purpose: 展示物联网标准化从垂直协议独立演进，到水平平台收敛，再到语义互操作和AI交互接口扩展的四个关键阶段（节点均为示意性引用，不代表官方标准化路径）。
+audience_takeaway: 标准化的趋势是语义统一和AI交互接口预留，这决定了平台架构演进的长期方向。
+visual_focus: 从早期阶段到深水区再到MCP的阶段推进，用箭头标注每一个关键阶段的核心成果。
+design_level: logical
+layout: 水平时间线，从左至右分为四个阶段：早期、中间层、深水区、当前节点。每个阶段下方列出代表性标准组织/项目。
 elements:
-- 语法层：消息格式一致（协议适配网关），成本最低、字段含义须人工对齐
-- 结构层：字段名类型一致（物模型），减少低级错误、跨厂商仍须映射
-- 语义层：含义上下文一致（本体 SSN/SOSA），自动推理、设计复杂
-- 四步路径：语法统一 → 结构绑定 → 语义标注 → 推理联动
-- 可选标准：Matter、WoT TD、OPC UA PubSub、Sparkplug B
+- 工业、消费与电信垂直标准群
+- oneM2M 水平平台
+- IETF CoRE 资源目录与 W3C WoT 能力描述
+- MCP AI 交互接口扩展
 relationships:
-- 三层次映射三种载体，机器理解深度递增；四步路径从语法推进到语义
-render_notes: HTML/SVG 渲染，三层次卡片 + 四步路径，灰蓝绿橙分层。
+- 垂直标准群 → oneM2M：通过水平资源抽象降低跨领域适配成本
+- oneM2M → IETF CoRE、W3C WoT：从结构统一推进到资源与能力语义描述
+- IETF CoRE、W3C WoT → MCP：为工具和资源发现提供设计参考
+- oneM2M → MCP：以资源和订阅模型补充 AI 交互设计
+- MCP → 既有设备协议：扩展 AI 调用接口而不替代设备通信栈
+regions:
+- id: phase_early
+  label: 早期阶段
+  role: 垂直标准群，各自独立演进
+- id: phase_mid
+  label: 中间层阶段
+  role: 水平平台收敛，oneM2M示意
+- id: phase_deep
+  label: 深水区阶段
+  role: 语义描述与本体映射
+- id: phase_now
+  label: 当前节点
+  role: AI交互语义接口扩展
+components:
+- id: vertical_standards
+  label: 垂直标准
+  type: external
+  subtitle: 工业/消费/电信
+  group: phase_early
+  priority: normal
+  shape: card
+- id: oneM2M
+  label: oneM2M
+  type: standard
+  subtitle: 水平平台（示意）
+  group: phase_mid
+  priority: primary
+  shape: card
+- id: coRE
+  label: IETF CoRE
+  type: standard
+  subtitle: 资源目录（示意）
+  group: phase_deep
+  priority: normal
+  shape: card
+- id: wot
+  label: W3C WoT
+  type: standard
+  subtitle: Thing Description（示意）
+  group: phase_deep
+  priority: normal
+  shape: card
+- id: mcp
+  label: MCP
+  type: ai
+  subtitle: 设备-Agent交互
+  group: phase_now
+  priority: primary
+  shape: card
+connections:
+- from: vertical_standards
+  to: oneM2M
+  label: 水平整合
+  style: solid
+  direction: left-to-right
+- from: oneM2M
+  to: coRE
+  label: 语义描述
+  style: solid
+  direction: left-to-right
+- from: coRE
+  to: mcp
+  label: 资源目录复用
+  style: dashed
+  direction: left-to-right
+- from: wot
+  to: mcp
+  label: 能力描述参考
+  style: dashed
+  direction: left-to-right
+- from: oneM2M
+  to: mcp
+  label: 订阅模型参考
+  style: dashed
+  direction: left-to-right
+callouts:
+- oneM2M的水平平台是收敛起点，但语义层互操作仍是鸿沟。
+- MCP在设计思路上融合了已有成果，但并非取代它们，而是作为AI交互的补充层。
+legend:
+- 蓝色节点=核心标准化节点；虚线箭头=补充关系或设计参考关系；实线箭头=主要演进路线。
+visual_constraints:
+- 最多6个节点，标签短，解释放入callouts。
+- MCP用橙色强调，代表AI交互层。
+- 图例放在图底部，不遮挡时间线。
+render_notes: HTML/SVG渲染，浅色背景，水平时间线布局，箭头带短标签，底部图例和出版级图注。
 caption:
-  zh: 图9-14 互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体；实践按语法统一、结构绑定、语义标注、推理联动四步推进，语义层让机器理解数据真实含义。
-  en: Figure 9-14 Interoperability spans three levels — syntactic, structural, semantic — carried by protocol adaptation gateways, thing models, and ontologies; practice advances in four steps (syntax unification, structure binding, semantic annotation, inference and linkage), and the semantic level lets machines understand what data truly means.
+  zh: 图 9-14 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和AI交互接口的四个阶段。MCP在工程实践中融合了oneM2M和WoT的设计思路，而不是另起炉灶。
+  en: 'Figure 9-14 Four stages of IoT standardization: independent vertical standards, convergence on horizontal platforms, semantic description, and AI interaction interfaces. In practice MCP builds on the design ideas of oneM2M and WoT rather than starting from scratch.'
 labels:
   en:
-    图9-14 语义互操作：从语法到语义的层次与路径: 'Figure 9-14 Semantic Interoperability: Levels and Path'
-    互操作分语法、结构、语义三层次，从语法统一到结构绑定、语义标注、推理联动四步推进。: 'Interoperability spans syntactic, structural, and semantic levels, advancing in four steps: syntax unification, structure binding, semantic annotation, inference & linkage.'
-    不只关心“消息怎么写”，而是“消息真正指代什么”: Not just "how the message is written" but "what it actually means"
-    互操作能力三层次: Three levels of interoperability
-    语法层: Syntactic level
-    消息格式一致：JSON / CBOR / CoAP: 'Consistent message format: JSON / CBOR / CoAP'
-    载体：协议适配网关: 'Carrier: protocol adaptation gateway'
-    优势：实现成本最低，兼容现有网络栈: 'Strength: cheapest to build, works with existing network stacks'
-    局限：字段含义须人工对齐，扩展性差: 'Limit: field meanings need manual alignment, poor extensibility'
-    'temp: 23.5 → 能被正确解码': 'temp: 23.5 → decodes correctly'
-    结构层: Structural level
-    字段名与类型一致: Consistent field names and types
-    载体：物模型（Thing Model）: 'Carrier: thing model'
-    优势：代码生成减少低级错误: 'Strength: code generation cuts trivial errors'
-    局限：跨厂商仍须人工映射，存在语义歧义: 'Limit: cross-vendor mapping still manual, semantic ambiguity remains'
-    temperature 统一字段名，仍不知是℃还是℉: temperature unifies the name, but °C or °F remains unknown
-    语义层: Semantic level
-    含义与上下文一致: Consistent meaning and context
-    载体：本体（Ontology，SSN/SOSA）: 'Carrier: ontology (SSN/SOSA)'
-    优势：自动推理与发现，减少人工维护: 'Strength: automated inference and discovery, less manual upkeep'
-    局限：本体设计复杂，初始投入高: 'Limit: ontology design is complex, high initial cost'
-    自动识别单位不一致，统计前换算: Auto-detects unit mismatch and converts before aggregation
-    从语法适配到语义映射：四步实践路径: 'From syntax adaptation to semantic mapping: a four-step path'
-    ① 语法统一: ① Syntax unification
-    通用传输协议 + 统一消息编码: Common transport protocol + unified message encoding
-    消息能被接收方正确解码: Messages the receiver can decode correctly
-    ② 结构绑定: ② Structure binding
-    引入物模型预定义属性/事件/命令: Thing model introduces predefined properties/events/commands
-    跨厂商对齐依赖人工评审: Cross-vendor alignment relies on manual review
-    ③ 语义标注: ③ Semantic annotation
-    物模型附加本体 URI 标注: Thing model annotated with ontology URIs
-    ④ 推理与联动: ④ Inference & linkage
-    语义推理引擎发现设备间关联: Semantic reasoning engine discovers device relationships
-    同房间均值 / 超阈值聚合告警: Per-room averages / threshold aggregation alarms
-    可选标准（按场景复用，勿重复造轮子）: Optional standards (reuse per scenario, do not reinvent)
-    Matter（智能家居互操作）· W3C WoT TD（机器可读说明书）· OPC UA PubSub（工厂跨车间）· Sparkplug B（MQTT 工业语义）: Matter (smart-home interop) · W3C WoT TD (machine-readable description) · OPC UA PubSub (cross-workshop factories) · Sparkplug B (industrial MQTT semantics)
-    图9-14 互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体；实践按语法统一、结构绑定、语义标注、推理联动四步推进，语义层让机器理解数据真实含义。: Figure 9-14 Interoperability spans three levels — syntactic, structural, semantic — carried by protocol adaptation gateways, thing models, and ontologies; practice advances in four steps (syntax unification, structure binding, semantic annotation, inference and linkage), and the semantic level lets machines understand what data truly means.
+    图 9-14 物联网标准化演进时间线: Figure 9-14 IoT Standardization Timeline
+    示意性的四阶段演进：垂直标准、水平平台、语义描述与本体映射、AI 交互接口扩展；MCP 是补充层而非替代既有标准。: 'A four-stage sketch: vertical standards, horizontal platforms, semantic description & ontology mapping, AI interface extension; MCP is a complementary layer, not a replacement.'
+    概念阶段示意，不代表官方标准化路径或精确年代划分: Conceptual stages only; not an official standardization path or exact dating
+    能力描述参考 / 资源目录复用: Capability description / resource directory reuse
+    订阅 / 通知模型参考: Subscribe / notify model reference
+    水平整合: Horizontal convergence
+    语义描述: Semantic description
+    AI 接口扩展: AI interface extension
+    早期阶段: Early stage
+    垂直标准群: Vertical standards
+    工业 / 消费 / 电信: Industrial / consumer / telecom
+    各自独立演进: Each evolves independently
+    适配成本随品类增长: Adaptation cost grows with variety
+    中间层阶段: Middleware stage
+    水平平台（示意）: Horizontal platform (illustrative)
+    统一资源抽象与 API: Unified resource abstraction & APIs
+    仍需消除语义歧义: Semantic ambiguity remains
+    深水区阶段: Deep-water stage
+    资源目录与能力描述: Resource directory & capability description
+    语义标注与本体映射: Semantic annotation & ontology mapping
+    机器可读的共享含义: Machine-readable shared meaning
+    当前节点: Current stage
+    AI 交互接口扩展: AI interaction interface extension
+    工具与资源发现: Tool & resource discovery
+    补充层，不替代设备协议: A complement, not a device-protocol replacement
+    实线主轴：概念阶段推进: 'Solid spine: stage progression'
+    虚线：补充关系或设计参考（不表示标准继承或官方归属）: 'Dashed: complement or design reference (not standard inheritance or endorsement)'
+    橙色：AI 交互层: 'Orange: AI interaction layer'
+    长期方向: Long-term direction
+    从「消息可传」推进到「含义可共享」，再为 AI 提供经过治理的能力发现与调用接口。: From "messages deliverable" to "meaning shareable", then governed capability discovery and invocation for AI.
+    图 9-14 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和 AI 交互接口的四个阶段。MCP 在工程实践中融合了 oneM2M 和 WoT 的设计思路，而不是另起炉灶。: 'Figure 9-14 Four stages of IoT standardization: independent vertical standards, horizontal platform convergence, semantic description, and AI interaction interfaces. MCP builds on oneM2M and WoT design ideas rather than starting from scratch.'

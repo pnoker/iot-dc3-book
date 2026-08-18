@@ -1,5 +1,5 @@
 type: pyramid
-title: 图13-2 区块链与物联网融合的信任三角
+title: 图 13-2 区块链与物联网融合的信任三角
 audience_takeaway: 读者应理解信任三角三个维度各司其职：账本保数据一致、签名与共识保来源可信、合约保规则自动执行，缺一不可。
 purpose: 展示分布式账本、数字签名与共识机制、智能合约三者如何共同支撑物联网系统的可信基础。
 visual_focus: 从左端到顶部：驱动可信业务逻辑的主链路。
@@ -95,11 +95,11 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 金字塔式布局，顶部中心为结果，三个角向顶部汇聚。配色使用技术出版主题色，圆角矩形，箭头带标签。
 caption:
-  zh: 图13-2 区块链与物联网融合的信任三角：分布式账本提供数据一致性，数字签名与共识机制确保身份真实性，智能合约自动化执行信任规则。三者协同重塑物联网信任体系。
+  zh: 图 13-2 区块链与物联网融合的信任三角：分布式账本提供数据一致性，数字签名与共识机制确保身份真实性，智能合约自动化执行信任规则。三者协同重塑物联网信任体系。
   en: 'Figure 13-2 The trust triangle of blockchain–IoT convergence: the distributed ledger provides data consistency, digital signatures and consensus mechanisms ensure identity authenticity, and smart contracts execute trust rules automatically. Working together, the three reshape the IoT trust system.'
 labels:
   en:
-    图13-2 区块链与物联网融合的信任三角: Figure 13-2 The Blockchain–IoT Trust Triangle
+    图 13-2 区块链与物联网融合的信任三角: Figure 13-2 The Blockchain–IoT Trust Triangle
     分布式账本、签名与共识、智能合约分别约束数据一致性、来源可信与规则执行，缺一不可。: Ledger, signatures and contracts govern consistency, provenance and execution — all essential.
     三个维度各司其职，缺少任一维度都无法形成完整可信闭环: Each plays its part; missing any breaks the trusted loop
     可信任的物联网系统行为: Trustworthy IoT System Behavior
@@ -116,4 +116,4 @@ labels:
     提供可信数据基底: Provides the trusted data foundation
     确保数据来源可信: Ensures trusted data origin
     驱动可信业务逻辑: Drives trusted business logic
-    图13-2 分布式账本、签名与共识、智能合约分别约束数据一致性、来源可信与规则执行。: Figure 13-2 Ledger, signatures and contracts govern consistency, provenance and execution.
+    图 13-2 分布式账本、签名与共识、智能合约分别约束数据一致性、来源可信与规则执行。: Figure 13-2 Ledger, signatures and contracts govern consistency, provenance and execution.

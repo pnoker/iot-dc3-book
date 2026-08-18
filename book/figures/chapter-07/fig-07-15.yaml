@@ -1,48 +1,66 @@
-type: matrix
-title: 图7-15 从 Copilot 到 Agent：低自主度与高自主度对比
-audience_takeaway: 读者应理解 Copilot 是低自主度协作（模型辅助、人保留执行权），Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界。
-purpose: 对比 Copilot 与 Agent 两种模式的自主度边界
-visual_focus: 左右并列的两种模式卡片。
-design_level: matrix
-layout: 左 Copilot（低自主度）、右 Agent（高自主度演进参考），底部共同安全边界
+type: lifecycle
+title: 图 7-15 IoT DC3 工业 Agent Runtime 四级演进路线
+purpose: 展示 IoT DC3 从只读 Copilot、受控 Action、确定性 Workflow 到有界自治 Runtime 的渐进路线，并为每一级设置可验证的准入门槛。
+audience_takeaway: 自主度不是随模型能力自然提升，而是通过权限、状态、恢复、评测和故障演练逐级获得；高风险安全联锁在所有阶段都不向通用 Agent 开放。
+visual_focus: 四个成熟度阶段沿时间轴排列，每级包含能力、治理要求和晋级证据；底部红色安全基线贯穿全程，顶部显示当前 DC3 覆盖 L0 和部分 L1。
+design_level: logical
+layout: 1200×620 水平四阶段路线图：L0 只读 Copilot、L1 受控 Action、L2 Workflow Runtime、L3 有界自治 Runtime。阶段之间设置证据闸门；底部贯穿一条 PLC/SIS 与禁止能力红线。
 elements:
-- Copilot：用户主动触发、查询与单次点位写 Action、写入等待确认、失败返回操作员处理
-- Agent：事件/调度触发、多步长期任务、高风险继续确认或外部审批、运行状态与补偿接管
-- 共同边界：模型可提出受控写入但不能绕过 Action；实时联锁由 PLC/边缘控制器承担
+- L0 只读 Copilot：会话、查询 Tool、MCP 发现、租户授权
+- L1 受控 Action：风险分级、人工确认、幂等键、结果验证
+- L2 Workflow Runtime：run_id、状态机、步骤编排、超时重试、补偿、人工接管
+- L3 有界自治 Runtime：事件触发、调度租约、动态规划、跨系统 Skill、持续 Eval
+- 证据闸门：任务成功率、越权率、重复副作用、接管成功率、恢复时间
+- 安全基线：R3 动作、PLC/SIS 联锁、急停与故障保护始终不开放
+- 当前定位：DC3 已具备 L0，并通过点位写 Action 覆盖 L1 的一部分
 relationships:
-- Copilot → Agent 自主度逐步放开，写入确认与确定性控制边界保持不变
-render_notes: HTML/SVG 渲染，左右对比，蓝/绿两色，底部安全边界橙框。
+- L0 通过只读正确性与权限隔离验证后进入 L1
+- L1 通过审批、幂等和结果验证后进入 L2
+- L2 通过故障恢复、补偿和人工接管演练后进入 L3
+- 任一级未满足证据门槛时保持当前自主度或降级
+- 安全基线贯穿所有阶段，不随成熟度提高而取消
+legend:
+- 绿色：当前已具备或可验证
+- 蓝色：下一阶段运行时能力
+- 橙色：晋级证据闸门
+- 红色：永久禁止越过的控制边界
+render_notes: 遵循 style.yaml 浅色技术出版风格。四阶段等宽排列，阶段间闸门不与箭头重叠。当前覆盖范围使用绿色顶部括号标记，L2/L3 使用蓝色；底部红色安全基线贯穿全图。
 caption:
-  zh: 图7-15 Copilot 是低自主度协作，模型辅助、人保留执行权；Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界，实时安全控制始终由确定性系统承担。
-  en: 'Figure 7-15 Copilot is low-autonomy collaboration: the model assists while people retain execution authority; the AI agent evolves along the perceive-plan-act-feedback loop, currently bounded by controlled tool calls and Action confirmation, with real-time safety always carried by deterministic systems.'
+  zh: 图 7-15 IoT DC3 工业 Agent Runtime 四级演进路线。平台先证明能安全读取，再证明能受控写入，随后补齐 Workflow 与恢复能力，最后才进入有界自治；自主度由证据获得，而不是由模型名称决定。
+  en: 'Figure 7-15 The four-level evolution path of the IoT DC3 industrial AI agent Runtime. The platform first proves it can read safely, then that it can write under control, then completes workflow and recovery capabilities, and only afterward enters bounded autonomy; autonomy is earned through evidence, not decided by a model''s name.'
 labels:
   en:
-    图7-15 从 Copilot 到 Agent：低自主度与高自主度对比: 'Figure 7-15 Copilot to AI Agent: low vs. high autonomy'
-    Copilot 模型辅助、人保留执行权；Agent 沿感知-规划-行动-反馈循环自主执行，当前以受控 Tool 调用为边界。: 'Copilot: the model assists, people keep execution; the AI agent loops perceive-plan-act-feedback, bounded today by controlled tool calls.'
-    自主度是逐步放开的受控变量 · 实时安全控制始终由 PLC / 边缘控制器承担: Autonomy is a controlled variable released gradually · real-time safety stays with PLC / edge controllers
-    Copilot 模式 · 低自主度（当前可实现）: Copilot mode · low autonomy (buildable today)
-    模型负责查询、解释、生成建议，操作员保留最终判断与执行权: Model queries, explains, proposes; operator keeps final say and execution
-    触发方式: Trigger
-    用户主动发起对话: User-initiated conversation
-    任务范围: Task scope
-    已注册 Tool 的查询与单次点位写 Action: Registered-tool queries and one-shot point-write Actions
-    写入控制: Write control
-    点位写入等待用户确认: Point writes await user confirmation
-    失败处理: On failure
-    返回错误并由操作员处理: Error returned, operator handles it
-    典型组合: Typical combo
-    DeviceTool 查设备 + DriverTool 查驱动状态 + PointValueTool 查趋势: DeviceTool for devices + DriverTool for driver status + PointValueTool for trends
-    价值：先验证模型能否稳定“看对”和“解释对”: 'Value: prove the model reliably reads and explains'
-    Agent 模式 · 高自主度（演进参考）: Agent mode · high autonomy (evolution reference)
-    围绕目标执行“感知—规划—行动—反馈”循环: Runs the perceive-plan-act-feedback loop toward goals
-    事件或调度触发，需要新增实现: Event/schedule triggered — new build needed
-    显式工作流中的多步长期任务: Multi-step long tasks in explicit workflows
-    高风险与不可逆动作继续确认或接外部审批: 'High-risk / irreversible acts: confirm or external approval'
-    运行状态、重试边界、补偿与人工接管: Run state, retry bounds, compensation, takeover
-    待补能力: To add
-    事件触发与显式工作流、场景白名单、外部审批、按动作设计补偿: Event triggers and explicit workflows, scene allowlists, external approval, per-action compensation
-    不是当前已上线产品模式，需新增实现: Not a shipped product mode; needs new work
-    当前安全边界（两种模式共同约束）: Current safety boundary (binds both modes)
-    模型可以提出并准备受控写入，但不能绕过 Action 确认直接控制设备 · CommandTool / EventTool 当前未注册: Models may propose and stage controlled writes but cannot bypass Action confirmation to drive devices · CommandTool / EventTool not registered
-    实时联锁、紧急停机、自动切换能源等确定性控制，始终由 PLC、边缘控制器或规则系统执行: Deterministic control — interlocks, e-stops, energy auto-switching — always runs on PLCs, edge controllers, or rules
-    图7-15 Copilot 是低自主度协作，模型辅助、人保留执行权；Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界，实时安全控制始终由确定性系统承担。: 'Figure 7-15 Copilot is low-autonomy collaboration: the model assists while people retain execution authority; the AI agent evolves along the perceive-plan-act-feedback loop, currently bounded by controlled tool calls and Action confirmation, with real-time safety always carried by deterministic systems.'
+    图 7-15 IoT DC3 工业 Agent Runtime 四级演进路线: 'Figure 7-15 IoT DC3 Industrial AI Agent Runtime: four-level roadmap'
+    自主度由权限、状态、恢复与评测证据逐级获得，不由模型名称决定；安全联锁在所有阶段都不开放。: Autonomy is earned level by level through permission, state, recovery, and eval evidence — not by model name; safety interlocks never open.
+    自主度由权限、状态、恢复与评测证据逐级获得，不由模型名称决定: Autonomy is earned by permission, state, recovery, and eval evidence — not model names
+    当前 DC3：已具备 L0，并覆盖 L1 的部分关键链路: 'DC3 today: L0 in place, covering key parts of L1'
+    L0 · 只读 Copilot: L0 · Read-Only Copilot
+    先证明系统能安全看对: First prove it reads correctly
+    能力: Capabilities
+    会话 · 查询 Tool · MCP 发现: Sessions · query tools · MCP discovery
+    设备状态解释 · 排查建议: Explain device state · suggest fixes
+    证据门槛: Evidence gate
+    Tool 选择与参数正确: Correct tool & parameter choice
+    跨租户越权 = 0: Cross-tenant violations = 0
+    当前已具备: Available today
+    L1 · 受控 Action: L1 · Controlled Actions
+    再证明系统能在约束下做对: Then prove correct action in bounds
+    风险分级 · 人工确认: Risk tiering · human confirmation
+    幂等键 · 执行后验证: Idempotency keys · post-execution checks
+    无审批高风险执行 = 0: Unapproved high-risk executions = 0
+    重复副作用 = 0: Duplicate side effects = 0
+    点位写部分具备: Point writes partially available
+    让任务可恢复、可补偿、可接管: Recoverable, compensable, takeover-ready
+    run_id · 状态机 · 步骤编排: run_id · state machine · step orchestration
+    超时重试 · 补偿 · 人工接管: Timeout retry · compensation · human takeover
+    进程 / MQ / DB 故障恢复: Process / MQ / DB failure recovery
+    副作用状态一致: Consistent side-effect state
+    待建设: To build
+    L3 · 有界自治 Runtime: L3 · Bounded-Autonomy Runtime
+    在限定范围内持续完成任务: Sustained task completion in bounds
+    事件触发 · 调度租约: Event triggers · scheduling leases
+    动态规划 · 跨系统 Skill · 持续 Eval: Dynamic planning · cross-system Skills · continuous eval
+    任务成功率 · 接管成功率: Task success rate · takeover success rate
+    恢复时间达标: Meets recovery-time targets
+    安全基线（全程贯穿）：R3 动作、PLC / SIS 联锁、急停与故障保护始终不向通用 Agent 开放: 'Safety baseline (always on): R3 actions, PLC/SIS interlocks, e-stops, and fault protection never open to general agents'
+    图 7-15 自主度通过权限、状态、恢复、评测与故障演练逐级获得；高风险安全联锁在所有阶段都不开放。: Figure 7-15 Autonomy is earned level by level through permissions, state, recovery, evaluation, and failure drills; high-risk safety interlocks stay closed at every stage.

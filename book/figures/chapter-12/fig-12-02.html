@@ -3,104 +3,166 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图12-2 作物病害识别CNN处理流程（架构示意）</title>
+  <title>图 12-2 环境传感网络部署拓扑示意</title>
   <style>
+    * export contract: 1200px logical width; static, offline, no script *
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
+    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
+    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .value { font-size: 14px; line-height: 1.55; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图12-2 作物病害识别CNN处理流程（架构示意）</title>
-  <desc id="desc">叶片图像经三级卷积池化提取层次特征、逐级降采样，展平后进入全连接层，Softmax 输出健康与各病害概率。</desc>
+  <title id="title">图 12-2 环境传感网络部署拓扑示意</title>
+  <desc id="desc">星型拓扑：终端节点单跳直达 LoRaWAN 网关，网关经 4G/有线回传至云平台。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
+  <svg x="24.000" y="60.000" width="1152.000" height="640.000" viewBox="0 0 1800.000 1000.000" preserveAspectRatio="xMidYMid meet">
+
+
 
   <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
 
   <defs>
     <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#10B981"/></marker>
+    <marker id="ah-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
+    <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
   </defs>
 
-  <!-- 标题 -->
+  <!-- ===== Title area ===== -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图12-2 作物病害识别CNN处理流程（架构示意）</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">卷积提取层次特征，池化逐级降采样，全连接层输出病害概率</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 12-2 环境传感网络部署拓扑示意</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">星型拓扑 · 终端节点单跳直达网关 · 数据自下而上汇聚至云平台</text>
+
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <!-- ===== 7 个方框（y=240-360） ===== -->
-  <!-- 1 输入图像 -->
-  <rect x="115" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
-  <text x="210" y="288" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">叶片图像</text>
-  <text x="210" y="318" font-size="11" fill="#475569" text-anchor="middle">224×224×3</text>
-  <text x="210" y="340" font-size="11" fill="#475569" text-anchor="middle">RGB</text>
+  <!-- ===== data_domain boundary (purple) ===== -->
+  <rect x="60" y="128" width="1680" height="176" rx="12" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="80" y="158" font-size="13" font-weight="700" fill="#7C3AED">数据资产域</text>
+  <text x="80" y="176" font-size="11" fill="#64748B">数据沉淀与治理边界</text>
 
-  <!-- 2 卷积池化① -->
-  <rect x="345" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="440" y="272" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">卷积 + 池化 ①</text>
-  <text x="440" y="298" font-size="11" fill="#475569" text-anchor="middle">Conv2D + ReLU</text>
-  <text x="440" y="320" font-size="11" fill="#475569" text-anchor="middle">MaxPool2D</text>
-  <text x="440" y="380" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">16×112×112</text>
+  <!-- c1: 云平台 / 数据中台 (database cylinder, purple) -->
+  <path d="M 770,176 L 770,256 A 130,13 0 0 0 1030,256 L 1030,176" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M 770,194 A 130,13 0 0 0 1030,194" fill="none" stroke="#7C3AED" stroke-width="1" opacity="0.35"/>
+  <ellipse cx="900" cy="176" rx="130" ry="13" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="900" y="226" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">云平台 / 数据中台</text>
+  <text x="900" y="246" font-size="11" fill="#475569" text-anchor="middle">数据库 · AI模型 · 大屏 · 告警</text>
 
-  <!-- 3 卷积池化② -->
-  <rect x="575" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="670" y="272" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">卷积 + 池化 ②</text>
-  <text x="670" y="298" font-size="11" fill="#475569" text-anchor="middle">Conv2D + ReLU</text>
-  <text x="670" y="320" font-size="11" fill="#475569" text-anchor="middle">MaxPool2D</text>
-  <text x="670" y="380" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">32×56×56</text>
+  <!-- ===== edge_domain boundary (green) ===== -->
+  <rect x="60" y="340" width="1680" height="520" rx="12" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="80" y="370" font-size="13" font-weight="700" fill="#10B981">设备与边缘域</text>
+  <text x="80" y="388" font-size="11" fill="#64748B">现场异构资源边界</text>
 
-  <!-- 4 卷积池化③ -->
-  <rect x="805" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
-  <text x="900" y="272" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">卷积 + 池化 ③</text>
-  <text x="900" y="298" font-size="11" fill="#475569" text-anchor="middle">Conv2D + ReLU</text>
-  <text x="900" y="320" font-size="11" fill="#475569" text-anchor="middle">MaxPool2D</text>
-  <text x="900" y="380" font-size="12" font-weight="700" fill="#2563EB" text-anchor="middle">64×28×28</text>
+  <!-- c2: LoRaWAN 网关 card (green) -->
+  <rect x="750" y="400" width="300" height="88" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <line x1="800" y1="466" x2="800" y2="420" stroke="#10B981" stroke-width="2"/>
+  <circle cx="800" cy="417" r="3" fill="#10B981"/>
+  <path d="M 808,426 A 9,9 0 0 0 808,410" fill="none" stroke="#10B981" stroke-width="1.5"/>
+  <path d="M 814,430 A 15,15 0 0 0 814,406" fill="none" stroke="#10B981" stroke-width="1.5"/>
+  <text x="968" y="436" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">LoRaWAN 网关</text>
+  <text x="968" y="458" font-size="11" fill="#475569" text-anchor="middle">农田中央立杆 · 4G/有线回传</text>
 
-  <!-- 5 Flatten -->
-  <rect x="1035" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.8"/>
-  <text x="1130" y="284" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Flatten</text>
-  <text x="1130" y="314" font-size="11" fill="#475569" text-anchor="middle">展平为一维</text>
-  <text x="1130" y="380" font-size="12" font-weight="700" fill="#7C3AED" text-anchor="middle">50,176</text>
+  <!-- callout: key takeaway -->
+  <rect x="1180" y="400" width="398" height="80" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="1198" y="428" font-size="13" font-weight="700" fill="#334155">星型单跳 = 低功耗根源</text>
+  <text x="1198" y="450" font-size="11" fill="#64748B">终端不维护中继路由，仅与网关一对一通信；</text>
+  <text x="1198" y="468" font-size="11" fill="#64748B">长休眠占空比，故可电池长期运行。</text>
 
-  <!-- 6 Dense -->
-  <rect x="1265" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.8"/>
-  <text x="1360" y="284" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">Dense</text>
-  <text x="1360" y="314" font-size="11" fill="#475569" text-anchor="middle">128 神经元 · ReLU</text>
+  <!-- backhaul: c2 -> c1 (solid gray, up) -->
+  <line x1="900" y1="400" x2="900" y2="270" stroke="#64748B" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <text x="960" y="330" font-size="11" font-weight="700" fill="#475569" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3">4G / 有线回传</text>
 
-  <!-- 7 概率条 -->
-  <rect x="1495" y="240" width="190" height="120" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.8"/>
-  <text x="1590" y="268" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">病害概率</text>
-  <text x="1590" y="290" font-size="10.5" fill="#475569" text-anchor="middle">Softmax · C 类</text>
-  <text x="1590" y="312" font-size="11" fill="#0F172A" text-anchor="middle">健康 0.01</text>
-  <text x="1590" y="330" font-size="11" fill="#0F172A" text-anchor="middle">白粉病 0.88</text>
-  <text x="1590" y="348" font-size="11" fill="#0F172A" text-anchor="middle">锈病 0.05 · 叶斑 0.06</text>
+  <!-- ===== Farmland plane (2D) ===== -->
+  <rect x="110" y="540" width="1580" height="300" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="130" y1="610" x2="1670" y2="610" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
+  <line x1="130" y1="700" x2="1670" y2="700" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
+  <line x1="130" y1="790" x2="1670" y2="790" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="2 8"/>
 
-  <!-- 箭头 -->
-  <line x1="307" y1="300" x2="343" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
-  <line x1="537" y1="300" x2="573" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
-  <line x1="767" y1="300" x2="803" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
-  <line x1="997" y1="300" x2="1033" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
-  <line x1="1227" y1="300" x2="1263" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
-  <line x1="1457" y1="300" x2="1493" y2="300" stroke="#2563EB" stroke-width="2.3" marker-end="url(#ah-blue)"/>
+  <!-- c3 cluster label -->
+  <text x="130" y="566" font-size="13" font-weight="700" fill="#10B981">终端节点（多类传感器）</text>
+  <text x="130" y="584" font-size="11" fill="#64748B">土壤水分 · 叶面湿度 · 光照 · 温湿度</text>
 
-  <!-- ===== 阶段分组标注 ===== -->
-  <line x1="115" y1="430" x2="1685" y2="430" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="210" y="462" font-size="13" font-weight="700" fill="#475569" text-anchor="middle">输入</text>
-  <text x="670" y="462" font-size="13" font-weight="700" fill="#2563EB" text-anchor="middle">特征提取与降采样</text>
-  <text x="1230" y="462" font-size="13" font-weight="700" fill="#7C3AED" text-anchor="middle">分类决策</text>
-  <text x="1590" y="462" font-size="13" font-weight="700" fill="#0F766E" text-anchor="middle">概率输出</text>
+  <!-- ===== LoRa star uplinks (dashed green, all converge on gateway) ===== -->
+  <g stroke="#10B981" stroke-width="1.5" stroke-dasharray="5 4" fill="none">
+    <line x1="320" y1="664" x2="900" y2="488"/>
+    <line x1="470" y1="754" x2="900" y2="488"/>
+    <line x1="620" y1="634" x2="900" y2="488"/>
+    <line x1="770" y1="779" x2="900" y2="488"/>
+    <line x1="1030" y1="779" x2="900" y2="488"/>
+    <line x1="1180" y1="634" x2="900" y2="488"/>
+    <line x1="1330" y1="754" x2="900" y2="488"/>
+    <line x1="1480" y1="664" x2="900" y2="488"/>
+  </g>
 
-  <!-- 底部说明 -->
-  <rect x="115" y="500" width="1570" height="70" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
-  <text x="900" y="530" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">三级特征提取：边缘 → 纹理 → 形状</text>
-  <text x="900" y="554" font-size="11.5" fill="#475569" text-anchor="middle">空间分辨率逐级降低、通道数逐级增加；C = 病害类别数 + 健康类别</text>
+  <!-- ===== Terminal sensor nodes (green) ===== -->
+  <g>
+    <!-- t1 -->
+    <circle cx="320" cy="680" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="320" cy="680" r="5" fill="#10B981"/>
+    <text x="320" y="708" font-size="11" fill="#475569" text-anchor="middle">土壤水分</text>
+    <!-- t2 -->
+    <circle cx="470" cy="770" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="470" cy="770" r="5" fill="#10B981"/>
+    <text x="470" y="798" font-size="11" fill="#475569" text-anchor="middle">温湿度</text>
+    <!-- t3 -->
+    <circle cx="620" cy="650" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="620" cy="650" r="5" fill="#10B981"/>
+    <text x="620" y="678" font-size="11" fill="#475569" text-anchor="middle">叶面湿度</text>
+    <!-- t4 -->
+    <circle cx="770" cy="795" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="770" cy="795" r="5" fill="#10B981"/>
+    <text x="770" y="823" font-size="11" fill="#475569" text-anchor="middle">光照</text>
+    <!-- t5 -->
+    <circle cx="1030" cy="795" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1030" cy="795" r="5" fill="#10B981"/>
+    <text x="1030" y="823" font-size="11" fill="#475569" text-anchor="middle">土壤水分</text>
+    <!-- t6 -->
+    <circle cx="1180" cy="650" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1180" cy="650" r="5" fill="#10B981"/>
+    <text x="1180" y="678" font-size="11" fill="#475569" text-anchor="middle">温湿度</text>
+    <!-- t7 -->
+    <circle cx="1330" cy="770" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1330" cy="770" r="5" fill="#10B981"/>
+    <text x="1330" y="798" font-size="11" fill="#475569" text-anchor="middle">叶面湿度</text>
+    <!-- t8 -->
+    <circle cx="1480" cy="680" r="16" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+    <circle cx="1480" cy="680" r="5" fill="#10B981"/>
+    <text x="1480" y="708" font-size="11" fill="#475569" text-anchor="middle">光照</text>
+  </g>
 
-  <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图12-2 三级卷积池化把空间分辨率从 224 逐级压缩到 28、通道数由 3 增至 64，特征由边缘、纹理过渡到形状；Softmax 输出健康与各病害概率，取最大者为识别结果。</text>
+  <!-- ===== Legend ===== -->
+  <line x1="40" y1="880" x2="1760" y2="880" stroke="#E2E8F0" stroke-width="1"/>
+  <g font-size="11" fill="#475569">
+    <line x1="60" y1="905" x2="100" y2="905" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="108" y="906" dominant-baseline="middle">虚线 · LoRa 星型上行（终端单跳直达网关）</text>
+
+    <line x1="450" y1="905" x2="490" y2="905" stroke="#64748B" stroke-width="2"/>
+    <text x="498" y="906" dominant-baseline="middle">实线 · 4G / 有线回传（网关→云平台）</text>
+
+    <rect x="820" y="898" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="844" y="906" dominant-baseline="middle">紫 · 数据资产域</text>
+
+    <rect x="980" y="898" width="16" height="14" rx="2" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <text x="1004" y="906" dominant-baseline="middle">绿 · 设备与边缘域</text>
+
+    <circle cx="1170" cy="905" r="8" fill="#FFFFFF" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="1170" cy="905" r="2.5" fill="#10B981"/>
+    <text x="1186" y="906" dominant-baseline="middle">绿圆 · 终端节点（传感器）</text>
+
+    <path d="M 1386,906 L 1386,894 A 9,2 0 0 0 1404,894 L 1404,906 A 9,2 0 0 1 1386,906" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="1412" y="906" dominant-baseline="middle">圆柱 · 云平台数据存储</text>
+  </g>
+
+  <!-- ===== Caption ===== -->
+  <text x="900" y="970" font-size="17" fill="#475569" text-anchor="middle">图 12-2 星型单跳免去终端维护中继路由，终端得以长休眠、电池长期运行；数据经 LoRa 上行至网关后由 4G/有线回传，自下而上汇入云平台数据资产域。</text>
   </svg>
 </svg>
+
   </main>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图5-6 降采样数据流程与数据量对比（例子）</title>
+  <title>图 5-6 边缘-云协同典型架构</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,94 +13,77 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图5-6 降采样数据流程与数据量对比（例子）</title>
-  <desc id="desc">四级数据桶由连续查询逐级聚合，数据量逐级降低并采用分层保留策略。</desc>
+  <title id="title">图 5-6 边缘-云协同典型架构</title>
+  <desc id="desc">实时任务靠近现场，全局训练与长期分析留在云端。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <defs>
-      <marker id="mk-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
-      <marker id="mk-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748B"/></marker>
+      <marker id="mk-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
+      <marker id="mk-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F97316"/></marker>
+      <marker id="mk-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/></marker>
     </defs>
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图5-6 降采样数据流程与数据量对比（例子）</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">连续查询逐级聚合；粒度变粗，数据量与长期存储成本同步下降。</text>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 5-6 边缘-云协同典型架构</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">实时任务靠近现场，全局训练与长期分析留在云端。</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- CQ 主链路（先画） -->
-    <line x1="500" y1="270" x2="538" y2="270" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
-    <text x="519" y="254" font-size="14" font-weight="600" fill="#475569" text-anchor="middle">CQ：每分钟</text>
-    <line x1="880" y1="270" x2="918" y2="270" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
-    <text x="899" y="254" font-size="14" font-weight="600" fill="#475569" text-anchor="middle">CQ：每小时</text>
-    <line x1="1260" y1="270" x2="1298" y2="270" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
-    <text x="1279" y="254" font-size="14" font-weight="600" fill="#475569" text-anchor="middle">CQ：每天</text>
+    <!-- 双向协同主链路（先画） -->
+    <line x1="150" y1="533" x2="150" y2="188" stroke="#0F766E" stroke-width="2.4" marker-end="url(#mk-teal)"/>
+    <text x="150" y="360" transform="rotate(-90 150 360)" font-size="18" font-weight="600" fill="#0F766E" text-anchor="middle">聚合上报</text>
+    <line x1="1650" y1="188" x2="1650" y2="533" stroke="#F97316" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-orange)"/>
+    <text x="1650" y="360" transform="rotate(90 1650 360)" font-size="18" font-weight="600" fill="#F97316" text-anchor="middle">规则 / 模型下发</text>
 
-    <!-- 查询路径（虚线，先画） -->
-    <line x1="330" y1="380" x2="700" y2="432" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
-    <line x1="710" y1="380" x2="800" y2="432" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
-    <line x1="1090" y1="380" x2="900" y2="432" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
-    <line x1="1470" y1="380" x2="1000" y2="432" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
+    <!-- 边缘框架标注（左列，紫） -->
+    <line x1="250" y1="300" x2="268" y2="300" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 5"/>
+    <rect x="110" y="270" width="140" height="60" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="180" y="296" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">KubeEdge</text>
+    <text x="180" y="318" font-size="12" fill="#64748B" text-anchor="middle">容器编排</text>
+    <line x1="250" y1="415" x2="268" y2="415" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 5"/>
+    <rect x="110" y="385" width="140" height="60" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="180" y="411" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">EdgeX Foundry</text>
+    <text x="180" y="433" font-size="12" fill="#64748B" text-anchor="middle">设备接入框架</text>
 
-    <!-- 原始数据桶 -->
-    <rect x="160" y="160" width="340" height="220" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.6"/>
-    <rect x="160" y="160" width="340" height="54" rx="10" fill="#7C3AED"/>
-    <rect x="160" y="194" width="340" height="20" fill="#7C3AED"/>
-    <text x="330" y="196" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">原始数据桶</text>
-    <text x="330" y="248" font-size="14" fill="#475569" text-anchor="middle">10 秒级精度 · 短保留窗口</text>
-    <rect x="185" y="276" width="290" height="18" rx="4" fill="#7C3AED"/>
-    <text x="330" y="330" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">数据量：原始基准</text>
+    <!-- 云端平台 -->
+    <rect x="270" y="140" width="1260" height="95" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+    <text x="900" y="178" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">云端平台</text>
+    <text x="900" y="210" font-size="15" fill="#475569" text-anchor="middle">全局分析 · AI 模型训练 · 时序存储 · 规则下发</text>
 
-    <!-- 分钟聚合桶 -->
-    <rect x="540" y="160" width="340" height="220" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
-    <rect x="540" y="160" width="340" height="54" rx="10" fill="#2563EB"/>
-    <rect x="540" y="194" width="340" height="20" fill="#2563EB"/>
-    <text x="710" y="196" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">分钟聚合桶</text>
-    <text x="710" y="248" font-size="14" fill="#475569" text-anchor="middle">每分钟均值 · 短时趋势</text>
-    <rect x="565" y="276" width="190" height="18" rx="4" fill="#2563EB"/>
-    <text x="710" y="330" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">数据量：显著减少</text>
+    <!-- 区域边缘 MEC -->
+    <rect x="270" y="255" width="1260" height="95" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="900" y="293" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">区域边缘（MEC）</text>
+    <text x="900" y="325" font-size="15" fill="#475569" text-anchor="middle">KubeEdge · 容器化 AI 推理</text>
+    <rect x="1280" y="272" width="150" height="40" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="1355" y="298" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">容器化推理</text>
 
-    <!-- 小时聚合桶 -->
-    <rect x="920" y="160" width="340" height="220" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
-    <rect x="920" y="160" width="340" height="54" rx="10" fill="#0F766E"/>
-    <rect x="920" y="194" width="340" height="20" fill="#0F766E"/>
-    <text x="1090" y="196" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">小时聚合桶</text>
-    <text x="1090" y="248" font-size="14" fill="#475569" text-anchor="middle">每小时均值 · 日报/周报</text>
-    <rect x="945" y="276" width="120" height="18" rx="4" fill="#0F766E"/>
-    <text x="1090" y="330" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">数据量：大幅降低</text>
+    <!-- 网关边缘 -->
+    <rect x="270" y="370" width="1260" height="95" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="900" y="408" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">网关边缘</text>
+    <text x="900" y="440" font-size="15" fill="#475569" text-anchor="middle">EdgeX · 协议转换 · 本地规则执行</text>
+    <rect x="1280" y="387" width="150" height="40" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="1355" y="413" font-size="14" font-weight="700" fill="#C2410C" text-anchor="middle">本地规则引擎</text>
 
-    <!-- 天聚合桶 -->
-    <rect x="1300" y="160" width="340" height="220" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.6"/>
-    <rect x="1300" y="160" width="340" height="54" rx="10" fill="#F97316"/>
-    <rect x="1300" y="194" width="340" height="20" fill="#F97316"/>
-    <text x="1470" y="196" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">天聚合桶</text>
-    <text x="1470" y="248" font-size="14" fill="#475569" text-anchor="middle">每天均值 · 年度趋势</text>
-    <rect x="1325" y="276" width="70" height="18" rx="4" fill="#F97316"/>
-    <text x="1470" y="330" font-size="15" font-weight="600" fill="#475569" text-anchor="middle">数据量：极小占比</text>
-
-    <!-- 查询仪表盘 -->
-    <rect x="560" y="434" width="680" height="72" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.6"/>
-    <text x="900" y="464" font-size="20" font-weight="700" fill="#0F172A" text-anchor="middle">查询仪表盘</text>
-    <text x="900" y="492" font-size="14" fill="#475569" text-anchor="middle">应用层直接读取聚合数据</text>
-
-    <!-- 分层保留策略 -->
-    <rect x="160" y="555" width="1480" height="165" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-    <text x="200" y="596" font-size="20" font-weight="700" fill="#334155">分层保留策略</text>
-    <text x="330" y="640" font-size="18" font-weight="700" fill="#7C3AED" text-anchor="middle">原始层</text>
-    <text x="330" y="672" font-size="14" fill="#475569" text-anchor="middle">短期保留 · 故障回放</text>
-    <text x="710" y="640" font-size="18" font-weight="700" fill="#2563EB" text-anchor="middle">分钟层</text>
-    <text x="710" y="672" font-size="14" fill="#475569" text-anchor="middle">中期保留 · 短时趋势</text>
-    <text x="1090" y="640" font-size="18" font-weight="700" fill="#0F766E" text-anchor="middle">小时层</text>
-    <text x="1090" y="672" font-size="14" fill="#475569" text-anchor="middle">季度趋势 · 日报/周报</text>
-    <text x="1470" y="640" font-size="18" font-weight="700" fill="#F97316" text-anchor="middle">天层</text>
-    <text x="1470" y="672" font-size="14" fill="#475569" text-anchor="middle">长期保留 · 年度趋势</text>
+    <!-- 设备边缘 -->
+    <rect x="270" y="485" width="1260" height="95" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
+    <text x="900" y="523" font-size="24" font-weight="700" fill="#0F172A" text-anchor="middle">设备边缘</text>
+    <text x="900" y="555" font-size="15" fill="#475569" text-anchor="middle">MCU · PLC · 传感器 / 执行器（Modbus / OPC UA / CoAP）</text>
 
     <!-- 图例 -->
-    <line x1="300" y1="762" x2="360" y2="762" stroke="#2563EB" stroke-width="2.4" marker-end="url(#mk-blue)"/>
-    <text x="372" y="768" font-size="15" fill="#475569">实线箭头：连续查询驱动自动化聚合</text>
-    <line x1="830" y1="762" x2="890" y2="762" stroke="#64748B" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#mk-gray)"/>
-    <text x="902" y="768" font-size="15" fill="#475569">虚线箭头：应用层查询路径</text>
+    <line x1="300" y1="636" x2="360" y2="636" stroke="#0F766E" stroke-width="2.4" marker-end="url(#mk-teal)"/>
+    <text x="372" y="642" font-size="15" fill="#475569">实线：聚合上报（数据流）</text>
+    <line x1="700" y1="636" x2="760" y2="636" stroke="#F97316" stroke-width="2.4" stroke-dasharray="8 5" marker-end="url(#mk-orange)"/>
+    <text x="772" y="642" font-size="15" fill="#475569">虚线：规则 / 模型下发（配置与指令）</text>
+    <line x1="1240" y1="636" x2="1300" y2="636" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#mk-purple)"/>
+    <text x="1312" y="642" font-size="15" fill="#475569">边缘框架部署位置</text>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图5-6 降采样数据流程与数据量对比：三级降采样将数据量逐级压缩，原始层短保留用于故障回放，分钟/小时/天层分别支撑短时趋势、日报与年度趋势。</text>
+    <!-- 说明 -->
+    <rect x="270" y="700" width="1260" height="130" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <circle cx="302" cy="734" r="4" fill="#0F766E"/>
+    <text x="316" y="740" font-size="15" fill="#475569">规则下发仅在初始或规则更新时触发，执行过程中不依赖回云。</text>
+    <circle cx="302" cy="772" r="4" fill="#2563EB"/>
+    <text x="316" y="778" font-size="15" fill="#475569">聚合上报保留趋势信息，减少原始数据带宽消耗；边缘断网时仍可执行本地规则。</text>
+
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-6 边缘-云协同典型架构：展示从设备边缘到云端的层次与协同模式，左侧标注 EdgeX/KubeEdge 的典型部署位置，规则下发与聚合上报构成双向协同。</text>
   </svg>
 </svg>
   </main>

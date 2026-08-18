@@ -22,7 +22,7 @@
 ## B. References
 
 1. 3GPP TS 22.261 / 36.300 / 38.300 — Mobile communications system architecture and service requirements
-2. 3GPP TS 38.875 (RedCap) / TR 38.821 (NTN) — Lightweight 5G and non-terrestrial networks
+2. 3GPP TR 38.875 (RedCap) / TR 38.821 (NTN) — Lightweight 5G and non-terrestrial networks
 3. CSA, *Matter Specification* — Unified application-layer standard for smart homes
 4. OASIS, *MQTT Version 5.0* — Message Queuing Telemetry Transport
 5. IETF, *RFC 7252 (CoAP)* / *draft-ietf-oauth-v2-1 (OAuth 2.1 draft)* / *RFC 8628 (device authorization flow)*
@@ -40,6 +40,6 @@
 
 **AI & agents**: Large language model (LLM) / Agent / RAG / Tool calling / MCP / Spring AI / Agentic Center / natural-language operations / anomaly detection / predictive maintenance / TSFM / on-device SLM
 
-**Security**: OAuth 2.1 / JWT / X.509 certificates / TLS 1.3 / DTLS / RBAC / ABAC / multi-tenancy / prompt injection / PQC (post-quantum cryptography)
+**Security**: OAuth 2.1 (IETF draft) / JWT / X.509 certificates / TLS 1.3 / DTLS / RBAC / ABAC / multi-tenancy / prompt injection / PQC (post-quantum cryptography)
 
 **Application scenarios**: Industrial IoT (IIoT) / digital twins / smart cities / connected vehicles (V2X) / precision agriculture / blockchain + IoT / supply-chain traceability

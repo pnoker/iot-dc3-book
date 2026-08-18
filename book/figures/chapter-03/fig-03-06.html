@@ -3,90 +3,88 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图3-6 三角测量定位原理示意</title>
+  <title>图 3-6 RFID在智能仓储中的应用拓扑示意</title>
   <style>
-    html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 0; overflow: hidden; }
-    .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .card { background: #FFFFFF; border: 1px solid #94A3B8; border-radius: 14px; padding: 14px 16px; }
-    .label { color: #475569; font-size: 12px; margin-bottom: 6px; }
-    .value { font-size: 14px; line-height: 1.55; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .page { width: 1200px; margin: 0; padding: 0; background: #F8FAFC; overflow: hidden; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图3-6 三角测量定位原理示意</title>
-  <desc id="desc">三个测距圆理想下交于一点，实测误差使交点退化为交叠区，最小二乘法在该区取误差平方和最小的点作为坐标。</desc>
+  <title id="title">图 3-6 RFID在智能仓储中的应用拓扑示意</title>
+  <desc id="desc">RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
-  <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
+  <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
+  <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
 
   <defs>
-    <marker id="bp-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
-    <marker id="bp-arrow-primary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/></marker>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563EB"/></marker>
+    <marker id="ah-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#0F766E"/></marker>
   </defs>
-  <rect width="1800" height="900" fill="#FFFFFF"/>
+
+  <!-- 标题 -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图3-6 三角测量定位原理示意</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">三个测距圆理想下交于一点，实测误差使交点退化为交叠区，最小二乘法在该区取误差平方和最小的点作为坐标。</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 3-6 RFID在智能仓储中的应用拓扑示意</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">固定式门禁持续采集进出事件，手持终端补充货架盘点，两路数据在边缘层汇聚</text>
+  <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-  <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
-  <g data-layout="architecture" transform="translate(250 65) scale(.76)">
-  <!-- 同一坐标系：1 m = 8 px；参考点 A(0,0)、B(60,0)、C(30,50)，真实目标 T(30,20) -->
-  <g stroke="#E2E8F0" stroke-width="0.7">
-    <path d="M450 160V650 M530 160V650 M610 160V650 M690 160V650 M770 160V650 M850 160V650 M930 160V650"/>
-    <path d="M400 200H980 M400 280H980 M400 360H980 M400 440H980 M400 520H980 M400 600H980"/>
-  </g>
-  <g stroke="#64748B" stroke-width="1.5" fill="none">
-    <path d="M410 600H1000" marker-end="url(#bp-arrow)"/>
-    <path d="M450 650V135" marker-end="url(#bp-arrow)"/>
-  </g>
-  <g fill="#64748B" font-size="12" text-anchor="middle">
-    <text x="450" y="622">0</text><text x="530" y="622">10</text><text x="610" y="622">20</text><text x="690" y="622">30</text><text x="770" y="622">40</text><text x="850" y="622">50</text><text x="930" y="622">60</text>
-    <text x="1018" y="605">X (m)</text>
-  </g>
-  <g fill="#64748B" font-size="12" text-anchor="end">
-    <text x="438" y="604">0</text><text x="438" y="524">10</text><text x="438" y="444">20</text><text x="438" y="364">30</text><text x="438" y="284">40</text><text x="438" y="204">50</text><text x="440" y="140">Y (m)</text>
-  </g>
+  <!-- ===== 云端层 ===== -->
+  <text x="280" y="142" font-size="15" font-weight="700" fill="#334155">云端层</text>
+  <rect x="280" y="154" width="1240" height="72" rx="8" fill="#FFFFFF" stroke="#475569" stroke-width="1.8"/>
+  <text x="900" y="186" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">WMS 仓储管理系统</text>
+  <text x="900" y="210" font-size="11" fill="#475569" text-anchor="middle">入出库校验 · 库存台账 · 差异报告</text>
 
-  <!-- 三次测距均指向同一目标；测量半径 d1=36.0 m、d2=37.0 m、d3=29.0 m -->
-  <g fill="rgba(249,115,22,0.07)" stroke="#F97316" stroke-width="2" stroke-dasharray="8,8">
-    <circle cx="450" cy="600" r="288"/>
-    <circle cx="930" cy="600" r="296"/>
-    <circle cx="690" cy="200" r="232"/>
-  </g>
-  <g stroke="#F97316" stroke-width="1.5" stroke-dasharray="5,4" fill="none">
-    <line x1="450" y1="600" x2="685" y2="433"/>
-    <line x1="930" y1="600" x2="685" y2="433"/>
-    <line x1="690" y1="200" x2="685" y2="433"/>
-  </g>
-  <g fill="#F97316" font-size="12" font-weight="600">
-    <text x="535" y="515">d1 = 36.0 m</text><text x="785" y="515">d2 = 37.0 m</text><text x="705" y="320">d3 = 29.0 m</text>
-  </g>
+  <!-- 中间件 → WMS -->
+  <line x1="900" y1="226" x2="900" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#ah-gray)"/>
+  <marker id="ah-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#475569"/></marker>
+  <text x="560" y="244" font-size="11" font-weight="700" fill="#475569">API / 事件更新台账</text>
 
-  <!-- 参考点 -->
-  <g fill="#EFF6FF" stroke="#2563EB" stroke-width="2">
-    <circle cx="450" cy="600" r="9"/><circle cx="930" cy="600" r="9"/><circle cx="690" cy="200" r="9"/>
-  </g>
-  <g fill="#0F172A" font-size="13" font-weight="600">
-    <text x="465" y="596">A (0, 0)</text><text x="945" y="596">B (60, 0)</text><text x="705" y="196">C (30, 50)</text>
-  </g>
+  <!-- ===== 边缘层 ===== -->
+  <text x="280" y="274" font-size="15" font-weight="700" fill="#2563EB">边缘层</text>
+  <rect x="280" y="286" width="1240" height="72" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.8"/>
+  <text x="900" y="318" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">RFID 中间件</text>
+  <text x="900" y="342" font-size="11" fill="#475569" text-anchor="middle">去重 · 过滤 · EPC 事件聚合 · WMS 接口</text>
 
-  <!-- 三圆的共同近交叠区与最小二乘估计 Q≈(29.4,20.9) -->
-  <ellipse cx="685" cy="433" rx="18" ry="14" fill="rgba(100,116,139,0.28)" stroke="#64748B" stroke-width="1"/>
-  <circle cx="685" cy="433" r="6" fill="#2563EB"/>
-  <path d="M690 440l8 8m0-8l-8 8" stroke="#DC2626" stroke-width="2"/>
-  <text x="708" y="428" fill="#2563EB" font-size="12" font-weight="700">Q 最小二乘估计 (29.4, 20.9)</text>
-  <text x="708" y="450" fill="#DC2626" font-size="12" font-weight="600">T 真实目标 (30, 20)</text>
-</g>
-  <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
-  <rect x="80" y="797" width="16" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
-  <text x="104" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">蓝色=核心能力；橙色=智能/风险路径</text>
-  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图3-6 三角测量定位原理示意图。三圆在理想条件下应精确交于一点，但实际测量存在RSSI波动或ToA时钟误差，导致交叠区域出现，可借助最小二乘法计算误差平方和最小的点作为最终坐标。</text>
+  <!-- ===== 现场层 ===== -->
+  <text x="280" y="386" font-size="15" font-weight="700" fill="#0F766E">现场层</text>
+  <rect x="280" y="398" width="1240" height="250" rx="8" fill="#F8FAFC" stroke="#0F766E" stroke-width="1.6"/>
+
+  <!-- 入库区 -->
+  <rect x="320" y="428" width="360" height="150" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="500" y="464" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">入库区</text>
+  <text x="500" y="492" font-size="12" fill="#0F172A" text-anchor="middle">固定式读写器</text>
+  <text x="500" y="518" font-size="11" fill="#475569" text-anchor="middle">门禁天线 ×2 ← UHF 标签</text>
+  <text x="500" y="544" font-size="11" fill="#94A3B8" text-anchor="middle">批量采集进出事件</text>
+
+  <!-- 出库区 -->
+  <rect x="720" y="428" width="360" height="150" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="900" y="464" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">出库区</text>
+  <text x="900" y="492" font-size="12" fill="#0F172A" text-anchor="middle">固定式读写器</text>
+  <text x="900" y="518" font-size="11" fill="#475569" text-anchor="middle">门禁天线 ×2 ← UHF 标签</text>
+  <text x="900" y="544" font-size="11" fill="#94A3B8" text-anchor="middle">批量采集进出事件</text>
+
+  <!-- 货架区 -->
+  <rect x="1120" y="428" width="360" height="150" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.6"/>
+  <text x="1300" y="464" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">货架区</text>
+  <text x="1300" y="492" font-size="12" fill="#0F172A" text-anchor="middle">手持终端</text>
+  <text x="1300" y="518" font-size="11" fill="#475569" text-anchor="middle">移动盘点 ← 货架 UHF 标签</text>
+  <text x="1300" y="544" font-size="11" fill="#94A3B8" text-anchor="middle">补充盘点</text>
+
+  <!-- 现场层 → 中间件 -->
+  <line x1="500" y1="428" x2="500" y2="360" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="520" y="398" font-size="11" font-weight="700" fill="#0F766E">RJ45</text>
+  <line x1="900" y1="428" x2="900" y2="360" stroke="#0F766E" stroke-width="2" marker-end="url(#ah-teal)"/>
+  <text x="920" y="398" font-size="11" font-weight="700" fill="#0F766E">RJ45</text>
+  <line x1="1300" y1="428" x2="1300" y2="360" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-blue)"/>
+  <text x="1320" y="398" font-size="11" font-weight="700" fill="#2563EB">Wi-Fi</text>
+
+  <!-- 图注 -->
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 3-6 RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。</text>
   </svg>
 </svg>
-
   </main>
 </body>
 </html>

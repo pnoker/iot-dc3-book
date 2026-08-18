@@ -1,56 +1,50 @@
-type: architecture
-title: 图9-10 LwM2M 对象树与引导注册
-audience_takeaway: 读者应理解 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐，设备经引导、注册、更新注册接入平台。
-purpose: 展示 LwM2M 对象树三级结构与引导注册流程
-visual_focus: 对象树三级结构与引导注册三步。
-design_level: architecture
-layout: 上半对象树三级卡片，中部路径示例，下半引导注册三步
+type: sequence
+title: 图 9-10 MCP 消息模型与能力描述边界
+audience_takeaway: 读者应理解 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。
+purpose: 展示 MCP 消息模型、能力协商与能力描述的责任边界
+visual_focus: initialize 协商与三类能力卡片。
+design_level: sequence
+layout: 上半 Client-Server 能力协商，中部三类能力卡片，底部责任边界
 elements:
-- Object 对象：3 设备、3303 温度、6 位置、5 固件更新
-- Instance 实例：同类能力多副本，编号从 0 开始
-- Resource 资源：/5700 读数、/5601 量程，R/W/E 权限
-- 引导注册：引导（Bootstrap）→ 注册（Register）→ 更新注册（Update）
-- 观察/通知：GET + Observe:0 推送式上报
+- JSON-RPC 2.0 载体，initialize 请求开始能力协商
+- tools：模型可调用动作 + JSON Schema 输入参数
+- resources：client 读取的上下文资源
+- prompts：可参数化提示模板
+- 责任边界：WoT TD 负责属性/单位/协议，MCP 补充权限、风险等级、幂等策略
 relationships:
-- 对象树三级嵌套，路径 /objectId/instanceId/resourceId 与 CoAP URI 对齐；引导注册三步接入平台
-render_notes: HTML/SVG 渲染，三级对象树卡片 + 引导注册三步流程，蓝绿橙分层。
+- initialize 协商后进入操作阶段；三类能力由 Server 声明；能力描述是安全代理的接口合约
+render_notes: HTML/SVG 渲染，Client-Server 协商 + 三类能力卡片 + 责任边界，蓝绿橙分层。
 caption:
-  zh: 图9-10 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。
-  en: Figure 9-10 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update registration, and the observe/notify mechanism provides push-style reporting.
+  zh: 图 9-10 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力；能力描述本质是安全代理的接口合约，权限、风险等级与幂等策略由平台层补充。
+  en: Figure 9-10 MCP rides on JSON-RPC 2.0 and, after initialize negotiation, exposes three capability types — tools/resources/prompts; a capability description is essentially the interface contract for secure proxying, with permissions, risk levels, and idempotency policy supplied by the platform layer.
 labels:
   en:
-    图9-10 LwM2M 对象树与引导注册: Figure 9-10 LwM2M Object Tree and Bootstrap/Register
-    LwM2M 把设备能力抽象为对象/实例/资源三级对象树，经引导、注册、更新注册接入平台。: LwM2M abstracts device capabilities into an object/instance/resource tree and joins the platform via bootstrap, register, and update.
-    CoAP 管消息收发，LwM2M 管设备能力的抽象、注册、配置与维护: CoAP handles message exchange; LwM2M handles capability abstraction, registration, configuration, and upkeep
-    对象树三级结构：把设备能力变成可寻址路径: 'Three-level object tree: turning device capabilities into addressable paths'
-    Object 对象: Object
-    代表一类能力: One capability class
-    3 设备 · 3303 温度 · 6 位置 · 5 固件更新: 3 Device · 3303 Temperature · 6 Location · 5 Firmware Update
-    同对象 ID = 平台读写接口可复用: Same object ID = reusable platform read/write interface
-    Instance 对象实例: Instance
-    同一能力的多个副本: Multiple copies of one capability
-    三个温度传感器 = 三个 /3303/ 实例: Three temperature sensors = three /3303/ instances
-    编号从 0 开始: Numbering starts at 0
-    Resource 资源: Resource
-    实例里的可读/写/执行项: Readable/writable/executable items in an instance
-    /5700 当前读数 · /5601 最小量程: /5700 current reading · /5601 min range
-    R 只读 / W 可写 / E 可执行: R read / W write / E execute
-    访问路径示例: Path example
-    读第一个温度传感器的当前值：/3303/0/5700: 'Read the first temperature sensor: /3303/0/5700'
-    路径语义与 CoAP URI 天然对齐，客户端固件按路径查表找处理器函数: Path semantics align naturally with CoAP URIs; client firmware dispatches handlers by path lookup
-    引导与注册：设备上平台的标准三步: 'Bootstrap & registration: the standard three steps to onboard'
-    ① 引导（Bootstrap）: ① Bootstrap
-    出厂预置信息联系引导服务器: Contact the bootstrap server with factory presets
-    返回主服务器地址、端口、PSK/证书、初始配置: Returns server address, port, PSK/certificate, initial config
-    仅首次上电 / 恢复出厂 / 证书过期时发生: Only on first power-up / factory reset / certificate expiry
-    ② 注册（Register）: ② Register
-    向 Server 发 CoAP POST: CoAP POST to the server
-    携带对象 ID 列表与端点名: Carries object ID list and endpoint name
-    返回 CoAP 2.01 Created: Returns CoAP 2.01 Created
-    ③ 更新注册（Update）: ③ Update
-    存活时间（Lifetime）到期前周期性 POST 续约: Periodic POST renews registration before Lifetime expiry
-    超时未更新 → 判定离线，释放注册资源: Missed update → marked offline, registration released
-    NB-IoT 水表通电后自动完成全流程: An NB-IoT water meter completes the whole flow on power-up
-    观察/通知：从轮询到推送: 'Observe/Notify: from polling to push'
-    平台发 GET + Observe:0 → 设备加入观察者列表 → 变化阈值 / 最小通知周期触发主动上报 → RST 取消观察，把通信主动权交给设备侧: Platform sends GET + Observe:0 → device joins the observer list → change threshold / minimum notify period triggers reports → RST cancels, handing the initiative to the device
-    图9-10 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。: Figure 9-10 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update, and the observe/notify mechanism provides push-style reporting.
+    图 9-10 MCP 消息模型与能力描述边界: Figure 9-10 MCP Message Model and Capability Boundary
+    MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。: MCP rides on JSON-RPC 2.0; after initialize negotiation it exposes tools/resources/prompts — capability descriptions are the interface contract for secure proxying.
+    MCP 只解决一个问题：AI 应用如何发现并调用外部能力: 'MCP solves one problem: how AI apps discover and invoke external capabilities'
+    发送协议版本与 capabilities: Sends protocol version and capabilities
+    不持过期清单跨会话复用: No stale lists reused across sessions
+    返回版本 + capabilities + 扩展: Returns version + capabilities + extensions
+    每次新会话重新校验: Re-validated at every new session
+    initialize 请求（JSON-RPC 2.0）: initialize request (JSON-RPC 2.0)
+    响应：protocolVersion + capabilities: 'Response: protocolVersion + capabilities'
+    Server 声明的三类核心能力: Three core capabilities declared by the server
+    tools 工具: tools
+    模型可调用的动作: Actions the model can call
+    声明 name、description、JSON Schema 输入参数: Declares name, description, JSON Schema inputs
+    例：iot_read_point(deviceId, pointId): e.g. iot_read_point(deviceId, pointId)
+    resources 资源: resources
+    client 读取的上下文资源: Context resources read by the client
+    设备说明、历史摘要、文档: Device docs, history summaries, documents
+    支持 URI 模式匹配: Supports URI pattern matching
+    prompts 提示模板: prompts
+    可发现、可参数化的提示模板: Discoverable, parameterizable prompt templates
+    用于引导模型行为: Used to steer model behavior
+    能力描述遵从 JSON Schema: Capability descriptions follow JSON Schema
+    能力描述的责任边界：MCP 与 WoT TD 各管一段: 'Responsibility boundary: MCP and WoT TD each cover their part'
+    WoT TD / OPC UA / LwM2M 对象负责：属性、事件、命令、数据类型、单位、协议绑定: WoT TD / OPC UA / LwM2M objects own properties, events, commands, data types, units, protocol bindings
+    MCP server 基于上述模型适配生成 tools/resources，但必须额外补充三件事：: 'The MCP server derives tools/resources from those models but must add three things:'
+    ① 用户权限（当前主体是否被授权） ② 动作风险等级（写操作是否需二次确认） ③ 幂等策略（重复调用是否安全）: ① user permission (is the principal authorized) ② action risk level (does a write need confirmation) ③ idempotency policy (is a repeat call safe)
+    工具描述是不可信输入：限制 server 来源、审核 tool 名称与 schema 变化，防止诱导模型泄露或越权: 'Tool descriptions are untrusted input: restrict server sources, review tool names and schema changes to prevent leaks or privilege escalation'
+    MCP 只定义 tools 的描述格式，不定义“温度”的单位、枚举范围或生命周期: MCP only defines the tools description format — not the unit, enum range, or lifecycle of "temperature"
+    图 9-10 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力；能力描述本质是安全代理的接口合约，权限、风险等级与幂等策略由平台层补充。: Figure 9-10 MCP rides on JSON-RPC 2.0 and, after initialize negotiation, exposes three capability types — tools/resources/prompts; a capability description is essentially the interface contract for secure proxying, with permissions, risk levels, and idempotency policy supplied by the platform layer.
