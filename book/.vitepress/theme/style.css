@@ -1069,6 +1069,11 @@ body {
         font-size: 28px;
     }
 
+}
+
+/* 表格横向滚动：平板与窄桌面（桌面侧栏出现后内容区反而更窄，列多/长表头
+   表格的 min-content 会撑破页面宽度；≥1400px 大屏保持卡片式铺满样式） */
+@media (max-width: 1399px) {
     .VPDoc table {
         display: block;
         overflow-x: auto;
