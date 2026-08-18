@@ -4,13 +4,13 @@ You are translating ONE section file of a published technical book
 《从工业软件到 AI 智能体》 ("From Industrial Software to AI Agents") from Chinese
 to English. The book teaches IoT platform engineering, cloud-native architecture,
 and AI agents in industrial settings. Translation quality bar: the pair
-`book/manuscript/chapter-01/1.1.md` (source) ↔ `book/manuscript-en/chapter-01/1.1.md`
+`book/manuscript/zh/chapter-01/1.1.md` (source) ↔ `book/manuscript/en/chapter-01/1.1.md`
 (translation). READ BOTH before you start.
 
 ## Output file
 
-`book/manuscript-en/chapter-XX/X.Y.md` — same filename as the source
-`book/manuscript/chapter-XX/X.Y.md`. Write it only; touch nothing else.
+`book/manuscript/en/chapter-XX/X.Y.md` — same filename as the source
+`book/manuscript/zh/chapter-XX/X.Y.md`. Write it only; touch nothing else.
 
 ## Structure fidelity (absolute rules)
 
@@ -81,8 +81,8 @@ Terms not listed: prefer the appendix A equivalent in the source's own
 ```bash
 cd /Users/pnoker/Code/pnoker/IoTDC3/github/iot-dc3-book && python3 - <<'EOF'
 import re
-src = open('book/manuscript/chapter-XX/X.Y.md', encoding='utf-8').read()
-dst = open('book/manuscript-en/chapter-XX/X.Y.md', encoding='utf-8').read()
+src = open('book/manuscript/zh/chapter-XX/X.Y.md', encoding='utf-8').read()
+dst = open('book/manuscript/en/chapter-XX/X.Y.md', encoding='utf-8').read()
 a1 = re.findall(r'@\[(fig-\d+-\d+)\]', src); a2 = re.findall(r'@\[(fig-\d+-\d+)\]', dst)
 assert a1 == a2, f'anchors differ: {a1} vs {a2}'
 def noc(t): return re.sub(r'```.*?```', '', t, flags=re.DOTALL)

@@ -1,5 +1,11 @@
 # 《从工业软件到 AI 智能体》书籍网站 · 设计总览
 
+> **2026-08 迁移说明**：本目录是站点设计的历史档案，其中关于 `docs/` 中间层、
+> `scripts/build_web.py` Python 转换层的描述已过时。当前架构为 VitePress 直接以
+> `book/` 为根（`vitepress dev/build book`），渲染期变换在
+> `book/.vitepress/buildkit/` 实现，权威说明见仓库根 `AGENTS.md`。
+
+
 > 部署域名：**book.dc3.site**　·　参考站点：`iot-dc3-online`　·　技术栈：VitePress
 > 本文是设计入口；分项细节见同目录其余文档。
 

@@ -1,9 +1,9 @@
-# English Manuscript (manuscript-en)
+# English Manuscript (manuscript/en)
 
 English final-copy sources for the site's `/en/` locale. The tree mirrors
-`book/manuscript/` one-to-one; `scripts/build_web.py` picks up whatever is
+`book/manuscript/zh/` one-to-one; the buildkit renders whatever is
 translated — untranslated chapters simply stay Chinese-only. Edit a file,
-rerun `pnpm web` (or `pnpm dev`), and the site reflects it immediately.
+restart `pnpm dev` (or rerun `pnpm build`), and the site reflects it immediately.
 
 ## Conventions
 
@@ -31,10 +31,10 @@ rerun `pnpm web` (or `pnpm dev`), and the site reflects it immediately.
 
 ## Translating a figure's in-artwork labels
 
-Run `uv run python scripts/extract_figure_i18n.py fig-XX-YY --write` to add a
+Run `node scripts/figure-i18n.mjs fig-XX-YY --write` to add a
 `labels.en` stub to that figure's registry entry, fill in the translations, and the
 `/en/` pages render English-labeled SVGs on the next build. Figures without a
-mapping fall back to Chinese labels, and the build prints an audit warning. Keep
+mapping fall back to Chinese labels, and the build fails with an audit error. Keep
 in-figure English compact — SVG text boxes are sized for the shorter Chinese strings.
 
 ## Progress
@@ -50,3 +50,25 @@ in-figure English compact — SVG text boxes are sized for the shorter Chinese s
 Full English edition is live at `/en/`. Revisions to the Chinese manuscript should
 be mirrored here section by section — the shared conventions live in
 `TRANSLATION_CONTRACT.md` (same directory).
+
+## Translating a NEW chapter (structure steps)
+
+Section files alone are not enough — the chapter also needs its structure-page
+stub so the `/en/` chapter landing page exists:
+
+1. Create `book/manuscript/en/chapter-XX/` with `X.Y.md` section files
+   (plus `_intro.md` if the Chinese chapter has one);
+2. Create the stub `book/pages/en/chapter-XX.md` with exactly:
+
+   ```
+   ---
+   bookStub: chapter
+   chapter: XX
+   ---
+   ```
+
+   (copy any existing `book/pages/en/chapter-*.md` — the stub is only a marker,
+   the buildkit injects the rendered divider/overview/section list at build time).
+
+Untranslated chapters simply have no files here and no stub — they render
+Chinese-only with plain-text sidebar entries.
