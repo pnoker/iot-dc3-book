@@ -169,20 +169,19 @@ body {
 :lang(zh-CN) .VPNavBarTitle .title {
     font-size: 15px;
 }
-/* VitePress 的 title 容器样式带 scoped data-v 属性，书站需 !important 覆盖；
-   收紧容器 padding（960+ 与 1440+ 居中规则一并覆盖），给中文标题完整显示空间 */
+/* header 作为全宽横条：title 回到横条 flex 流内（不再 absolute 限宽于 sidebar），
+    logo+title 胶囊与右侧工具栏同排悬浮；sidebar 顶部的 curtain（sidebar 宽度内的纯色条）
+    一并隐藏，避免与 header 毛玻璃背景割裂 */
 @media (min-width: 960px) {
     .VPNavBar.has-sidebar .title {
+        position: static !important;
         box-sizing: border-box !important;
         padding: 0 16px !important;
+        width: auto !important;
     }
 }
-@media (min-width: 1440px) {
-    .VPNavBar.has-sidebar .title {
-        box-sizing: border-box !important;
-        padding-left: 16px !important;
-        width: var(--vp-sidebar-width) !important;
-    }
+.VPSidebar .curtain {
+    display: none;
 }
 
 .dark .VPNavBarTitle .title {
