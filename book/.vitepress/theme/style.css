@@ -787,6 +787,14 @@ body {
     font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', 'Fira Mono', 'Roboto Mono', Menlo, Monaco, 'Courier New', monospace;
 }
 
+/* 小屏：覆盖 VitePress 默认「代码块通栏」负 margin（-1.5rem），
+与表格/卡片保持一致的左右间隔，保留圆角边框 */
+@media (max-width: 640px) {
+    .vp-doc div[class*='language-'] {
+        margin: 16px 0;
+    }
+}
+
 /* Mermaid technical illustrations: a container consistent with the site's cards/tables — centered, horizontally scrollable, theme-aware */
 .dc3-mermaid,
 .vp-doc .mermaid {
