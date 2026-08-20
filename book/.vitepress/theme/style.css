@@ -1325,57 +1325,6 @@ body {
     font-family: inherit;
 }
 
-/* ── header 图库按钮（搜索框前）── */
-.gallery-nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* 与导航右侧动作按钮（折叠/主题 40×40）等大，紧贴其左，长标题下不被遮挡 */
-    width: 40px;
-    height: 40px;
-    margin: 0 2px 0 0;
-    flex-shrink: 0;
-    border: 1px solid rgba(var(--clover-glass-rgb), 0.25);
-    border-radius: 50%;
-    background:
-        radial-gradient(circle at 28% 8%, rgba(255, 255, 255, 0.84), transparent 44%),
-        linear-gradient(145deg, rgba(var(--clover-glass-rgb), 0.18), rgba(var(--clover-glass-rgb), 0.07));
-    box-shadow:
-        0 5px 14px rgba(var(--clover-glass-rgb), 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.78),
-        inset 0 -6px 12px rgba(var(--clover-glass-rgb), 0.05);
-    backdrop-filter: blur(12px) saturate(1.25);
-    -webkit-backdrop-filter: blur(12px) saturate(1.25);
-    transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
-}
-.gallery-nav-link:hover {
-    border-color: rgba(var(--clover-glass-rgb), 0.42);
-    box-shadow:
-        0 8px 18px rgba(var(--clover-glass-rgb), 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 -7px 14px rgba(var(--clover-glass-rgb), 0.08);
-    transform: translateY(-1px);
-}
-.dark .gallery-nav-link {
-    border-color: rgba(var(--clover-glass-rgb), 0.22);
-    background:
-        radial-gradient(circle at 28% 8%, rgba(231, 250, 255, 0.16), transparent 44%),
-        linear-gradient(145deg, rgba(var(--clover-glass-rgb), 0.17), rgba(var(--clover-glass-rgb), 0.06));
-    box-shadow:
-        0 6px 16px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(231, 250, 255, 0.14),
-        inset 0 -6px 12px rgba(0, 0, 0, 0.08);
-}
-.gallery-nav-icon {
-    display: flex;
-    width: 21px;
-    height: 21px;
-}
-.gallery-nav-icon svg {
-    width: 100%;
-    height: 100%;
-}
-
 /* ── 图库页面：突破正文宽度限制（container/content/content-container 全链路） ── */
 .VPDoc .container:has(.vp-doc._figures) {
     max-width: 1360px !important;
@@ -1390,12 +1339,7 @@ body {
     max-width: 1280px !important;
 }
 
-/* ── 图库按钮图标显示加强 ── */
-.gallery-nav-icon svg {
-    display: block;
-}
-
-/* 小屏：header 空间有限，隐藏站名文字只留 logo，给四叶草/搜索/汉堡腾出空间 */
+/* 小屏：header 空间有限，隐藏站名文字只留 logo，给搜索/汉堡腾出空间 */
 @media (max-width: 767px) {
     .VPNavBarTitle .title > span {
         display: none;
@@ -1500,18 +1444,4 @@ body {
     text-decoration: underline;
 }
 
-/* ── 四叶草图标主题协同（明/暗两套绿色，茎/外叶/内叶/中心四层） ── */
-:root {
-    --clover-stem: #00da38;
-    --clover-leaf-1: #0ce000;
-    --clover-leaf-2: #44ea00;
-    --clover-center: #92fa14;
-    --clover-glass-rgb: 0, 218, 56;
-}
-.dark {
-    --clover-stem: #4ade80;
-    --clover-leaf-1: #34d399;
-    --clover-leaf-2: #6ee7b7;
-    --clover-center: #d9f99d;
-    --clover-glass-rgb: 74, 222, 128;
-}
+/* 四叶草图库图标已并入社交图标组：单一 currentColor 配色，随明暗主题自动适配 */

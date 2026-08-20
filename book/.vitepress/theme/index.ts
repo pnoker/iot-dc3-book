@@ -8,21 +8,6 @@ import HeroWaves from './HeroWaves.vue'
 import HeroParticles from './HeroParticles.vue'
 import {coverBodyHtml} from './cover-art'
 
-// 图库按钮 icon（四叶草：iconfont 原版四层绿色，茎/外叶/内叶/中心，主题协同）
-const GALLERY_ICON =
-  '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-  '<path d="M512.776 587.284s-7.744 193.284-68 304" fill="var(--clover-stem)"></path>' +
-  '<path d="M792.776 159.284s112 46.856 112 112c0 65.14-118.22 195.428-392 192 0 0-31.344-91.256 0-212 32.692-125.928 97.632-199.864 160-208 50.08-6.532 66.688 32.392 120 116z" fill="var(--clover-leaf-1)"></path>' +
-  '<path d="M511.536 459.276c-5.508-18.824-26.26-102.06 1.24-207.992 32.692-125.928 97.632-199.864 160-208 50.08-6.532 66.688 32.392 120 116l0.04 0.016-281.28 299.976z" fill="var(--clover-leaf-2)"></path>' +
-  '<path d="M791.396 720.032s-46.98 111.948-112.124 111.876c-65.14-0.068-195.3-118.428-191.576-392.204 0 0 91.288-31.248 212 0.228 125.892 32.824 199.76 97.844 207.828 160.224 6.476 50.084-32.464 66.652-116.128 119.876z" fill="var(--clover-leaf-1)"></path>' +
-  '<path d="M491.704 438.468c18.832-5.488 102.088-26.152 207.992 1.464 125.892 32.824 199.76 97.844 207.828 160.224 6.476 50.084-32.464 66.652-116.128 119.876l-0.016 0.036-299.676-281.6z" fill="var(--clover-leaf-2)"></path>' +
-  '<path d="M230.648 718.044s-111.9-47.1-111.76-112.24c0.14-65.144 118.644-195.176 392.416-191.156 0 0 31.148 91.32-0.46 212-32.96 125.856-98.056 199.652-160.444 207.656-50.092 6.424-66.62-32.536-119.752-116.26z" fill="var(--clover-leaf-1)"></path>' +
-  '<path d="M230.612 718.028l281.924-299.372c5.464 18.84 26.04 102.116-1.692 207.992-32.96 125.856-98.056 199.652-160.444 207.656-50.092 6.424-66.62-32.536-119.752-116.26l-0.036-0.016z" fill="var(--clover-leaf-2)"></path>' +
-  '<path d="M233.24 157.3S280.46 45.452 345.6 45.664c65.14 0.208 195.048 118.852 190.732 392.616 0 0-91.352 31.052-212-0.684-125.82-33.096-199.548-98.272-207.48-160.672-6.372-50.096 32.604-66.58 116.388-119.624z" fill="var(--clover-leaf-1)"></path>' +
-  '<path d="M532.324 439.508c-18.844 5.448-102.144 25.932-207.992-1.912-125.82-33.096-199.548-98.272-207.48-160.672-6.372-50.096 32.604-66.58 116.388-119.624l0.016-0.036 299.068 282.244z" fill="var(--clover-leaf-2)"></path>' +
-  '<path d="M640.944 315.064l-83.996 118.844 80.044 121.54-118.844-83.992-121.536 80.044 83.992-118.844-80.044-121.54 118.844 83.992 121.54-80.044z" fill="var(--clover-center)"></path>' +
-  '</svg>'
-
 const theme: Theme = {
   extends: DefaultTheme,
 
@@ -36,18 +21,6 @@ const theme: Theme = {
         h('div', {class: 'hero-cover hero-logo'}, [
           h('div', {class: 'cover-body', innerHTML: coverBodyHtml}),
         ]),
-      // header 搜索框前：全书插图图库入口（跟随语言路由切换中/英文图库）
-      'nav-bar-content-before': () => {
-        const isEn = route.path.startsWith('/en/')
-        return h('a', {
-          class: 'gallery-nav-link',
-          href: isEn ? '/en/figures' : '/figures',
-          'aria-label': isEn ? 'Figure gallery' : '全书插图',
-          title: isEn ? 'Figure gallery' : '全书插图',
-        }, [
-          h('span', {class: 'gallery-nav-icon', innerHTML: GALLERY_ICON}),
-        ])
-      },
     })
   },
 
@@ -90,17 +63,31 @@ const theme: Theme = {
           body.style.setProperty('--cover-scale', String(scale))
         })
       })
+    // 四叶草图库入口已并入社交图标组：VPSocialLink 默认 target=_blank，
+    // 剥离内部链接的 target/rel，让 /figures 走站内 SPA 路由（外链不受影响）
+    const fixInternalSocialLinks = () =>
+      nextTick(() => {
+        document.querySelectorAll<HTMLAnchorElement>('.VPSocialLink[href^="/"]').forEach((a) => {
+          a.removeAttribute('target')
+          a.removeAttribute('rel')
+        })
+      })
     onMounted(() => {
       initZoom()
       wrapButtons()
       scaleDividers()
       scaleCover()
+      fixInternalSocialLinks()
+      // 抽屉/extra 菜单按需渲染，挂载后再出现的社交链接也要剥离 target
+      const observer = new MutationObserver(() => fixInternalSocialLinks())
+      observer.observe(document.body, {childList: true, subtree: true})
     })
     watch(() => route.path, () => {
       initZoom()
       wrapButtons()
       scaleDividers()
       scaleCover()
+      fixInternalSocialLinks()
     })
     // 窗口尺寸变化（响应式）时重新缩放扉页/封面
     if (typeof window !== 'undefined') {
