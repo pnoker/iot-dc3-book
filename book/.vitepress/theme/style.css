@@ -82,6 +82,8 @@ body {
 .VPNavBar {
     background: color-mix(in srgb, var(--vp-c-bg) 85%, transparent);
     backdrop-filter: saturate(1.4) blur(12px);
+    /* Safari：backdrop-filter 需 -webkit- 前缀，缺失时圆角子元素下沿会渲染黑边 */
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
 }
 
 .VPNavBar.home.top {
@@ -109,9 +111,9 @@ body {
 }
 
 .VPNavBarTitle .title {
-    width: auto;
+    width: auto !important;
     height: 40px;
-    padding: 5px 13px 5px 6px;
+    padding: 5px 10px 5px 5px;
     border: 1px solid rgba(148, 216, 246, 0.34);
     border-radius: var(--dc3-glass-radius);
     background:
@@ -122,6 +124,7 @@ body {
         inset 0 1px 0 rgba(255, 255, 255, 0.86),
         inset 0 -8px 18px rgba(55, 131, 203, 0.05);
     backdrop-filter: blur(18px) saturate(1.45);
+    -webkit-backdrop-filter: blur(18px) saturate(1.45);
     color: var(--vp-c-brand-1);
     font-weight: 740;
     letter-spacing: -0.01em;
@@ -134,13 +137,13 @@ body {
         0 14px 34px rgba(12, 89, 153, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.92),
         inset 0 -8px 18px rgba(55, 131, 203, 0.07);
-    transform: translateY(-1px);
+    /* 不再上移 1px：hover 位移会让胶囊下沿露出 1px 背景缝隙（Safari 下渲染为黑边） */
 }
 
 .VPNavBarTitle .logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 8px;
+    width: 26px;
+    height: 26px;
+    margin-right: 6px;
     filter: drop-shadow(0 4px 7px rgba(13, 82, 157, 0.2));
 }
 
@@ -158,6 +161,28 @@ body {
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+}
+
+/* 中文站：标题 15px 并收紧 sidebar 布局下标题容器 padding，
+「从工业软件到 AI 智能体」完整显示，不再触发省略号（避免 background-clip:text + ellipsis 的深色块渲染 bug）；
+英文长标题保持既有的省略号截断设计 */
+:lang(zh-CN) .VPNavBarTitle .title {
+    font-size: 15px;
+}
+/* VitePress 的 title 容器样式带 scoped data-v 属性，书站需 !important 覆盖；
+   收紧容器 padding（960+ 与 1440+ 居中规则一并覆盖），给中文标题完整显示空间 */
+@media (min-width: 960px) {
+    .VPNavBar.has-sidebar .title {
+        box-sizing: border-box !important;
+        padding: 0 16px !important;
+    }
+}
+@media (min-width: 1440px) {
+    .VPNavBar.has-sidebar .title {
+        box-sizing: border-box !important;
+        padding-left: 16px !important;
+        width: var(--vp-sidebar-width) !important;
+    }
 }
 
 .dark .VPNavBarTitle .title {
