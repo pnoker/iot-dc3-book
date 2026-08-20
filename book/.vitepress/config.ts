@@ -67,7 +67,7 @@ export default defineConfig({
         socialLinks: socialLinks('en'),
         outline: {level: [2, 3], label: 'On this page'},
         outlineTitle: 'On this page',
-        nav: [{text: '中文版', link: '/'}],
+        // 语言切换统一走 VitePress 标准下拉（English ⇄ 简体中文），不再单独放「中文版」导航按钮
         docFooter: {prev: 'Previous section', next: 'Next section'},
         darkModeSwitchLabel: 'Appearance',
         // 英文侧搜索 UI 文案（未配置时会回落根级中文 translations）
