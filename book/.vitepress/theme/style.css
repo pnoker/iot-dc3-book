@@ -1444,4 +1444,16 @@ body {
     text-decoration: underline;
 }
 
-/* 四叶草图库图标已并入社交图标组：单一 currentColor 配色，随明暗主题自动适配 */
+/* ── 四叶草图标主题协同（明/暗两套绿色，茎/外叶/内叶/中心四层）── */
+:root {
+    --clover-stem: #00da38;
+    --clover-leaf-1: #0ce000;
+    --clover-leaf-2: #44ea00;
+    --clover-center: #92fa14;
+}
+.dark {
+    --clover-stem: #4ade80;
+    --clover-leaf-1: #34d399;
+    --clover-leaf-2: #6ee7b7;
+    --clover-center: #d9f99d;
+}
