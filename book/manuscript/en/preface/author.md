@@ -10,9 +10,9 @@ Since 2024 he has been integrating large language models into the platform, expl
 
 This book grows out of these two consecutive phases of hands-on work, and records the fundamentals and boundaries that were confirmed again and again along the way.
 
-## The Author, Off the Clock
+## What the Author Usually Gets Up To
 
-After the serious introduction, here is the daily field report: build a ladder, climb a wall, surf for a while, then keep learning. “Climbing the wall” means finding a route for a stubborn protocol; “surfing” means research. The only real danger is cold coffee beside uncommitted code.
+If you turned a normal day into four panels, it would look something like this: build a ladder, climb a wall, surf the web for references, then settle in to learn. The wall is a protocol problem, not a disappearing act; the only things that reliably get out of hand are browser tabs and coffee consumption.
 
 <div class="author-daily-grid">
   <figure class="author-daily-card">
