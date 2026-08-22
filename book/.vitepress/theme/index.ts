@@ -1,8 +1,8 @@
 import type {Theme} from 'vitepress'
-import {h, onMounted, watch, nextTick} from 'vue'
+import {h, onBeforeUnmount, onMounted, watch, nextTick} from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import mediumZoom from 'medium-zoom'
-import {useRoute} from 'vitepress'
+import {useRoute, useRouter} from 'vitepress'
 import './style.css'
 import HeroWaves from './HeroWaves.vue'
 import HeroParticles from './HeroParticles.vue'
@@ -30,6 +30,7 @@ const theme: Theme = {
   setup() {
     // 图表点击放大：绑定正文区图片，排除章/篇扉页（.no-zoom）；封面已内联为矢量，无需 zoom
     const route = useRoute()
+    const router = useRouter()
     const initZoom = () =>
       nextTick(() => {
         mediumZoom('.vp-doc img:not(.no-zoom)', {
@@ -75,15 +76,100 @@ const theme: Theme = {
           a.removeAttribute('rel')
         })
       })
+    const enhanceMobileLanguageControl = () =>
+      nextTick(() => {
+        document.querySelectorAll<HTMLElement>('.VPNavScreenTranslations').forEach((container) => {
+          if (container.querySelector('.dc3-mobile-language-control')) return
+          const title = container.querySelector<HTMLButtonElement>('.title')
+          const link = container.querySelector<HTMLAnchorElement>('.list .link')
+          const href = link?.getAttribute('href')
+          if (!title || !link || !href) return
+
+          const currentIsEnglish = route.path === '/en' || route.path.startsWith('/en/')
+          const languageControl = document.createElement('div')
+          languageControl.className = 'dc3-mobile-language-control'
+          const languageLabel = document.createElement('span')
+          languageLabel.className = 'dc3-mobile-language-label'
+          languageLabel.textContent = currentIsEnglish ? 'Language' : '语言'
+          const languageIcon = document.createElement('span')
+          languageIcon.className = 'vpi-languages dc3-mobile-language-icon'
+          languageLabel.prepend(languageIcon)
+
+          const segmented = document.createElement('div')
+          segmented.className = 'dc3-mobile-language-segmented'
+          segmented.setAttribute('role', 'group')
+          segmented.setAttribute('aria-label', currentIsEnglish ? 'Language' : '语言')
+          const currentSegment = document.createElement('button')
+          currentSegment.type = 'button'
+          currentSegment.className = 'dc3-mobile-language-segment active'
+          currentSegment.setAttribute('aria-pressed', 'true')
+          currentSegment.textContent = currentIsEnglish ? 'English' : '中文'
+          const targetSegment = document.createElement('button')
+          targetSegment.type = 'button'
+          targetSegment.className = 'dc3-mobile-language-segment'
+          targetSegment.setAttribute('aria-pressed', 'false')
+          targetSegment.dataset.href = href
+          targetSegment.textContent = currentIsEnglish ? '中文' : 'English'
+
+          segmented.append(currentSegment, targetSegment)
+          languageControl.append(languageLabel, segmented)
+          title.hidden = true
+          const list = container.querySelector<HTMLElement>('.list')
+          if (list) list.hidden = true
+          container.classList.add('dc3-mobile-language-ready')
+          container.append(languageControl)
+        })
+      })
+    const handleMobileLanguageClick = (event: MouseEvent) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const segment = target.closest<HTMLButtonElement>('.dc3-mobile-language-segment')
+      if (segment) {
+        const href = segment.dataset.href
+        if (!href) return
+        event.preventDefault()
+        event.stopImmediatePropagation()
+        void router.go(href)
+        return
+      }
+      const title = target.closest<HTMLButtonElement>('.VPNavScreenTranslations .title')
+      if (!title) return
+      const href = title.parentElement
+        ?.querySelector<HTMLAnchorElement>('.list .link')
+        ?.getAttribute('href')
+      if (!href) return
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      void router.go(href)
+    }
+    const closeScreenAfterMobileAppearance = (event: MouseEvent) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      if (!target.closest('.VPNavScreenAppearance .VPSwitchAppearance')) return
+      window.setTimeout(() => {
+        if (!document.querySelector('#VPNavScreen')) return
+        document.querySelector<HTMLButtonElement>('.VPNavBarHamburger')?.click()
+      }, 0)
+    }
     onMounted(() => {
       initZoom()
       wrapButtons()
       scaleDividers()
       scaleCover()
       fixInternalSocialLinks()
+      enhanceMobileLanguageControl()
+      document.addEventListener('click', handleMobileLanguageClick, true)
+      document.addEventListener('click', closeScreenAfterMobileAppearance)
       // 抽屉/extra 菜单按需渲染，挂载后再出现的社交链接也要剥离 target
-      const observer = new MutationObserver(() => fixInternalSocialLinks())
+      const observer = new MutationObserver(() => {
+        fixInternalSocialLinks()
+        enhanceMobileLanguageControl()
+      })
       observer.observe(document.body, {childList: true, subtree: true})
+    })
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', handleMobileLanguageClick, true)
+      document.removeEventListener('click', closeScreenAfterMobileAppearance)
     })
     watch(() => route.path, () => {
       initZoom()
@@ -91,6 +177,7 @@ const theme: Theme = {
       scaleDividers()
       scaleCover()
       fixInternalSocialLinks()
+      enhanceMobileLanguageControl()
     })
     // 窗口尺寸变化（响应式）时重新缩放扉页/封面
     if (typeof window !== 'undefined') {
