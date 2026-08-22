@@ -11,6 +11,9 @@ hero:
     - theme: alt
       text: 全书目录
       link: /preface/contents
+    - theme: alt
+      text: English Edition
+      link: /en/
 
 features:
   - icon: 🏭

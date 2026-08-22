@@ -137,10 +137,37 @@ export function scopeCoverCss(css: string): string {
 }
 
 /** 渲染封面模板，返回 [作用域化 CSS, body HTML]。 */
-export function renderCoverInline(): [string, string] {
+export function renderCoverInline(lang: 'zh' | 'en' = 'zh'): [string, string] {
   const meta = YAML.parse(readFileSync(join(BOOK_DIR, 'config', 'book.yaml'), 'utf-8')) as Record<string, string>
   const nj = new nunjucks.Environment(null, {autoescape: true})
-  const rendered = nj.renderString(readFileSync(join(BOOK_DIR, 'assets', 'cover.html'), 'utf-8'), meta)
+  const context = lang === 'en'
+    ? {
+        ...meta,
+        language: 'en-US',
+        title: 'From Industrial Software to AI Agents',
+        subtitle: 'Building a multi-protocol, cloud-native, open-source industrial IoT platform ready for agentic evolution',
+        author: 'Zhang Hongyuan',
+        cover_tag: 'AI Native',
+        cover_highlight_1: 'Five-layer architecture · Intelligence layer · IoT platform foundation',
+        cover_highlight_2: 'LLMs · Agents · MCP · Tools · Skills · CLI · Intelligent operations',
+        cover_highlight_3: 'IoT DC3 open-source project throughout the book',
+        cover_highlight_4: '14 chapters · 200 figures · Engineering methodology',
+        cover_author_role: 'Architect & IoT Expert',
+        cover_brand: 'IoT DC3 · Open-source Industrial IoT',
+        cover_brand_subtitle: 'Sense · Understand · Decide · Act',
+      }
+    : {
+        ...meta,
+        cover_tag: 'AI 原生',
+        cover_highlight_1: '五层架构 · 智能层 · 物联网平台底座',
+        cover_highlight_2: '大模型 · Agent · MCP · Tools · Skills · CLI · 智能运维',
+        cover_highlight_3: 'IoT DC3 开源项目贯穿全书',
+        cover_highlight_4: '14 章 · 200 张图表 · 工程方法论',
+        cover_author_role: '架构师 & 物联网专家',
+        cover_brand: '感知 · 理解 · 决策 · 执行',
+        cover_brand_subtitle: 'Sense · Understand · Decide · Act',
+      }
+  const rendered = nj.renderString(readFileSync(join(BOOK_DIR, 'assets', 'cover.html'), 'utf-8'), context)
 
   const styleM = /<style[^>]*>([\s\S]*?)<\/style>/.exec(rendered)
   const css = styleM ? styleM[1] : ''

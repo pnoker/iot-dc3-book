@@ -67,7 +67,7 @@
     /* 明亮·前途光明：晨曦浅蓝→青白→暖光渐变 */
     background:var(--cover-bg);
     color:var(--cover-text); display:flex; flex-direction:column; justify-content:space-between;
-    padding:26mm 22mm; position:relative; overflow:hidden;
+    padding:26mm 22mm; position:relative; overflow:hidden; text-align:left; line-height:normal;
   }
   /* 顶部光晕（朝阳感） */
   .glow { position:absolute; border-radius:50%; filter:blur(60px); z-index:0; }
@@ -170,15 +170,15 @@
   </div>
 
   <div class="top">
-    <div class="tag">AI 原生</div>
+    <div class="tag">{{ cover_tag }}</div>
     <div class="title">{{ title }}</div>
     <div class="subtitle">{{ subtitle }}</div>
     <div class="divider"></div>
     <div class="highlights">
-      <div><span class="dot">●</span>五层架构 · 智能层 · 物联网平台底座</div>
-      <div><span class="dot g">●</span>大模型 · Agent · MCP · Tools · Skills · CLI · 智能运维</div>
-      <div><span class="dot a">●</span>IoT DC3 开源项目贯穿全书</div>
-      <div><span class="dot">●</span>14 章 · 200 张图表 · 工程方法论</div>
+      <div><span class="dot">●</span>{{ cover_highlight_1 }}</div>
+      <div><span class="dot g">●</span>{{ cover_highlight_2 }}</div>
+      <div><span class="dot a">●</span>{{ cover_highlight_3 }}</div>
+      <div><span class="dot">●</span>{{ cover_highlight_4 }}</div>
     </div>
   </div>
 
@@ -187,12 +187,12 @@
       <div class="logo-mark"><img src="logo.svg" alt="IoT DC3"></div>
       <div class="author">
         {{ author }}
-        <small>架构师 &amp; 物联网专家</small>
+        <small>{{ cover_author_role }}</small>
       </div>
     </div>
     <div class="brand">
-      <b>感知 · 理解 · 决策 · 执行</b>
-      Sense · Understand · Decide · Act
+      <b>{{ cover_brand }}</b>
+      {{ cover_brand_subtitle }}
     </div>
   </div>
 </body>

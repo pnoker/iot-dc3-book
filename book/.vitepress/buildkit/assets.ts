@@ -99,12 +99,14 @@ export function prepareAssets(): void {
   }
 
   // 封面主题样式 + 内联 body（hero 主视觉，跟随明暗主题）
-  const [coverCss, coverBody] = renderCoverInline()
+  const [coverCss, coverBody] = renderCoverInline('zh')
+  const [, coverBodyEn] = renderCoverInline('en')
   writeFileSync(join(PUBLIC_DIR, 'cover.css'), coverCss, 'utf-8')
   writeFileSync(
     join(THEME_DIR, 'cover-art.ts'),
     '// 自动生成，请勿手改 —— 由 book/.vitepress/buildkit/assets.ts 产出\n'
-      + `export const coverBodyHtml = ${JSON.stringify(coverBody)}\n`,
+      + `export const coverBodyHtml = ${JSON.stringify(coverBody)}\n`
+      + `export const coverBodyHtmlEn = ${JSON.stringify(coverBodyEn)}\n`,
     'utf-8',
   )
 }

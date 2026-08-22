@@ -6,7 +6,7 @@ import {useRoute} from 'vitepress'
 import './style.css'
 import HeroWaves from './HeroWaves.vue'
 import HeroParticles from './HeroParticles.vue'
-import {coverBodyHtml} from './cover-art'
+import {coverBodyHtml, coverBodyHtmlEn} from './cover-art'
 
 const theme: Theme = {
   extends: DefaultTheme,
@@ -19,7 +19,10 @@ const theme: Theme = {
       // 首页主视觉：内联封面（由 book/assets/cover.html 派生，颜色跟随明暗主题）
       'home-hero-image': () =>
         h('div', {class: 'hero-cover hero-logo'}, [
-          h('div', {class: 'cover-body', innerHTML: coverBodyHtml}),
+          h('div', {
+            class: 'cover-body',
+            innerHTML: route.path === '/en' || route.path.startsWith('/en/') ? coverBodyHtmlEn : coverBodyHtml,
+          }),
         ]),
     })
   },

@@ -110,8 +110,8 @@ body {
     overflow: hidden;
 }
 
-/* logo+title 玻璃胶囊：与右侧工具栏/online 站同一风格（悬浮圆角 + 毛玻璃），
-   但底部不再叠加深色层（原版渐变末端 rgba(75,88,210,.08) + inset 底部阴影正是「下沿黑色」的来源） */
+/* logo+title 玻璃胶囊：保留圆角、毛玻璃和内高光；不使用外阴影，
+   避免阴影被标题裁剪容器截成矩形色块 */
 .VPNavBarTitle .title {
     width: auto !important;
     height: 40px;
@@ -122,9 +122,7 @@ body {
     background:
         radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.85), transparent 40%),
         linear-gradient(160deg, rgba(255, 255, 255, 0.5), rgba(115, 205, 241, 0.12));
-    box-shadow:
-        0 10px 28px rgba(12, 89, 153, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(18px) saturate(1.45);
     -webkit-backdrop-filter: blur(18px) saturate(1.45);
     color: var(--vp-c-brand-1);
@@ -135,9 +133,7 @@ body {
 
 .VPNavBarTitle .title:hover {
     border-color: rgba(61, 172, 224, 0.46);
-    box-shadow:
-        0 14px 34px rgba(12, 89, 153, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
 }
 
 .VPNavBarTitle .logo {
@@ -190,9 +186,7 @@ body {
     background:
         radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.16), transparent 40%),
         linear-gradient(160deg, rgba(55, 130, 183, 0.14), rgba(21, 42, 62, 0.22));
-    box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.24),
-        inset 0 1px 0 rgba(231, 251, 255, 0.14);
+    box-shadow: inset 0 1px 0 rgba(231, 251, 255, 0.14);
 }
 
 .dark .VPNavBarTitle .title > span {
@@ -202,34 +196,45 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+.VPNavBar .content-body {
+    width: fit-content;
+    height: 40px;
+    margin: 12px 0 12px auto;
+    padding: 3px 5px;
+    border: 1px solid rgba(148, 216, 246, 0.34);
+    border-radius: var(--dc3-glass-radius);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
+    box-shadow:
+        0 10px 28px rgba(12, 89, 153, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86),
+        inset 0 -8px 18px rgba(55, 131, 203, 0.05);
+    backdrop-filter: blur(18px) saturate(1.45);
+    -webkit-backdrop-filter: blur(18px) saturate(1.45);
+    transition: border-color 260ms ease, box-shadow 260ms ease;
+}
+
+.VPNavBar .content-body:hover {
+    border-color: rgba(61, 172, 224, 0.46);
+    box-shadow:
+        0 14px 34px rgba(12, 89, 153, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -8px 18px rgba(55, 131, 203, 0.07);
+}
+
+.dark .VPNavBar .content-body {
+    border-color: rgba(139, 210, 250, 0.18);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
+        linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(231, 251, 255, 0.12),
+        inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+}
+
 @media (min-width: 1280px) {
-    .VPNavBar .content-body {
-        width: fit-content;
-        height: 40px;
-        margin: 12px 0 12px auto;
-        padding: 3px 5px;
-        border: 1px solid rgba(148, 216, 246, 0.34);
-        border-radius: var(--dc3-glass-radius);
-        background:
-            radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
-            linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
-        box-shadow:
-            0 10px 28px rgba(12, 89, 153, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.86),
-            inset 0 -8px 18px rgba(55, 131, 203, 0.05);
-        backdrop-filter: blur(18px) saturate(1.45);
-        -webkit-backdrop-filter: blur(18px) saturate(1.45);
-        transition: border-color 260ms ease, box-shadow 260ms ease;
-    }
-
-    .VPNavBar .content-body:hover {
-        border-color: rgba(61, 172, 224, 0.46);
-        box-shadow:
-            0 14px 34px rgba(12, 89, 153, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.92),
-            inset 0 -8px 18px rgba(55, 131, 203, 0.07);
-    }
-
     .VPNavBar .translations::before,
     .VPNavBar .appearance::before,
     .VPNavBar .social-links::before {
@@ -263,17 +268,6 @@ body {
     .VPNavBarSocialLinks {
         gap: 2px;
         padding-left: 2px;
-    }
-
-    .dark .VPNavBar .content-body {
-        border-color: rgba(139, 210, 250, 0.18);
-        background:
-            radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
-            linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
-        box-shadow:
-            0 12px 30px rgba(0, 0, 0, 0.24),
-            inset 0 1px 0 rgba(231, 251, 255, 0.12),
-            inset 0 -8px 18px rgba(0, 0, 0, 0.12);
     }
 
     .dark .VPNavBarTranslations .button:hover {
@@ -384,7 +378,7 @@ body {
 }
 
 .VPNavBarExtra .social-links-list {
-    margin: 0;
+    margin: 0 auto;
 }
 
 .VPNavBarTranslations .VPMenu,
@@ -429,7 +423,6 @@ body {
         margin-right: 0;
     }
 
-    .VPNavBar .VPNavBarExtra > .button,
     .VPNavBar .VPNavBarHamburger {
         width: 40px;
         height: 40px;
@@ -448,15 +441,6 @@ body {
         transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
     }
 
-    .VPNavBar .VPNavBarExtra > .button {
-        justify-content: center;
-    }
-
-    .VPNavBar .VPNavBarExtra > .button .icon {
-        font-size: 18px;
-    }
-
-    .VPNavBar .VPNavBarExtra > .button:hover,
     .VPNavBar .VPNavBarHamburger:hover {
         border-color: rgba(61, 172, 224, 0.46);
         box-shadow:
@@ -466,7 +450,6 @@ body {
         transform: translateY(-1px);
     }
 
-    .dark .VPNavBar .VPNavBarExtra > .button,
     .dark .VPNavBar .VPNavBarHamburger {
         border-color: rgba(139, 210, 250, 0.18);
         background:
@@ -476,6 +459,105 @@ body {
             0 12px 30px rgba(0, 0, 0, 0.24),
             inset 0 1px 0 rgba(231, 251, 255, 0.12),
             inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+    .VPNavBar .VPNavBarSearch {
+        flex-grow: 0;
+        padding-left: 0;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button {
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 0;
+        border-radius: 14px;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        transition: color 220ms ease, background-color 220ms ease;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button .icon {
+        font-size: 18px;
+    }
+
+    .VPNavBar .VPNavBarExtra > .button:hover {
+        border-color: transparent;
+        background: rgba(18, 150, 219, 0.09);
+        box-shadow: none;
+        transform: none;
+    }
+
+    .dark .VPNavBar .VPNavBarExtra > .button {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .dark .VPNavBar .VPNavBarExtra > .button:hover {
+        background: rgba(95, 195, 239, 0.1);
+    }
+}
+
+@media (max-width: 767px) {
+    .VPNavBarTitle {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .VPNavBarTitle .title {
+        width: auto !important;
+        max-width: calc(100vw - 122px);
+    }
+
+    .VPNavBarTitle .title > span {
+        display: block;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .VPNavBar .content {
+        flex: 0 1 auto;
+        width: fit-content;
+    }
+
+    .VPNavBar .VPNavBarSearch {
+        flex-grow: 0;
+        padding-left: 0;
+    }
+
+    .VPNavBar .DocSearch-Button {
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+    }
+
+    .VPNavBar .VPNavBarHamburger {
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 14px;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .VPNavBar .VPNavBarHamburger:hover {
+        border-color: transparent;
+        background: rgba(18, 150, 219, 0.09);
+        box-shadow: none;
+        transform: none;
+    }
+
+    .dark .VPNavBar .VPNavBarHamburger:hover {
+        background: rgba(95, 195, 239, 0.1);
     }
 }
 
@@ -583,16 +665,6 @@ body {
     line-height: 0.98;
     background-size: 220% auto;
     filter: drop-shadow(0 12px 24px rgba(10, 92, 164, 0.14));
-    animation: hero-name-glint 8s ease-in-out infinite;
-}
-
-@keyframes hero-name-glint {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
 }
 
 .VPHero .text {
@@ -1094,6 +1166,12 @@ body {
         height: auto;
     }
 
+    .VPHero .main {
+        width: 100%;
+        margin-inline: auto;
+        text-align: center;
+    }
+
     .VPDoc .container {
         padding-top: 10px;
     }
@@ -1160,9 +1238,35 @@ body {
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .VPHero .name {
-        animation: none;
+/* 中屏保持单列：左右两栏会把标题、摘要和按钮锁在左侧，窄宽度下视觉上不居中。 */
+@media (min-width: 960px) and (max-width: 1279px) {
+    .VPHero .container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .VPHero .main {
+        order: 2;
+        width: 100%;
+        max-width: 680px !important;
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .VPHero .image {
+        order: 1;
+        width: 100%;
+        margin: 0 0 30px;
+    }
+
+    .VPHero.has-image .name,
+    .VPHero.has-image .text,
+    .VPHero.has-image .tagline {
+        margin-inline: auto;
+    }
+
+    .VPHero.has-image .actions {
+        justify-content: center;
     }
 }
 
@@ -1369,13 +1473,6 @@ body {
 }
 .vp-doc._figures {
     max-width: 1280px !important;
-}
-
-/* 小屏：header 空间有限，隐藏站名文字只留 logo，给搜索/汉堡腾出空间 */
-@media (max-width: 767px) {
-    .VPNavBarTitle .title > span {
-        display: none;
-    }
 }
 
 /* ── 章首署名行（作者/版权/许可，随正文传播） ── */
