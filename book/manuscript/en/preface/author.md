@@ -10,7 +10,7 @@ Since 2024 he has been integrating large language models into the platform, expl
 
 This book grows out of these two consecutive phases of hands-on work, and records the fundamentals and boundaries that were confirmed again and again along the way.
 
-## What the Author Usually Gets Up To
+## The Author's Daily Life
 
 If you turned a normal day into four panels, it would look something like this: build a ladder, climb a wall, surf the web for references, then settle in to learn. The wall is a protocol problem, not a disappearing act; the only things that reliably get out of hand are browser tabs and coffee consumption.
 
