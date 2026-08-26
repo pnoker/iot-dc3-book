@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const { chromium } = require("/Users/pnoker/Code/micode/web/f1-web/node_modules/playwright-core");
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname));
 const slidesDir = path.join(root, "slides");
-const imagesDir = root;
+const imagesDir = path.join(root, "images");
 const chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 await fs.mkdir(imagesDir, { recursive: true });
