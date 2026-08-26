@@ -12,7 +12,7 @@ This book grows out of these two consecutive phases of hands-on work, and record
 
 ## The Author's Daily Life
 
-If you turned a normal day into four panels, it would look something like this: build a ladder, climb a wall, surf the web for references, then settle in to learn. The wall is a protocol problem, not a disappearing act; the only things that reliably get out of hand are browser tabs and coffee consumption.
+If you turned a normal day into four panels, it would look something like this: build a ladder, climb over an actual wall, surf the web for references, then settle in to learn. The "wall" here is a literal one — climbing it means finding a route for protocols, not slipping away to slack off; "surfing" means looking up references; the only things that reliably get out of hand are browser tabs and coffee consumption.
 
 <div class="author-daily-grid">
   <figure class="author-daily-card">
@@ -21,7 +21,7 @@ If you turned a normal day into four panels, it would look something like this: 
   </figure>
   <figure class="author-daily-card">
     <img src="/author-daily/en-02-wall.png" alt="The author climbs a wall to find a path for protocols" loading="lazy">
-    <figcaption><strong>Climb the wall:</strong> Not to disappear, but to find a route that lets the protocol through.</figcaption>
+    <figcaption><strong>Climb the wall:</strong> A literal wall — not to slip away and slack off, but to find a route that lets the protocol through.</figcaption>
   </figure>
   <figure class="author-daily-card">
     <img src="/author-daily/en-03-surf.png" alt="The author surfs the web with research tabs and coffee" loading="lazy">
