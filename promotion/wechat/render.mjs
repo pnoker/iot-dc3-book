@@ -13,12 +13,21 @@ await fs.mkdir(imagesDir, { recursive: true });
 const files = (await fs.readdir(slidesDir)).filter((file) => file.endsWith(".html")).sort();
 const browser = await chromium.launch({ executablePath: chromePath, args: ["--force-color-profile=srgb"] });
 for (const file of files) {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 2 });
-  await page.goto(`file://${path.join(slidesDir, file)}`);
+  const url = `file://${path.join(slidesDir, file)}`;
+  // 预打开读取 <body data-w/data-h> 自定义画幅(默认 1280×720),公众号封面 2.35:1 / 1:1 用
+  const probe = await browser.newPage();
+  await probe.goto(url);
+  const [w, h] = await probe.evaluate(() => [
+    Number(document.body.dataset.w) || 1280,
+    Number(document.body.dataset.h) || 720,
+  ]);
+  await probe.close();
+  const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 2 });
+  await page.goto(url);
   await page.waitForTimeout(250);
   const output = path.join(imagesDir, `${path.basename(file, ".html")}.png`);
   await page.screenshot({ path: output });
-  console.log(`✓ ${path.relative(root, output)}`);
+  console.log(`✓ ${path.relative(root, output)} (${w}×${h}@2x)`);
   await page.close();
 }
 await browser.close();
