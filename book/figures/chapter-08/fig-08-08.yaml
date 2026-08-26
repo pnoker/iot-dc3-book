@@ -1,6 +1,6 @@
 type: architecture
 title: 图8-8 物联网微隔离架构示意图
-audience_takeaway: 读者应理解微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。
+audience_takeaway: 微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。
 purpose: 展示从设备层到策略编排层的四层分层模型，说明微分段如何通过SDN控制器实现逐设备级别的隔离规则，防止横向移动。
 visual_focus: 从layer1到layer1的主链路。
 design_level: logical
@@ -95,7 +95,7 @@ caption:
 labels:
   en:
     图8-8 物联网微隔离架构示意图: Figure 8-8 IoT Micro-Segmentation Architecture
-    读者应理解微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。: Micro-segmentation pushes isolation rules down to the SDN control layer and issues per-device policies, so a compromised device cannot move laterally within the network.
+    微隔离把隔离规则下放到SDN微分段控制层，按设备级下发策略，使被攻陷设备无法在同一网络内横向移动。: Micro-segmentation pushes isolation rules down to the SDN control layer and issues per-device policies, so a compromised device cannot move laterally within the network.
     平台服务域: Platform Service Domain
     策略下发: Policy Delivery
     规则下发: Rule Delivery

@@ -1,7 +1,7 @@
 type: flowchart
 title: 图1-15 物联网价值迁移路径
 purpose: 展示物联网价值重心从连接层向智能决策层迁移的路径，以及每层对应的典型产品形态和商业模式。
-audience_takeaway: 读者应看到价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。
+audience_takeaway: 价值重心从左到右迁移，智能层的利润率和增长潜力显著高于连接层。
 visual_focus: 从左到右逐渐增粗的箭头表明价值占比变化；智能层节点用橙色强调。
 design_level: schematic
 layout: 水平流向，三个主节点从左到右排列，下方通过虚线连接商业模式标签。

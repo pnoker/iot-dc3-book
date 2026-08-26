@@ -1,6 +1,6 @@
 type: layered
 title: 图6-5 物联网微服务容器部署的端-边-云分层架构
-audience_takeaway: 读者应理解边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。
+audience_takeaway: 边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。
 purpose: 展示从端设备、边缘节点到云端的数据流与控制流，以及各层使用的容器编排工具
 visual_focus: 从云端层到端设备层的主链路。
 design_level: logical
@@ -24,33 +24,33 @@ components:
 - id: c1
   label: 云端层
   type: platform
-  subtitle: 完整 Kubernetes 集群，包含控制平面（API…
+  subtitle: 完整 Kubernetes 集群：控制平面（API Server 等）+ 中心服务
   group: platform_domain
   priority: primary
   shape: card
 - id: c2
   label: 边缘层
   type: edge
-  subtitle: 节点内包含：边缘网关 Pod、协议适配 Pod（Mod…
+  subtitle: 边缘网关 Pod + 协议适配 Pod（Modbus/OPC UA 等）
   group: edge_domain
   priority: primary
   shape: bus
 - id: c3
   label: 端设备层
   type: edge
-  subtitle: 传感器、PLC、执行器，通过现场总线（Modbus R…
+  subtitle: 传感器、PLC、执行器，经现场总线（Modbus RS-485 等）接入
   group: edge_domain
   priority: normal
   shape: bus
 connections:
 - from: c1
   to: c2
-  label: 云端中心服务通过 MQTT Bro…
+  label: 经 MQTT Broker 异步交换数据
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: 边缘节点与端设备之间采用实时采集/…
+  label: 实时采集/控制回路（不经云端）
   style: solid
   direction: left-to-right
 callouts:

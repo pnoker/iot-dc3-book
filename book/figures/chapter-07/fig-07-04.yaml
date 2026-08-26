@@ -1,6 +1,6 @@
 type: dataflow
 title: 图 7-4 RAG + Tool-Calling 联合工作流
-audience_takeaway: 读者应理解 RAG 提供版本化 SOP 证据，只读 Tool 获取平台状态；涉及写入时只创建待确认 Action，用户确认并通过平台校验后才执行。
+audience_takeaway: RAG 证据与只读 Tool 结果共同构成操作建议的依据；写入止步于待确认 Action，用户确认并通过平台校验后才真正执行。
 purpose: 展示运维任务依次经过 RAG 检索、状态读取、待确认 Action 创建、用户确认和受控执行的完整数据流与职责边界。
 visual_focus: 从 RAG 证据与状态读取到待确认 Action、用户确认和控制器执行的主链路。
 design_level: implementation
@@ -42,7 +42,7 @@ components:
   priority: primary
   shape: card
 - id: r2
-  label: LLM 推理引擎：发起任务（自然语…
+  label: LLM 推理引擎：发起任务（自然语言）
   type: ai
   subtitle: ''
   group: intelligence_domain
@@ -56,7 +56,7 @@ components:
   priority: normal
   shape: card
 - id: r4
-  label: 向量知识库：检索 SOP 文档，实…
+  label: 向量知识库：检索版本化 SOP 文档
   type: platform
   subtitle: ''
   group: platform_domain
@@ -70,14 +70,14 @@ components:
   priority: normal
   shape: card
 - id: r6
-  label: LLM 推理引擎：返回 SOP 文…
+  label: LLM 推理引擎：返回 SOP 证据
   type: ai
   subtitle: ''
   group: intelligence_domain
   priority: normal
   shape: card
 - id: r7
-  label: Tool-Calling 执行器…
+  label: Tool-Calling 执行器
   type: platform
   subtitle: ''
   group: platform_domain
@@ -106,38 +106,38 @@ components:
   shape: card
 connections:
 - from: r1
-  to: llm
-  label: 操作员 → LLM 推理引擎：发起…
+  to: r3
+  label: 操作员 → LLM 推理引擎：发起任务
   style: solid
   direction: request
 - from: r3
-  to: sop
-  label: LLM 推理引擎 → 向量知识库…
+  to: r5
+  label: LLM 推理引擎 → 向量知识库：检索 SOP 文档
   style: solid
   direction: request
 - from: r5
-  to: llm_sop
-  label: 向量知识库 → LLM 推理引擎…
+  to: r3
+  label: 向量知识库 → LLM 推理引擎：返回 SOP 证据
   style: dashed
   direction: response
 - from: r3
-  to: tool-calling_so
-  label: LLM 推理引擎 → Tool-C…
+  to: r8
+  label: LLM 推理引擎 → Tool-Calling 执行器：查询设备实时状态
   style: dashed
   direction: request
 - from: r8
   to: r9
-  label: Tool-Calling 执行器…
+  label: Tool-Calling 执行器
   style: dashed
   direction: request
 - from: r10
-  to: tool-calling
-  label: 设备层 → Tool-Callin…
+  to: r8
+  label: 设备层 → Tool-Calling 执行器：返回状态快照
   style: dashed
   direction: response
 - from: r8
-  to: llm
-  label: Tool-Calling 执行器…
+  to: r3
+  label: Tool-Calling 执行器
   style: dashed
   direction: request
 callouts:
@@ -154,8 +154,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用 <svg> 标签绘制。泳道用 <rect> 填充不同背景色。节点用圆角矩形 <rect rx="5" ry="5">，文字用 <text> 居中。箭头用 <path> 带 marker-end。整体使用 flexbox 居中对齐，下方加图注区。
 caption:
-  zh: 图 7-4 RAG + Tool-Calling 联合工作流图。操作员发起任务后，LLM 首先通过 RAG 检索设备 SOP 文档，获取操作步骤；随后按步骤依次调用 Tool-Calling 执行具体设备操作，直至任务完成。
-  en: Figure 7-4 The combined RAG + tool-calling workflow. After the operator initiates a task, the LLM first retrieves the device SOP documents through RAG to obtain the operating steps, then calls tools in sequence to perform the specific device operations until the task completes.
+  zh: 图 7-4 RAG + Tool-Calling 联合工作流图。操作员发起任务后，LLM 先经 RAG 检索版本化 SOP，再读取平台实时状态形成操作建议；涉及写操作时仅创建待确认 Action，经用户确认并通过鉴权、参数与策略校验后，才由平台下发执行并回读状态。
+  en: Figure 7-4 The combined RAG + tool-calling workflow. After the operator initiates a task, the LLM retrieves the versioned SOP via RAG and reads live platform state to draft an action proposal; any write only creates a pending Action, which the platform executes and verifies after user confirmation and authorization/parameter/policy checks.
 labels:
   en:
     图 7-4 RAG + Tool-Calling 联合工作流: Figure 7-4 RAG + Tool-Calling Workflow

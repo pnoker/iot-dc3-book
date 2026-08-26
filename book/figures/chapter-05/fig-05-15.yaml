@@ -1,6 +1,6 @@
 type: architecture
 title: 图 5-15 平台层延伸阅读工具链全景图
-audience_takeaway: 读者应理解开源工具沿数据上报→消费落库→查询告警的数据流链条分层，且边缘与容器编排层以虚框横跨消息与时序两层。
+audience_takeaway: 开源工具沿数据上报→消费落库→查询告警的数据流链条分层，且边缘与容器编排层以虚框横跨消息与时序两层。
 purpose: 展示本节推荐的开源工具在物联网平台层中各层级的分布
 visual_focus: 从设备接入到可视化与监控的主链路。
 design_level: logical
@@ -84,7 +84,7 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用 SVG 绘制5个水平矩形条作为层，由上至下排列；在“边缘与容器编排”层用半透明虚线矩形覆盖其下方的“消息与流处理”和“时序存储”层，表示编排范围；每层内用圆角矩形放置组件名称；箭头带标签从设备接入层指向消息与流处理层，再到时序存储层，最后从时序存储层双向连接到可视化与监控层；整体加上浅灰色背景和边框。
 caption:
-  zh: 图中每个方框对应正文推荐的开源项目或功能模块；“设备接入”层延伸自5.1节网关层。
+  zh: 图 5-15 图中每个方框对应正文推荐的开源项目或功能模块；“设备接入”层延伸自5.2节协议接入与5.3节数据采集的网关设计。
   en: 'Each box corresponds to an open-source project or functional module recommended in the text; the "Device Access" layer extends the gateway layer from Section 5.1.'
 labels:
   en:

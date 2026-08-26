@@ -1,8 +1,8 @@
 type: matrix
 title: 图8-12 多租户隔离强度对比
-audience_takeaway: 读者应理解隔离强度与跨租户风险反向、与资源效率和运维复杂度也反向，强隔离必有成本代价，需按租户价值取舍。
+audience_takeaway: 隔离强度与跨租户风险反向、与资源效率和运维复杂度也反向，强隔离必有成本代价，需按租户价值取舍。
 purpose: 对比三种主要隔离维度在不同隔离强度（低/中/高）下的实现方式、跨租户风险、资源效率和运维复杂度
-visual_focus: 从进入下一判断到进入下一判断的主链路。
+visual_focus: 按数据/计算资源/网络三个隔离维度，逐行比较低/中/高强度的实现方式与代价。
 design_level: decision
 layout: 表格，行为三种维度（数据隔离、计算资源隔离、网络隔离），每行三个强度等级（低/中/高），列包含典型实现方式、跨租户风险、资源效率高低、运维复杂度高低四项指标
 elements:
@@ -16,21 +16,21 @@ regions:
   role: 核心服务能力边界
 components:
 - id: c1
-  label: 进入下一判断
+  label: 数据隔离
   type: platform
   subtitle: ''
   group: platform_domain
   priority: primary
   shape: card
 - id: c2
-  label: 进入下一判断
+  label: 计算资源隔离
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: c3
-  label: 进入下一判断
+  label: 网络隔离
   type: platform
   subtitle: ''
   group: platform_domain
@@ -39,7 +39,7 @@ components:
 connections:
 - from: c1
   to: c2
-  label: 同一行内从左到右隔离强度递增，跨租…
+  label: 同一行内从左到右隔离强度递增，跨租户风险递减
   style: solid
   direction: left-to-right
 - from: c2
@@ -57,8 +57,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML表格，表头加粗居中，第一列左对齐加底色。低/中/高强度三列使用渐变背景（灰→浅蓝→深蓝）。每个单元格内包含实现方式与三项指标。
 caption:
-  zh: 表8-5 多租户隔离强度对比（假设场景：智能家居平台“智家云”）
-  en: 'Table 8-5 Multi-tenancy isolation strength compared (hypothetical scenario: the smart-home platform "ZhiJia Cloud")'
+  zh: 图 8-12 多租户隔离强度对比（假设场景：智能家居平台“智家云”）
+  en: 'Figure 8-12 Multi-tenancy isolation strength compared (hypothetical scenario: the smart-home platform "ZhiJia Cloud")'
 labels:
   en:
     图8-12 多租户隔离强度对比: Figure 8-12 Multi-Tenancy Isolation Strength

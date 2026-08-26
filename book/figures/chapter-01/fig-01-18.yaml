@@ -1,65 +1,75 @@
 type: architecture
 title: 图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比
-audience_takeaway: 读者应理解传统架构端云直连数据上传、指令下发,AIoT在两者之间插入边缘侧承担实时推理与本地决策,端云改为经边缘间接交互、云侧退居模型训练与知识下推。
+audience_takeaway: 传统架构端云直连数据上传、指令下发,AIoT在两者之间插入边缘侧承担实时推理与本地决策,端云改为经边缘间接交互、云侧退居模型训练与知识下推。
 purpose: 直观对比大模型介入前后物联网拓扑结构的演变，突出边缘层作为推理枢纽的角色，以及数据流和信息流方向的变化。
-visual_focus: 从传统架构=name=感知层到AIoT新架构=name=端侧的主链路。
+visual_focus: 从左侧传统端-云两层到右侧AIoT边-端-云三层的主链路。
 design_level: logical
 layout: 架构布局，强调边界、组件职责和主链路。
 elements:
-- '传统架构=name=感知层；shape=box；color=#E3F2FD；label=端侧设备
-
-  (传感器/执行器)；name=云平台层；shape=box；color=#E8EAF6；label=云服务器
-
-  (存储、应用、规则引擎)'
-- 'AIoT新架构=name=端侧；shape=box；color=#E3F2FD；label=端侧设备
-
-  (采集、执行、唤醒)；name=边缘侧；shape=box；color=#FFF3E0；label=边缘网关
-
-  (蒸馏模型推理、实时决策)；name=云侧；shape=box；color=#E8EAF6；label=云服务器
-
-  (大模型训练、复杂推理、知识更新)'
+- '传统架构：端侧设备（传感器/执行器） ⇄ 云平台层（存储、应用、规则引擎）'
+- 'AIoT新架构：端侧设备（采集、执行、唤醒） → 边缘网关（蒸馏模型推理、实时决策） → 云侧（大模型训练、复杂推理、知识更新）'
 relationships:
-- 传统架构=from=感知层
-- to=云平台层
-- color=#90CAF9
-- style=solid
-- label=数据上传
-- from=云平台层
-- to=感知层
-- color=#90CAF9
-- style=solid
-- label=指令下发
-- AIoT新架构=from=端侧
-- to=边缘侧
+- 传统架构：感知层与云平台层之间数据上传、指令下发直连
+- AIoT新架构：端侧与边缘侧实时交互，边缘侧与云侧进行样本回传和模型/知识下发
 regions:
 - id: edge_domain
   label: 设备与边缘域
   role: 现场异构资源边界
 components:
 - id: c1
-  label: 传统架构=name=感知层
+  label: 传统架构·端侧设备
+  subtitle: 传感器/执行器，端云直连
   type: edge
-  subtitle: shape=box；color=#E3F2FD；lab…
   group: edge_domain
   priority: primary
-  shape: database
+  shape: box
 - id: c2
-  label: AIoT新架构=name=端侧
+  label: 传统架构·云平台层
+  subtitle: 存储、应用、规则引擎
+  type: platform
+  group: edge_domain
+  priority: normal
+  shape: box
+- id: c3
+  label: AIoT架构·端侧设备
+  subtitle: 采集、执行、关键唤醒
   type: edge
-  subtitle: shape=box；color=#E3F2FD；lab…
   group: edge_domain
   priority: primary
-  shape: decision
+  shape: box
+- id: c4
+  label: AIoT架构·边缘网关
+  subtitle: 蒸馏模型推理、实时决策
+  type: edge
+  group: edge_domain
+  priority: primary
+  shape: box
+- id: c5
+  label: AIoT架构·云侧
+  subtitle: 大模型训练、复杂推理、知识更新
+  type: platform
+  group: edge_domain
+  priority: normal
+  shape: box
 connections:
 - from: c1
   to: c2
-  label: 传统架构=from=感知层
+  label: 数据上传 / 指令下发（直连）
   style: solid
   direction: left-to-right
+- from: c3
+  to: c4
+  label: 数据/事件上报 / 实时控制
+  style: solid
+  direction: left-to-right
+- from: c4
+  to: c5
+  label: 样本回传 / 模型与知识下发
+  style: dashed
+  direction: left-to-right
 callouts:
-- 传统架构=from=感知层
-- to=云平台层
-- color=#90CAF9
+- 传统架构中端云直连，实时性受网络往返制约
+- AIoT架构中边缘侧承担实时推理，云侧退居训练与知识下推
 legend:
 - '端侧设备: 感知、执行、状态上报'
 - '边缘侧节点: 实时推理、本地决策、控制闭环'

@@ -1,6 +1,6 @@
 type: layered
 title: 图 9-13 语义互操作：从语法到语义的层次与路径
-audience_takeaway: 读者应理解互操作分语法、结构、语义三层次，对应协议适配网关、物模型、本体三种载体，按四步路径推进。
+audience_takeaway: 停在语法层的网关只统一报文格式，字段含义仍靠人工对齐；只有推进到语义层的本体与标注，跨厂商数据才能被机器自动推理和联动。
 purpose: 展示语义互操作的三层次与四步实践路径
 visual_focus: 三层次卡片与四步路径。
 design_level: layered

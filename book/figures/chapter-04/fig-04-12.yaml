@@ -1,8 +1,8 @@
 type: architecture
 title: 图4-12 协议碎片化→统一接入层→Driver SDK 架构映射
-audience_takeaway: 读者应理解每个协议只需一个独立驱动,经Driver SDK固定接口接入统一接入层,再归一为统一设备影子。
+audience_takeaway: 每个协议只需一个独立驱动,经Driver SDK固定接口接入统一接入层,再归一为统一设备影子。
 purpose: 展示从异构协议终端到业务应用层的分层架构，突出 Driver SDK 作为适配桥梁的作用，以及统一接入层如何屏蔽底层差异。
-visual_focus: 从进入下一判断到进入下一判断的主链路。
+visual_focus: 从设备层经驱动层、统一接入层到业务应用层的主链路。
 design_level: logical
 layout: 水平分层（四层）：自下而上为设备层、驱动层、统一接入层、业务应用层。每层之间用带箭头的竖线连接，表示数据流转和指令转发。
 elements:
@@ -27,47 +27,47 @@ regions:
   role: 数据沉淀与治理边界
 components:
 - id: c1
-  label: 进入下一判断
+  label: 设备层
   type: edge
-  subtitle: 包含多种异构无线终端：NB-IoT 水表、Lo…
+  subtitle: 异构无线终端：NB-IoT 水表、LoRa 传感器、BLE 信标、Zigbee 灯控、Wi-Fi 摄像头
   group: edge_domain
   priority: primary
   shape: card
 - id: c2
-  label: 进入下一判断
+  label: 驱动层
   type: platform
-  subtitle: 由多个独立微服务（Driver 1…Drive…
+  subtitle: 多个独立驱动微服务，内部遵循 Driver SDK 的 connect/disconnect/send/receive/parse 接口
   group: platform_domain
   priority: normal
   shape: card
 - id: c3
-  label: 进入下一判断
-  type: edge
-  subtitle: 包含设备注册管理、会话管理、消息路由、协议转换…
+  label: 统一接入层
+  type: platform
+  subtitle: 设备注册、会话管理、消息路由、协议转换、物模型标准化，向上暴露设备影子
   group: edge_domain
   priority: normal
   shape: bus
 - id: c4
-  label: 进入下一判断
+  label: 业务应用层
   type: data
-  subtitle: 包括数据存储、规则引擎、告警服务、可视化仪表盘…
+  subtitle: 数据存储、规则引擎、告警服务、可视化仪表盘
   group: data_domain
   priority: normal
   shape: database
 connections:
 - from: c1
   to: c2
-  label: 设备层各终端通过各自无线协议连接到…
+  label: 原生协议接入
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: 驱动层每个驱动将其解析后的标准物模…
+  label: 上报标准物模型数据
   style: solid
   direction: left-to-right
 - from: c3
   to: c4
-  label: 统一接入层将标准化数据路由至业务应…
+  label: 路由标准化数据
   style: solid
   direction: left-to-right
 callouts:

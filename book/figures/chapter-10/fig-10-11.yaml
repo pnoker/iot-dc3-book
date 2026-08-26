@@ -1,6 +1,6 @@
 type: architecture
 title: 图 10-11 IoT DC3平台微服务架构
-audience_takeaway: 读者应理解规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。
+audience_takeaway: 规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。
 purpose: 展示IoT DC3核心模块（设备中心、数据中心、规则引擎、智能中心）之间的职责边界和数据闭环路径。
 visual_focus: 主链路从设备驱动经数据中心到规则引擎和智能中心，规则引擎与智能中心之间用虚线表示“快判转深析”的可选路径。
 design_level: logical
@@ -130,12 +130,12 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景（#F8FAFC），圆角矩形服务块，统一12px间距，箭头带协议或消息标签。
 caption:
-  zh: 图 10-11 IoT DC3平台微服务架构，展示从设备接入到智能决策闭环的五层结构与模块边界。
-  en: Figure 10-11 The IoT DC3 platform microservice architecture, showing the five-layer structure and module boundaries from device access to the intelligent decision closed loop.
+  zh: 图 10-11 数据中心是全平台唯一的数据枢纽：规则引擎毫秒级快判、Agentic中心秒级到分钟级深析，两者异步协同、互不阻塞。
+  en: "Figure 10-11 The Data Center is the platform's single data hub: the rule engine judges in milliseconds while the Agentic center reasons in seconds to minutes, and the two cooperate asynchronously without blocking each other."
 labels:
   en:
     图 10-11 IoT DC3平台微服务架构: Figure 10-11 IoT DC3 Platform Microservice Architecture
-    读者应理解规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。: The rule engine judges in milliseconds while LLM deep analysis runs async — neither blocks the other; the data center is the sole data hub, and the device center stays out of the real-time data flow.
+    规则引擎毫秒级快判、LLM深析走异步互不阻塞,数据中心是唯一数据枢纽而设备中心不介入实时数据流。: The rule engine judges in milliseconds while LLM deep analysis runs async — neither blocks the other; the data center is the sole data hub, and the device center stays out of the real-time data flow.
     规则引擎毫秒级快判、LLM深析走异步互不阻塞；数据中心是唯一数据枢纽，设备中心不介入实时数据流: 'Rule engine: millisecond decisions; LLM analysis: async — no mutual blocking. The data center is the sole data hub; the device center stays out of real-time data flow'
     业务应用层: Business Application Layer
     智能决策层: Intelligence Layer

@@ -1,6 +1,6 @@
 type: architecture
 title: 图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎
-audience_takeaway: 读者应理解消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响，通常消息队列最先选型。
+audience_takeaway: 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响，通常消息队列最先选型。
 purpose: 展示平台层三个核心组件的作用与选型关系
 visual_focus: 三组件卡片与选型相互影响。
 design_level: architecture

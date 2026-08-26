@@ -1,6 +1,6 @@
 type: matrix
 title: 图 10-6 工业时序数据库选型与 PointValue 数据模型
-audience_takeaway: 读者应理解时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流，PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。
+audience_takeaway: 时序库以高写入吞吐、时间分区、聚合下推与自动过期应对工业数据流，PointValue 按设备/点位/值/时间/单位建模，标签控基数、分区按采样频率分主副。
 purpose: 展示工业时序数据库核心特点、主流选型与 PointValue 数据模型
 visual_focus: 核心特点四卡片、三库选型与数据模型。
 design_level: matrix

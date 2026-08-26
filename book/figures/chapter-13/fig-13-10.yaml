@@ -1,6 +1,6 @@
 type: architecture
 title: 图 13-10 异构区块链网络互联的三种方案
-audience_takeaway: 读者应理解原子交换用哈希锁定做轻量凭证迁移，中继链用轻客户端做通用跨链消息，预言机做联盟链到公链的数据桥，异构互联不破坏各自共识安全边界。
+audience_takeaway: 原子交换用哈希锁定做轻量凭证迁移，中继链用轻客户端做通用跨链消息，预言机做联盟链到公链的数据桥，异构互联不破坏各自共识安全边界。
 purpose: 展示异构区块链互联的三种技术方案
 visual_focus: 三列跨链方案卡片。
 design_level: architecture

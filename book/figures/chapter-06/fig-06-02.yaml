@@ -1,7 +1,7 @@
 type: architecture
 title: 图6-2 物联网平台协议分层架构
 purpose: 展示MQTT、REST、gRPC在典型平台中的部署层次与交互主链路。
-audience_takeaway: 读者应理解设备、平台、北向三个层次的责任边界，以及各层次应选择的“最佳”协议。
+audience_takeaway: 设备、平台、北向三个层次的责任边界，以及各层次应选择的“最佳”协议。
 visual_focus: 从设备层经网关/边缘层到平台服务层再到北向应用层的主链路；不同协议用不同线型区分。
 design_level: logical
 layout: 自下而上四层：设备层、网关/边缘层、平台服务层、北向应用层。

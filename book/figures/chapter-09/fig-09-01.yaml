@@ -1,7 +1,7 @@
 type: layered
 title: 图 9-1 物联网协议栈与分类图
 purpose: 区分可直接承载IP的接入技术与通常需要IP适配或网关的接入技术，并展示它们汇入应用协议栈的路径。
-audience_takeaway: 读者应理解Wi-Fi与蜂窝网络通常直接承载IP，而BLE、Zigbee、LoRa通常需经适配或网关进入IP网络。
+audience_takeaway: Wi-Fi与蜂窝网络通常直接承载IP，而BLE、Zigbee、LoRa通常需经适配或网关进入IP网络。
 visual_focus: 从感知层分出直接IP承载与需IP适配/网关两条路径，在网络层汇合后进入TCP/UDP与应用协议。
 design_level: logical
 layout: 自下而上分层；无线接入层左右分为常用IP承载和需IP适配/网关两列，汇入统一网络层。

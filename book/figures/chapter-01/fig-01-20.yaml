@@ -1,6 +1,6 @@
 type: architecture
 title: 图1-20 边云协同AIoT三级架构示意
-audience_takeaway: 读者应理解云侧只下发量化剪枝模型并回收低置信度样本,边缘负责实时推理,端侧靠低功耗AI芯片本地响应,三层形成训练-推理-反馈闭环。
+audience_takeaway: 云侧只下发量化剪枝模型并回收低置信度样本,边缘负责实时推理,端侧靠低功耗AI芯片本地响应,三层形成训练-推理-反馈闭环。
 purpose: 展示AIoT中端、边、云三层之间的智能分工与数据流向，突出边缘计算作为实时推理载体的位置，以及模型下沉形成的闭环。
 visual_focus: 从云层到边缘层：原始数据上报的主链路。
 design_level: logical
@@ -77,7 +77,7 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 经过量化、剪枝后的轻量模型通过安全…
+  label: 经过量化、剪枝后的轻量模型通过安全信道下发
   style: solid
   direction: request
 - from: r3
@@ -92,7 +92,7 @@ connections:
   direction: request
 - from: r6
   to: r7
-  label: 经预处理后通过MQTT/CoAP协…
+  label: 经预处理后通过MQTT/CoAP协议上报
   style: solid
   direction: request
 callouts:

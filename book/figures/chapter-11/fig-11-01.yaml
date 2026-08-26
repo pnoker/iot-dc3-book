@@ -1,205 +1,210 @@
+---
 type: flowchart
 title: 图11-1 V2X通信技术选型决策路径图
-audience_takeaway: 读者应理解时延是首要维度:碰撞预警百毫秒级用DSRC,毫秒级编队须NR-V2X,稀疏覆盖靠Mode 4直连兜底。
-purpose: 展示从业务时延需求、基础设施覆盖、演进预期和后装兼容性四个维度出发，选择DSRC、LTE-V2X或NR-V2X的决策路径。
-visual_focus: 从node到node的主链路。
+audience_takeaway: 时延是首要维度：碰撞预警百毫秒级用DSRC，毫秒级编队须NR-V2X，稀疏覆盖靠Mode 4直连兜底。
+purpose: 展示从业务时延需求、基础设施覆盖、演进预期和存量后装兼容性四个维度出发，选择DSRC、LTE-V2X、NR-V2X或多模方案的决策路径。
+visual_focus: 从根节点“业务时延需求？”分出百毫秒级与毫秒级两条主支，再经覆盖、演进与后装条件收敛到四种方案。
 design_level: implementation
-layout: 有向图，从上到下依次分支，每个节点有两个或更多出口，最终汇至三种技术方案或多模方案。
+layout: 自上而下的决策树：根节点为时延需求判断，左右两支分别处理百毫秒级基础安全与毫秒级高级驾驶，叶节点为DSRC、NR-V2X Mode 4、NR-V2X、LTE-V2X与多模方案。
 elements:
-- 'node: "业务时延需求"'
-- 'condition: "碰撞预警级别（百毫秒） →"'
-- V2X / DSRC"
-- 'condition: "自动驾驶编队（毫秒级） →"'
-- V2X"
-- 'node: "基础设施覆盖"'
-- 'condition: "RSU高密度部署 →"'
-- 'condition: "无基站或稀疏覆盖 →"'
-- V2X Mode 4"
-- 'node: "演进预期"'
-- 'condition: "五年内需高级自动驾驶 →"'
-- V2X"
-- 'condition: "高级自动驾驶无要求 →"'
-- V2X或DSRC"
-- 'node: "后装兼容性"'
-- 'condition: "现有车队需与行人设备协同 →"'
-- 'condition: "全新前装部署 →"'
-- V2X优先）"
-- 'node: "DSRC"'
-- 'node: "LTE-V2X"'
-- 'node: "NR-V2X"'
-- 'node: "多模方案"'
-- 'from: "业务时延需求" to: "基础设施覆盖" (顺序分支)'
-- 'from: "基础设施覆盖" to: "演进预期" (顺序分支)'
-- 'from: "演进预期" to: "后装兼容性" (顺序分支)'
-- 'from: "后装兼容性" to: "DSRC" / "LTE-V2X" / "NR-V2X" / "多模方案"'
-- 1 V2X通信技术选型决策路径图
+- 根决策：业务时延需求？
+- 左支（百毫秒级基础安全）→ 安全预警 · 基础安全消息
+- 左支决策：RSU 覆盖？
+- RSU 高密 → DSRC（高密 RSU · 基础安全消息）
+- 覆盖稀疏 → NR-V2X Mode 4（Mode 4 直连 · 稀疏覆盖）
+- 右支（毫秒级编队 / 高级驾驶）→ 自动驾驶编队 · 高级驾驶
+- 右支决策：演进预期？
+- 三年内演进 → NR-V2X（毫秒级编队 · 高级驾驶）
+- 仅基础业务 → 决策：存量后装？
+- 全新前装 → LTE-V2X（蜂窝直连 · 前装支持）
+- 旧车队协同 → 多模方案（DSRC / C-V2X 过渡兼容）
 relationships:
-- 'from: "业务时延需求" to: "基础设施覆盖" (顺序分支)'
-- 'from: "基础设施覆盖" to: "演进预期" (顺序分支)'
-- 'from: "演进预期" to: "后装兼容性" (顺序分支)'
-- 'from: "后装兼容性" to: "DSRC" / "LTE-V2X" / "NR-V2X" / "多模方案"'
-- 1 V2X通信技术选型决策路径图
+- 业务时延需求？ -百毫秒级基础安全→ 安全预警 · 基础安全消息
+- 安全预警 · 基础安全消息 -RSU 覆盖？→ DSRC（RSU 高密）/ NR-V2X Mode 4（覆盖稀疏）
+- 业务时延需求？ -毫秒级编队 / 高级驾驶→ 自动驾驶编队 · 高级驾驶
+- 自动驾驶编队 · 高级驾驶 -演进预期？→ NR-V2X（三年内演进）
+- 自动驾驶编队 · 高级驾驶 -仅基础业务→ 存量后装？
+- 存量后装？ -全新前装→ LTE-V2X；-旧车队协同→ 多模方案
 regions:
-- id: application_domain
-  label: 业务应用域
-  role: 业务价值交付边界
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
+- id: decision_domain
+  label: 决策维度域
+  role: 时延、覆盖、演进、后装四个判断条件
+- id: solution_domain
+  label: 技术方案域
+  role: DSRC / LTE-V2X / NR-V2X / 多模四种收敛结果
 components:
-- id: c1
-  label: node
+- id: n_root
+  label: 业务时延需求？
   type: application
-  subtitle: '""'
-  group: application_domain
+  subtitle: 根决策
+  group: decision_domain
   priority: primary
-  shape: card
-- id: c2
-  label: condition
-  type: platform
-  subtitle: '""'
-  group: platform_domain
+  shape: diamond
+- id: n_left
+  label: 安全预警 · 基础安全消息
+  type: application
+  subtitle: 百毫秒级基础安全
+  group: decision_domain
   priority: normal
   shape: card
-- id: c3
-  label: V2X / DSRC"
+- id: n_rsu
+  label: RSU 覆盖？
   type: platform
-  subtitle: ''
-  group: platform_domain
+  subtitle: 左支决策
+  group: decision_domain
+  priority: normal
+  shape: diamond
+- id: s_dsrc
+  label: DSRC
+  type: data
+  subtitle: 高密 RSU · 基础安全消息
+  group: solution_domain
   priority: normal
   shape: card
-- id: c4
-  label: condition
-  type: platform
-  subtitle: '""'
-  group: platform_domain
+- id: s_mode4
+  label: NR-V2X Mode 4
+  type: data
+  subtitle: Mode 4 直连 · 稀疏覆盖
+  group: solution_domain
   priority: normal
   shape: card
-- id: c5
-  label: V2X"
-  type: platform
-  subtitle: ''
-  group: platform_domain
+- id: n_right
+  label: 自动驾驶编队 · 高级驾驶
+  type: application
+  subtitle: 毫秒级编队 / 高级驾驶
+  group: decision_domain
   priority: normal
   shape: card
-- id: c6
-  label: node
+- id: n_evo
+  label: 演进预期？
   type: platform
-  subtitle: '""'
-  group: platform_domain
+  subtitle: 右支决策
+  group: decision_domain
+  priority: normal
+  shape: diamond
+- id: s_nr
+  label: NR-V2X
+  type: data
+  subtitle: 毫秒级编队 · 高级驾驶
+  group: solution_domain
   priority: normal
   shape: card
-- id: c7
-  label: condition
+- id: n_retro
+  label: 存量后装？
   type: platform
-  subtitle: '""'
-  group: platform_domain
+  subtitle: 仅基础业务时判断
+  group: decision_domain
+  priority: normal
+  shape: diamond
+- id: s_lte
+  label: LTE-V2X
+  type: data
+  subtitle: 蜂窝直连 · 前装支持
+  group: solution_domain
   priority: normal
   shape: card
-- id: c8
-  label: condition
-  type: platform
-  subtitle: '""'
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: c9
-  label: V2X Mode 4"
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: c10
-  label: node
-  type: platform
-  subtitle: '""'
-  group: platform_domain
+- id: s_multi
+  label: 多模方案
+  type: data
+  subtitle: DSRC / C-V2X 过渡兼容
+  group: solution_domain
   priority: normal
   shape: card
 connections:
-- from: c1
-  to: c2
-  label: 'from: "业务时延需求" to…'
+- from: n_root
+  to: n_left
+  label: 百毫秒级基础安全
   style: solid
-  direction: left-to-right
-- from: c2
-  to: c3
-  label: 'from: "基础设施覆盖" to…'
+  direction: down
+- from: n_root
+  to: n_right
+  label: 毫秒级编队 / 高级驾驶
   style: solid
-  direction: left-to-right
-- from: c3
-  to: c4
-  label: 'from: "演进预期" to…'
+  direction: down
+- from: n_left
+  to: n_rsu
+  label: 进入覆盖判断
   style: solid
-  direction: left-to-right
-- from: c4
-  to: c5
-  label: 'from: "后装兼容性" to…'
+  direction: down
+- from: n_rsu
+  to: s_dsrc
+  label: RSU 高密
   style: solid
-  direction: left-to-right
-- from: c5
-  to: c6
-  label: 1 V2X通信技术选型决策路径图
+  direction: down
+- from: n_rsu
+  to: s_mode4
+  label: 覆盖稀疏
   style: solid
-  direction: left-to-right
-- from: c6
-  to: c7
-  label: 'from: "业务时延需求" to…'
+  direction: down
+- from: n_right
+  to: n_evo
+  label: 进入演进判断
   style: solid
-  direction: left-to-right
-- from: c7
-  to: c8
-  label: 'from: "基础设施覆盖" to…'
+  direction: down
+- from: n_evo
+  to: s_nr
+  label: 三年内演进
   style: solid
-  direction: left-to-right
-- from: c8
-  to: c9
-  label: 'from: "演进预期" to…'
+  direction: down
+- from: n_evo
+  to: n_retro
+  label: 仅基础业务
   style: solid
-  direction: left-to-right
-- from: c9
-  to: c10
-  label: 'from: "后装兼容性" to…'
+  direction: down
+- from: n_retro
+  to: s_lte
+  label: 全新前装
   style: solid
-  direction: left-to-right
+  direction: down
+- from: n_retro
+  to: s_multi
+  label: 旧车队协同
+  style: solid
+  direction: down
 callouts:
-- 'from: "业务时延需求" to: "基础设施覆盖" (顺序分支)'
-- 'from: "基础设施覆盖" to: "演进预期" (顺序分支)'
-- 'from: "演进预期" to: "后装兼容性" (顺序分支)'
+- 决策菱形为判断条件，矩形为技术方案。
+- 频段合规和现场测试是所有分支结果的共同前提。
 legend:
-- 蓝色=核心能力；橙色=智能/风险路径。
+- 橙色菱形=决策节点；蓝色/绿色/红色矩形=技术方案叶节点。
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
-render_notes: '|'
+render_notes: 渲染为自包含SVG决策树，与 fig-11-01.html 保持一致：根节点居中，左支（DSRC / Mode 4）与右支（NR-V2X
+  / LTE-V2X / 多模）对称展开，底部附图注。
 caption:
-  zh: 图11-1 V2X通信技术选型决策路径图
-  en: 'Figure 11-1 Decision path for V2X communication technology selection.'
+  zh: 图11-1 时延决定技术代际，覆盖与存量条件进一步分流；频段合规和现场测试是所有结果的共同前提。
+  en: Figure 11-1 Latency sets the technology generation; coverage and legacy-fleet
+    conditions further split the path — spectrum compliance and field testing are
+    common prerequisites for every outcome.
 labels:
   en:
-    图11-1 V2X通信技术选型决策路径图: 'Figure 11-1 V2X Technology Selection Decision Path'
-    按时延划定技术代际，再由覆盖、演进与存量兼容条件收敛到 DSRC、LTE-V2X 或 NR-V2X 方案。: 'Latency sets the technology generation; coverage, evolution, and legacy fleets narrow it to DSRC, LTE-V2X, or NR-V2X.'
-    按时延划定技术代际，再由覆盖、演进与存量兼容条件收敛方案: 'Latency sets the generation; coverage/evolution/legacy converge the choice'
-    业务时延需求？: 'Required latency?'
-    百毫秒级基础安全: '100 ms basic safety'
-    安全预警 · 基础安全消息: 'Safety alerts · BSM'
-    RSU 覆盖？: 'RSU coverage?'
-    RSU 高密: 'Dense RSU'
-    高密 RSU · 基础安全消息: 'Dense RSU · BSM'
-    覆盖稀疏: 'Sparse coverage'
-    Mode 4 直连 · 稀疏覆盖: 'Mode 4 direct · sparse coverage'
-    毫秒级编队 / 高级驾驶: 'ms platooning / advanced driving'
-    自动驾驶编队 · 高级驾驶: 'Platooning · advanced driving'
-    演进预期？: 'Evolution plan?'
-    三年内演进: 'Evolve in 3 yrs'
-    毫秒级编队 · 高级驾驶: 'ms platooning · advanced driving'
-    仅基础业务: 'Basic services'
-    存量后装？: 'Legacy retrofit?'
-    全新前装: 'All-new OEM fit'
-    蜂窝直连 · 前装支持: 'Cellular direct · built-in'
-    旧车队协同: 'Legacy fleet'
-    多模方案: 'Multi-mode'
-    DSRC / C-V2X 过渡兼容: 'DSRC / C-V2X transition'
-    图11-1 时延决定技术代际，覆盖与存量条件进一步分流；频段合规和现场测试是所有结果的共同前提。: 'Figure 11-1 Latency sets the generation; coverage and legacy split the path — spectrum compliance and field tests apply to all outcomes.'
+    图11-1 V2X通信技术选型决策路径图: Figure 11-1 V2X Technology Selection Decision Path
+    按时延划定技术代际，再由覆盖、演进与存量兼容条件收敛到 DSRC、LTE-V2X 或 NR-V2X 方案。: Latency sets the technology
+      generation; coverage, evolution, and legacy fleets narrow it to DSRC, LTE-V2X,
+      or NR-V2X.
+    按时延划定技术代际，再由覆盖、演进与存量兼容条件收敛方案: Latency sets the generation; coverage/evolution/legacy
+      converge the choice
+    业务时延需求？: Required latency?
+    百毫秒级基础安全: 100 ms basic safety
+    安全预警 · 基础安全消息: Safety alerts · BSM
+    RSU 覆盖？: RSU coverage?
+    RSU 高密: Dense RSU
+    高密 RSU · 基础安全消息: Dense RSU · BSM
+    覆盖稀疏: Sparse coverage
+    Mode 4 直连 · 稀疏覆盖: Mode 4 direct · sparse coverage
+    毫秒级编队 / 高级驾驶: ms platooning / advanced driving
+    自动驾驶编队 · 高级驾驶: Platooning · advanced driving
+    演进预期？: Evolution plan?
+    三年内演进: Evolve in 3 yrs
+    仅基础业务: Basic services
+    存量后装？: Legacy retrofit?
+    全新前装: All-new OEM fit
+    蜂窝直连 · 前装支持: Cellular direct · built-in
+    旧车队协同: Legacy fleet
+    多模方案: Multi-mode
+    DSRC / C-V2X 过渡兼容: DSRC / C-V2X transition
+    ? 图11-1 时延决定技术代际，覆盖与存量条件进一步分流；频段合规和现场测试是所有结果的共同前提。
+    : Figure 11-1 Latency sets the generation; coverage and legacy split the path
+      — spectrum compliance and field tests apply to all outcomes.
+    毫秒级编队 · 高级驾驶: Millisecond platooning · Advanced driving

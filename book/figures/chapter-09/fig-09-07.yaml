@@ -1,6 +1,6 @@
 type: dataflow
 title: 图 9-7 CoAP/LwM2M 在 NB-IoT 中的协同
-audience_takeaway: 读者应理解 NB-IoT 提供低功耗通道、CoAP 负责轻量消息、LwM2M 承担对象标准化，状态上报用 NON、关键指令用 CON。
+audience_takeaway:  NB-IoT 提供低功耗通道、CoAP 负责轻量消息、LwM2M 承担对象标准化，状态上报用 NON、关键指令用 CON。
 purpose: 展示 NB-IoT 场景下三层技术栈分工与消息可靠性分级
 visual_focus: 三层技术栈卡片与 NON/CON 消息分级。
 design_level: dataflow

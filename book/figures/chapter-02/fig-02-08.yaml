@@ -1,7 +1,7 @@
 type: sequence
 title: 图2-8 认证流程时序图：用户登录到设备列表访问
 purpose: 展示Auth中心如何与Gateway、Manager协作，完成用户登录、令牌颁发、请求校验和权限判定的完整过程。
-audience_takeaway: 读者应理解认证逻辑集中在Auth中心，Gateway只负责路由和验票，Manager基于已认证的上下文执行业务，不重复判断权限。
+audience_takeaway: 认证逻辑集中在Auth中心，Gateway只负责路由和验票，Manager基于已认证的上下文执行业务，不重复判断权限。
 visual_focus: 用户→Gateway→Auth中心的两轮交互：第一轮换取JWT，第二轮验证令牌并转发业务请求；Auth中心为Gateway提供权限判定结果后再将请求发给Manager。
 design_level: logical
 layout: 四列自上而下排列，参与者从左到右：用户、Gateway、Auth中心、Manager中心。消息按时间顺序从上到下标注步骤编号。

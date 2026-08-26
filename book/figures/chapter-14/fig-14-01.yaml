@@ -1,6 +1,6 @@
 type: framework
 title: 图 14-1 需求分析的四个来源与资产生命周期检视
-audience_takeaway: 读者应理解需求来自访谈、现场勘查、存量系统、行业规范四个来源，用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。
+audience_takeaway: 需求来自访谈、现场勘查、存量系统、行业规范四个来源；用资产生命周期检视法从部署到退役逐阶段推导用例，再以 MoSCoW 划分优先级并量化非功能需求。
 purpose: 展示需求获取的四个来源与资产生命周期检视法
 visual_focus: 四个来源卡片与资产生命周期五阶段。
 design_level: framework

@@ -1,8 +1,8 @@
 type: matrix
 title: 图4-4 主流 IoT 无线技术选型雷达图（示意框架）
-audience_takeaway: 读者应理解雷达图面积大不代表技术更优,LoRa用自建网关换距离与低功耗,NB-IoT则复用运营商基站换部署便捷。
+audience_takeaway: 雷达图面积大不代表技术更优,LoRa用自建网关换距离与低功耗,NB-IoT则复用运营商基站换部署便捷。
 purpose: 定性展示六种技术在五项工程维度上的相对优势与折中，辅助选型判断。
-visual_focus: 从五根轴对应五项维度到每个技术在五轴上的相对优势用半透明…的主链路。
+visual_focus: 五轴雷达图上六种技术的相对工程画像。
 design_level: decision
 layout: 五边形雷达图，五轴等角度分布（72°），轴名从正上方顺时针标记：距离、速率、功耗（越低越省电）、成本（越低越省钱）、部署便捷性。
 elements:
@@ -31,12 +31,12 @@ components:
 - id: c2
   label: 六条彩色连线代表六种技术
   type: platform
-  subtitle: BLE-蓝色、Zigbee-青色、WiFi-橙色、Lo…
+  subtitle: BLE-蓝、Zigbee-青、WiFi-橙、LoRa-红、NB-IoT-紫、5G-灰
   group: platform_domain
   priority: normal
   shape: card
 - id: c3
-  label: 每个技术在五轴上的相对优势用半透明…
+  label: 各技术按相对优势绘制半透明多边形
   type: platform
   subtitle: 形成多边形区域
   group: platform_domain
@@ -45,12 +45,12 @@ components:
 connections:
 - from: c1
   to: c2
-  label: BLE：距离近、速率中、功耗极低…
+  label: BLE：距离近、速率中、功耗极低
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: Zigbee：距离近、速率低、功耗…
+  label: Zigbee：距离近、速率低、功耗极低
   style: solid
   direction: left-to-right
 callouts:

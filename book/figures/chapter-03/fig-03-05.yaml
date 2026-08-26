@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 3-5 RFID 防碰撞两条路线与标签存储结构
-audience_takeaway: 读者应理解帧时隙 ALOHA 用概率换取吞吐、二进制搜索树用确定性换取按序识别，EPC Gen2 标签分 Reserved/EPC/TID/User 四存储体。
+audience_takeaway: 帧时隙 ALOHA 用概率换取吞吐、二进制搜索树用确定性换取按序识别，EPC Gen2 标签分 Reserved/EPC/TID/User 四存储体。
 purpose: 展示 RFID 防碰撞两条路线与标签四存储体
 visual_focus: 概率路线与确定路线对比，标签四存储体。
 design_level: flowchart

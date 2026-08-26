@@ -1,6 +1,6 @@
 type: layered
 title: 图8-5 防篡改设计的纵深防线
-audience_takeaway: 读者应理解密钥派生与签名全程在安全元件内部闭环，PUF派生私钥永不通过SPI暴露给主控，物理取芯也拿不到明文私钥。
+audience_takeaway: 密钥派生与签名全程在安全元件内部闭环，PUF派生私钥永不通过SPI暴露给主控，物理取芯也拿不到明文私钥。
 purpose: 展示从外壳到芯片内部的四层物理安全防护体系，以及安全元件内部密钥派生的数据流
 visual_focus: 从主控发起签名请求到终点的主链路。
 design_level: logical
@@ -31,7 +31,7 @@ components:
   priority: primary
   shape: card
 - id: r2
-  label: SE内部调用PUF派生密钥 ->…
+  label: SE 内部调用 PUF 派生密钥 → 执行签名 → 返回结果
   type: platform
   subtitle: ''
   group: platform_domain
@@ -39,8 +39,8 @@ components:
   shape: card
 connections:
 - from: r1
-  to: se_puf_-
-  label: 主控发起签名请求 -> SE内部调…
+  to: r2
+  label: 主控发起签名请求 → SE 内部派生密钥并签名 → 返回签名结果
   style: dashed
   direction: response
 callouts:

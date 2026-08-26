@@ -1,6 +1,6 @@
 type: dataflow
 title: 图 3-10 边缘数据预处理的三个工程目标
-audience_takeaway: 读者应理解边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作，只在边缘执行无需跨设备上下文的操作。
+audience_takeaway: 边缘预处理围绕滤除噪声、减少数据量、独立决策三目标，上传干净数据、向下快速动作，只在边缘执行无需跨设备上下文的操作。
 purpose: 展示边缘数据预处理的三个工程目标
 visual_focus: 三目标自上而下的数据流。
 design_level: dataflow

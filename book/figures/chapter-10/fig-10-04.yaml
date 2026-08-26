@@ -1,7 +1,7 @@
 type: architecture
 title: 图 10-4 三类维护策略长期运营效率对比（示意）
 purpose: 对比被动、预防性和预测性维护策略在持续运营中的成本趋势与设备可用率差异，展示趋势关系而非精确数值。
-audience_takeaway: 读者应理解三类维护策略在长期运行中成本与可用率的相对走势：被动维护成本快速攀升、可用率骤降；预防性维护成本周期性波动、可用率缓慢下滑；预测性维护成本逐步稳定低位、可用率几乎不衰减。
+audience_takeaway: 三类维护策略在长期运行中成本与可用率的相对走势：被动维护成本快速攀升、可用率骤降；预防性维护成本周期性波动、可用率缓慢下滑；预测性维护成本逐步稳定低位、可用率几乎不衰减。
 visual_focus: 从被动维护成本到预测性维护可用率的主链路，强调预测性维护的成本-可靠性平衡优势。
 design_level: logical
 layout: 双轴组合图。左侧纵轴为成本（条形图），右侧纵轴为设备可用率（折线图）。x轴为运行周期，象征持续运营时间跨度。
@@ -85,7 +85,7 @@ visual_constraints:
 - 条形图高度仅表示相对大小关系，不标具体刻度。
 - 折线图纵轴刻度仅标注高、中、低三个水平。
 - 图例放在底部，清晰标注颜色与线型对应关系。
-render_notes: 使用Web图表库（如ECharts或Highcharts）渲染，组合柱状图（主）与折线图（辅）。x轴：运行周期（1-6）。左侧y轴：年度维护成本（相对值，无刻度）。右侧y轴：设备可用率（相对值，无刻度）。折线采用不同线型（实线、虚线、点划线）以便灰度印刷区分。图表底部添加图例区域。标题明确标注“示意”。
+render_notes: 渲染为自包含SVG（无需ECharts/Highcharts等外部图表库），组合柱状图（主）与折线图（辅）。x轴：运行周期（1-6）。左侧y轴：年度维护成本（相对值，无刻度）。右侧y轴：设备可用率（相对值，无刻度）。折线采用不同线型（实线、虚线、点划线）以便灰度印刷区分。图表底部添加图例区域。标题明确标注“示意”。
 caption:
   zh: 图 10-4 三类维护策略效率对比（示意）。本图展示三种维护策略在长期运营中的成本与可用率相对趋势：被动维护成本快速攀升、可用率骤降；预防性维护成本周期性波动、可用率缓慢下滑；预测性维护成本逐步稳定、可用率长期维持高位。
   en: 'Figure 10-4 Efficiency comparison of three maintenance strategies (illustrative). The chart shows the relative cost and availability trends of the three strategies in long-term operation: reactive maintenance cost climbs fast while availability plunges; preventive maintenance cost swings cyclically while availability slowly declines; predictive maintenance cost levels off and availability stays high over the long run.'

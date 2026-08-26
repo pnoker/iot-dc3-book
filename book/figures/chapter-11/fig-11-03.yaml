@@ -1,7 +1,7 @@
 type: architecture
 title: 图11-3 智能路灯杆功能图（假设场景）
 purpose: 展示单根智能路灯杆上挂载的五类模块、边缘计算盒的位置及数据流动方向，帮助读者理解不同传感器在带宽、安全、实时性上的差异如何决定数据是否本地处理或上传云端。
-audience_takeaway: 读者应理解边缘计算盒的关键作用——视频等高频数据本地消失，低频和控制数据上传，这是城市级物联网带宽与管理成本的工程折中。
+audience_takeaway: 边缘计算盒的关键作用——视频等高频数据本地消失，低频和控制数据上传，这是城市级物联网带宽与管理成本的工程折中。
 visual_focus: 数据从环境传感器组、摄像头、照明、充电桩流向边缘计算盒，再经MQTT上传云端IoT Hub的主链路。摄像头到边缘盒的虚线标注“本地推理”。
 design_level: logical
 layout: 纵向三层：挂载层（顶部）、边缘计算层（中部）、云端层（底部）
@@ -122,8 +122,8 @@ visual_constraints:
 - “图例置于底部，不遮挡主体。”
 render_notes: “1. 标题行加‘(假设场景)’标识。2. 摄像头-边缘盒箭头中线标注‘本地推理’。3. 充电桩链路加锁图标表示TLS。4. IoT Hub与应用服务间用双向箭头。5. 三层用浅灰底色区分。6. 所有模块文字在14个汉字以内。”
 caption:
-  zh: 图11-3 智能路灯杆功能图（假设场景），展示五类模块与边缘计算盒的数据流向关系。”
-  en: 'Figure 11-3 Functional diagram of a smart light pole (hypothetical scenario), showing how the five module types exchange data with the edge computing box.'
+  zh: 图11-3 视频等高频数据在杆内边缘计算盒本地消化，只输出结构化消息；低频传感与控制数据经MQTT上传——这是带宽与运维成本之间的工程折中。
+  en: 'Figure 11-3 High-frequency video is digested locally by the on-pole edge box, which outputs structured messages only; low-frequency sensing and control data go up over MQTT — an engineering trade-off between bandwidth and operations cost.'
 labels:
   en:
     图11-3 智能路灯杆功能图（假设场景）: 'Figure 11-3 Smart Light Pole Functions (Hypothetical)'

@@ -1,6 +1,6 @@
 type: architecture
 title: 图 13-5 数据验证与溯源机制时序图
-audience_takeaway: 读者应理解溯源依赖事件日志的链下索引：合约只存哈希与所有权映射，历史查询由监听器从DataStored事件重建而不重扫区块。
+audience_takeaway: 溯源依赖事件日志的链下索引：合约只存哈希与所有权映射，历史查询由监听器从DataStored事件重建而不重扫区块。
 purpose: 展示数据从传感器产生到链上验证的完整流程，重点突出事件日志的索引作用和验证函数的调用路径。
 visual_focus: 从1. 传感器到边缘节点：推送原始数据的主链路。
 design_level: logical
@@ -36,11 +36,11 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 实线箭头，标注“原始数据 JSON…
+  label: 实线箭头，标注“原始数据 JSON”
   style: solid
   direction: request
 callouts:
-- 1. 传感器 → 边缘节点：推送原始数据（实线箭头，标注“原始数据 JSON”） 2. 边缘节点 → 智能合约：调…
+- 1. 传感器 → 边缘节点：推送原始数据（实线箭头，标注“原始数据 JSON”） 2. 边缘节点 → 智能合约：调用 `storeDataHash(dataId, hash)` 交易（实线箭头，标注“上链交易”） 3. 智能合约 → 区块链网络：写入 mapping 并发出 `DataStored` 事件
 legend:
 - 实线箭头：交易或直接调用
 - 虚线箭头：事件广播或异步通知
@@ -53,7 +53,7 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: SVG 绘制，纵向布局，时间轴左侧标注时间刻度（T0, T1, …）；参与方列在左侧纵向排列；箭头使用不同颜色区分实线与虚线；合约内部用嵌套矩形展示 mapping；区块链网络用三个连续的锯齿矩形表示，区块之间用箭头连接；所有文本使用无衬线字体，关键参数（keccak256, dataId, indexed）用斜体。
 caption:
-  zh: 数据验证与溯源时序图。数据从传感器经边缘节点上链，合约记录指纹并发出事件；验证者通过对比哈希确认完整性，同时利用事件追溯历史操作。
+  zh: 图 13-5 数据验证与溯源时序图。数据从传感器经边缘节点上链，合约记录指纹并发出事件；验证者通过对比哈希确认完整性，同时利用事件追溯历史操作。
   en: 'Data verification and traceability sequence diagram. Data flows from the sensor through the edge node onto the chain, where the contract records the fingerprint and emits events; the verifier confirms integrity by comparing hashes and uses the events to trace historical operations.'
 labels:
   en:

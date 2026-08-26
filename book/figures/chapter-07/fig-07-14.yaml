@@ -1,6 +1,6 @@
 type: matrix
 title: 图 7-14 从 Copilot 到 Agent：低自主度与高自主度对比
-audience_takeaway: 读者应理解 Copilot 是低自主度协作（模型辅助、人保留执行权），Agent 沿感知-规划-行动-反馈循环演进，当前以受控 Tool 调用和 Action 确认为边界。
+audience_takeaway: 低自主度下模型只组合只读 Tool，写入必须经 Action 确认；更高自主度需补齐事件触发、任务状态机、审批与补偿后才可开放，实时安全控制始终留在 PLC 与边缘控制器。
 purpose: 对比 Copilot 与 Agent 两种模式的自主度边界
 visual_focus: 左右并列的两种模式卡片。
 design_level: matrix

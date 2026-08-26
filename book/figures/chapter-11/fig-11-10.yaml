@@ -1,7 +1,7 @@
 type: flowchart
 title: 图11-10 十字路口强化学习框架
 purpose: 展示十字路口中，RL智能体与环境之间的交互闭环，包括状态观测、动作执行、奖励反馈、经验回放与参数更新。
-audience_takeaway: 读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。
+audience_takeaway: 十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。
 visual_focus: 从环境到智能体目标网络的主训练链路，强调经验回放和双网络结构对训练稳定性的支撑。
 design_level: implementation
 layout: 左右两列布局。左侧为环境域，右侧为智能体域。
@@ -134,7 +134,7 @@ caption:
 labels:
   en:
     图11-10 十字路口强化学习框架: 'Figure 11-10 Intersection Reinforcement Learning'
-    读者应理解十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。: 'The training path from environment to agent target network, and how replay and twin networks stabilize training.'
+    十字路口RL框架中，从环境到智能体目标网络的训练主链路，以及经验回放和双网络结构对训练稳定性的支撑作用。: 'The training path from environment to agent target network, and how replay and twin networks stabilize training.'
     环境域: 'Environment Domain'
     物理路口与信号灯执行边界: 'Physical intersection & signal actuation'
     智能决策域: 'Intelligent Decision Domain'

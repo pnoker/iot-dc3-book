@@ -56,12 +56,12 @@ components:
 connections:
 - from: c1
   to: c2
-  label: 根节点以Organizes引用方式…
+  label: 根节点以Organizes引用方式包含设备对象
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: 设备对象以HasComponent…
+  label: 设备对象以HasComponent引用方式包含变量节点和方法节点
   style: solid
   direction: left-to-right
 - from: c3

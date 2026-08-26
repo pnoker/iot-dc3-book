@@ -1,7 +1,7 @@
 type: architecture
 title: 图6-6 IoT DC3 模块关系与数据流分层图
 purpose: 展示 Gateway、四个中心、协议 Driver、RabbitMQ 与 PostgreSQL 的真实模块边界和通信方向。
-audience_takeaway: 读者应理解北向统一路由、Driver 与 Manager 的 gRPC 管理调用，以及 Data 与 Driver 之间的 RabbitMQ 异步命令和数据流。
+audience_takeaway: 北向统一路由、Driver 与 Manager 的 gRPC 管理调用，以及 Data 与 Driver 之间的 RabbitMQ 异步命令和数据流。
 visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver 三条主链路。
 design_level: logical
 layout: 自上而下四层：北向接入层、平台服务层、南向驱动层、基础设施层。

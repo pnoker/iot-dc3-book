@@ -1,6 +1,6 @@
 type: sequence
 title: 图11-2 RSU与OBU通信流程
-audience_takeaway: 读者应理解RSU是路侧枢纽:信号机灯色经串口轮询编码SPAT,雷达目标经以太网编码RSI,OBU融合CAN数据供ADAS。
+audience_takeaway: RSU是路侧枢纽:信号机灯色经串口轮询编码SPAT,雷达目标经以太网编码RSI,OBU融合CAN数据供ADAS。
 purpose: 展示信号机、RSU、雷达、OBU、车载HMI以及ADAS域控制器之间的消息交互顺序和时序关系
 visual_focus: 从信号机到终点的主链路。
 design_level: implementation

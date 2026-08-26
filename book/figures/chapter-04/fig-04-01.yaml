@@ -1,8 +1,8 @@
 type: topology
 title: 图4-1 NB-IoT 网络架构示意
-audience_takeaway: 读者应理解NB-IoT复用运营商LTE蜂窝网络,终端经Uu空口、S1/SGi接口直达核心网与平台,无需自建网关。
+audience_takeaway: NB-IoT复用运营商LTE蜂窝网络,终端经Uu空口、S1/SGi接口直达核心网与平台,无需自建网关。
 purpose: 展示一个传感器数据从终端到应用的完整穿越路径，并区分各层角色在 3GPP 体系中的职责，帮助读者理解 NB-IoT 的端到端通信模型。
-visual_focus: 从上行数据流：实线向上箭头从终端层到终点的主链路。
+visual_focus: 从终端层到应用层的上行主链路（辅以下行控制流）。
 design_level: logical
 layout: 自上而下垂直分列，包含五层结构，核心网部分内部再拆解为三个功能实体。底部为终端，顶部为应用，中间层按数据流方向依次连接。
 elements:
@@ -23,26 +23,67 @@ regions:
   label: 业务应用域
   role: 业务价值交付边界
 components:
-- id: r1
-  label: 上行数据流：实线向上箭头从终端层
-  type: data
-  subtitle: ''
+- id: terminal
+  label: 终端层
+  type: device
+  subtitle: NB-IoT 模组（智能水表、智能井盖、小型气象站）
   group: data_domain
   priority: primary
-  shape: database
-- id: r2
-  label: 接入层→核心网→IoT 平台→应用…
+  shape: card
+- id: access
+  label: 网络接入层
+  type: network
+  subtitle: eNodeB（LTE 基站），200 kHz 带宽
+  group: data_domain
+  priority: primary
+  shape: card
+- id: core
+  label: 核心网层
+  type: network
+  subtitle: MME / SGW / PGW
+  group: data_domain
+  priority: primary
+  shape: card
+- id: iot_platform
+  label: IoT 平台层
+  type: platform
+  subtitle: 设备管理、数据汇聚、API 暴露
+  group: data_domain
+  priority: primary
+  shape: card
+- id: application
+  label: 应用层
   type: application
-  subtitle: ''
+  subtitle: 垂直行业应用（抄表、市政、环境）
   group: application_domain
-  priority: normal
+  priority: primary
   shape: card
 connections:
-- from: r1
-  to: iot
-  label: 上行数据流：实线向上箭头从终端层→…
+- from: terminal
+  to: access
+  label: Uu 空口·上行数据
   style: solid
   direction: request
+- from: access
+  to: core
+  label: S1 接口
+  style: solid
+  direction: request
+- from: core
+  to: iot_platform
+  label: SGi 接口
+  style: solid
+  direction: request
+- from: iot_platform
+  to: application
+  label: 上行数据
+  style: solid
+  direction: request
+- from: application
+  to: terminal
+  label: 下行指令
+  style: dashed
+  direction: response
 callouts:
 - 上行数据流：实线向上箭头从终端层→接入层→核心网→IoT 平台→应用层，箭头旁标注‘上行数据’
 - 下行控制流：虚线向下箭头从应用层贯穿至终端层，箭头旁标注‘下行指令’

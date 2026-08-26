@@ -1,6 +1,6 @@
 type: matrix
 title: 图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比
-audience_takeaway: 读者应理解产量预测有统计模型（ARIMA 只用目标变量历史值、可解释性强）与深度学习（LSTM 融合多源环境变量、能捕捉非线性关系）两条路线，并以 RMSE、MAE 评估。
+audience_takeaway: 产量预测有统计模型（ARIMA 只用目标变量历史值、可解释性强）与深度学习（LSTM 融合多源环境变量、能捕捉非线性关系）两条路线，并以 RMSE、MAE 评估。
 purpose: 对比两条产量预测路线的输入、建模步骤与评估指标
 visual_focus: 左右并列的两条建模路线。
 design_level: matrix

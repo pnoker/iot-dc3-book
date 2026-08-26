@@ -1,6 +1,6 @@
 type: matrix
 title: 图 9-2 协议选择的三维约束与主流协议对比
-audience_takeaway: 读者应理解协议选型在网络、设备、生态三个约束维度找平衡，MQTT 适合双向高可靠，CoAP 适合低功耗休眠终端，LwM2M 适合远程管理，HTTP 适合无实时要求的 RESTful 调用。
+audience_takeaway: 网络与设备约束通常先收敛候选集，生态约束决定最终取舍；四种协议并非互斥竞争，一个平台同时运行 MQTT 设备接入与 HTTP 北向 API 是常态。
 purpose: 展示协议选择的三维约束与主流协议对比
 visual_focus: 三约束卡片与四协议对比表。
 design_level: matrix

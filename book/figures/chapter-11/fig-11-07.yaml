@@ -1,6 +1,6 @@
 type: architecture
 title: 图11-7 城市物联网消息队列与数据流处理架构
-audience_takeaway: 读者应理解高频传感流走Kafka/Flink实时聚合入时序库,控制指令走RocketMQ事务管道,两类通道隔离避免互扰。
+audience_takeaway: 高频传感流走Kafka/Flink实时聚合入时序库,控制指令走RocketMQ事务管道,两类通道隔离避免互扰。
 purpose: 展示从设备层到最终数据消费的完整消息流转路径，突出消息队列作为缓冲和分发枢纽，以及流处理引擎如何实现数据精炼。
 visual_focus: 从设备层经Kafka/RocketMQ到达Flink/Spark流处理层的主链路，以及可选归档路径。
 design_level: logical
@@ -203,7 +203,7 @@ caption:
 labels:
   en:
     图11-7 城市物联网消息队列与数据流处理架构: 'Figure 11-7 City IoT Messaging & Stream Processing'
-    读者应理解高频传感流走Kafka/Flink实时聚合入时序库，控制指令走RocketMQ事务管道，两类通道隔离避免互扰。: 'High-frequency sensing goes Kafka→Flink→TSDB in real time, while control commands ride the RocketMQ transactional channel — the two stay isolated.'
+    高频传感流走Kafka/Flink实时聚合入时序库，控制指令走RocketMQ事务管道，两类通道隔离避免互扰。: 'High-frequency sensing goes Kafka→Flink→TSDB in real time, while control commands ride the RocketMQ transactional channel — the two stay isolated.'
     设备与边缘域: 'Device & Edge Domain'
     现场数据生产者: 'Field data producers'
     消息队列域: 'Message Queue Domain'

@@ -1,6 +1,6 @@
 type: architecture
 title: 图 3-9 多源融合定位：单一技术边界与 AGV 融合
-audience_takeaway: 读者应理解单一定位技术各有边界，AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为推算源，卡尔曼滤波按观测噪声 R 加权。
+audience_takeaway: 单一定位技术各有边界，AGV 以 UWB 为主源、BLE 为校正源、IMU+编码器为推算源，卡尔曼滤波按观测噪声 R 加权。
 purpose: 展示单一定位技术边界与 AGV 多源融合方案
 visual_focus: 单一技术边界与 AGV 三源融合。
 design_level: architecture

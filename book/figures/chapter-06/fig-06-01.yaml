@@ -1,8 +1,8 @@
 type: dataflow
 title: 图6-1 物联网REST API端点设计示例（示意）
-audience_takeaway: 读者应理解API以带v1前缀的资源型端点组织，上报与指令下发走写路径(经接入层校验、去重、队列)，历史查询走读路径并按时间窗参数化。
+audience_takeaway: API以带v1前缀的资源型端点组织，上报与指令下发走写路径(经接入层校验、去重、队列)，历史查询走读路径并按时间窗参数化。
 purpose: 展示物联网后端常见API端点布局，体现读写分离、版本控制、资源型端点设计。
-visual_focus: 从device到终点的主链路。
+visual_focus: 从外部实体经 /api/v1 资源型端点到内部服务（读路径与写路径分离）的主链路。
 design_level: implementation
 layout: 横向泳道图：左侧外部实体（设备、前端、第三方），中间API端点，右侧内部服务。
 elements:
@@ -101,6 +101,13 @@ components:
   group: platform_domain
   priority: normal
   shape: card
+- id: command_svc
+  label: 控制层（指令队列）
+  type: platform
+  subtitle: 接收写路径指令并入队下发
+  group: platform_domain
+  priority: normal
+  shape: card
 connections:
 - from: r1
   to: r2
@@ -153,7 +160,7 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 整体采用横向泳道布局：左侧外部实体（椭圆形状），中间API端点列（圆角矩形，根据HTTP方法着色：GET绿色，POST蓝色，PUT橙色，DELETE红色），右侧内部服务（虚线圆角矩形）。数据流从左向右流动。端点按功能分组：设备上报数据用POST，指令下发用POST（但语义不同，路径不同），数据查询用GET，告警规则按标准CRUD。所有端点统一前缀/api/v1。图中省略了鉴权和错误处理细节，这些由Spring Security和全局异常处理器实现。本图为示意性设计，非具体项目截图。
 caption:
-  zh: 图6-1 物联网REST API端点设计示例（示意）
+  zh: 图6-1 外部实体（设备、前端、第三方）经统一的 /api/v1 前缀访问资源型端点：数据上报与指令下发走写路径并进入接入层校验、去重与队列，历史查询走读路径并按时间窗参数化。
   en: 'Figure 6-1 An illustrative example of REST API endpoint design for an IoT platform.'
 labels:
   en:

@@ -1,12 +1,13 @@
+---
 type: dataflow
 title: 图 3-15 物模型在数据互通中的三层角色
-audience_takeaway: 读者应理解物模型三层角色：语义适配层把异构数据归一、设备影子拆解同步耦合、平台无关应用实现一次编写多处部署。
+audience_takeaway: 物模型三层角色：语义适配层把异构数据归一、设备影子拆解同步耦合、平台无关应用实现一次编写多处部署。
 purpose: 展示物模型在数据互通中的三层工程角色
 visual_focus: 异构数据归一与三层角色。
 design_level: dataflow
 layout: 上半异构数据归一（三厂商 → 统一物模型），下半设备影子与平台无关应用
 elements:
-- 语义适配层：Modbus/KNX/DL/T645 异构数据归一为属性/指令/事件
+- 语义适配层：Modbus/KNX/DL/T645 异构数据归一为属性/服务/事件
 - 设备影子：平台持最新状态，应用写期望值，设备上线拉取同步
 - 平台无关应用：同一物模型跨总线复用，业务逻辑与基础设施解耦
 relationships:
@@ -14,36 +15,63 @@ relationships:
 render_notes: HTML/SVG 渲染，异构数据归一 + 三层角色，蓝绿橙分层。
 caption:
   zh: 图 3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。
-  en: 'Figure 3-15 The three roles of the thing model in data interop: the semantic adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow decouples synchronous coupling, and platform-independent applications are written once and deployed anywhere — making it the semantic anchor for data from the sensing layer to the intelligence layer.'
+  en: 'Figure 3-15 The three roles of the thing model in data interop: the semantic
+    adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow
+    decouples synchronous coupling, and platform-independent applications are written
+    once and deployed anywhere — making it the semantic anchor for data from the sensing
+    layer to the intelligence layer.'
 labels:
   en:
     图 3-15 物模型在数据互通中的三层角色: Figure 3-15 Three Roles of the Thing Model in Data Interop
-    物模型把异构协议归一为统一语义空间，设备影子拆解同步耦合，催生平台无关应用。: The thing model unifies heterogeneous protocols into one semantic space; the device shadow decouples synchronization and enables platform-independent apps.
-    让来源各异的物理量汇入同一个语义空间: Bring physical quantities of every origin into one semantic space
+    物模型把异构协议归一为统一语义空间，设备影子拆解同步耦合，催生平台无关应用。: The thing model unifies heterogeneous
+      protocols into one semantic space; the device shadow decouples synchronization
+      and enables platform-independent apps.
+    让来源各异的物理量汇入同一个语义空间: Bring physical quantities of every origin into one semantic
+      space
     语义适配层：消弭协议鸿沟: 'Semantic Adaptation Layer: Bridging Protocol Gaps'
     A 厂温湿度变送器: Vendor A temp/humidity transmitter
     温度在第 3~4 字节十六进制表达: Temperature in hex at bytes 3–4
-    “01 0A” → 高字节×0.1 = 10.0℃: '"01 0A" → high byte × 0.1 = 10.0°C'
+    "“01 0A” → 高字节×0.1 = 10.0℃": '"01 0A" → high byte × 0.1 = 10.0°C'
     B 厂空调控制器: Vendor B AC controller
     KNX 总线: KNX Bus
     温度设定值对应通讯对象号: Temperature setpoint maps to a comms object number
-    KNX 数据点“9.001”: 'KNX datapoint "9.001"'
+    KNX 数据点“9.001”: KNX datapoint "9.001"
     C 厂智能电表: Vendor C smart meter
     DL/T645 协议: DL/T645 Protocol
     数据标识符层层嵌套: Data identifiers nested layer upon layer
     私有协议需逐个解析: Proprietary protocols parsed one by one
     统一物模型（语义空间）: Unified Thing Model (Semantic Space)
-    属性（Property）· 指令（Command）· 事件（Event）: Property · Command · Event
-    三者的“温度”归入同一位号: 'All three fold their "temperature" into one point'
-    适配逻辑集成到设备接入模块，复用同一套映射: Adaptation logic lives in the device access module and reuses one set of mappings
+    属性（Property）· 服务（Service）· 事件（Event）: Properties (Property) · Services (Service)
+      · Events (Event)
+    三者的“温度”归入同一位号: All three fold their "temperature" into one point
+    适配逻辑集成到设备接入模块，复用同一套映射: Adaptation logic lives in the device access module and
+      reuses one set of mappings
     设备影子：拆解同步耦合: 'Device Shadow: Decoupling Synchronization'
-    平台持有设备最新物模型状态，应用写影子属性记录期望值，设备下次上线拉取影子对比差异并同步: The platform holds the latest thing-model state; apps write desired values to shadow properties, and the device pulls the shadow on next login to diff and sync
-    写操作不再被设备在线状况阻塞，同步问题转化为异步状态管理: Writes are no longer blocked by device online status; synchronization becomes async state management
-    应用不感知设备在线状态，设备不感知应用调用时序: Apps are unaware of device online status; devices are unaware of app call timing
-    低功耗节点休眠或网络抖动时，业务流程不会被拖死: When low-power nodes sleep or the network jitters, business flows are not stalled
+    ? 平台持有设备最新物模型状态，应用写影子属性记录期望值，设备下次上线拉取影子对比差异并同步
+    : The platform holds the latest thing-model state; apps write desired values to
+      shadow properties, and the device pulls the shadow on next login to diff and
+      sync
+    写操作不再被设备在线状况阻塞，同步问题转化为异步状态管理: Writes are no longer blocked by device online status;
+      synchronization becomes async state management
+    应用不感知设备在线状态，设备不感知应用调用时序: Apps are unaware of device online status; devices are
+      unaware of app call timing
+    低功耗节点休眠或网络抖动时，业务流程不会被拖死: When low-power nodes sleep or the network jitters, business
+      flows are not stalled
     催生平台无关的应用开发: Enabling Platform-Independent App Development
-    同一物模型下，楼宇能源优化策略在 BACnet / Modbus / 自定义总线环境都能直接复用: Under one thing model, building energy strategies reuse directly across BACnet / Modbus / custom buses
-    开发只依赖物模型属性与指令，不关心设备品牌或总线类型，业务逻辑与基础设施彻底解耦: Development depends only on thing-model properties and commands — not device brands or bus types — fully decoupling business logic from infrastructure
-    实时监控面板、告警规则、能源报表在统一语义空间直接对话，AI 层同样通过物模型读写能力: Dashboards, alarm rules, and energy reports converse in one semantic space; the AI layer also reads and writes capabilities through the thing model
-    IoT DC3 经 /profile 系列 REST API 管理物模型：一设备一物模型，多同型号设备复用一个物模型: 'IoT DC3 manages thing models via the /profile REST APIs: one thing model per device, reused across devices of the same model'
-    图 3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。: 'Figure 3-15 The three roles of the thing model in data interop: the semantic adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow decouples synchronous coupling, and platform-independent applications are written once and deployed anywhere — making it the semantic anchor for data from the sensing layer to the intelligence layer.'
+    同一物模型下，楼宇能源优化策略在 BACnet / Modbus / 自定义总线环境都能直接复用: Under one thing model, building
+      energy strategies reuse directly across BACnet / Modbus / custom buses
+    开发只依赖物模型属性与服务，不关心设备品牌或总线类型，业务逻辑与基础设施彻底解耦: Development depends only on thing-model
+      properties and services — not on device brand or bus type — fully decoupling
+      business logic from infrastructure
+    实时监控面板、告警规则、能源报表在统一语义空间直接对话，AI 层同样通过物模型读写能力: Dashboards, alarm rules, and energy
+      reports converse in one semantic space; the AI layer also reads and writes capabilities
+      through the thing model
+    IoT DC3 经 /profile 系列 REST API 管理物模型：一设备一物模型，多同型号设备复用一个物模型: 'IoT DC3 manages thing
+      models via the /profile REST APIs: one thing model per device, reused across
+      devices of the same model'
+    ? 图 3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。
+    : 'Figure 3-15 The three roles of the thing model in data interop: the semantic
+      adaptation layer unifies heterogeneous Modbus/KNX/DL/T645 data, the device shadow
+      decouples synchronous coupling, and platform-independent applications are written
+      once and deployed anywhere — making it the semantic anchor for data from the
+      sensing layer to the intelligence layer.'

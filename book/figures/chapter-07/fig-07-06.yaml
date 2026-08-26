@@ -1,6 +1,6 @@
 type: layered
 title: 图 7-6 RAG Eval 分层评测
-audience_takeaway: 读者应理解 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题，失败分类比单一综合分数更能指导工程改进。
+audience_takeaway: 检索层看是否命中正确版本的证据，生成层看回答是否忠实于证据，端到端层看任务完成与时延成本；失败样本先分类，才能对应到扩语料、改切分、换 reranker 等具体修复动作。
 purpose: 展示 RAG 评测的四层结构与各层指标，强调分层定位问题
 visual_focus: 自上而下的四层评测结构。
 design_level: layered

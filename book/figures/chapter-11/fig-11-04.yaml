@@ -1,7 +1,7 @@
 type: architecture
 title: 图11-4 城市应急响应物联网架构
 purpose: 展示城市应急响应系统从感知到指挥的四层结构及各层之间的数据流与指令流关系。
-audience_takeaway: 读者应理解应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。
+audience_takeaway: 应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。
 visual_focus: 从感知层经处理层到协同层的主链路，强调边缘节点本地判定和协同层事件分发。
 design_level: logical
 layout: 垂直分层，自下而上依次为感知层、处理层、协同层、指挥层。
@@ -91,7 +91,7 @@ caption:
 labels:
   en:
     图11-4 城市应急响应物联网架构: 'Figure 11-4 City Emergency Response IoT Architecture'
-    读者应理解应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。: 'Layered duty boundaries; edge processing and event routing compress response time.'
+    应急响应系统的分层职责边界，以及边缘处理与事件路由对响应时间的压缩作用。: 'Layered duty boundaries; edge processing and event routing compress response time.'
     现场资源域: 'Field Resources'
     数据协同域: 'Data Collaboration'
     感知层: 'Sensing Layer'

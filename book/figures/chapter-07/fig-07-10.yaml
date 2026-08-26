@@ -1,6 +1,6 @@
 type: architecture
 title: 图 7-10 Agentic Center 工具生态与写入确认链路
-audience_takeaway: 读者应理解 Agentic Center 当前注册 8 类 Tool（查询为主），PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路。
+audience_takeaway: 8 类已注册 Tool 以查询为主；PointValueTool.writePointValue 只创建 10 分钟有效的 PENDING Action，确认时原子抢占后才经 submitWrite 进入设备命令链路。
 purpose: 展示 Tool 生态全貌与写入确认的真实流程，划清模型能力边界
 visual_focus: 8 类 Tool 布局与底部写入确认链路。
 design_level: architecture

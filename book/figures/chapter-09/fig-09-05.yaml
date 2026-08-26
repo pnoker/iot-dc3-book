@@ -1,7 +1,7 @@
 type: architecture
 title: 图 9-5 CoAP消息格式与选项示意
 purpose: 展示CoAP消息的紧凑二进制格式，与HTTP冗长的文本头部形成对比，直观解释CoAP如何实现轻量级传输。
-audience_takeaway: 读者应理解等效的GET请求，HTTP的文本头部大小通常远超CoAP的二进制头部，由此理解CoAP在受限网络中的核心优势。
+audience_takeaway: 等效的GET请求，HTTP的文本头部大小通常远超CoAP的二进制头部，由此理解CoAP在受限网络中的核心优势。
 visual_focus: 上半部分展示HTTP请求头部示例（文本格式），下半部分展示CoAP CON GET请求的二进制分段布局（Ver/T/TKL/Code/Message ID/Token/Options/Payload）。用连线和标注突出二者完成相同语义时的大小差异。
 design_level: logical
 layout: 从上到下分为两个并行区域：上方为HTTP请求头部，下方为CoAP CON GET请求的二进制分段布局。

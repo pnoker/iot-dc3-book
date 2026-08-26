@@ -1,8 +1,8 @@
 type: flowchart
 title: 图8-9 密钥生命周期管理与云边协同流程
-audience_takeaway: 读者应理解密钥状态沿生成、分发、轮换、撤销、销毁迁移，云端与边缘经TLS加密通道协同管理，撤销即从可用态剔除。
+audience_takeaway: 密钥状态沿生成、分发、轮换、撤销、销毁迁移，云端与边缘经TLS加密通道协同管理，撤销即从可用态剔除。
 purpose: 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥状态转换。
-visual_focus: 从进入下一判断到进入下一判断的主链路。
+visual_focus: 从密钥生成、分发、轮换到撤销销毁的主链路，云边两泳道协同。
 design_level: implementation
 layout: 从上到下的泳道流程图
 elements:
@@ -15,28 +15,28 @@ regions:
   role: 核心服务能力边界
 components:
 - id: c1
-  label: 进入下一判断
+  label: 密钥生成
   type: platform
   subtitle: ''
   group: platform_domain
   priority: primary
   shape: card
 - id: c2
-  label: 进入下一判断
+  label: 分发至设备/边缘
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: c3
-  label: 进入下一判断
+  label: 轮换与更新
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: c4
-  label: 进入下一判断
+  label: 撤销与销毁
   type: platform
   subtitle: ''
   group: platform_domain
@@ -59,7 +59,7 @@ connections:
   style: solid
   direction: left-to-right
 callouts:
-- 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥…
+- 展示物联网平台中密钥从生成到销毁的完整生命周期，强调云端和边缘的协同密钥管理流程，帮助读者理解不同角色的职责和密钥状态的完整流转
 legend:
 - 颜色=使用中（绿色）、轮换中（黄色）、已撤销/停用（红色）、待销毁（灰色）
 - 箭头=实线箭头表示直接操作，虚线箭头表示通过TLS加密通道传输
@@ -69,7 +69,7 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: 绘制时使用矩形表示各节点，箭头线表示流程方向，并在箭头旁标注操作名，如“生成”、“分发”、“加密”、“解密”、“轮换”、“撤销”、“销毁”。泳道之间用水平虚线分隔，每条泳道的左侧标注角色名。使用指定颜色区分密钥状态。虚线箭头代表TLS加密传输。图例置于图下方或右侧。
 caption:
-  zh: 图8-9 密钥生命周期管理与云边协同流程
+  zh: 图8-9 密钥经生成、分发、轮换、撤销、销毁五个状态依次迁移，云端与边缘侧通过 TLS 加密通道协同管理；被撤销的密钥立即从可用密钥集合中剔除。
   en: Figure 8-9 Key lifecycle management and cloud-edge coordination
 labels:
   en:

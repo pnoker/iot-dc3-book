@@ -1,6 +1,6 @@
 type: layered
 title: 图8-2 物联网纵深防御多层模型
-audience_takeaway: 读者应理解补偿控制只能降低部分剩余风险；链路认证与监测不能替代设备缺失的硬件 Root of Trust。
+audience_takeaway: 补偿控制只能降低部分剩余风险；链路认证与监测不能替代设备缺失的硬件 Root of Trust。
 purpose: 展示从物理安全到应用安全的多个防御面，以及补偿控制的跨层连接。
 visual_focus: 从补偿控制（灰色虚线）到终点的主链路。
 design_level: logical
@@ -30,7 +30,7 @@ components:
   priority: primary
   shape: card
 - id: r2
-  label: 不同层，例如Layer 2若缺乏硬…
+  label: Layer 2 设备固件安全（缺乏硬件 Root of Trust 的示例层）
   type: platform
   subtitle: ''
   group: platform_domain
@@ -38,8 +38,8 @@ components:
   shape: card
 connections:
 - from: r1
-  to: layer_2
-  label: 补偿控制（灰色虚线）连接不同层，例…
+  to: r2
+  label: 补偿控制（灰色虚线）跨层连接，降低部分剩余风险，但不能替代硬件 Root of Trust
   style: dashed
   direction: request
 callouts:

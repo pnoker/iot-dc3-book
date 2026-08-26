@@ -41,21 +41,21 @@ components:
 - id: c2
   label: 设备1内部
   type: edge
-  subtitle: 根据公钥哈希构造DID字符串（例如 did:examp…
+  subtitle: 根据公钥哈希构造DID字符串（例如 did:example:公钥哈希）
   group: edge_domain
   priority: normal
   shape: card
 - id: c3
   label: 设备1→合约
   type: edge
-  subtitle: 发起 registerDevice(did, publ…
+  subtitle: 发起 registerDevice(did, publicKeyHash) + 账户签名
   group: edge_domain
   priority: normal
   shape: card
 - id: c4
   label: 合约内部
   type: platform
-  subtitle: 验证签名，写入状态（owner, publicKeyH…
+  subtitle: 验证签名，写入状态（owner/hash/timestamp/isActive）
   group: platform_domain
   priority: normal
   shape: card
@@ -69,21 +69,21 @@ components:
 - id: c6
   label: 设备1→设备2
   type: edge
-  subtitle: 发送握手消息（包含DID + 随机挑战 + 对挑战的签…
+  subtitle: 发送握手消息（包含DID + 随机挑战 + 对挑战的签名）
   group: edge_domain
   priority: normal
   shape: bus
 - id: c7
   label: 设备2→合约
   type: edge
-  subtitle: 静态调用 didDocs[didHash] 查询DID…
+  subtitle: 静态调用 didDocs[didHash] 查询DID文档
   group: edge_domain
   priority: normal
   shape: card
 - id: c8
   label: 合约→设备2
   type: edge
-  subtitle: 返回DID文档（owner, publicKeyHas…
+  subtitle: 返回DID文档（owner / publicKeyHash / isActive）
   group: edge_domain
   priority: normal
   shape: card
@@ -104,47 +104,47 @@ components:
 connections:
 - from: c1
   to: c2
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c2
   to: c3
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c3
   to: c4
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c4
   to: c5
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c5
   to: c6
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c6
   to: c7
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c7
   to: c8
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c8
   to: c9
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 - from: c9
   to: c10
-  label: 步骤3、5、7为链上操作（虚线箭头…
+  label: 步骤3、5、7为链上操作（虚线箭头表示）
   style: dashed
   direction: left-to-right
 callouts:

@@ -1,6 +1,6 @@
 type: architecture
 title: 图1-21 未来展望：AIoT 融合的三个方向
-audience_takeaway: 读者应理解 AIoT 未来三方向——AGI 意图理解、数字孪生预测干预、M2M 自主协商——共同把设备从被动连接节点变为主动智能体。
+audience_takeaway:  AIoT 未来三方向——AGI 意图理解、数字孪生预测干预、M2M 自主协商——共同把设备从被动连接节点变为主动智能体。
 purpose: 展示 AIoT 融合的三个方向，并用智慧城市闭环示意场景说明「感知→决策→协调→回传」的自治协作。
 visual_focus: 三个方向模块 + 智慧城市四节点闭环（含回传箭头）。
 design_level: logical

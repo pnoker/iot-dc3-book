@@ -1,6 +1,6 @@
 type: architecture
 title: 图 9-6 LwM2M 对象树与引导注册
-audience_takeaway: 读者应理解 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐，设备经引导、注册、更新注册接入平台。
+audience_takeaway:  LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐，设备经引导、注册、更新注册接入平台。
 purpose: 展示 LwM2M 对象树三级结构与引导注册流程
 visual_focus: 对象树三级结构与引导注册三步。
 design_level: architecture

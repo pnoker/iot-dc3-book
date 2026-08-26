@@ -1,6 +1,6 @@
 type: matrix
 title: 图 7-8 对话记忆的三种策略
-audience_takeaway: 读者应理解对话记忆有消息历史、摘要记忆、知识图谱记忆三种策略，由 ChatMemory 接口统一接入、conversationId 隔离会话，解决无状态 API 与多轮交互的结构性矛盾。
+audience_takeaway: 短轮次对话用消息历史即可；长对话或 Tool 反馈频繁时应切换摘要记忆，且压缩时必须保留操作结果与状态码，避免模型重复下发指令。
 purpose: 对比三种对话记忆策略的原理、适用场景与运维定位
 visual_focus: 三列策略卡片并列。
 design_level: matrix

@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 10-7 原始数据与清洗后数据对比
-audience_takeaway: 读者应理解清洗须先判异常成因:通信中断的缺失段用前向填充,电磁干扰的毛刺替换为平滑值,两类异常处理手段不同。
+audience_takeaway: 清洗须先判异常成因:通信中断的缺失段用前向填充,电磁干扰的毛刺替换为平滑值,两类异常处理手段不同。
 purpose: 展示清洗前后温度序列的变化，说明缺失填充和毛刺过滤的效果。
 visual_focus: 从原始数据到清洗后数据的主链路。
 design_level: implementation

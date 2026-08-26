@@ -1,6 +1,6 @@
 type: dataflow
 title: 图8-7 CoAP 的 OSCORE 安全处理流程示意
-audience_takeaway: 读者应理解 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 生成密文和认证标签；接收方通过重放窗口与 AEAD 验证解密后才接受消息。
+audience_takeaway:  OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 生成密文和认证标签；接收方通过重放窗口与 AEAD 验证解密后才接受消息。
 purpose: 展示 OSCORE 从安全上下文、AEAD 加密认证、接收端重放预检查到 AEAD 验证解密和重放窗口提交的处理链，并说明失败处理。
 visual_focus: 从CoAP Client 生成原始请求到终点的主链路。
 design_level: implementation
@@ -30,7 +30,7 @@ components:
   priority: primary
   shape: card
 - id: r2
-  label: OSCORE 处理模块将请求加密…
+  label: OSCORE 处理模块将请求加密、计算 MAC、打包密钥标识与序列号
   type: platform
   subtitle: ''
   group: platform_domain
@@ -38,12 +38,12 @@ components:
   shape: card
 connections:
 - from: r1
-  to: oscore_m
-  label: Kid）和序列号 → 网络链路传递…
+  to: r2
+  label: 加密后携带 Kid 与序列号，经网络链路传递至服务端
   style: solid
   direction: request
 callouts:
-- CoAP Client 生成原始请求 → OSCORE 处理模块将请求加密、计算 MAC、打包密钥标识（Kid）和…
+- CoAP Client 生成原始请求 → OSCORE 处理模块将请求加密、计算 MAC、打包密钥标识（Kid）和序列号 → 经网络链路传递至服务端
 - 否则返回 4.01 Unauthorized（拒绝）
 legend:
 - 矩形框：实体或处理模块（实体框填白色，处理框填浅灰色）

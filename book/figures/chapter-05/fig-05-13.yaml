@@ -1,6 +1,6 @@
 type: architecture
 title: 图 5-13 工厂设备状态监控系统四层架构图（例子）
-audience_takeaway: 读者应理解边缘两级阈值把安全与智能分流：一级阈值本地GPIO直接停机不经云端，二级及以上才经MQTT/Kafka上云做AI分析。
+audience_takeaway: 边缘两级阈值把安全与智能分流：一级阈值本地GPIO直接停机不经云端，二级及以上才经MQTT/Kafka上云做AI分析。
 purpose: 展示设备层、边缘层、消息层、云层四层架构，以及传感器数据从现场到告警的完整流经路径，包括本地紧急停机路径和云端AI分析路径。
 visual_focus: 从起点到邮件/短信通知后采取行动的主链路。
 design_level: logical
@@ -37,28 +37,28 @@ regions:
   role: 风险控制与责任边界
 components:
 - id: r1
-  label: 边缘层Node-RED解析并做两级…
+  label: Node-RED 解析并执行两级阈值判断
   type: edge
   subtitle: ''
   group: edge_domain
   priority: primary
   shape: decision
 - id: r2
-  label: GPIO输出紧急停机信号（橙色箭头…
+  label: GPIO 紧急停机输出
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: r3
-  label: AI服务从InfluxDB拉取最近…
+  label: AI 服务从 InfluxDB 拉取近期数据
   type: ai
   subtitle: ''
   group: intelligence_domain
   priority: normal
   shape: card
 - id: r4
-  label: Kafka的alarm-event…
+  label: Kafka alarm-events 主题
   type: platform
   subtitle: ''
   group: platform_domain
@@ -79,7 +79,7 @@ components:
   priority: normal
   shape: card
 - id: r7
-  label: 工程师通过Grafana查看仪表盘…
+  label: 工程师经 Grafana 查看仪表盘
   type: platform
   subtitle: ''
   group: platform_domain
@@ -93,38 +93,38 @@ components:
   priority: normal
   shape: card
 - id: r9
-  label: 云端下行指令（阈值更新、模型参数下…
+  label: 云端下行指令（阈值更新、模型参数下发）
   type: ai
   subtitle: ''
   group: intelligence_domain
   priority: normal
   shape: card
 - id: r10
-  label: Kafka的alarm-comma…
+  label: Kafka alarm-commands 主题
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: bus
 connections:
-- from: node-red
-  to: gpio
+- from: r1
+  to: r2
   label: 橙色箭头，不经过消息层和云层
   style: solid
   direction: request
-- from: ai_influxdb_2
-  to: kafka_alarm-events_to
-  label: AI服务从InfluxDB拉取最近…
+- from: r3
+  to: r4
+  label: 产出告警事件
   style: dashed
   direction: event
 - from: r5
   to: r6
-  label: 告警服务消费alarm-event…
+  label: 消费 alarm-events
   style: risk
   direction: event
-- from: grafana
+- from: r7
   to: r8
-  label: 工程师通过Grafana查看仪表盘…
+  label: 查看仪表盘
   style: solid
   direction: request
 callouts:

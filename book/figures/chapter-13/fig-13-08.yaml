@@ -29,14 +29,14 @@ components:
 - id: c1
   label: 左栏顶部
   type: edge
-  subtitle: 中心化云平台（蓝色大块），底部：传感器/设备群（青绿色…
+  subtitle: 中心化云平台（蓝色大块），底部：传感器/设备群（青绿色节点），星型连接
   group: edge_domain
   priority: primary
   shape: card
 - id: c2
   label: 右栏
   type: edge
-  subtitle: 设备以P2P方式连接到区块链共识网络（六个蓝色节点构成…
+  subtitle: 设备以P2P方式连接到区块链共识网络（六个蓝色节点构成的网状结构）
   group: edge_domain
   priority: normal
   shape: card
@@ -57,17 +57,17 @@ components:
 connections:
 - from: c1
   to: c2
-  label: 左栏中，所有设备必须通过中心化平台…
+  label: 左栏中，所有设备必须通过中心化平台进行认证和消息路由
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: 右栏中设备通过与区块链节点交互完成…
+  label: 右栏中设备通过与区块链节点交互完成身份注册和交易验证
   style: solid
   direction: left-to-right
 - from: c3
   to: c4
-  label: 左栏单一故障点（中心平台）失效则全…
+  label: 左栏单一故障点（中心平台）失效则全网不可用
   style: solid
   direction: left-to-right
 callouts:

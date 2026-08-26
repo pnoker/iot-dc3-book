@@ -120,7 +120,7 @@ visual_constraints:
 - 图注放在底部，清晰说明颜色和线型的语义。
 render_notes: HTML/SVG 渲染，浅色背景。使用水平从左到右布局，突出主链路。节点颜色严格按图例标注。箭头应有方向指示，消息队列用三条平行竖线表示缓冲。
 caption:
-  zh: 图2-11 展示了IoT DC3 Data中心的核心数据流，以及消息队列如何解耦写入和分发。
+  zh: 图2-11 Data中心数据流示意。Data 中心是“一次接收、两处分发”的管道：经消息队列的一路保障落库可靠，即时推送的一路服务实时订阅——消息队列把写入速度与消费速度解耦，避免慢消费者拖垮采集。
   en: 'Figure 2-11 The core data flow of the IoT DC3 Data center, showing how the message queue decouples persistence from distribution.'
 labels:
   en:

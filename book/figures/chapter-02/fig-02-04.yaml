@@ -1,7 +1,7 @@
 type: flowchart
 title: 图2-4 传统数据模式与智能闭环模式的数据流程对比
 purpose: 直观展示传统单向链路终点是“被看见”，而闭环模式通过理解、决策、执行实现物理状态的自动改变。
-audience_takeaway: 读者应理解传统数据模式的单向线性链路与闭环模式回路结构的根本区别，并识别出“执行”环节是闭环模式的工程核心。
+audience_takeaway: 传统数据模式的单向线性链路与闭环模式回路结构的根本区别，并识别出“执行”环节是闭环模式的工程核心。
 visual_focus: 左栏为单向线性链，终点标记为“人”；右栏为闭环回路，回路箭头从“执行”返回“采集”，用深绿色加粗虚线强调。
 design_level: implementation
 layout: 并排双栏，左栏为传统模式，右栏为闭环模式。底部统一图例。
@@ -117,7 +117,7 @@ callouts:
 - 闭环模式的终点是“物理状态的自动改变”，回路箭头标示数据驱动设备的持续迭代。
 render_notes: HTML/SVG 渲染，左栏方框使用灰色调，右栏方框使用区分功能类型的填充色（采集蓝、理解浅蓝、决策橙、执行绿）。回路箭头使用深绿色加粗虚线。人工操作区域使用圆角矩形与右栏区分。
 caption:
-  zh: 图2-4 传统数据模式与智能闭环模式的数据流程对比
+  zh: 图2-4 两种数据模式的取舍：传统单向链路止步于“被人看见”，响应依赖人工；闭环模式以“执行”环节把决策送回物理世界，适合工况多变、响应要求高的场景。
   en: 'Figure 2-4 Comparison of data flows between the traditional data pattern and the intelligent closed-loop pattern.'
 labels:
   en:

@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 13-4 数据上链流程图
-audience_takeaway: 读者应理解存证是'链下存原文、链上存指纹'的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。
+audience_takeaway: 存证是'链下存原文、链上存指纹'的分工：验证时重算哈希与链上比对，兼顾存储成本与不可篡改性。
 purpose: 展示从传感器采样到链上存证、链下存储、验证的完整流程，说明链下存储与链上指纹的协作关系。
 visual_focus: 从传感器到终点的主链路。
 design_level: implementation
@@ -53,14 +53,14 @@ components:
   priority: normal
   shape: card
 - id: r4
-  label: IPFS/Arweave：实线箭头…
+  label: IPFS/Arweave：实线箭头，标注‘原始数据’
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: r5
-  label: 区块链：实线箭头，标注‘哈希+元数…
+  label: 区块链：实线箭头，标注‘哈希+元数据’
   type: data
   subtitle: ''
   group: data_domain
@@ -74,7 +74,7 @@ components:
   priority: normal
   shape: card
 - id: r7
-  label: 验证方：实线箭头，标注‘提供原始数…
+  label: 验证方：实线箭头，标注‘提供原始数据’
   type: data
   subtitle: ''
   group: data_domain
@@ -88,7 +88,7 @@ components:
   priority: normal
   shape: card
 - id: r9
-  label: 验证方：实线箭头，标注‘查询哈希是…
+  label: 验证方：实线箭头，标注‘查询哈希是否存在’
   type: decision
   subtitle: ''
   group: decision_domain
@@ -97,12 +97,12 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 传感器 → 边缘节点：实线箭头，标…
+  label: 传感器 → 边缘节点：实线箭头，标注‘采样数据’
   style: solid
   direction: request
 - from: r3
-  to: ipfs_arweave
-  label: 边缘节点 → IPFS/Arwea…
+  to: r6
+  label: 边缘节点 → IPFS/Arweave：实线箭头，标注‘原始数据’
   style: solid
   direction: request
 callouts:

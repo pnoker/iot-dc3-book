@@ -157,7 +157,7 @@ visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
 - 优先表达边界和主链路，不把所有概念塞进一张图。
-render_notes: HTML/SVG 渲染，浅色背景，四层纵向布局，各层之间用虚线层隔线。层内服务块使用圆角矩形，箭头统一使用
+render_notes: HTML/SVG 渲染，浅色背景，四层纵向布局，各层之间用虚线层隔线。层内服务块使用圆角矩形，箭头统一使用实线表示同步调用、虚线表示异步消息，颜色随所在层配色，箭头旁带文字标签。
 caption:
   zh: 图 14-2 物联网平台的四层分层架构，设备层通过边缘接入层的协议驱动与服务层解耦，各层之间以消息队列实现异步隔离。
   en: 'Figure 14-2 The four-layer architecture of an IoT platform: the device layer is decoupled from the service layer by protocol drivers at the edge access layer, and the layers are isolated asynchronously through message queues.'

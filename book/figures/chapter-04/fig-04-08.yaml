@@ -1,8 +1,8 @@
 type: dataflow
 title: 图4-8 设备抽象与物模型映射示意图
-audience_takeaway: 读者应理解驱动把原始字节解析为带类型值(0x0A加偏移15.3得25.3℃),映射层按Schema归一成统一物模型实例。
+audience_takeaway: 驱动把原始字节解析为带类型值(0x0A加偏移15.3得25.3℃),映射层按Schema归一成统一物模型实例。
 purpose: 展示从底层原生数据（Modbus寄存器、BLE特征值、LoRaWAN负载）到统一物模型实例的映射过程，说明设备抽象层如何屏蔽协议差异，实现数据模型标准化。
-visual_focus: '从Modbus 寄存器值到数据映射层 : 解析值的主链路。'
+visual_focus: 从三路原生数据经驱动解析、映射层归一，到统一物模型实例的主链路。
 design_level: implementation
 layout: 从左至右三列流向：原生数据→驱动解析→数据映射层→物模型实例→平台消费方
 elements:
@@ -27,106 +27,112 @@ regions:
 - id: data_domain
   label: 数据资产域
   role: 数据沉淀与治理边界
+- id: application_domain
+  label: 业务应用域
+  role: 业务价值交付边界
 components:
-- id: r1
+- id: modbus_raw
   label: Modbus 寄存器值
-  type: platform
-  subtitle: ''
+  type: data
+  subtitle: 地址 0x0001，值 0x0A
+  group: data_domain
+  priority: primary
+  shape: card
+- id: modbus_driver
+  label: Modbus Driver
+  type: driver
+  subtitle: 0x0A 转整数 10，加偏移 15.3 得 25.3
   group: platform_domain
   priority: primary
   shape: card
-- id: r2
-  label: 'Modbus Driver : 原…'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r3
-  label: Modbus Driver
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r4
-  label: '数据映射层 : 解析值'
+- id: ble_raw
+  label: BLE 特征值
   type: data
-  subtitle: ''
+  subtitle: UUID 0x2A6E，值 0x419A0000
   group: data_domain
   priority: normal
-  shape: database
-- id: r5
-  label: BLE 特征值
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
   shape: card
-- id: r6
-  label: 'BLE Driver : 原始帧'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r7
+- id: ble_driver
   label: BLE Driver
-  type: platform
-  subtitle: ''
+  type: driver
+  subtitle: IEEE754 浮点转换
   group: platform_domain
   priority: normal
   shape: card
-- id: r8
+- id: lorawan_raw
   label: LoRaWAN 负载
-  type: platform
-  subtitle: ''
-  group: platform_domain
+  type: data
+  subtitle: 0x02 0xFD 0x00 0x27
+  group: data_domain
   priority: normal
   shape: card
-- id: r9
-  label: LoRaWAN Driver…
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r10
+- id: lorawan_driver
   label: LoRaWAN Driver
-  type: platform
-  subtitle: ''
+  type: driver
+  subtitle: FPort 端口解码
   group: platform_domain
+  priority: normal
+  shape: card
+- id: mapping
+  label: 数据映射层
+  type: platform
+  subtitle: 按 JSON Schema 做字段映射与类型统一
+  group: platform_domain
+  priority: primary
+  shape: database
+- id: thing_model
+  label: 物模型实例
+  type: data
+  subtitle: "temperature: 25.3, humidity: 45.0（与协议无关）"
+  group: data_domain
+  priority: primary
+  shape: card
+- id: apps
+  label: 平台应用
+  type: application
+  subtitle: 告警引擎、规则引擎、实时仪表盘
+  group: application_domain
   priority: normal
   shape: card
 connections:
-- from: r1
+- from: modbus_raw
   to: modbus_driver
-  label: Modbus 寄存器值 → Mod…
+  label: 原始帧
   style: solid
   direction: request
-- from: r3
-  to: r4
-  label: 整型
+- from: modbus_driver
+  to: mapping
+  label: 解析值（整型）
   style: solid
   direction: request
-- from: r5
-  to: r6
-  label: BLE 特征值 → BLE Dri…
+- from: ble_raw
+  to: ble_driver
+  label: 原始帧
   style: solid
   direction: request
-- from: r7
-  to: r4
-  label: 浮点
+- from: ble_driver
+  to: mapping
+  label: 解析值（浮点）
   style: solid
   direction: request
-- from: r8
+- from: lorawan_raw
   to: lorawan_driver
-  label: LoRaWAN 负载 → LoRa…
+  label: 原始帧
   style: solid
   direction: request
-- from: r10
-  to: r4
-  label: 十六进制解码
+- from: lorawan_driver
+  to: mapping
+  label: 解析值（十六进制解码）
+  style: solid
+  direction: request
+- from: mapping
+  to: thing_model
+  label: Schema 归一化
+  style: solid
+  direction: request
+- from: thing_model
+  to: apps
+  label: 属性 / 事件 / 服务
   style: solid
   direction: request
 callouts:

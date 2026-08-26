@@ -1,6 +1,6 @@
 type: dataflow
 title: 图 5-12 Kappa架构示意图
-audience_takeaway: 读者应理解Kappa用单一流管道同时覆盖实时与历史：消息总线持久化原始流，历史分析靠Time Travel回放而非另建批管道，省去Lambda双管道维护。
+audience_takeaway: Kappa用单一流管道同时覆盖实时与历史：消息总线持久化原始流，历史分析靠Time Travel回放而非另建批管道，省去Lambda双管道维护。
 purpose: 展示Kappa架构如何通过单一流处理管道兼容实时与历史分析
 visual_focus: 从数据源到结果输出：持续输出的主链路。
 design_level: implementation
@@ -74,7 +74,7 @@ connections:
   direction: request
 - from: r1
   to: r3
-  label: 数据源→消息总线→实时流处理：持久…
+  label: 持久化消息总线承载回放
   style: solid
   direction: request
 - from: r4
@@ -102,7 +102,7 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 菱形节点采用蓝绿色，虚线箭头使用灰色；数据源和输出端用浅色圆角矩形；所有箭头带文字标签。
 caption:
-  zh: Kappa架构通过单一流处理管道完成所有计算，历史数据的批量分析通过回放流（replay）实现，消除了Lambda架构并行维护两条管道的成本。
+  zh: 图 5-12 Kappa架构通过单一流处理管道完成所有计算，历史数据的批量分析通过回放流（replay）实现，消除了Lambda架构并行维护两条管道的成本。
   en: 'The Kappa architecture completes all computation through a single stream-processing pipeline; batch analysis of historical data is achieved by replaying the stream, eliminating the cost of maintaining two parallel pipelines as in the Lambda architecture.'
 labels:
   en:

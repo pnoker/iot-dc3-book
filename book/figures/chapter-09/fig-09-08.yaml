@@ -1,7 +1,7 @@
 type: layered
 title: 图 9-8 BLE GATT协议栈与服务-特征层次
 purpose: 展示BLE协议栈从PHY到GATT Profile的层次关系，以及Service-Characteristic-Descriptor嵌套结构。左下方叠加Notification与Indication的路径分支。
-audience_takeaway: 读者应看到GATT Profile是属性数据库的访问模型，Characteristic是数据点，Descriptor控制订阅行为。Notification无确认、功耗低但可能丢包；Indication有ACK、高可靠但功耗大。
+audience_takeaway: 周期性传感器数据用 Notification 即可，指令执行结果与故障告警必须用 Indication 逐包确认；CCCD 写入是订阅两种推送的共同开关。
 visual_focus: 从PHY/Link Layer向上到GATT Profile的主链路。从CCCD分叉成两条水平路径：实线Notification与虚线Indication。
 design_level: logical
 layout: 垂直分层。底部为PHY+Link，向上依次为L2CAP、Attribute Protocol（ATT）、GATT Profile。顶部右侧用嵌套方块展示Device→Service→Characteristic→Descriptor的包含关系。从CCCD向右引出两条水平路径。
@@ -146,7 +146,7 @@ visual_constraints:
 - Connection label不超过12个汉字。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形。Characteristic节点标注Properties（如Read|Notify）。Notification和Indication为菱形节点。底部图例。
 caption:
-  zh: 图 9-8 BLE GATT协议栈层次及Service-Characteristic-Descriptor嵌套结构，右半部分展示Notification与Indication的执行路径分叉。
+  zh: 图 9-8 左半部分自下而上为 BLE 协议栈各层，GATT 建立在 ATT 与 L2CAP 之上；右半部分对比两条推送路径——Notification 发送后即结束、不等确认，Indication 须收到客户端 ACK 才能发送下一条。
   en: Figure 9-8 The BLE GATT stack layers and the Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication execution paths.
 labels:
   en:

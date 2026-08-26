@@ -1,7 +1,7 @@
 type: layered
 title: 图4-6 统一接入层的逻辑定位与内部能力分层
 purpose: 展示统一接入层在物联网平台中的位置，以及其内部的能力层分解，帮助读者理解这一层如何'夹在'异构协议与统一业务服务之间，逐层完成数据加工。
-audience_takeaway: 读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。
+audience_takeaway: 统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。
 visual_focus: 从底层异构设备开始，经过三个子层依次向上，最终输出标准化事件/属性到业务层的主链路。
 design_level: logical
 layout: 竖向堆叠，层之间用实线分隔，子层用虚线分隔。所有层宽度一致。
@@ -94,7 +94,7 @@ caption:
 labels:
   en:
     图4-6 统一接入层的逻辑定位与内部能力分层: 'Figure 4-6 The Unified Access Layer: Logical Position and Internal Layers'
-    读者应理解统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。: 'The unified access layer is not a single service but a middle layer of three sub-layers: protocol conversion, device model mapping, and security authentication.'
+    统一接入层的逻辑定位——它不是一个单一服务，而是由协议转换、设备模型映射、安全认证三个子层组成的中间层。: 'The unified access layer is not a single service but a middle layer of three sub-layers: protocol conversion, device model mapping, and security authentication.'
     异构设备与协议: 'Heterogeneous Devices & Protocols'
     协议转换与适配: 'Protocol Conversion & Adaptation'
     连接管理·报文解析·格式归一: 'Connections · Parsing · Unified Format'

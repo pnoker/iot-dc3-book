@@ -1,7 +1,7 @@
 type: flowchart
 title: 图 10-9 预测性维护闭环数据流（示意）
 purpose: 展示从设备采集到工单执行的完整数据转换路径，标注每一跳的输出格式和决策点。
-audience_takeaway: 读者应理解闭环中每层的职责边界与数据形态变化，工单生成不是终点而是反馈起点。
+audience_takeaway: 闭环中每层的职责边界与数据形态变化，工单生成不是终点而是反馈起点。
 visual_focus: 从左到右的主链路（采集→特征提取→健康评估→决策→执行），以及从执行返回采集的虚线反馈回路。
 design_level: implementation
 layout: 从左到右流水线，五层模块串联，底部一条虚线反馈回路。

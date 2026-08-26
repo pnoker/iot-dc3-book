@@ -1,6 +1,6 @@
 type: lifecycle
 title: 图 14-3 按硬件节拍编排的迭代与三层测试
-audience_takeaway: 读者应理解迭代周期对齐硬件发布节奏（四周），CI/CD 分阶段统一集成验证，测试分单元、集成、端到端三层。
+audience_takeaway: 迭代周期对齐固件的四周发布节奏，CI/CD 以分阶段统一集成验证为核心，测试按单元、集成、端到端三层分层覆盖，才能避免“版本赶不上物理世界”。
 purpose: 展示按硬件节拍编排的四周迭代节奏与三层测试策略
 visual_focus: 四周迭代三阶段与 CI/CD 三阶段、三层测试。
 design_level: lifecycle

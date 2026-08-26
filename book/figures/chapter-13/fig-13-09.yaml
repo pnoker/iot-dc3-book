@@ -1,6 +1,6 @@
 type: matrix
 title: 图 13-9 物联网环境下的轻量级共识机制对比
-audience_takeaway: 读者应理解 PoW 算力开销在物联网不可行，PoA 用身份替代算力、Tangle 免交易费但稀疏网络难起跑、PBFT 变体适合封闭网络，共识选型先识别信任模型再匹配。
+audience_takeaway:  PoW 算力开销在物联网不可行，PoA 用身份替代算力、Tangle 免交易费但稀疏网络难起跑、PBFT 变体适合封闭网络，共识选型先识别信任模型再匹配。
 purpose: 对比四种共识机制在物联网环境下的工程特性
 visual_focus: 四列共识机制对比表。
 design_level: matrix

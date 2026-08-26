@@ -1,6 +1,6 @@
 type: timeline
 title: 图1-5 三次浪潮演进时间线示意
-audience_takeaway: 读者应理解三次浪潮的核心驱动力依次从信息数字化、人的移动性转向物的数字化,连接规模从约10亿、20亿跃升一个数量级至百亿级。
+audience_takeaway: 三次浪潮的核心驱动力依次从信息数字化、人的移动性转向物的数字化,连接规模从约10亿、20亿跃升一个数量级至百亿级。
 purpose: 直观展示PC互联网、移动互联网、万物互联三个阶段的时间范围、连接主体、连接规模与核心驱动力
 visual_focus: 从从移动互联网到万物互联：实线箭头，标注'技术演进'的主链路。
 design_level: implementation
@@ -13,42 +13,40 @@ relationships:
 - 从PC互联网到移动互联网：实线箭头，标注'技术演进'
 - 从移动互联网到万物互联：实线箭头，标注'技术演进'
 regions:
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
+- id: waves_domain
+  label: 三次网络浪潮
+  role: 时间轴上的三个演进阶段
 components:
 - id: r1
-  label: 从PC互联网
-  type: platform
-  subtitle: ''
-  group: platform_domain
+  label: PC 互联网
+  subtitle: 1990s · 信息数字化 · 约10亿用户
+  type: stage
+  group: waves_domain
   priority: primary
-  shape: card
+  shape: box
 - id: r2
-  label: 移动互联网：实线箭头，标注'技术演…
-  type: platform
-  subtitle: ''
-  group: platform_domain
+  label: 移动互联网
+  subtitle: 2000s–2010s · 人的移动性 · 约20亿用户
+  type: stage
+  group: waves_domain
   priority: normal
-  shape: card
+  shape: box
 - id: r3
-  label: 从移动互联网
-  type: platform
-  subtitle: ''
-  group: platform_domain
+  label: 万物互联
+  subtitle: 2010s至今 · 物的数字化 · 数百亿连接
+  type: stage
+  group: waves_domain
   priority: normal
-  shape: card
-- id: r4
-  label: 万物互联：实线箭头，标注'技术演进'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
+  shape: box
 connections:
-- from: r3
-  to: r4
-  label: 从移动互联网到万物互联：实线箭头…
+- from: r1
+  to: r2
+  label: 技术演进
+  style: solid
+  direction: request
+- from: r2
+  to: r3
+  label: 技术演进
   style: solid
   direction: request
 callouts:
@@ -61,7 +59,7 @@ legend:
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
-render_notes: 渲染为横向时间轴SVG。三个矩形盒子从左到右排列，宽度220px、高度60px，间距40px。盒子内显示阶段名称和时间范围。盒子正上方显示连接主体描述，盒子正下方显示连接规模数据（引用[S1]）。两条箭头从左到右连接相邻盒子，连线中点上方标注'技术演进'。图例位于时间轴下方或右侧，用2行×3列网格展示颜色块与标签。
+render_notes: 渲染为横向时间轴SVG。三个矩形盒子从左到右排列，宽度220px、高度60px，间距40px。盒子内显示阶段名称和时间范围。盒子正上方显示连接主体描述，盒子正下方显示连接规模数据。两条箭头从左到右连接相邻盒子，连线中点上方标注'技术演进'。图例位于时间轴下方或右侧，用2行×3列网格展示颜色块与标签。
 caption:
   zh: 图1-5 三次浪潮演进时间线示意。时间轴下方标注连接规模数据，箭头表示演进方向。
   en: Figure 1-5 A schematic timeline of the three waves' evolution. Connection-scale figures sit below the timeline; arrows mark the direction of evolution.

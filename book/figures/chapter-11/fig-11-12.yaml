@@ -1,6 +1,6 @@
 type: flowchart
 title: 图11-12 智慧交通系统集成部署工程检查流程
-audience_takeaway: 读者应理解四泳道检查须串行递进:先验设备制式与接口兼容,再验网关压测与QoS,继而PKI证书与签名,最后总线与灾备就绪方可上线。
+audience_takeaway: 四泳道检查须串行递进:先验设备制式与接口兼容,再验网关压测与QoS,继而PKI证书与签名,最后总线与灾备就绪方可上线。
 purpose: 展示四个检查域在部署流程中的依赖关系与先后顺序，帮助工程师规划执行步骤和风险节点
 visual_focus: 从泳道4两个决策节点顺序通过后到达终点部署上线的主链路。
 design_level: implementation
@@ -42,7 +42,7 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 泳道4两个决策节点顺序通过后，到达…
+  label: 泳道4两个决策节点顺序通过后，到达终点部署上线
   style: solid
   direction: request
 callouts:
@@ -61,12 +61,12 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: HTML/SVG渲染。浅色背景，四条横向泳道。通过节点用绿色菱形，未通过用红色菱形。箭头线用实线（通过时绿色、未通过时红色虚线）。终端节点为蓝色圆角矩形。图例以表格形式放在图下方，图11-12标题居中在图上。
 caption:
-  zh: 图11-12 智慧交通系统集成部署工程检查流程
-  en: 'Figure 11-12 Engineering checklist flow for smart transportation system integration and deployment.'
+  zh: 图11-12 四个检查域须串行递进：设备制式与接口兼容最先锁定，网关压测、PKI证书与数据总线灾备依次通过后，方可部署上线。
+  en: 'Figure 11-12 The four check domains proceed serially: device compatibility is locked first, then gateway stress tests, PKI certificates, and bus/disaster-readiness, before deployment can go live.'
 labels:
   en:
     图11-12 智慧交通系统集成部署工程检查流程: 'Figure 11-12 Deployment Checklist Flow for Smart Transportation'
-    读者应理解四泳道检查须串行递进：先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线。: 'Four swimlanes run in series: device compatibility → gateway stress tests & QoS → PKI certificates & signatures → bus and disaster readiness before go-live.'
+    四泳道检查须串行递进：先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线。: 'Four swimlanes run in series: device compatibility → gateway stress tests & QoS → PKI certificates & signatures → bus and disaster readiness before go-live.'
     泳道 1: 'Swimlane 1'
     设备与协议兼容性检查: 'Device & protocol compatibility'
     泳道 2: 'Swimlane 2'

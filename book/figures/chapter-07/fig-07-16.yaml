@@ -1,6 +1,6 @@
 type: layered
 title: 图 7-16 Agent Eval：结果、轨迹、安全与代价四层
-audience_takeaway: 读者应理解 Agent Eval 从结果、轨迹、安全、代价四层评测：结果看目标状态、轨迹看过程合规、安全以零越权为硬门槛、代价看每成功任务综合成本。
+audience_takeaway: 最终状态以平台查询和命令回执为准，而非模型自述；越权、审批绕过、不可逆动作与敏感信息泄露四项为零是发布硬门槛，成本按每个成功任务核算。
 purpose: 展示 Agent Eval 的四层评测结构与安全硬性阈值
 visual_focus: 自上而下的四层评测结构。
 design_level: layered

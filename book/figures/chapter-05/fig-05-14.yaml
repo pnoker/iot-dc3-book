@@ -1,8 +1,8 @@
 type: matrix
 title: 图 5-14 平台层工程检查矩阵
-audience_takeaway: 读者应理解检查矩阵在五维×四属性交叉点给出可验证检查项并按绿黄红标风险等级，如消息队列须acks=all、复制因子≥2。
+audience_takeaway: 检查矩阵在五维×四属性交叉点给出可验证检查项并按绿黄红标风险等级，如消息队列须acks=all、复制因子≥2。
 purpose: 提供平台层设计时需关注的五个维度与四个检查属性，帮助工程师快速定位潜在风险
-visual_focus: 从进入下一判断到进入下一判断的主链路。
+visual_focus: 五个工程维度与四个检查属性的交叉矩阵。
 design_level: decision
 layout: 5行 × 4列表格
 elements:
@@ -14,28 +14,28 @@ regions:
   label: 平台服务域
   role: 核心服务能力边界
 components:
-- id: c1
-  label: 进入下一判断
+- id: dimensions
+  label: 检查维度（行）
   type: platform
-  subtitle: ''
+  subtitle: 设备接入、消息队列、时序数据库、边缘节点等五个工程维度
   group: platform_domain
   priority: primary
   shape: card
-- id: c2
-  label: 进入下一判断
+- id: attributes
+  label: 检查属性（列）
   type: platform
-  subtitle: ''
+  subtitle: 功能完整性、容量/性能、容错/高可用、运维/回滚
   group: platform_domain
-  priority: normal
+  priority: primary
   shape: card
 connections:
-- from: c1
-  to: c2
-  label: 每个（行，列）交叉点放置一个关键检…
+- from: dimensions
+  to: attributes
+  label: 每个交叉点放置一个检查项并标注风险等级
   style: solid
   direction: left-to-right
 callouts:
-- 每个（行，列）交叉点放置一个关键检查项，使用颜色图标表示风险等级：绿色✓（低风险）、黄色△（需关注）、红色✗（必须…
+- 每个（行，列）交叉点放置一个关键检查项，使用颜色图标表示风险等级：绿色✓（低风险）、黄色△（需关注）、红色✗（必须重点验证）
 legend:
 - 蓝色=核心平台/主链路；青绿色=设备与边缘；橙色=AI/风险/关键决策。
 visual_constraints:

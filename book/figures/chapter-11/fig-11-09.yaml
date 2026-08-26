@@ -1,8 +1,8 @@
 type: layered
 title: 图11-9 LSTM交通流预测模型架构图
-audience_takeaway: 读者应理解输入96步×3通道(流量/时刻/星期)经LSTM压缩为64维,Dropout防过拟合,Dense(6)输出未来6步。
+audience_takeaway: 输入96步×3通道(流量/时刻/星期)经LSTM压缩为64维,Dropout防过拟合,Dense(6)输出未来6步。
 purpose: 直观展示短时交通流预测中单层LSTM网络从输入到输出各阶段的数据变换流程，帮助理解维度和特征在不同层之间的变化。
-visual_focus: 从数据流方向：从左至右，全局标注前向…到(64)→(64)→(6)的主链路。
+visual_focus: 从输入数据块沿前向传播方向经 LSTM(64)、Dropout 到 Dense(6) 输出的主链路。
 design_level: logical
 layout: 从左至右水平流向，共四个主要模块。
 elements:
@@ -23,7 +23,7 @@ regions:
   role: 核心服务能力边界
 components:
 - id: r1
-  label: 数据流方向：从左至右，全局标注前向…
+  label: 数据流方向：从左至右，全局标注前向传播方向标签
   type: data
   subtitle: ''
   group: data_domain
@@ -39,11 +39,11 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 数据流方向：从左至右，全局标注前向…
+  label: 数据流方向：从左至右，全局标注前向传播方向标签
   style: solid
   direction: left-to-right
 callouts:
-- 数据流方向：从左至右，全局标注前向传播方向标签。各层之间用带箭头实线串联，箭头旁串联标注数据维度变化：(64,3)…
+- 数据流方向：从左至右，全局标注前向传播方向标签。各层之间用带箭头实线串联，箭头旁串联标注数据维度变化：(96,3)→(64)→(64)→(6)。
 - 结构分组：输入块外另设一个虚线框包围LSTM层与Dropout层，框内标注特征提取阶段
 - 输出框外标注预测输出
 legend:

@@ -1,7 +1,7 @@
 type: architecture
 title: 图 3-13 物模型驱动设备互操作的示意图
 purpose: 展示物模型作为中间抽象层，如何屏蔽异构设备的协议差异，为上层应用提供统一的数据和服务接口。
-audience_takeaway: 读者应理解物模型的价值核心在于‘能力抽象’：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。
+audience_takeaway: 物模型的价值核心在于‘能力抽象’：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。
 visual_focus: 从dev-ax4（A公司温度传感器）和dev-bx4（B公司温度传感器）两条不同源的数据流，分别映射到物模型层中‘温度’属性节点，再汇聚为统一数据流到达应用层的这条主链路。
 design_level: logical
 layout: 垂直三层架构：顶部为应用层（两个应用节点），中部为物模型抽象层（属性、服务、事件三列），底部为设备层（四个不同协议/厂商的设备节点）。
@@ -152,7 +152,7 @@ caption:
 labels:
   en:
     图 3-13 物模型驱动设备互操作的示意图: Figure 3-13 Thing-Model-Driven Device Interoperability
-    读者应理解物模型的价值核心在于能力抽象：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。: 'The core value of the thing model is capability abstraction: applications talk only to the thing model, never caring whether the device underneath speaks Modbus RTU, MQTT, or a binary protocol.'
+    物模型的价值核心在于能力抽象：上层应用只与物模型交互，无需感知底层设备是Modbus RTU、MQTT还是二进制协议。: 'The core value of the thing model is capability abstraction: applications talk only to the thing model, never caring whether the device underneath speaks Modbus RTU, MQTT, or a binary protocol.'
     应用消费域: Application Consumption Domain
     · 消费标准化能力的边界: · boundary where standardized capabilities are consumed
     物模型抽象域: Thing Model Abstraction Domain

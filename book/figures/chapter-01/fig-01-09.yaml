@@ -1,6 +1,6 @@
 type: timeline
 title: 图1-9 物联网定义的演变：从识别到泛在连接
-audience_takeaway: 读者应理解物联网定义经历识别、感知、连接三次扩展，评判系统需要多强识别、多广感知，直接决定架构取舍。
+audience_takeaway: 物联网定义经历识别、感知、连接三次扩展，评判系统需要多强识别、多广感知，直接决定架构取舍。
 purpose: 展示 1999 RFID+EPC、2003 WSN、2004 u-Japan 三个节点如何把定义从「识别物」拓宽到「连接万物」。
 visual_focus: 三个阶段的演进箭头与时间轴，识别→感知→连接的能力扩展。
 design_level: logical

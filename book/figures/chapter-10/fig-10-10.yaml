@@ -1,6 +1,6 @@
 type: lifecycle
 title: 图 10-10 工业模型的持续监控与更新闭环
-audience_takeaway: 读者应理解区分数据漂移与概念漂移，用 KS 检验检测漂移，按轻量校准、主动学习、全量重训练三级响应，形成检测到再监控的闭环流水线。
+audience_takeaway: 区分数据漂移与概念漂移，用 KS 检验检测漂移，按轻量校准、主动学习、全量重训练三级响应，形成检测到再监控的闭环流水线。
 purpose: 展示工业模型的持续监控指标、漂移检测与更新策略闭环
 visual_focus: 两类漂移、三级响应与闭环流水线。
 design_level: lifecycle

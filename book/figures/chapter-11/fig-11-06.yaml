@@ -1,6 +1,6 @@
 type: architecture
 title: 图11-6 城市物联网百万级接入系统架构图
-audience_takeaway: 读者应理解百万级接入靠两段解耦:IP哈希维持设备-Broker长连接,MQTT转Kafka削峰后按实时与非实时分路消费。
+audience_takeaway: 百万级接入靠两段解耦:IP哈希维持设备-Broker长连接,MQTT转Kafka削峰后按实时与非实时分路消费。
 purpose: 展示百万级接入系统的拓扑结构，说明各层如何协同处理设备洪峰、实现水平扩展
 visual_focus: 从负载均衡器到设备层的主链路。
 design_level: logical

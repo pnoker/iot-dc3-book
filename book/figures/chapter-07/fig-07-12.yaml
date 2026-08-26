@@ -1,7 +1,8 @@
+---
 type: architecture
 title: 图 7-12 私有化与混合部署架构
 purpose: 展示私有化部署、公有云部署和混合路由三种模式之间的推理路径和边界。
-audience_takeaway: 读者应理解私有化部署不是全量替代公有云，而是根据数据敏感度和任务复杂度分层选择推理后端。
+audience_takeaway: 敏感与简单查询留在本地引擎处理，复杂任务可出域走云端；换推理引擎通常只改 base-url，但按敏感度分流的策略路由仍需显式实现。
 visual_focus: 从 Agentic Center 出发的两条分支路径：通向本地推理引擎的绿色数据安全路径，和通向云端推理引擎的橙色复杂任务路径。
 design_level: deployment
 layout: 从左到右：左侧为 Agentic Center，中间为路由决策节点，右侧为两个推理后端（本地、云端）。
@@ -80,12 +81,14 @@ visual_constraints:
 - 企业内部网络边界使用浅色背景区分。
 render_notes: HTML/SVG 渲染，浅色背景从左到右布局，菱形决策节点，实线和虚线箭头分别表示不同路径，底部图例。
 caption:
-  zh: 图 7-12 展示私有化部署中 Agentic Center 与本地/云端推理引擎之间的路由关系。
-  en: Figure 7-12 shows the routing relationships between the Agentic Center and local or cloud inference engines in a private deployment.
+  zh: 图 7-12 敏感或简单查询经路由决策留在企业内部网络，由 Ollama/vLLM 等本地引擎推理；复杂任务可出域调用云端模型，出域数据需受允许清单约束。
+  en: Figure 7-12 shows the routing relationships between the Agentic Center and local
+    or cloud inference engines in a private deployment.
 labels:
   en:
     图 7-12 私有化与混合部署架构: Figure 7-12 Private & Hybrid Deployment Architecture
-    读者应理解私有化部署不是全量替代公有云，而是根据数据敏感度和任务复杂度分层选择推理后端。: Private deployment does not fully replace the public cloud — backends are picked by data sensitivity and task complexity.
+    私有化部署按数据敏感度与任务复杂度分层选择推理后端，并非全量替代公有云。: Private deployment does not fully replace
+      the public cloud — backends are picked by data sensitivity and task complexity.
     企业内部网络: Corporate intranet
     请求分流: Request routing
     敏感/简单: Sensitive/simple
@@ -101,4 +104,12 @@ labels:
     蓝色=Agentic Center 核心: Blue = Agentic Center core
     实线=数据安全路径；虚线=跨网络路径: Solid = data-safe path; dashed = cross-network path
     企业内部网络边界用虚线表示: The corporate network boundary is dashed
-    图 7-12 私有化与混合部署按敏感度和任务复杂度选择推理后端；当前平台支持按会话选模型，自动策略路由仍需显式实现。: Figure 7-12 Private and hybrid deployments pick inference backends by sensitivity and task complexity; today the platform selects models per session, and automatic policy routing still needs explicit implementation.
+    ? 图 7-12 私有化与混合部署按敏感度和任务复杂度选择推理后端；当前平台支持按会话选模型，自动策略路由仍需显式实现。
+    : Figure 7-12 Private and hybrid deployments pick inference backends by sensitivity
+      and task complexity; today the platform selects models per session, and automatic
+      policy routing still needs explicit implementation.
+    ? 敏感与简单查询留在本地引擎处理，复杂任务可出域走云端；换推理引擎通常只改 base-url，但按敏感度分流的策略路由仍需显式实现。
+    : Sensitive and simple queries stay in the local engine; complex tasks may leave
+      the site for the cloud. Switching inference engines usually means changing only
+      the base-url, but policy-based routing by sensitivity still has to be implemented
+      explicitly.

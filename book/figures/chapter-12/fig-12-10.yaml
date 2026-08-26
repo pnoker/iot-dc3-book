@@ -1,7 +1,7 @@
 type: architecture
 title: 图 12-10 智慧果园综合监测系统架构（示意）
 purpose: 展示10公顷苹果园监测系统中感知层、通信层、边缘处理层和云平台层之间的接口划分与主数据流路径。
-audience_takeaway: 读者应理解混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。
+audience_takeaway: 混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。
 visual_focus: 两类数据流的分离路径：LoRaWAN服务于土壤和气象节点，4G服务于图像节点；以及云平台下行控制电磁阀的链路。
 design_level: logical
 layout: 自下而上的四层架构：田间感知层、混合通信层、边缘处理层、云端平台与应用层。
@@ -131,7 +131,7 @@ labels:
   en:
     图 12-10 智慧果园综合监测系统架构（示意）: Figure 12-10 Smart Orchard Monitoring Architecture (Schematic)
     展示10公顷苹果园监测系统中感知层、通信层、边缘处理层和云平台层之间的接口划分与主数据流路径。: Interfaces and main data flows across the sensing, communication, edge-processing, and cloud layers of a 10-hectare apple orchard system.
-    读者应理解混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。: Hybrid networking is not a compromise but a rational split between low-frequency small packets and high-frequency large ones.
+    混合组网不是技术妥协，而是在低频小包和高频大包两类数据需求之间的理性切口。: Hybrid networking is not a compromise but a rational split between low-frequency small packets and high-frequency large ones.
     云端平台与应用层: Cloud Platform & Applications
     云服务平台域 · 数据汇聚 / 决策 / 存储 / 服务: Cloud service domain · aggregation / decisions / storage / services
     云规则引擎: Cloud Rule Engine

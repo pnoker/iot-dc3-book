@@ -1,7 +1,7 @@
 type: sequence
 title: 图11-5 火灾应急响应事件流转时序（假设场景）
 purpose: 说明火灾事件从传感器报警到跨部门调度的消息传递顺序，突出边缘计算和自动路由对响应时间的压缩作用。
-audience_takeaway: 读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。
+audience_takeaway: 自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。
 visual_focus: 从传感器报警到边缘判定再到自动路由的路径。
 design_level: implementation
 layout: 参与者横向排列，时间轴从上到下。主参与者在顶部，生命线向下延伸。
@@ -93,7 +93,7 @@ caption:
 labels:
   en:
     图11-5 火灾应急响应事件流转时序（假设场景）: 'Figure 11-5 Fire Response Event Sequence (Hypothetical)'
-    读者应理解自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。: 'How automation avoids manual hand-off delay, and where the edge node cuts sense-to-response time.'
+    自动化链路如何规避人工转接带来的延迟，以及边缘节点在压减感知到响应时间中的位置。: 'How automation avoids manual hand-off delay, and where the edge node cuts sense-to-response time.'
     设备与边缘域: 'Device & Edge Domain'
     云端协同域: 'Cloud Coordination Domain'
     烟雾传感器: 'Smoke Sensor'

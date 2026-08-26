@@ -1,8 +1,8 @@
 type: architecture
 title: 图8-20 本章参考资料分类导图
-audience_takeaway: 读者应理解12条参考资料按六大主题域归档，其中协议安全问题仅[S5][S6]两条、AI安全仅[S4][S8]两条，可据此判断支撑密度。
+audience_takeaway: 参考资料按设备、通信、协议、平台、AI 与测试六个主题域归档，每个条目再分为核心支撑与扩展实践；协议安全与 AI 安全两个主题的资料密度相对较薄，深入时应优先补齐这两块的一手规范。
 purpose: 帮助读者快速定位本书研究资料包中 12 条参考资料对应的安全主题域，理解各参考资料的主要覆盖范围。
-visual_focus: 从[S9]到终点的主链路。
+visual_focus: 从参考资料节点到各安全主题域的主链路。
 design_level: logical
 layout: 2×3 网格铺满主体区域，六个主题域等宽等高排列，每格直接展示资料编号与关系标签。
 elements:
@@ -13,18 +13,18 @@ elements:
 - 讨论模型注入、Prompt 安全、权限范围约束
 - 提供设备、云接口和移动端的安全测试清单
 relationships:
-- '[S9] → 设备安全与认证（核心支撑）'
-- '[S12] → 设备安全与认证（扩展实践）'
-- '[S1] → 通信加密与认证（核心定义）'
-- '[S10] → 通信加密与认证（实践要点）'
-- '[S11] → 通信加密与认证（协议细节）'
-- '[S5] → 协议安全问题（原理剖析）'
-- '[S6] → 协议安全问题（工程取舍）'
-- '[S2] → 平台安全与 RBAC（核心方案）'
-- '[S3] → 平台安全与 RBAC（深度链接）'
-- '[S4] → AI 安全与隔离（接口规范）'
-- '[S8] → AI 安全与隔离（硬约束）'
-- '[S7] → 安全测试与评估（实践清单）'
+- '核心支撑 → 设备安全与认证（核心支撑）'
+- '扩展实践 → 设备安全与认证（扩展实践）'
+- '核心定义 → 通信加密与认证（核心定义）'
+- '实践要点 → 通信加密与认证（实践要点）'
+- '协议细节 → 通信加密与认证（协议细节）'
+- '原理剖析 → 协议安全问题（原理剖析）'
+- '工程取舍 → 协议安全问题（工程取舍）'
+- '核心方案 → 平台安全与 RBAC（核心方案）'
+- '深度链接 → 平台安全与 RBAC（深度链接）'
+- '接口规范 → AI 安全与隔离（接口规范）'
+- '硬约束 → AI 安全与隔离（硬约束）'
+- '实践清单 → 安全测试与评估（实践清单）'
 regions:
 - id: platform_domain
   label: 平台服务域
@@ -37,7 +37,7 @@ regions:
   role: 风险控制与责任边界
 components:
 - id: r1
-  label: '[S9]'
+  label: '核心支撑'
   type: platform
   subtitle: ''
   group: platform_domain
@@ -51,14 +51,14 @@ components:
   priority: normal
   shape: card
 - id: r3
-  label: '[S12]'
+  label: '扩展实践'
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: r4
-  label: '[S1]'
+  label: '核心定义'
   type: platform
   subtitle: ''
   group: platform_domain
@@ -72,21 +72,21 @@ components:
   priority: normal
   shape: card
 - id: r6
-  label: '[S10]'
+  label: '实践要点'
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: r7
-  label: '[S11]'
+  label: '协议细节'
   type: platform
   subtitle: ''
   group: platform_domain
   priority: normal
   shape: card
 - id: r8
-  label: '[S5]'
+  label: '原理剖析'
   type: platform
   subtitle: ''
   group: platform_domain
@@ -100,10 +100,52 @@ components:
   priority: normal
   shape: card
 - id: r10
-  label: '[S6]'
+  label: '工程取舍'
   type: platform
   subtitle: ''
   group: platform_domain
+  priority: normal
+  shape: card
+- id: r11
+  label: '核心方案'
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r12
+  label: 平台安全与 RBAC
+  type: security
+  subtitle: ''
+  group: governance_domain
+  priority: normal
+  shape: card
+- id: r13
+  label: 深度链接
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r14
+  label: 接口规范
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r15
+  label: 硬约束
+  type: platform
+  subtitle: ''
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: r16
+  label: AI 安全与隔离
+  type: security
+  subtitle: ''
+  group: governance_domain
   priority: normal
   shape: card
 connections:
@@ -142,42 +184,42 @@ connections:
   label: 工程取舍
   style: solid
   direction: request
-- from: s2
-  to: rbac
+- from: r11
+  to: r12
   label: 核心方案
   style: solid
   direction: request
-- from: s3
-  to: rbac
+- from: r13
+  to: r12
   label: 深度链接
   style: solid
   direction: request
-- from: s4
-  to: ai
+- from: r14
+  to: r16
   label: 接口规范
   style: solid
   direction: request
-- from: s8
-  to: ai
+- from: r15
+  to: r16
   label: 硬约束
   style: solid
   direction: request
 callouts:
-- '[S9] → 设备安全与认证（核心支撑）'
-- '[S12] → 设备安全与认证（扩展实践）'
-- '[S1] → 通信加密与认证（核心定义）'
+- '核心支撑 → 设备安全与认证（核心支撑）'
+- '扩展实践 → 设备安全与认证（扩展实践）'
+- '核心定义 → 通信加密与认证（核心定义）'
 legend:
 - 圆角矩形：安全主题领域（共 6 个）
-- 圆圈：参考资料编号（[S1]–[S12]）
+- 圆圈：参考资料的支撑类型标签
 - 带箭头的连线：参考资料 → 所属主题领域，箭头旁标注关系标签
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
 - 优先表达边界和主链路，不把所有概念塞进一张图。
-render_notes: '建议使用 SVG 绘制。画布尺寸 700×480px。两列布局，每列 3 个矩形垂直排列。每个圆角矩形尺寸 200×60px，圆角半径 10px。左侧批量填充 #e3f2fd（浅蓝），边框 #1976d2。右侧批量填充 #f3e5f5（浅紫），边框 #7b1fa2。矩形内文字 14px 黑体。每个矩形右侧连接一个小圆圈（直径 22px），圆圈内标注参考资料编号（如 [S9]），字体 11px Consolas，填充 #fff3e0，边框 #ef6c00。连线从圆圈引出，终点指向矩形右侧边。箭头和标签使用 12px 微软雅黑，颜色 #616161。避免重叠，必要时加曲线路径。左上角加标题 "本章参考资料分类导图"，字号 16px 黑体，颜色 #333。'
+render_notes: '建议使用 SVG 绘制。画布尺寸 700×480px。两列布局，每列 3 个矩形垂直排列。每个圆角矩形尺寸 200×60px，圆角半径 10px。左侧批量填充 #e3f2fd（浅蓝），边框 #1976d2。右侧批量填充 #f3e5f5（浅紫），边框 #7b1fa2。矩形内文字 14px 黑体。每个矩形右侧连接一个小圆圈（直径 22px），圆圈内标注参考资料的支撑类型标签（如 核心支撑），字体 11px Consolas，填充 #fff3e0，边框 #ef6c00。连线从圆圈引出，终点指向矩形右侧边。箭头和标签使用 12px 微软雅黑，颜色 #616161。避免重叠，必要时加曲线路径。左上角加标题 "本章参考资料分类导图"，字号 16px 黑体，颜色 #333。'
 caption:
-  zh: 本图将研究资料包中的 12 条参考资料按安全主题域分类映射。左侧为设备层安全（硬件、通信、协议），右侧为平台与数据层安全（权限、AI、测试），从上到下覆盖从物理层到应用层的全栈。
-  en: This figure maps the 12 references in the research material pack to security theme domains. The left side covers device-layer security (hardware, communication, protocols), the right side platform- and data-layer security (permissions, AI, testing), spanning the full stack from the physical layer to the application layer.
+  zh: 图 8-20 本图将 8.7 节参考资料按安全主题域分类映射。左侧为设备层安全（硬件、通信、协议），右侧为平台与数据层安全（权限、AI、测试），从上到下覆盖从物理层到应用层的全栈。
+  en: This figure maps the references in Section 8.7 to security theme domains. The left side covers device-layer security (hardware, communication, protocols), the right side platform- and data-layer security (permissions, AI, testing), spanning the full stack from the physical layer to the application layer.
 labels:
   en:
     图8-20 本章参考资料分类导图: Figure 8-20 Chapter References Classification Map
@@ -209,5 +251,5 @@ labels:
     实践清单: Practice Checklist
     资料覆盖密度：: Reference Coverage
     通信加密与认证 3 条；设备安全、协议安全、平台安全、AI 安全各 2 条；安全测试 1 条。: 'Communication encryption & authentication: 3; device, protocol, platform, and AI security: 2 each; security testing: 1.'
-    '[Sx] = 参考资料编号 · 标签 = 关系': '[Sx] = Reference ID · Label = Relationship'
+    '标签 = 参考资料支撑类型 · 连线 = 归属主题域': 'Tag = reference support type · link = theme domain'
     图8-20 研究资料包中的 12 条参考资料按安全主题域分类映射：左侧为设备层安全（硬件、通信、协议），右侧为平台与数据层安全（权限、AI、测试），覆盖从物理层到应用层的全栈。: 'Figure 8-20 The 12 references in the research pack mapped to security theme domains: device-layer security on the left (hardware, communication, protocols), platform- and data-layer security on the right (permissions, AI, testing), covering the full stack from physical to application layers.'

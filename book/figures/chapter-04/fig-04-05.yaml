@@ -1,8 +1,8 @@
 type: layered
 title: 图4-5 多种协议设备的接入困境
-audience_takeaway: 读者应理解每增加一种接入协议，都需新增对应适配器，并在解析、模型映射与指令处理等跨层环节产生重复工作。
+audience_takeaway: 每增加一种接入协议，都需新增对应适配器，并在解析、模型映射与指令处理等跨层环节产生重复工作。
 purpose: 展示在一个物联网网关或平台上，接入多种异构协议设备时各层所面临的复杂度和重复适配工作。
-visual_focus: 从设备到平台：统一数据模型转换（转换逻辑因…的主链路。
+visual_focus: 从设备经各协议适配器到平台统一数据模型的转换主链路。
 design_level: logical
 layout: 上下三层纵向排布：设备层→协议转换层→平台层。设备层多个图标水平排列，每个设备向下引出独立路径穿过转换层到达平台层。
 elements:
@@ -31,7 +31,7 @@ components:
   priority: primary
   shape: card
 - id: r2
-  label: 对应适配器：专用协议连接（物理层+…
+  label: 协议适配器
   type: data
   subtitle: ''
   group: data_domain
@@ -45,7 +45,7 @@ components:
   priority: normal
   shape: card
 - id: r4
-  label: 平台：统一数据模型转换（转换逻辑因…
+  label: 平台统一数据模型
   type: data
   subtitle: ''
   group: data_domain
@@ -54,17 +54,17 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 设备到对应适配器：专用协议连接（物…
+  label: 专用协议连接
   style: solid
   direction: left-to-right
 - from: r2
   to: r3
-  label: 各适配器到平台：统一数据模型转换（…
+  label: 数据模型转换
   style: solid
   direction: left-to-right
 - from: r3
   to: r4
-  label: 设备到对应适配器：专用协议连接（物…
+  label: 专用协议连接
   style: solid
   direction: left-to-right
 callouts:

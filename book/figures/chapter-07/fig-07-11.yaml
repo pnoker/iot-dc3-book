@@ -1,6 +1,6 @@
 type: architecture
 title: 图 7-11 Agentic Center 当前能力与知识对齐边界
-audience_takeaway: 读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。
+audience_takeaway: 已实现边界只有 @Tool 方法、Web/HTTP 与 MCP Tools；Skills 与 CLI 是概念对齐参考，当前源码中没有对应类型、注册器或 dc3 agent 命令。
 purpose: 区分当前已实现的 Tools、Web/HTTP 与 MCP Tools 端点，以及仅用于知识对齐的 Skills 和 CLI 概念。
 layout: 左侧“当前已实现”区域包含 Agentic @Tool、Web/HTTP 对话和 MCP Tools；右侧“知识对齐（非现有功能）”区域包含 Skills 编排概念与 CLI 客户端概念，两侧用虚线关系箭头连接。
 elements:
@@ -19,7 +19,7 @@ caption:
 labels:
   en:
     图 7-11 Agentic Center 当前能力与知识对齐边界: 'Figure 7-11 Agentic Center: implemented vs. knowledge-alignment boundary'
-    读者应理解当前只有 @Tool、Web/HTTP 与 MCP Tools 属已实现边界，Skills 与 CLI 仅作知识对齐概念。: Only @Tool, Web/HTTP, and MCP Tools are implemented today; Skills and CLI are knowledge-alignment concepts only.
+    已实现边界只有 @Tool 方法、Web/HTTP 与 MCP Tools；Skills 与 CLI 是概念对齐参考，当前源码中没有对应类型、注册器或 dc3 agent 命令。: Only @Tool, Web/HTTP, and MCP Tools are implemented today; Skills and CLI are knowledge-alignment concepts only.
     Tools 是当前实现；Skills 与 CLI 用于对齐通用 Agent 工程概念，不代表 IoT DC3 已上线对应产品能力: Tools are implemented; Skills and CLI align general agent-engineering concepts and are not shipped IoT DC3 capabilities
     当前已实现: Currently implemented
     8 类 Tool 显式注册: 8 explicitly registered tools

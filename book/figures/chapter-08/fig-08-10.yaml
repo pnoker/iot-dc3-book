@@ -1,6 +1,6 @@
 type: flowchart
 title: 图8-10 数据脱敏与匿名化决策流程
-audience_takeaway: 读者应理解脱敏只是弱保护，匿名化须注入差分隐私并通过重识别风险评估方可发布，仅掩盖一层即发布是重识别泄露的根源。
+audience_takeaway: 脱敏只是弱保护，匿名化须注入差分隐私并通过重识别风险评估方可发布，仅掩盖一层即发布是重识别泄露的根源。
 purpose: 展示在数据发布前，如何根据数据敏感等级选择脱敏或匿名化策略，并最终通过重识别风险评估。
 visual_focus: 从id到from的主链路。
 design_level: implementation
@@ -174,8 +174,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: '|'
 caption:
-  zh: 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估（资料：[S2]）。
-  en: 'The problem in most projects is confusing masking with anonymization: a single layer of masking is treated as anonymized and published, causing re-identification risk leaks. The difference is that strong anonymization must pass a re-identification risk assessment (source: [S2]).'
+  zh: 图 8-10 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估。
+  en: 'The problem in most projects is confusing masking with anonymization: a single layer of masking is treated as anonymized and published, causing re-identification risk leaks. The difference is that strong anonymization must pass a re-identification risk assessment.'
 labels:
   en:
     图8-10 数据脱敏与匿名化决策流程: Figure 8-10 Data Masking vs Anonymization Decision Flow

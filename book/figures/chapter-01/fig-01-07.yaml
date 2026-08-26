@@ -1,6 +1,6 @@
 type: topology
 title: 图1-7 移动互联网应用生态示意
-audience_takeaway: 读者应理解移动互联网以用户为唯一中心,应用模块围绕用户辐射,且通过社交内嵌支付等交叉连接实现功能聚合而非各自孤立。
+audience_takeaway: 移动互联网以用户为唯一中心,应用模块围绕用户辐射,且通过社交内嵌支付等交叉连接实现功能聚合而非各自孤立。
 purpose: 展示移动互联网时代以用户为中心的星形应用生态，突出“人-应用-服务”的连接闭环。
 visual_focus: 从用户到移动支付的主链路。
 design_level: logical
@@ -112,7 +112,7 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: '采用Flexbox布局实现星形拓扑。中心图标使用FontAwesome fa-user，外围图标分别用 fa-comment-dots、fa-share-alt、fa-credit-card、fa-map-marked-alt、fa-video。连接线使用SVG的path绘制贝塞尔曲线，实现平滑放射状，每条连接线中部添加文本标签。模块间虚线用CSS的border-style: dashed实现。'
 caption:
-  zh: 该图展示移动互联网时代以用户为中心的应用生态。即时通信维系熟人关系，社交媒体扩大社交半径，移动支付将社交关系延伸至交易，地图/出行解决物理移动需求，短视频成为新的内容消费和社交入口。模块间交叉连接的含义是：一个应用内往往集成多种功能（例如社交媒体可以内嵌支付入口）。
+  zh: 图 1-7 该图展示移动互联网时代以用户为中心的应用生态。即时通信维系熟人关系，社交媒体扩大社交半径，移动支付将社交关系延伸至交易，地图/出行解决物理移动需求，短视频成为新的内容消费和社交入口。模块间交叉连接的含义是：一个应用内往往集成多种功能（例如社交媒体可以内嵌支付入口）。
   en: This figure shows the user-centered app ecosystem of the mobile-Internet era. Instant messaging maintains close relationships, social media widens the social radius, mobile payment extends social ties into transactions, maps/mobility meet physical travel needs, and short video becomes a new entry for content consumption and social life. The cross-links between modules mean that one app often bundles several functions (for example, social media can embed a payment entry).
 labels:
   en:

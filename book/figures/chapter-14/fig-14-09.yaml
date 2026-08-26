@@ -1,6 +1,6 @@
 type: lifecycle
 title: 图 14-9 可复现实验的五个环节与证据包
-audience_takeaway: 读者应理解可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为结构化证据包。
+audience_takeaway: 可复现实验依次冻结环境 manifest、固定可重放的工作负载、按指标字典先定义分母再报告、覆盖故障与安全用例，最终沉淀为可第三方复算的结构化证据包。
 purpose: 展示可复现实验的五个环节与证据包结构
 visual_focus: 五环节横向流程与证据包目录结构。
 design_level: lifecycle

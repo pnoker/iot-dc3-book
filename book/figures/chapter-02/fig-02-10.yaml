@@ -1,7 +1,7 @@
 type: flowchart
 title: 图2-10 规则引擎数据流：温度超标触发报警与自动控制
 purpose: 展示从设备上报温度值，经规则引擎判断，最终触发告警和命令下发的完整流程。
-audience_takeaway: 读者应理解规则引擎在数据闭环中的位置：不直接操作硬件，而是通过Data中心间接下发命令。
+audience_takeaway: 规则引擎在数据闭环中的位置：不直接操作硬件，而是通过Data中心间接下发命令。
 visual_focus: 规则引擎菱形节点作为分支点，向上走告警路径，向下走命令路径。
 design_level: logical
 layout: 水平从左到右，数据流在上路，告警和命令流在下路分叉。
@@ -100,7 +100,7 @@ visual_constraints:
 - 决策菱形置于中部，上下游清晰。
 render_notes: 画布600×250，水平从左到右。设备用传感器图标，菱形用黄色背景，其他卡片用浅灰。箭头标注短标签，见图例。
 caption:
-  zh: 图2-10 展示规则引擎从事件输入到告警/命令输出的数据流。
+  zh: 图2-10 规则引擎数据流（温度超标示例）。规则引擎是数据闭环中的分叉点：向上产出告警通知，向下经 Data 中心间接下发命令——它自己从不直接操作硬件。
   en: 'Figure 2-10 The rule-engine data flow from event input to alarm and command outputs.'
 labels:
   en:

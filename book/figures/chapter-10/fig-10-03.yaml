@@ -1,6 +1,6 @@
 type: architecture
 title: 图 10-3 数字孪生五维模型架构图
-audience_takeaway: 读者应理解连接层是数字孪生枢纽:传感器值经CN上行、控制指令下行,模型输出沉淀为知识反哺业务,形成自我进化的双向闭环。
+audience_takeaway: 连接层是数字孪生枢纽:传感器值经CN上行、控制指令下行,模型输出沉淀为知识反哺业务,形成自我进化的双向闭环。
 purpose: 展示数字孪生的五个核心维度及它们之间的数据与控制流向，帮助读者理解CPS在工程层面的完整协作关系
 visual_focus: 从PE到Data & Service的主链路。
 design_level: logical
@@ -105,7 +105,7 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用SVG绘制，物理实体与虚拟模型使用蓝色/绿色色系，连接层使用橙色居中，数据与服务与知识使用紫色系。双向箭头使用不同颜色区分数据流与控制流。底部添加图注，附一句话说明：五维模型的核心是连接层——它决定了数字孪生的实时性与可靠性。
 caption:
-  zh: 五维模型架构图。连接层（CN）是数字孪生能否实时运转的关键：它决定了物理实体与虚拟模型之间的同步精度和指令可达性。数据与服务层和知识层则提供了从数据到决策的持续演进能力。
+  zh: 图 10-3 五维模型架构图。连接层（CN）是数字孪生能否实时运转的关键：它决定了物理实体与虚拟模型之间的同步精度和指令可达性。数据与服务层和知识层则提供了从数据到决策的持续演进能力。
   en: 'The five-dimension model architecture. The connection layer (CN) is the key to whether a digital twin can run in real time: it determines the synchronization accuracy and command reachability between the physical entity and the virtual model. The data & service layer and the knowledge layer provide the capacity to keep evolving from data to decisions.'
 labels:
   en:

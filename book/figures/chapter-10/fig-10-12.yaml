@@ -1,6 +1,6 @@
 type: dataflow
 title: 图 10-12 IoT DC3设备接入与数据采集数据流
-audience_takeaway: 读者应理解原始位号到展示曲线需三层改造:驱动归一为语义PointValue、数据中心对齐时间戳与单位、时序库按设备+位号分区。
+audience_takeaway: 原始位号到展示曲线需三层改造:驱动归一为语义PointValue、数据中心对齐时间戳与单位、时序库按设备+位号分区。
 purpose: 展示从设备注册、驱动绑定到实时上报和存储的端到端流程。
 visual_focus: 从设备驱动绑定到Grafana大屏的主链路。
 design_level: implementation
@@ -90,8 +90,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，水平流向布局，各层节点按颜色区分，流线上标注协议类型和数据格式。
 caption:
-  zh: 图 10-12 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流。
-  en: Figure 10-12 Illustrates the IoT DC3 data flow from device access to the monitoring dashboard in an SMT production line scenario.
+  zh: 图 10-12 原始寄存器值需经驱动归一、数据中心对齐、时序库分区三层改造，才成为监控大屏上可直接消费的时序曲线。
+  en: Figure 10-12 Raw register values must pass through three layers — driver normalization, Data Center alignment, and time-series partitioning — before becoming dashboard-ready curves.
 labels:
   en:
     图 10-12 IoT DC3设备接入与数据采集数据流: Figure 10-12 IoT DC3 Device Access and Data Acquisition Flow

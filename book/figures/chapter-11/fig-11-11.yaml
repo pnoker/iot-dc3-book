@@ -2,7 +2,7 @@ type: timeline
 title: 图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）
 source_note: 来源：本书假设场景，曲线仅用于说明控制策略差异。
 purpose: 示意性对比传统定时照明与 DQN 调光策略在 24 小时内的功率曲线，说明低流量时段的节能空间。
-audience_takeaway: 读者应看到深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。
+audience_takeaway: 深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。
 visual_focus: 午夜至凌晨时段两条曲线的分离区域（节能示意），以及凌晨环卫作业时 DQN 曲线的短暂抬升。
 design_level: quantitative-schematic
 layout: 横轴 00:00–24:00 共 24 小时，纵轴功率 0–60W。两条曲线：传统（虚线，深灰色）、DQN（实线，蓝色）。差值区域用浅绿色填充。
@@ -57,7 +57,7 @@ caption:
 labels:
   en:
     图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）: 'Figure 11-11 Energy Comparison: Smart vs Conventional Lighting (Hypothetical)'
-    读者应看到深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。: 'At deep-night low traffic the DQN policy cuts power sharply yet keeps fast safety rebound.'
+    深夜低流量时段 DQN 策略可显著降低功率，但安全响应仍保留快速回弹能力。: 'At deep-night low traffic the DQN policy cuts power sharply yet keeps fast safety rebound.'
     功率 (W): 'Power (W)'
     晚高峰段: 'Evening peak'
     需求量大: 'High demand'

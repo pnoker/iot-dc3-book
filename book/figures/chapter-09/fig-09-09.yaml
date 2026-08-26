@@ -1,7 +1,7 @@
 type: sequence
 title: 图 9-9 MCP协议交互序列图
 purpose: 展示AI Agent通过MCP与IoT平台及设备的典型交互流程：资源发现、工具调用、状态反馈。
-audience_takeaway: 读者应理解MCP作为AI与IoT平台之间的互操作层，不直接操作设备，而是通过平台封装的安全上下文调用后端服务。
+audience_takeaway: MCP作为AI与IoT平台之间的互操作层，不直接操作设备，而是通过平台封装的安全上下文调用后端服务。
 visual_focus: 从AI Agent发起会话到MCP Server鉴权、工具发现、调用后端设备服务、写入MQTT/CoAP，最终返回结果给AI Agent的完整时间线。
 design_level: logical
 layout: 自上而下时间线，左侧参与者：AI Agent, MCP Server, IoT平台服务, 设备协议适配层, 物理设备。

@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 5-3 设备认证与数据加密流程
-audience_takeaway: 读者应理解证书认证发生在TLS/mTLS握手内；Token路径必须先建立加密通道并完成通道内认证，再签发短期Token和refresh；混合模式按mTLS→Token→API执行。
+audience_takeaway: 证书认证发生在TLS/mTLS握手内；Token路径必须先建立加密通道并完成通道内认证，再签发短期Token和refresh；混合模式按mTLS→Token→API执行。
 purpose: 展示证书路径、Token路径与混合路径各自正确的认证和加密时序。
 visual_focus: 证书在握手内认证、Token在加密通道内认证后签发，以及mTLS→Token→API混合主链路。
 design_level: implementation

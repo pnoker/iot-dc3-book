@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 9-11 MCP 工程原型：AI 控制灯光的受控链路
-audience_takeaway: 读者应理解 AI Agent 不直连设备，经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯。
+audience_takeaway:  AI Agent 不直连设备，经 MCP Server 完成工具发现、权限校验与参数校验，由 IoT 平台通过 MQTT 下发指令到智能灯。
 purpose: 展示 AI 控制灯光的受控链路与权限、审计边界
 visual_focus: AI Agent → MCP Server → IoT 平台 → 设备的主链路。
 design_level: flowchart

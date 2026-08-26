@@ -1,6 +1,6 @@
 type: architecture
 title: 图1-1 工业软件的版图：ISA-95 五层金字塔
-audience_takeaway: 读者应理解 ISA-95 用五层金字塔组织工业软件系统，自底向上时效从毫秒到天，其设计预设是数据由人查看、决策由人做出、指令由人下发。
+audience_takeaway:  ISA-95 用五层金字塔组织工业软件系统，自底向上时效从毫秒到天，其设计预设是数据由人查看、决策由人做出、指令由人下发。
 purpose: 展示 ISA-95（IEC 62264）五层金字塔：L0 物理过程、L1 基础控制（PLC/DCS）、L2 过程监控（SCADA/HMI）、L3 制造运营管理（MES）、L4 业务规划（ERP），凸显以人为中心的设计预设。
 visual_focus: 自底向上的五层金字塔与右侧"数据/决策/指令由人"的设计预设对照。
 design_level: logical

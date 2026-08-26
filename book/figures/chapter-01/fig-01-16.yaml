@@ -1,6 +1,6 @@
 type: flowchart
 title: 图1-16 传统物联网与大模型驱动物联网的对比
-audience_takeaway: 读者应理解传统物联网靠静态规则精确匹配、被动响应,大模型驱动改为上下文概率推理并新增执行前用户二次确认,从被动转向主动。
+audience_takeaway: 传统物联网靠静态规则精确匹配、被动响应,大模型驱动改为上下文概率推理并新增执行前用户二次确认,从被动转向主动。
 purpose: 直观对比两种物联网模式的决策链路与用户交互路径，突出大模型引入推理能力带来的架构变化。
 visual_focus: 从大模型驱动物联网：用户自然语言描述到终点的主链路。
 design_level: implementation
@@ -34,7 +34,7 @@ components:
   priority: primary
   shape: actor
 - id: r2
-  label: 规则引擎精确匹配 → 直接执行或报…
+  label: 规则引擎精确匹配 → 直接执行或报警
   type: platform
   subtitle: ''
   group: platform_domain
@@ -48,7 +48,7 @@ components:
   priority: normal
   shape: actor
 - id: r4
-  label: LLM解析意图并查询设备实时状态…
+  label: LLM解析意图并查询设备实时状态
   type: edge
   subtitle: ''
   group: edge_domain
@@ -56,13 +56,13 @@ components:
   shape: card
 connections:
 - from: r3
-  to: llm
-  label: 大模型驱动物联网：用户自然语言描述…
+  to: r4
+  label: 大模型驱动物联网：用户自然语言描述
   style: dashed
   direction: request
 callouts:
 - 传统物联网：用户输入固定指令 → 规则引擎精确匹配 → 直接执行或报警（反馈为闭环箭头）
-- 大模型驱动物联网：用户自然语言描述 → LLM解析意图并查询设备实时状态 → 生成决策序列 → 用户二次确认后执行…
+- 大模型驱动物联网：用户自然语言描述 → LLM解析意图并查询设备实时状态 → 生成决策序列 → 用户二次确认后执行
 legend:
 - 矩形框：用户交互节点
 - 钻石框：决策节点（规则引擎或LLM）

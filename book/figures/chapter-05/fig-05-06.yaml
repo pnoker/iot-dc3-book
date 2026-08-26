@@ -1,7 +1,7 @@
 type: architecture
 title: 图 5-6 边缘-云协同典型架构
 purpose: 展示从设备边缘到云端的三层边缘节点、两种协同模式以及边缘计算框架的放置位置。
-audience_takeaway: 读者应理解设备边缘、网关边缘、区域边缘的边界以及规则下发和聚合上报两条数据主链路。
+audience_takeaway: 设备边缘、网关边缘、区域边缘的边界以及规则下发和聚合上报两条数据主链路。
 visual_focus: 从设备层向上经网关边缘、区域边缘到云端的两条数据流（规则下发用虚线、聚合上报用实线）；规则引擎和AI推理框用橙色强调。
 design_level: logical
 layout: 自下而上分层：设备边缘→网关边缘→区域边缘→云端；左侧标注边缘框架选项。
@@ -122,7 +122,7 @@ visual_constraints:
 - 分组边界用虚线圆角矩形。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，箭头带短标签，底部图例和出版级图注。
 caption:
-  zh: 图 5-6 展示从设备边缘到云端的层次与协同模式，左侧标注EdgeX/KubeEdge的典型部署位置。
+  zh: 图 5-6 展示从设备边缘到云端的层次与协同模式，左侧标注EdgeX/KubeEdge的典型部署位置。云端与边缘双向协同：规则与模型经“规则下发”通道下沉到边缘，现场数据经“聚合上报”通道回流云端。
   en: 'Figure 5-6 Layers and collaboration modes from device edge to cloud, with the typical deployment positions of EdgeX/KubeEdge annotated on the left.'
 labels:
   en:

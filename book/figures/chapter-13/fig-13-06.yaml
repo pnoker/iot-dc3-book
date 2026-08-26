@@ -1,8 +1,8 @@
 type: matrix
 title: 图 13-6 供应链核心痛点与区块链价值点映射
-audience_takeaway: 读者应理解每个痛点都有对应价值点且为线性映射，最粗箭头表明'信息孤岛→多方共享账本'是区块链在供应链中力度最大的解。
+audience_takeaway: 每个痛点都有对应价值点且为线性映射，最粗箭头表明'信息孤岛→多方共享账本'是区块链在供应链中力度最大的解。
 purpose: 展示供应链场景的四个典型困难与区块链技术对应解耦方案的映射关系。
-visual_focus: 从每一条痛点通过虚线箭头指向其直接对…到分布式账本的箭头最粗的主链路。
+visual_focus: 从每一条痛点通过虚线箭头指向其直接对应的价值点，其中信息孤岛→分布式账本的箭头最粗的主链路。
 design_level: decision
 layout: 左右双层映射结构，左侧为痛点井（橙色系），右侧为价值塔（蓝色系），中间以带圆点的虚线箭头连接。
 elements:
@@ -16,7 +16,7 @@ regions:
   role: 核心服务能力边界
 components:
 - id: r1
-  label: 每一条痛点通过虚线箭头指向其直接对…
+  label: 每一条痛点通过虚线箭头指向其直接对应的价值点
   type: platform
   subtitle: ''
   group: platform_domain
@@ -32,7 +32,7 @@ components:
 connections:
 - from: r1
   to: r2
-  label: 每一条痛点通过虚线箭头指向其直接对…
+  label: 每一条痛点通过虚线箭头指向其直接对应的价值点
   style: dashed
   direction: left-to-right
 callouts:

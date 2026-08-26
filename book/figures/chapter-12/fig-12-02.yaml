@@ -1,6 +1,6 @@
 type: topology
 title: 图 12-2 环境传感网络部署拓扑示意
-audience_takeaway: 读者应理解终端节点与云端不直连——大量LoRa传感器先星型汇聚到单一网关,再由网关经4G/有线回传上云,网关承担隔离与汇聚中继角色。
+audience_takeaway: 终端节点与云端不直连——大量LoRa传感器先星型汇聚到单一网关,再由网关经4G/有线回传上云,网关承担隔离与汇聚中继角色。
 purpose: 显示农业环境传感网络的星型拓扑结构，涵盖终端节点、网关与云平台之间的通信关系。
 visual_focus: 从顶层（云平台层）到底层（终端节点层）的主链路。
 design_level: logical
@@ -23,34 +23,34 @@ components:
 - id: c1
   label: 顶层（云平台层）
   type: data
-  subtitle: 内部包含四个小图标：数据库、AI模型、可视化大屏、告警…
+  subtitle: 内部包含四个小图标：数据库、AI模型、可视化大屏、告警通知
   group: data_domain
   priority: primary
   shape: database
 - id: c2
   label: 中层（网关层）
   type: edge
-  subtitle: 固定安装于农田中央立杆或温室顶部，通过4G/5G或有线…
+  subtitle: 固定安装于农田中央立杆或温室顶部，通过4G/5G或有线回传与云平台通信
   group: edge_domain
   priority: normal
   shape: card
 - id: c3
   label: 底层（终端节点层）
   type: edge
-  subtitle: 水滴（土壤水分）、树叶（叶面湿度）、太阳（光照）、温度…
+  subtitle: 水滴（土壤水分）、树叶（叶面湿度）、太阳（光照）、温度计（空气温湿度）
   group: edge_domain
   priority: normal
   shape: card
 connections:
-- from: c1
-  to: c2
-  label: 底层终端节点与中层网关之间用‘虚线…
-  style: dashed
-  direction: left-to-right
 - from: c2
-  to: c3
-  label: 中层网关与顶层云平台之间用‘实线+…
+  to: c1
+  label: 实线+箭头 · 网关经4G/有线回传至云平台
   style: solid
+  direction: left-to-right
+- from: c3
+  to: c2
+  label: 虚线 · 终端节点LoRa星型单跳上行至网关
+  style: dashed
   direction: left-to-right
 callouts:
 - 底层终端节点与中层网关之间用‘虚线’表示LoRa星型上行链路

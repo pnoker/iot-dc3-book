@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 13-13 智能合约驱动的自动化决策闭环
-audience_takeaway: 读者应理解智能灌溉经 AI 推理、预言机上链、合约条件触发、设备执行四步闭环，事件日志构成不可篡改审计轨迹，价值在多方可审计的自动执行。
+audience_takeaway: 智能灌溉经 AI 推理、预言机上链、合约条件触发、设备执行四步闭环，事件日志构成不可篡改审计轨迹，价值在多方可审计的自动执行。
 purpose: 展示智能合约驱动自动化决策的四步闭环与工程权衡
 visual_focus: 四步决策闭环与工程权衡。
 design_level: flowchart

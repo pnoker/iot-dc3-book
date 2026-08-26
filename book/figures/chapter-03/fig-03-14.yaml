@@ -1,7 +1,8 @@
+---
 type: architecture
 title: 图 3-14 物模型与设备实例的关系：属性、动作、事件的交互模式
 purpose: 直观说明物模型作为“模板”如何被实例化，以及属性、动作、事件在平台侧的三种典型交互方式。
-audience_takeaway: 读者应理解物模型是一类设备的能力契约，多个设备实例共享同一模板，平台无需关心设备内部差异。
+audience_takeaway: 物模型是一类设备的能力契约，多个设备实例共享同一模板，平台无需关心设备内部差异。
 visual_focus: 从物模型模板到告警服务的主链路。
 design_level: logical
 layout: 三层架构：顶部为“物模型模板”，中间为“设备实例层”，底部为“平台应用层”。
@@ -122,16 +123,18 @@ visual_constraints:
 render_notes: HTML/SVG 渲染，浅色背景，圆角矩形。三行布局，顶部一个橙色宽矩形（模版T-100），中间两个灰色窄矩形并列（设备A、设备B），底部三个蓝色窄矩形并列（数据存储、远程控制、告警服务）。底部图例和出版级图注。
 caption:
   zh: 图 3-14 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。
-  en: Figure 3-14 A thing model template reused by multiple device instances; devices talk to platform applications through three standard interface types. The platform never needs to care about internal device differences — it only interacts using the data formats and protocols defined by the thing model.
+  en: Figure 3-14 A thing model template reused by multiple device instances; devices
+    talk to platform applications through three standard interface types. The platform
+    never needs to care about internal device differences — it only interacts using
+    the data formats and protocols defined by the thing model.
 labels:
   en:
-    图 3-14 物模型与设备实例的关系：属性、动作、事件的交互模式: 'Figure 3-14 Thing Model and Device Instances: Property, Action, and Event Interactions'
-    一份物模型模板被多台设备复用，设备与平台间通过属性上报、动作下发、事件推送三类接口交互。: One thing-model template is reused across many devices; device and platform interact through three interface types — property reporting, action delivery, and event push.
-    智能决策域: Intelligent Decision Domain
-    设备与边缘域: Device & Edge Domain
-    数据资产域: Data Asset Domain
-    平台服务域: Platform Service Domain
-    治理域: Governance Domain
+    图 3-14 物模型与设备实例的关系：属性、动作、事件的交互模式: 'Figure 3-14 Thing Model and Device Instances:
+      Property, Action, and Event Interactions'
+    ? 一份物模型模板被多台设备复用，设备与平台间通过属性上报、动作下发、事件推送三类接口交互。
+    : One thing-model template is reused across many devices; device and platform
+      interact through three interface types — property reporting, action delivery,
+      and event push.
     复用: Reuse
     上报属性值: Report property
     下发动作: Deliver action
@@ -143,4 +146,13 @@ labels:
     远程控制: Remote Control
     告警服务: Alarm Service
     symbols=dashed-line=复用/模板关系: 'Legend: dashed line = reuse / template relation'
-    图 3-14 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。: Figure 3-14 A thing model template reused by multiple device instances; devices talk to platform applications through three standard interface types. The platform never needs to care about internal device differences — it only interacts using the data formats and protocols defined by the thing model.
+    ? 图 3-14 物模型作为模板被多个设备实例复用，设备通过标准的三类接口与平台应用通信。平台无需关心设备内部差异，只需按照物模型定义的数据格式和协议进行交互。
+    : Figure 3-14 A thing model template reused by multiple device instances; devices
+      talk to platform applications through three standard interface types. The platform
+      never needs to care about internal device differences — it only interacts using
+      the data formats and protocols defined by the thing model.
+    智能决策域: Intelligence domain
+    设备与边缘域: Device & edge domain
+    数据资产域: Data asset domain
+    平台服务域: Platform service domain
+    治理域: Governance domain

@@ -1,7 +1,7 @@
 type: architecture
 title: 图6-9 物联网系统关键决策三元组
 purpose: 展示语言、协议、架构三个决策维度在原型阶段与生产阶段的典型差异和迁移路径。
-audience_takeaway: 读者应理解物联网系统决策不是孤立选择，而是三个维度互相影响的系统工程。
+audience_takeaway: 物联网系统决策不是孤立选择，而是三个维度互相影响的系统工程。
 visual_focus: 从“语言→协议→架构”的递进影响链路，以及每个维度内迁移路径上的关键工程动作。
 design_level: logical
 layout: 三栏并排布局。每栏分上下两个区域：上方“原型阶段”浅蓝底色，下方“生产阶段”深蓝底色；两区域之间用橙色箭头竖直连接，箭头旁标注迁移动作。
@@ -64,8 +64,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 使用 HTML/SVG 绘制。整体采用三并排卡片布局，左中右三列分别对应语言、协议、架构。每个卡片分为上下两个区域：上区域浅蓝底（原型），下区域深蓝底（生产），两区域之间用橙色箭头竖直连接，箭头旁标注迁移动作。卡片内标题为小号黑色加粗。图下方放置图例。图注置于图下方，字号稍小。
 caption:
-  zh: 图6-9 从原型到生产的三元决策矩阵。每一列展示了在语言、协议、架构层面，原型阶段和生产阶段分别采用的最佳选项，以及两者之间的最短迁移路径。图中元素来源于本章各节讨论（6.1 语言实践、6.2 协议实践、6.3 架构实践）。
-  en: 'Figure 6-9 The prototype-to-production decision triad. Each column shows the best option at the prototype and production stages for language, protocol, and architecture, together with the shortest migration path between them. Elements draw on this chapter''s sections (6.1 language practice, 6.2 protocol practice, 6.3 architecture practice).'
+  zh: 图6-9 从原型到生产的三元决策矩阵。每一列展示了在语言、协议、架构层面，原型阶段和生产阶段分别采用的最佳选项，以及两者之间的最短迁移路径。图中元素来源于本章各节讨论（语言见 6.1、协议见 6.1.3、架构见 6.2）。
+  en: 'Figure 6-9 The prototype-to-production decision triad. Each column shows the best option at the prototype and production stages for language, protocol, and architecture, together with the shortest migration path between them. Elements draw on this chapter''s sections (language in 6.1, protocols in 6.1.3, architecture in 6.2).'
 labels:
   en:
     图6-9 物联网系统关键决策三元组: Figure 6-9 Key IoT Decision Triad

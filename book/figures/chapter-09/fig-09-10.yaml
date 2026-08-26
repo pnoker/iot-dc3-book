@@ -1,6 +1,6 @@
 type: sequence
 title: 图 9-10 MCP 消息模型与能力描述边界
-audience_takeaway: 读者应理解 MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。
+audience_takeaway:  MCP 以 JSON-RPC 2.0 为载体，经 initialize 协商后暴露 tools/resources/prompts 三类能力，能力描述是安全代理的接口合约。
 purpose: 展示 MCP 消息模型、能力协商与能力描述的责任边界
 visual_focus: initialize 协商与三类能力卡片。
 design_level: sequence

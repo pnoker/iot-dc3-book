@@ -1,6 +1,6 @@
 type: architecture
 title: 图 10-8 AI模型部署架构（从训练到边缘推理）
-audience_takeaway: 读者应理解模型仓库一份模型可同时服务REST与专用推理,边缘只跑裁剪模型且仅上报结果,与云端分工避免重复工单。
+audience_takeaway: 模型仓库一份模型可同时服务REST与专用推理,边缘只跑裁剪模型且仅上报结果,与云端分工避免重复工单。
 purpose: 展示模型从训练环境产出、导出、部署到推理服务并接入IoT DC3平台的完整链路。
 visual_focus: 从训练阶段经模型仓库到推理服务的主链路，以及边缘推理节点本地推理后上报结果到数据中心的虚线路径。
 design_level: logical
@@ -128,8 +128,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，三段式布局。训练阶段使用橙色块，推理服务使用蓝色块，边缘层使用青绿色块。数据流使用带标签的虚线箭头。
 caption:
-  zh: 图 10-8 AI模型部署架构：从训练环境到工业物联网平台的完整链路，涉及模型导出、推理服务化和与IoT DC3的集成。
-  en: 'Figure 10-8 AI model deployment architecture: the complete chain from the training environment to the industrial IoT platform, covering model export, model serving, and integration with IoT DC3.'
+  zh: 图 10-8 模型仓库中的同一份模型可分别服务云端REST/专用推理与边缘裁剪推理；边缘节点只在本地推理并上报结果，避免与云端重复触发工单。
+  en: 'Figure 10-8 The same model artifact from the model registry can serve both cloud REST/dedicated serving and edge-side trimmed inference; edge nodes infer locally and report results only, avoiding duplicate work orders with the cloud.'
 labels:
   en:
     图 10-8 AI模型部署架构（从训练到边缘推理）: Figure 10-8 AI Model Deployment Architecture (Training to Edge Inference)

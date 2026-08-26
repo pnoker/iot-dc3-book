@@ -1,7 +1,7 @@
 type: sequence
 title: 图 9-4 MQTT智能家居监控系统交互序列
 purpose: 展示MQTT在智能家居温湿度监控场景中的完整交互时序，包括连接建立、数据发布、告警触发以及断连后遗嘱消息的发布流程。
-audience_takeaway: 读者应理解MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。
+audience_takeaway: MQTT设备、Broker、订阅端和手机App之间的消息时序，重点关注遗嘱消息和QoS 2告警消息在可靠性保障中的角色。
 visual_focus: 设备到Broker到订阅端的数据发布链路（蓝色虚线），以及断连后Broker发布的遗嘱消息（红色虚线）。
 design_level: detailed
 layout: 水平泳道，时间轴自上而下，分三个Phase阶段。

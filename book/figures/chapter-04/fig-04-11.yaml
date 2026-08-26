@@ -1,7 +1,7 @@
 type: architecture
 title: 图4-11 智能路灯系统总体拓扑
 purpose: 展示混合使用NB-IoT和LoRa两种通信技术的路灯，如何通过统一接入层实现异构协议融合，使上层应用无感知。
-audience_takeaway: 读者应理解统一接入层如何将两套异构的物理链路抽象为一致的设备属性，业务层无需感知底层协议差异。
+audience_takeaway: 统一接入层如何将两套异构的物理链路抽象为一致的设备属性，业务层无需感知底层协议差异。
 visual_focus: 从应用层经统一接入层到两种路灯的主链路；设备影子作为中间抽象层使用绿色强调。
 design_level: logical
 layout: 三层结构：上为应用层（统一管控大屏+API网关），中为统一接入层（设备影子+NB-IoT驱动+LoRa驱动），下为感知层（NB-IoT路灯组+LoRa路灯组），层间蓝色实线条带表示数据流方向。
@@ -167,7 +167,7 @@ caption:
 labels:
   en:
     图4-11 智能路灯系统总体拓扑: 'Figure 4-11 Smart Streetlight System Topology'
-    读者应理解统一接入层如何将两套异构的物理链路抽象为一致的设备属性，业务层无需感知底层协议差异。: 'The unified access layer abstracts two heterogeneous physical links into consistent device attributes, so the business layer never sees the underlying protocol difference.'
+    统一接入层如何将两套异构的物理链路抽象为一致的设备属性，业务层无需感知底层协议差异。: 'The unified access layer abstracts two heterogeneous physical links into consistent device attributes, so the business layer never sees the underlying protocol difference.'
     统一接入域: 'Unified Access Domain'
     NB-IoT通信路径: 'NB-IoT Path'
     LoRa通信路径: 'LoRa Path'

@@ -1,6 +1,6 @@
 type: matrix
 title: 图 3-3 传感器选型四维约束与误差校准
-audience_takeaway: 读者应理解传感器选型在精度、成本、功耗、环境适应性四维之间取舍并预留余量，误差按系统、随机、粗大三类分别校准与抑制。
+audience_takeaway: 传感器选型在精度、成本、功耗、环境适应性四维之间取舍并预留余量，误差按系统、随机、粗大三类分别校准与抑制。
 purpose: 展示传感器选型的四维约束与误差分类校准方法
 visual_focus: 四维约束卡片与误差分类三列。
 design_level: matrix

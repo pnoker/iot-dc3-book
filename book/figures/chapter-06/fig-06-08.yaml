@@ -1,6 +1,6 @@
 type: layered
 title: 图6-8 微服务可观测性分层架构
-audience_takeaway: 读者应理解可观测性中服务主动暴露端点、Prometheus以pull模式拉取指标、日志与指标分通道存储(ES/Prometheus)，健康状态并入业务指标统一告警。
+audience_takeaway: 可观测性中服务主动暴露端点、Prometheus以pull模式拉取指标、日志与指标分通道存储(ES/Prometheus)，健康状态并入业务指标统一告警。
 purpose: 展示指标、日志、告警与可视化查询的完整可观测链路。
 visual_focus: Prometheus拉取服务指标、日志经采集器进入ES、Prometheus发送告警到Alertmanager，以及Grafana查询两类存储。
 design_level: logical
@@ -27,35 +27,35 @@ regions:
   role: 核心服务能力边界
 components:
 - id: c1
-  label: 进入下一判断
+  label: 展示与告警层
   type: security
-  subtitle: 可视化指标面板与告警通知，支持钉钉/邮件/Pa…
+  subtitle: Grafana 可视化，Alertmanager 通知钉钉/邮件/PagerDuty
   group: governance_domain
   priority: primary
   shape: card
 - id: c2
-  label: 进入下一判断
+  label: 采集与存储层
   type: data
-  subtitle: Prometheus pull 模式拉取 me…
+  subtitle: Prometheus pull 指标，日志经采集器写入 Elasticsearch
   group: data_domain
   priority: normal
   shape: database
 - id: c3
-  label: 进入下一判断
+  label: 服务暴露层
   type: platform
-  subtitle: 每个微服务暴露 Prometheus 端点和自…
+  subtitle: 每个微服务/Driver 暴露指标端点并输出结构化日志
   group: platform_domain
   priority: normal
   shape: card
 connections:
 - from: c1
   to: c2
-  label: Service A 和 Servi…
+  label: 查询指标与日志
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: Prometheus 将聚合后的数…
+  label: 告警规则触发通知
   style: solid
   direction: left-to-right
 callouts:

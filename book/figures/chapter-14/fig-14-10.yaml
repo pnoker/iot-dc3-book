@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 14-10 连接可靠性：MQTT QoS 与消息链路闭环
-audience_takeaway: 读者应理解 MQTT QoS 0/1/2 各司其职，RabbitMQ 链路依靠持久化、TTL 与死信、ack/nack、commandId 去重与设备级串行，形成可靠性闭环。
+audience_takeaway: QoS 0/1/2 分别匹配可丢弃遥测、关键上报与恰好一次语义；RabbitMQ 链路依靠持久化、TTL 与死信、ack/nack、commandId 去重与设备级串行，共同构成从生产确认到结果回执的可靠性闭环。
 purpose: 展示 MQTT QoS 分级与 RabbitMQ 消息链路的可靠性闭环
 visual_focus: QoS 三级卡片与 RabbitMQ 可靠性闭环五要素。
 design_level: flowchart

@@ -1,6 +1,6 @@
-type: matrix
+type: radar
 title: 图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图
-audience_takeaway: 读者应理解三项技术功耗与速率反向取舍——NB-IoT速率最高(4)而功耗最差(2),Sigfox功耗最优(4)但速率最低(1),LoRa生态最开放(5)居中平衡。
+audience_takeaway: 三项技术功耗与速率反向取舍——NB-IoT速率最高(4)而功耗最差(2),Sigfox功耗最优(4)但速率最低(1),LoRa生态最开放(5)居中平衡。
 purpose: 在同一坐标系下展示三项技术在覆盖、速率、功耗、成本、生态开放性、穿透能力六个维度的相对强弱，辅助选型决策
 visual_focus: 从LoRa到Sigfox的主链路。
 design_level: decision
@@ -40,12 +40,12 @@ components:
 connections:
 - from: c1
   to: c2
-  label: 三个系列在同一份刻度坐标上对比，便…
+  label: 三个系列在同一份刻度坐标上对比，便于目视识别优势短板
   style: solid
   direction: left-to-right
 - from: c2
   to: c3
-  label: 三个系列在同一份刻度坐标上对比，便…
+  label: 三个系列在同一份刻度坐标上对比，便于目视识别优势短板
   style: solid
   direction: left-to-right
 callouts:

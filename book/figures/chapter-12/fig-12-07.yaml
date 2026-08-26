@@ -1,6 +1,6 @@
 type: framework
 title: 图 12-7 农业场景 LPWAN 选型四维约束
-audience_takeaway: 读者应理解农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。
+audience_takeaway: 农业场景对 LPWAN 提出覆盖、速率、功耗、成本四维约束，归结为远覆盖、低速率、长续航、低成本、上行为主。
 purpose: 梳理农业场景对 LPWAN 的具体约束，为后续技术比选建立框架
 visual_focus: 四维约束卡片并列，底部结论。
 design_level: framework

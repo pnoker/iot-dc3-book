@@ -1,5 +1,6 @@
 type: layered
 title: 图8-11 物联网平台 JWT 认证与授权架构
+audience_takeaway: JWT 携带 tenant_id 完成认证后，授权层的 RBAC/ABAC 决策与审计日志仍须在同一租户边界内执行；任何一环丢失租户上下文，都会成为跨租户越权的入口。
 purpose: 展示 JWT 认证与授权在物联网平台中的四层架构与鉴权流程。
 layout: 自下而上四层:基础设施层→认证层→授权层→策略层;租户边界以垂直虚线贯穿。
 elements:

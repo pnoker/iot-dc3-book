@@ -1,8 +1,8 @@
 type: layered
 title: 图4-7 统一接入层四层架构
-audience_takeaway: 读者应理解四层架构把协议差异逐层收口到最底层,上层只见设备影子与标准载荷,调用向下、数据回调向上。
+audience_takeaway: 四层架构把协议差异逐层收口到最底层,上层只见设备影子与标准载荷,调用向下、数据回调向上。
 purpose: 展示统一接入层内部的四个功能层以及各层间的接口与数据流向。
-visual_focus: 从设备抽象层向下到协议泛化层的 read/write的主链路。
+visual_focus: 自上而下四个功能层：设备抽象→数据解析→连接管理→协议泛化。
 design_level: logical
 layout: 自上而下竖向堆叠，层间用实线分隔并标注接口箭头。
 elements:
@@ -26,76 +26,48 @@ regions:
   label: 平台服务域
   role: 核心服务能力边界
 components:
-- id: r1
-  label: 设备抽象层向下
+- id: abstraction
+  label: 设备抽象层
   type: edge
-  subtitle: ''
+  subtitle: 维护设备影子，接口 getDeviceShadow()/updateShadow()
   group: edge_domain
   priority: primary
   shape: card
-- id: r2
-  label: 数据解析层的 toStandard…
+- id: parsing
+  label: 数据解析层
   type: data
-  subtitle: ''
+  subtitle: 字节流与标准 JSON/Protobuf 互转
   group: data_domain
-  priority: normal
+  priority: primary
   shape: database
-- id: r3
-  label: 数据解析层向下
-  type: data
-  subtitle: ''
-  group: data_domain
-  priority: normal
-  shape: database
-- id: r4
-  label: 连接管理层的 connect/ke…
+- id: connection
+  label: 连接管理层
   type: platform
-  subtitle: ''
+  subtitle: 会话表、心跳、重连
   group: platform_domain
-  priority: normal
+  priority: primary
   shape: card
-- id: r5
-  label: 连接管理层向下
+- id: generalization
+  label: 协议泛化层
   type: platform
-  subtitle: ''
+  subtitle: 封装具体协议驱动，read/write
   group: platform_domain
-  priority: normal
+  priority: primary
   shape: card
-- id: r6
-  label: 协议泛化层的 read/write
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r7
-  label: 左侧标注'
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r8
-  label: 方向向下'，右侧标注'数据上报方向…
-  type: data
-  subtitle: ''
-  group: data_domain
-  priority: normal
-  shape: database
 connections:
-- from: r1
-  to: tostandardpayl
-  label: 设备抽象层向下调用数据解析层的 t…
+- from: abstraction
+  to: parsing
+  label: toStandardPayload/fromStandardPayload
   style: solid
   direction: request
-- from: r3
-  to: connect_keepal
-  label: 数据解析层向下调用连接管理层的 c…
+- from: parsing
+  to: connection
+  label: connect/keepAlive
   style: solid
   direction: request
-- from: r5
-  to: r6
-  label: 连接管理层向下调用协议泛化层的 r…
+- from: connection
+  to: generalization
+  label: read/write
   style: solid
   direction: request
 callouts:

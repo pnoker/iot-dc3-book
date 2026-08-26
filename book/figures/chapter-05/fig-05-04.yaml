@@ -1,6 +1,6 @@
 type: dataflow
 title: 图 5-4 消息队列缓冲削峰示意
-audience_takeaway: 读者应理解洪峰时队列水位升高而下游不直接承压，消费者按自身能力拉取削峰，多个消费者组可独立消费同一Topic满足不同时效。
+audience_takeaway: 洪峰时队列水位升高而下游不直接承压，消费者按自身能力拉取削峰，多个消费者组可独立消费同一Topic满足不同时效。
 purpose: 说明消息队列在设备洪峰到来时如何暂存消息，防止后端处理系统过载。
 visual_focus: 从设备群到时间轴的主链路。
 design_level: implementation

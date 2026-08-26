@@ -1,7 +1,7 @@
 type: topology
 title: 图 3-6 RFID在智能仓储中的应用拓扑示意
 purpose: 展示UHF RFID在仓储场景中固定式门禁与手持终端配合使用的典型部署模式，帮助读者建立全局系统认识。
-audience_takeaway: 读者应理解RFID仓储方案由现场标签、固定式读写器、手持终端、RFID中间件和WMS五层组件构成，主链路从标签通过天线经中间件抵达业务系统。
+audience_takeaway: RFID仓储方案由现场标签、固定式读写器、手持终端、RFID中间件和WMS五层组件构成，主链路从标签通过天线经中间件抵达业务系统。
 visual_focus: 从RFID标签到WMS主链路的逐级数据流向；固定式读写器与手持终端作为并行的两种采集入口。
 design_level: physical
 layout: 自上而下三层：云端层（WMS）→ 边缘层（RFID中间件）→ 现场层（读写器与标签）。现场层按功能区分为入库区、出库区和货架区三个虚线框。

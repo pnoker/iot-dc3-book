@@ -1,7 +1,7 @@
 type: layered
 title: 图1-11 四层物联网参考架构示意图
 purpose: 展示物联网四层参考架构及层间数据流
-audience_takeaway: 读者应理解物联网系统由四个职责清晰且相互依赖的层次构成，安全作为一个跨越所有层的约束条件存在。
+audience_takeaway: 物联网系统由四个职责清晰且相互依赖的层次构成，安全作为一个跨越所有层的约束条件存在。
 visual_focus: 数据从感知层上行至应用层的主链路，以及指令下行的反向回路。
 design_level: logical
 layout: 从下到上垂直堆叠，左侧标出贯穿的安全条带

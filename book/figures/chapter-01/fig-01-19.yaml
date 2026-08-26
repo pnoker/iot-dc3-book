@@ -1,6 +1,6 @@
 type: flowchart
 title: 图1-19 AIoT数据闭环流程
-audience_takeaway: 读者应理解AIoT是感知-学习-决策-执行的循环,执行结果反馈回感知驱动持续自我优化,区别于传统IoT的单向数据管道。
+audience_takeaway: AIoT是感知-学习-决策-执行的循环,执行结果反馈回感知驱动持续自我优化,区别于传统IoT的单向数据管道。
 purpose: 展示AIoT中从感知到学习、决策、执行，再到反馈优化的循环过程，直观区别于传统IoT的单向数据流。
 visual_focus: 从step1到step1的主链路。
 design_level: implementation

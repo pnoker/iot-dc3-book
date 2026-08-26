@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 5-11 从数据采集到告警触发的预测性维护流程
-audience_takeaway: 读者应理解预测性维护靠残差驱动：Prophet预测值与实际值求残差、滑动窗口打分，超阈值才告警，运维确认后回流触发模型增量更新。
+audience_takeaway: 预测性维护靠残差驱动：Prophet预测值与实际值求残差、滑动窗口打分，超阈值才告警，运维确认后回流触发模型增量更新。
 purpose: 展示预测性维护管道的完整阶段，以及数据流、告警流、模型更新流之间的交互关系
 visual_focus: 从设备层到决策层：传递评分结果的主链路。
 design_level: implementation
@@ -96,7 +96,7 @@ components:
   priority: normal
   shape: decision
 - id: r10
-  label: 反馈回路 → 模型层：确认后执行增…
+  label: 反馈回路：确认后增量重训
   type: ai
   subtitle: ''
   group: intelligence_domain
@@ -135,7 +135,7 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: 使用从左至右布局，进程用圆角矩形，数据存储用圆柱，判断用菱形。流程图应清晰显示反馈回路。
 caption:
-  zh: 图 5-11 预测性维护管道数据流示意
+  zh: 图 5-11 电流数据自设备层经数据管道进入模型层，训练与推理共用同一条管道；评分层输出预测区间，超出阈值即触发告警并回流至运维侧。
   en: 'Figure 5-11 Data flow of the predictive maintenance pipeline.'
 labels:
   en:

@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 5-5 数据传输的 QoS 分级与容错机制
-audience_takeaway: 读者应理解 QoS 0/1/2 可靠性递增、开销递增，持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序。
+audience_takeaway:  QoS 0/1/2 可靠性递增、开销递增，持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序。
 purpose: 展示数据传输的 QoS 分级与容错机制
 visual_focus: QoS 三级与容错三机制。
 design_level: flowchart

@@ -1,8 +1,8 @@
 type: topology
 title: 图4-2 LoRaWAN网络架构示意
-audience_takeaway: 读者应理解LoRaWAN星形拓扑中网关仅做透明转发、不解析帧,去重校验与下行调度全部集中在网络服务器。
+audience_takeaway: LoRaWAN星形拓扑中网关仅做透明转发、不解析帧,去重校验与下行调度全部集中在网络服务器。
 purpose: 展示终端节点、网关、网络服务器和应用服务器之间的连接关系，说明LoRaWAN星形拓扑和网关透明转发特性。
-visual_focus: 从终端到终点的主链路。
+visual_focus: 从终端节点经网关、网络服务器到应用服务器的星形主链路。
 design_level: logical
 layout: 从上到下分为四层——应用服务器层、网络服务器层、网关层、终端节点层。每层用水平矩形框表示，层级间用箭头表示数据流方向（上行用实线，下行用虚线）。网关层包含多个网关矩形，终端层包含多个终端圆形。
 elements:
@@ -25,64 +25,50 @@ regions:
   label: 业务应用域
   role: 业务价值交付边界
 components:
-- id: r1
-  label: 终端
+- id: end_device
+  label: 终端节点
+  type: device
+  subtitle: 水表、温湿度计、资产标签等传感器
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: gateway
+  label: 网关
+  type: edge
+  subtitle: 透明转发 LoRaWAN 帧，不做协议解析
+  group: edge_domain
+  priority: primary
+  shape: card
+- id: network_server
+  label: 网络服务器
   type: platform
-  subtitle: ''
+  subtitle: 去重、校验、下行时序调度
   group: platform_domain
   priority: primary
   shape: card
-- id: r2
-  label: 网关：LoRa调制，双向通信（上行…
-  type: edge
-  subtitle: ''
-  group: edge_domain
-  priority: normal
-  shape: card
-- id: r3
-  label: 网关
-  type: edge
-  subtitle: ''
-  group: edge_domain
-  priority: normal
-  shape: card
-- id: r4
-  label: 网络服务器：通过IP协议（UDP或…
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r5
-  label: 网络服务器
-  type: platform
-  subtitle: ''
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: r6
-  label: 应用服务器：内部API或MQTT协…
+- id: app_server
+  label: 应用服务器
   type: application
-  subtitle: ''
+  subtitle: 处理业务逻辑，接收上行数据或下发指令
   group: application_domain
-  priority: normal
+  priority: primary
   shape: bus
 connections:
-- from: r1
-  to: lora
-  label: 终端 → 网关：LoRa调制，双向…
+- from: end_device
+  to: gateway
+  label: LoRa 调制（上行主动、下行经接收窗）
   style: solid
   direction: request
-- from: r3
-  to: ip_udp_tcp
-  label: 网关 → 网络服务器：通过IP协议…
+- from: gateway
+  to: network_server
+  label: IP（UDP/TCP）透明转发
   style: solid
   direction: request
-- from: r5
-  to: api_mqtt
-  label: 双向
+- from: network_server
+  to: app_server
+  label: 内部 API 或 MQTT
   style: solid
-  direction: request
+  direction: bidirectional
 callouts:
 - 终端 → 网关：LoRa调制，双向通信（上行由终端主动发起，下行通过接收窗口）
 - 网关 → 网络服务器：通过IP协议（UDP或TCP）透明转发LoRaWAN帧

@@ -1,6 +1,6 @@
 type: matrix
 title: 图 7-13 MLOps 与 LLMOps 的边界及五道发布门
-audience_takeaway: 读者应理解 MLOps 治理数据与模型，LLMOps 把 Prompt、索引、Tool schema、策略与评测集纳入发布单元，发布经五道门逐步放权。
+audience_takeaway: 每次发布应生成记录模型、Prompt、索引、Tool schema 与策略版本的不可变 manifest；升级先过离线回归与影子流量，再按租户和只读能力逐步放权，回退按组件独立设计。
 purpose: 对比 MLOps 与 LLMOps 的治理边界，展示五道发布门
 visual_focus: 五维对比表与底部五道发布门。
 design_level: matrix

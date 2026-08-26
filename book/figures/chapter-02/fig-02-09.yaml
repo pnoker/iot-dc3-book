@@ -1,7 +1,7 @@
 type: lifecycle
 title: 图2-9 设备生命周期状态机
 purpose: 展示 Manager 中心管理的设备从注册到退役的完整状态流转。
-audience_takeaway: 读者应理解设备状态的迁移条件，以及状态变化如何触发规则引擎事件。
+audience_takeaway: 设备状态的迁移条件，以及状态变化如何触发规则引擎事件。
 visual_focus: 核心流转路径：未激活→在线→离线→在线（循环），以及任意状态→已注销的终结路径。
 design_level: logical
 layout: 五个状态节点呈环形分布，顺时针方向流转，终结节点放在底部中央。
@@ -107,7 +107,7 @@ visual_constraints:
 - 终结路径统一使用虚线，避免与正常流转混淆。
 render_notes: 画布400×300，推荐使用有向图布局，顺时针。节点颜色按图例，箭头带条件短语，字号10px。
 caption:
-  zh: 图2-9 展示设备从注册到退役的五个状态及迁移条件。
+  zh: 图2-9 设备生命周期状态机。“在线↔离线”由失联阈值与上报恢复自动驱动，而“维护中”与“已注销”只能由运维干预触发——状态迁移条件决定了监控告警与规则事件的触发时机。
   en: 'Figure 2-9 The five device states from registration to retirement and the transition conditions between them.'
 labels:
   en:

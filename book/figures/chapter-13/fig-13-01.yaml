@@ -1,6 +1,6 @@
 type: architecture
 title: 图 13-1 中心化物联网架构的信任困境
-audience_takeaway: 读者应理解星型拓扑把信任全部压向唯一云平台，三个困境沿'问题蔓延'层层叠加，根因是单一信任锚点。
+audience_takeaway: 星型拓扑把信任全部压向唯一云平台，三个困境沿'问题蔓延'层层叠加，根因是单一信任锚点。
 purpose: 展示中心化架构下三个信任困境——单点故障、数据篡改、跨主体互信成本高——之间的关联，以及它们最终都指向信任缺失的根因。
 visual_focus: 从左栏到右栏最下方的主链路。
 design_level: logical
@@ -27,59 +27,54 @@ regions:
   role: 核心服务能力边界
 components:
 - id: c1
-  label: 左栏
+  label: 设备A~F
   type: edge
-  subtitle: 周围6个小矩形‘设备A~F’，使用青绿色；每个设备发出…
+  subtitle: 现场设备，青绿色小矩形
   group: edge_domain
   priority: primary
   shape: card
 - id: c2
-  label: 左栏
-  type: data
-  subtitle: 云平台外围虚线方框，标注‘’、‘数据与日志同源’
-  group: data_domain
-  priority: normal
-  shape: database
-- id: c3
-  label: 右栏
-  type: data
-  subtitle: 三个堆叠文本块，依次为‘’、‘数据孤岛与篡改风险’、‘…
-  group: data_domain
-  priority: normal
-  shape: database
-- id: c4
-  label: 右栏
+  label: 云平台/中心服务器
   type: platform
-  subtitle: 三个文本块之间用带红叉的箭头连接，箭头旁文字‘’
+  subtitle: 信任锚点唯一、数据与日志同源
   group: platform_domain
+  priority: primary
+  shape: card
+- id: c3
+  label: 单点故障与安全风险
+  type: data
+  subtitle: 中心失效或失陷，影响覆盖全网
+  group: data_domain
+  priority: normal
+  shape: card
+- id: c4
+  label: 数据孤岛与篡改风险
+  type: data
+  subtitle: 保管方同时控制数据与审计记录
+  group: data_domain
   priority: normal
   shape: card
 - id: c5
-  label: 右栏最下方
+  label: 跨主体互信成本高
   type: data
-  subtitle: 带问号的灰色图标，标注‘’
+  subtitle: 各方需反复对账并依赖中介背书
   group: data_domain
   priority: normal
-  shape: decision
+  shape: card
 connections:
 - from: c1
   to: c2
-  label: 左栏：设备全部依赖云平台，形成星型…
-  style: solid
-  direction: left-to-right
-- from: c2
-  to: c3
-  label: 右栏：三个困境依次传递并叠加，最终…
+  label: 设备接入与数据上报，星型拓扑
   style: solid
   direction: left-to-right
 - from: c3
   to: c4
-  label: 左右栏之间用淡色渐变背景过渡，暗示…
+  label: 问题蔓延
   style: solid
   direction: left-to-right
 - from: c4
   to: c5
-  label: 左栏：设备全部依赖云平台，形成星型…
+  label: 问题蔓延
   style: solid
   direction: left-to-right
 callouts:

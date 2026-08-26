@@ -1,6 +1,6 @@
 type: architecture
 title: 图 14-12 AGI时代物联网架构演进
-audience_takeaway: 读者应理解AGI时代智能层由规则+固定模型升级为Agent编排与动态模型调度,自动决策须经独立安全护栏层校验后才可下发。
+audience_takeaway: AGI时代智能层由规则+固定模型升级为Agent编排与动态模型调度；自动决策须经独立安全护栏层校验后才可下发。
 purpose: 展示从传统IoT平台到AGI时代平台的核心层次变化：智能层升级为Agent编排+动态模型调度，安全护栏串接在所有自动决策与平台执行之间。
 visual_focus: 设备→接入→平台→智能的上行数据主链，以及智能→安全护栏→平台的独立向下受控决策链。
 design_level: logical
@@ -12,41 +12,204 @@ elements:
 - 两侧都用青绿色表示设备层，蓝色表示接入层和平台层，橙色表示智能层，红色表示安全护栏层，灰色表示应用层。
 relationships:
 - 传统IoT：平台层向智能层提供数据源，智能层通过规则和模型产生告警/控制指令返回至平台层。
-- AGI时代：平台层向智能层提供数据源
-- Agent编排层调用模型调度网关，后者可路由到边缘或云端模型
+- AGI时代：平台层向智能层提供数据源，Agent编排层输出经安全护栏校验后下发平台层执行。
+- Agent编排层调用模型调度网关，后者可路由到边缘或云端模型。
 - Agent编排层的输出先进入安全护栏层校验，通过后才下发至平台层进行指令执行。安全护栏层有独立通道连接应用层以支持人工确认。模型调度网关与Agent编排层之间虚线表示动态路由。
 regions:
-- id: data_domain
-  label: 数据资产域
-  role: 数据沉淀与治理边界
 - id: edge_domain
   label: 设备与边缘域
   role: 现场异构资源边界
+- id: platform_domain
+  label: 接入与平台域
+  role: 核心服务能力边界
+- id: intelligence_domain
+  label: 智能决策域
+  role: Agent、规则与模型调度边界
+- id: safety_domain
+  label: 安全护栏域
+  role: 自动决策校验与人工接管边界
+- id: app_domain
+  label: 应用域
+  role: 外部应用与用户界面边界
 components:
-- id: r1
-  label: AGI时代：平台层向智能层提供数据…
-  type: data
-  subtitle: ''
-  group: data_domain
-  priority: primary
-  shape: database
-- id: r2
-  label: 模型调度网关，后者可路由到边缘或云…
+- id: t_device
+  label: 设备层
   type: edge
-  subtitle: ''
+  subtitle: 传感器 / 控制器 / 边缘网关
   group: edge_domain
   priority: normal
   shape: card
+- id: t_access
+  label: 接入层
+  type: platform
+  subtitle: MQTT / CoAP / Modbus
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: t_platform
+  label: 平台层
+  type: platform
+  subtitle: 认证 / 设备管理 / 数据中心
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: t_intel
+  label: 智能层（规则引擎+预训练模型）
+  type: ai
+  subtitle: 阈值规则 / 条件触发；异常检测 / 预测
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: t_app
+  label: 应用层
+  type: app
+  subtitle: 监控大屏 / 告警 / 业务应用
+  group: app_domain
+  priority: normal
+  shape: card
+- id: a_device
+  label: 设备层
+  type: edge
+  subtitle: 传感器 / 控制器 / 边缘网关
+  group: edge_domain
+  priority: normal
+  shape: card
+- id: a_access
+  label: 接入层
+  type: platform
+  subtitle: MQTT / CoAP / Modbus
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: a_platform
+  label: 平台层
+  type: platform
+  subtitle: 认证 / 设备管理 / 数据中心
+  group: platform_domain
+  priority: normal
+  shape: card
+- id: a_orchestrator
+  label: Agent编排层
+  type: ai
+  subtitle: 多Agent调度 · 上下文管理 · 推理链追踪
+  group: intelligence_domain
+  priority: primary
+  shape: card
+- id: a_gateway
+  label: 模型调度网关
+  type: ai
+  subtitle: 端/云模型路由 · 模型版本管理
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: a_edge_model
+  label: 边缘模型
+  type: ai
+  subtitle: 边缘侧推理模型
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: a_cloud_model
+  label: 云端模型
+  type: ai
+  subtitle: 云端大模型与专用模型
+  group: intelligence_domain
+  priority: normal
+  shape: card
+- id: a_guard
+  label: 安全护栏层
+  type: security
+  subtitle: 决策校验服务 · 操作区间约束 · 人工接管接口
+  group: safety_domain
+  priority: primary
+  shape: card
+- id: a_app
+  label: 应用层
+  type: app
+  subtitle: 监控大屏 / 告警 / 业务应用
+  group: app_domain
+  priority: normal
+  shape: card
 connections:
-- from: agent
-  to: age
-  label: Agent编排层的输出先进入安全护…
+- from: t_device
+  to: t_access
+  label: 设备数据
+  style: solid
+  direction: up
+- from: t_access
+  to: t_platform
+  label: 接入数据
+  style: solid
+  direction: up
+- from: t_platform
+  to: t_intel
+  label: 数据源
+  style: solid
+  direction: up
+- from: t_intel
+  to: t_platform
+  label: 告警/控制指令
+  style: solid
+  direction: down
+- from: t_intel
+  to: t_app
+  label: 告警/结果
+  style: solid
+  direction: up
+- from: a_device
+  to: a_access
+  label: 设备数据
+  style: solid
+  direction: up
+- from: a_access
+  to: a_platform
+  label: 接入数据
+  style: solid
+  direction: up
+- from: a_platform
+  to: a_orchestrator
+  label: 数据源
+  style: solid
+  direction: up
+- from: a_orchestrator
+  to: a_gateway
+  label: 调用
+  style: solid
+  direction: right
+- from: a_gateway
+  to: a_edge_model
+  label: 动态路由
   style: dashed
-  direction: request
+  direction: right
+- from: a_gateway
+  to: a_cloud_model
+  label: 动态路由
+  style: dashed
+  direction: right
+- from: a_orchestrator
+  to: a_guard
+  label: 决策送检
+  style: solid
+  direction: down
+- from: a_guard
+  to: a_platform
+  label: 受控决策向下 · 校验通过后执行
+  style: solid
+  direction: down
+- from: a_guard
+  to: a_app
+  label: 人工确认
+  style: dashed
+  direction: up
+- from: a_orchestrator
+  to: a_app
+  label: 结果/告警
+  style: solid
+  direction: up
 callouts:
-- 传统IoT：平台层向智能层提供数据源，智能层通过规则和模型产生告警/控制指令返回至平台层
-- AGI时代：平台层向智能层提供数据源
-- Agent编排层调用模型调度网关，后者可路由到边缘或云端模型
+- 左侧传统平台：智能层由规则引擎与预训练模型构成，告警与控制指令直接返回平台层。
+- 右侧AGI时代平台：智能层升级为Agent编排层+模型调度网关，所有自动决策必经独立安全护栏层校验。
+- 安全护栏层含人工接管接口，高风险操作可经应用层人工确认后执行。
 legend:
 - 青绿色=设备与边缘；蓝色=接入与平台基础服务；橙色=AI与Agent能力；红色=安全与管控；灰色=外部应用与UI。
 - 实线箭头=同步调用/强依赖；虚线箭头=异步事件/可选路由。
