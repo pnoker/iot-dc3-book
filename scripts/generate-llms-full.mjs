@@ -7,7 +7,7 @@
  */
 import {readFileSync, writeFileSync, readdirSync, statSync, mkdirSync} from 'node:fs'
 import {join, relative, resolve, dirname} from 'node:path'
-import {fileURLToPath} from 'node:url'
+import {fileURLToPath, pathToFileURL} from 'node:url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const BOOK = join(ROOT, 'book')
@@ -22,8 +22,9 @@ const EXCLUDE_REL = new Set([
 ])
 const EXCLUDE_DIRS = new Set(['.vitepress', 'public', 'node_modules', 'design', 'assets', 'config', 'dividers', 'figures'])
 
-const {transformPage} = await import(join(BOOK, '.vitepress/buildkit/markdown.ts'))
-const {rewrite} = await import(join(BOOK, '.vitepress/buildkit/site.ts'))
+// Windows 下 ESM import 需要 file:// URL，不能直接用盘符绝对路径
+const {transformPage} = await import(pathToFileURL(join(BOOK, '.vitepress/buildkit/markdown.ts')).href)
+const {rewrite} = await import(pathToFileURL(join(BOOK, '.vitepress/buildkit/site.ts')).href)
 
 function walk(dir, out = []) {
   let entries = []
