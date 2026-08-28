@@ -55,7 +55,7 @@ and AI agents in industrial settings. Translation quality bar: the pair
 应用层=application layer; 智能层=intelligence layer; 五层架构=five-layer architecture;
 物模型=thing model; 位号=point; 位号值=point value; 测点=point;
 设备影子=device shadow; 驱动=driver; 驱动框架=driver framework; 网关=gateway;
-边缘节点=edge node; 边缘计算=edge computing; 边云协同=edge-cloud collaboration;
+边缘节点=edge node; 边缘计算=edge computing; 云边协同=edge-cloud collaboration;
 云原生=cloud-native; 微服务=microservice; 容器化=containerization;
 多租户=multi-tenancy; 租户=tenant; 数据归一=unified data;
 能力开放=open capabilities; 闭环自动化=closed-loop automation; 数据闭环=data loop;
