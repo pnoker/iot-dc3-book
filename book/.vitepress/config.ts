@@ -124,8 +124,8 @@ export default defineConfig({
     // ── 分析 ──
     ['script', {async: true, src: 'https://www.googletagmanager.com/gtag/js?id=G-VVTDCS4KSE'}],
     ['script', {}, 'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-VVTDCS4KSE");'],
-    ['script', {}, 'var _hmt=_hmt||[];'],
-    ['script', {async: true, src: 'https://hm.baidu.com/hm.js?6474f729cc0afe2083c201a7a0e0c60e'}],
+    // 百度统计：本地开发（vite dev :5173/:5175、vitepress preview :4173）不加载，避免污染生产报表
+    ['script', {}, `if(!/^(localhost|127\\.0\\.0\\.1|\\[::1\\])$/.test(location.hostname)){var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?6474f729cc0afe2083c201a7a0e0c60e";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();}`],
 
     // ── Google AdSense（账号审核与广告投放均要求每页加载此脚本；ads.txt 在 public/ 下）──
     ['link', {rel: 'preconnect', href: 'https://pagead2.googlesyndication.com', crossorigin: 'anonymous'}],
