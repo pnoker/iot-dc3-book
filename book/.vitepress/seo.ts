@@ -1,4 +1,32 @@
 import type {HeadConfig, TransformContext} from 'vitepress'
+import {existsSync, readdirSync} from 'node:fs'
+import {fileURLToPath} from 'node:url'
+import {resolve} from 'node:path'
+import {rewrite} from './buildkit/site'
+
+const BOOK_DIR = fileURLToPath(new URL('../', import.meta.url))
+
+/* ── 英文侧输出路由集合 ────────────────────────────────────────────
+ * transformHead 拿到的 relativePath 是 rewrite 之后的输出路径，无法直接反查
+ * 源文件；改为枚举英文源目录（manuscript/en、pages/en、en），经项目自身的
+ * rewrite() 算出全部英文输出路由，供中文页判断 en 对照页是否存在。 */
+let enRoutesCache: Set<string> | undefined
+function enRoutes(): Set<string> {
+  if (enRoutesCache) return enRoutesCache
+  const routes = new Set<string>()
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(resolve(BOOK_DIR, dir), {withFileTypes: true})) {
+      const rel = `${dir}/${entry.name}`
+      if (entry.isDirectory()) walk(rel)
+      else if (entry.name.endsWith('.md')) routes.add(rewrite(rel) ?? rel)
+    }
+  }
+  for (const dir of ['manuscript/en', 'pages/en', 'en']) {
+    if (existsSync(resolve(BOOK_DIR, dir))) walk(dir)
+  }
+  enRoutesCache = routes
+  return routes
+}
 
 const SITE_URL = 'https://book.dc3.site'
 const SITE_IMAGE = `${SITE_URL}/cover.png`
@@ -47,7 +75,8 @@ function jsonLd(obj: unknown): HeadConfig {
 }
 
 function buildHreflang(canonicalUrl: string, enUrl?: string, zhUrl?: string): HeadConfig[] {
-  // 英文页同时声明 en 与 zh-CN 互链（中文版结构必然存在）；中文页暂不声明 en 互链（翻译未完成）
+  // 双语互链：en/zh 双方都声明三件套（x-default 指向中文版）。
+  // 中文页仅在 en 对照文件存在时传入 enUrl（翻译未完成的章节不声明，避免 alternate 指向 404）
   if (enUrl && zhUrl) {
     return [
       ['link', {rel: 'alternate', hreflang: 'en', href: enUrl}],
@@ -347,6 +376,12 @@ export function transformHead(context: TransformContext): HeadConfig[] {
   const zhCounterpartUrl = isEn
     ? new URL(routeOf(relativePath.replace(/^en\//, '')), SITE_URL).href
     : undefined
+  // 中文页：en 对照输出路由存在才声明 en 互链；英文页：中文对照必然存在
+  const enMirrorPath = !isEn ? `en/${relativePath}` : undefined
+  const enMirrorUrl =
+    enMirrorPath && enRoutes().has(enMirrorPath)
+      ? new URL(routeOf(enMirrorPath), SITE_URL).href
+      : undefined
 
   return [
     // ── 基础 SEO ──
@@ -360,7 +395,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['link', {rel: 'alternate', type: 'text/plain', href: `${SITE_URL}/llms-full.txt`, title: 'AI-readable full content'}],
 
     // ── hreflang ──
-    ...buildHreflang(canonicalUrl, isEn ? canonicalUrl : undefined, zhCounterpartUrl),
+    ...buildHreflang(canonicalUrl, isEn ? canonicalUrl : enMirrorUrl, isEn ? zhCounterpartUrl : (enMirrorUrl ? canonicalUrl : undefined)),
 
     // ── Open Graph ──
     ['meta', {property: 'og:site_name', content: isEn ? BOOK_TITLE_EN : BOOK_TITLE}],
