@@ -59,6 +59,29 @@ jobs:
                 --data-binary @- \
                 "http://data.zz.baidu.com/urls?site=book.dc3.site&token=${BAIDU_PUSH_TOKEN}" || true
 
+      # IndexNow 推送（Bing/Seznam/Naver 等）：key 文件在 book/public/ 下随站点部署
+      - name: Ping IndexNow
+        env:
+          KEY: c9f59b3f24a3f95bf5118a8ca3ae3355
+        run: |
+          sleep 20
+          URLS=$(curl -fsS --retry 3 "https://book.dc3.site/sitemap.xml" \
+            | grep -oE '<loc>[^<]+</loc>' \
+            | sed -E 's#</?loc>##g' \
+            | jq -Rsc 'split("\n") | map(select(length > 0))')
+          if [ -z "$URLS" ] || [ "$URLS" = "[]" ]; then
+            echo "No URLs extracted from sitemap, skip IndexNow ping"
+            exit 0
+          fi
+          jq -n --arg key "$KEY" --argjson urls "$URLS" \
+            '{host: "book.dc3.site", key: $key, keyLocation: ("https://book.dc3.site/" + $key + ".txt"), urlList: $urls}' \
+            > indexnow-payload.json
+          STATUS=$(curl -fsS -o /dev/null -w "%{http_code}" --retry 2 \
+            -X POST "https://api.indexnow.org/IndexNow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data @indexnow-payload.json) || STATUS="request-failed"
+          echo "IndexNow responded: $STATUS (202/200 = accepted)"
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
