@@ -127,6 +127,10 @@ export default defineConfig({
     ['script', {}, 'var _hmt=_hmt||[];'],
     ['script', {async: true, src: 'https://hm.baidu.com/hm.js?6474f729cc0afe2083c201a7a0e0c60e'}],
 
+    // ── Google AdSense（账号审核与广告投放均要求每页加载此脚本；ads.txt 在 public/ 下）──
+    ['link', {rel: 'preconnect', href: 'https://pagead2.googlesyndication.com', crossorigin: 'anonymous'}],
+    ['script', {async: true, src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7573143232245283', crossorigin: 'anonymous'}],
+
     // 搜索引擎验证标签 — 在对应平台（Search Console / 百度站长 / Bing Webmaster）完成
     // 所有权验证后，取消注释并填入验证值。Google 和百度可通过 DNS TXT 记录替代此 meta 方式。
     // ['meta', {name: 'google-site-verification', content: '你的验证值'}],
