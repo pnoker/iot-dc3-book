@@ -29,6 +29,19 @@ const copy = computed(() => isEnglish.value ? {
     ],
     formula: ['Reliable data', 'Governed tools', 'Deterministic execution', 'Traceable feedback']
   },
+  journey: {
+    kicker: 'One concrete walkthrough',
+    title: 'One cooling-pump vibration alert, end to end',
+    description: 'The full mechanism chain in a single real incident: from a cooling-pump vibration value arriving to one confirmed write. Each step is developed in Chapters 4–5, 7, 8, and 14.',
+    steps: [
+      {number: '01', title: 'Uplink & storage', description: 'The driver reports the vibration point value over MQTT; unit and timestamp land in the time-series store.', ref: 'Ch. 4–5'},
+      {number: '02', title: 'Threshold alert', description: 'The rule engine lifts the excursion out of thousands of point values—deterministic logic holds the line first.', ref: 'Ch. 5'},
+      {number: '03', title: 'Evidence, not guesswork', description: 'Through authorized tools the agent reads trend, load, and maintenance records—the evidence points to early bearing wear.', ref: 'Ch. 7'},
+      {number: '04', title: 'A pending Action', description: 'Writes are never sent directly: a pending Action passes schema, permission, and risk checks first.', ref: 'Ch. 7–8'},
+      {number: '05', title: 'Confirm & audit', description: 'After human confirmation a deterministic path executes; receipts and audit trails stay queryable.', ref: 'Ch. 8, 14'}
+    ],
+    note: 'Every step has a clear owner: data to drivers, alerts to rules, judgment to the model, actions to workflow, execution to deterministic paths.'
+  },
   parts: {
     kicker: 'Three parts · fourteen chapters',
     title: 'Build the complete loop, layer by layer',
@@ -65,7 +78,9 @@ const copy = computed(() => isEnglish.value ? {
     primary: 'Start Chapter 1',
     primaryLink: '/en/foundations/chapter-1/',
     secondary: 'Browse the contents',
-    secondaryLink: '/en/preface/contents'
+    secondaryLink: '/en/preface/contents',
+    guide: 'Not sure where to start? Read the guide first',
+    guideLink: '/en/preface/guide'
   }
 } : {
   premise: {
@@ -90,6 +105,19 @@ const copy = computed(() => isEnglish.value ? {
       {number: '04', tag: '演进结果', title: '有边界的自治', description: '系统能够感知、推理、执行、验证与恢复，但不会把模型误当作 PLC 或安全系统。'}
     ],
     formula: ['可信数据', '受治理工具', '确定性执行', '可追溯反馈']
+  },
+  journey: {
+    kicker: '主线的一次具体走查',
+    title: '一次振动越限，走完整条链路',
+    description: '把全书的机制放进同一次真实事件：从冷却泵的振动位号值上行，到一次经确认的写操作。各步机制分别在第 4–5、7、8 与 14 章展开。',
+    steps: [
+      {number: '01', title: '上行入库', description: '驱动把振动位号值经 MQTT 上报，带单位与时间戳落入时序库。', ref: '第 4–5 章'},
+      {number: '02', title: '越限告警', description: '规则引擎按阈值把异常从海量位号中挑出来，先由确定性逻辑兜底。', ref: '第 5 章'},
+      {number: '03', title: '汇总证据', description: '智能体经授权工具读取趋势、负载与维修记录，给出轴承磨损前兆的判断和依据。', ref: '第 7 章'},
+      {number: '04', title: '待确认动作', description: '写操作不直接下发：生成待确认 Action，先过校验、权限与风险策略。', ref: '第 7–8 章'},
+      {number: '05', title: '确认与回执', description: '人工确认后由确定性链路执行，回执与审计留痕可回查。', ref: '第 8、14 章'}
+    ],
+    note: '每一步都有明确的责任人：数据归驱动，告警归规则，判断归模型，动作归流程，执行归确定性链路。'
   },
   parts: {
     kicker: '三篇 · 十四章',
@@ -127,7 +155,9 @@ const copy = computed(() => isEnglish.value ? {
     primary: '从第 1 章开始',
     primaryLink: '/foundations/chapter-1/',
     secondary: '浏览全书目录',
-    secondaryLink: '/preface/contents'
+    secondaryLink: '/preface/contents',
+    guide: '不确定从哪开始？先看导读',
+    guideLink: '/preface/guide'
   }
 })
 </script>
@@ -183,6 +213,30 @@ const copy = computed(() => isEnglish.value ? {
             <span>{{ item }}</span>
             <b v-if="index < copy.thesis.formula.length - 1" aria-hidden="true">→</b>
           </template>
+        </div>
+      </div>
+    </section>
+
+    <section class="book-home-section book-home-journey">
+      <div class="book-home-container">
+        <header class="book-home-heading">
+          <span class="book-home-kicker">{{ copy.journey.kicker }}</span>
+          <h2>{{ copy.journey.title }}</h2>
+          <p>{{ copy.journey.description }}</p>
+        </header>
+
+        <div class="book-home-card book-home-journey-panel">
+          <ol class="book-home-journey-steps">
+            <li v-for="step in copy.journey.steps" :key="step.number" class="book-home-journey-step">
+              <span class="book-home-journey-node">{{ step.number }}</span>
+              <div class="book-home-journey-body">
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+                <small>{{ step.ref }}</small>
+              </div>
+            </li>
+          </ol>
+          <p class="book-home-journey-note">{{ copy.journey.note }}</p>
         </div>
       </div>
     </section>
@@ -253,6 +307,7 @@ const copy = computed(() => isEnglish.value ? {
           <a class="book-home-button book-home-button-primary" :href="copy.cta.primaryLink">{{ copy.cta.primary }} <span aria-hidden="true">→</span></a>
           <a class="book-home-button book-home-button-secondary" :href="copy.cta.secondaryLink">{{ copy.cta.secondary }}</a>
         </div>
+        <a class="book-home-cta-guide" :href="copy.cta.guideLink">{{ copy.cta.guide }} <i aria-hidden="true">→</i></a>
       </div>
     </section>
   </main>
@@ -363,7 +418,8 @@ const copy = computed(() => isEnglish.value ? {
   background: linear-gradient(90deg, transparent, var(--vp-c-brand-1), transparent);
 }
 
-.book-home-card:hover {
+.book-home-card:hover,
+.book-home-stage:hover {
   border-color: color-mix(in srgb, var(--vp-c-brand-1) 42%, transparent);
   box-shadow: 0 24px 52px rgba(16, 96, 161, .13), inset 0 1px 0 rgba(255, 255, 255, .82);
   transform: translateY(-5px);
@@ -464,6 +520,7 @@ const copy = computed(() => isEnglish.value ? {
   box-shadow: 0 12px 32px rgba(16, 96, 161, .05);
   text-align: left;
   overflow: visible;
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
 }
 
 .book-home-stage::before {
@@ -562,6 +619,99 @@ const copy = computed(() => isEnglish.value ? {
 .book-home-formula b {
   color: var(--vp-c-brand-1);
   font-weight: 720;
+}
+
+.book-home-journey-panel {
+  margin-top: 56px;
+  padding: 40px 36px 30px;
+}
+
+.book-home-journey-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 连接线只贯穿首尾节点圆心：五等分栏的圆心分别落在 10% 与 90% 处 */
+.book-home-journey-steps::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 17px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, #29c5df, #1296db 52%, #5b74eb);
+  opacity: .5;
+}
+
+.book-home-journey-step {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  text-align: center;
+}
+
+.book-home-journey-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .42);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #07549a, #1296db 52%, #5558c9);
+  box-shadow: 0 8px 20px rgba(13, 114, 180, .22), inset 0 1px 0 rgba(255, 255, 255, .3);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 760;
+  font-family: var(--vp-font-family-mono);
+}
+
+.book-home-journey-body h3 {
+  margin: 16px 0 0;
+  font-size: 16.5px;
+  line-height: 1.4;
+}
+
+.book-home-journey-body p {
+  margin: 9px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.book-home-journey-body small {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 46%, transparent);
+  color: var(--vp-c-text-3);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: .06em;
+  font-family: var(--vp-font-family-mono);
+  white-space: nowrap;
+}
+
+.book-home-journey-note {
+  margin: 26px auto 0;
+  padding-top: 22px;
+  border-top: 1px dashed var(--book-home-border);
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.75;
+  text-align: center;
 }
 
 .book-home-part-card {
@@ -762,17 +912,67 @@ const copy = computed(() => isEnglish.value ? {
   color: var(--vp-c-text-1);
 }
 
-:global(.dark) .book-home-card,
-:global(.dark) .book-home-stage {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(41, 197, 223, .11), transparent 44%),
-    linear-gradient(150deg, rgba(22, 113, 169, .08), rgba(17, 35, 52, .32), rgba(61, 62, 143, .09));
-  box-shadow: 0 16px 38px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(232, 251, 255, .08);
+.book-home-cta-guide {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 20px;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  text-decoration: none;
+  transition: color .22s ease;
 }
 
-:global(.dark) .book-home-part-number {
+.book-home-cta-guide:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.book-home-cta-guide i {
+  font-style: normal;
+}
+
+/* 暗色主题：注意 scoped 样式里 :global(.dark) X 的混写形式会被编译器整条丢弃，
+   必须写成普通祖先选择器 .dark X（编译为 .dark X[data-v-…]）。 */
+.dark .book-home-story {
+  --book-home-border: color-mix(in srgb, var(--vp-c-brand-1) 28%, rgba(148, 184, 220, .14));
+}
+
+.dark .book-home-card,
+.dark .book-home-stage {
+  border-color: var(--book-home-border);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(41, 197, 223, .12), transparent 44%),
+    linear-gradient(150deg, rgba(35, 56, 82, .68), rgba(20, 33, 50, .84) 52%, rgba(34, 42, 84, .6));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(232, 251, 255, .1);
+}
+
+/* 暗色悬停：与上面的表面规则同特异性，靠 :hover 提高一级压过它，
+   否则基础规则会把悬停的描边变亮与阴影加深全部压平（transform 不受影响） */
+.dark .book-home-card:hover,
+.dark .book-home-stage:hover {
+  border-color: color-mix(in srgb, var(--vp-c-brand-1) 55%, transparent);
+  box-shadow: 0 26px 56px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(232, 251, 255, .16);
+}
+
+.dark .book-home-part-number {
   background: linear-gradient(112deg, #8edcff, #d3fbff 48%, #a6a9ff);
   background-clip: text;
+}
+
+/* 暗色下 tinted 区块反转为略亮于页面底（bg-alt 在暗色下比 bg 更暗，原写法会形成"暗带"） */
+.dark .book-home-thesis,
+.dark .book-home-clarity {
+  border-top-color: color-mix(in srgb, var(--vp-c-brand-1) 15%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--vp-c-brand-1) 15%, transparent);
+  background:
+    radial-gradient(circle at 8% 18%, rgba(41, 197, 223, .05), transparent 28%),
+    radial-gradient(circle at 92% 82%, rgba(91, 116, 235, .07), transparent 28%),
+    linear-gradient(180deg, rgba(26, 42, 62, .42), rgba(17, 28, 43, .55));
+}
+
+.dark .book-home-formula {
+  background: color-mix(in srgb, var(--vp-c-bg-elv) 74%, transparent);
+  box-shadow: inset 0 1px 0 rgba(232, 251, 255, .09);
 }
 
 @media (max-width: 1100px) {
@@ -787,6 +987,38 @@ const copy = computed(() => isEnglish.value ? {
 
   .book-home-stage:not(:last-child)::after {
     display: none;
+  }
+
+  .book-home-journey-steps {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* 窄屏改为左侧竖向导轨：导轨对准 36px 节点的圆心（x=18），节点列固定不缩放 */
+  .book-home-journey-steps::before {
+    top: 20px;
+    bottom: 20px;
+    left: 17px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, #29c5df, #1296db 52%, #5b74eb);
+  }
+
+  .book-home-journey-step {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    text-align: left;
+  }
+
+  .book-home-journey-body h3 {
+    margin-top: 5px;
+  }
+
+  .book-home-journey-body p {
+    margin-top: 7px;
   }
 }
 
@@ -936,12 +1168,14 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (prefers-reduced-motion: reduce) {
   .book-home-card,
+  .book-home-stage,
   .book-home-button,
   .book-home-part-action i {
     transition: none;
   }
 
   .book-home-card:hover,
+  .book-home-stage:hover,
   .book-home-button:hover {
     transform: none;
   }
