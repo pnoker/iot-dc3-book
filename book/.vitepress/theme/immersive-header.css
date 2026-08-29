@@ -1,0 +1,273 @@
+/* 首页沉浸式导航：与 iot-dc3-online 的滚动胶囊使用同一组状态变量与曲线。 */
+html:has(.dc3-book-home-layout) { scrollbar-gutter: stable; }
+
+.dc3-book-home-layout .VPNavBar {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: none;
+}
+
+.dc3-book-home-layout .VPNavBar .wrapper { padding-right: 0 !important; padding-left: 0 !important; }
+.dc3-book-home-layout .VPNav { position: fixed; inset: 0 0 auto; width: 100%; }
+.dc3-book-home-layout .VPLocalNav { display: none !important; }
+.dc3-book-home-layout .VPNavBar .divider { opacity: 0; }
+
+.dc3-book-home-layout .VPNavBar > .wrapper > .container {
+    position: relative;
+    box-sizing: border-box;
+    width: var(--dc3-nav-width, calc(100% - 64px));
+    max-width: 1360px;
+    height: var(--dc3-nav-height, 64px);
+    margin: var(--dc3-nav-offset, 0) auto 0;
+    padding: 0 var(--dc3-nav-padding, 0);
+    border: 1px solid rgba(114, 204, 241, calc(var(--dc3-nav-progress, 0) * 0.3));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vp-c-bg-elv) calc(var(--dc3-nav-progress, 0) * 72%), transparent);
+    box-shadow:
+        0 calc(var(--dc3-nav-progress, 0) * 18px) calc(var(--dc3-nav-progress, 0) * 50px) rgba(11, 92, 153, calc(var(--dc3-nav-progress, 0) * 0.16)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(var(--dc3-nav-progress, 0) * 0.82)),
+        inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px) rgba(56, 132, 205, calc(var(--dc3-nav-progress, 0) * 0.06));
+    backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+    -webkit-backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+}
+
+html.dc3-nav-animating .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+    will-change: width, height, margin, padding, backdrop-filter;
+}
+
+.dc3-book-home-layout .VPNavBarTitle .title,
+.dc3-book-home-layout .VPNavBar .content-body {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: none;
+}
+
+.dc3-book-home-layout .VPNavBarTitle .title:hover,
+.dc3-book-home-layout .VPNavBar .content-body:hover { border-color: transparent; box-shadow: none; }
+
+.dc3-book-home-layout .VPNavBar > .wrapper > .container > .title,
+.dc3-book-home-layout .VPNavBar > .wrapper > .container > .content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.dc3-book-home-layout .VPNavBar > .wrapper > .container > .content { justify-content: flex-end; }
+.dc3-book-home-layout .VPNavBarTitle { height: 100%; }
+.dc3-book-home-layout .VPNavBar .content-body { margin-top: 0; margin-bottom: 0; }
+
+.dc3-book-home-layout .VPNavBar > .wrapper > .container::after {
+    content: '';
+    position: absolute;
+    right: 11%;
+    bottom: -1px;
+    width: 24%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(41, 197, 223, 0.84), rgba(91, 116, 235, 0.5), transparent);
+    filter: drop-shadow(0 0 5px rgba(41, 197, 223, 0.46));
+    opacity: clamp(0, calc((var(--dc3-nav-progress, 0) - 0.5) * 1.84), 0.92);
+    animation: dc3-header-scan 5.6s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+    border-color: rgba(126, 213, 247, calc(var(--dc3-nav-progress, 0) * 0.18));
+    background: rgba(12, 27, 43, calc(var(--dc3-nav-progress, 0) * 0.72));
+    box-shadow:
+        0 calc(var(--dc3-nav-progress, 0) * 20px) calc(var(--dc3-nav-progress, 0) * 54px) rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.34)),
+        inset 0 1px 0 rgba(220, 248, 255, calc(var(--dc3-nav-progress, 0) * 0.12)),
+        inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px) rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.16));
+}
+
+@keyframes dc3-header-scan {
+    from { transform: translateX(-250%); }
+    to { transform: translateX(22%); }
+}
+
+@media (min-width: 768px) and (max-width: 1279.98px) {
+    .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+        width: var(--dc3-nav-width, calc(100% - 48px));
+        max-width: none;
+    }
+
+    .dc3-book-home-layout .VPNavBarExtra .VPMenu {
+        overflow: visible;
+        border-color: rgba(114, 204, 241, 0.34);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.96), transparent 40%),
+            linear-gradient(145deg, rgba(252, 254, 255, 0.98), rgba(225, 244, 252, 0.97) 58%, rgba(235, 236, 255, 0.96));
+        box-shadow: 0 22px 58px rgba(8, 64, 111, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(28px) saturate(1.5);
+        -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    }
+
+    .dc3-book-home-layout .VPNavBarExtra .social-links-list { width: 100%; justify-content: center; gap: 2px; }
+
+    html.dark .dc3-book-home-layout .VPNavBarExtra .VPMenu {
+        border-color: rgba(126, 213, 247, 0.22);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 40%),
+            linear-gradient(145deg, rgba(28, 56, 76, 0.98), rgba(13, 29, 43, 0.98) 58%, rgba(43, 43, 96, 0.96));
+        box-shadow: 0 24px 62px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(220, 248, 255, 0.12);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+        width: var(--dc3-nav-width, calc(100% - 24px));
+        max-width: none;
+        height: var(--dc3-nav-height, var(--vp-nav-height));
+        margin: var(--dc3-nav-offset, 0) auto 0;
+        padding: 0 var(--dc3-nav-padding, 0);
+        border-radius: 999px;
+        background: rgba(244, 251, 255, calc(var(--dc3-nav-progress, 0) * 0.86));
+        box-shadow:
+            0 calc(var(--dc3-nav-progress, 0) * 16px) calc(var(--dc3-nav-progress, 0) * 44px) rgba(11, 92, 153, calc(var(--dc3-nav-progress, 0) * 0.18)),
+            inset 0 1px 0 rgba(255, 255, 255, calc(var(--dc3-nav-progress, 0) * 0.88));
+        backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.45));
+        -webkit-backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.45));
+        transform: none;
+        transition: none;
+    }
+
+    html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+        border-color: rgba(126, 213, 247, calc(var(--dc3-nav-progress, 0) * 0.2));
+        background: rgba(12, 27, 43, calc(var(--dc3-nav-progress, 0) * 0.88));
+        box-shadow: 0 calc(var(--dc3-nav-progress, 0) * 18px) calc(var(--dc3-nav-progress, 0) * 48px) rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.38));
+    }
+
+    .dc3-book-home-layout .VPNavBar > .wrapper > .container::after { display: none; }
+    html.dc3-nav-animating .dc3-book-home-layout .VPNavBar > .wrapper > .container { will-change: auto; }
+
+    .dc3-book-home-layout .VPNavScreen {
+        top: calc(var(--vp-nav-height) + 8px);
+        right: 12px;
+        bottom: auto;
+        left: 12px;
+        width: auto;
+        max-height: calc(100dvh - var(--vp-nav-height) - 24px);
+        padding: 0;
+        border: 1px solid rgba(114, 204, 241, 0.3);
+        border-radius: 26px;
+        background:
+            radial-gradient(circle at 12% 8%, rgba(76, 200, 237, 0.2), transparent 34%),
+            radial-gradient(circle at 88% 28%, rgba(90, 92, 220, 0.14), transparent 38%),
+            linear-gradient(155deg, rgba(249, 253, 255, 0.97), rgba(231, 246, 252, 0.96) 52%, rgba(239, 240, 255, 0.95));
+        box-shadow: 0 24px 64px rgba(10, 80, 137, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(28px) saturate(1.42);
+        -webkit-backdrop-filter: blur(28px) saturate(1.42);
+    }
+
+    .dc3-book-home-layout .VPNavScreen > .container {
+        display: block;
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 22px;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations,
+    .dc3-book-home-layout .VPNavScreenAppearance {
+        box-sizing: border-box;
+        height: 48px;
+        border: 1px solid rgba(114, 204, 241, 0.2);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.46);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations,
+    .dc3-book-home-layout .VPNavScreenTranslations.open {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+        height: 48px !important;
+        padding: 4px;
+        overflow: visible;
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .title,
+    .dc3-book-home-layout .VPNavScreenTranslations .list,
+    .dc3-book-home-layout .VPNavScreenTranslations .item,
+    .dc3-book-home-layout .VPNavScreenTranslations .link {
+        width: 100%;
+        height: 38px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .list { display: block !important; }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .title,
+    .dc3-book-home-layout .VPNavScreenTranslations .link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        font-size: 13px;
+        line-height: 38px;
+        text-align: center;
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .title {
+        background: linear-gradient(135deg, rgba(18, 150, 219, 0.16), rgba(75, 88, 210, 0.1));
+        box-shadow: 0 3px 10px rgba(10, 108, 178, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+        color: var(--vp-c-brand-1);
+        font-weight: 650;
+        cursor: default;
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .link {
+        color: var(--vp-c-text-2);
+        font-weight: 560;
+        transition: color 180ms ease, background-color 180ms ease;
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .link:hover {
+        background: rgba(18, 150, 219, 0.08);
+        color: var(--vp-c-brand-1);
+    }
+
+    .dc3-book-home-layout .VPNavScreenTranslations .icon,
+    .dc3-book-home-layout .VPNavScreenTranslations .chevron { display: none; }
+    html[lang^="en"] .dc3-book-home-layout .VPNavScreenTranslations .title { order: 2; }
+    html[lang^="en"] .dc3-book-home-layout .VPNavScreenTranslations .list { order: 1; }
+    .dc3-book-home-layout .VPNavScreenAppearance { padding: 4px 8px 4px 14px; }
+    .dc3-book-home-layout .VPNavScreen .translations + .appearance { margin-top: 10px; }
+    .dc3-book-home-layout .VPNavScreen .social-links { width: 100%; margin-top: 18px; justify-content: center; gap: 2px; }
+
+    html.dark .dc3-book-home-layout .VPNavScreen {
+        border-color: rgba(126, 213, 247, 0.2);
+        background:
+            radial-gradient(circle at 12% 8%, rgba(44, 181, 222, 0.14), transparent 34%),
+            radial-gradient(circle at 88% 28%, rgba(98, 100, 226, 0.13), transparent 38%),
+            linear-gradient(155deg, rgba(9, 22, 34, 0.96), rgba(10, 25, 38, 0.95) 52%, rgba(18, 20, 48, 0.94));
+        box-shadow: 0 26px 68px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(220, 248, 255, 0.12);
+    }
+
+    html.dark .dc3-book-home-layout .VPNavScreenTranslations,
+    html.dark .dc3-book-home-layout .VPNavScreenAppearance {
+        border-color: rgba(126, 213, 247, 0.14);
+        background: rgba(17, 35, 50, 0.58);
+        box-shadow: inset 0 1px 0 rgba(220, 248, 255, 0.08);
+    }
+
+    html.dark .dc3-book-home-layout .VPNavScreenTranslations .title {
+        background: linear-gradient(135deg, rgba(40, 167, 220, 0.2), rgba(94, 98, 222, 0.16));
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(220, 248, 255, 0.1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dc3-book-home-layout .VPNavBar > .wrapper > .container { will-change: auto; }
+    .dc3-book-home-layout .VPNavBar > .wrapper > .container::after { animation: none; }
+}

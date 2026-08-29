@@ -6,6 +6,8 @@ import {prepareAssets, bookAssetsPlugin} from './buildkit/assets'
 
 const BOOK_TITLE = '从工业软件到 AI 智能体'
 const BOOK_TITLE_EN = 'From Industrial Software to AI Agents'
+const CURRENT_YEAR = new Date().getFullYear()
+const CURRENT_YEAR_HTML = `<time data-current-year datetime="${CURRENT_YEAR}">${CURRENT_YEAR}</time>`
 
 // ── 头部社交图标组（回 home / 图库四叶草 / github / gitee）──
 // 四叶草夹在回 home（dc3.site）与 github 之间，与社交图标同尺寸；iconfont 原版四层绿色，跟随明暗主题；
@@ -89,7 +91,7 @@ export default defineConfig({
         langMenuLabel: 'Language',
         footer: {
           message: `${BOOK_TITLE_EN} · Building a multi-protocol, cloud-native, open-source industrial IoT platform ready to evolve toward AI agents`,
-          copyright: 'By Zhang Hongyuan · © 2016–2026',
+          copyright: `By Zhang Hongyuan · © 2016–${CURRENT_YEAR_HTML}`,
         },
       },
     },
@@ -184,7 +186,7 @@ export default defineConfig({
 
     footer: {
       message: '从工业软件到 AI 智能体 · 构建面向智能体演进的多协议、云原生、开源工业物联网平台',
-      copyright: '张红元 著 · © 2016–2026',
+      copyright: `张红元 著 · © 2016–${CURRENT_YEAR_HTML}`,
     },
 
     docFooter: {prev: '上一章', next: '下一章'},

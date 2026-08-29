@@ -668,6 +668,15 @@ body {
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 260ms ease, border-color 260ms ease !important;
 }
 
+.VPHero .VPButton {
+    min-height: 44px;
+    padding-right: 22px !important;
+    padding-left: 22px !important;
+    border-radius: 16px !important;
+    font-size: 15px;
+    line-height: 42px;
+}
+
 /* 两按钮统一：玻璃胶囊底（同 header 标题胶囊 / features 卡片质感） */
 .VPButton.brand,
 .VPButton.alt {
@@ -713,19 +722,79 @@ body {
 
 .VPHero {
     position: relative;
-    flex: 0 1 auto;
+    isolation: isolate;
+    box-sizing: border-box;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
+    min-height: calc(100svh - var(--vp-nav-height));
     margin-top: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 14px !important;
+    padding-top: clamp(32px, 6vh, 72px) !important;
+    padding-bottom: clamp(42px, 7vh, 82px) !important;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 74% 38%, rgba(18, 150, 219, .11), transparent 27%),
+        radial-gradient(ellipse at 17% 18%, rgba(41, 197, 223, .08), transparent 31%),
+        radial-gradient(ellipse at 86% 84%, rgba(91, 116, 235, .075), transparent 32%),
+        linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg) 96%, #dff7ff 4%), var(--vp-c-bg));
 }
 
-/* hero content floats above the two background canvases (HeroWaves z-index 0, HeroParticles z-index 1) */
+.VPHero::before,
+.VPHero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* 一张连续纹理覆盖整个首屏。使用 CSS 栅格承担静态层，Canvas 只绘制低频波动，
+   避免 Windows 高分屏上两个透明画布叠加时出现的锯齿接缝。 */
+.VPHero::before {
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(18, 150, 219, .038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 150, 219, .038) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: linear-gradient(180deg, transparent, #000 10%, #000 84%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 10%, #000 84%, transparent 100%);
+}
+
+.VPHero::after {
+    z-index: 1;
+    background:
+        linear-gradient(180deg, transparent 72%, color-mix(in srgb, var(--vp-c-bg) 88%, transparent) 94%, var(--vp-c-bg) 100%),
+        radial-gradient(ellipse at 50% 100%, rgba(18, 150, 219, .06), transparent 58%);
+}
+
+.hero-waves-canvas {
+    position: absolute;
+    z-index: 1;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 2px);
+    pointer-events: none;
+    mask-image: linear-gradient(180deg, transparent 1%, #000 9%, #000 82%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 1%, #000 9%, #000 82%, transparent 100%);
+}
+
+.dark .VPHero {
+    background:
+        radial-gradient(ellipse at 74% 38%, rgba(55, 178, 235, .14), transparent 28%),
+        radial-gradient(ellipse at 17% 18%, rgba(41, 197, 223, .085), transparent 31%),
+        radial-gradient(ellipse at 86% 84%, rgba(112, 116, 255, .11), transparent 32%),
+        linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg) 94%, #071d31 6%), var(--vp-c-bg));
+}
+
+.dark .VPHero::before {
+    opacity: .72;
+}
+
+/* hero content floats above the continuous background field */
 .VPHero .container {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     flex: 0 0 auto;
     align-items: flex-start;
     padding-top: 0 !important;
@@ -742,13 +811,25 @@ body {
     letter-spacing: 0;
 }
 
+.VPHero .text {
+    text-wrap: balance;
+}
+
+/* 中文标题只允许在空格处分行，避免“智 / 能体”这类单字断裂。 */
+:lang(zh-CN) .VPHero .name {
+    overflow-wrap: normal;
+    word-break: keep-all;
+    text-wrap: balance;
+    line-height: 1.16;
+}
+
 .VPHero .heading {
     row-gap: var(--dc3-hero-content-gap);
 }
 
 .VPHero .name {
     font-size: clamp(42px, 7vw, 76px);
-    line-height: 0.98;
+    line-height: 1.06;
     background-size: 220% auto;
     filter: drop-shadow(0 12px 24px rgba(10, 92, 164, 0.14));
 }
@@ -773,6 +854,11 @@ body {
 }
 
 .VPHero .image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
     transform: none !important;
 }
 
@@ -1257,28 +1343,124 @@ body {
     border-top-color: var(--vp-c-divider);
 }
 
-/* !important 覆盖 VitePress scoped 的 .VPFooter：去掉上边框线、背景与页面统一，消除切换感 */
+/* 首页页脚延续 Hero 的“数据流”视觉：上方是一条自包含 SVG 波线，正文回到安静的双栏信息层。 */
 .VPFooter {
+    position: relative;
+    isolation: isolate;
+    padding: 112px 24px 34px !important;
+    overflow: hidden;
     border-top: none !important;
-    background-color: var(--vp-c-bg) !important;
+    background:
+        radial-gradient(ellipse at 18% 18%, rgba(41, 197, 223, .08), transparent 28%),
+        radial-gradient(ellipse at 82% 22%, rgba(91, 116, 235, .07), transparent 30%),
+        linear-gradient(180deg, var(--vp-c-bg), color-mix(in srgb, var(--vp-c-bg-alt) 62%, var(--vp-c-bg))) !important;
+}
+
+.VPFooter::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 14px;
+    right: 0;
+    left: 0;
+    height: 92px;
+    background: center / 100% 92px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 92' preserveAspectRatio='none'%3E%3Cpath d='M-20 59 C180 38 285 76 470 54 S790 28 980 46 S1310 75 1620 35' fill='none' stroke='%231296db' stroke-opacity='.24'/%3E%3Cpath d='M-20 69 C210 48 350 83 565 61 S900 43 1080 57 S1370 78 1620 52' fill='none' stroke='%235b74eb' stroke-opacity='.13'/%3E%3Ccircle cx='318' cy='60' r='4' fill='%2329c5df' fill-opacity='.55'/%3E%3Ccircle cx='861' cy='39' r='5' fill='%231296db' fill-opacity='.5'/%3E%3Ccircle cx='1398' cy='61' r='4' fill='%235b74eb' fill-opacity='.48'/%3E%3C/svg%3E");
+}
+
+/* 脚本可用时由 FooterSignal 接管；静态 SVG 仅作为 SSR/禁用脚本时的降级。 */
+.VPFooter.has-footer-signal::before {
+    display: none;
+}
+
+.VPFooter .container {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 32px;
+    align-items: end;
+    width: min(100%, 1180px);
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 14%, var(--vp-c-divider));
 }
 
 .VPFooter .copyright,
 .VPFooter .message {
+    margin: 0 !important;
     color: var(--vp-c-text-2);
     font-weight: 540;
 }
 
+.VPFooter .message {
+    position: relative;
+    max-width: 780px;
+    padding-left: 17px;
+    text-align: left;
+    line-height: 1.65;
+}
+
+.VPFooter .message::before {
+    content: '';
+    position: absolute;
+    top: .62em;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #29c5df;
+    box-shadow: 0 0 0 5px rgba(41, 197, 223, .1), 0 0 16px rgba(41, 197, 223, .55);
+}
+
+.VPFooter .copyright {
+    color: var(--vp-c-text-3);
+    text-align: right;
+    white-space: nowrap;
+}
+
 .dark .VPFooter {
-    border-top-color: rgba(108, 206, 250, 0.12);
+    background:
+        radial-gradient(ellipse at 18% 18%, rgba(41, 197, 223, .09), transparent 28%),
+        radial-gradient(ellipse at 82% 22%, rgba(91, 116, 235, .1), transparent 30%),
+        linear-gradient(180deg, var(--vp-c-bg), color-mix(in srgb, var(--vp-c-bg-alt) 66%, var(--vp-c-bg))) !important;
+}
+
+.dark .VPFooter::before {
+    opacity: .76;
+}
+
+@media (max-width: 720px) {
+    .VPFooter {
+        padding: 94px 24px 30px !important;
+    }
+
+    .VPFooter::before {
+        top: 4px;
+        height: 78px;
+        background-size: auto 78px;
+    }
+
+    .VPFooter .container {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        align-items: start;
+        padding-top: 22px;
+    }
+
+    .VPFooter .copyright {
+        padding-left: 17px;
+        text-align: left;
+        white-space: normal;
+    }
 }
 
 @media (max-width: 960px) {
     .VPHero {
         flex: 0 0 auto;
-        justify-content: flex-start;
-        padding-top: 0 !important;
-        padding-bottom: 24px !important;
+        justify-content: center;
+        min-height: calc(100svh - var(--vp-nav-height));
+        padding-top: clamp(24px, 4.5vh, 46px) !important;
+        padding-bottom: clamp(38px, 6vh, 62px) !important;
     }
 
     /* 覆盖 .container 的 align-items:flex-start：手机端 column 模式下 flex-start 会让封面 .image 水平靠左；
@@ -1314,19 +1496,110 @@ body {
 
 @media (max-width: 640px) {
     .VPHero .main {
-        --dc3-hero-content-gap: 18px;
+        --dc3-hero-content-gap: 13px;
+    }
+
+    .VPHero .name {
+        font-size: clamp(36px, 10.6vw, 42px);
+        line-height: 1.1;
+    }
+
+    .VPHero .text {
+        font-size: clamp(22px, 6.6vw, 27px);
+        line-height: 1.24;
     }
 
     .VPHero .tagline {
-        padding-top: 16px;
-        font-size: 16px;
-        line-height: 1.72;
+        padding-top: 12px;
+        font-size: 14px;
+        line-height: 1.62;
+    }
+
+    .VPHero .actions {
+        gap: 0;
+        justify-content: center;
+        padding-top: 18px;
+    }
+
+    .VPHero .action {
+        padding: 1px;
+    }
+
+    .VPHero .VPButton {
+        min-height: 42px;
+        padding-right: 13px !important;
+        padding-left: 13px !important;
+        font-size: 14.5px;
+        line-height: 40px;
+    }
+
+    .VPHero .image {
+        margin: 0 0 18px;
+    }
+
+    .VPHero .hero-cover-shell {
+        /* 手机端封面是首屏的主视觉，不再按小图标尺寸处理。高度参与约束，
+           在常见 740–900px 高度下保持约 229–262px 宽，主动压缩上下无效留白。 */
+        max-width: clamp(225px, 31vh, 270px);
+    }
+
+    :lang(en-US) .VPHero .hero-cover-shell {
+        max-width: clamp(208px, 27.5vh, 244px);
     }
 
     .VPDoc h1 {
         font-size: 28px;
     }
 
+}
+
+/* 英文摘要更长：在 360×740 一类矮屏上压缩装饰占位，仍让三个入口留在首屏内。 */
+@media (max-width: 380px) and (max-height: 760px) {
+    :lang(en-US) .VPHero {
+        padding-top: 14px !important;
+        padding-bottom: 24px !important;
+    }
+
+    :lang(en-US) .VPHero .hero-cover-shell {
+        max-width: clamp(194px, 27.5vh, 204px);
+    }
+
+    :lang(en-US) .VPHero .image {
+        margin-bottom: 12px;
+    }
+
+    :lang(en-US) .VPHero .main {
+        --dc3-hero-content-gap: 9px;
+    }
+
+    :lang(en-US) .VPHero .name {
+        font-size: 32px;
+        line-height: 1.03;
+    }
+
+    :lang(en-US) .VPHero .text {
+        font-size: 20px;
+        line-height: 1.17;
+    }
+
+    :lang(en-US) .VPHero .tagline {
+        padding-top: 7px;
+        font-size: 12.5px;
+        line-height: 1.48;
+    }
+
+    :lang(en-US) .VPHero .actions {
+        padding-top: 10px;
+    }
+
+    :lang(en-US) .VPHero .action {
+        padding: 1px;
+    }
+
+    :lang(en-US) .VPHero .VPButton {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
 }
 
 /* 表格横向滚动：平板与窄桌面（桌面侧栏出现后内容区反而更窄，列多/长表头
@@ -1341,12 +1614,13 @@ body {
 @media (min-width: 960px) {
     .VPHero {
         justify-content: center;
-        padding-top: clamp(18px, calc(6.25vh - 27px), 48px) !important;
-        padding-bottom: clamp(14px, calc(6.25vh - 31px), 44px) !important;
+        padding-top: clamp(32px, 6vh, 72px) !important;
+        padding-bottom: clamp(42px, 7vh, 82px) !important;
     }
 
     .VPHero .name {
-        font-size: clamp(50px, 7vh, 76px);
+        font-size: clamp(50px, 6.7vh, 74px);
+        line-height: 1.1;
     }
 
     .VPHero .text {
@@ -1369,58 +1643,274 @@ body {
     }
 }
 
-/* 中屏保持单列：左右两栏会把标题、摘要和按钮锁在左侧，窄宽度下视觉上不居中。 */
-@media (min-width: 960px) and (max-width: 1279px) {
-    .VPHero .container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .VPHero .main {
-        order: 2;
-        width: 100%;
-        max-width: 680px !important;
-        margin-inline: auto;
-        text-align: center;
+@media (min-width: 641px) and (max-width: 959px) {
+    .VPHero .hero-cover-shell {
+        /* 上下结构里封面独占一行：宽度负责放大主视觉，高度为横屏与矮屏兜底。 */
+        max-width: clamp(300px, min(47vw, 40vh), 390px);
     }
 
     .VPHero .image {
+        margin: 0 0 clamp(18px, 2.6vh, 26px);
+    }
+
+    .VPHero .name {
+        font-size: clamp(44px, 6.4vw, 52px);
+        line-height: 1.1;
+    }
+}
+
+/* 横向中屏改为紧凑双栏：封面与标题彼此支撑，不再纵向堆叠挤压标题。 */
+@media (min-width: 960px) and (max-width: 1279px) {
+    .VPHero .container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(290px, .72fr);
+        gap: clamp(30px, 4vw, 50px);
+        align-items: center;
+        width: min(calc(100% - 56px), 980px);
+        margin-inline: auto;
+        padding-inline: 0 !important;
+    }
+
+    .VPHero .main {
+        --dc3-hero-content-gap: clamp(15px, 2.1vh, 22px);
         order: 1;
         width: 100%;
-        margin: 0 0 30px;
+        max-width: 600px !important;
+        margin-inline: 0;
+        text-align: left;
+    }
+
+    .VPHero .image {
+        order: 2;
+        width: 100%;
+        margin: 0;
+    }
+
+    .VPHero .tagline {
+        padding-top: clamp(12px, 1.8vh, 18px);
+        line-height: 1.65;
+    }
+
+    .VPHero .actions {
+        justify-content: flex-start;
+        padding-top: clamp(18px, 2.5vh, 26px);
+    }
+
+    .VPHero .hero-cover-shell {
+        max-width: clamp(330px, min(34vw, 46vh), 390px);
     }
 
     .VPHero.has-image .name,
     .VPHero.has-image .text,
     .VPHero.has-image .tagline {
-        margin-inline: auto;
+        margin-inline: 0;
     }
 
     .VPHero.has-image .actions {
-        justify-content: center;
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 1280px) {
+    .VPHero .container {
+        /* 桌面首屏由文字与封面共同构图：放宽内容舞台，并按各自中心线对齐，
+           避免较高的封面把较矮的文字块固定在顶部后留下大段空白。 */
+        width: min(calc(100% - 64px), 1280px);
+        max-width: 1280px !important;
+        margin-inline: auto;
+        padding-inline: 0 !important;
+        align-items: center;
+    }
+
+    .VPHero .hero-cover-shell {
+        /* 视口宽度决定冲击力，视口高度负责兜底，避免矮桌面端封面顶出首屏。 */
+        max-width: clamp(400px, min(26vw, 48vh), 500px);
     }
 }
 
 /* ── book 站专属 ── */
 /* online 在此隐藏 features/页脚改用全宽 CardNav；book 用默认三篇卡片 + 页脚，不沿用。 */
 
-/* 首页主视觉：内联封面（由 book/assets/cover.html 派生，颜色跟随明暗主题）；hero-logo class 让粒子向封面聚拢 */
-.hero-cover {
+/* 首页主视觉：封面放进独立景深层；hero-logo 仍作为粒子汇聚锚点。 */
+.hero-cover-shell {
     position: relative;
     width: 100%;
-    max-width: 256px;
-    aspect-ratio: 794 / 1123;
+    max-width: 300px;
     margin: 0 auto;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow:
-        0 30px 60px rgba(16, 96, 161, 0.22),
-        0 12px 28px rgba(0, 0, 0, 0.12);
-    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    perspective: 1700px;
+    transform-style: preserve-3d;
+    --hero-book-rotate-x: .9deg;
+    --hero-book-rotate-y: -4.6deg;
 }
 
-.hero-cover:hover {
-    transform: translateY(-4px);
+.hero-cover-shell::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 5% -16% -7%;
+    border-radius: 44%;
+    background:
+        radial-gradient(circle at 46% 36%, rgba(41, 197, 223, .22), transparent 46%),
+        radial-gradient(circle at 66% 72%, rgba(91, 116, 235, .18), transparent 52%);
+    filter: blur(24px);
+    opacity: .72;
+    transform: translateZ(-60px);
+}
+
+.hero-cover-shell::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    right: 7%;
+    bottom: -5%;
+    left: 7%;
+    height: 9%;
+    border-radius: 50%;
+    background: rgba(15, 113, 157, .16);
+    filter: blur(22px);
+    transform: translateZ(-80px);
+}
+
+.hero-book {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 794 / 1123;
+    margin: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--hero-book-rotate-x)) rotateY(var(--hero-book-rotate-y)) translateY(0);
+    transform-origin: 48% 52%;
+    filter: drop-shadow(0 26px 24px rgba(18, 105, 145, .14));
+    will-change: transform;
+    transition: transform .28s cubic-bezier(.2, .8, .2, 1), filter .32s ease;
+}
+
+.hero-book-back,
+.hero-book-pages,
+.hero-cover,
+.hero-book-spine {
+    position: absolute;
+}
+
+.hero-book-back {
+    z-index: 0;
+    top: 5px;
+    right: -5px;
+    bottom: -5px;
+    left: 6px;
+    border: 1px solid rgba(112, 151, 160, .2);
+    border-radius: 3px 6px 6px 3px;
+    background: #f2f7f8;
+    box-shadow: 5px 11px 20px rgba(20, 78, 103, .13);
+    transform: translateZ(-6px);
+}
+
+.hero-book-pages {
+    z-index: 1;
+    inset: 0;
+    transform: translateZ(-2px);
+    pointer-events: none;
+}
+
+.hero-book-pages::before,
+.hero-book-pages::after {
+    content: '';
+    position: absolute;
+    display: block;
+}
+
+.hero-book-pages::before {
+    top: 5px;
+    right: -5px;
+    bottom: -4px;
+    width: 6px;
+    clip-path: polygon(0 0, 100% 3px, 100% calc(100% - 2px), 0 100%);
+    border-right: 1px solid rgba(96, 138, 148, .2);
+    background:
+        repeating-linear-gradient(180deg, rgba(70, 112, 121, .14) 0 1px, transparent 1px 3px),
+        linear-gradient(90deg, #ffffff 0%, #f8fbfc 56%, #d9e5e8 100%);
+    box-shadow: inset 2px 0 4px rgba(70, 111, 120, .08);
+}
+
+.hero-book-pages::after {
+    right: -5px;
+    bottom: -5px;
+    left: 6px;
+    height: 6px;
+    clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 100%, 3px 100%);
+    border-bottom: 1px solid rgba(96, 138, 148, .2);
+    background:
+        repeating-linear-gradient(0deg, rgba(70, 112, 121, .13) 0 1px, transparent 1px 3px),
+        linear-gradient(180deg, #ffffff 0%, #fafcfc 55%, #dce7e9 100%);
+    box-shadow: inset 0 2px 4px rgba(70, 111, 120, .07);
+}
+
+.hero-cover {
+    z-index: 2;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, .48);
+    border-radius: 4px 6px 6px 4px;
+    overflow: hidden;
+    box-shadow:
+        -1px 1px 0 rgba(221, 246, 250, .8),
+        0 16px 34px rgba(22, 132, 172, .15),
+        0 7px 15px rgba(17, 65, 87, .1),
+        inset 0 1px 0 rgba(255, 255, 255, .55);
+    transform: translateZ(7px);
+    transition: box-shadow .34s ease;
+}
+
+.hero-cover::before {
+    content: '';
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    bottom: 0;
+    left: clamp(4px, 1.45%, 7px);
+    width: 1px;
+    background: linear-gradient(180deg, rgba(31, 145, 178, .08), rgba(31, 145, 178, .2) 50%, rgba(31, 145, 178, .08));
+    box-shadow: 1px 0 rgba(255, 255, 255, .38);
+    pointer-events: none;
+}
+
+.hero-cover::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    background:
+        radial-gradient(circle at var(--hero-pointer-x, 72%) var(--hero-pointer-y, 30%), rgba(255, 255, 255, .34), transparent 22%),
+        linear-gradient(112deg, transparent 30%, rgba(255, 255, 255, .13) 46%, transparent 61%);
+    mix-blend-mode: screen;
+    opacity: .46;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+.hero-book-spine {
+    z-index: 4;
+    top: 2px;
+    bottom: 2px;
+    left: 0;
+    width: clamp(2px, .75%, 4px);
+    border-radius: 3px 0 0 3px;
+    background: linear-gradient(90deg, rgba(22, 115, 150, .18), rgba(166, 231, 239, .1) 70%, transparent);
+    box-shadow: inset 1px 0 rgba(255, 255, 255, .3);
+    opacity: .72;
+    transform: translateZ(9px);
+    pointer-events: none;
+}
+
+.hero-cover-shell:hover .hero-book {
+    filter: drop-shadow(0 34px 28px rgba(18, 105, 145, .2));
+    transform: rotateX(var(--hero-book-rotate-x)) rotateY(var(--hero-book-rotate-y)) translateY(-4px) scale(1.008);
+}
+
+.hero-cover-shell:hover .hero-cover {
+    box-shadow:
+        -1px 1px 0 rgba(221, 246, 250, .92),
+        0 21px 42px rgba(22, 132, 172, .18),
+        0 8px 18px rgba(17, 65, 87, .12),
+        inset 0 1px 0 rgba(255, 255, 255, .65);
 }
 
 .hero-cover .cover-body {
@@ -1428,14 +1918,78 @@ body {
     top: 0;
     left: 0;
     transform-origin: top left;
-    /* 初始近似缩放（hero 封面 256px / 794 ≈ 0.322），JS 挂载后精确修正；避免首次渲染放大到 794px 的 FOUC */
-    transform: scale(var(--cover-scale, 0.322));
+    /* 初始近似缩放（300px / 794），JS 挂载后按实际宽度精确修正，避免水合前闪烁。 */
+    transform: scale(var(--cover-scale, 0.378));
 }
 
 .dark .hero-cover {
+    border-color: rgba(139, 210, 250, .18);
     box-shadow:
-        0 30px 60px rgba(0, 0, 0, 0.5),
-        0 12px 28px rgba(0, 0, 0, 0.3);
+        -2px 2px 0 rgba(44, 72, 91, .72),
+        0 20px 48px rgba(0, 0, 0, .48),
+        0 9px 22px rgba(0, 0, 0, .3),
+        inset 0 1px 0 rgba(220, 249, 255, .1);
+}
+
+.dark .hero-book-pages {
+    filter: brightness(.94);
+}
+
+.dark .hero-book-back {
+    border-color: rgba(184, 215, 222, .22);
+    background: #e7eff1;
+}
+
+.dark .hero-cover-shell::before {
+    opacity: .52;
+}
+
+/* 首次水合前的近似比例；挂载后仍由 scaleCover 按实际宽度精确覆盖。 */
+@media (min-width: 1280px) {
+    .hero-cover .cover-body {
+        --cover-scale: .58;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 959px) {
+    .hero-cover .cover-body {
+        --cover-scale: .47;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-cover .cover-body {
+        --cover-scale: .33;
+    }
+}
+
+@media (max-width: 380px) and (max-height: 760px) {
+    :lang(en-US) .hero-cover .cover-body {
+        --cover-scale: .255;
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .hero-book {
+        transform: rotateX(.8deg) rotateY(-4deg);
+        will-change: auto;
+    }
+
+    .hero-cover-shell:hover .hero-book {
+        filter: drop-shadow(0 26px 24px rgba(18, 105, 145, .14));
+        transform: rotateX(.8deg) rotateY(-4deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-book,
+    .hero-cover {
+        transition: none;
+    }
+
+    .hero-book {
+        will-change: auto;
+    }
 }
 
 /* 正文架构图 figure：居中、带图题、点击放大 */
