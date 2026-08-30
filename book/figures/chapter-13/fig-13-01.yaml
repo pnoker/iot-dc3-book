@@ -43,7 +43,7 @@ components:
 - id: c3
   label: 单点故障与安全风险
   type: data
-  subtitle: 中心失效或失陷，影响覆盖全网
+  subtitle: 未做冗余时，中心故障域可能扩大
   group: data_domain
   priority: normal
   shape: card
@@ -107,7 +107,7 @@ labels:
     认证 · 路由 · 数据与日志: Auth · Routing · Data & Logs
     信任锚点唯一 · 数据与日志同源: Single trust anchor · shared data & logs
     单点故障与安全风险: Single Point of Failure & Security Risk
-    中心失效或失陷，影响覆盖全网: Center failure hits the whole network
+    未做冗余时，中心故障域可能扩大: Without redundancy, the central failure domain may expand
     数据孤岛与篡改风险: Data Silos & Tampering Risk
     保管方同时控制数据与审计记录: Custodian controls data and audit logs
     跨主体互信成本高: High Cross-Party Trust Cost

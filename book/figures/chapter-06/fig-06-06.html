@@ -29,7 +29,6 @@
     <text x="88" y="64" font-size="12" fill="#64748B">同步管理与异步设备数据分流，业务数据按中心职责持久化。</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
-    <!-- ===== 连线（先画） ===== -->
     <line x1="500" y1="183" x2="776" y2="183" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
     <line x1="960" y1="216" x2="960" y2="283" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
     <line x1="285" y1="285" x2="1275" y2="285" stroke="#2563EB" stroke-width="1.4"/>
@@ -37,19 +36,14 @@
     <line x1="615" y1="285" x2="615" y2="331" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
     <line x1="945" y1="285" x2="945" y2="331" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
     <line x1="1275" y1="285" x2="1275" y2="331" stroke="#2563EB" stroke-width="1.4" marker-end="url(#ah-blue)"/>
-    <!-- gRPC：Driver → Manager -->
     <line x1="545" y1="558" x2="545" y2="439" stroke="#16A34A" stroke-width="2" marker-end="url(#ah-green)"/>
-    <!-- 协议通信：Driver → 现场设备 -->
     <line x1="760" y1="602" x2="796" y2="602" stroke="#16A34A" stroke-width="2" marker-end="url(#ah-green)"/>
-    <!-- RabbitMQ 异步：Data ↔ MQ ↔ Driver -->
     <line x1="945" y1="437" x2="945" y2="471" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
     <line x1="975" y1="471" x2="975" y2="437" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
     <line x1="615" y1="519" x2="615" y2="556" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
     <line x1="645" y1="556" x2="645" y2="519" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
-    <!-- 各中心 → PostgreSQL 持久化 -->
     <line x1="1275" y1="439" x2="1275" y2="709" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
 
-    <!-- ===== 北向接入层 ===== -->
     <rect x="120" y="140" width="1560" height="90" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
     <circle cx="150" cy="172" r="6" fill="#2563EB"/>
     <text x="168" y="180" font-size="18" font-weight="700" fill="#2563EB">北向接入层</text>
@@ -60,7 +54,6 @@
     <text x="802" y="180" font-size="15" font-weight="700" fill="#0F172A">dc3-gateway</text>
     <text x="802" y="200" font-size="12" fill="#2563EB">固定服务名路由 · 认证</text>
 
-    <!-- ===== 平台服务层 ===== -->
     <rect x="120" y="290" width="1560" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
     <circle cx="150" cy="322" r="6" fill="#2563EB"/>
     <text x="168" y="330" font-size="18" font-weight="700" fill="#2563EB">平台服务层</text>
@@ -81,11 +74,9 @@
     <text x="1152" y="391" font-size="12" fill="#475569">模型 · 会话 · Tools</text>
     <text x="1152" y="411" font-size="12" fill="#2563EB">Spring AI @Tool</text>
 
-    <!-- RabbitMQ 消息总线 -->
     <rect x="580" y="475" width="400" height="40" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6 4"/>
-    <text x="780" y="501" font-size="15" font-weight="700" fill="#7C3AED" text-anchor="middle">RabbitMQ · 消息总线</text>
+    <text x="780" y="501" font-size="15" font-weight="700" fill="#7C3AED" text-anchor="middle">RabbitMQ · 默认消息适配器</text>
 
-    <!-- ===== 南向驱动层 ===== -->
     <rect x="120" y="540" width="1560" height="110" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
     <circle cx="150" cy="572" r="6" fill="#16A34A"/>
     <text x="168" y="580" font-size="18" font-weight="700" fill="#16A34A">南向驱动层</text>
@@ -98,19 +89,17 @@
     <text x="822" y="614" font-size="12" fill="#475569">传感器 · 执行器 · PLC</text>
     <text x="822" y="634" font-size="12" fill="#64748B">协议通信接入</text>
 
-    <!-- ===== 基础设施层 ===== -->
     <rect x="120" y="700" width="1560" height="100" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
     <circle cx="150" cy="732" r="6" fill="#64748B"/>
     <text x="168" y="740" font-size="18" font-weight="700" fill="#475569">基础设施层</text>
     <rect x="140" y="715" width="290" height="70" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
     <text x="162" y="744" font-size="15" font-weight="700" fill="#0F172A">Caffeine</text>
     <text x="162" y="768" font-size="12" fill="#64748B">进程内热点缓存（本地）</text>
-    <text x="800" y="755" font-size="13" fill="#7C3AED" text-anchor="middle">RabbitMQ：唯一消息总线（见中段）</text>
+    <text x="800" y="755" font-size="13" fill="#7C3AED" text-anchor="middle">RabbitMQ：默认消息适配器（见中段）</text>
     <rect x="1130" y="715" width="290" height="70" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
-    <text x="1152" y="744" font-size="15" font-weight="700" fill="#0F172A">PostgreSQL</text>
+    <text x="1152" y="744" font-size="15" font-weight="700" fill="#0F172A">PostgreSQL / TimescaleDB</text>
     <text x="1152" y="768" font-size="12" fill="#64748B">业务数据 · 位号历史</text>
 
-    <!-- ===== 标签 ===== -->
     <text x="638" y="175" font-size="13" fill="#2563EB" text-anchor="middle">REST</text>
     <text x="972" y="255" font-size="13" fill="#2563EB">REST 路由 · 认证</text>
     <text x="558" y="500" font-size="13" fill="#16A34A">gRPC 注册/查询</text>
@@ -121,7 +110,6 @@
     <text x="778" y="575" font-size="12" fill="#16A34A" text-anchor="middle">协议通信</text>
     <text x="1288" y="560" font-size="12" fill="#64748B">各中心按职责持久化</text>
 
-    <!-- ===== 图例 ===== -->
     <line x1="60" y1="862" x2="118" y2="862" stroke="#2563EB" stroke-width="2" marker-end="url(#ah-blue)"/>
     <text x="126" y="868" font-size="14" fill="#475569">同步 REST 路由</text>
     <line x1="330" y1="862" x2="388" y2="862" stroke="#16A34A" stroke-width="2" marker-end="url(#ah-green)"/>
@@ -131,7 +119,7 @@
     <line x1="920" y1="862" x2="978" y2="862" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
     <text x="986" y="868" font-size="14" fill="#475569">持久化</text>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图6-6 Data ↔ RabbitMQ ↔ Driver ↔ 设备构成设备数据主链路，PostgreSQL 承载平台业务持久化。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图6-6 默认链路以 RabbitMQ 连接 Data 与 Driver；具体 Broker 由消息适配器选择。</text>
   </svg>
 </svg>
   </main>

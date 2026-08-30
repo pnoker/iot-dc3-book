@@ -7,7 +7,7 @@ design_level: decision
 layout: 三角金字塔：顶部为'可信任的物联网系统行为'，三个角分别对应三个维度。
 elements:
 - 顶部：可信任的物联网系统行为（#2E86AB），描述去中心化架构下各方无须共同信任单一机构。
-- 左端：分布式账本（#E9C46A），提供数据全网一致性、不可篡改。
+- 左端：分布式账本（#E9C46A），支持多方验证状态并提高历史改写的可发现性。
 - 右端：数字签名与共识机制（#F4A261），确保设备身份可信、消息来源真实。
 - 底部：智能合约（#264653），代码化信任规则并自动执行。
 relationships:
@@ -95,17 +95,17 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 金字塔式布局，顶部中心为结果，三个角向顶部汇聚。配色使用技术出版主题色，圆角矩形，箭头带标签。
 caption:
-  zh: 图 13-2 区块链与物联网融合的信任三角：分布式账本提供数据一致性，数字签名与共识机制确保身份真实性，智能合约自动化执行信任规则。三者协同重塑物联网信任体系。
+  zh: 图 13-2 分布式账本、签名目录与智能合约分别支持多方状态验证、来源校验和可审计规则执行；是否组合使用取决于信任模型。
   en: 'Figure 13-2 The trust triangle of blockchain–IoT convergence: the distributed ledger provides data consistency, digital signatures and consensus mechanisms ensure identity authenticity, and smart contracts execute trust rules automatically. Working together, the three reshape the IoT trust system.'
 labels:
   en:
     图 13-2 区块链与物联网融合的信任三角: Figure 13-2 The Blockchain–IoT Trust Triangle
-    分布式账本、签名与共识、智能合约分别约束数据一致性、来源可信与规则执行，缺一不可。: Ledger, signatures and contracts govern consistency, provenance and execution — all essential.
+    分布式账本、签名目录与智能合约可分别支持多方验证、来源校验与规则执行，但是否需要取决于信任模型。: Ledgers, signature directories, and contracts can support multiparty verification, provenance checks, and rule execution; the trust model decides whether they are needed.
     三个维度各司其职，缺少任一维度都无法形成完整可信闭环: Each plays its part; missing any breaks the trusted loop
     可信任的物联网系统行为: Trustworthy IoT System Behavior
     各方无须共同信任单一机构: No need to trust a single institution
     分布式账本: Distributed Ledger
-    全网数据一致 · 记录不可篡改: Network-wide consistency · tamper-proof records
+    多方验证状态 · 历史改写可发现: Multiparty state verification · detectable history rewrites
     可信数据基底: Trusted Data Foundation
     数字签名与共识机制: Digital Signatures & Consensus
     设备身份可信 · 消息来源真实: Trusted device identity · authentic message origin
@@ -116,4 +116,4 @@ labels:
     提供可信数据基底: Provides the trusted data foundation
     确保数据来源可信: Ensures trusted data origin
     驱动可信业务逻辑: Drives trusted business logic
-    图 13-2 分布式账本、签名与共识、智能合约分别约束数据一致性、来源可信与规则执行。: Figure 13-2 Ledger, signatures and contracts govern consistency, provenance and execution.
+    图 13-2 三类机制解决不同问题，不构成所有 IoT 系统的必选组合。: Figure 13-2 The three mechanisms solve different problems and are not mandatory for every IoT system.

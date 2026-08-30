@@ -1,19 +1,19 @@
 type: sequence
 title: 图 9-9 MCP协议交互序列图
-purpose: 展示AI Agent通过MCP与IoT平台及设备的典型交互流程：资源发现、工具调用、状态反馈。
+purpose: 展示AI Agent通过MCP与IoT平台及设备的典型交互流程：初始化、工具目录发现、工具调用、状态反馈。
 audience_takeaway: MCP作为AI与IoT平台之间的互操作层，不直接操作设备，而是通过平台封装的安全上下文调用后端服务。
-visual_focus: 从AI Agent发起会话到MCP Server鉴权、工具发现、调用后端设备服务、写入MQTT/CoAP，最终返回结果给AI Agent的完整时间线。
+visual_focus: 从AI Agent发起协议初始化到MCP Server鉴权、工具发现、调用后端设备服务、写入MQTT/CoAP，最终返回结果给AI Agent的完整时间线。
 design_level: logical
 layout: 自上而下时间线，左侧参与者：AI Agent, MCP Server, IoT平台服务, 设备协议适配层, 物理设备。
 elements:
 - AI Agent（发起侧）
-- MCP Server（会话管理、鉴权、工具路由）
+- MCP Server（协议握手、鉴权、工具路由）
 - IoT平台后端（设备管理、数据服务、告警服务）
 - 设备协议适配层（MQTT Broker / CoAP端节点）
 - 物理设备（传感器/执行器）
 relationships:
-- 'AI Agent → MCP Server: session init (包括能力协商)'
-- 'MCP Server → AI Agent: 返回session ID, 声明支持版本和能力'
+- 'AI Agent → MCP Server: initialize（协议版本与能力协商）'
+- 'MCP Server → AI Agent: 返回选定版本、能力和实现信息'
 - 'AI Agent → MCP Server: tools/list'
 - 'MCP Server: 基于用户身份、租户范围聚合工具目录'
 - 'MCP Server → AI Agent: 返回工具列表（每个含JSON Schema）'
@@ -47,7 +47,7 @@ components:
 - id: mcp_server
   label: MCP Server
   type: ai
-  subtitle: 会话管理、鉴权路由
+  subtitle: 协议握手、鉴权路由
   group: platform_domain
   priority: primary
   shape: card
@@ -75,12 +75,12 @@ components:
 connections:
 - from: ai_agent
   to: mcp_server
-  label: session init
+  label: initialize
   style: solid
   direction: request
 - from: mcp_server
   to: ai_agent
-  label: session info
+  label: initialize result
   style: solid
   direction: response
 - from: ai_agent
@@ -146,8 +146,8 @@ visual_constraints:
 - 图例放在底部，不遮挡时序线。
 render_notes: HTML/SVG 渲染，浅色背景，时间线自上而下，参与者列在左侧，消息线用直角折线段，箭头上标注标签。
 caption:
-  zh: 图 9-9 MCP协议交互序列示意：AI Agent通过MCP Server与IoT平台及设备进行有状态、安全可控的工具调用。
-  en: 'Figure 9-9 MCP interaction sequence: the AI Agent makes stateful, security-governed tool calls to the IoT platform and devices through the MCP Server.'
+  zh: 图 9-9 MCP协议交互序列示意：AI Agent通过MCP Server发现并调用经安全策略裁剪的平台工具，设备链路仍由IoT平台控制。
+  en: 'Figure 9-9 MCP interaction sequence: the AI Agent discovers and invokes policy-scoped platform Tools through the MCP Server, while the IoT platform retains control of the device path.'
 labels:
   en:
     图 9-9 MCP协议交互序列图: Figure 9-9 MCP Interaction Sequence
@@ -156,8 +156,8 @@ labels:
     身份 + 租户范围裁剪: Identity + tenant scoping
     鉴权 · 白名单 · 参数校验: Auth · whitelist · parameter checks
     风险分级 · 必要时人工确认: Risk tiers · human approval when needed
-    session init · 能力协商: session init · capability negotiation
-    session info · 版本与能力: session info · version & capabilities
+    initialize · 能力协商: initialize · capability negotiation
+    initialize 响应 · 版本与能力: initialize response · version & capabilities
     工具列表 · JSON Schema: Tool list · JSON Schema
     tools/call · 工具 + 参数: tools/call · tool + parameters
     平台服务调用 (REST): Platform service call (REST)
@@ -167,14 +167,14 @@ labels:
     结果回调: Result callback
     状态 + 数据 + 审计结果: Status + data + audit trail
     tools/call 响应: tools/call response
-    会话与发现: Session & discovery
+    初始化与发现: Initialization & discovery
     受控工具调用: Governed tool call
     设备响应与审计回传: Device response & audit return
     AI 应用域: AI application domain
     IoT 平台安全域: IoT platform security domain
     设备通信域: Device communication domain
     Claude Desktop 等: Claude Desktop etc.
-    会话 · 策略 · 工具路由: Session · policy · tool routing
+    协议 · 策略 · 工具路由: Protocol · policy · tool routing
     IoT 平台后端: IoT platform backend
     设备 / 数据服务: Device / data services
     协议适配层: Protocol adaptation layer
@@ -185,4 +185,4 @@ labels:
     绿色：设备响应回传: 'Green: device response return'
     橙色框：安全决策点: 'Orange box: security decision point'
     虚线域边界：AI 与设备均不能绕过 IoT 平台安全域: 'Dashed domain boundary: neither AI nor devices bypass the platform security domain'
-    图 9-9 MCP 协议交互序列示意：AI Agent 通过 MCP Server 与 IoT 平台及设备进行有状态、安全可控的工具调用。: 'Figure 9-9 MCP interaction sequence: the AI Agent makes stateful, security-governed tool calls to the IoT platform and devices through the MCP Server.'
+    图 9-9 MCP 协议交互序列示意：AI Agent 通过 MCP Server 发现并调用经安全策略裁剪的平台工具，设备链路仍由 IoT 平台控制。: 'Figure 9-9 MCP interaction sequence: the AI Agent discovers and invokes policy-scoped platform Tools through the MCP Server, while the IoT platform retains control of the device path.'

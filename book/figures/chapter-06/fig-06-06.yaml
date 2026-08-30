@@ -1,6 +1,6 @@
 type: architecture
 title: 图6-6 IoT DC3 模块关系与数据流分层图
-purpose: 展示 Gateway、四个中心、协议 Driver、RabbitMQ 与 PostgreSQL 的真实模块边界和通信方向。
+purpose: 展示 Gateway、四个中心、协议 Driver，以及默认 RabbitMQ 与 PostgreSQL/TimescaleDB 适配器的模块边界和通信方向。
 audience_takeaway: 北向统一路由、Driver 与 Manager 的 gRPC 管理调用，以及 Data 与 Driver 之间的 RabbitMQ 异步命令和数据流。
 visual_focus: Gateway→四中心、Driver→Manager、Data↔RabbitMQ↔Driver 三条主链路。
 design_level: logical
@@ -9,13 +9,13 @@ elements:
 - 北向接入层：Web/第三方客户端与 dc3-gateway。
 - 平台服务层：Auth、Manager、Data、Agentic 四个中心。
 - 南向驱动层：MQTT Driver、Modbus Driver、OPC UA Driver 与现场设备。
-- 基础设施层：RabbitMQ、PostgreSQL、Caffeine。
+- 基础设施层：默认 RabbitMQ、PostgreSQL/TimescaleDB 与 Caffeine。
 relationships:
 - 客户端→Gateway→四中心：同步 REST 路由与认证。
 - Driver→Manager：同步 gRPC 业务注册和元数据查询。
 - Data→RabbitMQ→Driver：异步点位读写与自定义命令。
 - Driver→RabbitMQ→Data：异步回执、位号值、状态与事件。
-- 各中心→PostgreSQL：按各自职责持久化数据。
+- Auth/Manager/Agentic→PostgreSQL：业务数据；Data→TsdbStore：位号历史。
 regions:
 - id: north_domain
   label: 北向接入域
@@ -80,7 +80,7 @@ components:
   priority: primary
   shape: database
 - id: postgres
-  label: PostgreSQL
+  label: PostgreSQL / TimescaleDB
   type: data
   subtitle: 业务数据与位号历史
   group: infrastructure_domain
@@ -119,7 +119,7 @@ connections:
   direction: request
 callouts:
 - 当前中心服务是 Auth、Manager、Data、Agentic，不存在独立 Command Service。
-- 当前消息中间件只有 RabbitMQ，不包含 Kafka。
+- RabbitMQ 是默认消息适配器；其他 Broker 由 DC3_MQ_TYPE 选择并需单独验证能力。
 - 服务寻址使用固定服务名、容器 DNS 与环境变量，不包含 Nacos。
 legend:
 - 实线表示同步 REST/gRPC；虚线表示 RabbitMQ 异步消息。
@@ -127,7 +127,7 @@ legend:
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts。
 - 图例放在底部，不遮挡主体结构。
-render_notes: HTML/SVG 渲染，浅色背景，四层水平带；RabbitMQ 位于 Data 与 Driver 之间并作为唯一消息总线突出显示。
+render_notes: HTML/SVG 渲染，浅色背景，四层水平带；RabbitMQ 位于 Data 与 Driver 之间并作为默认消息适配器突出显示。
 caption:
   zh: 图6-6 IoT DC3 模块关系与数据流：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 和 Driver 之间异步流转。
   en: 'Figure 6-6 IoT DC3 module relationships and data flows: northbound requests enter the four centers through the Gateway, Drivers connect to Manager over gRPC, and commands and data flow asynchronously between Data and Drivers via RabbitMQ.'
@@ -145,7 +145,7 @@ labels:
     位号值 · 命令 · 告警: Point Values · Commands · Alarms
     命令入口 / 回执处理: Command Entry / Receipts
     模型 · 会话 · Tools: Models · Sessions · Tools
-    RabbitMQ · 消息总线: RabbitMQ · Message Bus
+    RabbitMQ · 默认消息适配器: RabbitMQ · Default Message Adapter
     南向驱动层: Southbound Driver Layer
     协议 Driver: Protocol Drivers
     协议适配与执行: Protocol Adaptation & Execution
@@ -154,7 +154,8 @@ labels:
     协议通信接入: Protocol Access
     基础设施层: Infrastructure Layer
     进程内热点缓存（本地）: 'In-process hot cache (local)'
-    RabbitMQ：唯一消息总线（见中段）: 'RabbitMQ: the only message bus (see middle)'
+    RabbitMQ：默认消息适配器（见中段）: 'RabbitMQ: default message adapter (see middle)'
+    PostgreSQL / TimescaleDB: PostgreSQL / TimescaleDB
     业务数据 · 位号历史: Business Data · Point History
     REST 路由 · 认证: REST Routing · Auth
     gRPC 注册/查询: gRPC Register/Query
@@ -168,4 +169,4 @@ labels:
     同步 gRPC 管理调用: Sync gRPC Management Calls
     RabbitMQ 异步消息: RabbitMQ Async Messages
     持久化: Persistence
-    图6-6 Data ↔ RabbitMQ ↔ Driver ↔ 设备构成设备数据主链路，PostgreSQL 承载平台业务持久化。: 'Figure 6-6 Data ↔ RabbitMQ ↔ Driver ↔ devices form the device data path; PostgreSQL carries platform business persistence.'
+    图6-6 默认链路以 RabbitMQ 连接 Data 与 Driver；具体 Broker 由消息适配器选择。: 'Figure 6-6 The default path connects Data and Drivers through RabbitMQ; the message adapter selects the concrete broker.'

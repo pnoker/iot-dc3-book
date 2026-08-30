@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图2-10 规则引擎数据流：温度超标触发报警与自动控制</title>
+  <title>图2-10 可选ECA Workflow：告警与受控动作</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图2-10 规则引擎数据流：温度超标触发报警与自动控制</title>
-  <desc id="desc">温度传感器上报事件，经 Gateway 与 Data 中心进入 Manager 规则引擎做 ECA 判断，触发告警通知或下发风扇调速命令，命令经 Data 中心转发回设备。</desc>
+  <title id="title">图2-10 可选ECA Workflow：告警与受控动作</title>
+  <desc id="desc">温度事件经 Driver 和 RabbitMQ 进入可选规则服务，告警可直接通知，设备写动作必须经过策略、确认和审计后回到命令总线。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
@@ -26,8 +26,8 @@
 
     <!-- 标题区 -->
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图2-10 规则引擎数据流：温度超标触发报警与自动控制</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">ECA 判断分流告警与命令，写操作经 Data 回到设备</text>
+    <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图2-10 可选ECA Workflow：告警与受控动作</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">参考扩展，不代表 Manager 内置规则引擎</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
     <!-- 连线：先画 -->
@@ -39,12 +39,12 @@
     <path d="M1450 570 V650 H830 V570" fill="none" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
 
     <!-- 连线标签 -->
-    <text x="380" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">数据流</text>
-    <text x="680" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">数据流</text>
-    <text x="922" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">事件输入</text>
-    <text x="1096" y="370" font-size="15" font-weight="700" fill="#DC2626">黄 / 红牌</text>
-    <text x="1266" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">仅红牌</text>
-    <text x="1140" y="642" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">命令转发</text>
+    <text x="380" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">现场数据</text>
+    <text x="680" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">发布事件</text>
+    <text x="922" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">订阅输入</text>
+    <text x="1096" y="370" font-size="15" font-weight="700" fill="#DC2626">告警事件</text>
+    <text x="1266" y="498" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">候选 Action</text>
+    <text x="1140" y="642" font-size="15" font-weight="700" fill="#2563EB" text-anchor="middle">确认后进入命令总线</text>
 
     <!-- 节点 -->
     <rect x="130" y="450" width="200" height="120" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
@@ -52,27 +52,27 @@
     <text x="230" y="530" font-size="15" fill="#475569" text-anchor="middle">现场设备</text>
 
     <rect x="430" y="450" width="200" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-    <text x="530" y="502" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">Gateway</text>
-    <text x="530" y="530" font-size="15" fill="#475569" text-anchor="middle">协议接入</text>
+    <text x="530" y="502" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">协议 Driver</text>
+    <text x="530" y="530" font-size="15" fill="#475569" text-anchor="middle">解析与位号映射</text>
 
     <rect x="730" y="450" width="200" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-    <text x="830" y="502" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">Data 中心</text>
-    <text x="830" y="530" font-size="15" fill="#475569" text-anchor="middle">存储与转发</text>
+    <text x="830" y="502" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">RabbitMQ</text>
+    <text x="830" y="530" font-size="15" fill="#475569" text-anchor="middle">事件与命令总线</text>
 
     <polygon points="1080,450 1250,520 1080,590 910,520" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-    <text x="1080" y="508" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">规则引擎</text>
-    <text x="1080" y="536" font-size="14" fill="#475569" text-anchor="middle">ECA 判断</text>
+    <text x="1080" y="508" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">规则 / Workflow</text>
+    <text x="1080" y="536" font-size="14" fill="#475569" text-anchor="middle">可选 ECA 扩展</text>
 
     <rect x="1350" y="450" width="200" height="120" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
-    <text x="1450" y="502" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">下发命令</text>
-    <text x="1450" y="530" font-size="15" fill="#475569" text-anchor="middle">风扇调速</text>
+    <text x="1450" y="502" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">策略与确认</text>
+    <text x="1450" y="530" font-size="15" fill="#475569" text-anchor="middle">值域 · 互锁 · 审批</text>
 
     <rect x="970" y="160" width="200" height="120" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
     <text x="1070" y="212" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">告警通知</text>
-    <text x="1070" y="240" font-size="15" fill="#475569" text-anchor="middle">邮件 / 短信 / 微信</text>
+    <text x="1070" y="240" font-size="15" fill="#475569" text-anchor="middle">通知渠道与告警状态</text>
 
     <!-- 说明 -->
-    <text x="230" y="790" font-size="15" fill="#64748B">规则引擎不直连硬件：命令经 Data 中心转发，高风险写操作需校验与审计。</text>
+    <text x="230" y="790" font-size="15" fill="#64748B">规则服务不直连硬件：写操作经策略确认后，由 Data 命令接口与 Driver 链路执行。</text>
 
     <!-- 图例 -->
     <rect x="150" y="860" width="30" height="22" rx="5" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
@@ -92,7 +92,7 @@
     <text x="1400" y="876" font-size="16" fill="#475569">告警流</text>
 
     <!-- 图注 -->
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-10 黄红牌触发告警，红牌命令由 Data 中心转发回设备，规则引擎不直连硬件。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-10 可选规则服务消费位号事件；告警走通知链，设备动作经策略与确认后回到命令总线。</text>
   </svg>
 </svg>
   </main>

@@ -1,239 +1,63 @@
 ---
-type: sequence
-title: 图2-12 网关与四中心协同流程（智能灌溉场景）
-purpose: 展示从设备注册、元数据配置、数据上报、规则触发、AI推理到指令下发的完整时序，涵盖Gateway、Auth、Manager、Data、Agentic、驱动和现场设备七个参与者。突出闭环中PointValue的传递路径和责任边界。
-audience_takeaway: 五个中心不是独立运行的，它们通过JWT、PointValue和消息队列串联成一个完整的“感知-决策-执行”闭环。
-visual_focus: 从现场设备经Gateway进入平台域，再经Data进入Agentic域的主链路；Agentic域的橙色节点视觉高亮。
+id: fig-02-12
+type: architecture
+title: 图2-12 DC3默认主链与受控智能扩展
+purpose: 区分 IoT DC3 当前遥测与命令主链、外部 HTTP 访问链和可选 Agentic 扩展，纠正把设备流量经 Gateway 或把模型置于实时链路中的误解。
+audience_takeaway: 遥测经 Driver、RabbitMQ、Data 持久化，外部请求经 Gateway 与 Auth；Agentic 只通过受权工具查询，写操作经策略和确认后进入 Data 命令链。
+visual_focus: 上半区显示当前数据主链，下半区显示外部访问与受控智能扩展，确认边界使用虚线连接 Data。
 design_level: implementation
-layout: 水平时序，参与者沿时间轴排列，交互线垂直下行。左侧加注阶段标签（注册/配置/上报/推理/控制）。
+layout: 上下双泳道；上层从现场设备水平流向 PostgreSQL，下层从操作员流向 Gateway、Auth、Agentic 和 Workflow，再经确认连接 Data。
 elements:
-- 现场设备、运维人员与驱动服务
-- Gateway、Auth、Manager 与 Data 中心
-- Agentic Center
+  - 现场设备、协议 Driver、RabbitMQ、Data 与 PostgreSQL
+  - 操作员、Gateway、Auth、Agentic 与策略 Workflow
+  - PLC/SIS 硬实时与安全联锁边界
 relationships:
-- 现场设备 → Gateway ↔ Auth：注册、验证身份并取得 JWT
-- 运维人员 → Manager → Data：配置并同步规则
-- 现场设备 → Gateway → Data：上报 PointValue 并执行规则检查
-- Data ↔ Agentic：触发推理、查询历史数据并提交控制指令
-- Agentic → Data → 驱动服务 → 现场设备：命令经消息队列和 Modbus 链路执行
-components:
-- id: device_sensor
-  label: 现场设备
-  type: edge
-  subtitle: 传感器+执行器
-  group: edge_domain
-  priority: primary
-  shape: actor
-- id: gateway
-  label: Gateway
-  type: platform
-  subtitle: 协议接入
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: auth
-  label: Auth
-  type: platform
-  subtitle: 身份认证
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: operator
-  label: 运维人员
-  type: application
-  subtitle: 配置管理
-  group: application_domain
-  priority: normal
-  shape: actor
-- id: manager
-  label: Manager
-  type: platform
-  subtitle: 元数据与规则
-  group: platform_domain
-  priority: normal
-  shape: card
-- id: data
-  label: Data
-  type: data
-  subtitle: 数据治理
-  group: data_domain
-  priority: primary
-  shape: card
-- id: agentic
-  label: Agentic
-  type: ai
-  subtitle: 智能推理
-  group: intelligence_domain
-  priority: primary
-  shape: card
-- id: driver
-  label: 驱动服务
-  type: platform
-  subtitle: 协议执行
-  group: platform_domain
-  priority: normal
-  shape: card
-connections:
-- from: device_sensor
-  to: gateway
-  label: "① 注册请求"
-  style: solid
-  direction: request
-- from: gateway
-  to: auth
-  label: "② 验证身份"
-  style: solid
-  direction: request
-- from: auth
-  to: gateway
-  label: "③ 返回JWT"
-  style: dashed
-  direction: response
-- from: gateway
-  to: device_sensor
-  label: "④ 认证完成"
-  style: dashed
-  direction: response
-- from: operator
-  to: manager
-  label: "⑤ 配置规则"
-  style: solid
-  direction: request
-- from: manager
-  to: data
-  label: "⑥ 同步规则"
-  style: dashed
-  direction: event
-- from: device_sensor
-  to: gateway
-  label: "⑦ 上报数据"
-  style: solid
-  direction: request
-- from: gateway
-  to: data
-  label: "⑧ 转发PointValue"
-  style: solid
-  direction: request
-- from: data
-  to: data
-  label: "⑨ 规则检查"
-  style: solid
-  direction: feedback
-- from: data
-  to: agentic
-  label: "⑩ 条件触发"
-  style: solid
-  direction: event
-- from: agentic
-  to: data
-  label: "⑪ 查历史数据"
-  style: solid
-  direction: request
-- from: data
-  to: agentic
-  label: "⑫ 返回时序数据"
-  style: dashed
-  direction: response
-- from: agentic
-  to: agentic
-  label: "⑬ LLM推理"
-  style: solid
-  direction: feedback
-- from: agentic
-  to: data
-  label: "⑭ 下发指令"
-  style: solid
-  direction: request
-- from: data
-  to: driver
-  label: "⑮ 异步转MQ"
-  style: dashed
-  direction: event
-- from: driver
-  to: device_sensor
-  label: "⑯ Modbus写入"
-  style: solid
-  direction: request
-regions:
-- id: edge_domain
-  label: 设备与边缘域
-  role: 现场异构资源边界
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务边界
-- id: data_domain
-  label: 数据资产域
-  role: 数据沉淀与治理边界
-- id: intelligence_domain
-  label: 智能决策域
-  role: 模型推理与编排边界
-- id: application_domain
-  label: 业务应用域
-  role: 人机交互配置边界
-callouts:
-- 第⑨步 Data 内部规则引擎触发，走最短路径。
-- 第⑬步 Agentic 内部推理，外部请求需设超时降级。
-- 第⑮步消息队列解耦，驱动先回“已接收”再等设备回执。
-visual_constraints:
-- 参与者不超过8个，每组标签用短名词。
-- 图中橙色（AI）节点不超过1个，避免全图高亮。
-- 图例放在图底部，不遮挡主体结构。
-render_notes: HTML/SVG渲染。水平时序布局，参与者沿顶部排列。交互线垂直下行，阶段标签加在左侧（注册→配置→上报→推理→控制）。线型：实线同步调用，虚线异步返回或事件。配色：Gateway灰色，Auth紫色，Manager绿色，Data蓝色，Agentic橙色，驱动青绿。底部统一图例。
+  - 现场设备 → Driver → RabbitMQ → Data → PostgreSQL：当前遥测主链
+  - Data → RabbitMQ → Driver → 现场设备：当前命令与回执主链
+  - 操作员 → Gateway → Auth：平台登录与外部 API 访问
+  - Agentic → Data：只通过受权 Tool 查询证据
+  - Agentic → Workflow → Data：候选 Action 经策略与确认后提交命令
 caption:
-  zh: 图2-12 网关与四中心协同流程（智能灌溉场景）。一次完整的智能控制要顺序经过设备注册（Manager）、鉴权（Auth）、数据落库（Data）与推理决策（Agentic），PointValue
-    沿链路传递、命令经网关受控下发——箭头编号对应正文步骤说明。
-  en: Figure 2-12 The gateway and four centers working together from device registration
-    to intelligent control. The numbers on the arrows correspond to the step-by-step
-    description in the text.
+  zh: 图2-12 遥测与外部访问分走两条链，智能建议只有经过策略和确认后才能进入设备命令链。
+  en: Figure 2-12 Telemetry and external access follow separate paths; an AI proposal enters the device-command path only after policy checks and confirmation.
+render_notes: 自包含 HTML 与内联 SVG；上下双泳道，主链实线，受控扩展虚线；使用 style.yaml 调色板。
 labels:
   en:
-    图2-12 网关与四中心协同流程（智能灌溉场景）: Figure 2-12 Gateway and four centers working in concert
-      (smart-irrigation scenario)
-    ? 网关与四个中心通过 JWT、PointValue 与消息队列串联设备注册、数据上报、AI 推理与受控命令下发的完整闭环。
-    : The gateway and four centers chain device registration, data reporting, AI reasoning,
-      and controlled command delivery into a closed loop via JWT, PointValue, and
-      message queues.
-    JWT、PointValue 与消息队列串联注册、配置、推理和控制: JWT, PointValue, and the message queue chain
-      registration, configuration, reasoning, and control
-    注册: Registration
-    配置: Configuration
-    上报: Reporting
-    推理: Reasoning
-    控制: Control
-    现场设备: Field Device
-    传感器+执行器: Sensors + Actuators
-    协议接入: Protocol Access
-    身份认证: Authentication
-    运维人员: Operator
-    配置管理: Configuration Mgmt
-    元数据与规则: Metadata & Rules
-    数据治理: Data Governance
-    智能推理: AI Reasoning
-    驱动服务: Driver Service
-    协议执行: Protocol Execution
-    "⑨ 规则检查": "⑨ Rule Check"
-    "⑬ LLM 推理": "⑬ LLM Reasoning"
-    "① 注册请求": "① Register Request"
-    "② 验证身份": "② Verify Identity"
-    "③ 返回 JWT": "③ Return JWT"
-    "④ 认证完成": "④ Auth Done"
-    "⑤ 配置规则": "⑤ Configure Rules"
-    "⑥ 同步规则": "⑥ Sync Rules"
-    "⑦ 上报数据": "⑦ Report Data"
-    "⑧ 转发 PointValue": "⑧ Forward PointValue"
-    "⑩ 条件触发": "⑩ Condition Met"
-    "⑪ 查历史数据": "⑪ Query History"
-    "⑫ 返回时序数据": "⑫ Return Time Series"
-    "⑭ 下发指令": "⑭ Send Command"
-    "⑮ 异步转消息队列": "⑮ Async to MQ"
-    "⑯ Modbus 写入": "⑯ Modbus Write"
-    同步调用: Sync Call
-    异步返回 / 事件: Async Return / Event
-    内部处理: Internal Processing
-    ? 图2-12 网关与四个中心协同完成设备注册、数据上报、AI 推理与受控命令下发，箭头编号对应正文步骤说明。
-    : Figure 2-12 The gateway and four centers work together on device registration,
-      data reporting, AI reasoning, and controlled command delivery; the arrow numbers
-      match the steps described in the text.
-    ? 图2-12 网关与四中心协同完成设备注册、数据上报、AI 推理与受控命令下发，箭头编号对应正文步骤说明。
-    : Figure 2-12 The gateway and four centers complete registration, reporting, AI
-      reasoning, and controlled delivery; arrow numbers map to the steps in the text.
+    图2-12 DC3默认主链与受控智能扩展: Figure 2-12 Default DC3 paths and governed AI extension
+    默认遥测链路经协议 Driver、RabbitMQ 和 Data 持久化到 TimescaleDB；外部请求经 Gateway 和 Auth，Agentic 只通过授权工具查询，写操作经人工确认后进入 Data 命令链。: The default telemetry path persists through the protocol Driver, RabbitMQ, Data, and TimescaleDB; external requests go through Gateway and Auth. Agentic queries only through authorized tools, and writes enter the Data command path after human confirmation.
+    遥测不经 Gateway，Agentic 不在实时数据主链: Telemetry bypasses Gateway; Agentic is not on the real-time data path
+    当前遥测与命令主链: Current telemetry and command path
+    现场设备: Field devices
+    传感器与执行器: Sensors and actuators
+    协议 Driver: Protocol Driver
+    解析与位号映射: Parsing and point mapping
+    RabbitMQ: RabbitMQ
+    位号值、命令、回执: Point values, commands, receipts
+    Data 中心: Data Center
+    持久化与查询: Persistence and queries
+    TimescaleDB: TimescaleDB
+    默认时序适配器: Default time-series adapter
+    ① 现场协议: ① Field protocol
+    ② 位号值: ② Point values
+    ③ 消费: ③ Consume
+    ④ 持久化: ④ Persist
+    ⑩ 确认后的命令经 RabbitMQ 返回 Driver: ⑩ Confirmed commands return to the Driver through RabbitMQ
+    外部访问与可选智能扩展: External access and optional AI extension
+    操作员 / 应用: Operator / application
+    请求与最终确认: Requests and final confirmation
+    Gateway: Gateway
+    外部 HTTP 入口: External HTTP entry
+    Auth: Auth
+    平台主体认证: Platform-principal authentication
+    Agentic: Agentic
+    模型、会话与 Tools: Models, sessions, and Tools
+    策略 / Workflow: Policy / Workflow
+    校验、审批与审计: Validation, approval, and audit
+    ⑤ 登录 / API: ⑤ Login / API
+    ⑥ 认证: ⑥ Authenticate
+    ⑦ 受权 Tool: ⑦ Authorized Tool
+    ⑧ 候选 Action: ⑧ Proposed Action
+    ⑨ 确认后调用 Data 命令接口: ⑨ Call the Data command API after confirmation
+    只读查询: Read-only query
+    "边界：PLC / SIS 承担硬实时与安全联锁；模型不能绕过策略、确认和平台命令链。": "Boundary: PLC / SIS owns hard real-time control and safety interlocks; models cannot bypass policy, confirmation, or the platform command path."
+    图2-12 遥测与外部访问分走两条链，智能建议只有经过策略和确认后才能进入设备命令链。: Figure 2-12 Telemetry and external access follow separate paths; an AI proposal enters the device-command path only after policy checks and confirmation.

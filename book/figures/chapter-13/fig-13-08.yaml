@@ -1,6 +1,6 @@
 type: architecture
 title: 图 13-8 中心化 vs 去中心化物联网架构对比图
-audience_takeaway: 中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。
+audience_takeaway: 未做冗余的中心服务存在单点故障；共识网络仅在故障阈值和 quorum 条件满足时保持可用，两类架构都需容灾设计。
 purpose: 直观对比两种架构在组件角色、通信模型、信任锚点和故障影响范围上的差异。
 visual_focus: 从左栏顶部到右栏标注的主链路。
 design_level: logical
@@ -13,7 +13,7 @@ elements:
 relationships:
 - 左栏中，所有设备必须通过中心化平台进行认证和消息路由，数据流为汇聚型。
 - 右栏中设备通过与区块链节点交互完成身份注册和交易验证，设备间可直接或通过P2P中继通信。
-- 左栏单一故障点（中心平台）失效则全网不可用，标注红色虚线框
+- 左栏展示未做冗余的中心服务形成单点故障，标注红色虚线框
 - 右栏标注前提：故障未超容错阈值且 quorum 可达时，单个共识节点失效不影响全局运行。
 regions:
 - id: edge_domain
@@ -87,13 +87,13 @@ caption:
 labels:
   en:
     图 13-8 中心化 vs 去中心化物联网架构对比图: Figure 13-8 Centralized vs Decentralized IoT Architecture
-    中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。: 'Centralized: one failure hits the whole network. Decentralized: node failures are harmless below threshold with quorum reachable.'
+    未做冗余的中心服务存在单点故障；共识网络只有在故障未超容错阈值且 quorum 可达时才保持可用，两者都需要工程化容灾。: 'A central service without redundancy has a single point of failure; a consensus network stays available only below its fault threshold with quorum reachable. Both require engineered resilience.'
     核心差异是信任位置、数据流形态和故障影响域: Trust location, data-flow shape, and failure blast radius
     中心化架构: Centralized Architecture
     汇聚数据流 · 单一可信中介: Convergent data flow · single trusted intermediary
     中心化云平台: Centralized Cloud Platform
     认证中心 · 消息路由: Authentication center · message routing
-    单点失效 → 全网不可用: Single point fails → network down
+    未做冗余 → 单点故障: No redundancy → single point of failure
     设备 1: Device 1
     设备 2: Device 2
     设备 3: Device 3

@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图2-11 Data中心数据流示意</title>
-  <desc id="desc">现场设备数据经驱动归一、Gateway 路由进入 Data 中心，写入消息队列后分流：一路异步持久化到时序数据库，另一路实时推送给订阅方。</desc>
+  <desc id="desc">现场设备数据经 Driver 归一后进入消息端口，Data 消费并经时序存储端口持久化；图中的 RabbitMQ 与 PostgreSQL 表示默认适配器。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
@@ -27,14 +27,14 @@
     <!-- 标题区 -->
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
     <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图2-11 Data中心数据流示意</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">消息队列把持久化写入与实时消费解耦</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">Driver 发布，Data 消费；Gateway 不在遥测主链</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
     <!-- 三个域边界 -->
     <rect x="60" y="170" width="580" height="450" rx="12" fill="none" stroke="#0F766E" stroke-width="1.6" stroke-dasharray="8 5"/>
     <text x="84" y="202" font-size="18" font-weight="700" fill="#0F766E">设备与边缘域</text>
     <rect x="660" y="170" width="280" height="450" rx="12" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-dasharray="8 5"/>
-    <text x="684" y="202" font-size="18" font-weight="700" fill="#2563EB">平台服务域</text>
+    <text x="684" y="202" font-size="18" font-weight="700" fill="#2563EB">消息与平台服务域</text>
     <rect x="960" y="170" width="830" height="590" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-dasharray="8 5"/>
     <text x="984" y="202" font-size="18" font-weight="700" fill="#475569">数据资产域</text>
 
@@ -48,11 +48,11 @@
 
     <!-- 连线标签 -->
     <text x="350" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">原始信号</text>
-    <text x="640" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">PointValue</text>
-    <text x="940" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">转发数据</text>
-    <text x="1225" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">数据入队</text>
-    <text x="1374" y="594" font-size="14" font-weight="700" fill="#64748B">异步写入</text>
-    <text x="1510" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">实时推送</text>
+    <text x="640" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">发布位号值</text>
+    <text x="940" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">消费消息</text>
+    <text x="1225" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">持久化</text>
+    <text x="1374" y="594" font-size="14" font-weight="700" fill="#64748B">归档扩展</text>
+    <text x="1510" y="486" font-size="14" font-weight="700" fill="#2563EB" text-anchor="middle">受权查询 / 订阅</text>
 
     <!-- 节点 -->
     <rect x="110" y="440" width="200" height="120" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
@@ -64,27 +64,27 @@
     <text x="490" y="520" font-size="15" fill="#475569" text-anchor="middle">南向协议驱动</text>
 
     <rect x="690" y="440" width="200" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-    <text x="790" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">Gateway</text>
-    <text x="790" y="520" font-size="15" fill="#475569" text-anchor="middle">鉴权与路由</text>
+    <text x="790" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">RabbitMQ</text>
+    <text x="790" y="520" font-size="15" fill="#475569" text-anchor="middle">位号值 Exchange</text>
 
     <rect x="990" y="440" width="200" height="120" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
     <text x="1090" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">Data 中心</text>
-    <text x="1090" y="520" font-size="15" fill="#475569" text-anchor="middle">数据接收与分发</text>
+    <text x="1090" y="520" font-size="15" fill="#475569" text-anchor="middle">消费、持久化与查询</text>
 
     <rect x="1260" y="440" width="200" height="120" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-    <text x="1360" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">消息队列</text>
-    <text x="1360" y="520" font-size="15" fill="#475569" text-anchor="middle">RabbitMQ 缓冲层</text>
+    <text x="1360" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">PostgreSQL</text>
+    <text x="1360" y="520" font-size="15" fill="#475569" text-anchor="middle">当前默认存储</text>
     <line x1="1300" y1="470" x2="1300" y2="545" stroke="#F97316" stroke-width="2"/>
     <line x1="1360" y1="470" x2="1360" y2="545" stroke="#F97316" stroke-width="2"/>
     <line x1="1420" y1="470" x2="1420" y2="545" stroke="#F97316" stroke-width="2"/>
 
     <rect x="1260" y="620" width="200" height="100" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
-    <text x="1360" y="664" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">时序数据库</text>
-    <text x="1360" y="692" font-size="15" fill="#475569" text-anchor="middle">持久化存储</text>
+    <text x="1360" y="664" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">对象 / 冷存储</text>
+    <text x="1360" y="692" font-size="15" fill="#475569" text-anchor="middle">可选归档扩展</text>
 
     <rect x="1560" y="440" width="200" height="120" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
-    <text x="1660" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">订阅方</text>
-    <text x="1660" y="520" font-size="15" fill="#475569" text-anchor="middle">监控 / Agentic / 告警</text>
+    <text x="1660" y="492" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">授权消费者</text>
+    <text x="1660" y="520" font-size="15" fill="#475569" text-anchor="middle">API / WebSocket / Tool</text>
 
     <!-- 图例 -->
     <rect x="150" y="808" width="30" height="22" rx="5" fill="#F0FDF4" stroke="#0F766E" stroke-width="1.6"/>
@@ -102,7 +102,7 @@
     <text x="1490" y="824" font-size="16" fill="#475569">异步 / 事件驱动</text>
 
     <!-- 图注 -->
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-11 数据进入 Data 与消息队列后分流：一路异步写入时序库，一路实时推送给订阅方，互不阻塞。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-11 默认链路使用 RabbitMQ 与 TimescaleDB；消费者只通过受控出口访问。</text>
   </svg>
 </svg>
   </main>

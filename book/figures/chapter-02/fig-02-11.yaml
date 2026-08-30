@@ -1,157 +1,58 @@
+---
+id: fig-02-11
 type: dataflow
 title: 图2-11 Data中心数据流示意
-purpose: 展示IoT DC3 Data中心从设备采集到时序存储的核心数据流，说明消息队列如何缓冲和解耦。
-audience_takeaway: Data 中心是一个『一次接收、两处分发』的数据管道：一条路径进消息队列，另一条路径即时推送给实时订阅方。
-visual_focus: 从现场设备到消息队列的主链路，以及从消息队列分流到时序数据库和订阅方的分支路径。
+purpose: 展示 IoT DC3 从现场设备、Driver、消息端口、Data 到时序存储端口的遥测主链，并以 RabbitMQ 与 PostgreSQL/TimescaleDB 表示默认适配器。
+audience_takeaway: Driver 把位号值发布到消息端口，Data 消费并经时序存储端口持久化；Gateway 不在遥测主链，Agentic 等消费者也不直接连接内部消息队列或数据库。
+visual_focus: 从现场设备到 PostgreSQL 的单向主链，以及 PostgreSQL 到可选冷存储、Data 到授权消费者的扩展出口。
 design_level: implementation
-layout: horizontal_left_to_right 从现场设备开始，经过驱动、Gateway、Data中心，到达消息队列，然后分流到时序数据库和订阅方。
+layout: 水平左到右主链，PostgreSQL 下方放可选归档，最右侧为受控消费者。
 elements:
-- 现场设备与南向驱动
-- Gateway、Data 中心与 RabbitMQ
-- 时序数据库与实时订阅方
+  - 现场设备与协议 Driver
+  - RabbitMQ、Data 中心与 PostgreSQL
+  - 可选冷存储与授权消费者
 relationships:
-- 现场设备 → 驱动 → Gateway → Data 中心：原始信号归一为 PointValue 并完成路由
-- Data 中心 → RabbitMQ：数据入队以削峰解耦
-- RabbitMQ → 时序数据库：异步持久化
-- RabbitMQ → 订阅方：实时分发给监控、Agentic 与告警服务
-regions:
-- id: edge_domain
-  label: 设备与边缘域
-  role: 现场异构资源边界
-- id: platform_domain
-  label: 平台服务域
-  role: 核心服务能力边界
-- id: data_domain
-  label: 数据资产域
-  role: 数据沉淀与治理边界
-components:
-- id: field_device
-  label: 现场设备
-  type: edge
-  subtitle: PLC、电表、传感器
-  group: edge_domain
-  priority: primary
-  shape: card
-- id: driver
-  label: 驱动模块
-  type: platform
-  subtitle: 南向协议驱动
-  group: edge_domain
-  priority: normal
-  shape: card
-- id: gateway
-  label: Gateway
-  type: platform
-  subtitle: 鉴权与路由
-  group: platform_domain
-  priority: primary
-  shape: card
-- id: data_center
-  label: Data中心
-  type: data
-  subtitle: 数据接收与分发
-  group: data_domain
-  priority: primary
-  shape: database
-- id: mq
-  label: 消息队列
-  type: platform
-  subtitle: RabbitMQ 缓冲层
-  group: data_domain
-  priority: normal
-  shape: bus
-- id: tsdb
-  label: 时序数据库
-  type: data
-  subtitle: 持久化存储
-  group: data_domain
-  priority: primary
-  shape: database
-- id: consumer
-  label: 订阅方
-  type: application
-  subtitle: 监控/Agentic/告警
-  group: data_domain
-  priority: normal
-  shape: card
-connections:
-- from: field_device
-  to: driver
-  label: 原始信号
-  style: solid
-  direction: left-to-right
-- from: driver
-  to: gateway
-  label: PointValue
-  style: solid
-  direction: left-to-right
-- from: gateway
-  to: data_center
-  label: 转发数据
-  style: solid
-  direction: left-to-right
-- from: data_center
-  to: mq
-  label: 数据入队
-  style: solid
-  direction: left-to-right
-- from: mq
-  to: tsdb
-  label: 异步写入
-  style: dashed
-  direction: left-to-right
-- from: mq
-  to: consumer
-  label: 实时推送
-  style: solid
-  direction: left-to-right
-callouts:
-- 数据先入队，再写入存储，保证了高并发下的平稳写入。
-- 消息队列同时向订阅方实时推送，满足监控和告警的秒级需求。
-- 实时路径和写入路径异步，互不依赖，提升了系统的整体可用性。
-legend:
-- 青绿色=设备与边缘；蓝色=平台服务与数据；橙色=缓冲层；灰色=外部消费方。
-- 实线=同步/即时调用；虚线=异步/事件驱动。
-- 橙色节点表示本数据流中的关键缓冲和解耦环节。
-visual_constraints:
-- 节点数量不超过8个，避免过多分支导致视觉混乱。
-- 橙色只用于消息队列节点，不用于其他组件。
-- 箭头标签使用短中文，不超过10个字。
-- 图注放在底部，清晰说明颜色和线型的语义。
-render_notes: HTML/SVG 渲染，浅色背景。使用水平从左到右布局，突出主链路。节点颜色严格按图例标注。箭头应有方向指示，消息队列用三条平行竖线表示缓冲。
+  - 现场设备 → Driver：现场协议数据
+  - Driver → RabbitMQ：发布位号值
+  - RabbitMQ → Data：消费消息
+  - Data → PostgreSQL：持久化
+  - Data / PostgreSQL → 授权消费者：经 API、WebSocket 或 Tool 访问
 caption:
-  zh: 图2-11 Data中心数据流示意。Data 中心是“一次接收、两处分发”的管道：经消息队列的一路保障落库可靠，即时推送的一路服务实时订阅——消息队列把写入速度与消费速度解耦，避免慢消费者拖垮采集。
-  en: 'Figure 2-11 The core data flow of the IoT DC3 Data center, showing how the message queue decouples persistence from distribution.'
+  zh: 图2-11 默认链路使用 RabbitMQ 与 TimescaleDB；消费者只通过受控出口访问。
+  en: Figure 2-11 The default path uses RabbitMQ and TimescaleDB, while consumers access data only through governed interfaces.
+render_notes: 保持既有水平 SVG 布局；使用 style.yaml 调色板；实线表示当前主链，虚线表示可选归档。
 labels:
   en:
-    图2-11 Data中心数据流示意: Figure 2-11 Data Center Data Flow
-    现场设备数据经驱动归一、Gateway 路由进入 Data 中心，写入消息队列后分流：一路异步持久化到时序数据库，另一路实时推送给订阅方。: 'Field-device data is normalized by drivers and routed through Gateway into the Data center, then enqueued and split: one branch persists asynchronously to the time-series DB, the other pushes to subscribers in real time.'
-    消息队列把持久化写入与实时消费解耦: The message queue decouples persistent writes from real-time consumption
-    设备与边缘域: Device & Edge Domain
-    平台服务域: Platform Service Domain
-    数据资产域: Data Asset Domain
-    原始信号: Raw Signal
-    转发数据: Forward Data
-    数据入队: Enqueue Data
-    异步写入: Async Write
-    实时推送: Real-Time Push
-    现场设备: Field Device
-    PLC · 电表 · 传感器: PLC · Meters · Sensors
-    驱动模块: Driver Module
-    南向协议驱动: Southbound Protocol Driver
-    鉴权与路由: Auth & Routing
+    图2-11 Data中心数据流示意: Figure 2-11 Data Center data flow
+    现场设备数据经 Driver 归一后进入消息端口，Data 消费并经时序存储端口持久化；图中的 RabbitMQ 与 PostgreSQL 表示默认适配器。: Field-device data enters the message port after Driver normalization and is persisted by Data through the time-series storage port; RabbitMQ and PostgreSQL depict the default adapters.
+    Driver 发布，Data 消费；Gateway 不在遥测主链: Drivers publish and Data consumes; Gateway is not on the telemetry path
+    设备与边缘域: Device and edge domain
+    消息与平台服务域: Messaging and platform-services domain
+    数据资产域: Data asset domain
+    原始信号: Raw signal
+    发布位号值: Publish point values
+    消费消息: Consume messages
+    持久化: Persist
+    归档扩展: Archive extension
+    受权查询 / 订阅: Authorized query / subscription
+    现场设备: Field devices
+    PLC · 电表 · 传感器: PLCs · meters · sensors
+    驱动模块: Driver module
+    南向协议驱动: Southbound protocol Driver
+    RabbitMQ: RabbitMQ
+    位号值 Exchange: Point-value Exchange
     Data 中心: Data Center
-    数据接收与分发: Data Ingest & Distribution
-    消息队列: Message Queue
-    RabbitMQ 缓冲层: RabbitMQ Buffer
-    时序数据库: Time-Series DB
-    持久化存储: Persistent Storage
-    订阅方: Subscribers
-    监控 / Agentic / 告警: Monitoring / Agentic / Alarms
-    设备与边缘: Device & Edge
-    平台服务: Platform Service
-    消息队列（缓冲）: Message Queue (Buffer)
-    存储 / 订阅方: Storage / Subscribers
-    同步 / 即时调用: Sync / Immediate Call
-    异步 / 事件驱动: Async / Event-Driven
-    图2-11 数据进入 Data 与消息队列后分流：一路异步写入时序库，一路实时推送给订阅方，互不阻塞。: Figure 2-11 Once data enters the Data center and the message queue, it splits — one branch writes asynchronously to the time-series DB, the other pushes to subscribers in real time, and neither blocks the other.
+    消费、持久化与查询: Consume, persist, and query
+    PostgreSQL: PostgreSQL
+    当前默认存储: Current default store
+    对象 / 冷存储: Object / cold storage
+    可选归档扩展: Optional archive extension
+    授权消费者: Authorized consumers
+    API / WebSocket / Tool: API / WebSocket / Tool
+    设备与边缘: Devices and edge
+    平台服务: Platform services
+    消息队列（缓冲）: Message queue (buffer)
+    存储 / 订阅方: Storage / subscribers
+    同步 / 即时调用: Synchronous / immediate call
+    异步 / 事件驱动: Asynchronous / event-driven
+    图2-11 默认链路使用 RabbitMQ 与 TimescaleDB；消费者只通过受控出口访问。: Figure 2-11 The default path uses RabbitMQ and TimescaleDB, while consumers access data only through governed interfaces.

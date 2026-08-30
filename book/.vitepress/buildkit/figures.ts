@@ -217,12 +217,10 @@ export function svgToTheme(svgMarkup: string): string {
   )
   // 英文色名 white / black 等
   out = out.replace(/(fill|stroke)="white"/gi, '$1="var(--fig-ffffff)"')
-  // 压缩空行（保留单换行，标签间不断裂）。
-  // 用 \n(?:[ \t]*\n)+ 一次吃掉整段相邻空白行：\n[ \t]*\n+ 遇到
-  // 「注释剥离产生的 \n␠\n␠\n 相邻段」时 \n+ 跨不过中间空白，一轮替换
-  // 会残留空行（旧 Python 管线同款缺陷）——残留空行会截断 markdown-it 的
-  // html_block，dev 下 Vue SFC 编译器因 <figure> 断裂而报错。
-  out = out.replace(/\n(?:[ \t]*\n)+/g, '\n')
+  // 压缩空行（保留单换行，标签间不断裂）。同时兼容 LF 与 Windows CRLF；
+  // 否则 CR 会阻断匹配，markdown-it 可能在空行处结束 SVG HTML block，
+  // 把后续 <defs>/<rect> 等节点误渲染成代码块。
+  out = out.replace(/\r?\n(?:[ \t]*\r?\n)+/g, '\n')
   return out
 }
 

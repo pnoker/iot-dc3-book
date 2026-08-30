@@ -1,6 +1,6 @@
 type: layered
 title: 图 13-7 基于区块链的供应链溯源系统分层架构
-audience_takeaway: 应用层无权直连感知层与边缘层，任何数据查询都须经区块链网络层中转，链上成为唯一可信数据出口。
+audience_takeaway: 应用通过授权数据服务读取链下原文，并用账本中的摘要、签名与状态复核；账本不是唯一数据出口。
 purpose: 展示从物理感知到业务展示的四层结构，以及数据在各层间的流动方向。
 visual_focus: 从边缘层将计算出的数据哈希、数字签名和元数据发送到应用层（实线箭头），以及应用层发起的查询请求反向流入区块链网络层（虚线箭头）的主链路。
 design_level: logical
@@ -15,7 +15,7 @@ relationships:
 - 边缘层将计算出的数据哈希、数字签名和元数据打包成交易，发送到区块链网络层，实线箭头。
 - 区块链网络层将共识结果同步到应用层，实线箭头
 - 应用层发起的查询请求反向流入区块链网络层，虚线箭头。
-- 应用层不直接访问感知层或边缘层，数据只能通过区块链网络层获取，虚线箭头表示请求方向，实线箭头表示数据推送方向。
+- 应用层不直接访问现场设备；原文经授权数据服务提供，摘要与状态可经账本独立验证。
 regions:
 - id: edge_domain
   label: 设备与边缘域
@@ -83,13 +83,13 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，浅色背景。四层自下而上堆叠，每层使用不同底色（青绿→蓝色→橙色），层名使用粗体白色字体。层间箭头用粗细区分，实线箭头表示数据推送，虚线箭头表示查询请求。
 caption:
-  zh: 图 13-7 展示四层结构的职责边界和数据流向。边缘层将原始传感器数据哈希化后上链，原始数据保留在边缘存储或IPFS中。区块链网络层负责记录、共识与智能合约执行。
+  zh: 图 13-7 原始数据由授权的链下数据服务保存和提供，摘要、签名与状态可写入账本，应用把两者结合完成独立复核。
   en: 'Figure 13-7 The responsibility boundaries and data flows of the four-layer structure. The edge layer hashes raw sensor data and puts it on-chain, while the raw data stays in edge storage or IPFS. The blockchain network layer is responsible for recording, consensus, and smart-contract execution.'
 labels:
   en:
     图 13-7 基于区块链的供应链溯源系统分层架构: Figure 13-7 Layered Architecture of a Blockchain-Based Supply-Chain Traceability System
-    原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录，不直接绕过信任层访问设备。: Raw data stays off-chain; hash, signature and metadata on-chain; apps query trusted records via the chain, never bypassing the trust layer.
-    应用只能经区块链网络查询可信记录，不直接绕过信任层访问设备: Apps query trusted records only via the chain, never bypassing the trust layer
+    原始数据经授权的数据服务保留链下，摘要与签名状态可写入账本；应用读取原文后可用账本证据复核。: Raw data remains in an authorized off-chain data service; summaries and signature status may be recorded on a ledger so applications can verify the original.
+    业务数据走授权数据服务，账本提供独立验证证据: Business data uses an authorized data service; the ledger provides independent verification evidence
     应用层: Application Layer
     Web 溯源查询: Web traceability query
     移动端防伪验证: Mobile anti-counterfeit check
@@ -113,4 +113,4 @@ labels:
     RFID 读写器: RFID reader
     GPS 模块: GPS module
     工业采集设备: Industrial acquisition devices
-    图 13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。: Figure 13-7 Raw data off-chain, hash + signature + metadata on-chain; apps query trusted records via the chain.
+    图 13-7 链下数据服务负责原文访问，账本负责多方可验证的摘要与状态。: Figure 13-7 The off-chain data service provides originals, while the ledger provides multiparty-verifiable summaries and state.

@@ -1,6 +1,6 @@
 type: flowchart
 title: 图 13-13 智能合约驱动的自动化决策闭环
-audience_takeaway: 智能灌溉经 AI 推理、预言机上链、合约条件触发、设备执行四步闭环，事件日志构成不可篡改审计轨迹，价值在多方可审计的自动执行。
+audience_takeaway: AI 与链上事件只能产生候选授权；策略网关必须再次校验工况、权限和安全边界，事件日志提供多方可验证的审计证据。
 purpose: 展示智能合约驱动自动化决策的四步闭环与工程权衡
 visual_focus: 四步决策闭环与工程权衡。
 design_level: flowchart
@@ -11,10 +11,10 @@ elements:
 - 条件触发合约：置信度超阈值，发签名授权消息，不直接操作设备
 - 执行与审计：执行回执、开关时间戳、事件日志上链
 relationships:
-- 四步依次递进，事件日志构成不可篡改审计轨迹；价值在多方可审计执行
+- 四步依次递进，事件日志提供多方可验证证据；策略网关保留确定性执行边界
 render_notes: HTML/SVG 渲染，四步闭环 + 工程权衡，蓝绿橙红分层。
 caption:
-  zh: 图 13-13 智能灌溉经 AI 推理、预言机上链、合约条件触发、设备执行四步闭环，事件日志构成不可篡改审计轨迹；价值在多方可审计的自动执行，而非替代确定性控制逻辑。
+  zh: 图 13-13 AI 与链上事件只产生候选授权，策略网关仍须校验工况、权限与安全边界；事件日志用于多方复核，不替代确定性控制。
   en: 'Figure 13-13 Smart irrigation forms a four-step closed loop of AI inference, on-chain oracles, condition-triggered contracts, and device execution, with event logs forming a tamper-proof audit trail; the value lies in multi-party auditable automatic execution rather than replacing deterministic control logic.'
 labels:
   en:
@@ -43,7 +43,7 @@ labels:
     执行微服务确认回执: Executor confirms receipt
     电磁阀实际开关时间戳: Actual valve switch timestamps
     关键事件结构化上链: Key events structured on-chain
-    不可篡改审计轨迹: Tamper-proof audit trail
+    多方可验证审计证据: Multiparty-verifiable audit evidence
     阀门执行秒级: Valves actuate in seconds
     工程权衡: Engineering Trade-offs
     预言机信任模型: Oracle Trust Model
@@ -55,8 +55,8 @@ labels:
     许可链/侧链可免费用，但需维护节点: 'Permissioned/side chains: free, but need nodes'
     成本可能超过数据本身价值: Cost may exceed the value of the data
     交互延迟: Interaction Latency
-    决策循环：采集→推理→预言机→合约→阀门: 'Loop: sense → infer → oracle → contract → valve'
+    决策循环：采集→推理→存证→策略网关→设备: 'Loop: sense → infer → attest → policy gateway → device'
     整体秒级，阈值式灌溉可接受: Overall seconds; acceptable for thresholds
     紧急切断需本地边缘决策回路作降级: 'Emergency cutoff: local edge fallback loop'
     真正价值是“多方可审计的自动执行”，而非替代 PLC/SCADA；为“谁、何时、基于什么数据、执行了什么”提供防伪证据: Real value is multi-party auditable automation, not replacing PLC/SCADA — proving who did what, when, on which data
-    图 13-13 智能灌溉经 AI 推理、预言机上链、合约条件触发、设备执行四步闭环，事件日志构成不可篡改审计轨迹；价值在多方可审计的自动执行，而非替代确定性控制逻辑。: 'Figure 13-13 Smart irrigation: AI inference → on-chain oracle → condition-triggered contract → device execution; event logs form a tamper-proof audit trail; value is auditable automation, not replacing deterministic control.'
+    图 13-13 链上事件只产生候选授权，策略网关仍须校验工况、权限与安全边界。: 'Figure 13-13 On-chain events create candidate authorization only; a policy gateway must still validate operating conditions, permissions, and safety boundaries.'

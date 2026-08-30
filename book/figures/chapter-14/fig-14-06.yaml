@@ -1,8 +1,8 @@
 type: dataflow
 title: 图 14-6 设备接入与数据流
-purpose: 展示设备、Driver、RabbitMQ、Data、PostgreSQL 与北向查询之间的真实上下行链路。
-audience_takeaway: RabbitMQ 同时解耦上行位号值、下行命令和执行回执；Data 维护最新值、历史值、告警及按 commandId 关联的命令状态。
-visual_focus: 上行 Device→Driver→RabbitMQ→Data→Caffeine/PostgreSQL；下行 Client→Gateway→Data→RabbitMQ→Driver→Device，并有结果回执返回 Data。
+purpose: 展示设备、Driver、消息端口、Data、TsdbStore 与北向查询之间的上下行链路，并以 RabbitMQ 表示默认消息适配器。
+audience_takeaway: 消息端口解耦上行位号值、下行命令和执行回执；Data 维护最新值、历史值、告警及按 commandId 关联的命令状态。
+visual_focus: 上行 Device→Driver→消息端口→Data→Caffeine/TsdbStore；下行 Client→Gateway→Data→消息端口→Driver→Device，并有结果回执返回 Data。
 design_level: implementation
 layout: 上下两条水平泳道，上方上行数据，下方下行命令与回执。
 elements:
@@ -10,11 +10,11 @@ elements:
 - Driver：协议解析、元数据映射、设备读写。
 - RabbitMQ：位号值、点位命令、回执与状态。
 - Data：消费、批量、最新值、历史与告警。
-- 存储：本地 Caffeine 最新值缓存、PostgreSQL Repository。
+- 存储：本地 Caffeine 最新值缓存、TsdbStore 时序存储端口。
 - 北向：Gateway、Web、第三方 API、Grafana PostgreSQL 数据源。
 relationships:
 - 设备→Driver→RabbitMQ→Data：异步上行位号值。
-- Data→Caffeine/PostgreSQL→告警规则：先保存再处理规则。
+- Data→Caffeine/TsdbStore→告警规则：先保存再处理规则。
 - 客户端→Gateway→Data→RabbitMQ→Driver→设备：异步下行命令。
 - 设备→Driver→RabbitMQ→Data：执行结果按 commandId 完整回执，Data 更新命令状态并供客户端查询或订阅。
 regions:
@@ -26,7 +26,7 @@ regions:
   role: RabbitMQ 与 Data 中心
 - id: data_domain
   label: 数据资产域
-  role: 最新值缓存与 PostgreSQL 持久化
+  role: 最新值缓存与 TsdbStore 持久化
 - id: north_domain
   label: 北向应用域
   role: Gateway、Web、第三方 API 与 Grafana
@@ -67,8 +67,8 @@ components:
   priority: normal
   shape: database
 - id: postgres
-  label: PostgreSQL
-  subtitle: 历史值与告警仓库
+  label: TsdbStore
+  subtitle: 历史值时序存储端口
   type: data
   group: data_domain
   priority: normal
@@ -149,17 +149,17 @@ connections:
   style: dashed
   direction: response
 callouts:
-- 当前没有 Kafka 分区模型、InfluxDB 或 MongoDB 服务。
+- 图中仅画默认 RabbitMQ 与 TsdbStore 边界；其他适配器不是并行必选服务。
 - 同一设备命令由 Driver 侧设备锁与 commandId 去重保护。
-render_notes: 浅色 SVG 双泳道图，RabbitMQ 作为唯一消息总线突出显示；禁止绘制 Kafka、InfluxDB、MongoDB 或同步 Data→Driver 直连。
+render_notes: 浅色 SVG 双泳道图，RabbitMQ 作为默认消息适配器突出显示；禁止绘制多个 Broker 并行运行或同步 Data→Driver 直连。
 caption:
-  zh: 图 14-6 IoT DC3 设备数据链路：协议 Driver 将位号值经 RabbitMQ 交给 Data，Data 更新最新值缓存并写入 PostgreSQL；点位命令沿反向异步链路执行并回传结果。
-  en: 'Figure 14-6 The IoT DC3 device data path: protocol drivers hand point values to Data via RabbitMQ, Data updates the latest-value cache and writes to PostgreSQL, and point commands run over the reverse asynchronous path and report results back.'
+  zh: 图 14-6 IoT DC3 设备数据链路：协议 Driver 经消息端口把位号值交给 Data，Data 更新最新值缓存并经 TsdbStore 持久化；RabbitMQ 表示默认消息适配器。
+  en: 'Figure 14-6 The IoT DC3 device data path: protocol Drivers pass point values to Data through the message port, Data updates the latest-value cache and persists through TsdbStore, and RabbitMQ depicts the default message adapter.'
 labels:
   en:
     图 14-6 设备接入与数据流: 'Figure 14-6 Device Access & Data Flow'
-    ? 上行 Device→Driver→RabbitMQ→Data→Caffeine/PostgreSQL；下行 Client→Gateway→Data→RabbitMQ→Driver→Device，执行结果按 commandId 沿消息链回执到 Data。
-    : 'Uplink Device→Driver→RabbitMQ→Data→Caffeine/PostgreSQL; downlink Client→Gateway→Data→RabbitMQ→Driver→Device, with execution results returned to Data by commandId along the message chain.'
+    ? 上行 Device→Driver→消息端口→Data→Caffeine/TsdbStore；下行 Client→Gateway→Data→消息端口→Driver→Device，图中 RabbitMQ 表示默认适配器。
+    : 'Uplink Device→Driver→message port→Data→Caffeine/TsdbStore; downlink Client→Gateway→Data→message port→Driver→Device, with RabbitMQ depicting the default adapter.'
     上行位号值与下行命令分泳道；执行回执沿消息链返回并更新命令状态: 'Uplink point values and downlink commands in separate lanes; execution receipts return along the message chain and update command status'
     上行：位号值与状态: 'Uplink: point values & status'
     设备: 'Device'
@@ -168,14 +168,15 @@ labels:
     异步队列: 'Async Queue'
     消费与批量: 'Consume & Batch'
     存储: 'Storage'
+    Caffeine / TsdbStore: Caffeine / TsdbStore
     查询: 'Query'
     发布: 'Publish'
     消费: 'Consume'
     缓存/落库: 'Cache / Persist'
     读取: 'Read'
-    Data：更新 Caffeine 最新值，批量写 PostgreSQL，再处理告警规则: 'Data: update the Caffeine latest value, batch-write PostgreSQL, then process alarm rules'
+    Data：更新 Caffeine 最新值，经 TsdbStore 批量持久化: 'Data: update the Caffeine latest value and persist batches through TsdbStore'
     先保存再处理规则，保证告警基于已落库数据: 'Save first, then run rules, so alarms are based on persisted data'
-    RabbitMQ 吸收上报洪峰，Driver 与 Data 不同步阻塞: 'RabbitMQ absorbs reporting peaks, so Driver and Data never block on each other'
+    默认 RabbitMQ 解耦 Driver 与 Data；其他适配器需复验: 'Default RabbitMQ decouples Drivers and Data; other adapters require validation'
     上行只向前推进，不等待消费端回执: 'Uplink only moves forward, never waiting for consumer receipts'
     下行：命令与执行回执: 'Downlink: commands & execution receipts'
     客户端: 'Client'
@@ -192,4 +193,4 @@ labels:
     完整回执：设备结果 → Driver → RabbitMQ → Data: 'Full receipt: device result → Driver → RabbitMQ → Data'
     Data 按 commandId 更新命令状态并供客户端查询或订阅: 'Data updates command status by commandId for clients to query or subscribe'
     客户端查询或订阅命令状态: 'Client queries or subscribes to command status'
-    图 14-6 RabbitMQ 承载上行位号值、下行命令与执行回执，Data 统一维护数据和命令状态。: 'Figure 14-6 RabbitMQ carries uplink point values, downlink commands, and execution receipts; Data maintains data and command status uniformly.'
+    图 14-6 消息端口承载上行、命令与回执；RabbitMQ 表示默认适配器。: 'Figure 14-6 The message port carries uplink values, commands, and receipts; RabbitMQ depicts the default adapter.'

@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图 13-8 中心化 vs 去中心化物联网架构对比图</title>
-  <desc id="desc">中心化单点失效会扩大到全网；去中心化仅在故障未超容错阈值且 quorum 可达时，单节点失效不影响全局运行。</desc>
+  <desc id="desc">未做冗余的中心服务存在单点故障；共识网络只有在故障未超容错阈值且 quorum 可达时才保持可用，两者都需要工程化容灾。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
@@ -42,7 +42,7 @@
 
   <!-- 单点失效红框 -->
   <rect x="330" y="205" width="340" height="122" rx="12" fill="none" stroke="#DC2626" stroke-width="1.6" stroke-dasharray="8 4"/>
-  <text x="500" y="200" font-size="11" font-weight="700" fill="#DC2626" text-anchor="middle">单点失效 → 全网不可用</text>
+  <text x="500" y="200" font-size="11" font-weight="700" fill="#DC2626" text-anchor="middle">未做冗余 → 单点故障</text>
 
   <!-- 设备群 -->
   <g font-size="12" font-weight="700" fill="#0F172A" text-anchor="middle">

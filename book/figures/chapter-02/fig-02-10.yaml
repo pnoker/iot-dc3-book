@@ -1,133 +1,52 @@
+---
+id: fig-02-10
 type: flowchart
-title: 图2-10 规则引擎数据流：温度超标触发报警与自动控制
-purpose: 展示从设备上报温度值，经规则引擎判断，最终触发告警和命令下发的完整流程。
-audience_takeaway: 规则引擎在数据闭环中的位置：不直接操作硬件，而是通过Data中心间接下发命令。
-visual_focus: 规则引擎菱形节点作为分支点，向上走告警路径，向下走命令路径。
+title: 图2-10 可选ECA Workflow：告警与受控动作
+purpose: 展示独立规则或 Workflow 如何消费位号事件，并区分告警通知与需要策略、确认和审计的设备写操作。
+audience_takeaway: ECA 是项目可选扩展，不是 Manager 的默认事实；规则服务不直连硬件，候选 Action 必须经治理后进入 Data 命令链。
+visual_focus: 规则节点向告警和候选 Action 分叉，候选 Action 经策略确认后回到命令总线。
 design_level: logical
-layout: 水平从左到右，数据流在上路，告警和命令流在下路分叉。
+layout: 水平主链从设备到规则服务，上方为告警分支，下方为确认后回到命令总线的回路。
 elements:
-- 温度传感器、Gateway 与 Data 中心
-- Manager 规则引擎
-- 告警通知与风扇调速命令
+  - 温度传感器、协议 Driver 与 RabbitMQ
+  - 可选规则或 Workflow
+  - 告警通知与策略确认
 relationships:
-- 温度传感器 → Gateway → Data 中心 → 规则引擎：温度事件进入 ECA 判断
-- 规则引擎 → 告警通知：黄牌或红牌条件成立时发送通知
-- 规则引擎 → 下发命令 → Data 中心：红牌条件成立时提交风扇调速命令
-components:
-- id: sensor_device
-  label: 温度传感器
-  type: edge
-  subtitle: 现场设备
-  group: ''
-  priority: primary
-  shape: actor
-- id: gateway_service
-  label: Gateway中心
-  type: platform
-  subtitle: 协议接入
-  group: ''
-  priority: normal
-  shape: card
-- id: data_center
-  label: Data中心
-  type: data
-  subtitle: 存储与转发
-  group: ''
-  priority: normal
-  shape: database
-- id: rule_engine
-  label: Manager规则引擎
-  type: decision
-  subtitle: ECA判断
-  group: ''
-  priority: primary
-  shape: decision
-- id: alert_action
-  label: 告警通知
-  type: process
-  subtitle: 邮件/短信/微信
-  group: ''
-  priority: normal
-  shape: card
-- id: command_action
-  label: 下发命令
-  type: process
-  subtitle: 风扇调速
-  group: ''
-  priority: primary
-  shape: card
-connections:
-- from: sensor_device
-  to: gateway_service
-  label: 数据流
-  style: solid
-  direction: left-to-right
-- from: gateway_service
-  to: data_center
-  label: 数据流
-  style: solid
-  direction: left-to-right
-- from: data_center
-  to: rule_engine
-  label: 数据流
-  style: solid
-  direction: left-to-right
-- from: rule_engine
-  to: alert_action
-  label: 条件为真（黄/红）
-  style: dashed
-  direction: bottom-to-top
-- from: rule_engine
-  to: command_action
-  label: 条件为真（红牌）
-  style: solid
-  direction: left-to-right
-- from: command_action
-  to: data_center
-  label: 命令转发
-  style: solid
-  direction: right-to-left
-callouts:
-- 规则引擎不直接连接设备，命令通过Data中心的消息队列发送。
-- 红色路径代表高风险动作，通常需要人工确认或日志记录。
-legend:
-- 实线箭头：数据流或命令流
-- 虚线箭头：告警流
-- 菱形：决策节点（黄色背景）
-- 蓝色节点：核心服务；橙色节点：高风险动作
-visual_constraints:
-- 最多6个节点，避免拥挤。
-- 决策菱形置于中部，上下游清晰。
-render_notes: 画布600×250，水平从左到右。设备用传感器图标，菱形用黄色背景，其他卡片用浅灰。箭头标注短标签，见图例。
+  - 温度传感器 → Driver → RabbitMQ → 规则服务：位号事件输入
+  - 规则服务 → 告警通知：无设备副作用的告警链
+  - 规则服务 → 策略与确认 → RabbitMQ：受控命令链
 caption:
-  zh: 图2-10 规则引擎数据流（温度超标示例）。规则引擎是数据闭环中的分叉点：向上产出告警通知，向下经 Data 中心间接下发命令——它自己从不直接操作硬件。
-  en: 'Figure 2-10 The rule-engine data flow from event input to alarm and command outputs.'
+  zh: 图2-10 可选规则服务消费位号事件；告警走通知链，设备动作经策略与确认后回到命令总线。
+  en: Figure 2-10 An optional rule service consumes point events; alerts use the notification path, while device actions return to the command bus only after policy checks and confirmation.
+render_notes: 保持既有水平 SVG 布局；告警使用危险色虚线，数据和受控命令使用主色实线。
 labels:
   en:
-    图2-10 规则引擎数据流：温度超标触发报警与自动控制: 'Figure 2-10 Rule-Engine Data Flow: Temperature Alarm & Auto Control'
-    温度传感器上报事件，经 Gateway 与 Data 中心进入 Manager 规则引擎做 ECA 判断，触发告警通知或下发风扇调速命令，命令经 Data 中心转发回设备。: A temperature sensor reports an event that passes through Gateway and the Data center into the Manager rule engine for ECA evaluation, triggering an alarm notification or a fan-speed command that the Data center forwards back to the device.
-    ECA 判断分流告警与命令，写操作经 Data 回到设备: ECA evaluation splits alarms from commands; writes return to the device via the Data center
-    数据流: Data Flow
-    事件输入: Event Input
-    黄 / 红牌: Yellow / Red Card
-    仅红牌: Red Card Only
-    命令转发: Command Forwarding
-    温度传感器: Temperature Sensor
-    现场设备: Field Device
-    协议接入: Protocol Access
-    Data 中心: Data Center
-    存储与转发: Store & Forward
-    规则引擎: Rule Engine
-    ECA 判断: ECA Evaluation
-    下发命令: Send Command
-    风扇调速: Fan Speed Control
-    告警通知: Alarm Notification
-    邮件 / 短信 / 微信: Email / SMS / WeChat
-    规则引擎不直连硬件：命令经 Data 中心转发，高风险写操作需校验与审计。: 'The rule engine never touches hardware directly: commands go through the Data center, and high-risk writes require verification and audit.'
-    平台服务: Platform Service
-    决策节点: Decision Node
-    执行动作: Execution Action
-    告警动作: Alarm Action
-    数据/命令流: Data / Command Flow
-    告警流: Alarm Flow
-    图2-10 黄红牌触发告警，红牌命令由 Data 中心转发回设备，规则引擎不直连硬件。: Figure 2-10 Yellow and red cards raise alarms; red-card commands return to the device through the Data center, and the rule engine never connects to hardware directly.
+    图2-10 可选ECA Workflow：告警与受控动作: Figure 2-10 Optional ECA Workflow for alerts and governed actions
+    温度事件经 Driver 和 RabbitMQ 进入可选规则服务，告警可直接通知，设备写动作必须经过策略、确认和审计后回到命令总线。: Temperature events enter an optional rule service through the Driver and RabbitMQ. Alerts can notify directly, while device writes must return to the command bus after policy checks, confirmation, and audit.
+    参考扩展，不代表 Manager 内置规则引擎: Reference extension, not a built-in Manager rule engine
+    现场数据: Field data
+    发布事件: Publish event
+    订阅输入: Subscribe input
+    告警事件: Alert event
+    候选 Action: Proposed Action
+    确认后进入命令总线: Enter command bus after confirmation
+    温度传感器: Temperature sensor
+    现场设备: Field device
+    协议 Driver: Protocol Driver
+    解析与位号映射: Parsing and point mapping
+    RabbitMQ: RabbitMQ
+    事件与命令总线: Event and command bus
+    规则 / Workflow: Rule / Workflow
+    可选 ECA 扩展: Optional ECA extension
+    策略与确认: Policy and confirmation
+    值域 · 互锁 · 审批: Range · interlock · approval
+    告警通知: Alert notification
+    通知渠道与告警状态: Notification channels and alert state
+    规则服务不直连硬件：写操作经策略确认后，由 Data 命令接口与 Driver 链路执行。: The rule service does not connect directly to hardware. Writes run through the Data command API and Driver path after policy confirmation.
+    平台服务: Platform service
+    决策节点: Decision node
+    执行动作: Action
+    告警动作: Alert action
+    数据/命令流: Data / command flow
+    告警流: Alert flow
+    图2-10 可选规则服务消费位号事件；告警走通知链，设备动作经策略与确认后回到命令总线。: Figure 2-10 An optional rule service consumes point events; alerts use the notification path, while device actions return to the command bus only after policy checks and confirmation.

@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图 13-7 基于区块链的供应链溯源系统分层架构</title>
-  <desc id="desc">原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录，不直接绕过信任层访问设备。</desc>
+  <desc id="desc">原始数据经授权的数据服务保留链下，摘要与签名状态可写入账本；应用读取原文后可用账本证据复核。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
 
@@ -29,7 +29,7 @@
   <!-- 标题 -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 13-7 基于区块链的供应链溯源系统分层架构</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">应用只能经区块链网络查询可信记录，不直接绕过信任层访问设备</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">业务数据走授权数据服务，账本提供独立验证证据</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
   <!-- ===== 应用层 ===== -->
@@ -93,7 +93,7 @@
   </g>
 
   <!-- 图注 -->
-  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 13-7 原始数据保留链下，哈希、签名与元数据上链；应用层通过区块链网络查询可信记录。</text>
+  <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 13-7 链下数据服务负责原文访问，账本负责多方可验证的摘要与状态。</text>
   </svg>
 </svg>
   </main>

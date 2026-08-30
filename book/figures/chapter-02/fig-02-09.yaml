@@ -1,7 +1,7 @@
 type: lifecycle
-title: 图2-9 设备生命周期状态机
-purpose: 展示 Manager 中心管理的设备从注册到退役的完整状态流转。
-audience_takeaway: 设备状态的迁移条件，以及状态变化如何触发规则引擎事件。
+title: 图2-9 设备生命周期参考状态机
+purpose: 展示一种从配置、连接、维护到退役的通用状态设计，并强调实际字段、心跳来源和迁移条件需要单独验证。
+audience_takeaway: 生命周期不能只用一个在线布尔值表示；图中状态是参考模型，不代表当前 Manager 已实现同名状态机或自动规则事件。
 visual_focus: 核心流转路径：未激活→在线→离线→在线（循环），以及任意状态→已注销的终结路径。
 design_level: logical
 layout: 五个状态节点呈环形分布，顺时针方向流转，终结节点放在底部中央。
@@ -96,7 +96,7 @@ connections:
   style: dashed
   direction: bottom-to-top
 callouts:
-- 状态变化是规则引擎触发事件的关键输入源。
+- 配置状态、连接状态和业务状态在实现中应分开记录。
 - 从任意状态到'已注销'的路径表示管理员强制移除设备。
 legend:
 - 实线箭头：正常迁移路径
@@ -107,13 +107,13 @@ visual_constraints:
 - 终结路径统一使用虚线，避免与正常流转混淆。
 render_notes: 画布400×300，推荐使用有向图布局，顺时针。节点颜色按图例，箭头带条件短语，字号10px。
 caption:
-  zh: 图2-9 设备生命周期状态机。“在线↔离线”由失联阈值与上报恢复自动驱动，而“维护中”与“已注销”只能由运维干预触发——状态迁移条件决定了监控告警与规则事件的触发时机。
-  en: 'Figure 2-9 The five device states from registration to retirement and the transition conditions between them.'
+  zh: 图2-9 生命周期应区分配置、连接与业务状态；图中迁移需用实际心跳和管理流程验证。
+  en: 'Figure 2-9 A lifecycle should separate configuration, connection, and business states; the illustrated transitions require validation against actual heartbeat and management processes.'
 labels:
   en:
-    图2-9 设备生命周期状态机: Figure 2-9 Device Lifecycle State Machine
-    设备从注册到退役的五个状态：未激活、在线、离线、维护中与已注销，以及状态间的迁移条件。: Five device states from registration to retirement — inactive, online, offline, in maintenance, and deregistered — plus the transition conditions between them.
-    正常迁移形成在线循环，任意状态可终结为已注销: Normal transitions cycle through online; any state can end in deregistered
+    图2-9 设备生命周期参考状态机: Figure 2-9 Reference Device Lifecycle State Machine
+    一种通用设备生命周期设计，状态名称和迁移条件需要按实际平台字段、心跳来源和业务流程落地。: A generic device-lifecycle design whose state names and transitions must be implemented against actual platform fields, heartbeat sources, and business processes.
+    通用设计示例，不代表当前 Manager 已实现同名状态: Generic design example; it does not imply that the current Manager implements states with these names
     首次上报: First Report
     失联超阈值: Offline Past Threshold
     恢复上报: Reporting Resumes
@@ -130,4 +130,4 @@ labels:
     在线 / 维护中: Online / Maintenance
     正常迁移: Normal Transition
     终结迁移（永久移除）: Terminal Transition (Permanent Removal)
-    图2-9 设备可在在线、离线和维护间恢复，管理员可从任意状态永久注销设备。: Figure 2-9 Devices move recoverably among online, offline, and maintenance; an admin can permanently deregister a device from any state.
+    图2-9 生命周期应区分配置、连接与业务状态；图中迁移需用实际心跳和管理流程验证。: Figure 2-9 A lifecycle should separate configuration, connection, and business states; the illustrated transitions require validation against actual heartbeat and management processes.

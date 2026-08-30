@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图2-7 IoT DC3 一个网关与四个中心的逻辑关系</title>
-  <desc id="desc">Gateway 是北向唯一入口，Auth 提供鉴权上下文，Manager 提供元数据，Data 是数据核心枢纽，Agentic 是 AI 能力层，数据经消息队列解耦采集与命令下发。</desc>
+  <desc id="desc">Gateway 是外部 HTTP 入口，Auth 建立平台主体，Manager 管元数据，Data 管位号值与命令，Agentic 管模型、会话和 Tools；图中 RabbitMQ 与 PostgreSQL 表示默认适配器所在的基础设施。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
@@ -73,11 +73,11 @@
     <text x="1450" y="470" font-size="15" fill="#475569" text-anchor="middle">大模型 · 工具调用</text>
 
     <rect x="800" y="680" width="300" height="90" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
-    <text x="950" y="726" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">消息队列</text>
+    <text x="950" y="726" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">RabbitMQ</text>
     <text x="950" y="750" font-size="15" fill="#475569" text-anchor="middle">AMQP</text>
 
     <rect x="1180" y="680" width="300" height="90" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
-    <text x="1330" y="726" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">时序数据库</text>
+    <text x="1330" y="726" font-size="22" font-weight="700" fill="#0F172A" text-anchor="middle">PostgreSQL</text>
     <text x="1330" y="750" font-size="15" fill="#475569" text-anchor="middle">位号值存储</text>
 
     <!-- 图例 -->
@@ -96,7 +96,7 @@
     <text x="1630" y="866" font-size="16" fill="#475569">AMQP 消息</text>
 
     <!-- 图注 -->
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-7 网关与四个中心按入口、准入、定义、数据流转和智能推理分工协作，数据经消息队列解耦采集与命令下发。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-7 五个服务按职责分工；RabbitMQ 与 PostgreSQL 表示默认部署，可由端口适配器替换。</text>
   </svg>
 </svg>
   </main>

@@ -74,12 +74,12 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，三角形布局，三节点等距分布，中心标注闭环区域，边标注交互关系。节点使用圆角矩形，颜色匹配palette。箭头使用不同纹理（实线和虚线）。
 caption:
-  zh: 图 13-11 展示AI、区块链、物联网三者如何形成数据可信→模型可靠→决策可审计的闭环。
+  zh: 图 13-11 展示 IoT 观测、AI 推理与跨组织存证的可选组合，并强调数据真实性、模型可靠性与执行安全仍需分别验证。
   en: 'Figure 13-11 How AI, blockchain, and IoT together form a closed loop of trusted data → reliable models → auditable decisions.'
 labels:
   en:
     图 13-11 AI+区块链+物联网三角范式关系图: Figure 13-11 The AI + Blockchain + IoT Triangle
-    IoT 提供可信数据，AI 生成推理结果，区块链完成存证并约束受控执行，构成可审计的可信智能闭环。: IoT supplies trusted data, AI produces inference, blockchain attests and constrains execution — an auditable trusted-intelligence loop.
+    IoT 提供带来源和质量信息的观测，AI 生成待验证结果，账本可记录跨组织证据；受控执行仍由授权与策略边界完成。: IoT supplies observations with provenance and quality, AI produces results to validate, and a ledger may record cross-organization evidence; authorization and policy still govern execution.
     数据可信 → 模型可靠 → 决策可审计，形成受控智能闭环: Trusted data → reliable models → auditable decisions
     推理 · 预测 · 模型训练: Inference · Prediction · Training
     推理引擎 · 联邦聚合 · 模型服务: Inference engine · federated aggregation · model serving
@@ -95,4 +95,4 @@ labels:
     结果 · 参数哈希 · 训练轮次摘要: Results · parameter hashes · round digests
     信任执行: Trusted execution
     预言机与智能合约仅触发经鉴权、策略校验和审计的设备操作: Only authenticated, policy-checked, audited device actions are triggered
-    图 13-11 IoT 提供可信数据，AI 生成推理结果，区块链完成存证并约束受控执行。: Figure 13-11 IoT supplies trusted data, AI produces inference, blockchain attests and constrains execution.
+    图 13-11 观测、推理与存证各有边界，任一环节都不能自动证明下一环节可信。: Figure 13-11 Observation, inference, and attestation have separate boundaries; no stage automatically proves the next one trustworthy.

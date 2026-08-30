@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图2-8 认证流程时序图：用户登录到设备列表访问</title>
-  <desc id="desc">用户经 Gateway 向 Auth 中心登录换取 JWT，再携带令牌请求设备列表，Gateway 完成令牌与权限校验后转发给 Manager 中心查询并返回。</desc>
+  <desc id="desc">用户经 Gateway 调用 Auth 换取平台 Token，再携带项目约定的认证头请求设备列表；Gateway 执行入口策略，Manager 仍校验资源边界。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
@@ -28,7 +28,7 @@
     <!-- 标题区 -->
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
     <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图2-8 认证流程时序图：用户登录到设备列表访问</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">Auth 集中认证授权，Gateway 验票路由，Manager 只执行业务</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">认证、入口过滤与资源授权是三个边界</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
     <!-- 生命线（先画，在最底层） -->
@@ -76,23 +76,23 @@
 
     <!-- 内部操作（自循环，灰虚线框） -->
     <rect x="1225" y="342" width="200" height="32" rx="8" fill="#F8FAFC" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 3"/>
-    <text x="1325" y="362" font-size="14" fill="#475569" text-anchor="middle">3 核对凭证并签发 JWT</text>
+    <text x="1325" y="362" font-size="14" fill="#475569" text-anchor="middle">3 核对凭证并签发 Token</text>
     <line x1="1200" y1="358" x2="1225" y2="358" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#mk-gray)"/>
 
     <rect x="1585" y="707" width="200" height="32" rx="8" fill="#F8FAFC" stroke="#64748B" stroke-width="1.6" stroke-dasharray="5 3"/>
-    <text x="1685" y="727" font-size="14" fill="#475569" text-anchor="middle">12 查询租户设备列表</text>
+    <text x="1685" y="727" font-size="14" fill="#475569" text-anchor="middle">12 校验资源并查询</text>
     <line x1="1560" y1="723" x2="1585" y2="723" stroke="#64748B" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#mk-gray)"/>
 
     <!-- 消息标签 -->
     <text x="520" y="261" font-size="14" fill="#475569" text-anchor="middle">1 登录请求</text>
     <text x="980" y="301" font-size="14" fill="#475569" text-anchor="middle">2 透传认证</text>
     <text x="980" y="381" font-size="14" fill="#475569" text-anchor="middle">4 返回令牌</text>
-    <text x="520" y="421" font-size="14" fill="#475569" text-anchor="middle">5 返回 JWT</text>
+    <text x="520" y="421" font-size="14" fill="#475569" text-anchor="middle">5 返回 Token</text>
     <text x="520" y="466" font-size="14" fill="#475569" text-anchor="middle">6 请求设备列表</text>
     <text x="980" y="506" font-size="14" fill="#475569" text-anchor="middle">7 验证 Token</text>
     <text x="980" y="546" font-size="14" fill="#475569" text-anchor="middle">8 返回角色与租户</text>
-    <text x="980" y="586" font-size="14" fill="#475569" text-anchor="middle">9 校验权限与租户</text>
-    <text x="980" y="626" font-size="14" fill="#475569" text-anchor="middle">10 权限通过</text>
+    <text x="980" y="586" font-size="14" fill="#475569" text-anchor="middle">9 执行入口策略</text>
+    <text x="980" y="626" font-size="14" fill="#475569" text-anchor="middle">10 入口允许</text>
     <text x="1160" y="666" font-size="14" fill="#475569" text-anchor="middle">11 转发（带用户上下文）</text>
     <text x="1160" y="746" font-size="14" fill="#475569" text-anchor="middle">13 返回设备列表</text>
     <text x="520" y="786" font-size="14" fill="#475569" text-anchor="middle">14 200 OK</text>
@@ -106,7 +106,7 @@
     <text x="742" y="877" font-size="16" fill="#475569">内部操作（自循环）</text>
 
     <!-- 图注 -->
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-8 Auth 统一签发并校验令牌，Gateway 拦截与路由，Manager 仅基于认证上下文查询业务数据。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图2-8 Auth 建立平台主体，Gateway 执行入口策略，Manager 仍按租户与资源语义授权查询。</text>
   </svg>
 </svg>
   </main>

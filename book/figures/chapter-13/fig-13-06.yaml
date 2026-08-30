@@ -1,6 +1,6 @@
 type: matrix
 title: 图 13-6 供应链核心痛点与区块链价值点映射
-audience_takeaway: 每个痛点都有对应价值点且为线性映射，最粗箭头表明'信息孤岛→多方共享账本'是区块链在供应链中力度最大的解。
+audience_takeaway: 供应链痛点可映射到共享账本、签名、事件日志和合约等候选机制，但收益取决于信任边界、治理与替代方案。
 purpose: 展示供应链场景的四个典型困难与区块链技术对应解耦方案的映射关系。
 visual_focus: 从每一条痛点通过虚线箭头指向其直接对应的价值点，其中信息孤岛→分布式账本的箭头最粗的主链路。
 design_level: decision
@@ -44,7 +44,7 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 错位排列，每对映射下方可附加简短文字说明。采用HTML/SVG渲染，圆角矩形，背景浅色。
 caption:
-  zh: 图 13-6 供应链协同中‘信任’是核心障碍。区块链通过去中心化共享和不可篡改记录提供解耦方案。
+  zh: 图 13-6 共享账本、签名、事件日志与合约可作为跨组织协作的候选工具，但不会自动解决数据源真实性和治理风险。
   en: 'Figure 13-6 In supply-chain collaboration, trust is the core obstacle. Blockchain offers a decoupling solution through decentralized sharing and tamper-proof records.'
 labels:
   en:
@@ -64,14 +64,14 @@ labels:
     分布式账本: Distributed Ledger
     多方数据共享: Multi-party data sharing
     时间戳 + 数字签名: Timestamp + Digital Signature
-    数据不可篡改: Tamper-proof data
+    历史改写可发现: Detectable history rewrites
     全链路事件日志: End-to-end event log
     可追踪: Traceable
     智能合约: Smart Contract
     自动化审计: Automated audit
     打破信息孤岛，实现共享: Break silos, enable sharing
-    防伪验证，不可篡改: Tamper-proof verification
+    签名核验，篡改可发现: Signature checks, detectable tampering
     全链路追踪，召回精准: Precise end-to-end tracing
     自动化审计，降低成本: Automated audit, lower cost
-    左侧橙色为痛点，右侧蓝色为区块链价值点；线宽表示解决力度，信息孤岛 → 分布式账本的力度最大。: Left orange = pain points, right blue = blockchain value; line width = resolving power; silos → ledger is strongest.
-    图 13-6 供应链协同中「信任」是核心障碍，区块链通过去中心化共享和不可篡改记录提供解耦方案。: Figure 13-6 Trust is the core supply-chain obstacle; blockchain fixes it with decentralized sharing and tamper-proof records.
+    箭头表示候选映射；真正收益取决于参与方、治理和替代方案比较。: Arrows show candidate mappings; actual value depends on participants, governance, and alternatives.
+    图 13-6 账本是跨组织协作的候选工具，不自动消除数据源和治理风险。: Figure 13-6 A ledger is a candidate tool for cross-organization collaboration, not an automatic fix for source-data or governance risks.
