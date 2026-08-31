@@ -12,24 +12,24 @@ export function useImmersiveHeader() {
   let frame = 0
   let progress = 0
   let targetProgress = 0
-  let expandedWidth = 0
   let reducedMotion = false
+  let headerContainer: HTMLElement | null = null
+  let startWidth = 0
+  let endWidth = 0
+  let endPadding = 12
 
   function easedProgress(scrollY: number) {
     const raw = Math.min(1, Math.max(0, (scrollY - 4) / 96))
     return raw * raw * (3 - 2 * raw)
   }
 
-  function applyProgress(nextProgress: number) {
-    const root = document.documentElement
-    root.style.setProperty('--dc3-nav-progress', nextProgress.toFixed(4))
+  function resolveHeaderContainer() {
+    headerContainer = document.querySelector<HTMLElement>('.VPNavBar > .wrapper > .container')
+    return headerContainer
+  }
 
-    if (nextProgress < 0.0001) {
-      headerProperties.slice(1).forEach((property) => root.style.removeProperty(property))
-      return
-    }
-
-    const viewportWidth = document.querySelector<HTMLElement>('.dc3-book-home-layout')?.getBoundingClientRect().width
+  function measureGeometry() {
+    const viewportWidth = document.querySelector<HTMLElement>('.dc3-book-immersive-layout')?.getBoundingClientRect().width
       || document.documentElement.clientWidth
     const compact = viewportWidth < 768
     const medium = viewportWidth >= 768 && viewportWidth < 1280
@@ -37,16 +37,29 @@ export function useImmersiveHeader() {
     const responsiveStartWidth = compact || medium
       ? viewportWidth - startGutter
       : Math.min(1360, viewportWidth - startGutter)
-    const startWidth = expandedWidth || responsiveStartWidth
     const contentWidth = document.querySelector<HTMLElement>('.book-home-container')?.getBoundingClientRect().width
+      || document.querySelector<HTMLElement>('.figure-gallery')?.getBoundingClientRect().width
       || document.querySelector<HTMLElement>('.VPHero .container')?.getBoundingClientRect().width
-    const endWidth = contentWidth || Math.min(1152, viewportWidth - startGutter)
-    const endPadding = compact ? 8 : medium ? 10 : 12
 
-    root.style.setProperty('--dc3-nav-width', `${startWidth + (endWidth - startWidth) * nextProgress}px`)
-    root.style.setProperty('--dc3-nav-height', `${64 - 12 * nextProgress}px`)
-    root.style.setProperty('--dc3-nav-offset', `${6 * nextProgress}px`)
-    root.style.setProperty('--dc3-nav-padding', `${endPadding * nextProgress}px`)
+    startWidth = responsiveStartWidth
+    endWidth = contentWidth || Math.min(1152, viewportWidth - startGutter)
+    endPadding = compact ? 8 : medium ? 10 : 12
+  }
+
+  function applyProgress(nextProgress: number) {
+    const target = headerContainer || resolveHeaderContainer()
+    if (!target) return
+    target.style.setProperty('--dc3-nav-progress', nextProgress.toFixed(4))
+
+    if (nextProgress < 0.0001) {
+      headerProperties.slice(1).forEach((property) => target.style.removeProperty(property))
+      return
+    }
+
+    target.style.setProperty('--dc3-nav-width', `${startWidth + (endWidth - startWidth) * nextProgress}px`)
+    target.style.setProperty('--dc3-nav-height', `${64 - 12 * nextProgress}px`)
+    target.style.setProperty('--dc3-nav-offset', `${6 * nextProgress}px`)
+    target.style.setProperty('--dc3-nav-padding', `${endPadding * nextProgress}px`)
   }
 
   function animate() {
@@ -58,16 +71,13 @@ export function useImmersiveHeader() {
     if (progress !== targetProgress) frame = requestAnimationFrame(animate)
     else {
       frame = 0
-      document.documentElement.classList.remove('dc3-nav-animating')
+      headerContainer?.classList.remove('dc3-nav-animating')
     }
   }
 
   function syncState() {
     targetProgress = easedProgress(window.scrollY)
-    if (!expandedWidth && progress < 0.0001 && targetProgress > 0) {
-      expandedWidth = document.querySelector<HTMLElement>('.VPNavBar > .wrapper > .container')
-        ?.getBoundingClientRect().width || 0
-    }
+    if (progress < 0.0001 && targetProgress > 0) measureGeometry()
 
     if (reducedMotion) {
       progress = targetProgress
@@ -75,26 +85,27 @@ export function useImmersiveHeader() {
       return
     }
     if (!frame) {
-      document.documentElement.classList.add('dc3-nav-animating')
+      headerContainer?.classList.add('dc3-nav-animating')
       frame = requestAnimationFrame(animate)
     }
   }
 
   function syncViewport() {
-    expandedWidth = 0
+    resolveHeaderContainer()
+    measureGeometry()
     applyProgress(progress)
-    if (progress < 0.0001) {
-      expandedWidth = document.querySelector<HTMLElement>('.VPNavBar > .wrapper > .container')
-        ?.getBoundingClientRect().width || 0
-    }
   }
 
   onMounted(() => {
+    // 变量只挂在 Header 容器上，避免 Figures 页的上万个 SVG 节点参与每帧样式重算。
+    headerProperties.forEach((property) => document.documentElement.style.removeProperty(property))
+    document.documentElement.classList.remove('dc3-nav-animating')
+    resolveHeaderContainer()
+    measureGeometry()
     reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     progress = easedProgress(window.scrollY)
     targetProgress = progress
     applyProgress(progress)
-    if (progress < 0.0001) syncViewport()
     window.addEventListener('scroll', syncState, {passive: true})
     window.addEventListener('resize', syncViewport, {passive: true})
   })
@@ -104,6 +115,8 @@ export function useImmersiveHeader() {
     window.removeEventListener('scroll', syncState)
     window.removeEventListener('resize', syncViewport)
     document.documentElement.classList.remove('dc3-nav-animating')
-    headerProperties.forEach((property) => document.documentElement.style.removeProperty(property))
+    headerContainer?.classList.remove('dc3-nav-animating')
+    headerProperties.forEach((property) => headerContainer?.style.removeProperty(property))
+    headerContainer = null
   })
 }

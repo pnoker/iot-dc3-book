@@ -1,7 +1,7 @@
-/* 首页沉浸式导航：与 iot-dc3-online 的滚动胶囊使用同一组状态变量与曲线。 */
-html:has(.dc3-book-home-layout) { scrollbar-gutter: stable; }
+/* 首页与全书插图页共用沉浸式导航：与 iot-dc3-online 使用同一组滚动状态变量与曲线。 */
+html:has(.dc3-book-immersive-layout) { scrollbar-gutter: stable; }
 
-.dc3-book-home-layout .VPNavBar {
+.dc3-book-immersive-layout .VPNavBar {
     padding-right: 0 !important;
     padding-left: 0 !important;
     background: transparent !important;
@@ -10,12 +10,12 @@ html:has(.dc3-book-home-layout) { scrollbar-gutter: stable; }
     transition: none;
 }
 
-.dc3-book-home-layout .VPNavBar .wrapper { padding-right: 0 !important; padding-left: 0 !important; }
-.dc3-book-home-layout .VPNav { position: fixed; inset: 0 0 auto; width: 100%; }
-.dc3-book-home-layout .VPLocalNav { display: none !important; }
-.dc3-book-home-layout .VPNavBar .divider { opacity: 0; }
+.dc3-book-immersive-layout .VPNavBar .wrapper { padding-right: 0 !important; padding-left: 0 !important; }
+.dc3-book-immersive-layout .VPNav { position: fixed; inset: 0 0 auto; width: 100%; }
+.dc3-book-immersive-layout .VPLocalNav { display: none !important; }
+.dc3-book-immersive-layout .VPNavBar .divider { opacity: 0; }
 
-.dc3-book-home-layout .VPNavBar > .wrapper > .container {
+.dc3-book-immersive-layout .VPNavBar > .wrapper > .container {
     position: relative;
     box-sizing: border-box;
     width: var(--dc3-nav-width, calc(100% - 64px));
@@ -32,14 +32,15 @@ html:has(.dc3-book-home-layout) { scrollbar-gutter: stable; }
         inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px) rgba(56, 132, 205, calc(var(--dc3-nav-progress, 0) * 0.06));
     backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
     -webkit-backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+    contain: layout style;
 }
 
-html.dc3-nav-animating .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+.dc3-book-immersive-layout .VPNavBar > .wrapper > .container.dc3-nav-animating {
     will-change: width, height, margin, padding, backdrop-filter;
 }
 
-.dc3-book-home-layout .VPNavBarTitle .title,
-.dc3-book-home-layout .VPNavBar .content-body {
+.dc3-book-immersive-layout .VPNavBarTitle .title,
+.dc3-book-immersive-layout .VPNavBar .content-body {
     border-color: transparent;
     background: transparent;
     box-shadow: none;
@@ -48,21 +49,24 @@ html.dc3-nav-animating .dc3-book-home-layout .VPNavBar > .wrapper > .container {
     transition: none;
 }
 
-.dc3-book-home-layout .VPNavBarTitle .title:hover,
-.dc3-book-home-layout .VPNavBar .content-body:hover { border-color: transparent; box-shadow: none; }
+.dc3-book-immersive-layout .VPNavBarTitle .title:hover,
+.dc3-book-immersive-layout .VPNavBar .content-body:hover {
+    border-color: transparent;
+    box-shadow: none;
+}
 
-.dc3-book-home-layout .VPNavBar > .wrapper > .container > .title,
-.dc3-book-home-layout .VPNavBar > .wrapper > .container > .content {
+.dc3-book-immersive-layout .VPNavBar > .wrapper > .container > .title,
+.dc3-book-immersive-layout .VPNavBar > .wrapper > .container > .content {
     display: flex;
     align-items: center;
     height: 100%;
 }
 
-.dc3-book-home-layout .VPNavBar > .wrapper > .container > .content { justify-content: flex-end; }
-.dc3-book-home-layout .VPNavBarTitle { height: 100%; }
-.dc3-book-home-layout .VPNavBar .content-body { margin-top: 0; margin-bottom: 0; }
+.dc3-book-immersive-layout .VPNavBar > .wrapper > .container > .content { justify-content: flex-end; }
+.dc3-book-immersive-layout .VPNavBarTitle { height: 100%; }
+.dc3-book-immersive-layout .VPNavBar .content-body { margin-top: 0; margin-bottom: 0; }
 
-.dc3-book-home-layout .VPNavBar > .wrapper > .container::after {
+.dc3-book-immersive-layout .VPNavBar > .wrapper > .container::after {
     content: '';
     position: absolute;
     right: 11%;
@@ -76,7 +80,7 @@ html.dc3-nav-animating .dc3-book-home-layout .VPNavBar > .wrapper > .container {
     pointer-events: none;
 }
 
-html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+html.dark .dc3-book-immersive-layout .VPNavBar > .wrapper > .container {
     border-color: rgba(126, 213, 247, calc(var(--dc3-nav-progress, 0) * 0.18));
     background: rgba(12, 27, 43, calc(var(--dc3-nav-progress, 0) * 0.72));
     box-shadow:
@@ -91,12 +95,12 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
 }
 
 @media (min-width: 768px) and (max-width: 1279.98px) {
-    .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+    .dc3-book-immersive-layout .VPNavBar > .wrapper > .container {
         width: var(--dc3-nav-width, calc(100% - 48px));
         max-width: none;
     }
 
-    .dc3-book-home-layout .VPNavBarExtra .VPMenu {
+    .dc3-book-immersive-layout .VPNavBarExtra .VPMenu {
         overflow: visible;
         border-color: rgba(114, 204, 241, 0.34);
         background:
@@ -107,9 +111,9 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         -webkit-backdrop-filter: blur(28px) saturate(1.5);
     }
 
-    .dc3-book-home-layout .VPNavBarExtra .social-links-list { width: 100%; justify-content: center; gap: 2px; }
+    .dc3-book-immersive-layout .VPNavBarExtra .social-links-list { width: 100%; justify-content: center; gap: 2px; }
 
-    html.dark .dc3-book-home-layout .VPNavBarExtra .VPMenu {
+    html.dark .dc3-book-immersive-layout .VPNavBarExtra .VPMenu {
         border-color: rgba(126, 213, 247, 0.22);
         background:
             radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 40%),
@@ -118,8 +122,27 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
     }
 }
 
+/* VitePress 在中、大屏为首页预留了 64px 导航占位。Header 虽然透明，
+   但 Hero 从占位下方才开始绘制，顶部仍会露出一条纯色背景。
+   将完整的 Hero 视觉场向上延伸，同时把内容 padding 补回，正文位置保持不变。 */
+@media (min-width: 641px) and (max-width: 959.98px) {
+    .dc3-book-immersive-layout .VPHome .VPHero {
+        min-height: 100svh;
+        margin-top: calc(0px - var(--vp-nav-height)) !important;
+        padding-top: calc(clamp(24px, 4.5vh, 46px) + var(--vp-nav-height)) !important;
+    }
+}
+
+@media (min-width: 960px) {
+    .dc3-book-immersive-layout .VPHome .VPHero {
+        min-height: 100svh;
+        margin-top: calc(0px - var(--vp-nav-height)) !important;
+        padding-top: calc(clamp(32px, 6vh, 72px) + var(--vp-nav-height)) !important;
+    }
+}
+
 @media (max-width: 767.98px) {
-    .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+    .dc3-book-immersive-layout .VPNavBar > .wrapper > .container {
         width: var(--dc3-nav-width, calc(100% - 24px));
         max-width: none;
         height: var(--dc3-nav-height, var(--vp-nav-height));
@@ -136,16 +159,16 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         transition: none;
     }
 
-    html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
+    html.dark .dc3-book-immersive-layout .VPNavBar > .wrapper > .container {
         border-color: rgba(126, 213, 247, calc(var(--dc3-nav-progress, 0) * 0.2));
         background: rgba(12, 27, 43, calc(var(--dc3-nav-progress, 0) * 0.88));
         box-shadow: 0 calc(var(--dc3-nav-progress, 0) * 18px) calc(var(--dc3-nav-progress, 0) * 48px) rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.38));
     }
 
-    .dc3-book-home-layout .VPNavBar > .wrapper > .container::after { display: none; }
-    html.dc3-nav-animating .dc3-book-home-layout .VPNavBar > .wrapper > .container { will-change: auto; }
+    .dc3-book-immersive-layout .VPNavBar > .wrapper > .container::after { display: none; }
+    .dc3-book-immersive-layout .VPNavBar > .wrapper > .container.dc3-nav-animating { will-change: auto; }
 
-    .dc3-book-home-layout .VPNavScreen {
+    .dc3-book-immersive-layout .VPNavScreen {
         top: calc(var(--vp-nav-height) + 8px);
         right: 12px;
         bottom: auto;
@@ -164,7 +187,7 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         -webkit-backdrop-filter: blur(28px) saturate(1.42);
     }
 
-    .dc3-book-home-layout .VPNavScreen > .container {
+    .dc3-book-immersive-layout .VPNavScreen > .container {
         display: block;
         width: 100%;
         max-width: 360px;
@@ -175,8 +198,8 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         box-shadow: none;
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations,
-    .dc3-book-home-layout .VPNavScreenAppearance {
+    .dc3-book-immersive-layout .VPNavScreenTranslations,
+    .dc3-book-immersive-layout .VPNavScreenAppearance {
         box-sizing: border-box;
         height: 48px;
         border: 1px solid rgba(114, 204, 241, 0.2);
@@ -185,8 +208,8 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations,
-    .dc3-book-home-layout .VPNavScreenTranslations.open {
+    .dc3-book-immersive-layout .VPNavScreenTranslations,
+    .dc3-book-immersive-layout .VPNavScreenTranslations.open {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 4px;
@@ -195,20 +218,20 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         overflow: visible;
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .title,
-    .dc3-book-home-layout .VPNavScreenTranslations .list,
-    .dc3-book-home-layout .VPNavScreenTranslations .item,
-    .dc3-book-home-layout .VPNavScreenTranslations .link {
+    .dc3-book-immersive-layout .VPNavScreenTranslations .title,
+    .dc3-book-immersive-layout .VPNavScreenTranslations .list,
+    .dc3-book-immersive-layout .VPNavScreenTranslations .item,
+    .dc3-book-immersive-layout .VPNavScreenTranslations .link {
         width: 100%;
         height: 38px;
         margin: 0;
         padding: 0;
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .list { display: block !important; }
+    .dc3-book-immersive-layout .VPNavScreenTranslations .list { display: block !important; }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .title,
-    .dc3-book-home-layout .VPNavScreenTranslations .link {
+    .dc3-book-immersive-layout .VPNavScreenTranslations .title,
+    .dc3-book-immersive-layout .VPNavScreenTranslations .link {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -218,7 +241,7 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         text-align: center;
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .title {
+    .dc3-book-immersive-layout .VPNavScreenTranslations .title {
         background: linear-gradient(135deg, rgba(18, 150, 219, 0.16), rgba(75, 88, 210, 0.1));
         box-shadow: 0 3px 10px rgba(10, 108, 178, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.72);
         color: var(--vp-c-brand-1);
@@ -226,26 +249,26 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         cursor: default;
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .link {
+    .dc3-book-immersive-layout .VPNavScreenTranslations .link {
         color: var(--vp-c-text-2);
         font-weight: 560;
         transition: color 180ms ease, background-color 180ms ease;
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .link:hover {
+    .dc3-book-immersive-layout .VPNavScreenTranslations .link:hover {
         background: rgba(18, 150, 219, 0.08);
         color: var(--vp-c-brand-1);
     }
 
-    .dc3-book-home-layout .VPNavScreenTranslations .icon,
-    .dc3-book-home-layout .VPNavScreenTranslations .chevron { display: none; }
-    html[lang^="en"] .dc3-book-home-layout .VPNavScreenTranslations .title { order: 2; }
-    html[lang^="en"] .dc3-book-home-layout .VPNavScreenTranslations .list { order: 1; }
-    .dc3-book-home-layout .VPNavScreenAppearance { padding: 4px 8px 4px 14px; }
-    .dc3-book-home-layout .VPNavScreen .translations + .appearance { margin-top: 10px; }
-    .dc3-book-home-layout .VPNavScreen .social-links { width: 100%; margin-top: 18px; justify-content: center; gap: 2px; }
+    .dc3-book-immersive-layout .VPNavScreenTranslations .icon,
+    .dc3-book-immersive-layout .VPNavScreenTranslations .chevron { display: none; }
+    html[lang^="en"] .dc3-book-immersive-layout .VPNavScreenTranslations .title { order: 2; }
+    html[lang^="en"] .dc3-book-immersive-layout .VPNavScreenTranslations .list { order: 1; }
+    .dc3-book-immersive-layout .VPNavScreenAppearance { padding: 4px 8px 4px 14px; }
+    .dc3-book-immersive-layout .VPNavScreen .translations + .appearance { margin-top: 10px; }
+    .dc3-book-immersive-layout .VPNavScreen .social-links { width: 100%; margin-top: 18px; justify-content: center; gap: 2px; }
 
-    html.dark .dc3-book-home-layout .VPNavScreen {
+    html.dark .dc3-book-immersive-layout .VPNavScreen {
         border-color: rgba(126, 213, 247, 0.2);
         background:
             radial-gradient(circle at 12% 8%, rgba(44, 181, 222, 0.14), transparent 34%),
@@ -254,20 +277,20 @@ html.dark .dc3-book-home-layout .VPNavBar > .wrapper > .container {
         box-shadow: 0 26px 68px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(220, 248, 255, 0.12);
     }
 
-    html.dark .dc3-book-home-layout .VPNavScreenTranslations,
-    html.dark .dc3-book-home-layout .VPNavScreenAppearance {
+    html.dark .dc3-book-immersive-layout .VPNavScreenTranslations,
+    html.dark .dc3-book-immersive-layout .VPNavScreenAppearance {
         border-color: rgba(126, 213, 247, 0.14);
         background: rgba(17, 35, 50, 0.58);
         box-shadow: inset 0 1px 0 rgba(220, 248, 255, 0.08);
     }
 
-    html.dark .dc3-book-home-layout .VPNavScreenTranslations .title {
+    html.dark .dc3-book-immersive-layout .VPNavScreenTranslations .title {
         background: linear-gradient(135deg, rgba(40, 167, 220, 0.2), rgba(94, 98, 222, 0.16));
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(220, 248, 255, 0.1);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .dc3-book-home-layout .VPNavBar > .wrapper > .container { will-change: auto; }
-    .dc3-book-home-layout .VPNavBar > .wrapper > .container::after { animation: none; }
+    .dc3-book-immersive-layout .VPNavBar > .wrapper > .container { will-change: auto; }
+    .dc3-book-immersive-layout .VPNavBar > .wrapper > .container::after { animation: none; }
 }

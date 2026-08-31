@@ -9,6 +9,29 @@ const BOOK_TITLE_EN = 'From Industrial Software to AI Agents'
 const CURRENT_YEAR = new Date().getFullYear()
 const CURRENT_YEAR_HTML = `<time data-current-year datetime="${CURRENT_YEAR}">${CURRENT_YEAR}</time>`
 
+const BRAND_SPARK = '<svg class="dc3-brand-spark" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 .8c.35 3.05 2.15 4.85 5.2 5.2C8.15 6.35 6.35 8.15 6 11.2 5.65 8.15 3.85 6.35.8 6 3.85 5.65 5.65 3.85 6 .8Z"/></svg>'
+
+const navSiteTitle = ({lead, agent, signal, accessible}: {
+  lead: string
+  agent: string
+  signal: string
+  accessible: string
+}) => `<span class="dc3-brand-copy" aria-hidden="true"><span class="dc3-brand-title"><span class="dc3-brand-lead">${lead}</span><strong>${agent}</strong>${BRAND_SPARK}<span class="dc3-brand-agentic">AGENTIC</span></span><span class="dc3-brand-signal">${signal}</span></span><span class="dc3-brand-a11y">${accessible}</span>`
+
+const NAV_SITE_TITLE_ZH = navSiteTitle({
+  lead: '从工业软件到',
+  agent: 'AI 智能体',
+  signal: '感知、推理、行动、进化',
+  accessible: '从工业软件到 AI 智能体，AGENTIC：感知、推理、行动、进化',
+})
+
+const NAV_SITE_TITLE_EN = navSiteTitle({
+  lead: 'From Industrial Software to',
+  agent: 'AI Agents',
+  signal: 'Sense · Reason · Act · Evolve',
+  accessible: 'From Industrial Software to AI Agents, AGENTIC: Sense, Reason, Act, Evolve',
+})
+
 // ── 头部社交图标组（回 home / 图库四叶草 / github / gitee）──
 // 四叶草夹在回 home（dc3.site）与 github 之间，与社交图标同尺寸；iconfont 原版四层绿色，跟随明暗主题；
 // 折叠（平板 extra 菜单 / 移动端抽屉）时随社交图标一起收纳。
@@ -65,7 +88,7 @@ export default defineConfig({
       lang: 'en-US',
       description: `${BOOK_TITLE_EN} — AIoT technology and practice, from IoT platform to agent applications`,
       themeConfig: {
-        siteTitle: BOOK_TITLE_EN,
+        siteTitle: NAV_SITE_TITLE_EN,
         socialLinks: socialLinks('en'),
         outline: {level: [2, 3], label: 'On this page'},
         outlineTitle: 'On this page',
@@ -165,7 +188,7 @@ export default defineConfig({
 
   themeConfig: {
     logo: '/logo.svg',
-    siteTitle: '从工业软件到 AI 智能体',
+    siteTitle: NAV_SITE_TITLE_ZH,
     outline: {level: [2, 3], label: '本页目录'},
     sidebar: {
       '/': sidebarZh(),

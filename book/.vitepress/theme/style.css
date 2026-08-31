@@ -73,22 +73,19 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Remove the old site-wide bottom border; on the home page the top header blends in transparently (the hero is not covered by frosted glass),
-   turning frosted on scroll; doc pages keep VitePress's default bottom divider, echoing the sidebar's vertical line (so it doesn't look "bald"). */
+/* 导航底层保持透明：普通内容页使用左右独立控件层；沉浸式页面再由滚动进度合成单一胶囊。 */
 .VPNav {
     border-bottom: none;
 }
 
 .VPNavBar {
-    background: color-mix(in srgb, var(--vp-c-bg) 85%, transparent);
-    backdrop-filter: saturate(1.4) blur(12px);
-    /* Safari：backdrop-filter 需 -webkit- 前缀，缺失时圆角子元素下沿会渲染黑边 */
-    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
-.VPNavBar.home.top {
-    background-color: transparent;
-    backdrop-filter: none;
+.VPNavBar .divider {
+    opacity: 0;
 }
 
 .VPNavBar.has-sidebar .content {
@@ -114,11 +111,11 @@ body {
    避免阴影被标题裁剪容器截成矩形色块 */
 .VPNavBarTitle .title {
     width: auto !important;
-    height: 40px;
-    margin: 12px 0;
-    padding: 5px 10px 5px 5px;
+    height: 52px;
+    margin: 6px 0;
+    padding: 6px 12px 5px 7px;
     border: 1px solid rgba(148, 216, 246, 0.34);
-    border-radius: var(--dc3-glass-radius);
+    border-radius: 27px;
     background:
         radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.85), transparent 40%),
         linear-gradient(160deg, rgba(255, 255, 255, 0.5), rgba(115, 205, 241, 0.12));
@@ -137,9 +134,9 @@ body {
 }
 
 .VPNavBarTitle .logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 8px;
+    width: 36px;
+    height: 36px;
+    margin-right: 9px;
     filter: drop-shadow(0 4px 7px rgba(13, 82, 157, 0.2));
 }
 
@@ -150,34 +147,126 @@ body {
 }
 
 .VPNavBarTitle .title > span {
+    display: block;
+    min-width: 0;
+    flex: 1 1 auto;
     overflow: hidden;
+    color: inherit;
+    -webkit-text-fill-color: currentColor;
+}
+
+.dc3-brand-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.dc3-brand-title {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: 4px;
+    overflow: hidden;
+    color: var(--vp-c-brand-1);
+    font-size: 13px;
+    font-weight: 680;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.dc3-brand-lead {
+    min-width: 0;
+    overflow: hidden;
+    flex: 0 1 auto;
     text-overflow: ellipsis;
-    background: linear-gradient(112deg, #07549a, #149ed7 46%, #4f52bf);
+}
+
+.dc3-brand-title strong {
+    flex: none;
+    background: linear-gradient(105deg, #5656c8, #009fc9);
     background-clip: text;
-    -webkit-background-clip: text;
     color: transparent;
+    font-weight: 720;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* 中文站：标题 15px 并收紧 sidebar 布局下标题容器 padding，
-「从工业软件到 AI 智能体」完整显示，不再触发省略号（避免 background-clip:text + ellipsis 的深色块渲染 bug）；
-英文长标题保持既有的省略号截断设计 */
-:lang(zh-CN) .VPNavBarTitle .title {
-    font-size: 15px;
+.dc3-brand-spark {
+    display: block;
+    width: 10px;
+    height: 10px;
+    overflow: visible;
+    flex: none;
+    align-self: center;
+    fill: #5656c8;
+    filter: drop-shadow(0 0 3px rgba(0, 159, 201, 0.42));
 }
+
+.dc3-brand-agentic {
+    flex: none;
+    align-self: center;
+    color: #5656c8;
+    font-size: 9px;
+    font-weight: 680;
+    letter-spacing: 0.04em;
+    line-height: 1;
+}
+
+.dc3-brand-signal {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--vp-c-text-3);
+    font-size: 10px;
+    font-weight: 520;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    :lang(zh-CN) .VPNavBarTitle .title {
+        width: 300px !important;
+    }
+
+    :lang(en-US) .VPNavBarTitle .title {
+        width: 390px !important;
+    }
+}
+
+.dc3-brand-a11y {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap;
+}
+
 /* VitePress 的 title 容器样式带 scoped data-v 属性，书站需 !important 覆盖；
-   收紧容器 padding（960+ 与 1440+ 居中规则一并覆盖），给中文标题完整显示空间 */
+   收紧容器 padding（960+ 与 1440+ 居中规则一并覆盖），给双层品牌标题留出空间 */
 @media (min-width: 960px) {
-    .VPNavBar.has-sidebar .title {
+    .VPNavBar.has-sidebar > .wrapper > .container > .title {
         box-sizing: border-box !important;
         padding: 0 16px !important;
     }
+
+    :lang(zh-CN) .VPNavBar.has-sidebar > .wrapper > .container > .title {
+        width: min(340px, calc(100vw - 180px)) !important;
+    }
+
+    :lang(en-US) .VPNavBar.has-sidebar > .wrapper > .container > .title {
+        width: min(430px, calc(100vw - 180px)) !important;
+    }
 }
 @media (min-width: 1440px) {
-    .VPNavBar.has-sidebar .title {
+    .VPNavBar.has-sidebar > .wrapper > .container > .title {
         box-sizing: border-box !important;
         padding-left: 16px !important;
-        width: var(--vp-sidebar-width) !important;
     }
 }
 
@@ -189,11 +278,20 @@ body {
     box-shadow: inset 0 1px 0 rgba(231, 251, 255, 0.14);
 }
 
-.dark .VPNavBarTitle .title > span {
-    background: linear-gradient(112deg, #8edcff, #d3fbff 46%, #a5a8ff);
+.dark .dc3-brand-title strong {
+    background: linear-gradient(105deg, #aaaaff, #61def4);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.dark .dc3-brand-spark {
+    fill: #aaaaff;
+    filter: drop-shadow(0 0 3px rgba(97, 222, 244, 0.52));
+}
+
+.dark .dc3-brand-agentic {
+    color: #aaaaff;
 }
 
 .VPNavBar .content-body {
@@ -599,6 +697,31 @@ body {
     .VPNavBarTitle .title {
         width: auto !important;
         max-width: calc(100vw - 122px);
+        height: 48px;
+        margin: 8px 0;
+        padding: 5px 8px 5px 5px;
+    }
+
+    .VPNavBarTitle .logo {
+        width: 32px;
+        height: 32px;
+        margin-right: 7px;
+    }
+
+    .dc3-brand-title {
+        font-size: 12px;
+    }
+
+    .dc3-brand-copy {
+        gap: 3px;
+    }
+
+    .dc3-brand-agentic {
+        font-size: 8px;
+    }
+
+    .dc3-brand-signal {
+        font-size: 9px;
     }
 
     .VPNavBarTitle .title > span {
@@ -1495,6 +1618,10 @@ body {
 }
 
 @media (max-width: 640px) {
+    .VPHero {
+        padding-top: calc(var(--vp-nav-height) + 18px) !important;
+    }
+
     .VPHero .main {
         --dc3-hero-content-gap: 13px;
     }

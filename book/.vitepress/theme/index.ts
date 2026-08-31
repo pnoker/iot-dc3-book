@@ -43,7 +43,10 @@ const theme: Theme = {
   Layout() {
     const route = useRoute()
     const homeLayout = route.path === '/' || route.path === '/en' || route.path === '/en/'
-    return h(DefaultTheme.Layout, {class: {'dc3-book-home-layout': homeLayout}}, {
+    const figuresLayout = route.path === '/figures' || route.path === '/figures/'
+      || route.path === '/en/figures' || route.path === '/en/figures/'
+    const immersiveLayout = homeLayout || figuresLayout
+    return h(DefaultTheme.Layout, {class: {'dc3-book-immersive-layout': immersiveLayout}}, {
       // 与 online 首页同源的单画布力场：网格挤压、粒子网络和悬浮点阵 Logo
       'home-hero-before': () => h(HeroWaves),
       // 首页主视觉：内联封面（由 book/assets/cover.html 派生，颜色跟随明暗主题）
