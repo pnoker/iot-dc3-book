@@ -2274,6 +2274,48 @@ body {
 }
 
 /* ── 图库页面：突破正文宽度限制（container/content/content-container 全链路） ── */
+.dc3-book-immersive-layout .VPContent:has(.vp-doc._figures) {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background:
+        radial-gradient(ellipse at 74% 18%, rgba(18, 150, 219, .11), transparent 27%) top / 100% max(720px, 100svh) no-repeat,
+        radial-gradient(ellipse at 17% 8%, rgba(41, 197, 223, .08), transparent 31%) top / 100% max(720px, 100svh) no-repeat,
+        radial-gradient(ellipse at 86% 42%, rgba(91, 116, 235, .075), transparent 32%) top / 100% max(720px, 100svh) no-repeat,
+        linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg) 96%, #dff7ff 4%), var(--vp-c-bg) max(720px, 100svh));
+}
+
+.dark .dc3-book-immersive-layout .VPContent:has(.vp-doc._figures) {
+    background:
+        radial-gradient(ellipse at 74% 18%, rgba(55, 178, 235, .14), transparent 28%) top / 100% max(720px, 100svh) no-repeat,
+        radial-gradient(ellipse at 17% 8%, rgba(41, 197, 223, .085), transparent 31%) top / 100% max(720px, 100svh) no-repeat,
+        radial-gradient(ellipse at 86% 42%, rgba(112, 116, 255, .11), transparent 32%) top / 100% max(720px, 100svh) no-repeat,
+        linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg) 94%, #071d31 6%), var(--vp-c-bg) max(720px, 100svh));
+}
+
+.dc3-book-immersive-layout .VPContent:has(.vp-doc._figures)::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: max(720px, 100svh);
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(18, 150, 219, .038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 150, 219, .038) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: linear-gradient(180deg, transparent, #000 10%, #000 84%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 10%, #000 84%, transparent 100%);
+}
+
+.dc3-book-immersive-layout .VPContent:has(.vp-doc._figures) > .VPDoc {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+}
+
 .VPDoc .container:has(.vp-doc._figures) {
     max-width: 1360px !important;
 }

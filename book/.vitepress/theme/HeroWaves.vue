@@ -6,6 +6,14 @@
 import {onBeforeUnmount, onMounted, ref} from 'vue'
 import {LOGO_POINTS} from './logo-points'
 
+const props = withDefaults(defineProps<{
+  hostSelector?: string
+  variant?: 'home' | 'gallery'
+}>(), {
+  hostSelector: '.VPHero',
+  variant: 'home',
+})
+
 interface NodePoint {
   x: number
   y: number
@@ -287,7 +295,7 @@ function handlePointerLeave() {
 onMounted(() => {
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   rebuildLogoParticles()
-  host = document.querySelector('.VPHero') as HTMLElement | null
+  host = document.querySelector(props.hostSelector) as HTMLElement | null
   // home-hero-before 插槽实际位于 VPHome；把视觉层移入 VPHero，确保画布只覆盖首屏，
   // 同时让指针坐标、裁切和 IntersectionObserver 都以 Hero 为边界。
   if (host && root.value) host.insertBefore(root.value, host.firstChild)
@@ -299,7 +307,8 @@ onMounted(() => {
     if (inViewport) startAnimation()
     else stopAnimation()
   }, {rootMargin: '160px 0px', threshold: 0.01})
-  if (host) viewportObserver.observe(host)
+  // Gallery 页面很长，只观察首屏动画层本身；滚出首屏后立即停画，避免与大量 SVG 同时刷新。
+  if (root.value) viewportObserver.observe(root.value)
   themeObserver = new MutationObserver(() => {
     if (reducedMotion) animationFrame = requestAnimationFrame(draw)
   })
@@ -319,12 +328,18 @@ onBeforeUnmount(() => {
   document.removeEventListener('visibilitychange', handleVisibility)
   host?.removeEventListener('pointermove', handlePointerMove)
   host?.removeEventListener('pointerleave', handlePointerLeave)
+  // root 被手动移入目标容器，Vue 不会再按原插槽位置自动移除它。
+  root.value?.remove()
   host = null
 })
 </script>
 
 <template>
-  <div ref="root" class="hero-atmosphere" aria-hidden="true">
+  <div
+    ref="root"
+    :class="['hero-atmosphere', `hero-atmosphere-${variant}`]"
+    aria-hidden="true"
+  >
     <span class="hero-atmosphere-orb hero-atmosphere-orb-left" />
     <span class="hero-atmosphere-orb hero-atmosphere-orb-right" />
     <canvas ref="canvas" />
@@ -339,6 +354,11 @@ onBeforeUnmount(() => {
   overflow: hidden;
   pointer-events: none;
   mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.94) 70%, transparent 100%);
+}
+
+.hero-atmosphere-gallery {
+  bottom: auto;
+  height: max(720px, 100svh);
 }
 
 .hero-atmosphere canvas {

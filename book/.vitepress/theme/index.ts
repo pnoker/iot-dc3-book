@@ -49,6 +49,10 @@ const theme: Theme = {
     return h(DefaultTheme.Layout, {class: {'dc3-book-immersive-layout': immersiveLayout}}, {
       // 与 online 首页同源的单画布力场：网格挤压、粒子网络和悬浮点阵 Logo
       'home-hero-before': () => h(HeroWaves),
+      // 图库首屏复用同一套动态力场；首屏离开视口后组件会自动停画。
+      'doc-before': () => figuresLayout
+        ? h(HeroWaves, {hostSelector: '.VPContent', variant: 'gallery'})
+        : null,
       // 首页主视觉：内联封面（由 book/assets/cover.html 派生，颜色跟随明暗主题）
       'home-hero-image': () =>
         h('div', {
