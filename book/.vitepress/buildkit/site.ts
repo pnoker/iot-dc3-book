@@ -78,7 +78,9 @@ export function stripFrontmatter(md: string): string {
 
 /** 解析节文件：提取 H2 节标题（## N.M xxx） */
 function parseSectionFile(md: string): {stem: string; title: string} | null {
-  const body = stripFrontmatter(md)
+  // Windows 检出（core.autocrlf）行尾带 \r，行基正则（^##\s+(.+)$ 等）会在 \r 前失配，
+  // 小节标题静默丢失（侧栏/概览/小节导航链全部为空），渲染前统一为 \n
+  const body = stripFrontmatter(md).replace(/\r\n?/g, '\n')
   for (const line of body.split('\n')) {
     const m = /^##\s+(.+)$/.exec(line)
     if (m) {

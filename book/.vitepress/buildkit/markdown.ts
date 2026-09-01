@@ -68,7 +68,8 @@ export function extractDescription(body: string, maxLen = 130): string {
 
 /** 标题升级：首个 H2 → H1，H3~H6 整体降一级（围栏代码块内不动）。 */
 function shiftHeadings(md: string): string {
-  const lines = md.split('\n')
+  // 兼容 CRLF：_intro.md 等 readFileSync 直读路径不经 transformPage 的归一化
+  const lines = md.replace(/\r\n?/g, '\n').split('\n')
   let inCode = false
   let h1Done = false
   return lines
@@ -373,6 +374,9 @@ function renderAppendix(info: PageInfo, src: string): string {
 export function transformPage(rel: string, src: string): string {
   const info = classify(rel)
   if (!info) return src
+  // Windows 检出（core.autocrlf）会让行尾带 \r，行基正则（shiftHeadings 的 (.+)$ 等）
+  // 在 \r 前匹配失败，标题提升会静默失效（H1 出现字面 "##"）；渲染前统一为 \n
+  src = src.replace(/\r\n?/g, '\n')
   let next: string
   switch (info.kind) {
     case 'section':
