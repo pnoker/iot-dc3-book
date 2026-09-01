@@ -6,59 +6,80 @@
   <title>图4-13 延伸阅读三圈学习路径</title>
   <style>
     html, body { margin: 0; width: 1200px; background: #F8FAFC; color: #0F172A; font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Arial, sans-serif; }
-    .page { width: 1200px; margin: 0; padding: 24px; box-sizing: border-box; }
-    h1 { font-size: 22px; margin: 0 0 4px; }
-    .subtitle { color: #64748B; font-size: 13px; margin-bottom: 16px; }
-    .circle { border-radius: 10px; border-width: 2px; border-style: solid; padding: 14px 18px; margin: 0 auto; width: 1100px; }
-    .c1 { background: #EFF6FF; border-color: #2563EB; }
-    .c2 { background: #ECFDF5; border-color: #0F766E; }
-    .c3 { background: #FFF7ED; border-color: #F97316; }
-    .circle h2 { font-size: 17px; margin: 0 0 10px; }
-    .cards { display: flex; gap: 16px; }
-    .card { background: #FFFFFF; border-radius: 6px; border: 1.5px solid; padding: 10px 12px; flex: 1; min-height: 64px; }
-    .c1 .card { border-color: #2563EB; }
-    .c2 .card { border-color: #0F766E; }
-    .c3 .card { border-color: #F97316; }
-    .card .name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-    .card .meta { font-size: 11px; color: #64748B; line-height: 1.5; }
-    .arrow { text-align: center; margin: 6px 0; }
-    .arrow .tag { display: inline-block; background: #F8FAFC; border: 1px solid #94A3B8; border-radius: 4px; padding: 2px 10px; font-size: 12px; color: #0F172A; }
-    .caption { margin-top: 18px; text-align: center; font-size: 15px; font-weight: 600; color: #475569; }
+    .page { width: 1200px; margin: 0; padding: 0; }
   </style>
 </head>
 <body>
   <main class="page" data-figure-root>
-    <h1>图4-13 延伸阅读三圈学习路径</h1>
-    <div class="subtitle">按“读标准 → 搭环境 → 追演变”三圈递进，条目与 4.6.2 书单一一对应。</div>
-
-    <div class="circle c1">
-      <h2>第一圈：读原始标准（权威认知）</h2>
-      <div class="cards">
-        <div class="card"><div class="name">3GPP 规范</div><div class="meta">TS 22.261 / 23.682 / 36.300·38.300<br>对应 §4.1.3</div></div>
-        <div class="card"><div class="name">LoRa Alliance 规范</div><div class="meta">Class A/B/C 接收窗差异<br>对应 §4.1.2</div></div>
-        <div class="card"><div class="name">各联盟基础规范</div><div class="meta">Wi-Fi HaLow / Zigbee 3.0 / BLE Mesh<br>对应 §4.1.4</div></div>
-      </div>
-    </div>
-    <div class="arrow">▼ <span class="tag">用实践验证标准</span> ▼</div>
-
-    <div class="circle c2">
-      <h2>第二圈：动手搭环境（实战演练）</h2>
-      <div class="cards">
-        <div class="card"><div class="name">IoT DC3</div><div class="meta">github.com/pnoker/iot-dc3<br>对应 §4.4、§4.5</div></div>
-        <div class="card"><div class="name">Eclipse Hono</div><div class="meta">协议无关的遥测与命令 API<br>对应 §4.3</div></div>
-      </div>
-    </div>
-    <div class="arrow">▼ <span class="tag">在演变中定位</span> ▼</div>
-
-    <div class="circle c3">
-      <h2>第三圈：追行业演变（行业视野）</h2>
-      <div class="cards">
-        <div class="card"><div class="name">《物联网系统开发：从零到一》</div><div class="meta">叶树铭著，2022 年：功能该在哪一层做</div></div>
-        <div class="card"><div class="name">《5G物联网及NB-IoT技术详解》</div><div class="meta">江林华编著，2018 年：LoRa 与 NB-IoT 博弈<br>对应 §4.1</div></div>
-      </div>
-    </div>
-
-    <div class="caption">图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；第二圈（绿）用 IoT DC3 与 Eclipse Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。</div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="676" viewBox="0 0 1200 676" role="img" aria-labelledby="title desc">
+  <title id="title">图4-13 延伸阅读三圈学习路径</title>
+  <desc id="desc">本章延伸阅读按“读标准 → 搭环境 → 追演变”三圈递进，每圈资源均与 4.6.2 书单一一对应。</desc>
+  <defs>
+    <marker id="f413-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+  </defs>
+  <rect width="1200" height="676" fill="#F8FAFC"/>
+  <circle cx="64" cy="42" r="6" fill="#2563EB"/>
+  <text x="82" y="50" fill="#0F172A" font-size="22" font-weight="700">图4-13 延伸阅读三圈学习路径</text>
+  <text x="82" y="75" fill="#64748B" font-size="12.5">按“读标准 → 搭环境 → 追演变”三圈递进，条目与 4.6.2 书单一一对应。</text>
+  <line x1="64" y1="93" x2="1136" y2="93" stroke="#E2E8F0"/>
+  <g data-layout="layered">
+  <!-- 第一圈：读原始标准 -->
+  <rect x="64" y="112" width="1072" height="128" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="84" y="140" fill="#0F172A" font-size="15" font-weight="700">第一圈：读原始标准（权威认知）</text>
+  <rect x="84" y="152" width="333" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="96" y="176" fill="#0F172A" font-size="14" font-weight="600">3GPP 规范</text>
+  <text x="96" y="197" fill="#64748B" font-size="11">TS 22.261 / 23.682 / 36.300·38.300</text>
+  <text x="96" y="214" fill="#64748B" font-size="11">对应 §4.1.3</text>
+  <rect x="433" y="152" width="333" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="445" y="176" fill="#0F172A" font-size="14" font-weight="600">LoRa Alliance 规范</text>
+  <text x="445" y="197" fill="#64748B" font-size="11">Class A/B/C 接收窗差异</text>
+  <text x="445" y="214" fill="#64748B" font-size="11">对应 §4.1.2</text>
+  <rect x="782" y="152" width="333" height="74" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="794" y="176" fill="#0F172A" font-size="14" font-weight="600">各联盟基础规范</text>
+  <text x="794" y="197" fill="#64748B" font-size="11">Wi-Fi HaLow / Zigbee 3.0 / BLE Mesh</text>
+  <text x="794" y="214" fill="#64748B" font-size="11">对应 §4.1.4</text>
+  <!-- 过渡：用实践验证标准 -->
+  <line x1="300" y1="246" x2="300" y2="274" stroke="#475569" stroke-width="2" marker-end="url(#f413-arrow)"/>
+  <line x1="900" y1="246" x2="900" y2="274" stroke="#475569" stroke-width="2" marker-end="url(#f413-arrow)"/>
+  <rect x="495" y="250" width="210" height="24" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+  <text x="600" y="266" fill="#0F172A" font-size="12" text-anchor="middle">用实践验证标准</text>
+  <!-- 第二圈：动手搭环境 -->
+  <rect x="64" y="284" width="1072" height="128" rx="12" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="84" y="312" fill="#0F172A" font-size="15" font-weight="700">第二圈：动手搭环境（实战演练）</text>
+  <rect x="84" y="324" width="508" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="96" y="348" fill="#0F172A" font-size="14" font-weight="600">IoT DC3</text>
+  <text x="96" y="369" fill="#64748B" font-size="11">github.com/pnoker/iot-dc3</text>
+  <text x="96" y="386" fill="#64748B" font-size="11">对应 §4.4、§4.5</text>
+  <rect x="608" y="324" width="508" height="74" rx="8" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="620" y="348" fill="#0F172A" font-size="14" font-weight="600">Eclipse Hono</text>
+  <text x="620" y="369" fill="#64748B" font-size="11">协议无关的遥测与命令 API</text>
+  <text x="620" y="386" fill="#64748B" font-size="11">对应 §4.3</text>
+  <!-- 过渡：在演变中定位 -->
+  <line x1="300" y1="420" x2="300" y2="448" stroke="#475569" stroke-width="2" marker-end="url(#f413-arrow)"/>
+  <line x1="900" y1="420" x2="900" y2="448" stroke="#475569" stroke-width="2" marker-end="url(#f413-arrow)"/>
+  <rect x="495" y="424" width="210" height="24" rx="12" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+  <text x="600" y="440" fill="#0F172A" font-size="12" text-anchor="middle">在演变中定位</text>
+  <!-- 第三圈：追行业演变 -->
+  <rect x="64" y="456" width="1072" height="128" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="84" y="484" fill="#0F172A" font-size="15" font-weight="700">第三圈：追行业演变（行业视野）</text>
+  <rect x="84" y="496" width="508" height="74" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+  <text x="96" y="520" fill="#0F172A" font-size="14" font-weight="600">《物联网系统开发：从零到一》</text>
+  <text x="96" y="541" fill="#64748B" font-size="11">叶树铭著，2022 年：功能该在哪一层做</text>
+  <rect x="608" y="496" width="508" height="74" rx="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.5"/>
+  <text x="620" y="520" fill="#0F172A" font-size="14" font-weight="600">《5G物联网及NB-IoT技术详解》</text>
+  <text x="620" y="541" fill="#64748B" font-size="11">江林华编著，2018 年：LoRa 与 NB-IoT 博弈</text>
+  <text x="620" y="558" fill="#64748B" font-size="11">对应 §4.1</text>
+  </g>
+  <line x1="64" y1="600" x2="1136" y2="600" stroke="#E2E8F0"/>
+  <rect x="80" y="612" width="14" height="10" rx="2" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="100" y="621" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">蓝色=官方标准</text>
+  <rect x="270" y="612" width="14" height="10" rx="2" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="290" y="621" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">绿色=动手实践</text>
+  <rect x="460" y="612" width="14" height="10" rx="2" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+  <text x="480" y="621" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600">橙色=行业视野</text>
+  <text x="600" y="644" fill="#475569" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle">图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；</text>
+  <text x="600" y="661" fill="#475569" font-size="12" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle">第二圈（绿）用 IoT DC3 与 Eclipse Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。</text>
+    </svg>
   </main>
 </body>
 </html>

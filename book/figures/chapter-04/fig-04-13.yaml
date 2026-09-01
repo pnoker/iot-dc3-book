@@ -63,12 +63,11 @@ legend:
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
-render_notes: '使用三个横向块垂直堆叠，每块内条目水平排列，条目间距 8px。第一块背景 #E3F2FD 边框 #1565C0，第二块 #E8F5E9
-  边框 #2E7D32，第三块 #FFF3E0 边框 #E65100。每块左上角标注圈名，块间用带箭头竖线连接并加标注文字。图例水平排放在图框下方。图宽自适应，建议最小宽
-  600px。'
+render_notes: '画布 1200×676。三个圆角面板垂直堆叠：第一块背景 #EFF6FF 边框 #2563EB，第二块 #ECFDF5 边框 #0F766E，第三块 #FFF7ED
+  边框 #F97316，块内条目为白底卡片横排。块间用两支灰色下箭头夹中央标签胶囊衔接（用实践验证标准 / 在演变中定位）。分隔线下方图例横排（蓝/绿/橙三色），图注两行居中收尾。'
 caption:
-  zh: 图4-13 延伸阅读三圈学习路径。第一圈（蓝底）读 3GPP、LoRa Alliance 及各联盟原始规范；第二圈（绿底）用 IoT DC3 与 Eclipse
-    Hono 搭环境验证；第三圈（橙底）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。
+  zh: 图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；第二圈（绿）用 IoT DC3 与 Eclipse
+    Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。
   en: 'Figure 4-13 The three-circle further-reading path. Circle 1 (blue): read the
     original 3GPP, LoRa Alliance and consortium specifications. Circle 2 (green):
     verify with IoT DC3 and Eclipse Hono hands-on. Circle 3 (orange): return to industry
@@ -98,14 +97,21 @@ labels:
     叶树铭著，2022 年：功能该在哪一层做: 'Ye Shuming, 2022: which layer should own each feature'
     江林华编著，2018 年：LoRa 与 NB-IoT 博弈: 'Jiang Linhua, 2018: the LoRa vs. NB-IoT contest'
     对应 §4.1: See §4.1
-    ? 图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；第二圈（绿）用 IoT DC3 与 Eclipse
-      Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。
+    ? 图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；
     : 'Figure 4-13 Three-ring further-reading path. Ring 1 (blue): original specs
-      from 3GPP, the LoRa Alliance, and other alliances. Ring 2 (green): hands-on
-      validation with IoT DC3 and Eclipse Hono. Ring 3 (orange): two books on industry
-      evolution. Each item notes the section it maps to.'
+      from 3GPP, the LoRa Alliance, and other alliances.'
+    ? 第二圈（绿）用 IoT DC3 与 Eclipse Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。
+    : 'Ring 2 (green): hands-on validation with IoT DC3 and Eclipse Hono. Ring 3
+      (orange): two books on industry evolution. Each item notes the section it
+      maps to.'
     3GPP 规范: 3GPP specs
     LoRa Alliance 规范: LoRa Alliance specs
     各联盟基础规范: Baseline alliance specs
     "《物联网系统开发：从零到一》": 'IoT System Development: From Zero to One'
     "《5G物联网及NB-IoT技术详解》": 5G IoT and NB-IoT Technology In Depth
+    本章延伸阅读按“读标准 → 搭环境 → 追演变”三圈递进，每圈资源均与 4.6.2 书单一一对应。: 'Further reading advances in three
+      rings — read the standards, build an environment, follow the evolution —
+      each ring mapping onto the 4.6.2 reading list.'
+    蓝色=官方标准: Blue = official standards
+    绿色=动手实践: Green = hands-on practice
+    橙色=行业视野: Orange = industry outlook
