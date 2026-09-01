@@ -10,6 +10,19 @@ You don't need to memorize every protocol and framework on a first read. What de
 
 As for prerequisites: you don't need IoT project experience, nor do you need to be familiar with any particular protocol or framework in advance — a basic grounding in programming and computer networks is enough to read the whole book comfortably.
 
+## The Four Words
+
+The four words on the cover — Sense, Reason, Act, Evolve — are not slogans. They are the engineering loop this book keeps returning to, and each word pairs a capability with a boundary:
+
+- **Sense**: the physical world can only be known through signals. The capability is turning physical states into data; the boundary is that signals drift, drop out, and can be forged — so sensing must be trustworthy. Chapters 3–5 build this layer: thing models, unified access, and the data pipeline.
+- **Reason**: signals mean nothing until they are interpreted. The capability is letting machines understand semantics and produce judgments; the boundary is that reasoning is probabilistic — it proposes candidates, it does not decide. Chapter 7 and Section 9.5 build this layer.
+- **Act**: physical actions cannot be undone and carry safety costs — the essential difference from purely digital systems. The capability is carrying a judgment back into the physical world; the boundary is determinism — confirmation, permissions, rollback, and audit are all required. Section 2.2, Section 7.5, Chapter 8, and Section 10.4 develop this layer.
+- **Evolve**: capability never arrives all at once. The capability is the loop gaining authority level by level as the architecture grows; the boundary is reversibility — every step up must first be proven sound by new constraints. Sections 7.5 and 14.4 give this timeline.
+
+Sense, Reason, and Act form one loop; Evolve is the way that loop unfolds over time. The closing section of each chapter returns to these four words — if you remember only one of them after finishing the book, the chapters behind it are worth rereading.
+
+
+
 ## Suggested Paths
 
 The book follows one continuous technical path, but not every reader needs to read it from the first page to the last.
