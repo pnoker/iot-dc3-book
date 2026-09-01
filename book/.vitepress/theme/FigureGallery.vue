@@ -114,11 +114,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
           :placeholder="t('搜索图号、标题或章节…', 'Search by number, title, or chapter…')"
           :aria-label="t('搜索插图', 'Search figures')"
         />
+        <span class="gallery-count" aria-live="polite">
+          <template v-if="loading">{{ t('加载中…', 'Loading…') }}</template>
+          <template v-else>{{ t(`共 ${filtered.length} 张插图`, `${filtered.length} figures`) }}</template>
+        </span>
       </label>
-      <div class="gallery-count">
-        <template v-if="loading">{{ t('加载中…', 'Loading…') }}</template>
-        <template v-else>{{ t(`共 ${filtered.length} 张插图`, `${filtered.length} figures`) }}</template>
-      </div>
     </div>
 
     <p v-if="loading" class="gallery-hint">{{ t('正在加载全书插图清单…', 'Loading the figure list…') }}</p>
@@ -190,58 +190,81 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   margin: 0 auto;
 }
 
-/* 工具栏：搜索 + 计数 */
+/* 工具栏：不带任何整条底色——氛围背景直接透出，吸附时只有胶囊自身玻璃化，
+   避免亮色下白带 / 暗色下黑带的"大方块"感 */
 .gallery-toolbar {
   position: sticky;
   top: var(--vp-nav-height);
   z-index: 20;
   display: flex;
-  align-items: center;
-  gap: 16px;
   margin-bottom: 24px;
-  padding: 12px 0;
-  background: var(--vp-c-bg);
-  border-bottom: 1px solid var(--vp-c-divider);
-  flex-wrap: wrap;
 }
+/* 玻璃胶囊：图标 + 输入 + 计数同舱，与沉浸式导航胶囊同语言 */
 .gallery-search {
   position: relative;
-  flex: 1 1 320px;
+  flex: 1;
   display: flex;
   align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px 0 17px;
+  background: color-mix(in srgb, var(--vp-c-bg-elv) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vp-c-divider) 78%, transparent);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 42%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  cursor: text;
+}
+.gallery-search:hover {
+  border-color: color-mix(in srgb, var(--vp-c-brand-3) 38%, var(--vp-c-divider));
+}
+.gallery-search:focus-within {
+  background: color-mix(in srgb, var(--vp-c-bg-elv) 86%, transparent);
+  border-color: var(--vp-c-brand-1);
+  box-shadow:
+    0 0 0 3px var(--vp-c-brand-soft),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 42%, transparent);
 }
 .gallery-search-icon {
-  position: absolute;
-  left: 14px;
-  width: 18px;
-  height: 18px;
+  flex: none;
+  width: 17px;
+  height: 17px;
   fill: none;
-  stroke: var(--vp-c-text-2);
+  stroke: var(--vp-c-brand-1);
   stroke-width: 2;
+  stroke-linecap: round;
   pointer-events: none;
 }
 .gallery-search input {
-  width: 100%;
-  padding: 10px 16px 10px 42px;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
   font-size: 14px;
   color: var(--vp-c-text-1);
-  background: var(--vp-c-bg-alt);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  background: transparent;
+  border: none;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.gallery-search input:focus {
-  border-color: var(--vp-c-brand);
-  box-shadow: 0 0 0 3px var(--vp-c-brand-soft, rgba(37, 99, 235, 0.12));
+  box-shadow: none;
 }
 .gallery-search input::placeholder {
   color: var(--vp-c-text-3);
 }
 .gallery-count {
-  font-size: 13px;
-  color: var(--vp-c-text-2);
+  flex: none;
+  margin-left: 4px;
+  padding-left: 14px;
+  border-left: 1px solid color-mix(in srgb, var(--vp-c-divider) 70%, transparent);
+  font-size: 12.5px;
+  color: var(--vp-c-text-3);
   white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .gallery-count {
+    display: none;
+  }
 }
 
 .gallery-hint {
