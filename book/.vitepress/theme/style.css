@@ -470,6 +470,250 @@ body {
     height: 12.5px;
 }
 
+/* ── 社交图标悬浮提示 ──
+   桌面导航条上所有图标悬浮/键盘聚焦时浮出文字气泡（文案取自 aria-label，中英自动跟随）；
+   公众号无落地页，气泡换成单张二维码卡片：上 132px 是二维码，卡片内图片下方直接标注名称
+   （同样取自 aria-label，不另浮提示框），白底保证任何主题下可扫。
+   仅导航条整行启用：extra 折叠菜单与移动抽屉无 hover，点击行为已覆盖此场景。 */
+.VPNavBarSocialLinks .VPSocialLink[href*="demo.dc3.site"] {
+    --social-rgb: 18, 150, 219;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[href*="wechat-qrcode"] {
+    --social-rgb: 7, 193, 96;
+}
+
+.dark .VPNavBarSocialLinks .VPSocialLink[href*="demo.dc3.site"] {
+    --social-rgb: 95, 195, 239;
+}
+
+.dark .VPNavBarSocialLinks .VPSocialLink[href*="wechat-qrcode"] {
+    --social-rgb: 118, 208, 158;
+}
+
+@media (hover: hover) and (min-width: 768px) {
+    .VPNavBarSocialLinks .VPSocialLink {
+        position: relative;
+    }
+
+    /* 气泡公共底：悬浮于图标下方，默认隐藏，hover/聚焦时浮现 */
+    .VPNavBarSocialLinks .VPSocialLink::after {
+        content: attr(aria-label);
+        position: absolute;
+        top: calc(100% + 9px);
+        left: 50%;
+        translate: -50% 4px;
+        padding: 4px 10px;
+        border: 1px solid var(--vp-c-divider);
+        border-radius: 8px;
+        background: var(--vp-c-bg-elv);
+        color: var(--vp-c-text-1);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        white-space: nowrap;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 180ms ease, translate 180ms ease, visibility 180ms;
+        z-index: 80;
+    }
+
+    /* 公众号：气泡换成单张二维码卡片——padding-top 让文字落在背景二维码图下方；
+       图标贴近视口右缘，卡片右对齐锚定（-6px：滚动条有无导致的图标漂移下均不出屏）；
+       卡片恒为白底，文字用固定深色（不随暗色主题翻转） */
+    .VPNavBarSocialLinks .VPSocialLink[href*="wechat-qrcode"]::after {
+        top: calc(100% + 10px);
+        left: auto;
+        right: -6px;
+        translate: 0 4px;
+        box-sizing: border-box;
+        width: 148px;
+        padding: 140px 8px 9px;
+        border-radius: 12px;
+        border-color: rgba(var(--social-rgb), 0.4);
+        background: #fff url('/wechat-qrcode.jpg') center 8px / 132px 132px no-repeat;
+        color: #374151;
+        font-weight: 500;
+        line-height: 17px;
+        text-align: center;
+        white-space: normal;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .VPNavBarSocialLinks .VPSocialLink:hover::after,
+    .VPNavBarSocialLinks .VPSocialLink:focus-visible::after {
+        opacity: 1;
+        visibility: visible;
+        translate: -50% 0;
+    }
+
+    /* 公众号卡片为右对齐锚定，浮现位移不走居中位移 */
+    .VPNavBarSocialLinks .VPSocialLink[href*="wechat-qrcode"]:hover::after,
+    .VPNavBarSocialLinks .VPSocialLink[href*="wechat-qrcode"]:focus-visible::after {
+        translate: 0 0;
+    }
+}
+
+/* ── 公众号二维码弹窗：与导航玻璃菜单（VPMenu）/标题胶囊同族质感 ──
+   由 theme/index.ts 在点击公众号图标时注入 body；遮罩/关闭按钮/Esc 均可关闭 */
+body.dc3-modal-open {
+    overflow: hidden;
+}
+
+.dc3-wechat-modal {
+    position: fixed;
+    inset: 0;
+    /* 盖过 medium-zoom 放大层（100/101）与导航 */
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: dc3-wechat-fade 180ms ease;
+}
+
+.dc3-wechat-modal.is-closing {
+    animation: dc3-wechat-fade 160ms ease reverse forwards;
+}
+
+.dc3-wechat-modal__scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 35, 62, 0.4);
+    backdrop-filter: blur(10px) saturate(1.2);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+}
+
+.dark .dc3-wechat-modal__scrim {
+    background: rgba(4, 12, 24, 0.55);
+}
+
+.dc3-wechat-modal__card {
+    position: relative;
+    width: min(340px, 100%);
+    padding: 24px 24px 22px;
+    border: 1px solid rgba(148, 216, 246, 0.3);
+    border-radius: var(--dc3-glass-radius);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+        linear-gradient(135deg, color-mix(in srgb, var(--vp-c-bg-elv) 82%, transparent), rgba(115, 205, 241, 0.12) 58%, rgba(75, 88, 210, 0.08));
+    box-shadow:
+        0 18px 46px rgba(12, 89, 153, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+        inset 0 -10px 24px rgba(55, 131, 203, 0.05);
+    backdrop-filter: blur(24px) saturate(1.45);
+    -webkit-backdrop-filter: blur(24px) saturate(1.45);
+    text-align: center;
+    animation: dc3-wechat-pop 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 暗色玻璃配方与 .dark VPMenu 一致 */
+.dark .dc3-wechat-modal__card {
+    border-color: rgba(139, 210, 250, 0.18);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.13), transparent 38%),
+        linear-gradient(135deg, rgba(29, 61, 84, 0.82), rgba(15, 31, 46, 0.9) 58%, rgba(48, 48, 111, 0.72));
+    box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(231, 251, 255, 0.11),
+        inset 0 -10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.dc3-wechat-modal__title {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+    color: var(--vp-c-text-1);
+}
+
+/* 二维码面板恒为白底，保证明暗主题下都可扫 */
+.dc3-wechat-modal__qr {
+    padding: 12px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(18, 150, 219, 0.14);
+}
+
+.dc3-wechat-modal__qr img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.dc3-wechat-modal__hint {
+    margin: 14px 0 0;
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--vp-c-text-2);
+}
+
+.dc3-wechat-modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid rgba(148, 216, 246, 0.35);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--vp-c-bg-elv) 70%, transparent);
+    color: var(--vp-c-text-2);
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.dc3-wechat-modal__close svg {
+    width: 14px;
+    height: 14px;
+}
+
+.dc3-wechat-modal__close:hover {
+    color: #1296db;
+    border-color: rgba(18, 150, 219, 0.45);
+    background: rgba(18, 150, 219, 0.09);
+}
+
+.dark .dc3-wechat-modal__close:hover {
+    color: #5fc3ef;
+    border-color: rgba(95, 195, 239, 0.4);
+    background: rgba(95, 195, 239, 0.1);
+}
+
+@keyframes dc3-wechat-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes dc3-wechat-pop {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dc3-wechat-modal,
+    .dc3-wechat-modal.is-closing,
+    .dc3-wechat-modal__card {
+        animation: none;
+    }
+}
+
 .VPNavBarExtra .social-links-list,
 .VPNavScreenSocialLinks {
     gap: 2px;

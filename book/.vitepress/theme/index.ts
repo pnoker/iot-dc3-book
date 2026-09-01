@@ -128,14 +128,70 @@ const theme: Theme = {
         })
       })
     // 四叶草图库入口已并入社交图标组：VPSocialLink 默认 target=_blank，
-    // 剥离内部链接的 target/rel，让 /figures 走站内 SPA 路由（外链不受影响）
+    // 剥离内部链接的 target/rel，让 /figures 走站内 SPA 路由（外链不受影响）；
+    // 公众号图标指向 /wechat-qrcode.jpg 静态资源：点击被下方弹窗逻辑拦截，
+    // 这里保留其 target 作为无 JS 时的退化路径（新标签打开原图）
     const fixInternalSocialLinks = () =>
       nextTick(() => {
-        document.querySelectorAll<HTMLAnchorElement>('.VPSocialLink[href^="/"]').forEach((a) => {
+        document.querySelectorAll<HTMLAnchorElement>('.VPSocialLink[href^="/"]:not([href$=".jpg"])').forEach((a) => {
           a.removeAttribute('target')
           a.removeAttribute('rel')
         })
       })
+    // 公众号图标点击：在当前页弹出二维码弹窗（不再新标签打开原图；悬浮小卡片保留作快速预览）。
+    // 文档级委托：桌面导航条 / 平板 extra 菜单 / 移动抽屉里的同一图标都命中；文案随站点语言
+    const openWechatModal = (trigger: HTMLAnchorElement) => {
+      const en = document.documentElement.lang.startsWith('en')
+      const label = trigger.getAttribute('aria-label') || (en ? 'WeChat Official Account' : '微信公众号')
+      const closeLabel = en ? 'Close' : '关闭'
+      const hint = en ? 'Scan on WeChat to follow' : '微信扫码关注'
+      const modal = document.createElement('div')
+      modal.className = 'dc3-wechat-modal'
+      modal.setAttribute('role', 'dialog')
+      modal.setAttribute('aria-modal', 'true')
+      modal.setAttribute('aria-label', label)
+      modal.innerHTML = `
+        <div class="dc3-wechat-modal__scrim"></div>
+        <div class="dc3-wechat-modal__card">
+          <button class="dc3-wechat-modal__close" type="button" aria-label="${closeLabel}">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <p class="dc3-wechat-modal__title">${label}</p>
+          <div class="dc3-wechat-modal__qr"><img src="/wechat-qrcode.jpg" alt="${label}"></div>
+          <p class="dc3-wechat-modal__hint">${hint}</p>
+        </div>`
+      let closed = false
+      const close = () => {
+        if (closed) return
+        closed = true
+        document.removeEventListener('keydown', onKey, true)
+        document.body.classList.remove('dc3-modal-open')
+        modal.classList.add('is-closing')
+        window.setTimeout(() => modal.remove(), 170)
+        trigger.focus()
+      }
+      const onKey = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') close()
+        if (event.key === 'Tab') {
+          // 弹窗内唯一可聚焦元素是关闭按钮：把焦点留在弹窗内
+          event.preventDefault()
+          modal.querySelector<HTMLButtonElement>('.dc3-wechat-modal__close')?.focus()
+        }
+      }
+      modal.querySelector('.dc3-wechat-modal__close')?.addEventListener('click', close)
+      modal.querySelector('.dc3-wechat-modal__scrim')?.addEventListener('click', close)
+      document.addEventListener('keydown', onKey, true)
+      document.body.appendChild(modal)
+      document.body.classList.add('dc3-modal-open')
+      modal.querySelector<HTMLButtonElement>('.dc3-wechat-modal__close')?.focus()
+    }
+    const handleWechatIconClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || !(event.target instanceof Element)) return
+      const link = event.target.closest<HTMLAnchorElement>('.VPSocialLink[href*="wechat-qrcode"]')
+      if (!link) return
+      event.preventDefault()
+      openWechatModal(link)
+    }
     const closeScreenAfterMobileAppearance = (event: MouseEvent) => {
       const target = event.target
       if (!(target instanceof Element)) return
@@ -154,6 +210,7 @@ const theme: Theme = {
       fixInternalSocialLinks()
       currentYearTimer = window.setInterval(syncCurrentYear, 60 * 60 * 1000)
       document.addEventListener('click', closeScreenAfterMobileAppearance)
+      document.addEventListener('click', handleWechatIconClick)
       // 抽屉/extra 菜单按需渲染，挂载后再出现的社交链接也要剥离 target
       const observer = new MutationObserver(() => {
         fixInternalSocialLinks()
@@ -162,6 +219,10 @@ const theme: Theme = {
     })
     onBeforeUnmount(() => {
       document.removeEventListener('click', closeScreenAfterMobileAppearance)
+      document.removeEventListener('click', handleWechatIconClick)
+      // 卸载时若弹窗仍开着，直接移除并恢复页面滚动
+      document.querySelector('.dc3-wechat-modal')?.remove()
+      document.body.classList.remove('dc3-modal-open')
       window.clearInterval(currentYearTimer)
     })
     watch(() => route.path, () => {
