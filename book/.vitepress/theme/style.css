@@ -557,7 +557,9 @@ body {
 }
 
 /* ── 公众号二维码弹窗：与导航玻璃菜单（VPMenu）/标题胶囊同族质感 ──
-   由 theme/index.ts 在点击公众号图标时注入 body；遮罩/关闭按钮/Esc 均可关闭 */
+   由 theme/index.ts 在点击公众号图标时注入 body；遮罩/关闭按钮/Esc 均可关闭。
+   容器不做 opacity 动画：opacity<1 的祖先会抑制子层 backdrop-filter 取景，
+   模糊会迟到并突现；遮罩自身以 blur 0→10 的关键帧与卡片弹出同步渐入 */
 body.dc3-modal-open {
     overflow: hidden;
 }
@@ -571,11 +573,6 @@ body.dc3-modal-open {
     align-items: center;
     justify-content: center;
     padding: 24px;
-    animation: dc3-wechat-fade 180ms ease;
-}
-
-.dc3-wechat-modal.is-closing {
-    animation: dc3-wechat-fade 160ms ease reverse forwards;
 }
 
 .dc3-wechat-modal__scrim {
@@ -584,10 +581,20 @@ body.dc3-modal-open {
     background: rgba(15, 35, 62, 0.4);
     backdrop-filter: blur(10px) saturate(1.2);
     -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    animation: dc3-wechat-scrim 200ms ease both;
 }
 
 .dark .dc3-wechat-modal__scrim {
     background: rgba(4, 12, 24, 0.55);
+    animation-name: dc3-wechat-scrim-dark;
+}
+
+.dc3-wechat-modal.is-closing .dc3-wechat-modal__scrim {
+    animation: dc3-wechat-scrim 160ms ease reverse both;
+}
+
+.dark .dc3-wechat-modal.is-closing .dc3-wechat-modal__scrim {
+    animation-name: dc3-wechat-scrim-dark;
 }
 
 .dc3-wechat-modal__card {
@@ -607,6 +614,10 @@ body.dc3-modal-open {
     -webkit-backdrop-filter: blur(24px) saturate(1.45);
     text-align: center;
     animation: dc3-wechat-pop 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dc3-wechat-modal.is-closing .dc3-wechat-modal__card {
+    animation: dc3-wechat-pop 160ms ease reverse both;
 }
 
 /* 暗色玻璃配方与 .dark VPMenu 一致 */
@@ -686,12 +697,29 @@ body.dc3-modal-open {
     background: rgba(95, 195, 239, 0.1);
 }
 
-@keyframes dc3-wechat-fade {
+@keyframes dc3-wechat-scrim {
     from {
-        opacity: 0;
+        background: rgba(15, 35, 62, 0);
+        backdrop-filter: blur(0) saturate(1);
+        -webkit-backdrop-filter: blur(0) saturate(1);
     }
     to {
-        opacity: 1;
+        background: rgba(15, 35, 62, 0.4);
+        backdrop-filter: blur(10px) saturate(1.2);
+        -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    }
+}
+
+@keyframes dc3-wechat-scrim-dark {
+    from {
+        background: rgba(4, 12, 24, 0);
+        backdrop-filter: blur(0) saturate(1);
+        -webkit-backdrop-filter: blur(0) saturate(1);
+    }
+    to {
+        background: rgba(4, 12, 24, 0.55);
+        backdrop-filter: blur(10px) saturate(1.2);
+        -webkit-backdrop-filter: blur(10px) saturate(1.2);
     }
 }
 
@@ -707,9 +735,10 @@ body.dc3-modal-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .dc3-wechat-modal,
-    .dc3-wechat-modal.is-closing,
-    .dc3-wechat-modal__card {
+    .dc3-wechat-modal__scrim,
+    .dc3-wechat-modal__card,
+    .dc3-wechat-modal.is-closing .dc3-wechat-modal__scrim,
+    .dc3-wechat-modal.is-closing .dc3-wechat-modal__card {
         animation: none;
     }
 }

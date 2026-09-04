@@ -9,11 +9,12 @@ const copy = computed(() => isEnglish.value ? {
   premise: {
     kicker: 'The question behind the book',
     title: 'Once a model can reason, how does it touch the real world safely?',
-    description: 'In an industrial system, an answer cannot become an action directly. The field must first be observable, its signals must become trustworthy context, and every write must pass through an execution boundary.',
+    description: 'In an industrial system, an answer cannot become an action directly. Sense, Reason, Act, and Evolve form a governed loop: trustworthy signals support candidate judgments, approved actions cross a deterministic boundary, and feedback earns wider authority only through evaluation and controlled release.',
     items: [
-      {index: '01', eyebrow: 'Observe', title: 'Make the physical world legible', description: 'Sensors, protocols, drivers, point values, and thing models turn fragmented field signals into stable platform data.'},
-      {index: '02', eyebrow: 'Reason', title: 'Turn data into usable context', description: 'Data processing, rules, RAG, tools, and MCP give an agent the context it needs to understand a task and form a decision.'},
-      {index: '03', eyebrow: 'Act', title: 'Put governance before execution', description: 'Identity, authorization, validation, policy, confirmation, recovery, and audit stand between model intent and a physical command.'}
+      {index: '01', eyebrow: 'Sense', title: 'Turn the physical world into trustworthy data', description: 'Sensors, protocols, drivers, point values, and thing models make field signals attributable, interpretable, and quality-aware.'},
+      {index: '02', eyebrow: 'Reason', title: 'Produce candidates that can be checked', description: 'Data processing, rules, RAG, tools, and MCP give an agent bounded context for forming judgments and plans—not permission to execute them.'},
+      {index: '03', eyebrow: 'Act', title: 'Put governance before execution', description: 'Identity, authorization, validation, policy, confirmation, recovery, and audit stand between model intent and a physical command.'},
+      {index: '04', eyebrow: 'Evolve', title: 'Earn wider authority with evidence', description: 'Receipts and outcomes enter versioned evaluation, approval, controlled release, and rollback; feedback never grants the model authority by itself.'}
     ],
     boundary: 'An LLM can interpret intent and orchestrate governed tools. Real-time control, safety interlocks, and fault protection still belong to deterministic systems such as PLCs and edge controllers.'
   },
@@ -86,11 +87,12 @@ const copy = computed(() => isEnglish.value ? {
   premise: {
     kicker: '全书要回答的问题',
     title: '模型会推理之后，如何安全地触碰真实世界？',
-    description: '在工业系统里，答案不能直接变成动作。现场首先要可感知，信号要成为可信上下文，每一次写操作还必须穿过清晰的执行边界。',
+    description: '在工业系统里，答案不能直接变成动作。“感知、推理、行动、进化”构成一条受治理的闭环：可信信号支撑候选判断，获准行动穿过确定性边界，反馈则必须经过评测与受控发布，才能换来更大的权限。',
     items: [
-      {index: '01', eyebrow: '看见', title: '让物理世界可被理解', description: '传感器、协议、驱动、位号值与物模型，把碎片化的现场信号变成稳定的平台数据。'},
-      {index: '02', eyebrow: '推理', title: '让数据成为决策上下文', description: '数据处理、规则、RAG、Tool 与 MCP，为智能体理解任务和形成决策提供可用上下文。'},
-      {index: '03', eyebrow: '行动', title: '先治理，再执行', description: '身份、鉴权、参数校验、策略、确认、恢复与审计，位于模型意图与物理指令之间。'}
+      {index: '01', eyebrow: '感知', title: '让物理世界成为可信数据', description: '传感器、协议、驱动、位号值与物模型，让现场信号可归属、可解释，并带有可判断的质量。'},
+      {index: '02', eyebrow: '推理', title: '只生成可检验的候选', description: '数据处理、规则、RAG、Tool 与 MCP，为智能体形成判断和计划提供有边界的上下文，而不是执行许可。'},
+      {index: '03', eyebrow: '行动', title: '先治理，再执行', description: '身份、鉴权、参数校验、策略、确认、恢复与审计，位于模型意图与物理指令之间。'},
+      {index: '04', eyebrow: '进化', title: '用证据换取逐级放权', description: '回执与结果进入版本化评测、审批、受控发布和回退；反馈本身不会让模型自动获得权限。'}
     ],
     boundary: 'LLM 可以理解意图、归纳信息并编排受控工具；实时控制、安全联锁和故障保护，仍应由 PLC、边缘控制器等确定性系统承担。'
   },
@@ -393,6 +395,10 @@ const copy = computed(() => isEnglish.value ? {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   margin-top: 56px;
+}
+
+.book-home-premise-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .book-home-card {
@@ -976,6 +982,10 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 @media (max-width: 1100px) {
+  .book-home-premise-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .book-home-stages {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
