@@ -12,11 +12,11 @@
  */
 import {readFileSync, writeFileSync, readdirSync, existsSync} from 'node:fs'
 import {join, dirname, resolve} from 'node:path'
-import {fileURLToPath} from 'node:url'
+import {fileURLToPath, pathToFileURL} from 'node:url'
 import YAML from 'yaml'
 
 const BOOK = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'book')
-const figs = await import(join(BOOK, '.vitepress/buildkit/figures.ts'))
+const figs = await import(pathToFileURL(join(BOOK, '.vitepress/buildkit/figures.ts')).href)
 const FIGURES_DIR = figs.FIGURES_DIR
 const {loadFigureRegistry, extractFigureTexts} = figs
 
