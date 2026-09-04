@@ -1,7 +1,7 @@
 type: topology
 title: 图1-8 智慧工厂设备连接拓扑示意
-audience_takeaway: 边缘网关只上传均方根等统计特征而非原始波形,云侧趋势分析后控制流反向下发减速指令,虚实双线构成无人介入的闭环决策。
-purpose: 展示从感知层到应用层的完整设备连接链路，以及数据流与控制流的走向，说明万物互联场景下数据如何从传感器汇聚、经边缘处理、上云分析、最终形成闭环决策。
+audience_takeaway: 边缘网关汇聚现场数据，云侧形成风险判断；告警通知与设备写动作具有不同治理边界，写动作必须经策略、确认、审计和结果验证。
+purpose: 展示从感知层到应用层的设备连接链路，以及数据流与受控行动流的走向，说明工业智能闭环如何保留确定性执行和治理边界。
 visual_focus: 从起点到至边缘网关的主链路。
 design_level: logical
 layout: 分层拓扑布局，从左至右依次排列“感知层 → 网络层 → 平台层 → 应用层”。
@@ -9,12 +9,12 @@ elements:
 - '感知层: 冲压机床振动传感器（BLE）、传送带光电计数器（ZigBee）、仓库温湿度探头（ZigBee）'
 - '网络层: 车间边缘网关（5G/NB-IoT），负责数据汇聚与预处理（只上传均方根等统计特征）'
 - '平台层: 工业物联网云平台，接收上万设备时序数据，进行趋势分析'
-- '应用层: 预测性维护模块、自动告警系统、闭环控制（下发减速指令至控制器）'
+- '应用层: 预测性维护模块、自动告警系统、受控行动（策略校验后下发减速指令）'
 relationships:
 - 感知层设备通过 BLE/ZigBee 短距无线协议连接至边缘网关。
 - 边缘网关通过 5G/NB-IoT 上联至平台层云平台。
-- 云平台分析后，向应用层输出告警或决策。
-- 应用层自动告警系统可经由反向控制链路向设备端控制器下发减速指令。
+- 云平台分析后，向应用层输出告警或候选动作。
+- 告警可直接通知；设备写动作须经权限、策略、确认和审计后，才可沿反向控制链路下发。
 regions:
 - id: edge_domain
   label: 设备与边缘域
@@ -46,7 +46,7 @@ callouts:
 - 云平台分析后，向应用层输出告警或决策
 legend:
 - '实线箭头: 数据流（传感器信号、统计特征、时序数据）。'
-- '虚线箭头: 控制流（告警通知、减速指令）。'
+- '虚线箭头: 受控行动流（策略、确认、审计后的减速指令）。'
 - '矩形图标: 设备/系统节点。'
 visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
@@ -54,8 +54,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 采用多层矩形叠加布局，从左至右按“感知层 -> 网络层 -> 平台层 -> 应用层”排列，各层内嵌入对应设备图标（传感器、网关、服务器、操作终端），用实线箭头标明数据流方向，虚线箭头标明控制流方向。感知层内部可适当标注三种传感器使用的短距协议（BLE、ZigBee），网络层标注 5G/NB-IoT 双连接。平台层可标注“时序数据库 + 趋势分析模型”字样。
 caption:
-  zh: 图 1-8 示意一场智慧工厂的典型物联连接拓扑。车间传感器每小时上报一次均方根振动值，边缘网关抓取异常波形后直接触发告警，同时上传至云平台做趋势分析。云平台模型判断当前设备即将失效，自动向传送带控制器下发减速指令，避免带病运行产生残次品。整个过程无需人工介入，数据在物与系统之间循环流动。
-  en: A schematic of a typical IoT connection topology in a smart factory. Workshop sensors report an RMS vibration value once an hour; on catching an abnormal waveform the edge gateway triggers an alarm directly and also uploads it to the cloud platform for trend analysis. Judging that the equipment is about to fail, the cloud model automatically sends a slow-down command to the conveyor controller, avoiding defective products from running while degraded. No human intervenes anywhere — data circulates between things and systems.
+  zh: 图 1-8 示意一场智慧工厂的物联连接拓扑。边缘网关汇聚数据，云侧模型形成设备失效风险判断；告警可以直接通知，而减速等设备写动作须经权限、策略、确认与审计后下发，并以设备回执或状态回读验证闭环。
+  en: Figure 1-8 illustrates an IoT topology for a smart factory. The edge gateway aggregates data and a cloud model produces equipment-failure risk assessments. Alerts may notify directly, while device writes such as slowdown commands require authorization, policy checks, confirmation, and audit, followed by a device receipt or state readback to verify closure.
 labels:
   en:
     图1-8 智慧工厂设备连接拓扑示意: Figure 1-8 Smart-Factory Device Connection Topology
@@ -81,16 +81,16 @@ labels:
     时序数据库: Time-Series DB
     接收上万设备时序数据: Ingests time-series data from 10k+ devices
     趋势分析模型: Trend analysis model
-    判断设备即将失效: Detects impending failure
+    生成设备失效风险判断: Produces an equipment-failure risk assessment
     应用层: Application Layer
     预测性维护模块: Predictive maintenance module
     趋势分析 · 失效预警: Trend analysis · failure early warning
     自动告警系统: Automatic alarm system
     异常波形即时通知: Instant abnormal-waveform alerts
-    闭环控制: Closed-loop control
-    下发减速指令至控制器: Sends slow-down commands to the controller
-    无需人工介入，物与系统循环流动: No human in the loop — data circulates between things and systems
+    受控行动: Governed action
+    策略校验后下发减速指令: Sends a slowdown command after policy validation
+    按风险自动批准或人工确认: Automatic approval or human confirmation by risk
     告警/决策: Alarm/decision
-    闭环控制：减速指令下发（反向控制流）: 'Closed loop: slow-down command (reverse control flow)'
-    图1-8 智慧工厂设备连接拓扑示意。车间传感器经边缘网关只上传统计特征，云平台趋势分析后反向下发减速指令，: Figure 1-8 Smart-factory device topology. Sensors upload only statistical features via the edge gateway; after trend analysis the cloud sends slow-down commands back down —
-    数据流（实线）与控制流（虚线）构成无需人工介入的闭环决策。: data flow (solid) and control flow (dashed) form a closed decision loop with no human in the loop.
+    受控行动：策略 · 确认 · 审计后下发减速指令: 'Governed action: slowdown command after policy, confirmation, and audit'
+    图1-8 智慧工厂设备连接拓扑示意。边缘网关汇聚数据，云侧模型形成风险判断；告警可直接通知，: Figure 1-8 Smart-factory device topology. The edge gateway aggregates data and the cloud model produces a risk assessment; alerts may notify directly,
+    设备写动作经策略、确认与审计后下发，并以设备回执或状态回读验证闭环。: while device writes require policy, confirmation, and audit, followed by a device receipt or state readback to verify closure.

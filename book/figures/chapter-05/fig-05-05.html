@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
   <title id="title">图 5-5 数据传输的 QoS 分级与容错机制</title>
-  <desc id="desc">QoS 0/1/2 三级可靠性递增、开销递增；持久会话、幂等设计、序列号排序补齐容错闭环。</desc>
+  <desc id="desc">QoS只定义单个MQTT协议跳的报文语义；会话、幂等、顺序、效果回读与本地联锁共同构成完整边界。</desc>
   <rect width="1200" height="680" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="560" viewBox="0 0 1800 900" preserveAspectRatio="xMidYMid meet">
 
@@ -29,61 +29,61 @@
   <!-- QoS 0 -->
   <rect x="80" y="140" width="520" height="220" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
   <text x="340" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 0 · 至多一次</text>
-  <text x="116" y="214" font-size="12" fill="#475569">发布即完成，不等待应答、不保留副本</text>
-  <text x="116" y="240" font-size="12" fill="#475569">效率最高，开销接近零</text>
-  <text x="116" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：高频非关键状态量上报</text>
-  <text x="116" y="304" font-size="11" fill="#64748B">例：气象站每分钟报一次温度，丢一条下一条补上</text>
+  <text x="116" y="214" font-size="12" fill="#475569">发送方不等待协议确认，报文可能丢失</text>
+  <text x="116" y="240" font-size="12" fill="#475569">交互最少；结果仍取决于链路与实现</text>
+  <text x="116" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：可容忍单点缺失的遥测</text>
+  <text x="116" y="304" font-size="11" fill="#64748B">例：高频趋势值；缺失不影响安全与关键结算</text>
   <text x="116" y="338" font-size="11" fill="#64748B">1 步（发布即完成）</text>
 
   <!-- QoS 1 -->
   <rect x="640" y="140" width="520" height="220" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
   <text x="900" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 1 · 至少一次</text>
-  <text x="676" y="214" font-size="12" fill="#475569">等待 PUBACK，超时重发原报文</text>
-  <text x="676" y="240" font-size="12" fill="#475569">保证交付，但可能收到重复消息</text>
-  <text x="676" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：指令下发、告警转发</text>
+  <text x="676" y="214" font-size="12" fill="#475569">等待 PUBACK；确认缺失时可能重发</text>
+  <text x="676" y="240" font-size="12" fill="#475569">协议跳内至少一次，接收方可能见到重复</text>
+  <text x="676" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：可用业务幂等收敛的消息</text>
   <text x="676" y="304" font-size="11" fill="#64748B">例：充电宝开柜指令，ACK 丢失→重传→重复开锁</text>
   <text x="676" y="338" font-size="11" fill="#64748B">2 步（发布 + 确认 + 超时重传）</text>
 
   <!-- QoS 2 -->
   <rect x="1200" y="140" width="520" height="220" rx="12" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
-  <text x="1460" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 2 · 恰好一次</text>
+  <text x="1460" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">QoS 2 · 协议跳内交付一次</text>
   <text x="1236" y="214" font-size="12" fill="#475569">四步握手：PUBLISH → PUBREC → PUBREL → PUBCOMP</text>
-  <text x="1236" y="240" font-size="12" fill="#475569">既不丢也不重，交互开销成倍增加</text>
-  <text x="1236" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：资金交易、消防告警等不可重入</text>
-  <text x="1236" y="304" font-size="11" fill="#64748B">全链路开销最高，吞吐最低</text>
+  <text x="1236" y="240" font-size="12" fill="#475569">状态机消除该MQTT跳的重复交付</text>
+  <text x="1236" y="278" font-size="12" font-weight="700" fill="#0F172A">适用：该协议跳必须消除重复且资源允许</text>
+  <text x="1236" y="304" font-size="11" fill="#64748B">不保证数据库或物理动作只执行一次</text>
   <text x="1236" y="338" font-size="11" fill="#64748B">4 步（发布 + 三次握手）</text>
 
   <!-- 容错机制 -->
   <text x="80" y="420" font-size="15" font-weight="700" fill="#334155">QoS 之外的容错机制</text>
 
   <rect x="80" y="442" width="520" height="160" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="340" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">持久会话（CleanSession=false）</text>
-  <text x="116" y="510" font-size="12" fill="#475569">Broker 保存未确认消息与离线订阅消息</text>
-  <text x="116" y="536" font-size="12" fill="#475569">设备再次上线时一次性放行</text>
-  <text x="116" y="562" font-size="12" fill="#475569">PLC 重启或模块抖动时消息不凭空消失</text>
-  <text x="116" y="588" font-size="11" fill="#64748B">网络断开不可怕，开启持久会话即可</text>
+  <text x="340" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">会话状态（MQTT 3.1.1 / 5.0）</text>
+  <text x="116" y="510" font-size="12" fill="#475569">按会话过期、配额和消息过期保留状态</text>
+  <text x="116" y="536" font-size="12" fill="#475569">重连需复用Client ID且会话尚未过期</text>
+  <text x="116" y="562" font-size="12" fill="#475569">积压恢复要验证限流、重复与过期丢弃</text>
+  <text x="116" y="588" font-size="11" fill="#64748B">持久会话不等于任意断网都无损</text>
 
   <rect x="640" y="442" width="520" height="160" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
   <text x="900" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">幂等性设计（应用层去重）</text>
-  <text x="676" y="510" font-size="12" fill="#475569">指令携带全局唯一 ID，如 cmd-1234</text>
-  <text x="676" y="536" font-size="12" fill="#475569">处理前查 Redis SETNX / 数据库唯一索引</text>
-  <text x="676" y="562" font-size="12" fill="#475569">处理过则丢弃，未处理则执行并记录 ID</text>
-  <text x="676" y="588" font-size="11" fill="#64748B">QoS 1 管网络语义，幂等管应用层去重</text>
+  <text x="676" y="510" font-size="12" fill="#475569">命令携带稳定ID，如 cmd-1234</text>
+  <text x="676" y="536" font-size="12" fill="#475569">Inbox/唯一约束记录受理、状态与结果</text>
+  <text x="676" y="562" font-size="12" fill="#475569">重复请求返回同一结果，不重复制造副作用</text>
+  <text x="676" y="588" font-size="11" fill="#64748B">查重—执行—记账仍要处理崩溃原子性</text>
 
   <rect x="1200" y="442" width="520" height="160" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="1460" y="474" font-size="14" font-weight="700" fill="#0F172A" text-anchor="middle">数据乱序处理</text>
-  <text x="1236" y="510" font-size="12" fill="#475569">QoS 不保证到达顺序</text>
-  <text x="1236" y="536" font-size="12" fill="#475569">消息内嵌单调递增序列号 / 时间戳</text>
-  <text x="1236" y="562" font-size="12" fill="#475569">消费端按序列号排序、丢弃过期、合并</text>
-  <text x="1236" y="588" font-size="11" fill="#64748B">与时间序列写入顺序性设计相关（5.4 节）</text>
+  <text x="1236" y="510" font-size="12" fill="#475569">跨连接/Broker无全局事件时间顺序</text>
+  <text x="1236" y="536" font-size="12" fill="#475569">每设备序列号 + 源时间 + 接收时间</text>
+  <text x="1236" y="562" font-size="12" fill="#475569">在明确窗口内重排、丢弃或合并</text>
+  <text x="1236" y="588" font-size="11" fill="#64748B">同时定义序列重置与时钟漂移策略</text>
 
   <!-- 工程判断 -->
   <rect x="80" y="660" width="1640" height="80" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
   <text x="120" y="692" font-size="14" font-weight="700" fill="#334155">工程判断：不要指望纯协议解决所有问题</text>
-  <text x="120" y="720" font-size="12" fill="#475569">丢了会死人吗？会 → QoS 2；否则 QoS 1 + 应用层幂等。无状态量用 QoS 0。断线开启持久会话，乱序靠序列号在消费端排序</text>
+  <text x="120" y="720" font-size="12" fill="#475569">QoS按单跳丢失/重复容忍度选择；物理安全由本地联锁兜底，业务仍需授权、幂等、过期、效果回读与人工接管</text>
 
   <!-- Caption -->
-  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 5-5 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。</text>
+  <text x="900" y="860" font-size="17" fill="#475569" text-anchor="middle">图 5-5 QoS限定单个MQTT跳的报文语义；会话、幂等、顺序和效果回读补齐业务边界，本地联锁守住安全底线。</text>
   </svg>
 </svg>
   </main>

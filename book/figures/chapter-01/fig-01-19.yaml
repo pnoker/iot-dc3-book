@@ -1,20 +1,20 @@
 type: flowchart
 title: 图1-19 AIoT数据闭环流程
-audience_takeaway: AIoT是感知-学习-决策-执行的循环,执行结果反馈回感知驱动持续自我优化,区别于传统IoT的单向数据管道。
-purpose: 展示AIoT中从感知到学习、决策、执行，再到反馈优化的循环过程，直观区别于传统IoT的单向数据流。
+audience_takeaway: AIoT把感知、推理、受控行动与反馈评估接成闭环；反馈只是演进证据，改进仍须经过评测、发布与回退治理。
+purpose: 展示AIoT从感知、推理到受控行动和反馈评估的循环，说明其与传统单向数据流的差异及确定性执行边界。
 visual_focus: 从step1到step1的主链路。
 design_level: implementation
-layout: 横向流程图，四个主要步骤从左至右排列，底部有箭头从“执行”回到“感知”，表示反馈循环。
+layout: 横向流程图，四个主要步骤从左至右排列，底部有箭头从“反馈评估”回到“感知”，表示证据循环。
 elements:
 - 感知 (Perception)
-- 学习 (Learning)
-- 决策 (Decision)
-- 执行 (Execution)
+- 推理 (Reasoning)
+- 受控行动 (Governed Action)
+- 反馈评估 (Feedback Evaluation)
 - step4 → step1（反馈 (Feedback)）
 relationships:
 - step1 → step2（数据流）
-- step2 → step3（推理结果）
-- step3 → step4（控制指令）
+- step2 → step3（候选动作）
+- step3 → step4（执行回执）
 - step4 → step1（闭环反馈）
 regions:
 - id: platform_domain
@@ -57,12 +57,12 @@ connections:
   direction: request
 - from: r2
   to: r3
-  label: 推理结果
+  label: 候选动作
   style: solid
   direction: request
 - from: r3
   to: r4
-  label: 控制指令
+  label: 执行回执
   style: solid
   direction: request
 - from: r4
@@ -72,8 +72,8 @@ connections:
   direction: request
 callouts:
 - step1 → step2（数据流）
-- step2 → step3（推理结果）
-- step3 → step4（控制指令）
+- step2 → step3（候选动作）
+- step3 → step4（执行回执）
 legend:
 - 核心环节
 - 数据流向（含反馈）
@@ -81,27 +81,27 @@ visual_constraints:
 - 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
 - 图例放在底部，不遮挡主体结构。
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
-render_notes: 使用HTML+SVG实现。主体为四个横向排列的圆角矩形，之间用带箭头的直线连接。反馈箭头从最右矩形底部弯曲回到最左矩形底部。每个矩形内部居中显示标签和图标（如传感器图标、大脑图标、齿轮图标）。颜色：感知为绿色，学习为蓝色，决策为橙色，执行为红色。整体背景为浅灰，箭头为黑色。
+render_notes: 使用HTML+SVG实现。主体为四个横向排列的圆角矩形，之间用带箭头的直线连接。反馈箭头从最右矩形底部弯曲回到最左矩形底部。每个矩形内部居中显示标签和说明。颜色：感知为绿色，推理为蓝色，受控行动为橙色，反馈评估为红色。整体背景为浅灰，箭头为黑色。
 caption:
-  zh: 图1-19 AIoT数据闭环流程——感知、学习、决策、执行形成持续自我优化的循环，区别于传统IoT的单向数据管道。
-  en: Figure 1-19 The AIoT data loop — sensing, learning, decision-making, and execution form a continuously self-optimizing cycle, distinct from the one-way data pipeline of traditional IoT.
+  zh: 图1-19 AIoT数据闭环流程——感知、推理、受控行动与反馈评估形成证据闭环；改进经过评测、发布和回退治理后才成为进化。
+  en: Figure 1-19 The AIoT data loop — sensing, reasoning, governed action, and feedback evaluation form an evidence loop; improvement becomes evolution only after evaluation, release control, and rollback governance.
 labels:
   en:
     图1-19 AIoT数据闭环流程: Figure 1-19 The AIoT Data Loop
-    AIoT 感知-学习-决策-执行的闭环流程: 'The AIoT loop: sense–learn–decide–execute'
-    感知→学习→决策→执行四步循环，执行结果反馈回感知: Sense→learn→decide→execute; results feed back into sensing
+    AIoT 感知-推理-受控行动-反馈评估的闭环流程: 'The AIoT loop: sense–reason–act under control–evaluate feedback'
+    感知→推理→受控行动→反馈评估，结果形成下一轮证据: Sense→reason→act under control→evaluate feedback; results become evidence for the next cycle
     数据流: Data flow
-    推理结果: Inference results
-    控制指令: Control commands
-    闭环反馈（执行结果回传感知，驱动持续自我优化）: Closed-loop feedback (results return to sensing, driving continuous self-optimization)
+    候选动作: Candidate action
+    执行回执: Execution receipt
+    证据回流（反馈进入评测，不直接改写生产系统）: Evidence feedback (results enter evaluation, not direct production changes)
     ① 感知: ① Sense
     传感器采集数据: Sensors collect data
-    ② 学习: ② Learn
-    数据分析与建模: Data analysis and modeling
-    ③ 决策: ③ Decide
-    生成控制决策: Control decisions generated
-    ④ 执行: ④ Execute
-    设备执行动作: Devices act
-    感知—学习—决策—执行形成持续自我优化的循环: 'Sense–learn–decide–execute: a continuously self-optimizing cycle'
-    执行结果反馈回感知，区别于传统 IoT 的单向数据管道: Results feed back into sensing — unlike traditional IoT's one-way pipeline
-    图1-19 AIoT数据闭环流程——感知、学习、决策、执行形成持续自我优化的循环，区别于传统IoT的单向数据管道。: Figure 1-19 The AIoT data loop — sense, learn, decide, execute form a self-optimizing cycle, unlike the one-way pipeline of traditional IoT.
+    ② 推理: ② Reason
+    模型生成候选判断: Model generates candidate judgments
+    ③ 受控行动: ③ Act under control
+    策略与控制器确定性执行: Policies and controllers execute deterministically
+    ④ 反馈评估: ④ Evaluate feedback
+    回执与现场状态形成证据: Receipts and field state form evidence
+    感知—推理—受控行动形成闭环，进化发生在评测与发布之后: 'Sense–reason–act under control form the loop; evolution follows evaluation and release'
+    反馈形成证据，不直接改写生产系统: Feedback creates evidence; it does not rewrite production systems directly
+    图1-19 AIoT数据闭环流程——感知、推理、受控行动与反馈评估形成证据闭环；改进经过评测、发布和回退治理后才成为进化。: Figure 1-19 The AIoT data loop — sensing, reasoning, governed action, and feedback evaluation form an evidence loop; improvement becomes evolution only after evaluation, release control, and rollback governance.

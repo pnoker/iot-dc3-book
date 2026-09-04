@@ -1,12 +1,12 @@
 type: architecture
 title: 图1-20 云边协同AIoT三级架构示意
-audience_takeaway: 云侧只下发量化剪枝模型并回收低置信度样本,边缘负责实时推理,端侧靠低功耗AI芯片本地响应,三层形成训练-推理-反馈闭环。
+audience_takeaway: 云侧管理并下发经过验收的模型版本，边缘负责实时推理，端侧在本地规则与控制器边界内响应，回传样本与回执进入下一轮评测。
 purpose: 展示AIoT中端、边、云三层之间的智能分工与数据流向，突出边缘计算作为实时推理载体的位置，以及模型下沉形成的闭环。
 visual_focus: 从云层到边缘层：原始数据上报的主链路。
 design_level: logical
 layout: 自上而下三层水平带状布局。每层内放置矩形组件，层间用纵向箭头连接表示数据/模型流向。
 elements:
-- 云层：模型训练与更新、模型管理与分发、全局监控与运维
+- 云层：模型训练与评测、版本管理与分发、全局监控与运维
 - 边缘层：边缘推理节点（如NVIDIA Jetson、华为Atlas）、本地数据缓存与预处理、样本回传通道
 - 端层：智能传感器与执行器（含低功耗AI芯片）、数据采集与本地判断
 relationships:
@@ -111,19 +111,19 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，横向分三层，每层内放置多个矩形组件，层之间用纵向箭头连接，标注文本。颜色按图例设置。浅色背景，圆角矩形，统一间距。
 caption:
-  zh: 图1-20 云边协同AIoT三级架构。云侧负责模型训练与更新，边缘侧承担实时推理与数据过滤，端侧运行轻量模型实现本地自主响应。三层之间形成“训练-推理-反馈”闭环。
-  en: Figure 1-20 The three-tier edge-cloud collaborative AIoT architecture. The cloud trains and updates models, the edge carries real-time inference and data filtering, and the end runs lightweight models for autonomous local response. The three tiers form a training–inference–feedback loop.
+  zh: 图1-20 云边协同AIoT三级架构。云侧管理经过评测的模型版本，边缘侧承担实时推理与数据过滤，端侧在本地规则和控制器边界内响应，样本与回执回流后进入下一轮评测。
+  en: Figure 1-20 The three-tier edge-cloud collaborative AIoT architecture. The cloud manages evaluated model versions, the edge handles real-time inference and data filtering, and the end responds within local rule and controller boundaries; returned samples and receipts enter the next evaluation cycle.
 labels:
   en:
     图1-20 云边协同AIoT三级架构示意: 'Figure 1-20 Edge-Cloud Collaborative AIoT: Three Tiers'
     端边云三级架构的智能分工与数据/模型流向: How intelligence and data/model flows divide across end, edge, and cloud
-    云—边缘—端三层智能分工，训练—推理—反馈闭环: Cloud–edge–end division of labor; train–infer–feedback loop
+    云—边缘—端三层智能分工，评测发布—推理—反馈闭环: Cloud–edge–end division of labor; evaluate and release–infer–feedback loop
     原始数据上报: Raw data reporting
     推理结果反馈: Inference-result feedback
     样本回传: Sample return
     模型下发: Model push
     云层（高算力 · 非实时 · 全局）: Cloud (high compute · non-real-time · global)
-    模型训练与更新 · 模型管理与分发 · 全局监控与运维: Model training & updates · management & distribution · global monitoring & O&M
+    模型训练与评测 · 版本管理与分发 · 全局监控与运维: Model training & evaluation · version management & distribution · global monitoring & O&M
     量化、剪枝后的轻量模型经安全信道下发: Quantized, pruned lightweight models pushed over a secure channel
     边缘层（中等算力 · 实时推理 · 数据过滤）: Edge (medium compute · real-time inference · data filtering)
     边缘推理节点（NVIDIA Jetson / 华为 Atlas）· 本地数据缓存与预处理 · 样本回传通道: Edge inference nodes (NVIDIA Jetson / Huawei Atlas) · local cache & preprocessing · sample-return channel
@@ -131,7 +131,7 @@ labels:
     端层（低算力 · 超低功耗 · 本地响应）: End (low compute · ultra-low power · local response)
     智能传感器与执行器（含低功耗 AI 芯片）· 数据采集与本地判断: Smart sensors & actuators (low-power AI chips) · data collection & local judgment
     经预处理后通过 MQTT / CoAP 上报: Preprocessed, reported via MQTT / CoAP
-    三层形成「训练 — 推理 — 反馈」闭环: Three tiers form the train — infer — feedback loop
-    云训练模型 → 边缘实时推理 → 端侧本地响应 → 样本回传反哺训练: Cloud trains → edge infers → end responds locally → samples retrain the cloud
-    图1-20 云边协同AIoT三级架构。云侧负责模型训练与更新，边缘侧承担实时推理与数据过滤，端侧运行轻量模型实现本地自主响应，: Figure 1-20 Edge-cloud collaborative AIoT, three tiers. The cloud trains and updates models, the edge handles real-time inference and filtering, the end runs lightweight models for local autonomy —
-    三层之间形成「训练-推理-反馈」闭环。: together forming the train–infer–feedback loop.
+    三层形成「评测发布 — 推理 — 反馈」闭环: Three tiers form the evaluate and release — infer — feedback loop
+    云端评测发布 → 边缘实时推理 → 端侧受控响应 → 样本与回执返回评测: Cloud evaluates and releases → edge infers → end responds under control → samples and receipts return for evaluation
+    图1-20 云边协同AIoT三级架构。云侧管理经过评测的模型版本，边缘侧承担实时推理与数据过滤，: Figure 1-20 Edge-cloud collaborative AIoT, three tiers. The cloud manages evaluated model versions and the edge handles real-time inference and filtering —
+    端侧在本地规则和控制器边界内响应，样本与回执回流后进入下一轮评测。: the end responds within local rule and controller boundaries, and returned samples and receipts enter the next evaluation cycle.

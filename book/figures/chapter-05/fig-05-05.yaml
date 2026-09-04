@@ -1,60 +1,70 @@
 type: flowchart
 title: 图 5-5 数据传输的 QoS 分级与容错机制
-audience_takeaway:  QoS 0/1/2 可靠性递增、开销递增，持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序。
-purpose: 展示数据传输的 QoS 分级与容错机制
-visual_focus: QoS 三级与容错三机制。
+audience_takeaway: QoS 只定义单个 MQTT 协议跳的报文交付语义；会话恢复、业务幂等、事件顺序、效果回读和本地安全联锁仍需分别设计。
+purpose: 区分 MQTT QoS 的协议保证与跨 Broker、数据库、业务和物理设备的端到端责任。
+visual_focus: 上半部分比较 QoS 0/1/2，下半部分展示会话状态、幂等和顺序处理，底部明确本地安全边界。
 design_level: flowchart
-layout: 上半 QoS 三级卡片，下半容错三机制，底部工程判断
+layout: 上半部三张等宽 QoS 卡片，下半部三张等宽容错卡片，底部用横向判断框收束。
 elements:
-- QoS 0：至多一次，高频非关键状态量；QoS 1：至少一次，指令下发；QoS 2：恰好一次，资金交易
-- 持久会话：CleanSession=false，Broker 保存未确认消息
-- 幂等设计：全局唯一 ID + Redis SETNX / 唯一索引
-- 乱序处理：消息内嵌序列号，消费端排序
+- QoS 0：至多一次；发送方不等待协议确认，可用于容许单点缺失的遥测。
+- QoS 1：至少一次；确认缺失会重发，业务必须处理重复。
+- QoS 2：四步状态机在单个 MQTT 协议跳内消除重复交付，不保证业务或物理副作用只发生一次。
+- 会话状态：受协议版本、Client ID、会话过期、配额、消息过期和 Broker 持久化约束。
+- 幂等：稳定 ID、持久化状态与结果，并处理查重、执行和记账之间的崩溃窗口。
+- 顺序：按设备序列号、源时间、接收时间和业务窗口处理，不假定全局事件顺序。
 relationships:
-- QoS 分级按丢失容忍度选择；持久会话、幂等、序列号补齐协议之外的应用层容错
-render_notes: HTML/SVG 渲染，QoS 三级 + 容错三机制，灰蓝红分层。
+- QoS 等级只按单个 MQTT 跳的丢失/重复容忍度和端点资源选择。
+- 会话、幂等与顺序机制补充业务可靠性，但都不能替代本地安全联锁。
+callouts:
+- 受理、Broker 确认、消费成功、设备确认与效果回读是不同证据层级。
+- QoS 2 不能把云端远程控制变成安全回路。
+visual_constraints:
+- 三列卡片等宽、等高、等距；文字不溢出卡片。
+- 协议语义与业务语义使用不同措辞，避免“全链路恰好一次”。
+- 底部工程判断必须保留本地联锁、授权、幂等、过期、效果回读和人工接管。
+render_notes: HTML/SVG 渲染，QoS 三级与三类配套机制使用灰、蓝、红、绿、橙区分，但结论同时用文字表达。
 caption:
-  zh: 图 5-5 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。
-  en: 'Figure 5-5 QoS 0/1/2 bring rising reliability at rising overhead, each fit for its role; persistent sessions restore broken connections, idempotent design deduplicates at the application layer, and sequence-number ordering fixes reordering — together closing the fault-tolerance loop for data transmission.'
+  zh: 图 5-5 QoS限定单个MQTT跳的报文语义；会话、幂等、顺序和效果回读补齐业务边界，本地联锁守住安全底线。
+  en: 'Figure 5-5 QoS bounds message semantics on a single MQTT hop; sessions, idempotency, ordering, and effect readback complete the business boundary, while local interlocks protect the safety baseline.'
 labels:
   en:
-    图 5-5 数据传输的 QoS 分级与容错机制: Figure 5-5 QoS Levels & Fault Tolerance
-    QoS 0/1/2 三级可靠性递增、开销递增；持久会话、幂等设计、序列号排序补齐容错闭环。: 'QoS 0/1/2: reliability and overhead rise together; persistent sessions, idempotent design, and sequence ordering close the fault-tolerance loop.'
-    报文丢了怎么办？重复了怎么办？断了如何续接？: What if a message is lost? Duplicated? The connection drops?
-    QoS 0 · 至多一次: QoS 0 · At most once
-    发布即完成，不等待应答、不保留副本: 'Fire and forget: no ACK wait, no copy kept'
-    效率最高，开销接近零: Fastest; near-zero overhead
-    适用：高频非关键状态量上报: 'For: frequent non-critical status'
-    例：气象站每分钟报一次温度，丢一条下一条补上: e.g. per-minute temperature; next reading covers loss
-    1 步（发布即完成）: 1 step (fire and forget)
-    QoS 1 · 至少一次: QoS 1 · At least once
-    等待 PUBACK，超时重发原报文: Wait for PUBACK; resend on timeout
-    保证交付，但可能收到重复消息: Guaranteed, but may duplicate
-    适用：指令下发、告警转发: 'For: commands, alarm forwarding'
-    例：充电宝开柜指令，ACK 丢失→重传→重复开锁: 'e.g. locker-open command: lost ACK → resend → double unlock'
-    2 步（发布 + 确认 + 超时重传）: 2 steps (publish + ACK + retry)
-    QoS 2 · 恰好一次: QoS 2 · Exactly once
-    四步握手：PUBLISH → PUBREC → PUBREL → PUBCOMP: 'Four-way: PUBLISH → PUBREC → PUBREL → PUBCOMP'
-    既不丢也不重，交互开销成倍增加: No loss, no duplicates; overhead multiplies
-    适用：资金交易、消防告警等不可重入: 'For: payments, fire alarms — non-reentrant cases'
-    全链路开销最高，吞吐最低: Highest overhead, lowest throughput
-    4 步（发布 + 三次握手）: 4 steps (publish + three handshakes)
-    QoS 之外的容错机制: Fault Tolerance Beyond QoS
-    持久会话（CleanSession=false）: Persistent Session (CleanSession=false)
-    Broker 保存未确认消息与离线订阅消息: Broker stores unacked and offline messages
-    设备再次上线时一次性放行: Released in one batch at reconnect
-    PLC 重启或模块抖动时消息不凭空消失: Messages survive PLC restarts or module glitches
-    网络断开不可怕，开启持久会话即可: Network drops are fine with persistent sessions
-    幂等性设计（应用层去重）: Idempotent Design (app-layer dedup)
-    指令携带全局唯一 ID，如 cmd-1234: Commands carry a global unique ID, e.g. cmd-1234
-    处理前查 Redis SETNX / 数据库唯一索引: Check Redis SETNX / DB unique index before processing
-    处理过则丢弃，未处理则执行并记录 ID: Drop if seen; else execute & record ID
-    QoS 1 管网络语义，幂等管应用层去重: QoS 1 = network; idempotency = app layer
-    数据乱序处理: Handling Reordering
-    QoS 不保证到达顺序: QoS does not guarantee order
-    消息内嵌单调递增序列号 / 时间戳: Messages embed monotonic sequence numbers
-    消费端按序列号排序、丢弃过期、合并: Consumers sort by sequence, drop stale, merge
-    与时间序列写入顺序性设计相关（5.4 节）: Ties into time-series write ordering (Section 5.4)
-    工程判断：不要指望纯协议解决所有问题: 'Judgment: protocols alone won''t fix everything'
-    丢了会死人吗？会 → QoS 2；否则 QoS 1 + 应用层幂等。无状态量用 QoS 0。断线开启持久会话，乱序靠序列号在消费端排序: Life-threatening loss? → QoS 2; else QoS 1 + idempotency. Stateless → QoS 0. Persistent sessions for drops; consumer-side sequence sort for reordering.
-    图 5-5 QoS 0/1/2 可靠性递增、开销递增，各司其职；持久会话解决断线续接、幂等设计解决应用层去重、序列号排序解决乱序，共同补齐数据传输容错闭环。: 'Figure 5-5 QoS 0/1/2: reliability and overhead rise together, each fit for its role; persistent sessions restore broken connections, idempotent design deduplicates at the application layer, and sequence numbers fix reordering — closing the fault-tolerance loop for data transport.'
+    图 5-5 数据传输的 QoS 分级与容错机制: 'Figure 5-5 QoS Levels and Fault-Tolerance Boundaries'
+    QoS只定义单个MQTT协议跳的报文语义；会话、幂等、顺序、效果回读与本地联锁共同构成完整边界。: 'QoS defines message semantics only on one MQTT hop; sessions, idempotency, ordering, effect readback, and local interlocks complete the boundary.'
+    报文丢了怎么办？重复了怎么办？断了如何续接？: 'What if a message is lost, duplicated, or interrupted?'
+    QoS 0 · 至多一次: 'QoS 0 · At Most Once'
+    发送方不等待协议确认，报文可能丢失: 'The sender waits for no protocol ACK; the message may be lost'
+    交互最少；结果仍取决于链路与实现: 'Fewest exchanges; outcome still depends on the link and implementation'
+    适用：可容忍单点缺失的遥测: 'For telemetry that tolerates an individual missing sample'
+    例：高频趋势值；缺失不影响安全与关键结算: 'Example: high-rate trends whose gaps affect neither safety nor critical settlement'
+    1 步（发布即完成）: '1 step (publish and continue)'
+    QoS 1 · 至少一次: 'QoS 1 · At Least Once'
+    等待 PUBACK；确认缺失时可能重发: 'Wait for PUBACK; a missing ACK may cause retransmission'
+    协议跳内至少一次，接收方可能见到重复: 'At least once on the hop; the receiver may see duplicates'
+    适用：可用业务幂等收敛的消息: 'For messages whose duplicates can converge through business idempotency'
+    例：充电宝开柜指令，ACK 丢失→重传→重复开锁: 'Example: locker command; lost ACK → retransmit → duplicate unlock'
+    2 步（发布 + 确认 + 超时重传）: '2 steps (publish + ACK + timeout retry)'
+    QoS 2 · 协议跳内交付一次: 'QoS 2 · Deliver Once on the Protocol Hop'
+    四步握手：PUBLISH → PUBREC → PUBREL → PUBCOMP: 'Four exchanges: PUBLISH → PUBREC → PUBREL → PUBCOMP'
+    状态机消除该MQTT跳的重复交付: 'The state machine removes duplicate delivery on this MQTT hop'
+    适用：该协议跳必须消除重复且资源允许: 'For a hop that must eliminate duplicates and has sufficient resources'
+    不保证数据库或物理动作只执行一次: 'Does not guarantee one database write or physical action'
+    4 步（发布 + 三次握手）: '4 steps (publish + three acknowledgments)'
+    QoS 之外的容错机制: 'Fault Tolerance Beyond QoS'
+    会话状态（MQTT 3.1.1 / 5.0）: 'Session State (MQTT 3.1.1 / 5.0)'
+    按会话过期、配额和消息过期保留状态: 'Retain state subject to session expiry, quotas, and message expiry'
+    重连需复用Client ID且会话尚未过期: 'Reconnect with the same Client ID before the session expires'
+    积压恢复要验证限流、重复与过期丢弃: 'Test rate limits, duplicates, and expiry while draining backlog'
+    持久会话不等于任意断网都无损: 'A persistent session is not lossless recovery from every outage'
+    幂等性设计（应用层去重）: 'Idempotency (Application-Layer Deduplication)'
+    命令携带稳定ID，如 cmd-1234: 'Commands carry a stable ID, such as cmd-1234'
+    Inbox/唯一约束记录受理、状态与结果: 'An Inbox or uniqueness constraint records acceptance, state, and result'
+    重复请求返回同一结果，不重复制造副作用: 'A duplicate returns the same result without repeating the side effect'
+    查重—执行—记账仍要处理崩溃原子性: 'Check, act, and record must still handle crash atomicity'
+    数据乱序处理: 'Handling Reordering'
+    跨连接/Broker无全局事件时间顺序: 'No global event-time order exists across connections or brokers'
+    每设备序列号 + 源时间 + 接收时间: 'Per-device sequence + source time + receive time'
+    在明确窗口内重排、丢弃或合并: 'Reorder, drop, or merge within an explicit window'
+    同时定义序列重置与时钟漂移策略: 'Also define sequence-reset and clock-drift policies'
+    工程判断：不要指望纯协议解决所有问题: 'Engineering judgment: a protocol alone cannot solve every failure'
+    QoS按单跳丢失/重复容忍度选择；物理安全由本地联锁兜底，业务仍需授权、幂等、过期、效果回读与人工接管: 'Choose QoS by single-hop loss and duplicate tolerance; local interlocks protect physical safety, while business logic still needs authorization, idempotency, expiry, effect readback, and human takeover'
+    图 5-5 QoS限定单个MQTT跳的报文语义；会话、幂等、顺序和效果回读补齐业务边界，本地联锁守住安全底线。: 'Figure 5-5 QoS bounds message semantics on a single MQTT hop; sessions, idempotency, ordering, and effect readback complete the business boundary, while local interlocks protect the safety baseline.'

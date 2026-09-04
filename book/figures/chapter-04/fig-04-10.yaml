@@ -1,26 +1,26 @@
 type: architecture
 title: 图4-10 IoT DC3整体架构及驱动层位置
-audience_takeaway: 驱动层用独立JVM进程+Driver SDK、经MQ与核心服务解耦,新增驱动只需横向加框,故障不中断平台。
-purpose: 展示IoT DC3的四层体系（前端、核心服务、驱动层、设备层）和驱动层在其中的数据流向与解耦位置。
-visual_focus: 自上而下四层（前端、核心服务、驱动、设备），驱动层经消息队列与核心服务解耦。
+audience_takeaway: Driver SDK 与消息契约限制协议扩展的改动范围，但故障隔离、容量与跨层复用必须由配置和测试证明。
+purpose: 展示 IoT DC3 的前端、核心服务、Driver、设备与数据源边界，以及命令、位号值和回执的主要消息路径。
+visual_focus: Driver 层作为可扩展适配边界，经消息队列连接 Data 等核心服务，并面对各自独立验收的协议或数据源接口。
 design_level: logical
-layout: 自上而下四层布局，层与层之间用水平分隔线隔开，层内元素水平排列。整体居中，宽度按最长层设置。
+layout: 自上而下排列平台服务域、Driver 层和设备/数据源；同级 Driver 等宽等距，每个适配器与其外部接口垂直对齐。
 elements:
-- 顶层（Layer 1）：前端应用层。一个圆角方框，标记“Vue.js Admin Console”。颜色：#2d8cf0。
-- 第二层（Layer 2）：平台核心服务层。一组紧密排列的圆角方框，分别标记“Gateway”、“Auth”、“Manager”、“Data”、“Agentic”。左上方标注“固定服务名 + 容器 DNS + 环境变量”。颜色：#19be6b。
-- 第三层（Layer 3）：驱动层。一个横向的宽条框，内部并列排列多个小方框，分别标记“Modbus驱动”、“LoRa驱动”、“NB-IoT驱动”、“BLE驱动”、“Zigbee驱动”、“PLC S7驱动”、“MC协议驱动”等。驱动层大框左上方标注“独立JVM进程 + Driver SDK”。颜色：#e8a000。
-- 第四层（Layer 4）：物理设备层。一组不规则的图标或小方框，分别标记“PLC”、“传感器”、“水表”、“工业仪表”、“执行器”。
+- 前端应用层：Vue.js Admin Console。
+- 核心服务层：Gateway、Auth、Manager、Data、Agentic；服务地址以固定名称、容器 DNS 与环境变量配置。
+- Driver 层：独立部署进程通过 Driver SDK 和消息契约适配 Modbus、OPC UA、PLC、数据源、虚拟测试或私有协议。
+- 设备与数据源层：现场仪表、OPC UA 服务、PLC、数据库/API、仿真器和私有设备。
 relationships:
-- 第二层与第三层之间：两条虚线箭头。从上到下的箭头标注“下发指令（MQ）”
-- 从下到上的箭头标注“上报数据（MQ）”。箭头颜色为深灰色虚线。
-- 第三层与第四层之间：从每个驱动方框向下连接一个或多个设备图标，用实线箭头表示，线缆上用短标注协议名（如“Modbus TCP”、“LoRaWAN”、“BLE GATT”）。箭头由设备指向驱动，表示数据上行方向。
+- Data 等核心服务通过消息队列向 Driver 投递受控命令。
+- Driver 通过消息队列上报位号值与执行回执。
+- 每个 Driver 与外部设备或数据源之间都有独立的协议边界和验收责任。
 regions:
 - id: platform_domain
   label: 平台服务域
-  role: 核心服务能力边界
-- id: edge_domain
-  label: 设备与边缘域
-  role: 现场异构资源边界
+  role: 前端与核心服务边界
+- id: source_domain
+  label: 设备与数据源域
+  role: Driver、现场设备与外部数据源边界
 components:
 - id: frontend
   label: 前端应用层
@@ -30,85 +30,90 @@ components:
   priority: primary
   shape: card
 - id: core
-  label: 平台核心服务层
+  label: 核心服务层
   type: platform
-  subtitle: Gateway / Auth / Manager / Data / Agentic（固定服务名 + 容器 DNS + 环境变量）
+  subtitle: Gateway / Auth / Manager / Data / Agentic
   group: platform_domain
   priority: primary
   shape: card
 - id: driver
   label: 驱动层
   type: platform
-  subtitle: 独立 JVM 进程 + Driver SDK：Modbus、LoRa、NB-IoT、BLE、Zigbee、PLC S7、MC 等驱动
-  group: platform_domain
+  subtitle: 独立部署进程 + Driver SDK + 消息契约
+  group: source_domain
   priority: primary
   shape: card
-- id: device
-  label: 物理设备层
+- id: source
+  label: 设备/数据源
   type: edge
-  subtitle: PLC、传感器、水表、工业仪表、执行器
-  group: edge_domain
+  subtitle: 现场设备、工业服务、数据库、API 与仿真器
+  group: source_domain
   priority: primary
   shape: card
 connections:
 - from: core
   to: driver
-  label: 下发指令（MQ）
+  label: 受控命令（MQ）
   style: dashed
   direction: request
 - from: driver
   to: core
-  label: 上报数据（MQ）
+  label: 位号值/回执（MQ）
   style: dashed
   direction: response
-- from: device
+- from: source
   to: driver
-  label: 原生协议（Modbus TCP/LoRaWAN/BLE GATT 等）
+  label: 独立协议边界
   style: solid
-  direction: request
+  direction: bidirectional
 callouts:
-- 第二层与第三层之间：两条虚线箭头。从上到下的箭头标注“下发指令（MQ）”
-- 从下到上的箭头标注“上报数据（MQ）”。箭头颜色为深灰色虚线
-- 第三层与第四层之间：从每个驱动方框向下连接一个或多个设备图标，用实线箭头表示，线缆上用短标注协议名（如“Modbus TCP”、“LoRaWAN”、“BLE GATT”）。箭头由设备指向驱动，表示数据上行方向。
+- 消息队列提供时间解耦与缓冲，不自动保证故障隔离。
+- 新协议落在既有契约内时可主要修改 Driver；新增业务语义时仍可能跨层变更。
+- SDK 统一接口不等于互操作性证明，仍需契约、真实设备和端到端测试。
 legend:
-- 实线箭头代表数据流（上行/下行）
-- 虚线箭头代表通过消息队列进行的异步解耦通信
-- 黄色背景的层代表驱动层，是整张图的焦点
+- 实线箭头代表需独立验证的协议边界。
+- 虚线箭头代表通过消息队列进行的异步解耦通信。
+- 黄色区域突出 Driver 扩展边界。
 visual_constraints:
-- 节点标签使用短名词短语，解释性文字放入 callouts 或正文。
-- 图例放在底部，不遮挡主体结构。
-- 优先表达边界和主链路，不把所有概念塞进一张图。
-render_notes: 使用HTML/SVG渲染，浅色背景，圆角矩形，统一12px间距。驱动层的黄色边框应加粗以提高视觉优先级。元素间距均匀，整体画布宽高比建议16:9。
+- Driver 卡片和设备/数据源卡片等宽、等距、垂直对齐。
+- 连线先绘制，节点后绘制，文字不与箭头或边框重叠。
+- 不把示例 Driver 写成平台对所有协议的内置能力承诺。
+- 图例位于底部，不遮挡主体结构。
+render_notes: HTML/SVG 渲染，浅色技术出版风格；Driver 层使用黄色强调，主节点保持统一圆角和描边。
 caption:
-  zh: 图 4-10 驱动层进程彼此独立、互不依赖，通过消息队列与平台核心服务解耦，实现驱动故障时平台主体不中断。开发者新增驱动仅需在驱动层横向增加一个方框，平台其余层无需变化。
-  en: 'Driver-layer processes are independent of one another and decoupled from core platform services through the message queue, so a driver failure does not interrupt the platform. Adding a new driver only means adding one more box in the driver layer — every other layer stays unchanged.'
+  zh: 图4-10 IoT DC3整体架构及驱动层位置——SDK与消息契约限制改动范围，故障隔离和跨层复用仍需工程验证。
+  en: 'Figure 4-10 IoT DC3 overall architecture and the Driver layer — the SDK and messaging contracts bound the change surface, while fault isolation and cross-layer reuse still require engineering validation.'
 labels:
   en:
     图4-10 IoT DC3整体架构及驱动层位置: 'Figure 4-10 IoT DC3 Overall Architecture and the Driver Layer'
-    驱动层用独立JVM进程+Driver SDK、经MQ与核心服务解耦,新增驱动只需横向加框,故障不中断平台。: 'The driver layer runs standalone JVM processes with the Driver SDK, decoupled from core services via MQ; new drivers are just one more box, and a failure does not stop the platform.'
+    Driver SDK与消息契约形成扩展边界；故障隔离和跨层复用仍需配置与测试证明。: 'The Driver SDK and messaging contracts form an extension boundary; configuration and tests must still prove fault isolation and cross-layer reuse.'
     平台服务域: 'Platform Domain'
-    设备与边缘域: 'Device & Edge Domain'
-    下发指令（MQ）: 'Commands (MQ)'
-    上报数据（MQ）: 'Data Reports (MQ)'
-    前端应用层: 'Frontend App Layer'
+    设备与数据源域: 'Device & Data-Source Domain'
+    受控命令（MQ）: 'Governed Commands (MQ)'
+    位号值/回执（MQ）: 'Point Values / Receipts (MQ)'
+    前端应用层: 'Frontend Application Layer'
     核心服务层: 'Core Services Layer'
-    固定服务名 + 容器 DNS + 环境变量: 'Fixed Service Names + Container DNS + Env Vars'
+    固定服务名 + 容器 DNS + 环境变量: 'Fixed Service Names + Container DNS + Environment Variables'
     驱动层: 'Driver Layer'
-    独立JVM进程 + Driver SDK: 'Standalone JVM Process + Driver SDK'
+    独立部署进程 + Driver SDK + 消息契约: 'Independently Deployed Process + Driver SDK + Messaging Contract'
     Modbus驱动: 'Modbus Driver'
-    LoRa驱动: 'LoRa Driver'
-    NB-IoT驱动: 'NB-IoT Driver'
-    BLE驱动: 'BLE Driver'
-    Zigbee驱动: 'Zigbee Driver'
-    PLC S7驱动: 'PLC S7 Driver'
-    MC协议驱动: 'MC Protocol Driver'
-    MC协议: 'MC Protocol'
-    物理设备层: 'Physical Device Layer'
-    传感器: 'Sensors'
-    水表: 'Water Meter'
-    执行器: 'Actuator'
-    工业仪表: 'Industrial Meter'
-    实线箭头代表数据流（上行/下行）: 'Solid arrows: data flow (uplink/downlink)'
-    虚线箭头代表通过消息队列进行的异步解耦通信: 'Dashed arrows: asynchronous decoupled communication via message queue'
-    黄色背景的层代表驱动层，是整张图的焦点: 'The yellow layer is the driver layer — the focus of the figure'
-    图4-10 IoT DC3整体架构及驱动层位置。驱动层进程彼此独立、互不依赖，通过消息队列与平台核心服务解耦，实现驱动故障时平台主体不中断。开发者新增驱动仅需在驱动层横向增加一个方框，平台其余层无需变化。: 'Figure 4-10 IoT DC3 overall architecture and the driver layer position. Driver processes are independent of each other, decoupled from core platform services via the message queue, so a driver failure does not interrupt the platform. Adding a driver only requires one more box in the driver layer; no other layer changes.'
+    OPC UA驱动: 'OPC UA Driver'
+    PLC驱动: 'PLC Driver'
+    数据源适配: 'Data-Source Adapter'
+    虚拟测试驱动: 'Virtual-Test Driver'
+    私有协议驱动: 'Private-Protocol Driver'
+    其他驱动: 'Other Drivers'
+    测试数据: 'Test Data'
+    私有协议: 'Private Protocol'
+    扩展契约: 'Extension Contract'
+    设备/数据源: 'Devices / Data Sources'
+    现场仪表: 'Field Instrument'
+    OPC UA服务: 'OPC UA Server'
+    数据库/API: 'Database / API'
+    仿真器: 'Simulator'
+    私有设备: 'Private Device'
+    其他来源: 'Other Sources'
+    实线箭头代表需独立验证的协议边界: 'Solid arrows: protocol boundaries that require independent validation'
+    虚线箭头代表通过消息队列进行的异步解耦通信: 'Dashed arrows: asynchronous decoupling through the message queue'
+    黄色区域突出Driver扩展边界: 'The yellow region highlights the Driver extension boundary'
+    图4-10 IoT DC3整体架构及驱动层位置——SDK与消息契约限制改动范围，故障隔离和跨层复用仍需工程验证。: 'Figure 4-10 IoT DC3 overall architecture and the Driver layer — the SDK and messaging contracts bound the change surface, while fault isolation and cross-layer reuse still require engineering validation.'

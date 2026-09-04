@@ -1,16 +1,16 @@
 type: flowchart
 title: 图2-4 传统数据模式与智能闭环模式的数据流程对比
-purpose: 直观展示传统单向链路终点是“被看见”，而闭环模式通过理解、决策、执行实现物理状态的自动改变。
-audience_takeaway: 传统数据模式的单向线性链路与闭环模式回路结构的根本区别，并识别出“执行”环节是闭环模式的工程核心。
+purpose: 展示传统单向链路止于“被看见”，智能闭环则通过候选决策、策略校验、受控执行和结果回读作用于物理世界。
+audience_takeaway: 闭环的关键不只是增加执行环节，而是让获准动作进入确定性链路，并以设备回执和状态回读验证结果。
 visual_focus: 左栏为单向线性链，终点标记为“人”；右栏为闭环回路，回路箭头从“执行”返回“采集”，用深绿色加粗虚线强调。
 design_level: implementation
 layout: 并排双栏，左栏为传统模式，右栏为闭环模式。底部统一图例。
 elements:
 - 传统模式的采集、存储、展示与人工操作
-- 闭环模式的采集归一化、理解、决策与执行
+- 闭环模式的采集归一化、理解、候选决策与受控执行
 relationships:
 - 传感器采集 → 网络传输与存储 → 大屏展示与告警 → 人工操作：传统链路止于人工响应
-- 采集归一化 → 理解 → 决策 → 执行：自动生成并实施动作
+- 采集归一化 → 理解 → 候选决策 → 受控执行：动作经策略与确认后进入确定性链路
 - 执行 → 采集归一化：设备新状态回流形成持续闭环
 components:
 - id: sensor_collect
@@ -56,16 +56,16 @@ components:
   priority: primary
   shape: card
 - id: decide
-  label: 决策
+  label: 候选决策
   type: ai
-  subtitle: 规则引擎与AI规划
+  subtitle: 规则与 AI 规划
   group: right_flow
   priority: primary
   shape: decision
 - id: execute
-  label: 执行
+  label: 受控执行
   type: edge
-  subtitle: 指令调度与协议驱动
+  subtitle: 策略校验与协议驱动
   group: right_flow
   priority: primary
   shape: card
@@ -75,7 +75,7 @@ regions:
   role: 感知到展示的单向链路，终点为人工操作
 - id: right_flow
   label: 智能闭环模式
-  role: 感知到执行的回路结构，数据驱动设备改变
+  role: 从感知到获准行动的回路结构，回执与回读验证结果
 connections:
 - from: sensor_collect
   to: net_store
@@ -104,7 +104,7 @@ connections:
   direction: left-to-right
 - from: decide
   to: execute
-  label: 动作序列
+  label: 获准动作
   style: solid
   direction: left-to-right
 - from: execute
@@ -114,16 +114,16 @@ connections:
   direction: right-to-left
 callouts:
 - 传统模式的终点是“被看见”，数据流终止于人工决策。
-- 闭环模式的终点是“物理状态的自动改变”，回路箭头标示数据驱动设备的持续迭代。
+- 闭环模式让获准动作进入确定性执行链，回路箭头表示设备回执和新状态返回感知端。
 render_notes: HTML/SVG 渲染，左栏方框使用灰色调，右栏方框使用区分功能类型的填充色（采集蓝、理解浅蓝、决策橙、执行绿）。回路箭头使用深绿色加粗虚线。人工操作区域使用圆角矩形与右栏区分。
 caption:
-  zh: 图2-4 两种数据模式的取舍：传统单向链路止步于“被人看见”，响应依赖人工；闭环模式以“执行”环节把决策送回物理世界，适合工况多变、响应要求高的场景。
-  en: 'Figure 2-4 Comparison of data flows between the traditional data pattern and the intelligent closed-loop pattern.'
+  zh: 图2-4 传统单向链路止于展示与人工操作；智能闭环把理解转为候选决策，仅让获准动作进入确定性执行链，并以设备回执和状态回读验证结果。
+  en: 'Figure 2-4 The traditional chain ends at display and manual operation. The intelligent loop turns understanding into candidate decisions, admits only approved actions to the deterministic execution path, and verifies outcomes through device receipts and state readback.'
 labels:
   en:
     图2-4 传统数据模式与智能闭环模式的数据流程对比: Figure 2-4 Traditional Data Pattern vs Intelligent Closed Loop
-    传统数据模式是止于展示与人工操作的单向链路；智能闭环模式通过理解、决策、执行形成持续改变物理状态的回路。: The traditional pattern is a one-way chain that ends at display and manual operation; the closed-loop pattern uses understanding, decision, and execution to keep changing the physical state.
-    传统终点是被看见，闭环终点是物理状态被改变: The traditional end point is being seen; the closed loop ends with the physical state changed
+    传统数据模式止于展示与人工操作；智能闭环以候选决策、策略校验、受控执行和结果回读形成回路。: The traditional pattern ends at display and manual operation; the intelligent loop combines candidate decisions, policy validation, governed execution, and outcome readback.
+    传统终点是被看见，智能闭环以获准动作和结果验证回到现场: The traditional end point is being seen; the intelligent loop returns to the field through approved actions and outcome verification
     传统数据模式: Traditional Data Pattern
     传感器采集: Sensor Acquisition
     原始数值上报: Raw Value Reporting
@@ -141,16 +141,16 @@ labels:
     采集归一化: Collect & Unify
     异构数据→PointValue: Heterogeneous Data → PointValue
     理解: Understanding
-    状态感知与趋势预测: State Awareness & Trend Prediction
-    决策: Decision
-    规则引擎+AI规划: Rule Engine + AI Planning
-    执行: Execution
-    指令调度与协议驱动: Command Scheduling & Protocol Drivers
+    状态感知与趋势预测: State Awareness & Trends
+    候选决策: Candidate Decision
+    规则 + AI 规划: Rules + AI Planning
+    受控执行: Governed Execution
+    策略校验 · 协议驱动: Policy Validation · Protocol Drivers
     归一化数据: Unified Data
     状态摘要: State Summary
-    动作序列: Action Sequence
+    获准动作: Approved Action
     闭环回路: Closed-Loop Feedback
     传统链路: Traditional Chain
     数据正向流: Forward Data Flow
     闭环反馈回路: Closed-Loop Feedback Path
-    图2-4 传统链路止于展示与人工操作，智能闭环经理解、决策、执行持续改变物理状态。: Figure 2-4 The traditional chain ends at display and manual operation; the intelligent closed loop keeps changing the physical state through understanding, decision, and execution.
+    图2-4 智能闭环把理解转为候选决策，仅让获准动作进入确定性执行链，并以回读验证结果。: Figure 2-4 The intelligent loop turns understanding into candidate decisions, admits only approved actions to deterministic execution, and verifies outcomes through readback.

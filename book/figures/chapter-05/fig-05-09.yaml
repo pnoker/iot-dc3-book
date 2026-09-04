@@ -1,49 +1,56 @@
 type: layered
 title: 图 5-9 数据生命周期管理：保留策略与冷热分层
-audience_takeaway: 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储，分片迁移避免拖慢数据库。
-purpose: 展示数据生命周期管理的保留策略与冷热分层
-visual_focus: 保留策略三级与冷热分层三层。
+audience_takeaway: 保留期限与存储层级没有通用默认值，必须从业务、合规、查询 SLO、恢复目标和可复现测试共同确定。
+purpose: 用一组明确标为示例的期限说明保留与冷热分层方法，并提示格式、迁移和恢复边界。
+visual_focus: 上半部为三种数据粒度的示例期限，下半部为热、温、冷三层示例及其验证责任。
 design_level: layered
-layout: 上半保留策略三级，下半冷热分层三层
+layout: 上半部三张等宽保留策略卡片，下半部热/温/冷三条等宽横向层级。
 elements:
-- 保留策略：原始 10 秒级 7 天、分钟级 30 天、小时级 12 个月
-- 热存储：最近 7 天 NVMe/SSD，毫秒级，实时大盘
-- 温存储：8 天~3 个月 HDD/SSD，月度报表
-- 冷存储：超 3 个月对象存储，Parquet/Avro 分区，批量训练
+- 原始、分钟聚合和小时聚合数据分别展示示例期限，不作为默认生产策略。
+- 热、温、冷存储按访问模式、查询 SLO 和恢复目标选择介质。
+- Parquet 为列式格式，Avro 通常为行式格式；查询是否裁剪文件取决于分区与统计信息。
 relationships:
-- 数据价值随访问频率递减，按价值分层付费；分片迁移在低峰分批执行
-render_notes: HTML/SVG 渲染，保留策略三级 + 冷热分层三层，红橙蓝分层。
+- 数据用途、法规、合同、调查窗口和模型训练需求共同决定保留期限。
+- 渐进迁移和限流可以降低在线影响，但必须验证一致性、查询和恢复。
+callouts:
+- 数据区趋稳不代表索引、WAL、压缩临时空间和备份容量不再增长。
+- 内置分层也要评估可观测性、锁定风险和恢复时间。
+visual_constraints:
+- 所有期限前显式标注“示例”。
+- 三层介质不使用颜色作为唯一语义，保留热/温/冷文字标签。
+- 底部图注明确需要测试验收。
+render_notes: HTML/SVG 渲染，保留策略三列与冷热三层使用统一描边、圆角和间距。
 caption:
-  zh: 图 5-9 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。
-  en: 'Figure 5-9 Retention policies set expiry per data granularity, and hot/warm/cold tiering places data by access frequency across three storage tiers; shard migration runs in throttled batches at off-peak hours so it never drags database response down.'
+  zh: 图 5-9 保留与分层期限仅作示例；最终策略由业务和合规目标决定，并以迁移、查询与恢复测试验收。
+  en: 'Figure 5-9 Retention and tiering periods are illustrative only; business and compliance objectives determine the final policy, which migration, query, and recovery tests must validate.'
 labels:
   en:
-    图 5-9 数据生命周期管理：保留策略与冷热分层: 'Figure 5-9 Data Lifecycle: Retention & Hot/Cold Tiering'
-    保留策略按价值设定过期时长，冷热分层把数据按访问频率放到不同性价比的存储介质。: Retention sets expiry by value; tiering places data on storage media whose cost matches access frequency.
-    让每一字节数据按它的查询价值来付费: Pay for every byte according to its query value
-    保留策略：不同粒度设定独立保留时长: 'Retention: independent durations per granularity'
-    原始 10 秒级数据: Raw 10-second data
-    服务实时告警与故障排查: Real-time alarms, troubleshooting
-    保留 7 天: Keep 7 days
-    分钟级聚合数据: Minute-level aggregates
-    用于周报: For weekly reports
-    保留 30 天: Keep 30 days
-    小时级聚合数据: Hourly aggregates
-    用于年度趋势分析: For yearly trend analysis
-    保留 12 个月: Keep 12 months
-    冷热分层：按访问频率放在不同性价比的存储介质: 'Tiering: storage media matched to access frequency'
-    热存储: Hot Storage
-    最近 7 天 · 本地 NVMe / SSD: Last 7 Days · Local NVMe / SSD
-    响应仪表盘毫秒级查询，访问频繁: Millisecond dashboard queries, frequent access
-    时序数据库原生格式，单位成本相对较高: Native time-series format, higher unit cost
-    实时大盘、告警触发: Live dashboards, alarm triggers
-    温存储: Warm Storage
-    8 天～3 个月 · 普通 HDD / SSD: 8 Days ~ 3 Months · HDD / SSD
-    用于月度报表，访问频度中等: Monthly reports, medium access frequency
-    月度报表: Monthly reports
-    冷存储: Cold Storage
-    超过 3 个月 · 对象存储（MinIO / S3 兼容）: Over 3 Months · Object Storage (MinIO / S3)
-    Parquet / Avro 列式格式，按时间分区，查询只加载对应分区: Parquet / Avro columnar, time-partitioned; loads only needed partitions
-    用于季度回顾或算法模型训练，访问极少: Quarterly reviews or model training, rarely accessed
-    历史分析、批量训练: Historical analysis, batch training
-    图 5-9 保留策略按数据粒度设定过期时长，冷热分层把数据按访问频率放到热/温/冷三级存储；分片迁移在低峰分批执行并限速，避免迁移拖慢数据库响应。: Figure 5-9 Retention policies set expiry per data granularity, and hot/warm/cold tiering places data by access frequency across three storage tiers; shard migration runs in throttled batches at off-peak hours so it never drags database response down.
+    图 5-9 数据生命周期管理：保留策略与冷热分层: 'Figure 5-9 Data Lifecycle: Retention and Hot/Cold Tiering'
+    保留期限由业务、合规与恢复目标决定；冷热分层按访问模式设计，并通过迁移和查询测试验证。: 'Business, compliance, and recovery objectives determine retention; design tiering by access pattern and validate it with migration and query tests.'
+    期限是示例，不是默认值；分层效果必须验证: 'Periods are examples, not defaults; tiering results require validation'
+    保留策略示例：按用途、法规与调查窗口确定期限: 'Retention example: set periods from purpose, regulation, and investigation windows'
+    原始 10 秒级数据: 'Raw 10-Second Data'
+    服务实时告警与故障排查: 'Supports real-time alarms and troubleshooting'
+    示例：保留 7 天: 'Example: retain 7 days'
+    分钟级聚合数据: 'Minute-Level Aggregates'
+    用于周报: 'For weekly reports'
+    示例：保留 30 天: 'Example: retain 30 days'
+    小时级聚合数据: 'Hourly Aggregates'
+    用于年度趋势分析: 'For annual trend analysis'
+    示例：保留 12 个月: 'Example: retain 12 months'
+    冷热分层示例：按访问模式、查询SLO与恢复目标选择介质: 'Tiering example: select media by access pattern, query SLO, and recovery objective'
+    热存储: 'Hot Storage'
+    示例：最近 7 天 · 本地 NVMe / SSD: 'Example: latest 7 days · local NVMe / SSD'
+    响应仪表盘毫秒级查询，访问频繁: 'Frequent dashboard access with a millisecond query target'
+    时序数据库原生格式，单位成本相对较高: 'Native time-series format; relatively higher unit cost'
+    实时大盘、告警触发: 'Live dashboards and alarm triggers'
+    温存储: 'Warm Storage'
+    示例：8 天～3 个月 · HDD / SSD: 'Example: 8 days to 3 months · HDD / SSD'
+    用于月度报表，访问频度中等: 'Monthly reports with moderate access frequency'
+    月度报表: 'Monthly Reports'
+    冷存储: 'Cold Storage'
+    示例：超过 3 个月 · 对象存储（S3 兼容）: 'Example: older than 3 months · S3-compatible object storage'
+    Parquet列式 / Avro行式；分区裁剪效果取决于布局: 'Parquet is columnar / Avro is row-oriented; partition pruning depends on layout'
+    用于季度回顾或算法模型训练，访问极少: 'Quarterly review or model training with infrequent access'
+    历史分析、批量训练: 'Historical Analysis and Batch Training'
+    图 5-9 保留与分层期限仅作示例；最终策略由业务和合规目标决定，并以迁移、查询与恢复测试验收。: 'Figure 5-9 Retention and tiering periods are illustrative only; business and compliance objectives determine the final policy, which migration, query, and recovery tests must validate.'

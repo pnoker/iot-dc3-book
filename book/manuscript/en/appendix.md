@@ -21,7 +21,7 @@
 | OTA | Over-the-Air Update | Remote over-the-air update of firmware/software; must be paired with signature verification, encrypted transport, and anti-rollback protection — otherwise a single malicious update can compromise devices in batches |
 | Edge-cloud collaboration | Edge-Cloud Collaboration | Tiered collaboration: real-time processing at the edge, deep compute in the cloud |
 | RBAC/ABAC | Role/Attribute-Based Access Control | Access control based on roles or attributes |
-| MQTT | Message Queuing Telemetry Transport | De facto standard messaging protocol for the IoT |
+| MQTT | Message Queuing Telemetry Transport | Widely adopted publish/subscribe messaging protocol for IoT |
 | CoAP | Constrained Application Protocol | Lean web protocol for constrained devices (RFC 7252) |
 | LwM2M | Lightweight M2M | Lightweight device-management protocol defined by OMA (over CoAP) |
 | OPC UA | OPC Unified Architecture | Industrial interoperability application-layer protocol (IEC 62541) |

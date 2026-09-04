@@ -20,7 +20,7 @@
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
     <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-20 云边协同AIoT三级架构示意</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">云—边缘—端三层智能分工，训练—推理—反馈闭环</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">云—边缘—端三层智能分工，评测发布—推理—反馈闭环</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 <defs>
 <marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
@@ -43,7 +43,7 @@
 <!-- 云层 -->
 <rect x="40" y="150" width="1720" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
 <text x="80" y="205" font-size="24" font-weight="700" fill="#1D4ED8">云层（高算力 · 非实时 · 全局）</text>
-<text x="80" y="250" font-size="18" fill="#334155">模型训练与更新 · 模型管理与分发 · 全局监控与运维</text>
+<text x="80" y="250" font-size="18" fill="#334155">模型训练与评测 · 版本管理与分发 · 全局监控与运维</text>
 <text x="80" y="280" font-size="15" fill="#64748B">量化、剪枝后的轻量模型经安全信道下发</text>
 <!-- 边缘层 -->
 <rect x="40" y="380" width="1720" height="150" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2.6"/>
@@ -57,10 +57,10 @@
 <text x="80" y="740" font-size="15" fill="#64748B">经预处理后通过 MQTT / CoAP 上报</text>
 <!-- 结论 -->
 <rect x="40" y="800" width="1720" height="90" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
-<text x="900" y="840" font-size="21" font-weight="700" fill="#0F172A" text-anchor="middle">三层形成「训练 — 推理 — 反馈」闭环</text>
-<text x="900" y="872" font-size="16" fill="#64748B" text-anchor="middle">云训练模型 → 边缘实时推理 → 端侧本地响应 → 样本回传反哺训练</text>
-<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-20 云边协同AIoT三级架构。云侧负责模型训练与更新，边缘侧承担实时推理与数据过滤，端侧运行轻量模型实现本地自主响应，</text>
-<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">三层之间形成「训练-推理-反馈」闭环。</text>
+<text x="900" y="840" font-size="21" font-weight="700" fill="#0F172A" text-anchor="middle">三层形成「评测发布 — 推理 — 反馈」闭环</text>
+<text x="900" y="872" font-size="16" fill="#64748B" text-anchor="middle">云端评测发布 → 边缘实时推理 → 端侧受控响应 → 样本与回执返回评测</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-20 云边协同AIoT三级架构。云侧管理经过评测的模型版本，边缘侧承担实时推理与数据过滤，</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">端侧在本地规则和控制器边界内响应，样本与回执回流后进入下一轮评测。</text>
   </svg>
 </svg>
   </main>

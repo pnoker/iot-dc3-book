@@ -62,7 +62,7 @@
 <text x="1090" y="315" font-size="17" fill="#475569" text-anchor="middle">时序数据库</text>
 <text x="1090" y="352" font-size="16" fill="#475569" text-anchor="middle">接收上万设备时序数据</text>
 <text x="1090" y="380" font-size="16" fill="#475569" text-anchor="middle">趋势分析模型</text>
-<text x="1090" y="520" font-size="16" fill="#64748B" text-anchor="middle">判断设备即将失效</text>
+<text x="1090" y="520" font-size="16" fill="#64748B" text-anchor="middle">生成设备失效风险判断</text>
 
 <rect x="1290" y="150" width="470" height="640" rx="10" fill="#F0FDF4" stroke="#0F766E" stroke-width="2"/>
 <text x="1525" y="195" font-size="24" font-weight="700" fill="#0F766E" text-anchor="middle">应用层</text>
@@ -73,9 +73,9 @@
 <text x="1340" y="370" font-size="19" font-weight="700" fill="#15803D">自动告警系统</text>
 <text x="1340" y="403" font-size="16" fill="#475569">异常波形即时通知</text>
 <rect x="1320" y="445" width="410" height="100" rx="8" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.4"/>
-<text x="1340" y="485" font-size="19" font-weight="700" fill="#15803D">闭环控制</text>
-<text x="1340" y="518" font-size="16" fill="#475569">下发减速指令至控制器</text>
-<text x="1525" y="720" font-size="16" fill="#64748B" text-anchor="middle">无需人工介入，物与系统循环流动</text>
+<text x="1340" y="485" font-size="19" font-weight="700" fill="#15803D">受控行动</text>
+<text x="1340" y="518" font-size="16" fill="#475569">策略校验后下发减速指令</text>
+<text x="1525" y="720" font-size="16" fill="#64748B" text-anchor="middle">按风险自动批准或人工确认</text>
 
 <!-- 数据流（实线蓝） -->
 <line x1="510" y1="385" x2="516" y2="385" stroke="#2563EB" stroke-width="2.4" marker-end="url(#ab)"/>
@@ -86,9 +86,9 @@
 <text x="1280" y="370" font-size="15" fill="#1D4ED8">告警/决策</text>
 <!-- 控制流（虚线橙）反向 -->
 <path d="M1525,760 L1525,800 L275,800 L275,774" fill="none" stroke="#F97316" stroke-width="2.4" stroke-dasharray="8,6" marker-end="url(#ao)"/>
-<text x="900" y="840" font-size="17" font-weight="700" fill="#C2410C" text-anchor="middle">闭环控制：减速指令下发（反向控制流）</text>
-<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-8 智慧工厂设备连接拓扑示意。车间传感器经边缘网关只上传统计特征，云平台趋势分析后反向下发减速指令，</text>
-<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">数据流（实线）与控制流（虚线）构成无需人工介入的闭环决策。</text>
+<text x="900" y="840" font-size="17" font-weight="700" fill="#C2410C" text-anchor="middle">受控行动：策略 · 确认 · 审计后下发减速指令</text>
+<text x="900" y="948" font-size="18" fill="#475569" text-anchor="middle">图1-8 智慧工厂设备连接拓扑示意。边缘网关汇聚数据，云侧模型形成风险判断；告警可直接通知，</text>
+<text x="900" y="974" font-size="18" fill="#475569" text-anchor="middle">设备写动作经策略、确认与审计后下发，并以设备回执或状态回读验证闭环。</text>
   </svg>
 </svg>
   </main>

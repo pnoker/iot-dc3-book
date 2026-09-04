@@ -6,32 +6,32 @@ visual_focus: 三层技术栈卡片与 NON/CON 消息分级。
 design_level: dataflow
 layout: 上半三层技术栈（NB-IoT/CoAP/LwM2M），下半 NON 与 CON 消息分级
 elements:
-- NB-IoT：eDRX + PSM 节电机制，休眠接近零功耗
-- CoAP：无连接无状态，NON 发完即休眠，CON 指数退避重传
+- NB-IoT：eDRX + PSM 节电机制，降低休眠期功耗
+- CoAP：无长连接，NON 不确认，CON 使用确认与指数退避重传
 - LwM2M：Object 3/5 与自定义地磁对象，优先 OMA IPSO
 - 状态上报 NON：允许丢包，最近状态 + 超时推断补偿
-- 关键指令 CON：计费、配置、固件保证送达
+- 关键业务 CON：提高消息到达概率，动作完成仍需业务回执、回读与补偿
 relationships:
 - 三层技术栈各司其职；消息按冗余度与实时性分级选择 NON/CON
 render_notes: HTML/SVG 渲染，三层技术栈 + NON/CON 分级，蓝绿橙分层。
 caption:
-  zh: 图 9-7 NB-IoT 提供广覆盖低功耗通道，CoAP 负责无连接轻量消息，LwM2M 承担对象标准化；状态上报用 NON 换取低功耗，计费、配置、固件等关键指令用 CON 保证送达。
-  en: Figure 9-7 NB-IoT provides wide-coverage low-power connectivity, CoAP handles connectionless lightweight messages, and LwM2M provides object standardization; status reports use NON for low power, while critical commands such as billing, configuration, and firmware use CON for guaranteed delivery.
+  zh: 图 9-7 NB-IoT 提供低功耗广域接入，CoAP 区分 NON 与 CON 消息交换，LwM2M 提供设备管理对象。NON 不确认，CON 通过确认与重传提高到达概率；关键业务仍需事件去重、应用回执、状态回读和失败补偿。
+  en: Figure 9-7 NB-IoT provides low-power wide-area access, CoAP distinguishes NON and CON exchanges, and LwM2M supplies device-management objects. NON is unacknowledged; CON improves arrival probability through acknowledgment and retransmission, while critical workflows still require event deduplication, application receipts, state readback, and failure compensation.
 labels:
   en:
     图 9-7 CoAP/LwM2M 在 NB-IoT 中的协同: Figure 9-7 CoAP/LwM2M Working over NB-IoT
-    NB-IoT 提供低功耗通道，CoAP 负责轻量消息，LwM2M 承担对象标准化；状态上报用 NON、关键指令用 CON。: NB-IoT supplies the low-power pipe, CoAP lightweight messages, LwM2M object standards; status uses NON, critical commands use CON.
+    NB-IoT 提供低功耗通道，CoAP 负责轻量消息，LwM2M 承担对象标准化；状态可用 NON，需要消息确认时使用 CON，动作完成仍需业务回执。: NB-IoT supplies the low-power channel, CoAP lightweight messages, and LwM2M object standards; status may use NON, exchanges needing acknowledgment use CON, and action completion still needs a business receipt.
     以城市路侧地磁停车位为例：广覆盖低功耗通道 + 轻量消息 + 对象标准化: 'City roadside magnetic parking sensors: wide-coverage low-power connectivity + lightweight messages + object standards'
     三层技术栈分工: Three-layer division of labor
     NB-IoT 物理通道: NB-IoT physical channel
     3GPP R13 无线接入技术: 3GPP R13 radio access
     eDRX 扩展非连续接收: eDRX extended discontinuous reception
-    PSM 省电模式，休眠时接近零功耗: PSM power-saving mode, near-zero power while asleep
+    PSM 省电模式，降低休眠期功耗: PSM power-saving mode reduces sleep-period power
     深度覆盖 + 低功耗小数据包: Deep coverage + low-power small packets
     CoAP 轻量消息: CoAP lightweight messages
-    无连接、无状态，与休眠天然适配: Connectionless and stateless — a natural fit for sleep cycles
+    无长连接，适合按消息确认: No long-lived connection; confirmation can be selected per message
     NON 发完即休眠，无重传开销: NON sends then sleeps, no retransmit cost
-    CON 指数退避重传保证可靠送达: CON exponential-backoff retransmits guarantee delivery
+    CON 确认与重传提高到达概率: CON acknowledgment and retransmission improve arrival probability
     设备状态机：采集-组包-发送-休眠: 'Device cycle: sample - packetize - send - sleep'
     LwM2M 对象标准化: LwM2M object standardization
     Object 3 设备基本信息: Object 3 device information
@@ -43,12 +43,12 @@ labels:
     地磁传感器检测磁场变化 → 构造 NON 消息 → 立即进入 PSM 深度休眠: Magnetometer detects change → build NON message → enter PSM deep sleep at once
     允许一定丢包，用“最近状态 + 超时推断”补偿: Some loss is tolerable, compensated by latest state + timeout inference
     无线状态机简化为无状态循环，无需处理断连重连、心跳超时: The radio state machine reduces to a stateless loop — no reconnects or heartbeat timeouts
-    能耗最低，充分释放 NB-IoT 低功耗潜力: Lowest energy draw, fully exploiting NB-IoT low power
+    功耗收益须按覆盖、周期与重传实测: Measure energy gains against coverage, interval, and retransmissions
     关键指令：CON（需确认）: 'Critical commands: CON (ACK required)'
     计费扣款、开闸、配置写入、固件操作: Billing charges, gate opening, config writes, firmware ops
-    CoAP 内置指数退避重传，中等丢包率下可靠送达: Built-in exponential backoff delivers reliably at moderate loss rates
-    代价：等待 RTT 级 ACK，设备唤醒窗口被拖长: 'Cost: waiting an RTT for the ACK stretches the wake window'
-    固件升级用 CoAP 块传输 + 断点续传: Firmware updates use CoAP block transfer + resume
+    ACK 确认消息交换，不证明业务动作完成: An ACK confirms message exchange, not completion of a business action
+    需事件去重、业务回执、回读与超时补偿: Requires event deduplication, business receipts, readback, and timeout compensation
+    固件恢复与回滚须由实现和测试验证: Firmware recovery and rollback require implementation and test evidence
     适用性检查（要点）: Fit checklist (key points)
     模组需支持 eDRX/PSM · 状态用 NON、关键用 CON · 优先 OMA IPSO 标准对象 · 固件升级持久化 + 回滚 · 弱覆盖区评估覆盖增强带来的功耗: Module must support eDRX/PSM · NON for status, CON for critical · prefer OMA IPSO objects · persist + roll back firmware · assess coverage-boost power cost in weak-signal areas
-    图 9-7 NB-IoT 提供广覆盖低功耗通道，CoAP 负责无连接轻量消息，LwM2M 承担对象标准化；状态上报用 NON 换取低功耗，计费、配置、固件等关键指令用 CON 保证送达。: Figure 9-7 NB-IoT provides wide-coverage low-power connectivity, CoAP handles connectionless lightweight messages, and LwM2M provides object standardization; status reports use NON for low power, while critical commands such as billing, configuration, and firmware use CON for guaranteed delivery.
+    图 9-7 NON 不确认，CON 以确认与重传提高到达概率；关键业务仍需去重、回执、回读和失败补偿。: Figure 9-7 NON is unacknowledged and CON improves arrival probability through acknowledgment and retransmission; critical workflows still need deduplication, receipts, readback, and failure compensation.

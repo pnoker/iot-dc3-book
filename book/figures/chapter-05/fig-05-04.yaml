@@ -88,8 +88,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，时间轴使用水平线，队列水位用柱状图表示。
 caption:
-  zh: 图 5-4 消息队列缓冲削峰示意：洪峰到达时，消息在Topic分区中暂存，消费者组按积压数据逐步消费，后端服务不直接承受瞬时冲击。
-  en: 'Figure 5-4 Message queue buffering and peak shaving: when a burst arrives, messages are held in Topic partitions and consumer groups work through the backlog at their own pace, so backend services never take the instantaneous hit directly.'
+  zh: 图 5-4 消息队列可吸收有界洪峰并平滑下游负载；超过容量或恢复目标时，仍须限流、背压、降级与告警。
+  en: 'Figure 5-4 A message queue can absorb bounded bursts and smooth downstream load; once capacity or recovery objectives are exceeded, rate limiting, backpressure, degradation, and alerts remain necessary.'
 labels:
   en:
     图 5-4 消息队列缓冲削峰示意: Figure 5-4 Message Queue Peak Buffering
@@ -120,4 +120,4 @@ labels:
     实线粗箭头：高流量数据上报: 'Thick solid arrows: high-volume uploads'
     虚线箭头：调度 / 分配关系: 'Dashed arrows: scheduling / assignment'
     消费输出: Consumed Output
-    图 5-4 消息队列缓冲削峰示意：洪峰到达时消息在 Topic 分区中暂存、水位升高，消费者组按自身能力逐步消费，后端服务不直接承受瞬时冲击。: 'Figure 5-4 Message queue buffering and peak shaving: when a burst arrives, messages are held in Topic partitions while the queue level rises, consumer groups work through the backlog at their own pace, and backend services never take the instantaneous hit directly.'
+    图 5-4 消息队列可吸收有界洪峰并平滑下游负载；超过容量或恢复目标时，仍须限流、背压、降级与告警。: 'Figure 5-4 A message queue can absorb bounded bursts and smooth downstream load; once capacity or recovery objectives are exceeded, rate limiting, backpressure, degradation, and alerts remain necessary.'

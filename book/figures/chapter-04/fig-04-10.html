@@ -17,7 +17,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图4-10 IoT DC3整体架构及驱动层位置</title>
-  <desc id="desc">驱动层用独立JVM进程+Driver SDK、经MQ与核心服务解耦,新增驱动只需横向加框,故障不中断平台。</desc>
+  <desc id="desc">Driver SDK与消息契约形成扩展边界；故障隔离和跨层复用仍需配置与测试证明。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24.000" y="92.000" width="1152.000" height="576.000" viewBox="0 0 1800.000 900.000" preserveAspectRatio="xMidYMid meet">
 
@@ -28,7 +28,7 @@
   <rect width="1800" height="900" fill="#FFFFFF"/>
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
   <text x="82" y="47" fill="#0F172A" font-size="36" font-weight="700">图4-10 IoT DC3整体架构及驱动层位置</text>
-  <text x="82" y="70" fill="#64748B" font-size="12">驱动层用独立JVM进程+Driver SDK、经MQ与核心服务解耦,新增驱动只需横向加框,故障不中断平台。</text>
+  <text x="82" y="70" fill="#64748B" font-size="12">Driver SDK与消息契约形成扩展边界；故障隔离和跨层复用仍需配置与测试证明。</text>
 
   <line x1="64" y1="100" x2="1736" y2="100" stroke="#E2E8F0"/>
   <g data-layout="architecture">
@@ -36,13 +36,13 @@
   <rect x="80" y="122" width="1640" height="230" rx="14" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1.5"/>
   <text x="100" y="147" fill="#64748B" font-size="14" font-weight="bold">平台服务域</text>
   <rect x="80" y="438" width="1640" height="326" rx="14" fill="none" stroke="#94A3B8" stroke-dasharray="8,4" stroke-width="1.5"/>
-  <text x="100" y="463" fill="#64748B" font-size="14" font-weight="bold">设备与边缘域</text>
+  <text x="100" y="463" fill="#64748B" font-size="14" font-weight="bold">设备与数据源域</text>
 
   <!-- 第二层与第三层之间：MQ 异步解耦虚线箭头 -->
-  <line x1="790" y1="358" x2="790" y2="416" stroke="#475569" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  <text x="778" y="380" fill="#475569" font-size="12" font-weight="600" text-anchor="end">下发指令（MQ）</text>
-  <line x1="1010" y1="416" x2="1010" y2="360" stroke="#475569" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
-  <text x="1022" y="404" fill="#475569" font-size="12" font-weight="600" text-anchor="start">上报数据（MQ）</text>
+  <line x1="1090" y1="358" x2="1090" y2="416" stroke="#475569" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <text x="1078" y="380" fill="#475569" font-size="12" font-weight="600" text-anchor="end">受控命令（MQ）</text>
+  <line x1="1198" y1="416" x2="1198" y2="360" stroke="#475569" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#bp-arrow)"/>
+  <text x="1210" y="404" fill="#475569" font-size="12" font-weight="600" text-anchor="start">位号值/回执（MQ）</text>
 
   <!-- 顶层：前端应用层 -->
   <text x="120" y="198" fill="#475569" font-size="13" font-weight="bold">前端应用层</text>
@@ -67,66 +67,65 @@
   <!-- 第三层：驱动层（焦点，黄色边框加粗） -->
   <text x="120" y="545" fill="#D97706" font-size="13" font-weight="bold">驱动层</text>
   <rect x="180" y="478" width="1460" height="112" rx="12" fill="#FFF8E7" stroke="#d97706" stroke-width="3"/>
-  <text x="222" y="502" fill="#475569" font-size="12">独立JVM进程 + Driver SDK</text>
+  <text x="222" y="502" fill="#475569" font-size="12">独立部署进程 + Driver SDK + 消息契约</text>
   <rect x="200" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
   <text x="298" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">Modbus驱动</text>
   <rect x="404" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
-  <text x="502" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">LoRa驱动</text>
+  <text x="502" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">OPC UA驱动</text>
   <rect x="608" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
-  <text x="706" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">NB-IoT驱动</text>
+  <text x="706" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">PLC驱动</text>
   <rect x="812" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
-  <text x="910" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">BLE驱动</text>
+  <text x="910" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">数据源适配</text>
   <rect x="1016" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
-  <text x="1114" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">Zigbee驱动</text>
+  <text x="1114" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">虚拟测试驱动</text>
   <rect x="1220" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
-  <text x="1318" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">PLC S7驱动</text>
+  <text x="1318" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">私有协议驱动</text>
   <rect x="1424" y="512" width="196" height="64" rx="8" fill="#FFFFFF" stroke="#d97706" stroke-width="1.5"/>
-  <text x="1522" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">MC协议驱动</text>
+  <text x="1522" y="549" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">其他驱动</text>
 
-  <!-- 第三层与第四层之间：实线上行数据链路（设备 → 驱动） -->
-  <line x1="298" y1="650" x2="298" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="310" y="628" fill="#2563EB" font-size="11" font-weight="600">Modbus TCP</text>
-  <line x1="502" y1="650" x2="502" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="514" y="628" fill="#2563EB" font-size="11" font-weight="600">LoRaWAN</text>
-  <line x1="706" y1="650" x2="706" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="718" y="628" fill="#2563EB" font-size="11" font-weight="600">NB-IoT</text>
-  <line x1="910" y1="650" x2="910" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="922" y="628" fill="#2563EB" font-size="11" font-weight="600">BLE GATT</text>
-  <line x1="1318" y1="650" x2="1318" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="1330" y="628" fill="#2563EB" font-size="11" font-weight="600">S7 TCP</text>
-  <line x1="540" y1="650" x2="1114" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="870" y="628" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">Zigbee</text>
-  <line x1="1370" y1="650" x2="1522" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
-  <text x="1490" y="628" fill="#2563EB" font-size="11" font-weight="600" text-anchor="middle">MC协议</text>
+  <!-- 第三层与第四层之间：各适配边界独立验收 -->
+  <line x1="298" y1="648" x2="298" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="310" y="626" fill="#2563EB" font-size="11" font-weight="600">Modbus TCP</text>
+  <line x1="502" y1="648" x2="502" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="514" y="626" fill="#2563EB" font-size="11" font-weight="600">OPC UA</text>
+  <line x1="706" y1="648" x2="706" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="718" y="626" fill="#2563EB" font-size="11" font-weight="600">S7 / MC</text>
+  <line x1="910" y1="648" x2="910" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="922" y="626" fill="#2563EB" font-size="11" font-weight="600">JDBC / API</text>
+  <line x1="1114" y1="648" x2="1114" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1126" y="626" fill="#2563EB" font-size="11" font-weight="600">测试数据</text>
+  <line x1="1318" y1="648" x2="1318" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1330" y="626" fill="#2563EB" font-size="11" font-weight="600">私有协议</text>
+  <line x1="1522" y1="648" x2="1522" y2="592" stroke="#2563EB" stroke-width="2" marker-end="url(#bp-arrow-primary)"/>
+  <text x="1534" y="626" fill="#2563EB" font-size="11" font-weight="600">扩展契约</text>
 
-  <!-- 第四层：物理设备层 -->
-  <text x="120" y="690" fill="#475569" font-size="13" font-weight="bold">物理设备层</text>
-  <rect x="198" y="648" width="200" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="228" cy="690" r="11" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5"/>
-  <text x="308" y="695" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">PLC</text>
-  <rect x="402" y="648" width="200" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="432" cy="690" r="11" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="512" y="695" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">传感器</text>
-  <rect x="606" y="648" width="200" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="636" cy="690" r="11" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
-  <text x="716" y="695" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">水表</text>
-  <rect x="810" y="648" width="200" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="840" cy="690" r="11" fill="#FFEDD5" stroke="#F97316" stroke-width="1.5"/>
-  <text x="920" y="695" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">执行器</text>
-  <rect x="1218" y="648" width="200" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
-  <circle cx="1248" cy="690" r="11" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
-  <text x="1328" y="695" fill="#0F172A" font-size="14" font-weight="700" text-anchor="middle">工业仪表</text>
+  <!-- 第四层：设备与数据源 -->
+  <text x="120" y="690" fill="#475569" font-size="13" font-weight="bold">设备/数据源</text>
+  <rect x="200" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="298" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">现场仪表</text>
+  <rect x="404" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="502" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">OPC UA服务</text>
+  <rect x="608" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="706" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">PLC</text>
+  <rect x="812" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="910" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">数据库/API</text>
+  <rect x="1016" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1114" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">仿真器</text>
+  <rect x="1220" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1318" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">私有设备</text>
+  <rect x="1424" y="648" width="196" height="84" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="1522" y="696" fill="#0F172A" font-size="13" font-weight="700" text-anchor="middle">其他来源</text>
 </g>
   <line x1="64" y1="775" x2="1736" y2="775" stroke="#E2E8F0"/>
   <line x1="80" y1="803" x2="94" y2="803" stroke="#2563EB" stroke-width="2"/>
   <polygon points="94,799.5 102,803 94,806.5" fill="#2563EB"/>
-  <text x="110" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头代表数据流（上行/下行）</text>
+  <text x="110" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">实线箭头代表需独立验证的协议边界</text>
   <line x1="635" y1="803" x2="651" y2="803" stroke="#475569" stroke-width="2" stroke-dasharray="4,3"/>
   <polygon points="651,799.5 659,803 651,806.5" fill="#475569"/>
   <text x="667" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">虚线箭头代表通过消息队列进行的异步解耦通信</text>
   <rect x="1190" y="797" width="16" height="12" rx="2" fill="#FFF8E7" stroke="#d97706" stroke-width="2"/>
-  <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">黄色背景的层代表驱动层，是整张图的焦点</text>
-  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-10 IoT DC3整体架构及驱动层位置。驱动层进程彼此独立、互不依赖，通过消息队列与平台核心服务解耦，实现驱动故障时平台主体不中断。开发者新增驱动仅需在驱动层横向增加一个方框，平台其余层无需变化。</text>
+  <text x="1214" y="808" fill="#64748B" font-size="11" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="start">黄色区域突出Driver扩展边界</text>
+  <text x="900" y="855" fill="#475569" font-size="17" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-weight="600" text-anchor="middle">图4-10 IoT DC3整体架构及驱动层位置——SDK与消息契约限制改动范围，故障隔离和跨层复用仍需工程验证。</text>
   </svg>
 </svg>
 

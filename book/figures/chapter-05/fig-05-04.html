@@ -91,7 +91,7 @@
     <line x1="1240" y1="856" x2="1300" y2="856" stroke="#2563EB" stroke-width="2.2" marker-end="url(#mk-blue)"/>
     <text x="1312" y="862" font-size="15" fill="#475569">消费输出</text>
 
-    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-4 消息队列缓冲削峰示意：洪峰到达时消息在 Topic 分区中暂存、水位升高，消费者组按自身能力逐步消费，后端服务不直接承受瞬时冲击。</text>
+    <text x="900" y="960" font-size="17" fill="#475569" text-anchor="middle">图 5-4 消息队列可吸收有界洪峰并平滑下游负载；超过容量或恢复目标时，仍须限流、背压、降级与告警。</text>
   </svg>
 </svg>
   </main>

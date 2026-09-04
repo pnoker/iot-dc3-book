@@ -14,13 +14,13 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">图1-19 AIoT数据闭环流程</title>
-  <desc id="desc">AIoT 感知-学习-决策-执行的闭环流程</desc>
+  <desc id="desc">AIoT 感知-推理-受控行动-反馈评估的闭环流程</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
     <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图1-19 AIoT数据闭环流程</text>
-    <text x="88" y="64" font-size="12" fill="#64748B">感知→学习→决策→执行四步循环，执行结果反馈回感知</text>
+    <text x="88" y="64" font-size="12" fill="#64748B">感知→推理→受控行动→反馈评估，结果形成下一轮证据</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 <defs>
 <marker id="ab" markerWidth="15" markerHeight="15" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L15,7 L0,15 z" fill="#2563EB"/></marker>
@@ -35,34 +35,34 @@
 <line x1="442" y1="400" x2="473" y2="400" stroke="#475569" stroke-width="2.4" marker-end="url(#ag)"/>
 <text x="457" y="380" font-size="15" fill="#475569" text-anchor="middle">数据流</text>
 <line x1="877" y1="400" x2="908" y2="400" stroke="#475569" stroke-width="2.4" marker-end="url(#ag)"/>
-<text x="892" y="380" font-size="15" fill="#475569" text-anchor="middle">推理结果</text>
+<text x="892" y="380" font-size="15" fill="#475569" text-anchor="middle">候选动作</text>
 <line x1="1312" y1="400" x2="1343" y2="400" stroke="#475569" stroke-width="2.4" marker-end="url(#ag)"/>
-<text x="1327" y="380" font-size="15" fill="#475569" text-anchor="middle">控制指令</text>
+<text x="1327" y="380" font-size="15" fill="#475569" text-anchor="middle">执行回执</text>
 <!-- 反馈回路 -->
 <path d="M1552,500 L1552,640 L247,640 L247,504" fill="none" stroke="#DC2626" stroke-width="2.6" stroke-dasharray="8,6" marker-end="url(#ar)"/>
-<text x="900" y="625" font-size="18" font-weight="700" fill="#DC2626" text-anchor="middle">闭环反馈（执行结果回传感知，驱动持续自我优化）</text>
+<text x="900" y="625" font-size="18" font-weight="700" fill="#DC2626" text-anchor="middle">证据回流（反馈进入评测，不直接改写生产系统）</text>
 <!-- 四步骤 -->
 <rect x="52" y="300" width="390" height="200" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
 <text x="247" y="365" font-size="26" font-weight="700" fill="#15803D" text-anchor="middle">① 感知</text>
 <text x="247" y="405" font-size="17" fill="#475569" text-anchor="middle">Perception</text>
 <text x="247" y="452" font-size="16" fill="#64748B" text-anchor="middle">传感器采集数据</text>
 <rect x="487" y="300" width="390" height="200" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
-<text x="682" y="365" font-size="26" font-weight="700" fill="#1D4ED8" text-anchor="middle">② 学习</text>
-<text x="682" y="405" font-size="17" fill="#475569" text-anchor="middle">Learning</text>
-<text x="682" y="452" font-size="16" fill="#64748B" text-anchor="middle">数据分析与建模</text>
+<text x="682" y="365" font-size="26" font-weight="700" fill="#1D4ED8" text-anchor="middle">② 推理</text>
+<text x="682" y="405" font-size="17" fill="#475569" text-anchor="middle">Reasoning</text>
+<text x="682" y="452" font-size="16" fill="#64748B" text-anchor="middle">模型生成候选判断</text>
 <rect x="922" y="300" width="390" height="200" rx="10" fill="#FFF7ED" stroke="#F97316" stroke-width="2"/>
-<text x="1117" y="365" font-size="26" font-weight="700" fill="#C2410C" text-anchor="middle">③ 决策</text>
-<text x="1117" y="405" font-size="17" fill="#475569" text-anchor="middle">Decision</text>
-<text x="1117" y="452" font-size="16" fill="#64748B" text-anchor="middle">生成控制决策</text>
+<text x="1117" y="365" font-size="26" font-weight="700" fill="#C2410C" text-anchor="middle">③ 受控行动</text>
+<text x="1117" y="405" font-size="17" fill="#475569" text-anchor="middle">Governed Action</text>
+<text x="1117" y="452" font-size="16" fill="#64748B" text-anchor="middle">策略与控制器确定性执行</text>
 <rect x="1357" y="300" width="390" height="200" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
-<text x="1552" y="365" font-size="26" font-weight="700" fill="#B91C1C" text-anchor="middle">④ 执行</text>
-<text x="1552" y="405" font-size="17" fill="#475569" text-anchor="middle">Execution</text>
-<text x="1552" y="452" font-size="16" fill="#64748B" text-anchor="middle">设备执行动作</text>
+<text x="1552" y="365" font-size="26" font-weight="700" fill="#B91C1C" text-anchor="middle">④ 反馈评估</text>
+<text x="1552" y="405" font-size="17" fill="#475569" text-anchor="middle">Feedback Evaluation</text>
+<text x="1552" y="452" font-size="16" fill="#64748B" text-anchor="middle">回执与现场状态形成证据</text>
 <!-- 结论 -->
 <rect x="52" y="690" width="1695" height="150" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
-<text x="900" y="745" font-size="23" font-weight="700" fill="#0F172A" text-anchor="middle">感知—学习—决策—执行形成持续自我优化的循环</text>
-<text x="900" y="790" font-size="18" fill="#475569" text-anchor="middle">执行结果反馈回感知，区别于传统 IoT 的单向数据管道</text>
-<text x="900" y="960" font-size="18" fill="#475569" text-anchor="middle">图1-19 AIoT数据闭环流程——感知、学习、决策、执行形成持续自我优化的循环，区别于传统IoT的单向数据管道。</text>
+<text x="900" y="745" font-size="23" font-weight="700" fill="#0F172A" text-anchor="middle">感知—推理—受控行动形成闭环，进化发生在评测与发布之后</text>
+<text x="900" y="790" font-size="18" fill="#475569" text-anchor="middle">反馈形成证据，不直接改写生产系统</text>
+<text x="900" y="960" font-size="18" fill="#475569" text-anchor="middle">图1-19 AIoT数据闭环流程——感知、推理、受控行动与反馈评估形成证据闭环；改进经过评测、发布和回退治理后才成为进化。</text>
   </svg>
 </svg>
   </main>

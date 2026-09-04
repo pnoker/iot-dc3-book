@@ -6,45 +6,45 @@ visual_focus: 三约束卡片与四协议对比表。
 design_level: matrix
 layout: 上半三约束维度卡片，中部四协议对比表，底部安全层
 elements:
-- 网络约束：带宽（小包 CoAP 低开销）、延迟（蜂窝频繁断连 TCP 重传卡顿）、可靠性（NON 发完不管）
-- 设备约束：功耗（TCP 心跳耗电）、内存（M0 跑不了完整 MQTT+TLS）、算力（CoAP 栈精简）
+- 网络约束：完整栈开销、断续链路的会话/恢复策略、消息确认与业务回执
+- 设备约束：握手/保活/无线唤醒功耗、目标协议库内存和安全套件算力
 - 生态约束：标准成熟度（OASIS/IETF）、工具链（Paho/EMQX/MQTTX）、社区
-- 协议对比：MQTT/CoAP/LwM2M/HTTP 的传输层、最佳与最差场景
+- 协议对比：MQTT/CoAP/LwM2M/HTTP 的传输绑定、较适合场景与主要约束
 relationships:
-- 三约束交点决定方案；各协议有明确的最佳与最差场景
+- 三约束交点形成候选方案；最终结论仍需目标环境测试
 render_notes: HTML/SVG 渲染，三约束卡片 + 四协议对比表，蓝绿橙分层，底部安全层说明。
 caption:
-  zh: 图 9-2 协议选型在网络、设备、生态三个约束维度找平衡；MQTT 适合双向高可靠，CoAP 适合低功耗休眠终端，LwM2M 适合远程管理，HTTP 适合无实时要求的 RESTful 调用。
-  en: Figure 9-2 Protocol selection balances three constraint dimensions — network, device, and ecosystem; MQTT suits bidirectional high-reliability traffic, CoAP suits low-power sleeping endpoints, LwM2M suits remote management, and HTTP suits non-real-time RESTful calls.
+  zh: 图 9-2 协议选型需同时核对网络、设备、生态与安全约束。MQTT、CoAP、LwM2M 和 HTTP 各自提供不同消息与管理语义，但协议名称本身不承诺时延、功耗、到达率或业务动作完成。
+  en: Figure 9-2 Protocol selection must test network, device, ecosystem, and security constraints together. MQTT, CoAP, LwM2M, and HTTP provide different messaging and management semantics, but a protocol name alone does not promise latency, energy use, arrival rate, or completion of a business action.
 labels:
   en:
     图 9-2 协议选择的三维约束与主流协议对比: Figure 9-2 Three Constraint Dimensions and Protocol Comparison
-    协议选型在网络、设备、生态三个约束维度找平衡，MQTT/CoAP/LwM2M/HTTP 各有最佳与最差场景。: Protocol choice balances network, device, and ecosystem constraints; MQTT/CoAP/LwM2M/HTTP each have best and worst cases.
+    协议选型在网络、设备、生态三个维度权衡，MQTT/CoAP/LwM2M/HTTP 各有较适合场景和主要约束。: Protocol choice balances network, device, and ecosystem dimensions; MQTT, CoAP, LwM2M, and HTTP each have better-fit scenarios and primary constraints.
     三约束的交点，往往是“不是最先进，但最合适”的方案: The intersection of the three constraints is often "not the most advanced, but the most fitting" choice
     网络约束: Network constraints
-    带宽：小包用 CoAP 低开销，HTTP 文本头开销大: 'Bandwidth: CoAP is low-overhead for small packets; HTTP text headers are heavy'
-    延迟：局域网 MQTT 够用，蜂窝频繁断连时 TCP 重传成卡顿源: 'Latency: MQTT is fine on LAN; on cellular, TCP retransmits after frequent drops cause stutter'
-    可靠性：CoAP NON 发完不管，可靠策略交业务层定义: 'Reliability: CoAP NON is fire-and-forget; reliability policy is left to the application'
+    开销：比较完整协议栈、安全封装与报文频率: 'Overhead: compare the full stack, security envelope, and message frequency'
+    链路：断续网络需比较会话、重传与恢复策略: 'Link: compare session, retransmission, and recovery policies on intermittent networks'
+    可靠性：区分消息确认、业务回执与动作完成: 'Reliability: distinguish message acknowledgment, business receipt, and action completion'
     设备约束: Device constraints
-    功耗：TCP 心跳耗电，UDP 发完即深度睡眠: 'Power: TCP heartbeats drain batteries; UDP sleeps right after sending'
-    内存：Cortex-M0 十几 KB RAM 跑不了完整 MQTT+TLS 栈: 'Memory: tens of KB of RAM on a Cortex-M0 cannot run a full MQTT+TLS stack'
-    算力：CoAP/LwM2M 栈精简，可塞进有限闪存: 'Compute: the lean CoAP/LwM2M stack fits limited flash'
+    功耗：握手、保活、重传与无线唤醒须实测: 'Power: measure handshakes, keep-alive, retransmissions, and radio wakeups'
+    内存：按目标芯片、协议库与安全套件测量: 'Memory: measure the target chip, protocol library, and security suite'
+    算力：裁剪协议栈也要保留安全与可运维性: 'Compute: a trimmed stack must retain security and operability'
     生态约束: Ecosystem constraints
     标准成熟度：OASIS MQTT、IETF RFC 7252: 'Standard maturity: OASIS MQTT, IETF RFC 7252'
     工具链：MQTT 有 Paho/EMQX/MQTTX 成熟生态: 'Tooling: MQTT has the mature Paho/EMQX/MQTTX ecosystem'
     社区：CoAP 调试工具箱深度广度不如 MQTT: 'Community: CoAP debugging tools lag MQTT in depth and breadth'
     主流应用层协议对比（定性工程归纳）: Mainstream application protocols (qualitative engineering summary)
     传输层: Transport
-    最佳场景: Best case
-    双向控制、高可靠送达: Bidirectional control, reliable delivery
-    大量小包、电池供电休眠: Many small packets, battery-sleeping devices
-    远程管理的电信级终端: Carrier-grade devices managed remotely
-    无实时要求的 RESTful 调用: Non-real-time RESTful calls
-    最差场景: Worst case
-    深度休眠、极低功耗终端: Deep-sleep, ultra-low-power endpoints
-    严格排序与持久化: Strict ordering & persistence
-    开发优先、团队经验不足: Development speed first, low team experience
-    海量高频小数据包: Massive high-frequency small packets
+    较适合场景: Better-fit scenarios
+    Broker 分发、QoS / 会话: Broker distribution, QoS / sessions
+    小报文、按消息选择确认: Small messages, per-message confirmation
+    标准化设备管理流程: Standardized device-management workflows
+    REST API、大对象传输: REST APIs, large-object transfer
+    主要约束: Primary constraints
+    深休眠需优化会话: Deep sleep needs session tuning
+    持久化与业务回执另设计: Persistence and business receipts need separate design
+    对象模型与运维成本: Object-model and operational cost
+    高频小消息的连接与头开销: Connection and header cost for frequent small messages
     安全层（任何协议落地都绕不开）: Security layer (unavoidable for any protocol)
-    HTTPS（TLS）· MQTTS（TLS over TCP）· CoAP 用 DTLS · LwM2M 基于 CoAP 的 DTLS · 设备身份认证（PSK / X.509 / Token）决定整体安全架构: HTTPS (TLS) · MQTTS (TLS over TCP) · DTLS for CoAP · LwM2M DTLS over CoAP · device identity (PSK / X.509 / Token) shapes the security architecture
-    图 9-2 协议选型在网络、设备、生态三个约束维度找平衡；MQTT 适合双向高可靠，CoAP 适合低功耗休眠终端，LwM2M 适合远程管理，HTTP 适合无实时要求的 RESTful 调用。: Figure 9-2 Protocol selection balances network, device, and ecosystem constraints; MQTT suits bidirectional high-reliability traffic, CoAP suits low-power sleeping endpoints, LwM2M suits remote management, and HTTP suits non-real-time RESTful calls.
+    传输保护可用 TLS / DTLS / OSCORE；身份、密钥、授权、重放防护与审计共同决定整体安全: Transport protection may use TLS / DTLS / OSCORE; identity, keys, authorization, replay protection, and audit determine overall security
+    图 9-2 协议选型需同时验证网络、设备、生态与安全约束；协议名称本身不承诺时延、功耗或业务完成。: Figure 9-2 Protocol selection must validate network, device, ecosystem, and security constraints together; a protocol name alone does not promise latency, energy use, or business completion.

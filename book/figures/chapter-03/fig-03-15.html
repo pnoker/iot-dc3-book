@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图 3-15 物模型在数据互通中的三层角色</title>
+  <title>图 3-15 物模型与状态模式在数据互通中的分工</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,8 +13,8 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
-  <title id="title">图 3-15 物模型在数据互通中的三层角色</title>
-  <desc id="desc">物模型把异构协议归一为统一语义空间，设备影子拆解同步耦合，催生平台无关应用。</desc>
+  <title id="title">图 3-15 物模型与状态模式在数据互通中的分工</title>
+  <desc id="desc">物模型统一异构数据语义；设备影子是可选状态同步模式，应用复用仍需验证数据与执行契约。</desc>
   <rect width="1200" height="700" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
 
@@ -26,8 +26,8 @@
 
   <!-- Title -->
   <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 3-15 物模型在数据互通中的三层角色</text>
-  <text x="88" y="64" font-size="12" fill="#64748B">让来源各异的物理量汇入同一个语义空间</text>
+  <text x="88" y="38" font-size="36" font-weight="700" fill="#0F172A">图 3-15 物模型与状态模式在数据互通中的分工</text>
+  <text x="88" y="64" font-size="12" fill="#64748B">语义契约是基础；状态同步与应用复用需要分别验证</text>
   <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
   <!-- 异构数据归一 -->
@@ -37,7 +37,7 @@
   <text x="270" y="206" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">A 厂温湿度变送器</text>
   <text x="116" y="240" font-size="11" fill="#475569">Modbus RTU</text>
   <text x="116" y="264" font-size="11" fill="#475569">温度在第 3~4 字节十六进制表达</text>
-  <text x="116" y="288" font-size="11" fill="#475569">“01 0A” → 高字节×0.1 = 10.0℃</text>
+  <text x="116" y="288" font-size="11" fill="#475569">“00 64” → 0x0064×0.1 = 10.0℃</text>
 
   <rect x="490" y="172" width="380" height="140" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
   <text x="680" y="206" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">B 厂空调控制器</text>
@@ -57,24 +57,24 @@
   <text x="1346" y="270" font-size="12" fill="#475569">三者的“温度”归入同一位号</text>
   <text x="1346" y="296" font-size="11" fill="#64748B">适配逻辑集成到设备接入模块，复用同一套映射</text>
 
-  <!-- 设备影子 -->
+  <!-- 可选设备影子 -->
   <rect x="80" y="360" width="1640" height="180" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
-  <text x="120" y="394" font-size="14" font-weight="700" fill="#0F172A">设备影子：拆解同步耦合</text>
-  <text x="120" y="426" font-size="12" fill="#475569">平台持有设备最新物模型状态，应用写影子属性记录期望值，设备下次上线拉取影子对比差异并同步</text>
-  <text x="120" y="452" font-size="12" fill="#475569">写操作不再被设备在线状况阻塞，同步问题转化为异步状态管理</text>
-  <text x="120" y="488" font-size="12" fill="#475569">应用不感知设备在线状态，设备不感知应用调用时序</text>
-  <text x="120" y="520" font-size="11" fill="#64748B">低功耗节点休眠或网络抖动时，业务流程不会被拖死</text>
+  <text x="120" y="394" font-size="14" font-weight="700" fill="#0F172A">可选设备影子：显式管理状态同步</text>
+  <text x="120" y="426" font-size="12" fill="#475569">复用物模型字段维护期望状态与已上报状态，但设备影子是独立运行时机制</text>
+  <text x="120" y="452" font-size="12" fill="#475569">离线写入转为带版本与有效期的待同步状态；上线后仍需校验、执行与回执</text>
+  <text x="120" y="488" font-size="12" fill="#475569">必须处理过期命令、冲突合并、重复执行、重启恢复与人工接管</text>
+  <text x="120" y="520" font-size="11" fill="#64748B">并非所有平台都实现通用影子；当前 IoT DC3 不能按通用 Device Shadow 描述</text>
 
-  <!-- 平台无关应用 -->
+  <!-- 稳定应用契约 -->
   <rect x="80" y="590" width="1640" height="160" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
-  <text x="120" y="624" font-size="14" font-weight="700" fill="#0F172A">催生平台无关的应用开发</text>
-  <text x="120" y="656" font-size="12" fill="#475569">同一物模型下，楼宇能源优化策略在 BACnet / Modbus / 自定义总线环境都能直接复用</text>
-  <text x="120" y="682" font-size="12" fill="#475569">开发只依赖物模型属性与服务，不关心设备品牌或总线类型，业务逻辑与基础设施彻底解耦</text>
-  <text x="120" y="708" font-size="12" fill="#475569">实时监控面板、告警规则、能源报表在统一语义空间直接对话，AI 层同样通过物模型读写能力</text>
-  <text x="120" y="734" font-size="11" fill="#64748B">IoT DC3 经 /profile 系列 REST API 管理物模型：一设备一物模型，多同型号设备复用一个物模型</text>
+  <text x="120" y="624" font-size="14" font-weight="700" fill="#0F172A">稳定契约：降低应用的协议耦合</text>
+  <text x="120" y="656" font-size="12" fill="#475569">兼容物模型可复用核心逻辑；单位、质量、采样周期与可写范围仍需现场验证</text>
+  <text x="120" y="682" font-size="12" fill="#475569">应用不处理总线字节，但仍依赖版本化数据契约，不能宣称与基础设施彻底解耦</text>
+  <text x="120" y="708" font-size="12" fill="#475569">AI 经授权 Tool 读取位号值；写操作形成待确认 Action，不因语义统一而自动获准</text>
+  <text x="120" y="734" font-size="11" fill="#64748B">IoT DC3 经 /profile REST API 管理 Profile：设备引用定义，同类设备可复用</text>
 
   <!-- Caption -->
-  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 3-15 物模型三层角色：语义适配层把 Modbus/KNX/DL/T645 异构数据归一，设备影子拆解同步耦合，平台无关应用实现一次编写多处部署，成为从感知层到智能层的数据语义锚点。</text>
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 3-15 物模型统一异构数据语义；设备影子仅是可选状态模式，应用复用仍需验证契约与执行边界。</text>
   </svg>
 </svg>
   </main>

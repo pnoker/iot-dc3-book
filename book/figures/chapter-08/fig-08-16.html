@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>图8-16 LLM 驱动的 IoT 操作：安全威胁与可解释性反馈架构</title>
+  <title>图8-16 LLM 候选行动的安全与可解释性架构</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8FAFC; color: #0F172A; font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
@@ -13,14 +13,14 @@
 <body>
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">图8-16 LLM 驱动的 IoT 操作：安全威胁与可解释性反馈架构</title>
-  <desc id="desc">展示 LLM 驱动 IoT 操作时从输入到执行的安全过滤与可解释性反馈机制。</desc>
+  <title id="title">图8-16 LLM 候选行动的安全与可解释性架构</title>
+  <desc id="desc">模型只生成候选行动；输入防护、独立授权与策略校验、必要确认、确定性执行和审计共同约束闭环。</desc>
   <rect width="1200" height="760" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="640" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid meet">
     <rect x="0" y="0" width="1800" height="1000" fill="#FFFFFF"/>
     <circle cx="64" cy="40" r="6" fill="#2563EB"/>
-    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-16 LLM 驱动的 IoT 操作：安全威胁与可解释性反馈架构</text>
-    <text x="88" y="72" font-size="14" fill="#64748B">展示 LLM 驱动 IoT 操作时从输入到执行的安全过滤与可解释性反馈机制。</text>
+    <text x="88" y="50" font-size="36" font-weight="700" fill="#0F172A">图8-16 LLM 候选行动的安全与可解释性架构</text>
+    <text x="88" y="72" font-size="14" fill="#64748B">模型只生成候选行动；独立授权、策略校验、必要确认与审计约束执行。</text>
     <line x1="40" y1="103" x2="1760" y2="103" stroke="#E2E8F0" stroke-width="1"/>
 
   <defs>
@@ -64,12 +64,12 @@
   <text x="684" y="525" font-size="13" fill="#334155">0.28</text>
   <!-- 输出端过滤 -->
   <polygon points="700,570 800,620 700,670 600,620" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
-  <text x="700" y="618" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">输出过滤器</text>
-  <text x="700" y="638" text-anchor="middle" font-size="12" fill="#475569">参数校验 + 敏感词匹配</text>
+  <text x="700" y="618" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">行动治理器</text>
+  <text x="700" y="638" text-anchor="middle" font-size="12" fill="#475569">鉴权 · 参数 · 策略 · 确认</text>
   <!-- 执行层 -->
   <rect x="400" y="710" width="600" height="130" rx="8" fill="#ECFDF5" stroke="#0F766E" stroke-width="1.5"/>
-  <text x="700" y="748" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">执行层 · 工具调用</text>
-  <text x="700" y="776" text-anchor="middle" font-size="13" fill="#475569">控制设备 · 读写位号</text>
+  <text x="700" y="748" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">执行层 · 获准工具调用</text>
+  <text x="700" y="776" text-anchor="middle" font-size="13" fill="#475569">受控读写 · 确定性设备链路</text>
   <rect x="500" y="796" width="70" height="30" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.2"/>
   <text x="535" y="815" text-anchor="middle" font-size="13" fill="#0F172A">阀门</text>
   <rect x="615" y="796" width="70" height="30" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.2"/>
@@ -94,8 +94,8 @@
   <text x="1360" y="590" font-size="13" font-weight="700" fill="#0F172A">示例 trace：</text>
   <text x="1360" y="618" font-size="13" fill="#475569">输入过滤：拦截 Prompt 注入</text>
   <text x="1360" y="642" font-size="13" fill="#475569">LLM 决策：特征贡献 0.65</text>
-  <text x="1360" y="666" font-size="13" fill="#475569">输出校验：越权调用被拒</text>
-  <text x="1360" y="690" font-size="13" fill="#475569">工具执行：关闭阀门 #3</text>
+  <text x="1360" y="666" font-size="13" fill="#475569">行动治理：越权调用被拒</text>
+  <text x="1360" y="690" font-size="13" fill="#475569">获准执行：关闭阀门 #3</text>
   <text x="1360" y="714" font-size="12" fill="#94A3B8">审计时间戳：2026-08-01 10:32</text>
   <text x="1510" y="820" text-anchor="middle" font-size="14" font-weight="700" fill="#0F766E">可解释 + 可审计 安全闭环</text>
   <!-- 图例 -->
@@ -104,7 +104,7 @@
   <line x1="470" y1="880" x2="505" y2="880" stroke="#DC2626" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#blk)"/>
   <text x="515" y="886" fill="#64748B" font-size="13">拦截 / 攻击路径</text>
   <text x="700" y="886" fill="#64748B" font-size="13">外部中毒数据（间接注入）以红色虚线从侧方进入模型层</text>
-    <text x="900" y="960" font-size="16" fill="#475569" text-anchor="middle">图8-16 LLM 驱动设备操作时，输入/输出两端安全过滤拦截攻击，模型层内嵌可解释性反馈，审计日志贯穿，形成可解释+可审计的安全闭环。</text>
+    <text x="900" y="960" font-size="16" fill="#475569" text-anchor="middle">图8-16 模型生成候选行动，独立治理器决定能否执行；解释信息辅助复核，审计证据贯穿全链路。</text>
   </svg>
 </svg>
   </main>

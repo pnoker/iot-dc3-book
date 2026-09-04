@@ -21,7 +21,7 @@
 | OTA | Over-the-Air Update | 固件/软件空中远程升级，须配套签名验签、加密传输与防回滚，否则一次恶意升级可批量沦陷设备 |
 | 云边协同 | Cloud-Edge Collaboration | 云端深算+边缘实时的分层协作（旧称"边云协同"） |
 | RBAC/ABAC | Role/Attribute-Based Access Control | 基于角色/属性的访问控制 |
-| MQTT | Message Queuing Telemetry Transport | 消息队列遥测传输，IoT 事实标准消息协议 |
+| MQTT | Message Queuing Telemetry Transport | 消息队列遥测传输，IoT 中广泛采用的发布/订阅消息协议 |
 | CoAP | Constrained Application Protocol | 面向受限设备的精简 Web 协议（RFC 7252） |
 | LwM2M | Lightweight M2M | OMA 定义的轻量设备管理协议（基于 CoAP） |
 | OPC UA | OPC Unified Architecture | 工业互操作应用层协议（IEC 62541） |

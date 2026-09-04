@@ -14,7 +14,7 @@
   <main class="page" data-figure-root>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
   <title id="title">图 9-2 协议选择的三维约束与主流协议对比</title>
-  <desc id="desc">协议选型在网络、设备、生态三个约束维度找平衡，MQTT/CoAP/LwM2M/HTTP 各有最佳与最差场景。</desc>
+  <desc id="desc">协议选型在网络、设备、生态三个维度权衡，MQTT/CoAP/LwM2M/HTTP 各有较适合场景和主要约束。</desc>
   <rect width="1200" height="700" fill="#F8FAFC"/>
   <svg x="24" y="60" width="1152" height="580" viewBox="0 0 1800 950" preserveAspectRatio="xMidYMid meet">
 
@@ -29,15 +29,15 @@
   <!-- 三个约束维度 -->
   <rect x="80" y="140" width="520" height="180" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
   <text x="340" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">网络约束</text>
-  <text x="116" y="214" font-size="12" fill="#475569">带宽：小包用 CoAP 低开销，HTTP 文本头开销大</text>
-  <text x="116" y="240" font-size="12" fill="#475569">延迟：局域网 MQTT 够用，蜂窝频繁断连时 TCP 重传成卡顿源</text>
-  <text x="116" y="266" font-size="12" fill="#475569">可靠性：CoAP NON 发完不管，可靠策略交业务层定义</text>
+  <text x="116" y="214" font-size="12" fill="#475569">开销：比较完整协议栈、安全封装与报文频率</text>
+  <text x="116" y="240" font-size="12" fill="#475569">链路：断续网络需比较会话、重传与恢复策略</text>
+  <text x="116" y="266" font-size="12" fill="#475569">可靠性：区分消息确认、业务回执与动作完成</text>
 
   <rect x="640" y="140" width="520" height="180" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
   <text x="900" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">设备约束</text>
-  <text x="676" y="214" font-size="12" fill="#475569">功耗：TCP 心跳耗电，UDP 发完即深度睡眠</text>
-  <text x="676" y="240" font-size="12" fill="#475569">内存：Cortex-M0 十几 KB RAM 跑不了完整 MQTT+TLS 栈</text>
-  <text x="676" y="266" font-size="12" fill="#475569">算力：CoAP/LwM2M 栈精简，可塞进有限闪存</text>
+  <text x="676" y="214" font-size="12" fill="#475569">功耗：握手、保活、重传与无线唤醒须实测</text>
+  <text x="676" y="240" font-size="12" fill="#475569">内存：按目标芯片、协议库与安全套件测量</text>
+  <text x="676" y="266" font-size="12" fill="#475569">算力：裁剪协议栈也要保留安全与可运维性</text>
 
   <rect x="1200" y="140" width="520" height="180" rx="12" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
   <text x="1460" y="178" font-size="15" font-weight="700" fill="#0F172A" text-anchor="middle">生态约束</text>
@@ -58,30 +58,30 @@
   <text x="120" y="472" font-size="12" font-weight="700" fill="#0F172A">传输层</text>
   <text x="285" y="484" font-size="12" fill="#475569" text-anchor="middle">TCP</text>
   <text x="695" y="484" font-size="12" fill="#475569" text-anchor="middle">UDP</text>
-  <text x="1105" y="484" font-size="12" fill="#475569" text-anchor="middle">CoAP/UDP + DTLS</text>
+  <text x="1105" y="484" font-size="12" fill="#475569" text-anchor="middle">CoAP transport bindings</text>
   <text x="1515" y="484" font-size="12" fill="#475569" text-anchor="middle">TCP</text>
 
   <rect x="80" y="508" width="1640" height="60" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="532" font-size="12" font-weight="700" fill="#0F172A">最佳场景</text>
-  <text x="285" y="544" font-size="11" fill="#475569" text-anchor="middle">双向控制、高可靠送达</text>
-  <text x="695" y="544" font-size="11" fill="#475569" text-anchor="middle">大量小包、电池供电休眠</text>
-  <text x="1105" y="544" font-size="11" fill="#475569" text-anchor="middle">远程管理的电信级终端</text>
-  <text x="1515" y="544" font-size="11" fill="#475569" text-anchor="middle">无实时要求的 RESTful 调用</text>
+  <text x="120" y="532" font-size="12" font-weight="700" fill="#0F172A">较适合场景</text>
+  <text x="285" y="544" font-size="11" fill="#475569" text-anchor="middle">Broker 分发、QoS / 会话</text>
+  <text x="695" y="544" font-size="11" fill="#475569" text-anchor="middle">小报文、按消息选择确认</text>
+  <text x="1105" y="544" font-size="11" fill="#475569" text-anchor="middle">标准化设备管理流程</text>
+  <text x="1515" y="544" font-size="11" fill="#475569" text-anchor="middle">REST API、大对象传输</text>
 
   <rect x="80" y="568" width="1640" height="60" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="120" y="592" font-size="12" font-weight="700" fill="#0F172A">最差场景</text>
-  <text x="285" y="604" font-size="11" fill="#475569" text-anchor="middle">深度休眠、极低功耗终端</text>
-  <text x="695" y="604" font-size="11" fill="#475569" text-anchor="middle">严格排序与持久化</text>
-  <text x="1105" y="604" font-size="11" fill="#475569" text-anchor="middle">开发优先、团队经验不足</text>
-  <text x="1515" y="604" font-size="11" fill="#475569" text-anchor="middle">海量高频小数据包</text>
+  <text x="120" y="592" font-size="12" font-weight="700" fill="#0F172A">主要约束</text>
+  <text x="285" y="604" font-size="11" fill="#475569" text-anchor="middle">深休眠需优化会话</text>
+  <text x="695" y="604" font-size="11" fill="#475569" text-anchor="middle">持久化与业务回执另设计</text>
+  <text x="1105" y="604" font-size="11" fill="#475569" text-anchor="middle">对象模型与运维成本</text>
+  <text x="1515" y="604" font-size="11" fill="#475569" text-anchor="middle">高频小消息的连接与头开销</text>
 
   <!-- 底部安全 -->
   <rect x="80" y="680" width="1640" height="90" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
   <text x="120" y="712" font-size="13" font-weight="700" fill="#334155">安全层（任何协议落地都绕不开）</text>
-  <text x="120" y="740" font-size="12" fill="#475569">HTTPS（TLS）· MQTTS（TLS over TCP）· CoAP 用 DTLS · LwM2M 基于 CoAP 的 DTLS · 设备身份认证（PSK / X.509 / Token）决定整体安全架构</text>
+  <text x="120" y="740" font-size="12" fill="#475569">传输保护可用 TLS / DTLS / OSCORE；身份、密钥、授权、重放防护与审计共同决定整体安全</text>
 
   <!-- Caption -->
-  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 9-2 协议选型在网络、设备、生态三个约束维度找平衡；MQTT 适合双向高可靠，CoAP 适合低功耗休眠终端，LwM2M 适合远程管理，HTTP 适合无实时要求的 RESTful 调用。</text>
+  <text x="900" y="910" font-size="17" fill="#475569" text-anchor="middle">图 9-2 协议选型需同时验证网络、设备、生态与安全约束；协议名称本身不承诺时延、功耗或业务完成。</text>
   </svg>
 </svg>
   </main>
