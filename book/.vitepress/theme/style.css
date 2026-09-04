@@ -1136,6 +1136,37 @@ body.dc3-modal-open {
         linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg) 96%, #dff7ff 4%), var(--vp-c-bg));
 }
 
+/* hero 书名号后的品牌徽标：与导航 logo 同族的星芒 + AGENTIC。
+   .name 用 background-clip:text 做渐变字，子元素会继承 -webkit-text-fill-color:
+   transparent，这里必须显式改回实色，否则徽标会被渐变吞掉。 */
+.hero-book-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32em;
+    margin-left: 0.22em;
+    font-size: 0.26em;
+    font-weight: 680;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    vertical-align: 2.05em;
+    color: #5656c8;
+    -webkit-text-fill-color: #5656c8;
+}
+
+.hero-book-badge .dc3-brand-spark {
+    width: 1.05em;
+    height: 1.05em;
+}
+
+.hero-book-badge .dc3-brand-agentic {
+    font-size: 1em;
+}
+
+.dark .hero-book-badge {
+    color: #aaaaff;
+    -webkit-text-fill-color: #aaaaff;
+}
+
 .VPHero::before,
 .VPHero::after {
     content: '';
