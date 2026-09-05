@@ -1167,6 +1167,12 @@ body.dc3-modal-open {
     -webkit-text-fill-color: #aaaaff;
 }
 
+/* 英文末行是拉丁小写（如 "Agents"），视觉重心（x 高度中心）比 CJK 字形重心低，
+   0.8em 会让徽标显得沉；按语言抬到 1.05em 才落在英文的光学中线上。 */
+html[lang^='en'] .hero-book-badge {
+    vertical-align: 1.05em;
+}
+
 .VPHero::before,
 .VPHero::after {
     content: '';
