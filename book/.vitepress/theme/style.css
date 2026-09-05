@@ -2626,16 +2626,22 @@ html[lang^='en'] .hero-book-badge {
     background: transparent;
 }
 
-.VPDoc .container:has(.vp-doc._figures) {
+/* 路径派生类按路由生成：zh /figures → _figures，en /en/figures → _en_figures，
+   两语言必须同时覆盖（英文页窄容器导致图库只有两列的教训） */
+.VPDoc .container:has(.vp-doc._figures),
+.VPDoc .container:has(.vp-doc._en_figures) {
     max-width: 1360px !important;
 }
-.VPDoc .content:has(.vp-doc._figures) {
+.VPDoc .content:has(.vp-doc._figures),
+.VPDoc .content:has(.vp-doc._en_figures) {
     max-width: 1280px !important;
 }
-.VPDoc .content-container:has(.vp-doc._figures) {
+.VPDoc .content-container:has(.vp-doc._figures),
+.VPDoc .content-container:has(.vp-doc._en_figures) {
     max-width: 1280px !important;
 }
-.vp-doc._figures {
+.vp-doc._figures,
+.vp-doc._en_figures {
     max-width: 1280px !important;
 }
 

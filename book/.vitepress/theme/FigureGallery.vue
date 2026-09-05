@@ -82,15 +82,16 @@ const onKey = (e: KeyboardEvent) => {
 
 onMounted(async () => {
   window.addEventListener('keydown', onKey)
+  // SVG 清单（约 1.8MB）只服务卡片预览与灯箱，后台加载不阻塞缩略图网格首绘；
+  // svgs 缺失时模板 v-if 自动降级为纯卡片
+  fetch(en.value ? '/figures-svg-en.json' : '/figures-svg.json')
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((j) => { svgs.value = j })
+    .catch(() => {})
   try {
-    const [manifestRes, svgRes] = await Promise.all([
-      fetch('/figures-manifest.json'),
-      fetch(en.value ? '/figures-svg-en.json' : '/figures-svg.json'),
-    ])
+    const manifestRes = await fetch('/figures-manifest.json')
     if (!manifestRes.ok) throw new Error(String(manifestRes.status))
     items.value = await manifestRes.json()
-    // SVG 清单加载失败不阻塞图库
-    if (svgRes.ok) svgs.value = await svgRes.json()
   } catch {
     error.value = t('图库清单加载失败，请稍后重试', 'Failed to load the figure list — please retry')
   } finally {
@@ -333,6 +334,20 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   background: var(--vp-c-bg);
   border-bottom: 1px solid var(--vp-c-divider);
   overflow: hidden;
+}
+/* SVG 清单后台加载期间，空缩略图给呼吸占位，避免整版白盒观感 */
+.fig-thumb:empty {
+  background:
+    linear-gradient(100deg, transparent 32%, color-mix(in srgb, var(--vp-c-brand-1) 9%, transparent) 50%, transparent 68%) var(--vp-c-bg-alt);
+  background-size: 220% 100%;
+  animation: fig-thumb-shimmer 1.6s ease-in-out infinite;
+}
+@keyframes fig-thumb-shimmer {
+  from { background-position: 180% 0; }
+  to { background-position: -80% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fig-thumb:empty { animation: none; }
 }
 .fig-thumb img {
   width: 100%;
