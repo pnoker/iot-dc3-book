@@ -37,17 +37,19 @@
 
     <text x="80" y="354" font-size="30" fill="#c7d7e8">AIoT 技术与实践 —— 从物联网平台到智能体应用</text>
 
-    <text x="80" y="414" font-size="23" fill="#7f93ac">张红元 著 · 14 章 · 155 张架构图</text>
+    <text x="80" y="414" font-size="23" fill="#7f93ac">张红元 著 · 14 章 · 200 张图表</text>
   </g>
 
   <!-- 右侧书封 -->
   <g>
     <rect x="852" y="120" width="252" height="360" rx="14" fill="url(#cover)" stroke="rgba(120,190,240,0.35)"/>
-    <text x="978" y="210" text-anchor="middle" font-size="17" fill="#6f8fb0">IoT DC3</text>
-    <text x="978" y="252" text-anchor="middle" font-size="40" font-weight="700" fill="url(#word)">从工业软件</text>
-    <text x="978" y="306" text-anchor="middle" font-size="40" font-weight="700" fill="url(#word)">到 AI 智能体</text>
-    <line x1="920" y1="340" x2="1036" y2="340" stroke="rgba(120,190,240,0.35)"/>
-    <text x="978" y="382" text-anchor="middle" font-size="19" fill="#8fa7c2">AIoT 技术与实践</text>
+    <rect x="908" y="148" width="140" height="30" rx="15" fill="rgba(140,132,242,0.14)" stroke="rgba(154,148,255,0.45)"/>
+    <path transform="translate(924,155) scale(1.5)" fill="#aaaaff" d="M6 .8c.35 3.05 2.15 4.85 5.2 5.2C8.15 6.35 6.35 8.15 6 11.2 5.65 8.15 3.85 6.35.8 6 3.85 5.65 5.65 3.85 6 .8Z"/>
+    <text x="952" y="169" font-size="14" font-weight="680" letter-spacing="2.5" fill="#aaaaff">AGENTIC</text>
+    <text x="978" y="258" text-anchor="middle" font-size="40" font-weight="700" fill="url(#word)">从工业软件</text>
+    <text x="978" y="310" text-anchor="middle" font-size="40" font-weight="700" fill="url(#word)">到 AI 智能体</text>
+    <line x1="920" y1="342" x2="1036" y2="342" stroke="rgba(120,190,240,0.35)"/>
+    <text x="978" y="384" text-anchor="middle" font-size="17" fill="#8fa7c2">感知 · 推理 · 行动 · 进化</text>
     <text x="978" y="452" text-anchor="middle" font-size="16" fill="#6f8fb0">张红元 著</text>
   </g>
 

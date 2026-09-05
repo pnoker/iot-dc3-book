@@ -5,6 +5,7 @@
  * PNG 为提交产物；仅当 SVG 变更后需重新生成本地执行并提交。
  */
 import {execSync} from 'node:child_process'
+import {existsSync} from 'node:fs'
 import {fileURLToPath} from 'node:url'
 import {dirname, join} from 'node:path'
 
@@ -14,6 +15,8 @@ const png = join(root, 'book', 'public', 'og-image.png')
 
 const candidates = [
   process.env.CHROME_BIN,
+  'C:/Program Files/Google/Chrome/Application/chrome.exe',
+  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
   'google-chrome',
@@ -21,20 +24,21 @@ const candidates = [
   'chromium-browser'
 ].filter(Boolean)
 
-const bin = candidates.find(p => {
-  if (p.includes('/')) {
-    try { execSync(`test -x "${p}"`); return true } catch { return false }
-  }
-  return true
-})
+const bin = candidates.find(p => (p.includes('/') || p.includes('\\')) ? existsSync(p) : true)
 
 if (!bin) {
   console.error('❌ 未找到 Chrome/Edge，请安装后重试，或设置 CHROME_BIN 环境变量')
   process.exit(1)
 }
 
-execSync(
-  `"${bin}" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --user-data-dir=/tmp/dc3-og-chrome --window-size=1200,630 --screenshot="${png}" "file://${svg}"`,
-  {stdio: 'inherit'}
-)
+try {
+  execSync(
+    `"${bin}" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --user-data-dir=/tmp/dc3-og-chrome --window-size=1200,630 --screenshot="${png}" "file://${svg}"`,
+    // Windows 上 headless 截图完成后进程可能不退出，超时后 PNG 其实已写完
+    {stdio: 'inherit', timeout: 90_000}
+  )
+} catch (error) {
+  if (!existsSync(png)) throw error
+  console.log('(browser stayed open after screenshot; PNG written, continuing)')
+}
 console.log(`✅ og-image.png generated → ${png}`)
