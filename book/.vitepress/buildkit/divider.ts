@@ -147,7 +147,7 @@ export function renderCoverInline(lang: 'zh' | 'en' = 'zh'): [string, string] {
         title: 'From Industrial Software to AI Agents',
         subtitle: 'Building a multi-protocol, cloud-native, open-source industrial IoT platform ready for agentic evolution',
         author: 'Zhang Hongyuan',
-        cover_tag: 'AI Native',
+        cover_tag: 'AGENTIC',
         cover_highlight_1: 'Five-layer architecture · Intelligence layer · IoT platform foundation',
         cover_highlight_2: 'LLMs · Agents · MCP · Tools · Skills · CLI · Intelligent operations',
         cover_highlight_3: 'IoT DC3 open-source project throughout the book',
@@ -158,7 +158,7 @@ export function renderCoverInline(lang: 'zh' | 'en' = 'zh'): [string, string] {
       }
     : {
         ...meta,
-        cover_tag: 'AI 原生',
+        cover_tag: 'AGENTIC',
         cover_highlight_1: '五层架构 · 智能层 · 物联网平台底座',
         cover_highlight_2: '大模型 · Agent · MCP · Tools · Skills · CLI · 智能运维',
         cover_highlight_3: 'IoT DC3 开源项目贯穿全书',

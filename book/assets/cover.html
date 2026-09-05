@@ -28,8 +28,10 @@
     --cover-glow-b: rgba(16, 185, 129, .28);
     --cover-glow-c: rgba(251, 191, 36, .22);
     --cover-grid: rgba(37, 99, 235, .06);
-    --cover-tag-border: rgba(37, 99, 235, .4);
+    --cover-tag-border: rgba(86, 86, 200, .38);
     --cover-tag-bg: rgba(255, 255, 255, .5);
+    --cover-tag-color: #5656C8;
+    --cover-tag-glow: rgba(0, 159, 201, .42);
     --cover-orbit: #2563EB;
     --cover-star-stroke: #FFFFFF;
   }
@@ -54,8 +56,10 @@
     --cover-glow-b: rgba(16, 185, 129, .14);
     --cover-glow-c: rgba(251, 191, 36, .10);
     --cover-grid: rgba(96, 165, 250, .06);
-    --cover-tag-border: rgba(96, 165, 250, .4);
+    --cover-tag-border: rgba(170, 170, 255, .4);
     --cover-tag-bg: rgba(30, 41, 59, .5);
+    --cover-tag-color: #AAAAFF;
+    --cover-tag-glow: rgba(97, 222, 244, .52);
     --cover-orbit: #3B82F6;
     --cover-star-stroke: #0F172A;
   }
@@ -86,7 +90,8 @@
   .constellation .halo { opacity:.18; }
   .constellation .star { stroke:var(--cover-star-stroke); stroke-width:1.5; }
   .top, .bottom { position:relative; z-index:2; }
-  .tag { display:inline-block; padding:6px 18px; border:1.5px solid var(--cover-tag-border); border-radius:22px; font-size:12px; letter-spacing:3px; color:var(--cover-primary); font-weight:600; background:var(--cover-tag-bg); }
+  .tag { display:inline-flex; align-items:center; gap:7px; padding:6px 16px 6px 14px; border:1.5px solid var(--cover-tag-border); border-radius:22px; font-size:12px; letter-spacing:2.5px; color:var(--cover-tag-color); font-weight:680; background:var(--cover-tag-bg); }
+  .tag .tag-spark { width:12px; height:12px; flex:none; fill:var(--cover-tag-color); filter:drop-shadow(0 0 3px var(--cover-tag-glow)); }
   .title { font-size:68px; font-weight:800; line-height:1.08; margin:34px 0 12px; color:var(--cover-primary-3); background:var(--cover-title-grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; -webkit-print-color-adjust:exact; print-color-adjust:exact; letter-spacing:3px; }
   /* print 模式下渐变裁剪可能失效，退化为纯蓝纯色文字（不出现色块） */
   @media print {
@@ -170,7 +175,7 @@
   </div>
 
   <div class="top">
-    <div class="tag">{{ cover_tag }}</div>
+    <div class="tag"><svg class="tag-spark" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 .8c.35 3.05 2.15 4.85 5.2 5.2C8.15 6.35 6.35 8.15 6 11.2 5.65 8.15 3.85 6.35.8 6 3.85 5.65 5.65 3.85 6 .8Z"/></svg><span>{{ cover_tag }}</span></div>
     <div class="title">{{ title }}</div>
     <div class="subtitle">{{ subtitle }}</div>
     <div class="divider"></div>
