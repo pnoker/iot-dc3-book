@@ -126,7 +126,13 @@ export default defineConfig({
         outline: {level: [2, 3], label: 'On this page'},
         outlineTitle: 'On this page',
         // 语言切换统一走 VitePress 标准下拉（English ⇄ 简体中文），不再单独放「中文版」导航按钮
-        docFooter: {prev: 'Previous section', next: 'Next section'},
+        docFooter: {prev: 'Previous page', next: 'Next page'},
+        notFound: {
+          title: 'Page Not Found',
+          quote: 'The link may be broken, or the page may have been moved.',
+          linkLabel: 'Go to homepage',
+          linkText: 'Take me home',
+        },
         darkModeSwitchLabel: 'Appearance',
         // 英文侧搜索 UI 文案（未配置时会回落根级中文 translations）
         search: {
@@ -200,7 +206,7 @@ export default defineConfig({
     // InfluxQL 无内置高亮语法，别名到 SQL（否则 12 处回退 txt 警告且无高亮）
     languageAlias: {influxql: 'sql'},
     config(md: any) {
-      // 手稿即终稿：页面分型变换（锚点→内联 SVG、扉页注入、标题升降级、byline、节导航）
+      // 手稿即终稿：页面分型变换（锚点→内联 SVG、扉页注入、标题升降级、byline）
       md.use(bookMarkdownPlugin)
       md.core.ruler.before('inline', 'cn_bold_close', (state: any) => {
         for (const tok of state.tokens) {
@@ -249,7 +255,14 @@ export default defineConfig({
       copyright: `张红元 著 · © 2016–${CURRENT_YEAR_HTML}`,
     },
 
-    docFooter: {prev: '上一章', next: '下一章'},
+    docFooter: {prev: '上一篇', next: '下一篇'},
+    // 404 页本地化（VPNotFound 文案与 home 链接跟随 locale）
+    notFound: {
+      title: '页面不存在',
+      quote: '你访问的链接可能有误，或该页面已被移动。',
+      linkLabel: '回到首页',
+      linkText: '回到首页',
+    },
     darkModeSwitchLabel: '主题',
     sidebarMenuLabel: '目录',
     returnToTopLabel: '回到顶部',

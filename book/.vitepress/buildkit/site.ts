@@ -145,12 +145,6 @@ function buildLang(lang: Lang, partsCfg: unknown[], zhSlugs?: string[]): Part[] 
 export interface Site {
   zh: Part[]
   en: Part[]
-  /** zh 全书小节线性链（供 section-nav） */
-  chainZh: {title: string; url: string; outPath: string}[]
-  chainEn: {title: string; url: string; outPath: string}[]
-  /** 输出路径 → 线性链邻居 */
-  navZh: Map<string, {prev?: [string, string]; next?: [string, string]}>
-  navEn: Map<string, {prev?: [string, string]; next?: [string, string]}>
 }
 
 let _site: Site | null = null
@@ -165,34 +159,7 @@ export function getSite(): Site {
     throw new Error(`parts-en.yaml 篇数(${partsEn.length})与 parts.yaml(${partsZh.length})不一致。`)
   }
 
-  const buildChain = (parts: Part[]) => {
-    const chain: {title: string; url: string; outPath: string}[] = []
-    for (const part of parts) {
-      for (const ch of part.chapters) {
-        for (const s of ch.sections) chain.push({title: s.title, url: s.url, outPath: s.outPath})
-      }
-    }
-    const nav = new Map<string, {prev?: [string, string]; next?: [string, string]}>()
-    chain.forEach((cur, i) => {
-      const prev = chain[i - 1]
-      const next = chain[i + 1]
-      nav.set(cur.outPath, {
-        prev: prev ? [prev.title, prev.url] : undefined,
-        next: next ? [next.title, next.url] : undefined,
-      })
-    })
-    return {chain, nav}
-  }
-  const zh = buildChain(partsZh)
-  const en = buildChain(partsEn)
-  _site = {
-    zh: partsZh,
-    en: partsEn,
-    chainZh: zh.chain,
-    chainEn: en.chain,
-    navZh: zh.nav,
-    navEn: en.nav,
-  }
+  _site = {zh: partsZh, en: partsEn}
   auditFigures()
   return _site
 }

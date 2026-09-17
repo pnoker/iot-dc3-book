@@ -93,14 +93,6 @@ function shiftHeadings(md: string): string {
     .join('\n')
 }
 
-function genSectionNav(prev?: [string, string], next?: [string, string]): string {
-  const parts: string[] = []
-  if (prev) parts.push(`<a class="nav-prev" href="${prev[1]}">← ${prev[0]}</a>`)
-  if (next) parts.push(`<a class="nav-next" href="${next[1]}">${next[0]} →</a>`)
-  if (!parts.length) return ''
-  return '\n<nav class="section-nav">\n  ' + parts.join('\n  ') + '\n</nav>\n'
-}
-
 /** 把章描述拓展成一段简洁的概览总结（连贯成段，不列节标题）。 */
 export function genChapterOverview(desc: string, sections: {stem: string; title: string}[]): string {
   const topics: string[] = []
@@ -211,10 +203,8 @@ function findChapter(lang: Lang, cid: number): {part: Part; ch: Chapter} | null 
 }
 
 function renderSection(info: PageInfo, src: string): string {
-  const site = getSite()
-  const navMap = info.lang === 'en' ? site.navEn : site.navZh
-  const nav = navMap.get(info.out)
   // 标题升级后 body 自带 "# title"；对齐旧结构 fm + "# title\n" + BYLINE + "" + body
+  // 页面底部前后导航由主题 pager（VPDocFooter）按 sidebar 顺序统一承担
   const bodyFull = shiftHeadings(stripFm(src)).trim()
   const nl = bodyFull.indexOf('\n')
   const title = nl >= 0 ? bodyFull.slice(0, nl).replace(/^#\s+/, '') : bodyFull.replace(/^#\s+/, '')
@@ -227,11 +217,6 @@ function renderSection(info: PageInfo, src: string): string {
     '',
     body,
   ]
-  const navHtml = genSectionNav(nav?.prev, nav?.next)
-  if (navHtml) {
-    out.push('')
-    out.push(navHtml)
-  }
   return out.join('\n') + '\n'
 }
 
@@ -290,10 +275,9 @@ function renderPart(info: PageInfo): string {
       + '</figure>\n',
     )
   }
-  out.push(`# ${part.name}\n`)
-  out.push(`\n> ${desc}\n`)
+  // 篇名与概述由扉页 divider 承载，不再重复输出正文标题/引用
   if (info.lang === 'zh') {
-    out.push('\n## 本章包含\n')
+    out.push('\n## 本篇包含\n')
     for (const ch of part.chapters) {
       out.push(
         `- [第 ${ch.id} 章　${ch.title}](/${part.slug}/chapter-${ch.id}/)`

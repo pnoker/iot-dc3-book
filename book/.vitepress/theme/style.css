@@ -2659,29 +2659,6 @@ html[lang^='en'] .hero-book-badge {
     text-decoration: underline;
 }
 
-/* ── 小节上/下导航 ── */
-.section-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin: 2.5em 0 0;
-    padding-top: 1.2em;
-    border-top: 1px solid var(--vp-c-divider);
-    font-size: 14px;
-    line-height: 1.6;
-}
-.section-nav a {
-    color: var(--vp-c-brand);
-    text-decoration: none;
-}
-.section-nav a:hover {
-    text-decoration: underline;
-}
-.section-nav .nav-next {
-    margin-left: auto;
-    text-align: right;
-}
-
 /* ── 章首页「本章导读」卡片 ── */
 .chapter-summary {
     position: relative;
