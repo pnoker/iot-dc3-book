@@ -94,7 +94,7 @@ const copy = computed(() => isEnglish.value ? {
       {index: '03', eyebrow: '行动', title: '先治理，再执行', description: '身份、鉴权、参数校验、策略、确认、恢复与审计，位于模型意图与物理指令之间。'},
       {index: '04', eyebrow: '进化', title: '用证据换取逐级放权', description: '回执与结果进入版本化评测、审批、受控发布和回退；反馈本身不会让模型自动获得权限。'}
     ],
-    boundary: 'LLM 可以理解意图、归纳信息并编排受控工具；实时控制、安全联锁和故障保护，仍应由 PLC、边缘控制器等确定性系统承担。'
+    boundary: 'LLM 可以理解意图、归纳信息并编排受控工具；\n实时控制、安全联锁和故障保护，仍应由 PLC、边缘控制器等确定性系统承担。'
   },
   thesis: {
     kicker: '全书主线',
@@ -152,7 +152,7 @@ const copy = computed(() => isEnglish.value ? {
   },
   cta: {
     kicker: '从真实问题开始',
-    title: '沿一条现场信号，走到一次受治理的行动',
+    title: '沿一条现场信号，\n走到一次受治理的行动',
     description: '从第 1 章开始，可以完整跟随全书论证；也可以打开目录，从与你当前问题最接近的一层进入。',
     primary: '从第 1 章开始',
     primaryLink: '/foundations/chapter-1/',
@@ -375,6 +375,19 @@ const copy = computed(() => isEnglish.value ? {
   letter-spacing: -.045em;
 }
 
+/* 英文按词边界均衡断行即可；中文不能 balance（会把"安全""走到"这类词拆到两行），
+   显式断行写在文案的 \n 里，由下面的 pre-line 兑现 */
+:lang(en) .book-home-heading h2,
+:lang(en) .book-home-cta h2 {
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .book-home-cta h2 {
+    white-space: pre-line;
+  }
+}
+
 .book-home-heading > p,
 .book-home-cta > .book-home-container > p {
   max-width: 720px;
@@ -488,6 +501,7 @@ const copy = computed(() => isEnglish.value ? {
   font-weight: 620;
   line-height: 1.75;
   text-align: center;
+  white-space: pre-line;
 }
 
 .book-home-thesis,
