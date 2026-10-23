@@ -5,7 +5,8 @@
 | 术语 | 英文 | 释义 |
 |---|---|---|
 | AIoT | Artificial Intelligence of Things | AI 与物联网深度融合，从被动连接到主动智能 |
-| MCP | Model Context Protocol | Anthropic 2024 推出的 AI 与工具/数据源交互开放标准；2025 年 12 月捐赠给 Linux 基金会旗下 Agentic AI Foundation |
+| MCP | Model Context Protocol | Anthropic 2024 年推出的 AI 与工具/数据源交互开放标准；2025 年 12 月捐赠给 Linux 基金会旗下 Agentic AI Foundation |
+| A2A | Agent2Agent Protocol | Google 2025 年 4 月提出的智能体间协作协议，2025 年 6 月捐赠 Linux 基金会；定位与 MCP（agent↔工具）互补的 agent↔agent 任务委派与协商；正文 7.1/9.5 已有讨论 |
 | Tool-Calling | Tool Calling | LLM 通过函数调用操作外部工具（如设备）的机制 |
 | RAG | Retrieval-Augmented Generation | 检索增强生成，模型结合检索知识回答 |
 | Agent | AI Agent | 能感知、推理、规划、执行的多步智能体 |

@@ -6,6 +6,7 @@
 |---|---|---|
 | AIoT | Artificial Intelligence of Things | Deep fusion of AI and IoT — from passive connectivity to active intelligence |
 | MCP | Model Context Protocol | Open standard (Anthropic, 2024) for interaction between AI and external tools and data sources; donated in December 2025 to the Agentic AI Foundation under the Linux Foundation |
+| A2A | Agent2Agent Protocol | Agent-to-agent collaboration protocol proposed by Google in April 2025 and donated to the Linux Foundation in June 2025; complements MCP (agent↔tools) with agent↔agent task delegation and negotiation; discussed in Sections 7.1 and 9.5 |
 | Tool calling | Tool calling | Mechanism by which an LLM invokes external tools (e.g., devices) via function calls |
 | RAG | Retrieval-Augmented Generation | Model answers augmented with retrieved knowledge |
 | Agent | AI Agent | Intelligent agent that perceives, reasons, plans, and executes multi-step tasks |
