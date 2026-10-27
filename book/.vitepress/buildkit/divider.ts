@@ -153,6 +153,7 @@ export function renderCoverInline(lang: 'zh' | 'en' = 'zh'): [string, string] {
         cover_highlight_3: 'IoT DC3 open-source project throughout the book',
         cover_highlight_4: '14 chapters · 200 figures · Engineering methodology',
         cover_author_role: 'Architect & IoT Expert',
+        cover_date: 'February 2026',
         cover_brand: 'IoT DC3 · Open-source Industrial IoT',
         cover_brand_subtitle: 'Sense · Reason · Act · Evolve',
       }
@@ -164,6 +165,7 @@ export function renderCoverInline(lang: 'zh' | 'en' = 'zh'): [string, string] {
         cover_highlight_3: 'IoT DC3 开源项目贯穿全书',
         cover_highlight_4: '14 章 · 200 张图表 · 工程方法论',
         cover_author_role: '架构师 & 物联网专家',
+        cover_date: '2026 年 2 月',
         cover_brand: '感知 · 推理 · 行动 · 进化',
         cover_brand_subtitle: 'Sense · Reason · Act · Evolve',
       }
