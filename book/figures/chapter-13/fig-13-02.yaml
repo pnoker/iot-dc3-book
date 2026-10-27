@@ -95,8 +95,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 金字塔式布局，顶部中心为结果，三个角向顶部汇聚。配色使用技术出版主题色，圆角矩形，箭头带标签。
 caption:
-  zh: 图 13-2 分布式账本、签名目录与智能合约分别支持多方状态验证、来源校验和可审计规则执行；是否组合使用取决于信任模型。
-  en: 'Figure 13-2 The trust triangle of blockchain–IoT convergence: the distributed ledger provides data consistency, digital signatures and consensus mechanisms ensure identity authenticity, and smart contracts execute trust rules automatically. Working together, the three reshape the IoT trust system.'
+  zh: 图 13-2 三类机制解决不同问题，不构成所有 IoT 系统的必选组合。
+  en: Figure 13-2 The three mechanisms solve different problems and are not mandatory for every IoT system.
 labels:
   en:
     图 13-2 区块链与物联网融合的信任三角: Figure 13-2 The Blockchain–IoT Trust Triangle

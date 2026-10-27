@@ -58,7 +58,7 @@ visual_constraints:
 render_notes: 四层区域用透明度渐变的背景色区分（从外壳的不透明浅灰到芯片内部的深蓝），安全元件用硬件芯片符号，内部用矩形框划分模块，数据流用橙色箭头标注'密钥不出芯'字样。
 caption:
   zh: 图8-5 防篡改设计的四层防线：从外壳到芯片内部依次递进，攻击者需要逐层突破并付出指数级增长的成本。安全元件内部闭环完成密钥派生与签名，私钥永不离开芯片。
-  en: 'Figure 8-5 The four lines of defense in tamper-resistant design, advancing from the enclosure to the inside of the chip: an attacker must break through each layer at exponentially growing cost. Key derivation and signing close the loop inside the secure element, and the private key never leaves the chip.'
+  en: Figure 8-5 The four lines of defense advance from enclosure to chip interior, forcing an attacker to break through each layer at exponentially growing cost; key derivation and signing close the loop inside the secure element, and the private key never leaves the chip.
 labels:
   en:
     图8-5 防篡改设计的纵深防线: Figure 8-5 Defense in Depth for Tamper Resistance

@@ -129,8 +129,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG 渲染，浅色背景，四层水平带；RabbitMQ 位于 Data 与 Driver 之间并作为默认消息适配器突出显示。
 caption:
-  zh: 图6-6 IoT DC3 模块关系与数据流：北向请求经 Gateway 进入四中心，Driver 经 gRPC 对接 Manager，命令与数据经 RabbitMQ 在 Data 和 Driver 之间异步流转。
-  en: 'Figure 6-6 IoT DC3 module relationships and data flows: northbound requests enter the four centers through the Gateway, Drivers connect to Manager over gRPC, and commands and data flow asynchronously between Data and Drivers via RabbitMQ.'
+  zh: 图6-6 默认链路以 RabbitMQ 连接 Data 与 Driver；具体 Broker 由消息适配器选择。
+  en: Figure 6-6 The default path connects Data and Drivers through RabbitMQ; the message adapter selects the concrete broker.
 labels:
   en:
     图6-6 IoT DC3 模块关系与数据流分层图: Figure 6-6 IoT DC3 Modules and Data Flows

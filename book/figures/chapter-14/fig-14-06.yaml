@@ -153,8 +153,8 @@ callouts:
 - 同一设备命令由 Driver 侧设备锁与 commandId 去重保护。
 render_notes: 浅色 SVG 双泳道图，RabbitMQ 作为默认消息适配器突出显示；禁止绘制多个 Broker 并行运行或同步 Data→Driver 直连。
 caption:
-  zh: 图 14-6 IoT DC3 设备数据链路：协议 Driver 经消息端口把位号值交给 Data，Data 更新最新值缓存并经 TsdbStore 持久化；RabbitMQ 表示默认消息适配器。
-  en: 'Figure 14-6 The IoT DC3 device data path: protocol Drivers pass point values to Data through the message port, Data updates the latest-value cache and persists through TsdbStore, and RabbitMQ depicts the default message adapter.'
+  zh: 图 14-6 消息端口承载上行、命令与回执；RabbitMQ 表示默认适配器。
+  en: Figure 14-6 The message port carries uplink values, commands, and receipts; RabbitMQ depicts the default adapter.
 labels:
   en:
     图 14-6 设备接入与数据流: 'Figure 14-6 Device Access & Data Flow'

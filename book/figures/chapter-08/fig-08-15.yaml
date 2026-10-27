@@ -14,8 +14,8 @@ relationships:
 - 多种防御叠加使用效果优于单一种类,但需注意聚合后的总开销。
 render_notes: 六行五列表格,第一行表头加粗;各列宽度按内容分配。
 caption:
-  zh: 图8-15 模型注入防御需按攻击面组合策略:云端训练侧重数据溯源与对抗训练,设备端侧重验签与查询防护。
-  en: 'Figure 8-15 Model injection defenses must combine strategies by attack surface: cloud-side training emphasizes data provenance and adversarial training, while the device side emphasizes signature verification and query protection.'
+  zh: 图8-15 模型注入防御需按攻击面组合策略：云端训练侧重数据溯源与对抗训练，设备端侧重验签与查询防护。
+  en: 'Figure 8-15 Model injection defenses must combine strategies by attack surface: cloud training emphasizes data provenance and adversarial training, devices emphasize verification and query protection.'
 labels:
   en:
     图8-15 模型注入攻击防御策略及适用场景对比表: Figure 8-15 Model Injection Defense Strategies & Applicability

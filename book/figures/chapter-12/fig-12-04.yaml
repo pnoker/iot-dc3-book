@@ -117,8 +117,8 @@ visual_constraints:
 - 输出概率条用垂直堆叠条表示，最高概率项颜色加深。
 render_notes: SVG渲染：浅色背景，圆角矩形框，统一6px间距。箭头带文字标签'前向传播'。输出概率条示意三个病害概率。
 caption:
-  zh: 图 12-4 展示作物病害识别CNN从输入到输出的主要网络层与数据变换过程。工程实践中，卷积核数量与网络深度依据训练数据集规模和计算资源调整。
-  en: Figure 12-4 The main network layers and data transformations of a crop disease recognition CNN from input to output. In engineering practice, the number of convolution kernels and the network depth are tuned to the training dataset size and the compute budget.
+  zh: 图 12-4 三级卷积池化把空间分辨率从 224 逐级压缩到 28、通道数由 3 增至 64，特征由边缘、纹理过渡到形状；Softmax 输出健康与各病害概率，取最大者为识别结果。
+  en: Figure 12-4 Three conv-pool stages shrink spatial resolution from 224 to 28 while channels grow from 3 to 64, moving features from edges and texture to shape; Softmax outputs health and disease probabilities, and the largest wins as the recognition result.
 labels:
   en:
     图 12-4 作物病害识别CNN处理流程（架构示意）: Figure 12-4 Crop Disease Recognition CNN Pipeline (Architecture)

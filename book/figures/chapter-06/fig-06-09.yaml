@@ -64,8 +64,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 使用 HTML/SVG 绘制。整体采用三并排卡片布局，左中右三列分别对应语言、协议、架构。每个卡片分为上下两个区域：上区域浅蓝底（原型），下区域深蓝底（生产），两区域之间用橙色箭头竖直连接，箭头旁标注迁移动作。卡片内标题为小号黑色加粗。图下方放置图例。图注置于图下方，字号稍小。
 caption:
-  zh: 图6-9 从原型到生产的三元决策矩阵。每一列展示了在语言、协议、架构层面，原型阶段和生产阶段分别采用的最佳选项，以及两者之间的最短迁移路径。图中元素来源于本章各节讨论（语言见 6.1、协议见 6.1.3、架构见 6.2）。
-  en: 'Figure 6-9 The prototype-to-production decision triad. Each column shows the best option at the prototype and production stages for language, protocol, and architecture, together with the shortest migration path between them. Elements draw on this chapter''s sections (language in 6.1, protocols in 6.1.3, architecture in 6.2).'
+  zh: 图6-9 从原型到生产不是一次技术替换，而是语言能力、通信契约和部署边界的协同演进。
+  en: Figure 6-9 Prototype to production is not a single technology swap but the co-evolution of language capability, communication contracts, and deployment boundaries.
 labels:
   en:
     图6-9 物联网系统关键决策三元组: Figure 6-9 Key IoT Decision Triad

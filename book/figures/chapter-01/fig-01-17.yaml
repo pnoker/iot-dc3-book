@@ -14,7 +14,7 @@ relationships:
 render_notes: 左右流程对比，左侧灰/红，右侧蓝 + 黄色确认节点。完整 HTML 见 figures/chapter-01/fig-01-17.html。
 caption:
   zh: 图1-17 智能家居：从规则引擎到大模型控制。规则引擎只识别预设阈值，大模型结合上下文推理并生成决策序列，经用户二次确认后执行。
-  en: 'Figure 1-17 Smart home: from rule engine to LLM control. The rule engine recognizes only preset thresholds; the large model reasons over context to generate a decision sequence, which is executed after a second user confirmation.'
+  en: 'Figure 1-17 Smart home: rule engine to LLM control. The rule engine only knows preset thresholds; the LLM reasons over context and generates a decision sequence, executed after a second user confirmation.'
 labels:
   en:
     图1-17 智能家居：从规则引擎到大模型控制: 'Figure 1-17 Smart Home: Rule Engine to LLM Control'

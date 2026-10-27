@@ -46,7 +46,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，线条颜色使用全局配色规则，异常位置加红色标注框。
 caption:
   zh: 图 10-7 某产线电机温度数据清洗前后的对比。左侧空白为通信中断导致的缺失，右侧尖峰为电磁干扰导致的毛刺。
-  en: Figure 10-7 Motor temperature data from a production line before and after cleaning. The gap on the left is loss caused by a communication outage; the spike on the right is a glitch caused by electromagnetic interference.
+  en: 'Figure 10-7 Motor temperature data from a production line before and after cleaning: the left gap is loss from a communication outage; the right spike is a glitch from electromagnetic interference.'
 labels:
   en:
     图 10-7 原始数据与清洗后数据对比: Figure 10-7 Raw vs. Cleaned Data

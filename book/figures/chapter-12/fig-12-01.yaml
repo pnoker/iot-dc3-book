@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，浅色背景，绿/蓝/橙三色区分维度，底部图例，箭头自上而下。
 caption:
   zh: 图 12-1 土壤、气象、作物生理三个维度构成“天—地—苗”数据源，共同约束传感器在精度、接口、功耗、成本四项上的选型权衡。
-  en: Figure 12-1 Soil, weather, and crop physiology form the "sky-ground-plant" data sources, jointly constraining sensor selection trade-offs on accuracy, interface, power, and cost.
+  en: Figure 12-1 Soil, weather, and crop physiology form the "sky–ground–plant" data sources, jointly constraining sensor selection trade-offs on accuracy, interface, power, and cost.
 labels:
   en:
     图 12-1 精准农业感知三维度与传感器选型权衡: 'Figure 12-1 Precision Agriculture: Three Sensing Dimensions & Sensor Selection Trade-offs'

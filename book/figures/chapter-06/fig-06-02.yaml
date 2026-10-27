@@ -1,7 +1,7 @@
 type: architecture
 title: 图6-2 物联网平台协议分层架构
 purpose: 展示MQTT、REST、gRPC在典型平台中的部署层次与交互主链路。
-audience_takeaway: 设备、平台、北向三个层次的责任边界，以及各层次应选择的“最佳”协议。
+audience_takeaway: 协议按链路段分工：设备到网关与网关到平台走 MQTT 发布/订阅，平台内部服务间用 gRPC 同步调用、事件走消息队列，北向应用统一经 REST 接入。
 visual_focus: 从设备层经网关/边缘层到平台服务层再到北向应用层的主链路；不同协议用不同线型区分。
 design_level: logical
 layout: 自下而上四层：设备层、网关/边缘层、平台服务层、北向应用层。
@@ -95,8 +95,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，浅色背景，四层布局，不同协议用不同线型、颜色区分，底部图例和出版级图注。
 caption:
-  zh: 图6-2 展示MQTT、REST、gRPC在物联网平台各层次中的部署位置与交互关系。
-  en: 'Figure 6-2 Shows where MQTT, REST, and gRPC sit in each layer of an IoT platform and how they interact.'
+  zh: 图6-2 协议按层次互补，不以单一协议强行覆盖设备、服务与外部系统。
+  en: Figure 6-2 Protocols complement each other by layer; no single protocol is forced across devices, services, and external systems.
 labels:
   en:
     图6-2 物联网平台协议分层架构: Figure 6-2 Protocol Layering in an IoT Platform

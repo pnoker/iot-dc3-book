@@ -109,8 +109,8 @@ visual_constraints:
 - 天线需突出作为独立模块的地位。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，天线用天线图标示意，连线带方向标记和短标签。
 caption:
-  zh: 图 3-4 RFID系统工作示意图，展示读写器、天线与三种标签之间的射频耦合关系。
-  en: Figure 3-4 How an RFID system works, showing the RF coupling between the reader, the antenna, and the three tag types.
+  zh: 图 3-4 被动标签通过反向散射回复，主动标签则具备独立射频发射能力。
+  en: Figure 3-4 Passive tags reply by backscatter, while active tags have independent RF transmitters.
 labels:
   en:
     图 3-4 RFID系统工作示意图: Figure 3-4 How an RFID System Works

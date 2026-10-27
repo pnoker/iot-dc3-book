@@ -90,8 +90,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，水平流向布局，各层节点按颜色区分，流线上标注协议类型和数据格式。
 caption:
-  zh: 图 10-12 原始寄存器值需经驱动归一、数据中心对齐、时序库分区三层改造，才成为监控大屏上可直接消费的时序曲线。
-  en: Figure 10-12 Raw register values must pass through three layers — driver normalization, Data Center alignment, and time-series partitioning — before becoming dashboard-ready curves.
+  zh: 图 10-12 示意SMT产线场景下IoT DC3从设备接入到监控大屏的数据流：原始位号 → 驱动归一为语义 PointValue → 数据中心对齐写入 → TimescaleDB 分区存储 → Grafana 大屏。
+  en: 'Figure 10-12 IoT DC3 data flow in an SMT line scenario, from device access to the monitoring dashboard: raw values → driver-normalized semantic PointValues → aligned writes in the data center → partitioned TimescaleDB storage → Grafana dashboard.'
 labels:
   en:
     图 10-12 IoT DC3设备接入与数据采集数据流: Figure 10-12 IoT DC3 Device Access and Data Acquisition Flow

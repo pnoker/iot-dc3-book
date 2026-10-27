@@ -85,8 +85,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用 SVG 绘制四层分层架构图。设备层底部左右排列 5 个设备图标；驱动层每个驱动用矩形表示，内部标注接口名；统一接入层用一个大矩形包含多个小方块；业务层用几个更小的矩形。层间用箭头连接。图例放置在右下角。
 caption:
-  zh: 图4-12 协议碎片化→统一接入层→Driver SDK 架构映射。四层水平布局，展示从设备到应用的解耦路径。
-  en: 'Figure 4-12 Protocol fragmentation → unified access layer → Driver SDK architecture mapping. A four-layer horizontal layout showing the decoupled path from devices to applications.'
+  zh: 图4-12 蓝色实线表示数据由设备经 Driver 与统一接入层上报至业务应用，红色虚线表示指令反向下发；各协议 Driver 以统一的 connect/send/receive/parse 接口接入，统一接入层对上层只暴露一份设备影子。
+  en: Figure 4-12 Blue solid lines show data reported from devices through drivers and the unified access layer to business applications; red dashed lines show commands issued in reverse. Each protocol driver plugs in via the common connect/send/receive/parse interface, and the unified access layer exposes a single device shadow upward.
 labels:
   en:
     图4-12 协议碎片化→统一接入层→Driver SDK 架构映射: 'Figure 4-12 Protocol Fragmentation → Unified Access Layer → Driver SDK Mapping'

@@ -14,7 +14,7 @@ relationships:
 render_notes: HTML/SVG 渲染，三组件卡片 + 选型关系，蓝绿橙分层。
 caption:
   zh: 图 5-2 消息队列缓冲流量、时序数据库高效存储、规则引擎智能判断，三组件选型相互影响：队列吞吐决定时序库写入压力，规则引擎实时性依赖队列延迟，通常消息队列最先选型。
-  en: 'Figure 5-2 The message queue buffers traffic, the time-series DB stores efficiently, and the rule engine makes smart judgments; the three component selections influence each other — queue throughput sets the write pressure on the time-series DB, rule-engine real-time performance depends on queue latency, and the message queue is usually selected first.'
+  en: Figure 5-2 The message queue buffers traffic, the time-series DB stores efficiently, and the rule engine judges smartly; the three selections interlock — queue throughput sets write pressure, rule-engine real-time depends on queue latency, and the message queue is usually selected first.
 labels:
   en:
     图 5-2 平台层核心组件：消息队列、时序数据库、规则引擎: 'Figure 5-2 Platform Core: Message Queue, Time-Series DB, Rule Engine'

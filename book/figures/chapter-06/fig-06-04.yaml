@@ -71,8 +71,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，统一 12px 间距。节点颜色从浅灰渐变至深蓝；时间轴线起点标记，终点标记 '持续演进'；鼠标悬停显示该阶段典型挑战描述。
 caption:
-  zh: 图6-4 展示从单体原型到微服务持续演进的四个典型阶段。
-  en: 'Figure 6-4 Shows the four typical stages of evolution from a monolithic prototype to continuously evolving microservices.'
+  zh: 图6-4 微服务不是默认起点；拆分时机、验证周期和可回滚性比拆分数量更重要。
+  en: Figure 6-4 Microservices are not the default starting point; when to split, validation cycles, and rollback matter more than the number of services.
 labels:
   en:
     图6-4 单体到微服务演进阶段图: Figure 6-4 Monolith-to-Microservices Evolution Stages

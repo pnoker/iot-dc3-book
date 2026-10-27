@@ -15,7 +15,7 @@ relationships:
 render_notes: 三列等宽卡片，语义色蓝/青/橙，每列含要点与「为什么不可替代」说明。完整 HTML 见 figures/chapter-01/fig-01-02.html。
 caption:
   zh: 图1-2 工业软件的核心能力与不可替代性。确定性实时控制、结构化数据建模、工业级可靠性与安全认证构成不可替代的底座，是判断下一代平台「补什么、不动什么」的标尺。
-  en: Figure 1-2 The core capabilities of industrial software and why they are irreplaceable. Deterministic real-time control, structured data modeling, and industrial-grade reliability with safety certification form a base that cannot be replaced — the yardstick for judging what the next-generation platform should add and what it must leave alone.
+  en: Figure 1-2 The core capabilities of industrial software. Deterministic real-time control, structured data modeling, and industrial-grade reliability with safety certification form a base that cannot be replaced — the yardstick for what the next-generation platform should add, and what it must leave alone.
 labels:
   en:
     图1-2 工业软件的核心能力与不可替代性: Figure 1-2 Core Capabilities That Cannot Be Replaced

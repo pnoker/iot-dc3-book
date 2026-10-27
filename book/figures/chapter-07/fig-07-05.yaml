@@ -19,8 +19,8 @@ relationships:
 - Gateway→REST 后端：授权后转发 tools/call。
 render_notes: 浅色分层 SVG。Tools 主链路用实线；OpenAPI 汇聚用虚线；Resources/Prompts 放入灰色“协议可选、当前未启用”区域，禁止把所有能力标为 Resource。
 caption:
-  zh: 图 7-5 IoT DC3 当前 MCP 边界：外部 Agent 经 initialize 协商后使用 tools/list 与 tools/call；Gateway 每次调用前经 Auth 校验，工具目录由 OpenAPI 规格汇聚，Resources 与 Prompts 当前未启用。
-  en: 'Figure 7-5 The current MCP boundary of IoT DC3: after initialize negotiation, external agents use tools/list and tools/call; the Gateway verifies with Auth before each call, the tool catalog is aggregated from OpenAPI specs, and Resources and Prompts are not yet enabled.'
+  zh: 图 7-5 当前 /mcp 只声明 Tools capability：initialize 协商后使用 tools/list 与 tools/call，工具目录由静态 OpenAPI 规格汇聚并按 OAuth 连接、白名单与风险策略过滤；Resources / Prompts 当前未启用。
+  en: 'Figure 7-5 The current /mcp declares the Tools capability only: after initialize negotiation it serves tools/list and tools/call, the tool catalog is aggregated from static OpenAPI specs and filtered by OAuth connection, allowlist, and risk policy; Resources / Prompts are not yet enabled.'
 labels:
   en:
     图 7-5 MCP 在物联网平台中的架构示意: Figure 7-5 MCP Architecture in the IoT Platform

@@ -104,8 +104,8 @@ visual_constraints:
 - 图例放置底部，不遮挡区域边界
 render_notes: 水平流向图，三个矩形从左到右排布，中间嵌入圆形自检节点。书籍和项目精选标注在对应阶段下方，用灰色小字显示。箭头使用 SVG marker 渲染。
 caption:
-  zh: 图2-14 学习路径三台阶与自检节点。每个台阶完成对应自检后才能进入下一阶段，防止基础不牢直接上手工程造成理解断层。
-  en: 'Figure 2-14 The three-step learning path with self-check gates. Each step must pass its self-check before moving on to the next stage, preventing a weak foundation from turning into gaps in understanding once engineering work begins.'
+  zh: 图2-14 三个台阶以自检为关卡，自检内容依次为端到端协议链路、规则 vs AI 边界、全链路部署分析，通过后方可进入下一阶段。
+  en: Figure 2-14 The three steps are gated by self-checks — end-to-end protocol chain, rules vs AI boundary, then full-chain deployment analysis — and each must pass before the next stage.
 labels:
   en:
     图2-14 学习路径三台阶与自检节点: Figure 2-14 Three-Step Learning Path with Self-Check Gates

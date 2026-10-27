@@ -157,8 +157,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 标准时序图布局，参与者列于顶部，生命线垂直向下。按步骤编号+描述标注箭头。可选步骤10处增加回退分支（验证失败时显示握手终止）。
 caption:
-  zh: 图 13-3 展示设备从硬件密钥生成、DID注册到挑战验证的完整身份生命周期；验证方以一次性nonce发起挑战，收到签名后查询最新DID状态并消费nonce，从而阻断重放。
-  en: 'Figure 13-3 The complete device identity lifecycle, from hardware key generation and DID registration to challenge-based verification. The verifier issues a one-time nonce challenge, then queries the latest DID state upon receiving the signature and consumes the nonce, thereby blocking replay.'
+  zh: 图 13-3 设备注册 DID 与公钥哈希后，验证方结合一次性 nonce、签名和最新链上状态完成身份验证。
+  en: Figure 13-3 Device registers DID + key hash; verifier uses one-time nonce, signature and on-chain state.
 labels:
   en:
     图 13-3 设备DID注册与验证流程: Figure 13-3 Device DID Registration & Verification

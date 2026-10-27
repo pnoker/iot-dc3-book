@@ -76,8 +76,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用流程图形式，从左至右排列桶节点，节点间有粗实线箭头连接。每个节点下方显示定性比例描述（如“原始基准”、“显著减少”、“大幅降低”、“极小”）。使用圆角矩形节点，配色按图例。
 caption:
-  zh: 图 5-8 例子：中等规模工厂设备上报温度和湿度。三级降采样策略：原始数据保留短暂时间，分钟聚合保留中期，小时聚合保留季度级，天聚合保留年。各阶段数据量比例为基于常见压缩比的定性描述，非精确数值。
-  en: 'Figure 5-8 Example: devices in a mid-sized factory report temperature and humidity. The three-level downsampling strategy keeps raw data only briefly, minute aggregates for the mid term, hourly aggregates at quarter scale, and daily aggregates for a year. Data-volume ratios at each stage are qualitative descriptions based on common compression ratios, not exact figures.'
+  zh: 图 5-8 降采样数据流程与数据量对比：三级降采样将数据量逐级压缩，原始层短保留用于故障回放，分钟/小时/天层分别支撑短时趋势、日报与年度趋势。
+  en: 'Figure 5-8 Downsampling pipeline and data-volume comparison: three downsampling levels compress data step by step — the raw tier is short-retention for fault replay, while minute/hourly/daily tiers serve short-term trends, daily reports, and yearly trends.'
 labels:
   en:
     图 5-8 降采样数据流程与数据量对比（例子）: Figure 5-8 Downsampling Pipeline & Data Volume (Example)

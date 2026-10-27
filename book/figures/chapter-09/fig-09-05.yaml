@@ -49,8 +49,8 @@ visual_constraints:
 - 主要内容对比链路用一条带有标签的箭头强调。
 render_notes: 采用上下两个并行条块布局，CoAP侧以分段着色表示字段，底部附图例和简短的RFC 7252参考标注。
 caption:
-  zh: 图 9-5 CoAP消息格式与HTTP文本头部的体积对比，突出CoAP的紧凑二进制设计对受限设备的价值。
-  en: Figure 9-5 Size comparison between the CoAP message format and HTTP text headers, highlighting the value of CoAP's compact binary design for constrained devices.
+  zh: 图 9-5 CoAP 消息格式与 HTTP 文本头部的体积对比，突出 CoAP 的紧凑二进制设计对受限设备的价值。
+  en: Figure 9-5 Size comparison of the CoAP message format versus HTTP text headers, highlighting the value of CoAP's compact binary design for constrained devices.
 labels:
   en:
     图 9-5 CoAP消息格式与选项示意: Figure 9-5 CoAP Message Format and Options

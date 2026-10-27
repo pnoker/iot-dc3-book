@@ -14,8 +14,8 @@ relationships:
 - 授权层输出端标注 fail-closed,未明确授予的权限一律拒绝。
 render_notes: 四层自下而上分层绘制,不同背景色区分;成功路径绿色箭头、被拒绝红色箭头;授权层右侧放大镜图标代表审计日志。
 caption:
-  zh: 图8-11 JWT 认证与授权架构:认证层颁发令牌、授权层执行 RBAC/ABAC 决策、审计日志记录上下文,租户边界贯穿始终。
-  en: 'Figure 8-11 The JWT authentication and authorization architecture: the authentication layer issues tokens, the authorization layer enforces RBAC/ABAC decisions, the audit log records context, and the tenant boundary runs throughout.'
+  zh: 图8-11 JWT 认证与授权架构：认证层颁发令牌、授权层执行 RBAC/ABAC 决策、审计日志记录上下文，租户边界贯穿始终，未明确授予的权限一律拒绝（fail-closed）。
+  en: 'Figure 8-11 The JWT authentication and authorization architecture: the authentication layer issues tokens, the authorization layer enforces RBAC/ABAC decisions, the audit log records context, the tenant boundary runs throughout, and anything not explicitly granted is denied (fail-closed).'
 labels:
   en:
     图8-11 物联网平台 JWT 认证与授权架构: Figure 8-11 JWT Authentication & Authorization on the IoT Platform

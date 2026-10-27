@@ -99,8 +99,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG 渲染，采用浅色背景圆角矩形图标，箭头带文字标签；所有图标保持等宽（约 30px 宽），颜色使用 Web 安全色，确保印刷清晰。
 caption:
-  zh: 图4-1 NB-IoT 从终端到应用的四层网络架构，展示上行数据与下行控制的完整路径，并标注关键 3GPP 接口。
-  en: 'Figure 4-1 The four-layer NB-IoT network architecture from devices to applications, showing the complete uplink data and downlink control paths with key 3GPP interfaces marked.'
+  zh: 图4-1 NB-IoT 复用运营商 LTE 基站与核心网，企业侧无需建设现场蜂窝网关。
+  en: Figure 4-1 NB-IoT reuses operator LTE base stations and the core network; no on-site cellular gateway is needed on the enterprise side.
 labels:
   en:
     图4-1 NB-IoT 网络架构示意: 'Figure 4-1 NB-IoT Network Architecture'

@@ -61,8 +61,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 渲染为横向时间轴SVG。三个矩形盒子从左到右排列，宽度220px、高度60px，间距40px。盒子内显示阶段名称和时间范围。盒子正上方显示连接主体描述，盒子正下方显示连接规模数据。两条箭头从左到右连接相邻盒子，连线中点上方标注'技术演进'。图例位于时间轴下方或右侧，用2行×3列网格展示颜色块与标签。
 caption:
-  zh: 图1-5 三次浪潮演进时间线示意。时间轴下方标注连接规模数据，箭头表示演进方向。
-  en: Figure 1-5 A schematic timeline of the three waves' evolution. Connection-scale figures sit below the timeline; arrows mark the direction of evolution.
+  zh: 图1-5 三次浪潮演进时间线示意。时间轴上方为阶段与驱动力，下方标注连接规模，箭头表示技术演进方向。
+  en: Figure 1-5 Timeline of the three waves. Stages and drivers above the axis, connection scale below; arrows mark the direction of evolution.
 labels:
   en:
     图1-5 三次浪潮演进时间线示意: Figure 1-5 Timeline of the Three Waves

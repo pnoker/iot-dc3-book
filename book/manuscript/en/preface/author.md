@@ -4,7 +4,7 @@
 
 **Architect & IoT Specialist**
 
-Since 2016 he has designed and maintained the open-source industrial IoT platform IoT DC3, starting from device protocol parsing and gradually building a complete system covering multi-protocol access, data collection, permission isolation, and platform management. Every extension of the platform's capabilities came from needs discovered layer by layer in real projects — not piling on features, but solving each layer's problems properly.
+Since 2016 he has designed and maintained the open-source industrial IoT platform IoT DC3, starting from device protocol parsing and gradually building a complete system covering multi-protocol access, data collection, permission isolation, and platform management. Every extension of the platform's capabilities came from needs discovered layer by layer in real projects, each one solving that layer's problems properly.
 
 Since 2024 he has been integrating large language models into the platform, exploring the capabilities and boundaries of AI agents in industrial IoT scenarios: understanding intent, analyzing anomalies, and calling tools within authorized boundaries. The deeper he goes, the clearer it becomes: intelligence only means something when it rests on reliable data and governed capabilities.
 
@@ -12,7 +12,7 @@ This book grows out of these two consecutive phases of hands-on work, and record
 
 ## The Author's Daily Life
 
-If you turned a normal day into four panels, it would look something like this: build a ladder, climb over an actual wall, surf the web for references, then settle in to learn. The "wall" here is a literal one — climbing it means finding a route for protocols, not slipping away to slack off; "surfing" means looking up references; the only things that reliably get out of hand are browser tabs and coffee consumption.
+If you turned a normal day into four panels, it would look something like this: build a ladder, climb over an actual wall, surf the web for references, then settle in to learn. The "wall" here is a literal one: climbing it means finding a route for protocols, not slipping away to slack off; "surfing" means looking up references; the only things that reliably get out of hand are browser tabs and coffee consumption.
 
 <div class="author-daily-grid">
   <figure class="author-daily-card">
@@ -21,7 +21,7 @@ If you turned a normal day into four panels, it would look something like this: 
   </figure>
   <figure class="author-daily-card">
     <img src="/author-daily/en-02-wall.png" alt="The author climbs a wall to find a path for protocols" loading="lazy">
-    <figcaption><strong>Climb the wall:</strong> A literal wall — not to slip away and slack off, but to find a route that lets the protocol through.</figcaption>
+    <figcaption><strong>Climb the wall:</strong> A literal wall, climbed to find a route that lets the protocol through.</figcaption>
   </figure>
   <figure class="author-daily-card">
     <img src="/author-daily/en-03-surf.png" alt="The author surfs the web with research tabs and coffee" loading="lazy">

@@ -122,7 +122,7 @@ visual_constraints:
 - 连接箭头 label 短，解释放入 callouts
 caption:
   zh: 图 9-12 协议适配网关通用三层架构。自下向上逐层抽象：适配层负责协议连接管理和字节流收发，路由与转换层做格式与语义映射，统一接口层向上屏蔽差异。
-  en: 'Figure 9-12 The generic three-layer architecture of a protocol adaptation gateway. Abstraction rises layer by layer: the adapter layer manages protocol connections and byte-stream I/O, the routing and conversion layer performs format and semantic mapping, and the unified interface layer hides the differences from upper layers.'
+  en: 'Figure 9-12 The generic three-layer protocol adaptation gateway. Abstraction rises layer by layer: adapters manage connections and byte-stream I/O, routing & conversion maps format and semantics, and the unified interface hides the differences above.'
 labels:
   en:
     图 9-12 协议适配网关分层架构: Figure 9-12 Protocol Adaptation Gateway Layers

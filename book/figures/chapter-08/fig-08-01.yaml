@@ -59,7 +59,7 @@ visual_constraints:
 render_notes: HTML/SVG 渲染，浅色背景，四层垂直排列，左侧用纵向箭头标注‘AI模型攻击’，右侧用纵向箭头标注‘数据泄露与隐私侵犯’；每个威胁项用小文字标注在对应层右侧，并用虚线箭头指示可跨层传导。
 caption:
   zh: 图8-1 物联网安全威胁分层分类，展示威胁从物理层到应用层的分布及跨层攻击向量。数据泄露和AI模型攻击作为横切面威胁纵贯多个层次。
-  en: Figure 8-1 A layered classification of IoT security threats, showing how threats are distributed from the physical layer to the application layer along with cross-layer attack vectors. Data leakage and AI model attacks run vertically through multiple layers as cross-cutting threats.
+  en: 'Figure 8-1 A layered classification of IoT security threats: threat distribution from the physical to the application layer plus cross-layer attack vectors; data leakage and AI model attacks cut across multiple layers.'
 labels:
   en:
     图8-1 物联网安全威胁分层分类: Figure 8-1 Layered IoT Threat Classification

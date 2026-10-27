@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，三列方案卡片 + 跨链桥案例，蓝绿橙分层。
 caption:
   zh: 图 13-10 原子交换用哈希锁定做轻量凭证迁移，中继链用轻客户端做通用跨链消息，预言机做联盟链到公链的数据桥；异构互联不应破坏各自链的共识安全边界。
-  en: 'Figure 13-10 Atomic swaps use hash locking for lightweight credential migration, relay chains use light clients for general cross-chain messaging, and oracles serve as data bridges from consortium chains to public chains; heterogeneous interconnection should not break the consensus security boundary of each chain.'
+  en: Figure 13-10 Atomic swaps hash-lock credential migration; relay chains move general messages via light clients; oracles bridge consortium→public data — without breaking consensus security boundaries.
 labels:
   en:
     图 13-10 异构区块链网络互联的三种方案: Figure 13-10 Three Ways to Interconnect Heterogeneous Blockchains

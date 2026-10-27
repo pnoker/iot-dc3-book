@@ -73,8 +73,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，两段并列，左侧TLS右侧EDHOC。泳道标签清晰，消息箭头带文字名称。底部统一标注“会话密钥生成完成”。使用浅色背景，圆角矩形，12px间距。
 caption:
-  zh: 图8-3 展示TLS 1.3双向认证与EDHOC轻量认证的握手流程对比。TLS需要两次往返且传输证书，EDHOC仅需3条消息，体积更小。
-  en: Figure 8-3 A comparison of the TLS 1.3 mutual-authentication handshake with the lightweight EDHOC handshake. TLS requires two round trips and transmits certificates, while EDHOC needs only three messages with a much smaller footprint.
+  zh: 图8-3 展示 TLS 1.3 双向认证与 EDHOC 轻量认证的握手流程对比。TLS 需要两次往返且传输证书，EDHOC 仅需 3 条消息，体积更小。
+  en: 'Figure 8-3 Comparing the TLS 1.3 mutual-authentication handshake with the lightweight EDHOC handshake: TLS needs two round trips and certificate transfer, while EDHOC needs only three messages with a smaller footprint.'
 labels:
   en:
     图8-3 TLS 1.3与EDHOC握手流程对比: Figure 8-3 TLS 1.3 vs EDHOC Handshake

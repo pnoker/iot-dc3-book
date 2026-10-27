@@ -119,8 +119,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 三个 .stage 水平 flex 布局，时间轴用 ::before 伪元素。特征框内可选用图标示意。智能化曲线用 SVG path。驱动力文字用 .driver 高亮。
 caption:
-  zh: 图 7-1 AIoT 从连接到受约束决策的演进示意。第一阶段设备上网，数据汇聚，人看仪表盘做判断；第二阶段 LLM 理解语义，通过受控工具查询设备并提出操作；第三阶段 Agent 主动监测、诊断与规划，Runtime 经策略、Workflow 或人工确认后执行，人类从逐步操作转向监督与接管。驱动因素包括算力下沉、大模型突破和边缘智能普及。
-  en: Figure 7-1 The evolution of AIoT from connectivity to bounded decision-making. In stage one, devices come online and data converges while people judge from dashboards; in stage two, the LLM understands semantics and queries devices and proposes actions through controlled tools; in stage three, the AI agent proactively monitors, diagnoses, and plans while the Runtime executes after policy, workflow, or human confirmation, and humans shift from step-by-step operation to supervision and takeover. Drivers include compute moving to the edge, LLM breakthroughs, and pervasive edge intelligence.
+  zh: 图 7-1 连接是起点，分析是跃迁，受约束决策才是面向真实现场的下一阶段。
+  en: Figure 7-1 Connectivity is the start and analytics the leap; bounded decision-making is the next stage for real-world sites.
 labels:
   en:
     图 7-1 AIoT 演进阶段示意: Figure 7-1 AIoT Evolution Stages

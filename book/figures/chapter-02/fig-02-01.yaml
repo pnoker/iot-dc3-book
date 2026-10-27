@@ -104,8 +104,8 @@ visual_constraints:
 - 左侧安全竖线只体现概念，不画具体连线
 render_notes: HTML绘制采用flexbox实现垂直叠放布局。每层内items以flex-wrap排列，换行后居中对齐。安全竖条使用绝对定位的竖线，通过左margin与各层边框对齐。使用SVG inline渲染箭头，颜色遵循Material Design色系。层高根据items数量自适应，整体宽高比建议保持4:3。字号统一13px，中文使用系统默认字体。
 caption:
-  zh: 图2-1 物联网经典四层参考架构。平台层相比早期三层模型是新增层，将设备管理、数据存储、规则引擎等公共能力从应用层剥离。数据向上、指令向下的单向流向，决定了经典架构在处理复杂决策时存在结构性短板。
-  en: 'Figure 2-1 The classic four-layer IoT reference architecture. The platform layer is the new layer added over the earlier three-layer model, carving shared capabilities such as device management, data storage, and the rule engine out of the application layer. The one-way flow of data upward and commands downward leaves the classic architecture with structural shortcomings in complex decision-making.'
+  zh: 图2-1 平台层是相较早期三层模型新增的公共能力层；数据向上、指令向下的单向流向，决定了经典架构的结构性短板。
+  en: Figure 2-1 The platform layer is the shared capability layer newly added over the earlier three-layer model; the one-way flow of data up and commands down defines the structural weakness of the classic architecture.
 labels:
   en:
     图2-1 物联网经典四层参考架构: Figure 2-1 The Classic Four-Layer IoT Reference Architecture

@@ -74,7 +74,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，浅色背景，时间轴箭头深色，节点圆形，工业4.0节点使用蓝色填充，其他节点浅灰，底部图例和出版级图注。不标注具体年份，仅示意时间相对位置。
 caption:
   zh: 图 10-1 展示了从工业化到数字化四个阶段的关键特征。阶段划分依据工业界公认的演进脉络。
-  en: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization. Stage divisions follow the evolution path commonly recognized in industry.
+  en: Figure 10-1 Key characteristics of the four stages from industrialization to digitalization; stage divisions follow the evolution path commonly recognized in industry.
 labels:
   en:
     图 10-1 工业4.0发展阶段时间线: Figure 10-1 Industry 4.0 Development Timeline

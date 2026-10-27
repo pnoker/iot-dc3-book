@@ -117,8 +117,8 @@ callouts:
 - 闭环模式让获准动作进入确定性执行链，回路箭头表示设备回执和新状态返回感知端。
 render_notes: HTML/SVG 渲染，左栏方框使用灰色调，右栏方框使用区分功能类型的填充色（采集蓝、理解浅蓝、决策橙、执行绿）。回路箭头使用深绿色加粗虚线。人工操作区域使用圆角矩形与右栏区分。
 caption:
-  zh: 图2-4 传统单向链路止于展示与人工操作；智能闭环把理解转为候选决策，仅让获准动作进入确定性执行链，并以设备回执和状态回读验证结果。
-  en: 'Figure 2-4 The traditional chain ends at display and manual operation. The intelligent loop turns understanding into candidate decisions, admits only approved actions to the deterministic execution path, and verifies outcomes through device receipts and state readback.'
+  zh: 图2-4 智能闭环把理解转为候选决策，仅让获准动作进入确定性执行链，并以回读验证结果。
+  en: Figure 2-4 The intelligent loop turns understanding into candidate decisions, admits only approved actions to deterministic execution, and verifies outcomes through readback.
 labels:
   en:
     图2-4 传统数据模式与智能闭环模式的数据流程对比: Figure 2-4 Traditional Data Pattern vs Intelligent Closed Loop

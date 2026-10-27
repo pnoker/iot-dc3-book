@@ -148,8 +148,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG 渲染，浅色背景，标准 UML 序列图风格，纵向排列，操作员在左侧，ChatClient 在左中，LLM 在中心，LightTool 在右侧。左上角添加图例，宽度适配单栏排版约 500px。
 caption:
-  zh: 图 7-7 展示了 Spring AI Function Calling 的完整调用链路，以“关A区灯”为例。操作员的自然语言请求首先到达 ChatClient，ChatClient 将消息连同 LightTool 的工具描述发送给 LLM。LLM 推理后返回 JSON 格式的函数调用请求，ChatClient 解析并调用对应的 @Tool 方法，将执行结果回填给 LLM 后，LLM 生成最终的自然语言回复返回给操作员。
-  en: 'Figure 7-7 shows the complete call chain of Spring AI Function Calling, using "turn off the zone-A lights" as the example. The operator''s natural-language request first reaches the ChatClient, which sends the message together with the LightTool description to the LLM. After reasoning, the LLM returns a JSON function-call request; the ChatClient parses it, invokes the corresponding @Tool method, and feeds the execution result back to the LLM, which then generates the final natural-language reply for the operator.'
+  zh: 图 7-7 LLM 只生成函数名和参数；业务 Tool 与平台安全边界负责实际执行，高风险写入必须等待用户确认。
+  en: Figure 7-7 The LLM only generates function names and parameters; business tools and the platform safety boundary perform the execution; high-risk writes must await user confirmation.
 labels:
   en:
     图 7-7 Function Calling 交互流程：从自然语言到设备操作: 'Figure 7-7 Function Calling: from natural language to device operations'

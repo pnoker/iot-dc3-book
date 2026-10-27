@@ -14,8 +14,8 @@ relationships:
 - 三约束交点形成候选方案；最终结论仍需目标环境测试
 render_notes: HTML/SVG 渲染，三约束卡片 + 四协议对比表，蓝绿橙分层，底部安全层说明。
 caption:
-  zh: 图 9-2 协议选型需同时核对网络、设备、生态与安全约束。MQTT、CoAP、LwM2M 和 HTTP 各自提供不同消息与管理语义，但协议名称本身不承诺时延、功耗、到达率或业务动作完成。
-  en: Figure 9-2 Protocol selection must test network, device, ecosystem, and security constraints together. MQTT, CoAP, LwM2M, and HTTP provide different messaging and management semantics, but a protocol name alone does not promise latency, energy use, arrival rate, or completion of a business action.
+  zh: 图 9-2 协议选型需同时验证网络、设备、生态与安全约束；协议名称本身不承诺时延、功耗或业务完成。
+  en: Figure 9-2 Protocol selection must validate network, device, ecosystem, and security constraints together; a protocol name alone does not promise latency, energy use, or business completion.
 labels:
   en:
     图 9-2 协议选择的三维约束与主流协议对比: Figure 9-2 Three Constraint Dimensions and Protocol Comparison

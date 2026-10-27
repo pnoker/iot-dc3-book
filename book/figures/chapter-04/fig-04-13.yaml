@@ -66,13 +66,8 @@ visual_constraints:
 render_notes: '画布 1200×676。三个圆角面板垂直堆叠：第一块背景 #EFF6FF 边框 #2563EB，第二块 #ECFDF5 边框 #0F766E，第三块 #FFF7ED
   边框 #F97316，块内条目为白底卡片横排。块间用两支灰色下箭头夹中央标签胶囊衔接（用实践验证标准 / 在演变中定位）。分隔线下方图例横排（蓝/绿/橙三色），图注两行居中收尾。'
 caption:
-  zh: 图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；第二圈（绿）用 IoT DC3 与 Eclipse
-    Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。
-  en: 'Figure 4-13 The three-circle further-reading path. Circle 1 (blue): read the
-    original 3GPP, LoRa Alliance and consortium specifications. Circle 2 (green):
-    verify with IoT DC3 and Eclipse Hono hands-on. Circle 3 (orange): return to industry
-    evolution through two books. Each entry is annotated with its related section
-    in this chapter.'
+  zh: 图4-13 延伸阅读三圈学习路径。第一圈（蓝）读 3GPP、LoRa Alliance 及各联盟原始规范；第二圈（绿）用 IoT DC3 与 Eclipse Hono 搭环境验证；第三圈（橙）通过两本书回到行业演变脉络。每圈条目标注了与本章的对应关系。
+  en: 'Figure 4-13 Three-ring further-reading path. Ring 1 (blue): original specs from 3GPP, the LoRa Alliance, and other alliances. Ring 2 (green): hands-on validation with IoT DC3 and Eclipse Hono. Ring 3 (orange): two books on industry evolution. Each item notes the section it maps to.'
 labels:
   en:
     图4-13 延伸阅读三圈学习路径: Figure 4-13 Three-Circle Further-Reading Path

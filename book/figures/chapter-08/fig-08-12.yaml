@@ -57,8 +57,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML表格，表头加粗居中，第一列左对齐加底色。低/中/高强度三列使用渐变背景（灰→浅蓝→深蓝）。每个单元格内包含实现方式与三项指标。
 caption:
-  zh: 图 8-12 多租户隔离强度对比（假设场景：智能家居平台“智家云”）
-  en: 'Figure 8-12 Multi-tenancy isolation strength compared (hypothetical scenario: the smart-home platform "ZhiJia Cloud")'
+  zh: 图8-12 隔离强度越高，跨租户风险越低，但资源效率下降、运维复杂度上升。
+  en: Figure 8-12 The stronger the isolation, the lower the cross-tenant risk — but resource efficiency drops and operational complexity rises.
 labels:
   en:
     图8-12 多租户隔离强度对比: Figure 8-12 Multi-Tenancy Isolation Strength

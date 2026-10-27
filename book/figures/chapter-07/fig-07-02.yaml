@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，左右对比 + 三层卡片，蓝色主色，跃迁箭头居中。
 caption:
   zh: 图 7-2 大模型在规则引擎之上补上长期缺失的认知层：从数值判断跃迁到语义推理，带来自然语言穿透设备层、多模态融合与自动生成运维策略三层变化，且不取代实时控制逻辑。
-  en: 'Figure 7-2 The LLM supplies the long-missing cognition layer on top of the rule engine: the leap from numeric judgment to semantic reasoning brings three changes — natural language reaching the device layer, multimodal fusion, and automatically generated O&M strategies — without replacing real-time control logic.'
+  en: 'Figure 7-2 The LLM supplies the long-missing cognition layer on top of the rule engine: the leap from numeric judgment to semantic reasoning brings natural-language device access, multimodal fusion, and auto-generated O&M strategies, without replacing real-time control logic.'
 labels:
   en:
     图 7-2 大模型在物联网中的角色：从感知到认知: 'Figure 7-2 The LLM in IoT: from perception to cognition'

@@ -107,8 +107,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 绘制六条垂直生命线，自左向右排列为：信号机、RSU、雷达、OBU、HMI、ADAS。信号机与RSU之间画一根实线箭头。RSU与OBU之间画一条双竖线表示PC5广播通道。雷达与RSU之间画一根虚线箭头。OBU与HMI和ADAS的箭头分别从OBU生命线出发。箭头间隔建议保留80-120像素。所有生命线底部对齐。
 caption:
-  zh: 图11-2 RSU与OBU通信流程图。展示了信号机、路侧雷达、RSU、OBU、车载HMI和ADAS域控制器之间的消息流向和时序。
-  en: 'Figure 11-2 Message flow between the RSU and the OBU, showing the message paths and timing among the signal controller, roadside radar, RSU, OBU, in-vehicle HMI, and ADAS domain controller.'
+  zh: 图11-2 RSU 把信号机灯色编码为 SPAT、把雷达目标编码为 RSI，OBU 融合车载数据后供 HMI 提示与 ADAS 规划。
+  en: Figure 11-2 The RSU encodes signal state as SPAT and radar targets as RSI; the OBU fuses vehicle data for HMI alerts and ADAS planning.
 labels:
   en:
     图11-2 RSU与OBU通信流程: 'Figure 11-2 RSU–OBU Communication Flow'

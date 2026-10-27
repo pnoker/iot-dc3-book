@@ -18,11 +18,7 @@ relationships:
 render_notes: 战略卡片 + 产业卡片的分层框架，语义色蓝/青/橙。完整 HTML 见 figures/chapter-01/fig-01-13.html。
 caption:
   zh: 图1-13 成长期：各国战略布局与产业落地。u-Japan、智慧地球、感知中国三条路径向下铺路，智能家居与车联网两大引擎验证商业逻辑——但重复建设与标准不通，把问题指向平台体系。
-  en: 'Figure 1-13 The growth period: national strategies and industrial landing.
-    u-Japan, Smarter Planet, and Sensing China paved the way downward while smart
-    home and connected cars — the two industrial engines — validated the business
-    logic. Yet duplicated construction and incompatible standards point the problem
-    toward a platform system.'
+  en: 'Figure 1-13 Growth period: national strategies and industrial landing. u-Japan, Smarter Planet, and Sensing China paved the way; smart home and connected cars validated the business — but duplicated builds and incompatible standards point to a platform system.'
 labels:
   en:
     图1-13 成长期：各国战略布局与产业落地: 'Figure 1-13 Growth Period: Strategies and Industrial Landing'

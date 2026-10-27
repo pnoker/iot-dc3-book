@@ -67,7 +67,7 @@ visual_constraints:
 render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，边界虚线，箭头带短标签，底部图例和出版级图注。
 caption:
   zh: 图1-14 物联网平台市场格局示意。云原生、运营商、开源与垂直方案在生态完整性与运营商支持力度两个维度上形成差异化定位——定位矩阵仅作教学示意，不代表真实市场份额。
-  en: Figure 1-14 A schematic map of the IoT platform market. Cloud-native, carrier, open-source, and vertical offerings take differentiated positions along two dimensions — ecosystem completeness and carrier support. The positioning matrix is for teaching purposes only and does not represent real market shares.
+  en: Figure 1-14 IoT platform market landscape. Cloud-native, carrier, open-source, and vertical offerings differentiate along ecosystem completeness and carrier support — the matrix is for teaching only, not real market share.
 labels:
   en:
     图1-14 物联网平台市场格局示意: Figure 1-14 IoT Platform Market Landscape

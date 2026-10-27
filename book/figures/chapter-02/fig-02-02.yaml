@@ -134,8 +134,8 @@ visual_constraints:
 - 橙色只用于智能层组件，避免全图都高亮。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形。使用统一12px间距。应用层用虚线框表示边界。箭头带短标签。
 caption:
-  zh: 图2-2 智能层的闭环工作流：数据从物理世界采集，经平台层进入智能层进行推理与规划，规划结果通过平台层下发到执行器，执行反馈再回到传感器开始下一轮循环。
-  en: 'Figure 2-2 The closed-loop workflow of the intelligence layer: data is collected from the physical world, enters the intelligence layer through the platform layer for reasoning and planning, and the resulting plan is delivered through the platform layer to actuators; execution feedback then returns to the sensors to start the next cycle.'
+  zh: 图2-2 数据经平台层进入智能层完成推理与规划，指令经受控通道下发，执行反馈开启下一轮循环。
+  en: Figure 2-2 Data enters the intelligence layer through the platform layer for reasoning and planning; commands go out through a controlled channel, and execution feedback starts the next cycle.
 labels:
   en:
     图2-2 数据采集→理解→决策→执行闭环: Figure 2-2 Collect → Understand → Decide → Execute Loop

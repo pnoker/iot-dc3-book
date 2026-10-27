@@ -168,8 +168,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: '使用HTML `<table>`实现，表头行和首列采用#333333背景色与白色粗体字，数据单元格根据评分配置背景色（绿色#d4edda、黄色#fff3cd、红色#f8d7da），边框1px solid #ccc，单元格padding 8px。'
 caption:
-  zh: 图1-22 实践建议优先级矩阵。每个建议的投入产出和实施难度一目了然，优先从绿色单元格的条目开始。
-  en: Figure 1-22 A priority matrix of practice suggestions. The return and implementation difficulty of each suggestion are clear at a glance — start with the items in the green cells.
+  zh: 图1-22 实践建议优先级矩阵。按每个建议的投入产出与实施难度排序，优先从绿色单元格的条目开始。
+  en: Figure 1-22 Practice-suggestion priority matrix. Suggestions are ranked by payoff vs. effort and implementation difficulty; start with the green cells.
 labels:
   en:
     图1-22 实践建议优先级矩阵: Figure 1-22 Practice-Suggestion Priority Matrix
@@ -196,4 +196,4 @@ labels:
     高投入产出 / 低实施难度: High return / low difficulty
     中等投入产出 / 中等实施难度: Medium return / medium difficulty
     优先从绿色单元格的条目开始（高价值、低难度）: Start with the green cells (high value, low difficulty)
-    图1-22 实践建议优先级矩阵。每个建议的投入产出和实施难度一目了然，优先从绿色单元格的条目开始。: Figure 1-22 Practice-suggestion priority matrix. Return and difficulty at a glance — start with the green cells.
+    图1-22 实践建议优先级矩阵。按每个建议的投入产出与实施难度排序，优先从绿色单元格的条目开始。: Figure 1-22 Practice-suggestion priority matrix. Suggestions are ranked by payoff vs. effort and implementation difficulty; start with the green cells.

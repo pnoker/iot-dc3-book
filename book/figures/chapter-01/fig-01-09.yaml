@@ -15,7 +15,7 @@ relationships:
 render_notes: 时间轴与三阶段卡片，语义色蓝/青/橙。完整 HTML 见 figures/chapter-01/fig-01-09.html。
 caption:
   zh: 图1-9 物联网定义的演变：从识别到泛在连接。RFID+EPC 实现识别，无线传感网补足感知，u-Japan 泛在网络追求连接万物——被动连接的终点，正是主动决策的起点。
-  en: 'Figure 1-9 The evolving definition of the IoT: from identification to ubiquitous connection. RFID+EPC delivered identification, wireless sensor networks added sensing, and the u-Japan ubiquitous network pursued connecting everything — the endpoint of passive connection is precisely the starting point of active decision-making.'
+  en: 'Figure 1-9 The evolving definition of the IoT: from identification to ubiquitous connection. RFID+EPC delivered identification, WSN added sensing, u-Japan pursued connecting everything — the endpoint of passive connection is the start of active decision-making.'
 labels:
   en:
     图1-9 物联网定义的演变：从识别到泛在连接: 'Figure 1-9 The IoT Definition Evolves: Identification to Ubiquitous Connection'

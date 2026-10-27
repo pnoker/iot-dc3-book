@@ -144,8 +144,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用四层分层布局，每层用浅色背景矩形框（浅蓝、浅绿、浅黄、浅灰）区分。组件框用圆角矩形，内填组件名称和简要功能文字。电机用简化圆形+M图。数据流箭头的颜色和样式严格遵循图例。橙色紧急停机流直接从边缘层指向电机，不可到达消息层和云层。下行指令流用蓝色虚线点画线，与上行实线区分。每层框右下角标注L1~L4层级编号。
 caption:
-  zh: 图 5-13 工厂设备状态监控系统四层架构图（例子）
-  en: 'Figure 5-13 Four-layer architecture of a factory equipment condition monitoring system (example).'
+  zh: 图 5-13 工厂设备状态监控系统四层架构图：安全停机留在边缘确定性链路，云端负责长期分析、告警通知与参数管理。
+  en: 'Figure 5-13 Four-layer architecture of a factory equipment monitoring system: safety shutdowns stay on the deterministic edge path, while the cloud handles long-term analysis, alarm notification, and parameter management.'
 labels:
   en:
     图 5-13 工厂设备状态监控系统四层架构图（例子）: Figure 5-13 Four-Layer Factory Equipment Monitoring (Example)

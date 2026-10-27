@@ -64,8 +64,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 使用<svg>绘制极坐标雷达图，五轴间距72°，坐标轴不标分数等级仅标轴名称；每种技术用不同颜色描边，数据点以直线连接，色块填充透明度0.25，描边线宽2px；图例置于绘图区域右上角，用12×12px色块加文本标注。
 caption:
-  zh: 图4-4 对六种技术基于五项工程约束的定性对比。所有描述基于工程经验归纳，非实测或标准化值。多边形面积越大不代表技术越优，只反映该技术在更多维度上处于高位。
-  en: 'Figure 4-4 A qualitative comparison of six technologies across five engineering constraints. All descriptions are generalized from engineering experience, not measured or standardized values. A larger polygon area does not mean a better technology — it only indicates a higher position on more dimensions.'
+  zh: 图4-4 无线技术选型应先确定场景硬约束，再逐轴比较覆盖、速率、功耗、成本与生态折中。
+  en: Figure 4-4 Start from hard scenario constraints, then compare coverage, rate, power, cost, and ecosystem trade-offs axis by axis.
 labels:
   en:
     图4-4 主流 IoT 无线技术选型雷达图（示意框架）: 'Figure 4-4 IoT Wireless Technology Selection Radar (Illustrative)'

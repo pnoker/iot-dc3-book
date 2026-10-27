@@ -15,8 +15,8 @@ relationships:
 - 三层技术栈各司其职；消息按冗余度与实时性分级选择 NON/CON
 render_notes: HTML/SVG 渲染，三层技术栈 + NON/CON 分级，蓝绿橙分层。
 caption:
-  zh: 图 9-7 NB-IoT 提供低功耗广域接入，CoAP 区分 NON 与 CON 消息交换，LwM2M 提供设备管理对象。NON 不确认，CON 通过确认与重传提高到达概率；关键业务仍需事件去重、应用回执、状态回读和失败补偿。
-  en: Figure 9-7 NB-IoT provides low-power wide-area access, CoAP distinguishes NON and CON exchanges, and LwM2M supplies device-management objects. NON is unacknowledged; CON improves arrival probability through acknowledgment and retransmission, while critical workflows still require event deduplication, application receipts, state readback, and failure compensation.
+  zh: 图 9-7 NON 不确认，CON 以确认与重传提高到达概率；关键业务仍需去重、回执、回读和失败补偿。
+  en: Figure 9-7 NON is unacknowledged and CON improves arrival probability through acknowledgment and retransmission; critical workflows still need deduplication, receipts, readback, and failure compensation.
 labels:
   en:
     图 9-7 CoAP/LwM2M 在 NB-IoT 中的协同: Figure 9-7 CoAP/LwM2M Working over NB-IoT

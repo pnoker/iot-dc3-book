@@ -62,8 +62,8 @@ visual_constraints:
 - 矩阵坐标轴清晰标注。
 render_notes: HTML/SVG渲染，浅色背景，白底卡片，圆角矩形，使用象限网格线，底部图例和出版级图注。
 caption:
-  zh: 图 5-10 异常检测性能对比示意：规则检测、浅层机器学习、深度学习与混合策略在适应性和可解释性上的定位。
-  en: 'Figure 5-10 Anomaly detection performance comparison: how rule-based detection, shallow machine learning, deep learning, and hybrid strategies are positioned on adaptability and explainability.'
+  zh: 图 5-10 异常检测性能对比示意：规则检测、浅层机器学习、深度学习与混合策略在适应性和可解释性上的定位，方法选择取决于工况、样本与部署资源。
+  en: 'Figure 5-10 Anomaly detection performance comparison: how rules, shallow ML, deep learning, and hybrid strategies are positioned on adaptability and explainability; method choice depends on operating conditions, samples, and deployment resources.'
 labels:
   en:
     图 5-10 异常检测性能对比示意：规则 vs 机器学习: 'Figure 5-10 Anomaly Detection: Rules vs Machine Learning'

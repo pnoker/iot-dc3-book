@@ -112,8 +112,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: HTML5/SVG 渲染，使用圆角矩形节点和带文字标签的箭头。绿色实线表示成功路径，红色虚线表示失败路径。可附加注释说明双副本 A/B 分区回滚示意。
 caption:
-  zh: 图8-4 安全启动的多层信任链流程，展示从 BootROM 到文件系统的逐级签名验证关系。
-  en: Figure 8-4 The multi-level chain of trust in secure boot, showing signature verification cascading level by level from BootROM to the file system.
+  zh: 图8-4 信任链自 BootROM 起逐级验签至根文件系统；失败策略分级——SBL 凭 A/B 双分区回退恢复，BootROM、U-Boot、内核任一级失败即停机或拒绝启动，根文件系统由 dm-verity 校验完整性。
+  en: Figure 8-4 The chain of trust verifies signatures level by level from BootROM to the root file system; failure handling is tiered — SBL falls back via A/B partitions, failure at BootROM, U-Boot, or the kernel halts or refuses to boot, and rootfs integrity is checked by dm-verity.
 labels:
   en:
     图8-4 安全启动多层信任链流程: Figure 8-4 Secure Boot Chain of Trust

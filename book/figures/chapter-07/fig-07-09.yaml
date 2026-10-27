@@ -27,8 +27,8 @@ legend:
 - 灰色虚线：目标能力，当前未实现
 render_notes: 遵循 style.yaml 的浅色技术出版风格。状态标签位置统一，已具备用 secondary/success，部分具备用 accent/warning，待建设用 neutral 虚线。当前调用链使用实线，目标演进使用虚线；避免将待建设组件画入当前数据主链路。
 caption:
-  zh: 图 7-9 IoT DC3 Agentic Center 的 Runtime 能力映射。当前系统已经具备会话、模型适配、显式 Tool、租户上下文、MCP 授权和 Action 确认；长期任务编排、状态恢复与统一治理仍需继续建设。
-  en: Figure 7-9 Runtime capability mapping of the IoT DC3 Agentic Center. The system already provides sessions, model adaptation, explicit tools, tenant context, MCP authorization, and Action confirmation; long-horizon task orchestration, state recovery, and unified governance still need further construction.
+  zh: 图 7-9 DC3 已形成受治理的对话式 Tool 运行基础与受控点位写入；通用 Workflow、长期状态机、调度恢复与统一 Skill 注册仍是后续建设项。
+  en: Figure 7-9 DC3 already provides a governed conversational tool runtime and controlled point writes; general workflows, long-horizon state machines, schedule recovery, and unified Skill registration remain future work.
 labels:
   en:
     图 7-9 IoT DC3 Agentic Center 的 Runtime 能力映射: 'Figure 7-9 IoT DC3 Agentic Center: Runtime Capability Map'

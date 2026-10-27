@@ -89,8 +89,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形。左栏动画：设备依次出现并连接云平台。右栏动画：困境区块依次淡入，箭头带闪烁效果。右上角提供高亮/原始配色切换按钮。
 caption:
-  zh: 图 13-1 中心化物联网架构的信任困境。三个问题相互关联，共同指向单一信任锚点的结构性缺陷。
-  en: 'Figure 13-1 The trust dilemma of the centralized IoT architecture. The three problems are interrelated and together point to the structural flaw of a single trust anchor.'
+  zh: 图 13-1 单一信任锚点会把中心故障、数据篡改与跨主体互信成本连续放大。
+  en: Figure 13-1 A single trust anchor amplifies failure, tampering and trust costs.
 labels:
   en:
     图 13-1 中心化物联网架构的信任困境: Figure 13-1 Trust Dilemmas of Centralized IoT

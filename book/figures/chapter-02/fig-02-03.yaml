@@ -148,8 +148,8 @@ visual_constraints:
 - 每列最多5个节点，节点标签统一使用层名称。
 render_notes: SVG渲染，圆角矩形，浅色背景。左右两列间距适当，用虚线边框分别框住两列。每个层级的宽度一致，层之间箭头带短标签。图例放在图底部，字号稍小。
 caption:
-  zh: 图2-3 经典四层架构（左）与五层架构（右）的对比。左列数据流单向向上，右侧五层架构在平台层和智能层之间形成闭环：平台层向上提供数据，智能层向下发回命令。
-  en: 'Figure 2-3 Comparison of the classic four-layer architecture (left) with the five-layer architecture (right). In the left column data flows one way upward; in the five layers on the right, a closed loop forms between the platform layer and the intelligence layer: the platform layer supplies data upward, and the intelligence layer sends commands back down.'
+  zh: 图2-3 经典四层数据流单向向上；五层架构在平台层与智能层之间形成闭环：平台层提供数据、智能层回写命令。
+  en: Figure 2-3 The classic four layers move data one way up; the five-layer architecture closes the loop between the platform and intelligence layers — the platform supplies data, the intelligence layer writes commands back.
 labels:
   en:
     图2-3 五层架构与传统四层架构对比示意: Figure 2-3 Five-Layer vs Classic Four-Layer Architecture

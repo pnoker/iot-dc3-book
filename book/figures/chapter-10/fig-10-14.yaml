@@ -51,8 +51,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，浅色背景，四层横向分区，每层内部使用圆角矩形卡片承载关键词，右侧统一标注对应的IoT DC3模块名称。箭头统一使用12px间距，实线为#2563EB，虚线为#94A3B8。
 caption:
-  zh: 图 10-14 四层能力逐级递进并最终落在IoT DC3的具体模块上；分析决策经平台层下发设备，形成带反馈的完整闭环。
-  en: 'Figure 10-14 The four capability layers advance step by step and land on concrete IoT DC3 modules; analytic decisions flow back down to devices through the platform layer, forming a feedback closed loop.'
+  zh: 图 10-14 概述第10章的四层知识体系：从工业连接技术、数据平台、智能分析到IoT DC3实践，逐层递进。
+  en: 'Figure 10-14 The chapter''s four-layer knowledge system: from industrial connectivity and the data platform to intelligent analytics and IoT DC3 practice, layer by layer.'
 labels:
   en:
     图 10-14 本章知识体系图谱: Figure 10-14 Chapter Knowledge Map

@@ -20,8 +20,8 @@ callouts:
 - 当前 MCP 只暴露 Tools，不承载实时数据订阅。
 render_notes: 浅色三阶段 SVG。推理服务使用通用名称，不绘制为当前内置中心；顶部显著标注“可选扩展”。
 caption:
-  zh: 图 14-7 预测性维护扩展示例：模型在平台外训练和部署，授权任务把推理结果作为衍生位号写回 Data，复用已有规则与通知链路。
-  en: 'Figure 14-7 A predictive-maintenance extension example: the model is trained and deployed outside the platform, and an authorized task writes inference results back to Data as derived points, reusing the existing rule and notification paths.'
+  zh: 图 14-7 模型服务不可用时停止扩展推理，但不阻断设备采集、数据持久化和确定性规则。
+  en: Figure 14-7 When the model service is unavailable, extended inference stops, but device collection, data persistence, and deterministic rules are not blocked.
 labels:
   en:
     图 14-7 预测性维护扩展示例: 'Figure 14-7 Predictive Maintenance Extension Example'

@@ -174,9 +174,7 @@ render_notes: 渲染为自包含SVG决策树，与 fig-11-01.html 保持一致�
   / LTE-V2X / 多模）对称展开，底部附图注。
 caption:
   zh: 图11-1 时延决定技术代际，覆盖与存量条件进一步分流；频段合规和现场测试是所有结果的共同前提。
-  en: Figure 11-1 Latency sets the technology generation; coverage and legacy-fleet
-    conditions further split the path — spectrum compliance and field testing are
-    common prerequisites for every outcome.
+  en: Figure 11-1 Latency sets the generation; coverage and legacy split the path — spectrum compliance and field tests apply to all outcomes.
 labels:
   en:
     图11-1 V2X通信技术选型决策路径图: Figure 11-1 V2X Technology Selection Decision Path

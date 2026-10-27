@@ -105,8 +105,8 @@ visual_constraints:
 - 泳道间隔12px，握手消息带序号，箭头文字标注协议类型（TLS 1.3 / DTLS）。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，泳道间隔12px，握手消息带序号，箭头文字标注协议类型（TLS 1.3 / DTLS）。
 caption:
-  zh: 图 5-3 证书在TLS/mTLS握手内完成认证；Token在加密通道内认证后签发，混合模式依次使用mTLS、短期Token和业务API。
-  en: 'Figure 5-3 Certificates are authenticated within the TLS/mTLS handshake; tokens are issued only after in-channel authentication over an encrypted channel, and the hybrid mode uses mTLS, short-lived tokens, and business APIs in turn.'
+  zh: 图 5-3 设备认证与数据加密流程：证书在 TLS/mTLS 握手内完成认证，Token 在加密通道内认证后签发，混合模式依次使用 mTLS、短期 Token 与业务 API。
+  en: 'Figure 5-3 Device authentication and data encryption flow: certificates are authenticated within the TLS/mTLS handshake, tokens are issued after in-channel authentication over an encrypted channel, and the hybrid mode uses mTLS, short-lived tokens, and business APIs in turn.'
 labels:
   en:
     图 5-3 设备认证与数据加密流程: Figure 5-3 Device Authentication & Data Encryption Flow

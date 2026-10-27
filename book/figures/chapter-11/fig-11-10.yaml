@@ -129,8 +129,8 @@ visual_constraints:
 - 颜色强调训练主链路，其他辅助链路适当淡化。
 render_notes: SVG渲染，浅色背景。左侧环境域使用#f0f8ff背景色，右侧智能域使用#fff8dc背景色。箭头线宽2px，颜色按图例定义。
 caption:
-  zh: 图11-10 十字路口强化学习框架图。展示了RL智能体通过状态观测、动作执行、奖励反馈及经验回放训练DQN网络的闭环过程。
-  en: 'Figure 11-10 Reinforcement learning framework for an intersection, showing the closed loop in which the RL agent trains a DQN network through state observation, action execution, reward feedback, and experience replay.'
+  zh: 图11-10 状态 S_t 由排队、相位与时段编码构成，奖励 r_t 直接惩罚排队长度；经验回放切断时间相关性、目标 Q 网络提供固定 TD 目标，共同抑制训练震荡。
+  en: Figure 11-10 State S_t combines queue, phase, and period encoding; reward r_t penalizes queue length; replay breaks temporal correlation and the target Q-network fixes the TD target, damping oscillation.
 labels:
   en:
     图11-10 十字路口强化学习框架: 'Figure 11-10 Intersection Reinforcement Learning'

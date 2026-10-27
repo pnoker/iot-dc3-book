@@ -14,8 +14,8 @@ relationships:
 - CLI 概念 → Web/HTTP 或 MCP 入口：可作为未来客户端参照，但当前未实现
 render_notes: 左侧绿色实线框标“当前已实现”，右侧灰蓝虚线框标“知识对齐（非现有功能）”；禁止使用三层金字塔或未来路线措辞暗示三者均已上线。
 caption:
-  zh: 图 7-11 当前以 Tools、Web/HTTP 对话和 MCP Tools 端点为实现边界；Skills 与 CLI 用于对齐通用 Agent 工程知识，尚不是 IoT DC3 已实现功能。
-  en: Figure 7-11 The current implementation boundary covers Tools, the Web/HTTP chat, and the MCP Tools endpoint; Skills and CLI serve only to align general agent-engineering knowledge and are not yet implemented IoT DC3 features.
+  zh: 图 7-11 左侧为当前源码可验证能力；右侧仅用于知识对齐。虚线不表示已上线，也不表示项目路线承诺。
+  en: Figure 7-11 The left side is verifiable in current source; the right side is knowledge alignment only. Dashed lines imply neither shipping nor roadmap commitment.
 labels:
   en:
     图 7-11 Agentic Center 当前能力与知识对齐边界: 'Figure 7-11 Agentic Center: implemented vs. knowledge-alignment boundary'

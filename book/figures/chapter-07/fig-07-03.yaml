@@ -29,8 +29,8 @@ legend:
 - 红色：不可越过的安全边界
 render_notes: 遵循 style.yaml 的浅色技术出版风格，使用直角连线并先绘制连接线。四个平面边界清晰，文字以中文为主；Tool、Skill、Workflow、MCP 保留英文术语。确定性边界使用橙色竖向闸门，PLC/SIS 使用红色边界；避免线条穿过文字和卡片。
 caption:
-  zh: 图 7-3 工业 Agent Runtime 四平面架构。大模型负责提出候选决策，Runtime 负责把决策约束为有状态、可验证、可恢复、可审计的执行；PLC/SIS 继续承担确定性实时控制。
-  en: Figure 7-3 The four-plane architecture of the industrial AI agent Runtime. The LLM proposes candidate decisions, and the Runtime constrains them into stateful, verifiable, recoverable, and auditable execution; PLC/SIS continues to carry deterministic real-time control.
+  zh: 图 7-3 四平面把概率性推理约束成确定性执行，治理平面全程留痕，安全联锁始终独立于 Agent。
+  en: Figure 7-3 Four planes constrain probabilistic reasoning into deterministic execution, governance logs every step, and safety interlocks stay independent of the AI agent.
 labels:
   en:
     图 7-3 工业 Agent Runtime 四平面架构: Figure 7-3 Four-Plane Industrial AI Agent Runtime Architecture

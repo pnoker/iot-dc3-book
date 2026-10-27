@@ -16,7 +16,7 @@ relationships:
 render_notes: HTML/SVG 渲染，三级对象树卡片 + 引导注册三步流程，蓝绿橙分层。
 caption:
   zh: 图 9-6 LwM2M 把设备能力抽象为对象/实例/资源三级对象树，路径与 CoAP URI 对齐；设备经引导、注册、更新注册接入平台，观察/通知机制实现推送式上报。
-  en: Figure 9-6 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update registration, and the observe/notify mechanism provides push-style reporting.
+  en: Figure 9-6 LwM2M abstracts device capabilities into a three-level object/instance/resource tree whose paths align with CoAP URIs; devices join the platform through bootstrap, register, and update, and the observe/notify mechanism provides push-style reporting.
 labels:
   en:
     图 9-6 LwM2M 对象树与引导注册: Figure 9-6 LwM2M Object Tree and Bootstrap/Register

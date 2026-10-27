@@ -4,9 +4,9 @@
 
 | 术语 | 英文 | 释义 |
 |---|---|---|
-| AIoT | Artificial Intelligence of Things | AI 与物联网深度融合，从被动连接到主动智能 |
+| AIoT | Artificial Intelligence of Things | AI 与物联网结合，使系统从被动连接走向主动智能 |
 | MCP | Model Context Protocol | Anthropic 2024 年推出的 AI 与工具/数据源交互开放标准；2025 年 12 月捐赠给 Linux 基金会旗下 Agentic AI Foundation |
-| A2A | Agent2Agent Protocol | Google 2025 年 4 月提出的智能体间协作协议，2025 年 6 月捐赠 Linux 基金会；定位与 MCP（agent↔工具）互补的 agent↔agent 任务委派与协商；正文 7.1/9.5 已有讨论 |
+| A2A | Agent2Agent Protocol | Google 2025 年 4 月提出的智能体间协作协议，2025 年 6 月捐赠 Linux 基金会；其定位是与 MCP（agent↔工具）互补的 agent↔agent 任务委派与协商；正文 7.1/9.5 已有讨论 |
 | Tool-Calling | Tool Calling | LLM 通过函数调用操作外部工具（如设备）的机制 |
 | RAG | Retrieval-Augmented Generation | 检索增强生成，模型结合检索知识回答 |
 | Agent | AI Agent | 能感知、推理、规划、执行的多步智能体 |
@@ -19,8 +19,8 @@
 | TSFM | Time Series Foundation Model | 时序基础模型（TimesFM/Chronos 等），零样本预测 |
 | 端侧 SLM | Small Language Model (SLM) | 数十亿参数以下的小语言模型，量化后可下沉至边缘网关，支撑设备问答、告警摘要、工单初筛等轻量语义任务 |
 | 设备影子 | Device Shadow | 平台维护的设备期望/实际状态，解耦在线状态 |
-| OTA | Over-the-Air Update | 固件/软件空中远程升级，须配套签名验签、加密传输与防回滚，否则一次恶意升级可批量沦陷设备 |
-| 云边协同 | Cloud-Edge Collaboration | 云端深算+边缘实时的分层协作（旧称"边云协同"） |
+| OTA | Over-the-Air Update | 固件/软件空中远程升级，须配套签名验签、加密传输与防回滚，否则一次恶意升级可导致设备批量失陷 |
+| 云边协同 | Cloud-Edge Collaboration | 云端负责深度分析、边缘负责实时响应的分层协作（旧称"边云协同"） |
 | RBAC/ABAC | Role/Attribute-Based Access Control | 基于角色/属性的访问控制 |
 | MQTT | Message Queuing Telemetry Transport | 消息队列遥测传输，IoT 中广泛采用的发布/订阅消息协议 |
 | CoAP | Constrained Application Protocol | 面向受限设备的精简 Web 协议（RFC 7252） |

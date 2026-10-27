@@ -102,8 +102,8 @@ visual_constraints:
 - 图例放在图底部，不遮挡时间线。
 render_notes: HTML/SVG渲染，浅色背景，水平时间线布局，箭头带短标签，底部图例和出版级图注。
 caption:
-  zh: 图 9-14 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和AI交互接口的四个阶段。MCP在工程实践中融合了oneM2M和WoT的设计思路，而不是另起炉灶。
-  en: 'Figure 9-14 Four stages of IoT standardization: independent vertical standards, convergence on horizontal platforms, semantic description, and AI interaction interfaces. In practice MCP builds on the design ideas of oneM2M and WoT rather than starting from scratch.'
+  zh: 图 9-14 展示了物联网标准化从独立垂直标准，到水平平台收敛，再到语义描述和 AI 交互接口的四个阶段。MCP 在工程实践中融合了 oneM2M 和 WoT 的设计思路，而不是另起炉灶。
+  en: 'Figure 9-14 Four stages of IoT standardization: independent vertical standards, horizontal platform convergence, semantic description, and AI interaction interfaces. MCP builds on oneM2M and WoT design ideas rather than starting from scratch.'
 labels:
   en:
     图 9-14 物联网标准化演进时间线: Figure 9-14 IoT Standardization Timeline

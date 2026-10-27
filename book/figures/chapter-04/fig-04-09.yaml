@@ -90,7 +90,7 @@ visual_constraints:
 render_notes: 使用HTML/SVG渲染，接口层使用浅蓝背景和<<interface>>标签，实现层使用浅青绿色背景，组件使用白色小方块，连接线使用标准UML箭头样式，颜色遵循全书统一配置。
 caption:
   zh: 图4-9 协议适配器接口与驱动实现的架构示意。每个具体驱动通过组合持有底层通信组件，对上层只暴露通用接口。
-  en: 'Figure 4-9 Architecture of the protocol adapter interface and driver implementations. Each concrete driver composes its own low-level communication components and exposes only the generic interface to upper layers.'
+  en: Figure 4-9 The protocol adapter interface and driver implementations. Each concrete driver holds its low-level communication components through composition and exposes only the generic interface upward.
 labels:
   en:
     图4-9 协议适配器接口与驱动实现架构: 'Figure 4-9 Protocol Adapter Interface and Driver Implementations'

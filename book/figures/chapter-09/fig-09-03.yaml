@@ -123,8 +123,8 @@ visual_constraints:
 - 图例放在图底部。
 render_notes: HTML/SVG渲染，浅色背景。Client用青绿色框，Broker用蓝色框。消息箭头带短标签。超时事件用broker自指向虚线节点。恢复会话后的推送箭头用绿色。底部图例。
 caption:
-  zh: 图 9-3 MQTT会话连接与心跳交互示意。Client（sensor01）向Broker发起持久会话连接，完成订阅并与Broker维持60秒间隔的心跳。网络中断后Broker在90秒（1.5倍KA）超时后判定Client离线，执行遗嘱消息。Client通过指数退避策略重连，Broker识别出相同ClientID并恢复会话，随后推送断开期间缓存的消息。
-  en: Figure 9-3 MQTT session connection and heartbeat interaction. The Client (sensor01) opens a persistent session with the Broker, subscribes, and keeps a 60-second heartbeat. After the network drops, the Broker marks the Client offline at the 90 s (1.5×KA) timeout and publishes its Last Will. The Client reconnects with exponential backoff; the Broker recognizes the same Client ID, restores the session, and pushes the messages buffered during the outage.
+  zh: 图 9-3 Broker 在心跳超时后执行遗嘱；持久会话未过期时，重连可恢复订阅并接收缓存消息。
+  en: Figure 9-3 The Broker executes the Last Will after a heartbeat timeout; while the persistent session has not expired, reconnecting restores subscriptions and delivers buffered messages.
 labels:
   en:
     图 9-3 MQTT会话连接与心跳交互示意: Figure 9-3 MQTT Session, Connection and Heartbeat

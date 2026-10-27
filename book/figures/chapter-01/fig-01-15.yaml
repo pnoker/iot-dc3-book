@@ -105,7 +105,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，箭头带渐变粗度，图例置于图下方。
 caption:
   zh: 图1-15 物联网产业价值重心从连接层向平台层、最终向智能决策层迁移的路径。
-  en: Figure 1-15 The path along which the center of value in the IoT industry migrates from the connectivity layer to the platform layer and ultimately to the intelligent decision layer.
+  en: Figure 1-15 The IoT value center migrates from connectivity to platform and finally to intelligent decisions.
 labels:
   en:
     图1-15 物联网价值迁移路径: Figure 1-15 IoT Value Migration Path

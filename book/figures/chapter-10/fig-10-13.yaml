@@ -134,8 +134,8 @@ visual_constraints:
 - 闭环升级路径使用虚线，从'创建工单'节点的右侧引出。
 render_notes: 采用从左至右流程图布局，节点使用圆角矩形，决策节点使用菱形。颜色按图例对应，虚线路径使用箭头的虚线样式。底图例和出版级图注。
 caption:
-  zh: 图 10-13 展示了从温度数据判定到AI推理、工单创建、通知发送，以及基于工单状态回环的完整闭环流程。橙色部分表示升级路径，是在等待回复超时后触发的二次决策。
-  en: Figure 10-13 The complete closed loop from temperature data evaluation to AI inference, work order creation, and notification dispatch, plus the work order state loop. The orange part marks the escalation path — a second decision triggered after an acknowledgment times out.
+  zh: 图 10-13 展示从温度数据判定到 AI 推理、工单创建、通知发送，以及基于工单状态回环的完整闭环流程。橙色部分表示升级路径，是在等待回复超时后触发的二次决策。
+  en: Figure 10-13 The complete closed loop from temperature data evaluation to AI inference, work order creation, and notification dispatch, plus work order state looping. The orange part marks the escalation path — a second decision triggered after an acknowledgment times out.
 labels:
   en:
     图 10-13 规则引擎告警触发与预测性维护工单闭环流程: Figure 10-13 Rule Engine Alarm and Predictive Maintenance Work Order Closed Loop

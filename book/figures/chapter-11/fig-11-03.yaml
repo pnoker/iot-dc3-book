@@ -122,8 +122,8 @@ visual_constraints:
 - “图例置于底部，不遮挡主体。”
 render_notes: “1. 标题行加‘(假设场景)’标识。2. 摄像头-边缘盒箭头中线标注‘本地推理’。3. 充电桩链路加锁图标表示TLS。4. IoT Hub与应用服务间用双向箭头。5. 三层用浅灰底色区分。6. 所有模块文字在14个汉字以内。”
 caption:
-  zh: 图11-3 视频等高频数据在杆内边缘计算盒本地消化，只输出结构化消息；低频传感与控制数据经MQTT上传——这是带宽与运维成本之间的工程折中。
-  en: 'Figure 11-3 High-frequency video is digested locally by the on-pole edge box, which outputs structured messages only; low-frequency sensing and control data go up over MQTT — an engineering trade-off between bandwidth and operations cost.'
+  zh: 图11-3 五类模块经边缘盒汇聚；高带宽视频就地推理，仅低频数据和结构化事件通过 MQTT 进入 IoT Hub。
+  en: Figure 11-3 Five module types converge on the edge box; high-bandwidth video is inferred in place, and only low-rate data and structured events reach the IoT Hub via MQTT.
 labels:
   en:
     图11-3 智能路灯杆功能图（假设场景）: 'Figure 11-3 Smart Light Pole Functions (Hypothetical)'

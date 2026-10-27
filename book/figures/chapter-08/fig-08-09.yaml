@@ -69,8 +69,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: 绘制时使用矩形表示各节点，箭头线表示流程方向，并在箭头旁标注操作名，如“生成”、“分发”、“加密”、“解密”、“轮换”、“撤销”、“销毁”。泳道之间用水平虚线分隔，每条泳道的左侧标注角色名。使用指定颜色区分密钥状态。虚线箭头代表TLS加密传输。图例置于图下方或右侧。
 caption:
-  zh: 图8-9 密钥经生成、分发、轮换、撤销、销毁五个状态依次迁移，云端与边缘侧通过 TLS 加密通道协同管理；被撤销的密钥立即从可用密钥集合中剔除。
-  en: Figure 8-9 Key lifecycle management and cloud-edge coordination
+  zh: 图8-9 云端作为密钥状态的权威源，分发、轮换、撤销均经 TLS 加密通道同步到边缘；撤销后边缘同状态密钥即停止使用，防止旧密钥继续有效。
+  en: Figure 8-9 The cloud is the authoritative source of key state; distribution, rotation, and revocation sync to the edge over TLS, and once revoked the matching edge key stops being used, preventing old keys from remaining valid.
 labels:
   en:
     图8-9 密钥生命周期管理与云边协同流程: Figure 8-9 Key Lifecycle Management & Cloud-Edge Coordination

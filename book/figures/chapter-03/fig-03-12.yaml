@@ -70,8 +70,8 @@ visual_constraints:
 - 图例放在图底部，与主体分离。
 render_notes: 'SVG渲染，浅色背景。状态框使用圆角矩形，边框2px，底色#E3F2FD、#1565C0。箭头黑色实线1.5px，label宋体11px #666。复位箭头虚线。底部图例宋体10px。按出版级图注输出。'
 caption:
-  zh: 图 3-12 振动传感器自适应采样状态机（示意）。状态转移由模型预测误差的连续放大驱动，混合了事件驱动与变化率策略。
-  en: Figure 3-12 Adaptive sampling state machine of a vibration sensor (illustrative). Transitions are driven by consecutive growth of the model prediction error, blending event-driven and rate-of-change strategies.
+  zh: 图 3-12 状态机以逐级升高的能耗换取更完整的异常窗口，确认异常后才开启射频上传。
+  en: Figure 3-12 The state machine trades stepwise higher energy for a fuller anomaly window, and only turns on the radio to upload once an anomaly is confirmed.
 labels:
   en:
     图 3-12 振动传感器自适应采样状态机（示意）: Figure 3-12 Vibration Sensor Adaptive Sampling State Machine (Illustrative)

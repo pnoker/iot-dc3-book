@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，四共识对比表 + 三种方案关键机制，蓝绿橙分层。
 caption:
   zh: 图 13-9 PoW 算力开销在物联网不可行；PoA 用身份替代算力、Tangle 免交易费但稀疏网络难起跑、PBFT 变体适合封闭网络。共识选型先识别信任模型再匹配，无通用方案。
-  en: 'Figure 13-9 PoW computing cost is infeasible for IoT; PoA replaces computing power with identity, Tangle charges no transaction fees but struggles to bootstrap in sparse networks, and PBFT variants suit closed networks. Consensus selection should first identify the trust model and then match it — there is no universal option.'
+  en: Figure 13-9 PoW is infeasible for IoT; PoA replaces compute with identity, Tangle is fee-free but hard to bootstrap when sparse, PBFT variants suit closed networks. Match the trust model first — no universal option.
 labels:
   en:
     图 13-9 物联网环境下的轻量级共识机制对比: Figure 13-9 Lightweight Consensus for IoT Compared

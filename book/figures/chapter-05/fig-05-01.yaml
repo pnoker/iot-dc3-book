@@ -1,7 +1,7 @@
 type: layered
 title: 图 5-1 物联网平台分层架构示意
 purpose: 展示从感知层到应用层的标准四层模型，并明确平台层在这一模型中的桥梁位置
-audience_takeaway: 物联网的四层职责边界，以及数据流和控制流的方向差异。
+audience_takeaway: 平台层是四层中唯一同时面向上行数据与下行控制的桥梁：数据经设备接入→消息处理→存储→应用使能单向流动，控制指令沿原路反向回到感知层。
 visual_focus: 数据流的绿色箭头从感知层向上贯穿至应用层，控制流的蓝色箭头反向；平台层内部组件顺序关系用水平箭头表示。
 design_level: logical
 layout: 自下而上四个矩形堆叠，每层宽度一致，颜色不同；平台层内部用四个更小的水平方块表示组件流程。
@@ -85,8 +85,8 @@ connections:
   style: solid
   direction: top-to-bottom
 caption:
-  zh: 图 5-1 物联网平台分层架构示意。感知层采集物理信号并数字化，经网络层传输至平台层；平台层完成协议转换、消息缓冲、规则判断与存储，最后通过API暴露给应用层；应用层提供人机交互与决策支持。
-  en: 'Figure 5-1 Layered architecture of an IoT platform. The sensing layer digitizes physical signals and transports them through the network layer to the platform layer; the platform layer performs protocol conversion, message buffering, rule evaluation, and storage, then exposes everything to the application layer through APIs; the application layer provides human-machine interaction and decision support.'
+  zh: 图 5-1 物联网平台分层架构示意：感知层采集物理信号并数字化，经网络层传输至平台层完成协议转换、消息缓冲、规则判断与存储，再通过 API 暴露给应用层提供人机交互与决策支持。
+  en: 'Figure 5-1 Layered IoT platform architecture: the sensing layer digitizes physical signals and sends them through the network layer to the platform, which performs protocol conversion, message buffering, rule evaluation, and storage, then exposes them via APIs to the application layer for human-machine interaction and decision support.'
 labels:
   en:
     图 5-1 物联网平台分层架构示意: Figure 5-1 Layered IoT Platform Architecture

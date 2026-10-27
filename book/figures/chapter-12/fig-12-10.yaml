@@ -125,8 +125,8 @@ visual_constraints:
 - 优先表达数据类型分离和边缘处理逻辑。
 render_notes: HTML/SVG渲染，浅色背景。LoRaWAN网关以集中式拓扑示意，4G基站使用蜂窝网络图标。图注和字段使用统一10pt字体，箭头标签均使用中文标注。
 caption:
-  zh: 图 12-10 展示智慧果园混合组网的完整数据路径。土壤与气象数据通过LoRaWAN统一周期上报；图像数据在边缘完成病害推理后通过4G回传；灌溉指令由云端规则引擎通过LoRaWAN下行通道执行。
-  en: Figure 12-10 The complete data path of a smart orchard hybrid network. Soil and weather data are reported periodically over LoRaWAN; images are backhauled over 4G after edge disease inference; irrigation commands are executed by the cloud rule engine through the LoRaWAN downlink.
+  zh: 图 12-10 智慧果园混合组网完整数据路径：土壤与气象数据经 LoRaWAN 周期上报；图像数据在边缘完成推理后经 4G 回传；灌溉指令由云端规则引擎经 LoRaWAN 下行通道执行。
+  en: 'Figure 12-10 The complete data path of the smart orchard hybrid network: soil and weather data are reported periodically over LoRaWAN; images are backhauled over 4G after edge disease inference; irrigation commands are issued by the cloud rule engine over the LoRaWAN downlink.'
 labels:
   en:
     图 12-10 智慧果园综合监测系统架构（示意）: Figure 12-10 Smart Orchard Monitoring Architecture (Schematic)

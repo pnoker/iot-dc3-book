@@ -18,8 +18,8 @@ legend:
 - '形状: 顶点为圆形，边为实线，中心权衡区为圆形半透明叠加。'
 render_notes: 采用等边三角形布局，顶点颜色鲜明，策略标签使用项目符号列表紧凑排布，避免字体过小。建议使用 SVG 绘制，响应式缩放；若用 HTML Canvas，需保证文字清晰。中心权衡区上方加文字“权衡”。
 caption:
-  zh: 图 5-7 云边协同的难点在于三个维度互相牵制：强化安全性可能增加运维复杂度，追求强一致会影响系统弹性。工程设计的核心是找到项目可接受的平衡点。
-  en: 'Figure 5-7 The difficulty of cloud-edge collaboration is that three dimensions constrain one another: stronger security may add operational complexity, and pursuing strong consistency can hurt system elasticity. The core of engineering design is finding a balance point the project can accept.'
+  zh: 图 5-7 云边协同的难点在于三个维度互相牵制：强化安全性可能增加运维复杂度，追求强一致会影响系统弹性，工程设计的核心是找到项目可接受的平衡点。
+  en: 'Figure 5-7 The difficulty of cloud-edge collaboration: three dimensions constrain one another — stronger security may add operational complexity, and pursuing strong consistency hurts elasticity; engineering design is about finding a balance the project can accept.'
 labels:
   en:
     图 5-7 云边协同三大挑战的关联与权衡三角架: Figure 5-7 Trade-off Triangle of Three Cloud-Edge Challenges

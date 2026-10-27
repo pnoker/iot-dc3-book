@@ -57,7 +57,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，浅色背景，多层不同深浅蓝色矩形条圆角垂直堆叠，左侧红色箭头贯穿、右侧绿色箭头贯穿，灰色虚线跨层连接。每层矩形条可点击展示详细描述。
 caption:
   zh: 图8-2 展示了物联网系统中纵深防御的层次结构、攻击面与防御阻断方向，以及补偿控制的跨层连接。
-  en: Figure 8-2 The layered structure of defense in depth in an IoT system, the attack surface and the direction of defensive blocking, and the cross-layer links of compensating controls.
+  en: 'Figure 8-2 Defense in depth in an IoT system: the layered structure, the attack surface and blocking direction, and cross-layer compensating controls.'
 labels:
   en:
     图8-2 物联网纵深防御多层模型: Figure 8-2 IoT Defense-in-Depth Model

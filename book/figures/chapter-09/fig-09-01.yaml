@@ -147,8 +147,8 @@ visual_constraints:
 - 应用层内左右两列用不同颜色区分。
 render_notes: SVG 绘制五层水平矩形，左侧竖排标签“物联网协议栈”。最顶层左右两列用不同颜色区分通信模型，协议名称标注在对应色块内。各层之间虚线箭头表示数据流向。LwM2M 以虚线边框框在 CoAP 上方。底部署图例。
 caption:
-  zh: 图 9-1 Wi-Fi与蜂窝常直接承载IP；BLE、Zigbee、LoRa通常经适配或网关接入IP网络。
-  en: Figure 9-1 Wi-Fi and cellular usually carry IP directly; BLE, Zigbee, and LoRa typically reach the IP network through adaptation or a gateway.
+  zh: 图 9-1 Wi-Fi 与蜂窝常直接承载 IP；BLE、Zigbee、LoRa 通常经适配或网关接入 IP 网络。
+  en: Figure 9-1 Wi-Fi and cellular usually carry IP directly; BLE, Zigbee and LoRa typically join the IP network via adaptation or a gateway.
 labels:
   en:
     图 9-1 物联网协议栈与分类图: Figure 9-1 IoT Protocol Stack and Classification

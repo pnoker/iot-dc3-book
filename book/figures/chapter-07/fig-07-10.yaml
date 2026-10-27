@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，Tool 生态网格 + 底部四步写入确认链路，橙/蓝/绿区分读与写。
 caption:
   zh: 图 7-10 Agentic Center 当前注册 8 类 Tool，查询为主；PointValueTool 写操作先创建 PENDING Action，由用户确认后才经 submitWrite 进入设备命令链路，把“模型建议写入”与“平台真正执行”拆成两个明确步骤。
-  en: 'Figure 7-10 The Agentic Center currently registers 8 tool classes, mostly queries; PointValueTool writes first create a PENDING Action and enter the device command chain via submitWrite only after user confirmation, splitting "the model proposes a write" and "the platform actually executes" into two explicit steps.'
+  en: Figure 7-10 The Agentic Center currently registers 8 tool classes, mostly queries; PointValueTool writes first create a PENDING Action and enter the device command chain via submitWrite only after user confirmation, splitting model-proposed writes from platform execution into two explicit steps.
 labels:
   en:
     图 7-10 Agentic Center 工具生态与写入确认链路: Figure 7-10 Agentic Center Tool Ecosystem & Write-Confirmation Chain

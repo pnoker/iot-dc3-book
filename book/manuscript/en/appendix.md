@@ -4,7 +4,7 @@
 
 | Term | English / Full Name | Description |
 |---|---|---|
-| AIoT | Artificial Intelligence of Things | Deep fusion of AI and IoT — from passive connectivity to active intelligence |
+| AIoT | Artificial Intelligence of Things | Deep integration of AI and IoT, from passive connectivity to active intelligence |
 | MCP | Model Context Protocol | Open standard (Anthropic, 2024) for interaction between AI and external tools and data sources; donated in December 2025 to the Agentic AI Foundation under the Linux Foundation |
 | A2A | Agent2Agent Protocol | Agent-to-agent collaboration protocol proposed by Google in April 2025 and donated to the Linux Foundation in June 2025; complements MCP (agent↔tools) with agent↔agent task delegation and negotiation; discussed in Sections 7.1 and 9.5 |
 | Tool calling | Tool calling | Mechanism by which an LLM invokes external tools (e.g., devices) via function calls |
@@ -13,13 +13,13 @@
 | Thing model | Thing Model / Profile | Abstraction of device capabilities (properties/services/events) that hides protocol differences |
 | Point value | Point Value | Semantically tagged device data point (device ID + timestamp + unit + value) |
 | Agentic Center | Agentic Center | IoT DC3's intelligent decision hub, built on Spring AI |
-| Bounded autonomy | Bounded Autonomy | An agent executes multi-step tasks autonomously within explicit boundaries of permissions, policies, confirmations, and audits; the clearer the boundaries, the more authority can be delegated — safety-critical decisions always remain with humans |
+| Bounded autonomy | Bounded Autonomy | An agent executes multi-step tasks autonomously within explicit boundaries of permissions, policies, confirmations, and audits; the clearer the boundaries, the more authority can be delegated; safety-critical decisions always remain with humans |
 | LPWAN | Low-Power Wide-Area Network | Low-power wide-area network technologies such as NB-IoT and LoRa |
 | RedCap | Reduced Capability | Lightweight 5G (Rel-17) for mid-tier IoT |
 | TSFM | Time Series Foundation Model | Time-series foundation models (e.g., TimesFM, Chronos) for zero-shot forecasting |
 | On-device SLM | Small Language Model (SLM) | A small language model below a few billion parameters that, once quantized, can be pushed down to edge gateways to support lightweight semantic tasks such as device Q&A, alarm summarization, and first-pass work-order screening |
 | Device shadow | Device Shadow | Desired/actual device state maintained by the platform, decoupled from online status |
-| OTA | Over-the-Air Update | Remote over-the-air update of firmware/software; must be paired with signature verification, encrypted transport, and anti-rollback protection — otherwise a single malicious update can compromise devices in batches |
+| OTA | Over-the-Air Update | Remote over-the-air update of firmware/software; must be paired with signature verification, encrypted transport, and anti-rollback protection; otherwise a single malicious update can compromise devices at scale |
 | Edge-cloud collaboration | Edge-Cloud Collaboration | Tiered collaboration: real-time processing at the edge, deep compute in the cloud |
 | RBAC/ABAC | Role/Attribute-Based Access Control | Access control based on roles or attributes |
 | MQTT | Message Queuing Telemetry Transport | Widely adopted publish/subscribe messaging protocol for IoT |
@@ -33,7 +33,7 @@
 | Federated learning | Federated Learning | Mechanism for jointly training a model across parties without uploading raw data |
 | Consortium / permissioned chain | Consortium Chain / Permissioned Chain | A blockchain in which only authorized nodes take part in consensus and read/write; the form jointly governed by several known organizations is called a consortium chain (e.g., Hyperledger Fabric), suited to cross-organization collaboration |
 | Smart contract | Smart Contract | A program deployed on a blockchain that executes automatically once its conditions are met; in IoT, mostly used for on-chain evidence retention and automated trusted execution |
-| Merkle tree | Merkle Tree | A tree structure that aggregates the hashes of a batch of data pairwise, layer by layer, converging to a root hash; verifying a single record takes only a logarithmic path of hashes — well suited to bandwidth-constrained IoT evidence retention |
+| Merkle tree | Merkle Tree | A tree structure that aggregates the hashes of a batch of data pairwise, layer by layer, converging to a root hash; verifying a single record takes only a logarithmic path of hashes, well suited to bandwidth-constrained IoT evidence retention |
 | Oracle | Oracle | A bridge service that delivers off-chain data and events to on-chain smart contracts in a trustworthy manner; its own trustworthiness and degree of decentralization are the key risk points in on-chain decision paths |
 | Zero-knowledge proof (ZKP) | Zero-Knowledge Proof (ZKP) | A cryptographic technique in which a prover convinces a verifier that an assertion is true while revealing nothing beyond the assertion itself; suited to compliance checks of the form "verify the condition holds without exposing the value" |
 | Differential privacy (DP) | Differential Privacy (DP) | Injects quantifiable noise into query results or training gradients so that whether any single record participates cannot be inferred; suited to group statistics, not to single-point control |
@@ -46,7 +46,7 @@
 | RSU/OBU | Roadside Unit / On-Board Unit | Roadside communication unit / in-vehicle communication unit |
 | Edge computing | Edge Computing | Performing computation and decision-making close to the data source |
 | ADR | Architecture Decision Record | A lightweight document recording the context, options, decision, and consequences of an architecture decision, reviewed and evolved together with code changes |
-| MoSCoW | Must / Should / Could / Won't-have | A method that ranks requirements into four tiers — must have, should have, could have, and won't have this time — suited to IoT projects with constrained resources and a clear delivery cadence |
+| MoSCoW | Must / Should / Could / Won't-have | A method that ranks requirements into four tiers (must have, should have, could have, and won't have this time), suited to IoT projects with constrained resources and a clear delivery cadence |
 
 ## B. References
 

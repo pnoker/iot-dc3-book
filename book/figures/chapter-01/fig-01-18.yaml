@@ -83,8 +83,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG实现：左右两列布局。左侧从上到下排列“端侧”和“云侧”，用双向箭头连接。右侧从上到下排列“端侧”、“边缘侧”、“云侧”。边缘侧使用虚线框或不同底色突出其作为推理枢纽的角色。箭头使用不同样式（实线、虚线、点线）和颜色区分数据上传、指令下发和模型更新，并匹配图例说明。
 caption:
-  zh: 图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比。左侧传统架构为两层，数据流和控制流直接往返于端云之间。右侧AIoT新架构引入边缘侧作为实时推理和决策枢纽，端侧与云侧通过边缘侧间接交互，云侧主要负责模型训练与知识更新，并定期将更新下推至边缘侧。
-  en: 'Figure 1-18 Traditional end–cloud IoT architecture versus the AIoT edge–end–cloud collaborative architecture. The traditional architecture on the left has two tiers, with data and control flows passing directly between end and cloud. The AIoT architecture on the right introduces the edge as a hub for real-time inference and decisions: end and cloud interact indirectly through the edge, while the cloud mainly handles model training and knowledge updates, periodically pushing them down to the edge.'
+  zh: 图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比。左侧传统架构两层，数据流与控制流直接往返端云之间；右侧AIoT引入边缘侧作为实时推理与决策枢纽，端侧与云侧通过边缘侧间接交互，云侧主要负责模型训练与知识更新并定期下推。
+  en: 'Figure 1-18 End–cloud IoT vs. edge–end–cloud AIoT. Left: two tiers with data and control flowing directly between end and cloud. Right: AIoT adds the edge — a hub for real-time inference and decisions; end and cloud interact via the edge, and the cloud trains models and pushes updates on a schedule.'
 labels:
   en:
     图1-18 传统物联网端-云架构与AIoT边-端-云协同架构对比: Figure 1-18 End–Cloud IoT vs. Edge–End–Cloud AIoT

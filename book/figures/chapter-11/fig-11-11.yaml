@@ -53,7 +53,7 @@ visual_constraints:
 render_notes: HTML/SVG 渲染，浅色背景，坐标轴带网格线，图例置于右上方，图注置于底部。
 caption:
   zh: 图11-11 假设场景下 50W LED 路灯在典型工作日的功率曲线示例。传统策略定时全亮；DQN 策略根据实时传感器反馈动态调光。实际节电比例因部署路段车流和天气条件而异，但定性上可表明低流量时段的调光节能效果。
-  en: 'Figure 11-11 Example power curves of a 50 W LED streetlight on a typical working day, in a hypothetical scenario. The conventional strategy is timed full-on; the DQN strategy dims dynamically from real-time sensor feedback. Actual savings vary with traffic and weather at the deployment site, but they qualitatively demonstrate the dimming savings achievable in low-traffic hours.'
+  en: 'Figure 11-11 Power curves of a 50 W LED streetlight on a typical working day (hypothetical): conventional timed full-on vs DQN dynamic dimming from sensor feedback; actual savings vary with traffic and weather, but low-traffic dimming savings are qualitatively clear.'
 labels:
   en:
     图11-11 能耗数据对比图（智能照明 vs 传统照明，假设场景）: 'Figure 11-11 Energy Comparison: Smart vs Conventional Lighting (Hypothetical)'

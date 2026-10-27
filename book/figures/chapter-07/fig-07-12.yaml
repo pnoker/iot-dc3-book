@@ -81,9 +81,8 @@ visual_constraints:
 - 企业内部网络边界使用浅色背景区分。
 render_notes: HTML/SVG 渲染，浅色背景从左到右布局，菱形决策节点，实线和虚线箭头分别表示不同路径，底部图例。
 caption:
-  zh: 图 7-12 敏感或简单查询经路由决策留在企业内部网络，由 Ollama/vLLM 等本地引擎推理；复杂任务可出域调用云端模型，出域数据需受允许清单约束。
-  en: Figure 7-12 shows the routing relationships between the Agentic Center and local
-    or cloud inference engines in a private deployment.
+  zh: 图 7-12 私有化与混合部署按敏感度和任务复杂度选择推理后端；当前平台支持按会话选模型，自动策略路由仍需显式实现。
+  en: Figure 7-12 Private and hybrid deployments pick inference backends by sensitivity and task complexity; today the platform selects models per session, and automatic policy routing still needs explicit implementation.
 labels:
   en:
     图 7-12 私有化与混合部署架构: Figure 7-12 Private & Hybrid Deployment Architecture

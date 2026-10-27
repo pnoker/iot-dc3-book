@@ -126,8 +126,8 @@ visual_constraints:
 - 闭环迭代方向用虚线箭头标注，不占用主链路实线。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形模块，层间统一12px间距。智能层内三个模块等宽并排，使用flex布局，模块间用SVG虚线箭头。实线/虚线区分数据流与反馈。整体宽度自适应，最小宽度800px。
 caption:
-  zh: 图2-6 智能层在闭环中的推理-规划-执行分工，展示三个认知环节如何与平台层协同完成数据驱动决策循环。
-  en: 'Figure 2-6 The reasoning–planning–execution division of labor in the intelligence layer, showing how the three cognitive stages work with the platform layer to complete the data-driven decision cycle.'
+  zh: 图2-6 推理、规划、执行三个认知环节经数据中心与管理中心协同完成数据驱动决策循环，不直接操作设备协议。
+  en: Figure 2-6 The three cognitive stages of reasoning, planning, and execution complete the data-driven decision cycle through the data center and management center, never touching device protocols directly.
 labels:
   en:
     图2-6 智能层在闭环中的推理-规划-执行分工: Figure 2-6 Reasoning–Planning–Execution Roles in the Closed Loop

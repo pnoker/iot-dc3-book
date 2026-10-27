@@ -83,8 +83,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG渲染，浅色背景。四层自下而上堆叠，每层使用不同底色（青绿→蓝色→橙色），层名使用粗体白色字体。层间箭头用粗细区分，实线箭头表示数据推送，虚线箭头表示查询请求。
 caption:
-  zh: 图 13-7 原始数据由授权的链下数据服务保存和提供，摘要、签名与状态可写入账本，应用把两者结合完成独立复核。
-  en: 'Figure 13-7 The responsibility boundaries and data flows of the four-layer structure. The edge layer hashes raw sensor data and puts it on-chain, while the raw data stays in edge storage or IPFS. The blockchain network layer is responsible for recording, consensus, and smart-contract execution.'
+  zh: 图 13-7 链下数据服务负责原文访问，账本负责多方可验证的摘要与状态。
+  en: Figure 13-7 The off-chain data service provides originals, while the ledger provides multiparty-verifiable summaries and state.
 labels:
   en:
     图 13-7 基于区块链的供应链溯源系统分层架构: Figure 13-7 Layered Architecture of a Blockchain-Based Supply-Chain Traceability System

@@ -41,14 +41,8 @@ render_notes: 'SVG绘制。TCP/IP区域用蓝色系渐变矩形，万维网用�
 
   箭头使用<path>线宽2px，末端带三角形。虚线框stroke-dasharray=5,5，浅橙色填充。中文标注字号不小于14px。'
 caption:
-  zh: 图 1-6 '主架构展现“用户—桌面PC（浏览器）—万维网—信息内容”四层关系。底层为TCP/IP协议族，提供通信基础。
-
-    右下角用浅橙色虚线框标注传感器、执行器，用断开线强调它们尚未接入互联网。这与当今物联网场景形成鲜明对比——
-
-    在物联网中，这些物设备通过感知层和网络层成为体系的一部分（见第3章和第4章）。
-
-    '
-  en: The main architecture shows the four-part chain of user — desktop PC (browser) — World Wide Web — information content, with the TCP/IP protocol suite underneath providing the communication base. A dashed light-orange box in the lower right marks sensors and actuators, broken lines stressing that they are not yet connected to the Internet. This stands in sharp contrast to today's IoT, where such things become part of the system through the sensing layer and the network layer (see Chapters 3 and 4).
+  zh: 图1-6 PC互联网时代连接架构。主链路为「用户—桌面PC（浏览器）—万维网—信息内容」，底层为 TCP/IP 协议族；右下角虚线框标注传感器 / 执行器尚未接入互联网，与后续物联网场景形成鲜明对比。
+  en: 'Figure 1-6 Connection architecture of the PC-Internet era. Main chain: user — desktop PC (browser) — WWW — content, on a base of the TCP/IP protocol suite; a dashed box marks sensors/actuators as not yet online — a sharp contrast with the IoT scenes that follow.'
 labels:
   en:
     图1-6 PC互联网时代连接架构: Figure 1-6 Connection Architecture of the PC-Internet Era

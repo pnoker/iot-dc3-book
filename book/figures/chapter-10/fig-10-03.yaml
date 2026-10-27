@@ -105,8 +105,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 使用SVG绘制，物理实体与虚拟模型使用蓝色/绿色色系，连接层使用橙色居中，数据与服务与知识使用紫色系。双向箭头使用不同颜色区分数据流与控制流。底部添加图注，附一句话说明：五维模型的核心是连接层——它决定了数字孪生的实时性与可靠性。
 caption:
-  zh: 图 10-3 五维模型架构图。连接层（CN）承载物理实体与虚拟模型之间的状态同步和获准指令；同步精度、时延与可达性须由目标部署验证。模型输出经验证、评测和受控发布后，才可沉淀为服务业务的知识。
-  en: 'Figure 10-3 shows the five-dimension architecture. The connection layer (CN) carries state synchronization and approved commands between the physical entity and virtual model; synchronization accuracy, latency, and reachability require validation in the target deployment. Model output becomes reusable business knowledge only after validation, evaluation, and controlled release.'
+  zh: 图 10-3 连接层承载状态同步与获准指令；模型输出经验证、评测与受控发布后沉淀为知识。
+  en: Figure 10-3 The connection layer carries state synchronization and approved commands; model output becomes knowledge after validation, evaluation, and controlled release.
 labels:
   en:
     图 10-3 数字孪生五维模型架构图: Figure 10-3 Five-Dimension Digital Twin Architecture

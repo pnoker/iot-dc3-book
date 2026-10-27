@@ -23,8 +23,8 @@ legend:
 - 实线箭头=数据上报；虚线箭头=控制指令下发；底部标注短线=安全通道
 render_notes: SVG渲染，宽高比16:5。顶层四模块横向等距排列，间距18%。安全层高度为顶层模块高度40%，完全覆盖底层。采用圆角矩形（r=6px），线宽2px（虚线间隔6px）。配色：感知/传输用#2563EB主蓝，处理用#F97316橙，应用用#8B5CF6紫，安全层用#E2E8F0背景加#94A3B8虚线边框。图标用简单矢量符号，字号：模块中文16px，图例10px。
 caption:
-  zh: 图1-10 物联网系统五要素关系示意
-  en: Figure 1-10 A schematic of how the five elements of an IoT system relate.
+  zh: 图1-10 物联网系统五要素关系示意。数据从感知层经传输层到处理层和应用层，控制指令反向流动，安全机制贯穿全程。
+  en: Figure 1-10 The five elements of an IoT system. Data flows from sensing through transmission to processing and application, control commands flow back, and security runs throughout.
 labels:
   en:
     图1-10 物联网系统五要素关系示意: Figure 1-10 Five Elements of an IoT System

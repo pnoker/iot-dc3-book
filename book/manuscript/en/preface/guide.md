@@ -4,7 +4,7 @@ If "AI agents" is what drew you to this book, let me first ask you not to start 
 
 In a real system, what an agent can read depends on whether devices are already connected and whether the data is continuous and trustworthy; what it can do depends on which tools the platform has opened up, and what permissions and constraints it sets. Without these foundations, any discussion of intelligence is likely to remain at the demo stage.
 
-So this book begins with industrial software and IoT platforms. Part I first looks at how devices, networks, and data form a complete end-to-end chain, and explains what boundaries traditional industrial software left behind. In Part II we discuss how a cloud-native architecture carries a growing population of devices and services, and how AI agents take part in this system within security boundaries. Part III brings all of it back to industry, cities, agriculture, and other scenarios, and closes with IoT DC3 — tracing one platform's step-by-step path from protocol access to agent applications.
+So this book begins with industrial software and IoT platforms. Part I first looks at how devices, networks, and data form a complete end-to-end chain, and explains which boundaries traditional industrial software failed to close. In Part II we discuss how a cloud-native architecture carries a growing population of devices and services, and how AI agents take part in this system within security boundaries. Part III brings all of it back to industry, cities, agriculture, and other scenarios, and closes with IoT DC3, tracing one platform's step-by-step path from protocol access to agent applications.
 
 You don't need to memorize every protocol and framework on a first read. What deserves attention is what problem each layer solves, what it depends on, and what capability it hands to the layer above. Hold on to that thread, and even as specific technologies change, you will still know where to begin in understanding an IoT system.
 
@@ -12,14 +12,14 @@ As for prerequisites: you don't need IoT project experience, nor do you need to 
 
 ## The Four Words
 
-The four words on the cover — Sense, Reason, Act, Evolve — are not slogans. They are the engineering loop this book keeps returning to, and each word pairs a capability with a boundary:
+The four words on the cover (Sense, Reason, Act, Evolve) are not slogans. They are the engineering loop this book keeps returning to, and each word pairs a capability with a boundary:
 
-- **Sense**: the physical world can only be known through signals. The capability is turning physical states into data; the boundary is that signals drift, drop out, and can be forged — so sensing must be trustworthy. Chapters 3–5 build this layer: thing models, unified access, and the data pipeline.
-- **Reason**: signals mean nothing until they are interpreted. The capability is letting machines understand semantics and produce judgments; the boundary is that reasoning is probabilistic — it proposes candidates, it does not decide. Chapter 7 and Section 9.5 build this layer.
-- **Act**: physical actions cannot be undone and carry safety costs — the essential difference from purely digital systems. The capability is carrying a judgment back into the physical world; the boundary is determinism — confirmation, permissions, rollback, and audit are all required. Section 2.2, Section 7.5, Chapter 8, and Section 10.4 develop this layer.
-- **Evolve**: capability never arrives all at once. The capability is the loop gaining authority level by level as the architecture grows; the boundary is reversibility — every step up must first be proven sound by new constraints. Sections 7.5 and 14.4 give this timeline.
+- **Sense**: the physical world can only be known through signals. The capability is turning physical states into data; the boundary is that signals drift, drop out, and can be forged: sensing must therefore be trustworthy. Chapters 3–5 build this layer: thing models, unified access, and the data pipeline.
+- **Reason**: signals mean nothing until they are interpreted. The capability is letting machines understand semantics and produce judgments; the boundary is that reasoning is probabilistic: it proposes candidates; it does not decide. Chapter 7 and Section 9.5 build this layer.
+- **Act**: physical actions cannot be undone and carry safety costs — the essential difference from purely digital systems. The capability is carrying a judgment back into the physical world; the boundary is determinism: confirmation, permissions, rollback, and audit are all required. Section 2.2, Section 7.5, Chapter 8, and Section 10.4 develop this layer.
+- **Evolve**: capability never arrives all at once. The capability is the loop gaining authority level by level as the architecture grows; the boundary is reversibility: every step up must first be proven sound by new constraints. Sections 7.5 and 14.4 give this timeline.
 
-Sense, Reason, and Act form one loop; Evolve is the way that loop unfolds over time. The closing section of each chapter returns to these four words — if you remember only one of them after finishing the book, the chapters behind it are worth rereading.
+Sense, Reason, and Act form one loop; Evolve is the arc that loop traces over time. The closing section of each chapter returns to these four words; if you remember only one of them after finishing the book, the chapters it stands for are worth rereading.
 
 
 
@@ -34,4 +34,4 @@ The book follows one continuous technical path, but not every reader needs to re
 
 Running the system in this book requires only a development machine with Docker (or Podman) and Compose. If you build from source, prepare JDK 21 and the other tools specified by the repository README. Chapter 14 provides a versioned acceptance sequence tied to a specific commit. It uses the Virtual Driver by default to verify business registration, data uplink, and command receipts, so no additional MQTT broker or `mosquitto_pub` is required. Commands, ports, and runtime IDs must come from the README, Compose files, and actual responses of the current checkout; do not copy them across versions unchanged.
 
-The code, figures, and case studies in this book exist to illustrate mechanisms and trade-offs. As you read, keep asking: which layer this technology actually solves a problem for, and do the conditions it relies on hold in your own scenario?
+The code, figures, and case studies in this book exist to illustrate mechanisms and trade-offs. As you read, keep asking: which layer does this technology actually solve a problem for, and do the conditions it relies on hold in your own scenario?

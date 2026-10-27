@@ -61,8 +61,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: HTML/SVG渲染。浅色背景，四条横向泳道。通过节点用绿色菱形，未通过用红色菱形。箭头线用实线（通过时绿色、未通过时红色虚线）。终端节点为蓝色圆角矩形。图例以表格形式放在图下方，图11-12标题居中在图上。
 caption:
-  zh: 图11-12 四个检查域须串行递进：设备制式与接口兼容最先锁定，网关压测、PKI证书与数据总线灾备依次通过后，方可部署上线。
-  en: 'Figure 11-12 The four check domains proceed serially: device compatibility is locked first, then gateway stress tests, PKI certificates, and bus/disaster-readiness, before deployment can go live.'
+  zh: 图11-12 智慧交通系统集成部署工程检查流程：四条泳道须串行递进——先验设备制式与接口兼容，再验网关压测与QoS，继而PKI证书与签名，最后总线与灾备就绪方可上线；任一检查未通过即返回本节点修正。
+  en: Figure 11-12 Four swimlanes run in series — device compatibility, gateway stress & QoS, PKI certificates & signatures, then bus and disaster readiness before go-live; failures loop back for local correction.
 labels:
   en:
     图11-12 智慧交通系统集成部署工程检查流程: 'Figure 11-12 Deployment Checklist Flow for Smart Transportation'

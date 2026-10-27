@@ -79,8 +79,8 @@ visual_constraints:
 - “三个闭环路径需使用不同类型的高亮色区分，避免视觉混淆。”
 render_notes: “推荐使用 SVG 渲染。画布尺寸：960×640 px。云层置于 Y=0~160 区域，边层置于 Y=160~400 区域，端层置于 Y=400~640 区域。节点间连线宽度 2px，高亮路径宽度 4px 加描边效果。图例置于右下角 200×200 区域，字体大小 12px。”
 caption:
-  zh: 图11-13（Project Horizon示意）端-边-云三层结构中，边缘节点承担推理与控制闭环，云层负责模型训练与跨部门协同。
-  en: 'Figure 11-13 Deployment architecture of the new-district city brain (Project Horizon, illustrative). A three-tier device-edge-cloud structure in which edge nodes own inference and control loops while the cloud layer handles model training and cross-department coordination.'
+  zh: 图11-13 交通感知经边缘推理就地执行信号相位闭环，路灯能耗优化走双向闭环；应急上报与协同指令经云端应急平台路由，训练在云、推理在边缘分层协同。
+  en: Figure 11-13 Edge inference closes the signal loop locally; streetlights run a two-way energy loop; emergencies route through the cloud — training in cloud, inference at edge.
 labels:
   en:
     图11-13 新区城市大脑系统部署架构图: 'Figure 11-13 New-District City Brain Deployment'

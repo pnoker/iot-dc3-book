@@ -107,7 +107,7 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 使用统一的浅色背景，圆角矩形标签，箭头带文字标签。客户端和服务端使用不同颜色区分。消息类型使用等宽字体。
 caption:
-  zh: 图8-6 TLS 1.3握手流程（含示意性的双向认证）：展示从ClientHello到应用数据全加密的主要步骤。
+  zh: 图8-6 TLS 1.3 握手流程（含示意性的双向认证）：展示从 ClientHello 到应用数据全加密的主要步骤。
   en: Figure 8-6 The TLS 1.3 handshake (with an illustrative mutual authentication), showing the main steps from ClientHello to fully encrypted application data.
 labels:
   en:

@@ -87,7 +87,7 @@ visual_constraints:
 render_notes: 使用SVG或HTML渲染，层级清晰，箭头方向明确。颜色按图例标注，圆角矩形，统一间距。
 caption:
   zh: 图4-2 LoRaWAN网络架构示意。终端通过LoRa射频连接网关，网关透明转发至网络服务器，应用服务器通过API与NS交互。
-  en: 'Figure 4-2 LoRaWAN network architecture. End devices connect to gateways over LoRa radio, gateways transparently forward frames to the Network Server, and the Application Server interacts with the NS via APIs.'
+  en: Figure 4-2 LoRaWAN network architecture. End devices connect to gateways via LoRa radio, gateways transparently forward to the Network Server, and the Application Server interacts with the NS via APIs.
 labels:
   en:
     图4-2 LoRaWAN网络架构示意: 'Figure 4-2 LoRaWAN Network Architecture'

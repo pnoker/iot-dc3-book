@@ -54,8 +54,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: 采用多层矩形叠加布局，从左至右按“感知层 -> 网络层 -> 平台层 -> 应用层”排列，各层内嵌入对应设备图标（传感器、网关、服务器、操作终端），用实线箭头标明数据流方向，虚线箭头标明控制流方向。感知层内部可适当标注三种传感器使用的短距协议（BLE、ZigBee），网络层标注 5G/NB-IoT 双连接。平台层可标注“时序数据库 + 趋势分析模型”字样。
 caption:
-  zh: 图 1-8 示意一场智慧工厂的物联连接拓扑。边缘网关汇聚数据，云侧模型形成设备失效风险判断；告警可以直接通知，而减速等设备写动作须经权限、策略、确认与审计后下发，并以设备回执或状态回读验证闭环。
-  en: Figure 1-8 illustrates an IoT topology for a smart factory. The edge gateway aggregates data and a cloud model produces equipment-failure risk assessments. Alerts may notify directly, while device writes such as slowdown commands require authorization, policy checks, confirmation, and audit, followed by a device receipt or state readback to verify closure.
+  zh: 图1-8 智慧工厂设备连接拓扑示意。边缘网关汇聚数据，云侧模型形成风险判断；告警可直接通知，设备写动作经策略、确认与审计后下发，并以设备回执或状态回读验证闭环。
+  en: Figure 1-8 Smart-factory device topology. The edge gateway aggregates data and the cloud model produces a risk assessment; alerts may notify directly, while device writes require policy, confirmation, and audit, followed by a device receipt or state readback to verify closure.
 labels:
   en:
     图1-8 智慧工厂设备连接拓扑示意: Figure 1-8 Smart-Factory Device Connection Topology

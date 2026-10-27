@@ -80,7 +80,7 @@ visual_constraints:
 render_notes: 使用div.row flex布局，每层背景颜色递进。设备用SVG图标（如fa-water、fa-wi-fi等）表示。每个设备下方绘制纵向箭头和文字标签框。最底层添加平台图标和警告标签。整体色调偏冷灰蓝，适配层淡蓝边框以示强调。无真实设备供应商Logo或型号，仅使用占位图标。
 caption:
   zh: 图4-5 多种协议设备的接入困境示意图。每增加一种协议，都要新增对应适配器，并在解析、模型映射与指令处理等跨层环节重复投入。
-  en: 'Figure 4-5 The access dilemma of multi-protocol devices. Each additional protocol requires a new adapter and repeated investment in cross-layer work such as parsing, model mapping, and command handling.'
+  en: Figure 4-5 The access dilemma of multi-protocol devices. Each new protocol demands a new adapter and repeated investment in parsing, model mapping, and command handling.
 labels:
   en:
     图4-5 多种协议设备的接入困境: 'Figure 4-5 The Multi-Protocol Access Dilemma'

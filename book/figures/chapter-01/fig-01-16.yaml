@@ -76,8 +76,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: 使用SVG绘制，色彩方案：左侧蓝色系，右侧橙色系；用户确认节点用黄色高亮，并在其下方标注“高风险动作确认”；顶部增加“用户输入”入口区域的对比标签；左侧底部加虚线区标注“规则冲突风险随规模增长”，右侧底部加虚线区标注“推理延迟避免用于实时闭环”。字体使用无衬线体，字号：标题14px，其余12px。两列之间用带箭头的渐变弧线连接，弧线上标注“范式转变”。
 caption:
-  zh: 图1-16 传统物联网与大模型驱动物联网的对比示意。左侧为规则驱动的“感知-响应”模式，右侧为推理驱动的“理解-决策-确认”模式。大模型在决策层增加上下文理解和概率推理的能力，同时引入了执行前二次确认的安全机制。
-  en: Figure 1-16 Traditional IoT versus LLM-driven IoT. The left side shows the rule-driven sense–respond mode; the right side shows the reasoning-driven understand–decide–confirm mode. Large models add contextual understanding and probabilistic reasoning at the decision layer, while introducing the safety mechanism of a second confirmation before execution.
+  zh: 图1-16 传统物联网与大模型驱动物联网的对比示意。左侧为规则驱动的「感知-响应」模式，右侧为推理驱动的「理解-决策-确认」模式。大模型在决策层增加上下文理解与概率推理，并引入执行前二次确认的安全机制。
+  en: 'Figure 1-16 Traditional IoT vs. LLM-driven IoT. Left: the rule-driven sense–respond mode. Right: the reasoning-driven understand–decide–confirm mode. Large models add contextual understanding and probabilistic reasoning at the decision layer, plus a pre-execution confirmation safeguard.'
 labels:
   en:
     图1-16 传统物联网与大模型驱动物联网的对比: Figure 1-16 Traditional IoT vs. LLM-Driven IoT

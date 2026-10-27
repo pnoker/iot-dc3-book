@@ -89,7 +89,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，参与者列于顶部，生命线向下延伸，实线箭头表示同步消息，内部处理使用自指虚线箭头。
 caption:
   zh: 图11-5 自动化链路的关键在于边缘节点完成本地判定（第2步），云端协同层完成自动事件路由（第4步），两地均无人工转接环节。
-  en: 'Figure 11-5 The key to the automated chain is local judgment at the edge node (step 2) and automatic event routing at the cloud coordination layer (step 4); neither step involves a manual hand-off.'
+  en: Figure 11-5 Local judgment at the edge node (step 2) and automatic routing in the cloud (step 4) — no manual hand-offs at either point.
 labels:
   en:
     图11-5 火灾应急响应事件流转时序（假设场景）: 'Figure 11-5 Fire Response Event Sequence (Hypothetical)'

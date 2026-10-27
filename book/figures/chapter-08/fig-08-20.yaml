@@ -218,8 +218,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: '建议使用 SVG 绘制。画布尺寸 700×480px。两列布局，每列 3 个矩形垂直排列。每个圆角矩形尺寸 200×60px，圆角半径 10px。左侧批量填充 #e3f2fd（浅蓝），边框 #1976d2。右侧批量填充 #f3e5f5（浅紫），边框 #7b1fa2。矩形内文字 14px 黑体。每个矩形右侧连接一个小圆圈（直径 22px），圆圈内标注参考资料的支撑类型标签（如 核心支撑），字体 11px Consolas，填充 #fff3e0，边框 #ef6c00。连线从圆圈引出，终点指向矩形右侧边。箭头和标签使用 12px 微软雅黑，颜色 #616161。避免重叠，必要时加曲线路径。左上角加标题 "本章参考资料分类导图"，字号 16px 黑体，颜色 #333。'
 caption:
-  zh: 图 8-20 本图将 8.7 节参考资料按安全主题域分类映射。左侧为设备层安全（硬件、通信、协议），右侧为平台与数据层安全（权限、AI、测试），从上到下覆盖从物理层到应用层的全栈。
-  en: This figure maps the references in Section 8.7 to security theme domains. The left side covers device-layer security (hardware, communication, protocols), the right side platform- and data-layer security (permissions, AI, testing), spanning the full stack from the physical layer to the application layer.
+  zh: 图8-20 研究资料包中的 12 条参考资料按安全主题域分类映射：左侧为设备层安全（硬件、通信、协议），右侧为平台与数据层安全（权限、AI、测试），覆盖从物理层到应用层的全栈。
+  en: 'Figure 8-20 The 12 references in the research pack mapped to security theme domains: device-layer security on the left (hardware, communication, protocols), platform- and data-layer security on the right (permissions, AI, testing), covering the full stack from physical to application layers.'
 labels:
   en:
     图8-20 本章参考资料分类导图: Figure 8-20 Chapter References Classification Map

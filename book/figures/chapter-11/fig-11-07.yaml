@@ -198,8 +198,8 @@ visual_constraints:
 - 使用圆角矩形图标，箭头带短标签。
 render_notes: HTML/SVG渲染，浅色背景，层用嵌入式背景框区分，节点间距适当，确保文字在移动端可读。箭头颜色与源节点一致，虚线用stroke-dasharray。图注置于底部。
 caption:
-  zh: 图11-7 展示设备层、消息队列、流处理层与存储服务层之间的数据流动。设备上报到Kafka，Flink消费后聚合写入Redis/时序DB；AI推理微服务通过RocketMQ接收控制指令。
-  en: 'Figure 11-7 Data flows between the device layer, message queues, stream processing, and the storage/service layer. Devices report to Kafka; Flink consumes, aggregates, and writes to Redis and the time-series database; the AI inference microservice receives control commands through RocketMQ.'
+  zh: 图11-7 展示设备层、消息队列、流处理层与存储服务层之间的数据流动：设备上报到Kafka，Flink消费后聚合写入Redis/时序DB；Kafka traffic 同时被 Spark 与 AI 可选消费，体现单流多消费；控制指令经 RocketMQ 事务管道直达 AI 推理微服务，两条通道隔离互不干扰。
+  en: 'Figure 11-7 Data flows across devices, queues, stream processing, and storage: devices report to Kafka; Flink consumes and writes to Redis/TSDB; Kafka traffic is optionally consumed by Spark and AI (one stream, many consumers); control commands reach the AI service via RocketMQ transactions, isolated from the data path.'
 labels:
   en:
     图11-7 城市物联网消息队列与数据流处理架构: 'Figure 11-7 City IoT Messaging & Stream Processing'

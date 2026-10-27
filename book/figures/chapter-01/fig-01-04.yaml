@@ -15,7 +15,7 @@ relationships:
 render_notes: 左右对照，左侧裂缝用红/橙/紫，右侧补足用蓝/青/绿，中间蓝色跃迁箭头。完整 HTML 见 figures/chapter-01/fig-01-04.html。
 caption:
   zh: 图1-4 从工业软件到物联网平台：架构跃迁的动力。三条裂缝驱动的「向前一步」——数据归一、能力开放、闭环自动化，把以人为中心的信息架构升级为以数据-智能为中心。
-  en: 'Figure 1-4 From industrial software to the IoT platform: the force behind the leap. The "step forward" driven by three cracks — unified data, open capabilities, closed-loop automation — upgrading a human-centered information architecture into one centered on data and intelligence.'
+  en: Figure 1-4 The force behind the leap. The step forward driven by three cracks — unified data, open capabilities, closed-loop automation — upgrades a human-centered information architecture into one centered on data and intelligence.
 labels:
   en:
     图1-4 从工业软件到物联网平台：架构跃迁的动力: Figure 1-4 From Industrial Software to the IoT Platform

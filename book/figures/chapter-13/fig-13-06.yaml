@@ -44,8 +44,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 错位排列，每对映射下方可附加简短文字说明。采用HTML/SVG渲染，圆角矩形，背景浅色。
 caption:
-  zh: 图 13-6 共享账本、签名、事件日志与合约可作为跨组织协作的候选工具，但不会自动解决数据源真实性和治理风险。
-  en: 'Figure 13-6 In supply-chain collaboration, trust is the core obstacle. Blockchain offers a decoupling solution through decentralized sharing and tamper-proof records.'
+  zh: 图 13-6 账本是跨组织协作的候选工具，不自动消除数据源和治理风险。
+  en: Figure 13-6 A ledger is a candidate tool for cross-organization collaboration, not an automatic fix for source-data or governance risks.
 labels:
   en:
     图 13-6 供应链核心痛点与区块链价值点映射: Figure 13-6 Mapping Supply-Chain Pain Points to Blockchain Value

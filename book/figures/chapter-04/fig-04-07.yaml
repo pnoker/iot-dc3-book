@@ -84,7 +84,7 @@ visual_constraints:
 render_notes: 四个纵向堆叠的方框，宽度一致，高度均匀。层间用实线分隔，接口标注在箭头旁。色盘按legend分配。
 caption:
   zh: 图4-7 统一接入层通过四层解耦将协议差异逐层收口，上层对下层是调用依赖，下层对上层通过回调上送数据。
-  en: 'Figure 4-7 Through four decoupled layers, the unified access layer funnels protocol differences downward: upper layers depend on lower layers via calls, and lower layers deliver data upward via callbacks.'
+  en: 'Figure 4-7 The unified access layer funnels protocol differences layer by layer through four decoupled layers: upper layers call the layers below, and lower layers push data up through callbacks.'
 labels:
   en:
     图4-7 统一接入层四层架构: 'Figure 4-7 Unified Access Layer: Four-Layer Architecture'

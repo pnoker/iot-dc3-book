@@ -15,7 +15,7 @@ relationships:
 render_notes: 左侧金字塔轮廓 + 三道裂缝标注（红/橙/紫），右侧三卡片详解，底部引出跃迁。完整 HTML 见 figures/chapter-01/fig-01-03.html。
 caption:
   zh: 图1-3 工业软件的结构性局限：三条裂缝。数据被层级隔断、规则写死在代码里、系统封闭为孤岛，共同驱动了从工业软件到物联网平台的架构跃迁。
-  en: 'Figure 1-3 The structural limits of industrial software: three cracks. Data partitioned by levels with human-mediated linkage, rules hard-coded against a changing world, closed systems barring external intelligence — together these drive the leap toward the IoT platform.'
+  en: 'Figure 1-3 The structural limits of industrial software: three cracks. Data partitioned by levels, rules hard-coded in software, systems closed as islands — together they drive the architectural leap from industrial software to the IoT platform.'
 labels:
   en:
     图1-3 工业软件的结构性局限：三条裂缝: 'Figure 1-3 Structural Limits: Three Cracks'

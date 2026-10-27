@@ -12,8 +12,8 @@ relationships:
 - 触发器设计大小位置可调,选择小面积不显眼图案增加隐蔽性。
 render_notes: 标准流程图布局,上下并行分支,混合训练节点汇合;绿/红色区分正常与后门路径。
 caption:
-  zh: 图8-14 后门攻击的关键是触发器设计与毒化样本注入:模型经 OTA 分发到边缘设备后,后门一旦植入清理成本极高,且少量毒化样本常规测试集难以检出。
-  en: 'Figure 8-14 The key to backdoor attacks is trigger design and poisoned-sample injection: once models are distributed via OTA to edge devices, an implanted backdoor is extremely costly to remove, and small amounts of poisoned samples are hard to detect with standard test sets.'
+  zh: 图8-14 后门攻击的关键是触发器设计与毒化样本注入undefined25型经 OTA 分发到边缘设备后undefined42门一旦植入清理成本极高undefined55少量毒化样本常规测试集难以检出。
+  en: 'Figure 8-14 The key to backdoor attacks is trigger design and poisoned-sample injection: once distributed via OTA to edge devices, an implanted backdoor is extremely costly to remove, and small amounts of poisoned samples are hard to detect with standard test sets.'
 labels:
   en:
     图8-14 后门攻击流程图: Figure 8-14 Backdoor Attack Flow

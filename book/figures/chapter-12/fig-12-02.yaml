@@ -68,8 +68,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG渲染，浅色背景。底层所有绿色圆点分布在二维平面（代表农田）上，各圆点与中心橙色网关的物理距离不完全相等，以模拟真实地形。每根虚线从节点出发均指向同一个网关，确保‘星型’关系可视化。点击某个终端节点或网关，可弹出提示框，显示其ID、最近一次上报时间、电池电压。图例置入左下角浮动的半透明灰框内。图题置于图片正下方居中加粗显示。
 caption:
-  zh: 图 12-2 环境传感网络部署拓扑示意，展示了从终端节点到云平台的星型连接关系。
-  en: Figure 12-2 Deployment topology of an environmental sensor network, showing the star-shaped connection between end nodes and the cloud platform.
+  zh: 图 12-2 星型单跳免去终端维护中继路由，终端得以长休眠、电池长期运行；数据经 LoRa 上行至网关后由 4G/有线回传，自下而上汇入云平台数据资产域。
+  en: Figure 12-2 The star one-hop design frees end nodes from relay routing, enabling long sleep and multi-year battery life; data rises over LoRa to the gateway, is backhauled via 4G/wired links, and converges upward into the cloud data asset domain.
 labels:
   en:
     图 12-2 环境传感网络部署拓扑示意: Figure 12-2 Environmental Sensor Network Deployment Topology

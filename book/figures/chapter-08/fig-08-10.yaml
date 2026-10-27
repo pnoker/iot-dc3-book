@@ -174,8 +174,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: '|'
 caption:
-  zh: 图 8-10 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估。
-  en: 'The problem in most projects is confusing masking with anonymization: a single layer of masking is treated as anonymized and published, causing re-identification risk leaks. The difference is that strong anonymization must pass a re-identification risk assessment.'
+  zh: 图8-10 大多数项目的问题在于混淆脱敏和匿名化：做了一层掩盖就当成匿名化发布，导致重识别风险泄露。差异在于强匿名化必须通过重识别风险评估。
+  en: 'Figure 8-10 The problem in most projects is confusing masking with anonymization: a single layer of masking gets published as anonymized, leaking re-identification risk; strong anonymization must pass a re-identification risk assessment.'
 labels:
   en:
     图8-10 数据脱敏与匿名化决策流程: Figure 8-10 Data Masking vs Anonymization Decision Flow

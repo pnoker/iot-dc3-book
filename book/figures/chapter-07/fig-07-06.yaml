@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，四层纵向堆叠，灰/蓝/绿/橙四色分层，左侧竖排层名。
 caption:
   zh: 图 7-6 RAG 评测拆为数据集、检索、生成、端到端四层，各层用独立指标定位问题；失败分类对应不同修复入口，比单一综合分数更能指导工程改进。
-  en: Figure 7-6 RAG evaluation splits into four layers — dataset, retrieval, generation, and end-to-end — each with independent metrics to locate problems; failure classes map to different fix entry points and guide engineering better than a single overall score.
+  en: Figure 7-6 RAG evaluation splits into dataset, retrieval, generation, and end-to-end layers, each with its own metrics; failure classes map to different fix entry points and guide engineering better than a single overall score.
 labels:
   en:
     图 7-6 RAG Eval 分层评测: Figure 7-6 Layered RAG Evaluation

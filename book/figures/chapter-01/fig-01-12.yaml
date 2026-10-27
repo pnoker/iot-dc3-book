@@ -74,7 +74,7 @@ visual_constraints:
 render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，箭头带短标签，底部图例。
 caption:
   zh: 图1-12 RFID 系统基本组成：标签、读写器与后台系统的物理/逻辑关系。
-  en: 'Figure 1-12 The basic composition of an RFID system: the physical and logical relationships among tags, readers, and the backend system.'
+  en: 'Figure 1-12 Basic composition of an RFID system: the physical and logical relations among tags, readers, and the backend.'
 labels:
   en:
     图1-12 RFID 系统基本组成: Figure 1-12 Basic Composition of an RFID System

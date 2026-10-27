@@ -26,8 +26,8 @@ legend:
 - 红色：永久禁止越过的控制边界
 render_notes: 遵循 style.yaml 浅色技术出版风格。四阶段等宽排列，阶段间闸门不与箭头重叠。当前覆盖范围使用绿色顶部括号标记，L2/L3 使用蓝色；底部红色安全基线贯穿全图。
 caption:
-  zh: 图 7-15 IoT DC3 工业 Agent Runtime 四级演进路线。平台先证明能安全读取，再证明能受控写入，随后补齐 Workflow 与恢复能力，最后才进入有界自治；自主度由证据获得，而不是由模型名称决定。
-  en: 'Figure 7-15 The four-level evolution path of the IoT DC3 industrial AI agent Runtime. The platform first proves it can read safely, then that it can write under control, then completes workflow and recovery capabilities, and only afterward enters bounded autonomy; autonomy is earned through evidence, not decided by a model''s name.'
+  zh: 图 7-15 自主度通过权限、状态、恢复、评测与故障演练逐级获得；高风险安全联锁在所有阶段都不开放。
+  en: Figure 7-15 Autonomy is earned level by level through permissions, state, recovery, evaluation, and failure drills; high-risk safety interlocks stay closed at every stage.
 labels:
   en:
     图 7-15 IoT DC3 工业 Agent Runtime 四级演进路线: 'Figure 7-15 IoT DC3 Industrial AI Agent Runtime: four-level roadmap'

@@ -118,8 +118,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: HTML/SVG渲染，浅色背景，流程穿越表示使用折线，避免交叉。关键节点加粗边框，箭头带文字标签。
 caption:
-  zh: 图 13-4 展示数据从传感器采样到链下存储和链上存证，最终验证方通过两侧数据比对确认完整性的典型流程。
-  en: 'Figure 13-4 The typical flow in which data sampled by sensors goes to off-chain storage and on-chain attestation, and the verifier finally confirms integrity by comparing data from both sides.'
+  zh: 图 13-4 数据从传感器采样后，原始数据存链下、哈希指纹存链上，验证方通过两侧数据比对确认完整性。
+  en: Figure 13-4 Raw data off-chain, hash fingerprints on-chain; the verifier compares both to confirm integrity.
 labels:
   en:
     图 13-4 数据上链流程图: Figure 13-4 Data On-Chain Flow

@@ -15,8 +15,8 @@ relationships:
 - 获准工具调用进入确定性设备链路，模型不得绕过控制器与安全联锁。
 render_notes: 五层架构,输入/输出过滤器用菱形,模型层内嵌条形图,审计日志侧挂;攻击路径红色,正常路径绿色。
 caption:
-  zh: 图8-16 模型只生成候选行动，独立治理器通过鉴权、参数、策略与必要确认决定能否执行；解释信息辅助复核，审计证据贯穿输入、推理、治理、执行与回执。
-  en: Figure 8-16 The model produces candidate actions only. An independent governor decides whether they may execute through authorization, parameter and policy validation, and confirmation where required; explanations support review, while audit evidence spans input, inference, governance, execution, and receipt.
+  zh: 图8-16 模型生成候选行动，独立治理器决定能否执行；解释信息辅助复核，审计证据贯穿全链路。
+  en: Figure 8-16 The model proposes actions and an independent governor decides whether they may execute; explanations support review and audit evidence spans the chain.
 labels:
   en:
     图8-16 LLM 候选行动的安全与可解释性架构: 'Figure 8-16 Security and Explainability for LLM-Proposed Actions'

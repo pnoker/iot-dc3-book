@@ -117,8 +117,8 @@ visual_constraints:
 - 现场层三个子功能区用虚线方框区分，不额外增加节点。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，12px间距。箭头带文字标签。现场层内三个功能区不单独作为组件，仅用虚线框表示。
 caption:
-  zh: 图 3-6 展示UHF RFID在仓储场景中固定式门禁与手持终端配合使用的典型部署模式。示意场景：固定式读写器在数秒内可批量读取通过门禁的货物标签。
-  en: Figure 3-6 A typical UHF RFID deployment pattern for warehouses, combining fixed portals with handheld terminals. In the illustrated scene, a fixed reader batch-reads the tags of all goods passing through the portal within seconds.
+  zh: 图 3-6 RFID 标签经固定式读写器或手持终端汇入中间件，三路入口共享同一 WMS 业务台账。
+  en: Figure 3-6 RFID tags flow into the middleware via fixed readers or handheld terminals; all three entry points share the same WMS inventory ledger.
 labels:
   en:
     图 3-6 RFID在智能仓储中的应用拓扑示意: Figure 3-6 RFID Topology in a Smart Warehouse

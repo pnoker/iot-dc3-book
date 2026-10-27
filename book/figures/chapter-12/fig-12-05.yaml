@@ -14,7 +14,7 @@ relationships:
 render_notes: HTML/SVG 渲染，左右并列对比，蓝/绿区分两条路线，底部评估指标卡片。
 caption:
   zh: 图 12-5 产量预测有两条路线：ARIMA 只利用产量自身历史值、可解释性强；LSTM 融合温度、降水、土壤湿度、生长天数多变量、能捕捉非线性关系，两条路线最终都以 RMSE、MAE 评估。
-  en: 'Figure 12-5 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables such as temperature, rainfall, soil moisture, and growing days and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'
+  en: 'Figure 12-5 Yield prediction has two routes: ARIMA uses only the historical values of yield itself and is highly interpretable; LSTM fuses multiple variables — temperature, rainfall, soil moisture, and growing days — and captures nonlinear relationships. Both routes are finally evaluated with RMSE and MAE.'
 labels:
   en:
     图 12-5 产量预测：ARIMA 与 LSTM 两条路线对比: 'Figure 12-5 Yield Prediction: ARIMA vs. LSTM'

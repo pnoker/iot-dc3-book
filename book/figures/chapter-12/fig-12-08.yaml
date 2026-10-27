@@ -59,8 +59,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG 渲染，浅色背景，半透明网格，图例位于右上角，支持 hover 显示具体评分说明。
 caption:
-  zh: 图 12-8 六维度雷达图对比，各轴评分为定性相对值，非绝对性能指标。
-  en: Figure 12-8 A six-dimension radar comparison; scores on each axis are qualitative relative ratings, not absolute performance metrics.
+  zh: 图 12-8 三项技术在覆盖与成本上接近，主要差异在速率、功耗与生态开放性：LoRa 生态开放居中，NB-IoT 速率优先，Sigfox 功耗优先。
+  en: 'Figure 12-8 The three technologies are close on coverage and cost; they differ mainly in rate, power, and ecosystem openness: LoRa is open and balanced, NB-IoT prioritizes rate, Sigfox prioritizes power.'
 labels:
   en:
     图 12-8 LoRa / NB-IoT / Sigfox 技术维度对比雷达图: Figure 12-8 LoRa / NB-IoT / Sigfox Radar Comparison

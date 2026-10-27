@@ -56,8 +56,8 @@ visual_constraints:
 - 优先表达边界和主链路，不把所有概念塞进一张图。
 render_notes: HTML/SVG 渲染，水平布局，从左至右绘制主要实体和方框，实体间用带箭头的直线连接。左端矩形‘CoAP Client’右侧紧接矩形‘OSCORE 处理’，之后画一条粗箭线表示网络链路（可加虚线表示 UDP）。右端矩形‘CoAP Server’内部再划出一个子矩形‘OSCORE 反处理’。从该子矩形右侧分出两条分支线：一条向上指向文档图标，一条向下指向错误图标。各箭头旁标注相应文字。附注框以虚线边框矩形置于相应分支终点处。
 caption:
-  zh: 图8-7 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 一次生成密文和认证标签；接收方先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新。重放或认证失败时丢弃消息，并按规范处理需要返回的错误。
-  en: Figure 8-7 OSCORE derives the nonce and AAD from the security context and uses AEAD to produce the ciphertext and authentication tag in one pass; the receiver first pre-checks the replay window, then performs AEAD verification and decryption, and commits the window update only on success. On replay or authentication failure the message is dropped, and required error responses are handled per the specification.
+  zh: 图8-7 OSCORE 从安全上下文派生 nonce 与 AAD，由 AEAD 一次生成密文和认证标签；接收方先做重放窗口预检查，再完成 AEAD 验证解密，仅在成功后提交窗口更新，失败则丢弃并按 RFC 8613 返回错误。
+  en: Figure 8-7 OSCORE derives the nonce and AAD from the security context and uses AEAD to produce ciphertext and tag in one pass; the receiver pre-checks the replay window, then verifies and decrypts, committing the window update only on success — on failure the message is dropped and errors are returned per RFC 8613.
 labels:
   en:
     图8-7 CoAP 的 OSCORE 安全处理流程示意: Figure 8-7 OSCORE Security Processing for CoAP

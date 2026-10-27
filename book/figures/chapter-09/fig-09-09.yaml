@@ -146,7 +146,7 @@ visual_constraints:
 - 图例放在底部，不遮挡时序线。
 render_notes: HTML/SVG 渲染，浅色背景，时间线自上而下，参与者列在左侧，消息线用直角折线段，箭头上标注标签。
 caption:
-  zh: 图 9-9 MCP协议交互序列示意：AI Agent通过MCP Server发现并调用经安全策略裁剪的平台工具，设备链路仍由IoT平台控制。
+  zh: 图 9-9 MCP 协议交互序列示意：AI Agent 通过 MCP Server 发现并调用经安全策略裁剪的平台工具，设备链路仍由 IoT 平台控制。
   en: 'Figure 9-9 MCP interaction sequence: the AI Agent discovers and invokes policy-scoped platform Tools through the MCP Server, while the IoT platform retains control of the device path.'
 labels:
   en:

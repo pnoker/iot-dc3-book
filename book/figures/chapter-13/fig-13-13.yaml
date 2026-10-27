@@ -14,8 +14,8 @@ relationships:
 - 四步依次递进，事件日志提供多方可验证证据；策略网关保留确定性执行边界
 render_notes: HTML/SVG 渲染，四步闭环 + 工程权衡，蓝绿橙红分层。
 caption:
-  zh: 图 13-13 AI 与链上事件只产生候选授权，策略网关仍须校验工况、权限与安全边界；事件日志用于多方复核，不替代确定性控制。
-  en: 'Figure 13-13 Smart irrigation forms a four-step closed loop of AI inference, on-chain oracles, condition-triggered contracts, and device execution, with event logs forming a tamper-proof audit trail; the value lies in multi-party auditable automatic execution rather than replacing deterministic control logic.'
+  zh: 图 13-13 链上事件只产生候选授权，策略网关仍须校验工况、权限与安全边界。
+  en: Figure 13-13 On-chain events create candidate authorization only; a policy gateway must still validate operating conditions, permissions, and safety boundaries.
 labels:
   en:
     图 13-13 智能合约驱动的自动化决策闭环: Figure 13-13 Smart-Contract-Driven Automated Decision Loop

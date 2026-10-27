@@ -18,7 +18,7 @@ relationships:
 render_notes: 自底向上五层梯形金字塔，每层标系统与时效；右侧附"数据/决策/指令由人"的设计预设。完整 HTML 见 figures/chapter-01/fig-01-01.html。
 caption:
   zh: 图1-1 工业软件的版图：ISA-95 五层金字塔。自底向上为物理过程、基础控制、过程监控、制造运营、业务规划，时效从毫秒到天；这套以人为中心的信息架构正是后续结构性局限的源头。
-  en: 'Figure 1-1 The landscape of industrial software: the ISA-95 five-level pyramid. Bottom-up: physical process, basic control, supervision, manufacturing operations, business planning, with time scales from milliseconds to days. This human-centered information architecture is the very source of the structural limits discussed next.'
+  en: 'Figure 1-1 The landscape of industrial software: the ISA-95 five-level pyramid. Bottom-up: physical process, basic control, supervision, manufacturing operations, business planning — latency from milliseconds to days. This human-centered information architecture is the source of the structural limits that follow.'
 labels:
   en:
     图1-1 工业软件的版图：ISA-95 五层金字塔: Figure 1-1 The ISA-95 Five-Level Pyramid

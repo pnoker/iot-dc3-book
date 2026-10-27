@@ -1,5 +1,5 @@
 type: layered
-title: 图6-5 物联网微服务容器部署的端-边-云分层架构
+title: 图6-5 物联网微服务容器部署的端—边—云分层架构
 audience_takeaway: 边缘与云端采用不同规格容器编排(k3s vs 完整K8s)，时延敏感的采集控制回路在边缘本地闭环不经云端，云端仅经MQTT异步交换数据。
 purpose: 展示从端设备、边缘节点到云端的数据流与控制流，以及各层使用的容器编排工具
 visual_focus: 从云端层到端设备层的主链路。
@@ -65,8 +65,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: HTML/SVG 渲染，浅色背景，圆角矩形，三层纵列排布。层间连接线标注主要协议类型。边缘 k3s 节点内使用较小尺寸的 Pod 图标以体现资源差异。
 caption:
-  zh: 图6-5 展示物联网微服务从端设备到边缘节点再到云端的容器部署分层架构。边缘层运行 k3s 轻量集群处理协议适配和本地缓存，云端运行完整 K8s 集群承载中心服务。
-  en: 'Figure 6-5 Shows the layered container deployment of IoT microservices from end devices through edge nodes to the cloud. The edge tier runs lightweight k3s clusters for protocol adaptation and local buffering, while the cloud runs a full K8s cluster hosting the central services.'
+  zh: 图6-5 云端承担集中编排，边缘承担离线自治；是否引入 k3s 取决于节点规模与运维收益。
+  en: Figure 6-5 The cloud centralizes orchestration while the edge runs offline autonomously; adopting k3s depends on node scale and ops payoff.
 labels:
   en:
     图6-5 物联网微服务容器部署的端—边—云分层架构: Figure 6-5 Device–Edge–Cloud Container Deployment for IoT Microservices

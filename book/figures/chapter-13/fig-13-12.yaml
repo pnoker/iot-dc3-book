@@ -15,7 +15,7 @@ relationships:
 render_notes: HTML/SVG 渲染，参数上链数据流 + 梯度压缩三方法，蓝绿橙分层。
 caption:
   zh: 图 13-12 联邦学习中参数哈希上链、完整数据存链下 CID，梯度经 Top-K/量化/差分隐私压缩后传输，验证者比对哈希完成链上验证；隐私、鲁棒性与可用性须联合评测。
-  en: 'Figure 13-12 In federated learning, parameter hashes go on-chain while complete data is stored off-chain under a CID; gradients are compressed via Top-K, quantization, or differential privacy before transmission, and the verifier completes on-chain verification by comparing hashes. Privacy, robustness, and availability must be evaluated jointly.'
+  en: Figure 13-12 Hashes on-chain, full data off-chain by CID; gradients compressed via Top-K, quantization or differential privacy; verifiers compare hashes on-chain; privacy, robustness and availability evaluated jointly.
 labels:
   en:
     图 13-12 联邦学习与区块链的融合模式: Figure 13-12 Federated Learning Meets Blockchain

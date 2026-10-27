@@ -22,8 +22,8 @@ legend:
 - 实线表示同步 REST/gRPC 管理调用；虚线表示 RabbitMQ 异步消息。
 render_notes: SVG 分层绘制，RabbitMQ 作为唯一消息总线突出显示；禁止绘制 Kafka、Nacos 或 Data 到 Driver 的同步命令直连。
 caption:
-  zh: 图6-7 IoT DC3 服务间通信架构：Gateway 与 gRPC 承担同步管理调用，命令、回执和上行数据经 RabbitMQ 异步流转。
-  en: 'Figure 6-7 IoT DC3 inter-service communication: the Gateway and gRPC carry synchronous management calls, while commands, receipts, and uplink data flow asynchronously through RabbitMQ.'
+  zh: 图6-7 Driver → Manager 使用同步 gRPC；Data ↔ RabbitMQ ↔ Driver 使用双向异步消息。
+  en: Figure 6-7 Driver → Manager uses synchronous gRPC; Data ↔ RabbitMQ ↔ Driver uses bidirectional async messaging.
 labels:
   en:
     图6-7 IoT DC3 服务间通信架构图: Figure 6-7 IoT DC3 Inter-Service Communication

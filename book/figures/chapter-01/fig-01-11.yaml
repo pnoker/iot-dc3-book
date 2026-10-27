@@ -23,8 +23,8 @@ legend:
 - 金色竖条：安全贯穿线
 render_notes: 垂直分层，每层用一个带标题的圆角矩形表示。上行数据用橙色箭头标注，下行指令用蓝色箭头标注。左侧绘制一条金色竖带，标注“安全”，表示安全是跨越所有层的治理能力。使用 SVG 绘制，整体居中对齐。
 caption:
-  zh: 图1-11 四层物联网参考架构。数据从感知层上行至应用层，指令以相反方向下行，形成闭环控制。安全条带从左侧贯穿，跨越所有层次。
-  en: Figure 1-11 A four-layer IoT reference architecture. Data flows up from the sensing layer to the application layer while commands travel the opposite way down, forming closed-loop control. A security band runs down the left side, spanning every layer.
+  zh: 图1-11 四层物联网参考架构。数据从感知层上行至应用层，指令反向下行至执行器，安全作为跨越所有层的约束条件贯穿始终。
+  en: Figure 1-11 Four-layer IoT reference architecture. Data flows up from sensing to application, commands flow down to actuators, and security endures as a constraint across all layers.
 labels:
   en:
     图1-11 四层物联网参考架构示意图: Figure 1-11 Four-Layer IoT Reference Architecture

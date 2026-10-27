@@ -135,8 +135,8 @@ visual_constraints:
 - 决策节点必须写成可判断的问题或动作，分支标签保持短句。
 render_notes: 使用从左至右布局，进程用圆角矩形，数据存储用圆柱，判断用菱形。流程图应清晰显示反馈回路。
 caption:
-  zh: 图 5-11 电流数据自设备层经数据管道进入模型层，训练与推理共用同一条管道；评分层输出预测区间，超出阈值即触发告警并回流至运维侧。
-  en: 'Figure 5-11 Data flow of the predictive maintenance pipeline.'
+  zh: 图 5-11 预测性维护管道由残差评分驱动：评分超过阈值才告警，告警处置结果经运维确认和影子验证后反馈到模型增量更新。
+  en: 'Figure 5-11 The predictive maintenance pipeline is residual-score driven: an alarm fires only when the score exceeds a threshold, and confirmed alarm outcomes feed incremental model updates after ops confirmation and shadow validation.'
 labels:
   en:
     图 5-11 从数据采集到告警触发的预测性维护流程: 'Figure 5-11 Predictive Maintenance: Collection to Alarm'

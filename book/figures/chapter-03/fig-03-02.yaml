@@ -114,7 +114,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形。模拟路径各模块用实线箭头串接，数字路径用总线符号连接。图例位于底部。
 caption:
   zh: 图 3-2 模拟与数字信号路径对比。左栏模拟路径需要工程师逐级设计放大、滤波和ADC配置；右栏数字路径由传感器厂商封装调理电路，工程师只需通过总线协议读取结果。
-  en: Figure 3-2 Analog versus digital signal paths. The analog path on the left requires engineers to design amplification, filtering, and ADC configuration stage by stage; on the right, the digital path ships with the conditioning circuitry encapsulated by the sensor vendor, and engineers only read results over a bus protocol.
+  en: Figure 3-2 Analog versus digital signal paths. The left column shows the analog path, where engineers design amplification, filtering, and ADC configuration stage by stage; the right column shows the digital path, where the sensor vendor encapsulates the conditioning circuitry and engineers only read results over a bus protocol.
 labels:
   en:
     图 3-2 模拟与数字信号路径架构对比: Figure 3-2 Analog vs Digital Signal Path Architectures

@@ -131,8 +131,8 @@ visual_constraints:
 - 时间轴自上而下，标注Phase I/II/III分隔线。
 render_notes: HTML/SVG渲染，水平泳道布局。传感器在左，Broker在左中，云订阅在右中，手机App在右。时间轴自上而下。每条消息的箭头颜色和线型符合图例（CONNECT/ACK实线灰色，周期数据蓝色虚线，告警橙色虚线，遗嘱红色虚线）。图底部有图例说明。
 caption:
-  zh: 图 9-4 展示了一个完整的MQTT智能家居监控交互序列。序列分三个阶段：Phase I连接建立与遗嘱设置，Phase II正常运行与告警触发，Phase III断连处理与遗嘱发布。重点突出QoS 1的周期数据、QoS 2的告警消息以及断连后的遗嘱消息三者的时序与角色差异。
-  en: 'Figure 9-4 A complete MQTT smart-home monitoring sequence in three phases: Phase I connection setup with Last Will registration, Phase II normal operation and alarm triggering, and Phase III disconnect handling and Last Will publishing. It highlights how QoS 1 periodic data, QoS 2 alarm messages, and the post-disconnect Last Will differ in timing and role.'
+  zh: 图 9-4 周期数据、QoS 2 告警和遗嘱消息分别承担采集、关键通知与离线状态感知职责。
+  en: Figure 9-4 Periodic data, QoS 2 alarms, and the Last Will each serve collection, critical notification, and offline-state sensing.
 labels:
   en:
     图 9-4 MQTT智能家居监控系统交互序列: Figure 9-4 MQTT Smart-Home Monitoring Sequence

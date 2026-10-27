@@ -122,8 +122,8 @@ visual_constraints:
 - 分组边界用虚线圆角矩形。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，箭头带短标签，底部图例和出版级图注。
 caption:
-  zh: 图 5-6 展示从设备边缘到云端的层次与协同模式，左侧标注EdgeX/KubeEdge的典型部署位置。云端与边缘双向协同：规则与模型经“规则下发”通道下沉到边缘，现场数据经“聚合上报”通道回流云端。
-  en: 'Figure 5-6 Layers and collaboration modes from device edge to cloud, with the typical deployment positions of EdgeX/KubeEdge annotated on the left.'
+  zh: 图 5-6 边缘-云协同典型架构：展示从设备边缘到云端的层次与协同模式，左侧标注 EdgeX/KubeEdge 的典型部署位置，规则下发与聚合上报构成双向协同。
+  en: 'Figure 5-6 Typical edge-cloud collaboration architecture: layers and collaboration modes from device edge to cloud, with the typical EdgeX/KubeEdge deployment positions annotated on the left; rule push and aggregated upload form the two-way collaboration.'
 labels:
   en:
     图 5-6 边缘-云协同典型架构: Figure 5-6 Typical Edge-Cloud Collaboration Architecture

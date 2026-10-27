@@ -87,8 +87,8 @@ visual_constraints:
 - 图例放在底部，清晰标注颜色与线型对应关系。
 render_notes: 渲染为自包含SVG（无需ECharts/Highcharts等外部图表库），组合柱状图（主）与折线图（辅）。x轴：运行周期（1-6）。左侧y轴：年度维护成本（相对值，无刻度）。右侧y轴：设备可用率（相对值，无刻度）。折线采用不同线型（实线、虚线、点划线）以便灰度印刷区分。图表底部添加图例区域。标题明确标注“示意”。
 caption:
-  zh: 图 10-4 三类维护策略效率对比（示意）。本图展示三种维护策略在长期运营中的成本与可用率相对趋势：被动维护成本快速攀升、可用率骤降；预防性维护成本周期性波动、可用率缓慢下滑；预测性维护成本逐步稳定、可用率长期维持高位。
-  en: 'Figure 10-4 Efficiency comparison of three maintenance strategies (illustrative). The chart shows the relative cost and availability trends of the three strategies in long-term operation: reactive maintenance cost climbs fast while availability plunges; preventive maintenance cost swings cyclically while availability slowly declines; predictive maintenance cost levels off and availability stays high over the long run.'
+  zh: 图 10-4 三类维护策略效率对比（示意）：被动维护成本快速攀升、可用率骤降；预防性维护成本周期波动、可用率缓降；预测性维护成本稳定、可用率长期高位。
+  en: 'Figure 10-4 Three maintenance strategies compared (illustrative): reactive cost climbs as availability plunges; preventive cost cycles as availability drifts down; predictive cost stabilizes and availability stays high.'
 labels:
   en:
     图 10-4 三类维护策略长期运营效率对比（示意）: Figure 10-4 Long-Term Efficiency of Three Maintenance Strategies (Illustrative)

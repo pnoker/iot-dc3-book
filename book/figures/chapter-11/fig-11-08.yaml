@@ -91,8 +91,8 @@ visual_constraints:
 - 橙色只用于模型下发链路。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形，四层分明，箭头带短标签，底部图例和出版级图注。
 caption:
-  zh: 图11-8 云边协同分层架构示意：设备层数据经路侧RSU实时处理后，聚合统计上传至区域汇聚节点，汇聚节点运行短期预测模型，并与云端进行训练数据交换。
-  en: 'Figure 11-8 Layered edge-cloud collaboration architecture: device data is processed in real time by the roadside RSU, aggregated statistics are uploaded to regional aggregation nodes, which run short-term prediction models and exchange training data with the cloud.'
+  zh: 图11-8 四层按延迟、数据量与算力分工：数据逐层上行，云端训练的模型和策略向边缘下发。
+  en: 'Figure 11-8 Layers split by latency, data volume, and compute: data flows up, cloud-trained models and policies flow down.'
 labels:
   en:
     图11-8 云边协同分层架构示意: 'Figure 11-8 Layered Edge-Cloud Collaboration'

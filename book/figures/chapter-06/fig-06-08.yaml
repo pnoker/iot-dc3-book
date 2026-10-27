@@ -71,8 +71,8 @@ visual_constraints:
 - 图例放在底部，不遮挡主体结构。
 render_notes: 三列分层绘制；Prometheus到服务的pull箭头必须指向服务，日志链路必须经过采集器，Grafana分别连接Prometheus与Elasticsearch，Prometheus连接Alertmanager。
 caption:
-  zh: 图6-8 Prometheus主动拉取服务指标并将告警发送给Alertmanager；日志经采集器进入Elasticsearch，Grafana分别查询Prometheus和Elasticsearch。
-  en: 'Figure 6-8 Prometheus actively pulls service metrics and sends alerts to Alertmanager; logs flow through a collector into Elasticsearch, and Grafana queries Prometheus and Elasticsearch separately.'
+  zh: 图6-8 Prometheus 主动拉取指标并驱动告警；日志经采集器入 ES，Grafana 分别查询 Prometheus 与 ES。
+  en: Figure 6-8 Prometheus actively pulls metrics and drives alerting; logs enter ES via a collector, and Grafana queries Prometheus and ES separately.
 labels:
   en:
     图6-8 微服务可观测性分层架构: Figure 6-8 Microservice Observability Architecture

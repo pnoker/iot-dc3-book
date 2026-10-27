@@ -88,7 +88,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，底层为深灰色胶囊表示物理共享层，上方左、中、右三栏分别高亮渲染（红、蓝、绿）。终端图标使用简易矢量符号。mMTC切片底部标注“兼容NB-IoT/eMTC”标签。整体浅色背景，圆角矩形，统一间距。
 caption:
   zh: 图4-3 通过5G网络切片技术，同一物理网络可同时承载不同服务质量需求的IoT场景。URLLC保障毫秒级时延，mMTC提供极高连接密度，eMBB提供Gbps级吞吐。平台侧仍需协议适配层归一异构终端。
-  en: 'Figure 4-3 With 5G network slicing, a single physical network can carry IoT scenarios with different QoS requirements simultaneously. URLLC guarantees millisecond-level latency, mMTC delivers extremely high connection density, and eMBB provides Gbps-class throughput. The platform side still needs a protocol adaptation layer to unify heterogeneous devices.'
+  en: 'Figure 4-3 With 5G network slicing, one physical network simultaneously carries IoT scenarios with different QoS needs: URLLC ensures millisecond latency, mMTC delivers massive connection density, and eMBB provides Gbps-class throughput. The platform still needs a protocol adaptation layer to unify heterogeneous devices.'
 labels:
   en:
     图4-3 5G网络切片IoT应用示意: 'Figure 4-3 5G Network Slicing for IoT'

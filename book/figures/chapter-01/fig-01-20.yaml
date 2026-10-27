@@ -112,7 +112,7 @@ visual_constraints:
 render_notes: HTML/SVG渲染，横向分三层，每层内放置多个矩形组件，层之间用纵向箭头连接，标注文本。颜色按图例设置。浅色背景，圆角矩形，统一间距。
 caption:
   zh: 图1-20 云边协同AIoT三级架构。云侧管理经过评测的模型版本，边缘侧承担实时推理与数据过滤，端侧在本地规则和控制器边界内响应，样本与回执回流后进入下一轮评测。
-  en: Figure 1-20 The three-tier edge-cloud collaborative AIoT architecture. The cloud manages evaluated model versions, the edge handles real-time inference and data filtering, and the end responds within local rule and controller boundaries; returned samples and receipts enter the next evaluation cycle.
+  en: Figure 1-20 Edge-cloud collaborative AIoT, three tiers. The cloud manages evaluated model versions and the edge handles real-time inference and filtering — the end responds within local rule and controller boundaries, and returned samples and receipts enter the next evaluation cycle.
 labels:
   en:
     图1-20 云边协同AIoT三级架构示意: 'Figure 1-20 Edge-Cloud Collaborative AIoT: Three Tiers'

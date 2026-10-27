@@ -146,8 +146,8 @@ visual_constraints:
 - Connection label不超过12个汉字。
 render_notes: HTML/SVG渲染，浅色背景，圆角矩形。Characteristic节点标注Properties（如Read|Notify）。Notification和Indication为菱形节点。底部图例。
 caption:
-  zh: 图 9-8 左半部分自下而上为 BLE 协议栈各层，GATT 建立在 ATT 与 L2CAP 之上；右半部分对比两条推送路径——Notification 发送后即结束、不等确认，Indication 须收到客户端 ACK 才能发送下一条。
-  en: Figure 9-8 The BLE GATT stack layers and the Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication execution paths.
+  zh: 图 9-8 BLE GATT 协议栈层次及 Service-Characteristic-Descriptor 嵌套结构，右半部分展示 Notification 与 Indication 的执行路径分叉。
+  en: Figure 9-8 BLE GATT stack layers and Service-Characteristic-Descriptor nesting; the right half shows the fork between the Notification and Indication paths.
 labels:
   en:
     图 9-8 BLE GATT协议栈与服务-特征层次: Figure 9-8 BLE GATT Stack and Service-Characteristic Hierarchy
