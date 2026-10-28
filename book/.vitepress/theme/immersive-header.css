@@ -294,3 +294,103 @@ html.dark .dc3-book-immersive-layout .VPNavBar > .wrapper > .container {
     .dc3-book-immersive-layout .VPNavBar > .wrapper > .container { will-change: auto; }
     .dc3-book-immersive-layout .VPNavBar > .wrapper > .container::after { animation: none; }
 }
+
+/* ── 内容页:同一枚玻璃胶囊 header(≥960px 桌面端)。
+   移动端保留 VitePress 默认 nav + VPLocalNav,不占用侧栏/大纲入口。 ── */
+.dc3-book-doc-layout .VPNavBar {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: none;
+}
+
+.dc3-book-doc-layout .VPNavBar .wrapper { padding-right: 0 !important; padding-left: 0 !important; }
+.dc3-book-doc-layout .VPNavBar .divider { opacity: 0; }
+
+.dc3-book-doc-layout .VPNavBar > .wrapper > .container {
+    position: relative;
+    box-sizing: border-box;
+    width: var(--dc3-nav-width, calc(100% - 64px));
+    max-width: 1360px;
+    height: var(--dc3-nav-height, 64px);
+    margin: var(--dc3-nav-offset, 0) auto 0;
+    padding: 0 var(--dc3-nav-padding, 0);
+    border: 1px solid rgba(114, 204, 241, calc(var(--dc3-nav-progress, 0) * 0.3));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vp-c-bg-elv) calc(var(--dc3-nav-progress, 0) * 72%), transparent);
+    box-shadow:
+        0 calc(var(--dc3-nav-progress, 0) * 18px) calc(var(--dc3-nav-progress, 0) * 50px) rgba(11, 92, 153, calc(var(--dc3-nav-progress, 0) * 0.16)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(var(--dc3-nav-progress, 0) * 0.82)),
+        inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px) rgba(56, 132, 205, calc(var(--dc3-nav-progress, 0) * 0.06));
+    backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+    -webkit-backdrop-filter: blur(calc(var(--dc3-nav-progress, 0) * 22px)) saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+    contain: layout style;
+}
+
+.dc3-book-doc-layout .VPNavBar > .wrapper > .container.dc3-nav-animating {
+    will-change: width, height, margin, padding, backdrop-filter;
+}
+
+.dc3-book-doc-layout .VPNavBarTitle .title,
+.dc3-book-doc-layout .VPNavBar .content-body {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: none;
+}
+
+.dc3-book-doc-layout .VPNavBarTitle .title:hover,
+.dc3-book-doc-layout .VPNavBar .content-body:hover {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.dc3-book-doc-layout .VPNavBar > .wrapper > .container > .title,
+.dc3-book-doc-layout .VPNavBar > .wrapper > .container > .content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.dc3-book-doc-layout .VPNavBar > .wrapper > .container > .content { justify-content: flex-end; }
+.dc3-book-doc-layout .VPNavBarTitle { height: 100%; }
+.dc3-book-doc-layout .VPNavBar .content-body { margin-top: 0; margin-bottom: 0; }
+
+.dc3-book-doc-layout .VPNavBar > .wrapper > .container::after {
+    content: '';
+    position: absolute;
+    right: 11%;
+    bottom: -1px;
+    width: 24%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(41, 197, 223, 0.84), rgba(91, 116, 235, 0.5), transparent);
+    filter: drop-shadow(0 0 5px rgba(41, 197, 223, 0.46));
+    opacity: clamp(0, calc((var(--dc3-nav-progress, 0) - 0.5) * 1.84), 0.92);
+    animation: dc3-header-scan 5.6s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+html.dark .dc3-book-doc-layout .VPNavBar > .wrapper > .container {
+    border-color: rgba(126, 213, 247, calc(var(--dc3-nav-progress, 0) * 0.18));
+    background: rgba(12, 27, 43, calc(var(--dc3-nav-progress, 0) * 0.72));
+    box-shadow:
+        0 calc(var(--dc3-nav-progress, 0) * 20px) calc(var(--dc3-nav-progress, 0) * 54px) rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.34)),
+        inset 0 1px 0 rgba(220, 248, 255, calc(var(--dc3-nav-progress, 0) * 0.12)),
+        inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px) rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.16));
+}
+
+@media (min-width: 960px) {
+    .dc3-book-doc-layout .VPNavBar > .wrapper > .container {
+        width: var(--dc3-nav-width, calc(100% - 64px));
+        max-width: 1360px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dc3-book-doc-layout .VPNavBar > .wrapper > .container { will-change: auto; }
+    .dc3-book-doc-layout .VPNavBar > .wrapper > .container::after { animation: none; }
+}

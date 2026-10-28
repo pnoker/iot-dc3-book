@@ -46,7 +46,7 @@ const theme: Theme = {
     const figuresLayout = route.path === '/figures' || route.path === '/figures/'
       || route.path === '/en/figures' || route.path === '/en/figures/'
     const immersiveLayout = homeLayout || figuresLayout
-    return h(DefaultTheme.Layout, {class: {'dc3-book-immersive-layout': immersiveLayout}}, {
+    return h(DefaultTheme.Layout, {class: {'dc3-book-immersive-layout': immersiveLayout, 'dc3-book-doc-layout': !immersiveLayout}}, {
       // 与 online 首页同源的单画布力场：网格挤压、粒子网络和悬浮点阵 Logo
       'home-hero-before': () => h(HeroWaves),
       // 图库首屏复用同一套动态力场；首屏离开视口后组件会自动停画。
