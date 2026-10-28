@@ -17,7 +17,12 @@ const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(DIVIDERS_DIR)
   lstripBlocks: true, // 对齐 Jinja2 lstrip_blocks
 })
 
-export type DividerContext = Record<string, string>
+export type DividerContext = Record<string, unknown>
+
+export interface RouteItem {
+  no: string
+  title: string
+}
 
 /** 渲染章/篇扉页模板，提取 body 内容内联进页面（去掉 <link> 与空行）。 */
 export function renderDividerInline(context: DividerContext): string {
@@ -32,13 +37,14 @@ export function renderDividerInline(context: DividerContext): string {
   return body
 }
 
-/** 篇扉页上下文（zh/en 同构，label 由调用方传入）。 */
+/** 篇扉页上下文（zh/en 同构，label 由调用方传入）。route = 本篇各章（可选）。 */
 export function partDividerContext(
   name: string,
   prefix: string | number,
   description: string,
   partIndex: number,
   lang: 'zh' | 'en',
+  chapters?: RouteItem[],
 ): DividerContext {
   const themes = ['foundation', 'technology', 'application']
   const label = lang === 'zh' ? `第${prefix}篇` : `Part ${prefix}`
@@ -46,6 +52,7 @@ export function partDividerContext(
     source_name: `part-${String(partIndex).padStart(2, '0')}.html`,
     kind: 'part',
     theme: themes[(partIndex - 1) % themes.length],
+    lang,
     number: String(partIndex).padStart(2, '0'),
     label,
     english_label: `PART ${String(partIndex).padStart(2, '0')}`,
@@ -53,14 +60,18 @@ export function partDividerContext(
     title_main: name,
     title_sub: '',
     description,
+    route_label: lang === 'zh' ? '本篇脉络' : 'IN THIS PART',
+    footer_motif: lang === 'zh' ? '感知 · 推理 · 行动 · 进化' : 'Sense · Reason · Act · Evolve',
+    route: chapters ?? [],
   }
 }
 
-/** 章扉页上下文（zh 用全角"："分隔、en 用 ":" + title_sep）。 */
+/** 章扉页上下文（zh 用全角"："分隔、en 用 ":" + title_sep）。route = 本章小节（可选）。 */
 export function chapterDividerContext(
   ch: {id: number; title: string; description: string},
   partIndex: number,
   lang: 'zh' | 'en',
+  sections?: RouteItem[],
 ): DividerContext {
   const themes = ['foundation', 'technology', 'application']
   const sep = lang === 'zh' ? '：' : ':'
@@ -69,6 +80,7 @@ export function chapterDividerContext(
     source_name: `chapter-${String(ch.id).padStart(2, '0')}.html`,
     kind: 'chapter',
     theme: themes[(partIndex - 1) % themes.length],
+    lang,
     number: String(ch.id).padStart(2, '0'),
     label: lang === 'zh' ? `第${ch.id}章` : `Chapter ${ch.id}`,
     english_label: `CHAPTER ${String(ch.id).padStart(2, '0')}`,
@@ -77,6 +89,9 @@ export function chapterDividerContext(
     title_sub: lang === 'zh' ? titleSub : titleSub.trim(),
     ...(lang === 'en' ? {title_sep: ': '} : {}),
     description: ch.description,
+    route_label: lang === 'zh' ? '本章路线图' : 'IN THIS CHAPTER',
+    footer_motif: lang === 'zh' ? '感知 · 推理 · 行动 · 进化' : 'Sense · Reason · Act · Evolve',
+    route: sections ?? [],
   }
 }
 

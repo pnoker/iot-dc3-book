@@ -7,7 +7,7 @@
   <title>{{ label }} {{ title }}</title>
 </head>
 <body>
-  <main class="page {{ kind }}-page theme-{{ theme }}" data-figure-root>
+  <main class="page {{ kind }}-page lang-{{ lang }} theme-{{ theme }}" data-figure-root>
     <div class="glow glow-a" aria-hidden="true"></div>
     <div class="glow glow-b" aria-hidden="true"></div>
     <div class="glow glow-c" aria-hidden="true"></div>
@@ -27,9 +27,24 @@
       <div class="rule" aria-hidden="true"></div>
       <p class="overview">{{ description }}</p>
     </section>
+    {% if route and route.length %}
+    <section class="visual has-route">
+      <span class="route-ghost" aria-hidden="true">{{ number }}</span>
+      <p class="route-label">{{ route_label }}</p>
+      <ol class="route-list">
+        {% for it in route %}
+        <li class="route-item">
+          <span class="route-no">{{ it.no }}</span>
+          <span class="route-title">{{ it.title }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% else %}
     <section class="visual" aria-hidden="true">
       {% block illustration %}{% endblock %}
     </section>
+    {% endif %}
     <svg class="family-network" viewBox="0 0 360 260" aria-hidden="true">
       <path class="network-line" d="M24 206L102 132l72 42 70-112 92 54"/>
       <path class="network-line" d="M102 132l28-92 114 22 38 144" opacity="0.55"/>
@@ -44,6 +59,7 @@
     </svg>
     <footer class="footer">
       <span>FROM INDUSTRIAL SOFTWARE TO AI AGENTS</span>
+      {% if footer_motif %}<span class="footer-motif">{{ footer_motif }}</span>{% endif %}
     </footer>
   </main>
 </body>

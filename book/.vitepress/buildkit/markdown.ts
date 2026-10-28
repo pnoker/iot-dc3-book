@@ -94,7 +94,7 @@ function shiftHeadings(md: string): string {
 }
 
 /** 把章描述拓展成一段简洁的概览总结（连贯成段，不列节标题）。 */
-export function genChapterOverview(desc: string, sections: {stem: string; title: string}[]): string {
+export function genChapterOverview(desc: string, sections: {stem: string; title: string}[], cid = 0): string {
   const topics: string[] = []
   for (const s of sections) {
     if (!s.stem) continue
@@ -104,17 +104,31 @@ export function genChapterOverview(desc: string, sections: {stem: string; title:
   }
   const base = desc.replace(/[。！？；\n]+$/, '').trimEnd()
   if (!topics.length) return base
+  // 句式按章号轮换，避免 14 章同一副骨架；三组动词轨距一致、措辞各异
+  const frame = cid % 3
   let chain: string
   if (topics.length === 1) {
-    chain = `聚焦${topics[0]}`
+    chain = [`聚焦${topics[0]}`, `围绕${topics[0]}展开`, `以${topics[0]}为核心`][frame]
   } else if (topics.length === 2) {
-    chain = `先讲${topics[0]}，最后落在${topics[1]}`
+    chain = [
+      `先讲${topics[0]}，最后落在${topics[1]}`,
+      `从${topics[0]}切入，收束于${topics[1]}`,
+      `以${topics[0]}开篇，尾声落到${topics[1]}`,
+    ][frame]
   } else if (topics.length <= 5) {
     const mid = topics.slice(1, -1).join('、')
-    chain = `先讲${topics[0]}，再到${mid}，最后落在${topics[topics.length - 1]}`
+    chain = [
+      `先讲${topics[0]}，再到${mid}，最后落在${topics[topics.length - 1]}`,
+      `从${topics[0]}切入，继而${mid}，收束于${topics[topics.length - 1]}`,
+      `以${topics[0]}开篇，中段展开${mid}，尾声落到${topics[topics.length - 1]}`,
+    ][frame]
   } else {
     const mid = topics.slice(1, 4).join('、') + `等${topics.length - 1}个主题`
-    chain = `先讲${topics[0]}，再到${mid}，最后落在${topics[topics.length - 1]}`
+    chain = [
+      `先讲${topics[0]}，再到${mid}，最后落在${topics[topics.length - 1]}`,
+      `从${topics[0]}切入，继而${mid}，收束于${topics[topics.length - 1]}`,
+      `以${topics[0]}开篇，中段展开${mid}，尾声落到${topics[topics.length - 1]}`,
+    ][frame]
   }
   return `${base}。本章${chain}。`
 }
@@ -226,10 +240,14 @@ function renderChapter(info: PageInfo): string {
   const hit = findChapter(info.lang, cid)
   if (!hit) return ''
   const {ch} = hit
-  const dividerCtx = chapterDividerContext(ch, ch.partIndex, info.lang)
+  const route = ch.sections.map((s, i) => ({
+    no: `${cid}.${i + 1}`,
+    title: s.title.replace(/^\d+\.\d+\s*/, '').trim(),
+  }))
+  const dividerCtx = chapterDividerContext(ch, ch.partIndex, info.lang, route)
   let dividerHtml = renderDividerInline(dividerCtx)
   if (info.lang === 'zh') {
-    const overview = genChapterOverview(ch.description, ch.sections)
+    const overview = genChapterOverview(ch.description, ch.sections, cid)
     dividerHtml = dividerHtml.replace(
       /<p class="overview">[\s\S]*?<\/p>/,
       `<p class="overview">${overview}</p>`,
@@ -264,7 +282,14 @@ function renderPart(info: PageInfo): string {
   const part = site[info.lang].find((p) => p.slug === slug)
   if (!part) return ''
   const dividerHtml = renderDividerInline(
-    partDividerContext(part.name, part.prefix || part.partIndex, part.description, part.partIndex, info.lang),
+    partDividerContext(
+      part.name,
+      part.prefix || part.partIndex,
+      part.description,
+      part.partIndex,
+      info.lang,
+      part.chapters.map((c) => ({no: String(c.id).padStart(2, '0'), title: c.title})),
+    ),
   )
   const desc = oneline(part.description)
   const out = [fmStr({title: part.name, description: desc})]
